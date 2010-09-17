@@ -1,0 +1,541 @@
+Content-type: text/html
+
+<HTML><HEAD><TITLE>Manpage of BISON</TITLE>
+</HEAD><BODY>
+<H1>BISON</H1>
+Section: User Commands  (1)<BR>Updated: local<BR><A HREF="#index">Index</A>
+<A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+bison - GNU Project parser generator (yacc replacement)
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>bison</B>
+
+[
+<B>-b</B><I> file-prefix</I>
+
+] [
+<B>--file-prefix=</B><I>file-prefix</I>
+
+] [
+<B>-d</B>
+
+] [
+<B>--defines</B>
+
+] [
+<B>-k</B>
+
+] [
+<B>--token-table</B>
+
+] [
+<B>-l</B>
+
+] [
+<B>--no-lines</B>
+
+] [
+<B>-n</B>
+
+] [
+<B>--no-parser</B>
+
+] [
+<B>-o</B><I> outfile</I>
+
+] [
+<B>--output-file=</B><I>outfile</I>
+
+] [
+<B>-p</B><I> prefix</I>
+
+] [
+<B>--name-prefix=</B><I>prefix</I>
+
+] [
+<B>-r</B>
+
+] [
+<B>--raw</B>
+
+] [
+<B>-t</B>
+
+] [
+<B>--debug</B>
+
+] [
+<B>-v</B>
+
+] [
+<B>--verbose</B>
+
+] [
+<B>-V</B>
+
+] [
+<B>--version</B>
+
+] [
+<B>-y</B>
+
+] [
+<B>--yacc</B>
+
+] [
+<B>-h</B>
+
+] [
+<B>--help</B>
+
+] [
+<B>--fixed-output-files</B>
+
+]
+file
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>Bison</I>
+
+is a parser generator in the style of
+<I><A HREF="http://localhost/cgi-bin/man/man2html?1+yacc">yacc</A></I>(1).
+
+It should be upwardly compatible with input files designed
+for
+<I>yacc</I>.
+
+<P>
+
+Input files should follow the
+<I>yacc</I>
+
+convention of ending in
+<B>.y</B>.
+
+Unlike
+<I>yacc</I>,
+
+the generated files do not have fixed names, but instead use the prefix
+of the input file.
+For instance, a grammar description file named
+<B>parse.y</B>
+
+would produce the generated parser in a file named
+<B>parse.tab.c</B>,
+
+instead of
+<I>yacc</I>'s
+
+<B>y.tab.c</B>.
+
+<P>
+
+This description of the options that can be given to
+<I>bison</I>
+
+is adapted from the node
+<B>Invocation</B>
+
+in the
+<B>bison.texinfo</B>
+
+manual, which should be taken as authoritative.
+<P>
+
+<I>Bison</I>
+
+supports both traditional single-letter options and mnemonic long
+option names.  Long option names are indicated with
+<B>--</B>
+
+instead of
+<B>-</B>.
+
+Abbreviations for option names are allowed as long as they
+are unique.  When a long option takes an argument, like
+<B>--file-prefix</B>,
+
+connect the option name and the argument with
+<B>=</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><B>-b</B><I> file-prefix</I>
+
+<DD>
+<BR>
+
+
+<DT><B>--file-prefix=</B><I>file-prefix</I>
+
+<DD>
+Specify a prefix to use for all
+<I>bison</I>
+
+output file names.  The names are
+chosen as if the input file were named
+<I>file-prefix</I><B>.c</B>.
+<DT><B>-d</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--defines</B>
+
+<DD>
+Write an extra output file containing macro definitions for the token
+type names defined in the grammar and the semantic value type
+<B>YYSTYPE</B>,
+
+as well as a few
+<B>extern</B>
+
+variable declarations.
+<P>
+If the parser output file is named
+<I>name</I><B>.c</B>
+then this file
+is named
+<I>name</I><B>.h</B>.
+<P>
+This output file is essential if you wish to put the definition of
+<B>yylex</B>
+
+in a separate source file, because
+<B>yylex</B>
+
+needs to be able to refer to token type codes and the variable
+<B>yylval</B>.
+
+<DT><B>-r</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--raw</B>
+
+<DD>
+The token numbers in the <I>name</I><B>.h</B> file are usually the Yacc compatible 
+translations.  If this switch is specified, Bison token numbers
+are output instead.  (Yacc numbers start at 257 except for single character 
+tokens;  Bison assigns token numbers sequentially for all tokens 
+starting at 3.)
+<DT><B>-k</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--token-table</B>
+
+<DD>
+This switch causes the <I>name</I><B>.tab.c</B> output to include a list of 
+token names in order by their token numbers;  this is defined in the array 
+<I>yytname</I>.
+
+Also generated 
+are #defines for 
+<I>YYNTOKENS</I>,
+
+<I>YYNNTS</I>,
+
+<I>YYNRULES</I>,
+
+and 
+<I>YYNSTATES</I>.
+
+<DT><B>-l</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--no-lines</B>
+
+<DD>
+Don't put any
+<B>#line</B>
+
+preprocessor commands in the parser file.
+Ordinarily
+<I>bison</I>
+
+puts them in the parser file so that the C compiler
+and debuggers will associate errors with your source file, the
+grammar file.  This option causes them to associate errors with the
+parser file, treating it an independent source file in its own right.
+<DT><B>-n</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--no-parser</B>
+
+<DD>
+Do not generate the parser code into the output;  generate only
+declarations.  The generated <I>name</I><B>.tab.c</B> file will have only 
+constant declarations.  In addition, a <I>name</I><B>.act</B> file is
+generated containing a switch statement body containing all the
+translated actions. 
+<DT><B>-o</B><I> outfile</I>
+
+<DD>
+<BR>
+
+
+<DT><B>--output-file=</B><I>outfile</I>
+
+<DD>
+Specify the name
+<I>outfile</I>
+
+for the parser file.
+<P>
+The other output files' names are constructed from
+<I>outfile</I>
+
+as described under the
+<B>-v</B>
+
+and
+<B>-d</B>
+
+switches.
+<DT><B>-p</B><I> prefix</I>
+
+<DD>
+<BR>
+
+
+<DT><B>--name-prefix=</B><I>prefix</I>
+
+<DD>
+Rename the external symbols used in the parser so that they start with
+<I>prefix</I>
+
+instead of
+<B>yy</B>.
+
+The precise list of symbols renamed is
+<B>yyparse</B>,
+
+<B>yylex</B>,
+
+<B>yyerror</B>,
+
+<B>yylval</B>,
+
+<B>yychar</B>,
+
+and
+<B>yydebug</B>.
+
+<P>
+For example, if you use
+<B>-p c</B>,
+
+the names become
+<B>cparse</B>,
+
+<B>clex</B>,
+
+and so on.
+<DT><B>-t</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--debug</B>
+
+<DD>
+Output a definition of the macro
+<B>YYDEBUG </B>
+
+into the parser file,
+so that the debugging facilities are compiled.
+<DT><B>-v</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--verbose</B>
+
+<DD>
+Write an extra output file containing verbose descriptions of the
+parser states and what is done for each type of look-ahead token in
+that state.
+<P>
+This file also describes all the conflicts, both those resolved by
+operator precedence and the unresolved ones.
+<P>
+The file's name is made by removing
+<B>.tab.c</B>
+
+or
+<B>.c</B>
+
+from the parser output file name, and adding
+<B>.output</B>
+
+instead.
+<P>
+Therefore, if the input file is
+<B>foo.y</B>,
+
+then the parser file is called
+<B>foo.tab.c</B>
+
+by default.  As a consequence, the verbose
+output file is called
+<B>foo.output</B>.
+
+<DT><B>-V</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--version</B>
+
+<DD>
+Print the version number of
+<I>bison</I>
+
+and exit.
+<DT><B>-h</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--help</B>
+
+<DD>
+Print a summary of the options to
+<I>bison</I>
+
+and exit.
+<DT><B>-y</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--yacc</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--fixed-output-files</B>
+
+<DD>
+Equivalent to
+<B>-o y.tab.c</B>;
+
+the parser output file is called
+<B>y.tab.c</B>,
+
+and the other outputs are called
+<B>y.output</B>
+
+and
+<B>y.tab.h</B>.
+
+The purpose of this switch is to imitate
+<I>yacc</I>'s
+
+output file name conventions.
+Thus, the following shell script can substitute for
+<I>yacc</I>:
+
+<P>
+<DL COMPACT><DT><DD>
+<B>
+bison -y $*
+</B>
+<P>
+</DL>
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FILES</H2>
+
+/usr/local/lib/bison.simple<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>simple parser<BR>
+<BR>
+
+/usr/local/lib/bison.hairy<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>complicated parser<BR>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ENVIRONMENT VARIABLES</H2>
+
+<DL COMPACT>
+<DT><FONT SIZE="-1">BISON_SIMPLE</FONT>
+<DD>
+If this is set, it specifies the location in which the
+<B>bison.simple</B>
+
+parser can be found.
+<DT><FONT SIZE="-1">BISON_HAIRY</FONT>
+<DD>
+If this is set, it specifies the location in which the
+<B>bison.hairy</B>
+
+parser can be found.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<I><A HREF="http://localhost/cgi-bin/man/man2html?1+yacc">yacc</A></I>(1)
+
+<BR>
+
+The
+<I>Bison Reference Manual</I>,
+
+included as the file
+<B>bison.texinfo</B>
+
+in the
+<I>bison</I>
+
+source distribution.
+<A NAME="lbAI">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+Self explanatory.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">FILES</A><DD>
+<DT><A HREF="#lbAG">ENVIRONMENT VARIABLES</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+<DT><A HREF="#lbAI">DIAGNOSTICS</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://localhost/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 02:23:14 GMT, April 25, 2003
+</BODY>
+</HTML>

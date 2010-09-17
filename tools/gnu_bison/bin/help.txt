@@ -1,0 +1,8 @@
+Usage: bison.exe [-dhklntvyV] [-b file-prefix] [-o outfile] [-p name-prefix]
+       [--debug] [--defines] [--fixed-output-files] [--no-lines]
+       [--verbose] [--version] [--help] [--yacc]
+       [--no-parser] [--token-table]
+       [--file-prefix=prefix] [--name-prefix=prefix]
+       [--output=outfile] grammar-file
+
+Report bugs to bug-bison@gnu.org
