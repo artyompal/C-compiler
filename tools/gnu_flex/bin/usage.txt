@@ -1,0 +1,37 @@
+flex.exe [-bcdfhilnpstvwBFILTV78+? -C[aefFmr] -ooutput -Pprefix -Sskeleton]
+	[--help --version] [file ...]
+	-b  generate backing-up information to lex.backup
+	-c  do-nothing POSIX option
+	-d  turn on debug mode in generated scanner
+	-f  generate fast, large scanner
+	-h  produce this help message
+	-i  generate case-insensitive scanner
+	-l  maximal compatibility with original lex
+	-n  do-nothing POSIX option
+	-p  generate performance report to stderr
+	-s  suppress default rule to ECHO unmatched text
+	-t  write generated scanner on stdout instead of lex.yy.c
+	-v  write summary of scanner statistics to f
+	-w  do not generate warnings
+	-B  generate batch scanner (opposite of -I)
+	-F  use alternative fast scanner representation
+	-I  generate interactive scanner (opposite of -B)
+	-L  suppress #line directives in scanner
+	-T  flex.exe should run in trace mode
+	-V  report flex.exe version
+	-7  generate 7-bit scanner
+	-8  generate 8-bit scanner
+	-+  generate C++ scanner class
+	-?  produce this help message
+	-C  specify degree of table compression (default is -Cem):
+		-Ca  trade off larger tables for better memory alignment
+		-Ce  construct equivalence classes
+		-Cf  do not compress scanner tables; use -f representation
+		-CF  do not compress scanner tables; use -F representation
+		-Cm  construct meta-equivalence classes
+		-Cr  use read() instead of stdio for scanner input
+	-o  specify output filename
+	-P  specify scanner prefix other than "yy"
+	-S  specify skeleton file
+	--help     produce this help message
+	--version  report flex.exe version
