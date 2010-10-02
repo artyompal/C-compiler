@@ -6,8 +6,6 @@
 #include "unit.h"
 
 
-#ifdef _DEBUG
-
 static void _xml_alignment(FILE *file, int alignment)
 {
     int i;
@@ -406,6 +404,3 @@ void debug_dump_unit(const char *src_filename)
 
     fclose(file);
 }
-
-#endif // _DEBUG
-

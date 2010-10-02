@@ -1,0 +1,68 @@
+x86_codegen.c:      unimplemented_error("types other then int and float aren't supported");
+x86_codegen.c:      TODO: provide an optimized codepath for (*mem) = float2int/int2float(val): just save to the given memory location.
+x86_codegen.c:      TODO: provide an optimized codepath for x86op_address case: return value in register if it will be reused.
+x86_codegen.c:      TODO: for now, we cannot evaluate floating operands in reverse order. Flag "invert" needed.
+x86_codegen.c:      UNIMPLEMENTED_ASSERT(param_size == 4);
+x86_codegen.c:      TODO: evaluate operands in proper order, according to complexity.
+x86_intrinsics.c:   unimplemented_error("_memcpy_via_byte_movs_loop needs byte registers to be implemented");
+x86_opt_basic.c:    FIXME: нужно придумать правильный способ выполнять оптимизации, пока это приносит результаты.
+x86_opt_regvar.c:   TODO: при парсинге прототипов функций нужно все массивы-параметры функций делать unsized.
+x86_opt_regvar.c:   TODO: нужно давать больший приоритет переменным, использующимся во внутренних циклах.
+x86_opt_regvar.c:   TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные,
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < x86reg_count);
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < x86reg_count);
+x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(_real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+x86_text_output.c:  FIXME: assumed that operand can either be int or float
+common.h:           TODO: remove it when all C constructions will be supported in parser code.
+common.h:           TODO: pack structures, deal with alignment
+common.h:           TODO: periodically check with this warning enabled
+common.h:           unimplemented_error(const char *text);
+common.h:           UNIMPLEMENTED_ASSERT(EXPR) \
+common.h:           UNIMPLEMENTED_ASSERT(EXPR) \
+allocator.c:        TODO: linked chain of fixed size allocator blocks.
+allocator.c:        TODO: VirtualAlloc instead of _aligned_malloc.
+allocator.c:        TODO: implement _reset_allocator()
+common.c:           unimplemented_error(const char *text)
+expressions.c:      TODO: type check
+expressions.c:      FIXME: support arithmetic transformations for all types.
+expressions.c:      TODO: type check and arithmetic transformations.
+expressions.c:      TODO: check types and probably insert a type cast.
+expressions.c:      FIXME: sizeof should return unsigned type.
+expressions.c:      TODO: support all possible type conversations
+lexer_actions.c:    TODO: parse postfixes ulUL and deduce the type.
+lexer_actions.c:    TODO: parse postfixes lfLF and deduce the type.
+parser.c:           TODO: fix this for structure declarations. */ aux_warning("empty declaration"); ;
+parser.c:           unimplemented_error("enum_specifier"); ;
+parser.c:           unimplemented_error("enum_specifier"); ;
+parser.c:           unimplemented_error("enum_specifier"); ;
+parser.c:           unimplemented_error("enumerator_list"); ;
+parser.c:           unimplemented_error("enumerator"); ;
+parser.c:           unimplemented_error("enumerator"); ;
+parser.c:           unimplemented_error("label"); ;
+parser.c:           unimplemented_error("switch-case"); ;
+parser.c:           unimplemented_error("switch-default"); ;
+parser.c:           unimplemented_error("switch"); ;
+parser.c:           unimplemented_error("goto"); ;
+parser.c:           unimplemented_error("continue"); ;
+parser.c:           unimplemented_error("break"); ;
+parser_actions.c:   TODO: semantic check: type correspondence, type promotion and casting.
+symbol_table.c:     TODO: find better hash function?
+symbol_table.c:     FIXME: we only allow override functions. extern declarations and typedefs are not supported yet.
+symbol_table.c:     TODO: more flexible behavior? symbols can have multiple duplications
+types.c:            unimplemented_error("unsupported type for overriding declaration specifiers");
+types.c:            unimplemented_error("type_add_abstract_unsized_array_node");
+types.c:            unimplemented_error("type_add_abstract_sized_array_node");
+types.c:            unimplemented_error("type_add_abstract_function_node");
+types.c:            TODO: support of incomplete structures
+types.c:            TODO: support of incomplete unions
+types.c:            TODO: better type handling - support of incomplete struct/union/enum, arrays and pointers are the same, etc
+types.c:            UNIMPLEMENTED_ASSERT("enums and incomplete structures/unions aren't supported yet");
+types.c:            UNIMPLEMENTED_ASSERT("unsupported type specifiers");
+unit.c:             FIXME: quadratic complexity!!!
+unit.c:             TODO: можно анализировать операнд на наличие side-effects и возможность убрать джампы.
+unit.c:             FIXME: Из-за того, что список выражений односвязный, нам приходится вставлять инструкции в обратном порядке.
+unit.c:             UNIMPLEMENTED_ASSERT(sym->sym_init->init_code == code_terminal_initializer);
+unit.c:             TODO: поддержка локальных переменных во вложенных блоках с правильными областями видимости.

@@ -18,8 +18,11 @@ struct option_decl {
     {"debug_disable_regalloc",  &option_debug_disable_regalloc,     "don't replace pseudo-registers with real registers"},
     {"debug_disable_basic_opt", &option_debug_disable_basic_opt,    "don't optimize well-known sequences after code generation"},
     {"optimize",                &option_enable_optimization,        "enables code optimization"},
+    {"output_file_name",        0,                                  "lets to specify the name of the output file"},
     {NULL, NULL, NULL},
 };
+
+const char *next_option;
 
 
 static void print_version(void)
@@ -70,21 +73,25 @@ static void compile_unit(const char *filename)
     allocator_init();
     symbol_init_table();
     x86data_init();
-    text_output_begin_unit(filename);
+
+    if (option_output_filename[0] == '\0')
+        aux_replace_file_extension(option_output_filename, filename, ".asm");
+
+    text_output_begin_unit();
 
     if (yyparse() != 0) {
         aux_fatal_error("unrecoverable syntax error");
     }
 
-#ifdef _DEBUG
     debug_dump_unit(filename);
-#endif // _DEBUG
 
     if (!option_debug_disable_codegen && !aux_get_errors_count()) {
         unit_codegen();
     }
 
+    option_output_filename[0] = '\0';
     text_output_end_unit();
+
     allocator_reset_all();
     fclose(source_file);
 
@@ -120,7 +127,12 @@ int main(int argc, const char *argv[])
         print_version();
     } else {
         for (i = 1; i < argc; i++) {
-            if (argv[i][0] == '-') {
+            if (!strcmp(argv[i], "--output_file_name")) {
+                if (i < argc-1) {
+                    strcpy(option_output_filename, argv[i+1]);
+                    i++;
+                }
+            } else if (argv[i][0] == '-') {
                 interpret_option(argv[i]);
             } else {
                 compile_unit(argv[i]);

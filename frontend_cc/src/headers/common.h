@@ -14,6 +14,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <windows.h>
+
 
 #if defined(_MSC_VER)
 
@@ -37,11 +39,6 @@
 
 #define MIN(A, B) ((A) < (B) ? (A) : (B))
 #define MAX(A, B) ((A) > (B) ? (A) : (B))
-
-typedef unsigned int BOOL;
-
-#define FALSE   (0)
-#define TRUE    (1)
 
 
 #include "allocator.h"
@@ -112,6 +109,8 @@ extern BOOL option_debug_disable_codegen;
 extern BOOL option_debug_disable_regalloc;
 extern BOOL option_debug_disable_basic_opt;
 extern BOOL option_enable_optimization;
+
+extern char option_output_filename[];
 
 
 #ifdef _DEBUG

@@ -11,14 +11,11 @@ static FILE *asm_file = NULL;
 // Handling units, sections and data variables.
 //
 
-void text_output_begin_unit(const char *src_filename)
+void text_output_begin_unit(void)
 {
-    char filename[256];
-    aux_replace_file_extension(filename, src_filename, ".asm");
-
-    asm_file = fopen(filename, "w+");
+    asm_file = fopen(option_output_filename, "w+");
     if (!asm_file) {
-        aux_fatal_error("failed to open output file '%s'", filename);
+        aux_fatal_error("failed to open output file '%s'", option_output_filename);
     }
 
     fprintf(asm_file, "\n.686\n.model flat\n");

@@ -7,11 +7,7 @@
 #endif // _MSC_VER
 
 
-#ifdef _DEBUG
-
 void debug_dump_unit(const char *src_filename);
-
-#endif
 
 
 #else

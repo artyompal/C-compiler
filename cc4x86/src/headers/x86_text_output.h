@@ -12,7 +12,7 @@ typedef struct symbol_decl              symbol;
 typedef struct x86_instruction_decl     x86_instruction;
 
 
-void    text_output_begin_unit                  (const char *filename);
+void    text_output_begin_unit                  (void);
 void    text_output_end_unit                    (void);
 void    text_output_begin_data_section          (void);
 void    text_output_begin_text_section          (void);
