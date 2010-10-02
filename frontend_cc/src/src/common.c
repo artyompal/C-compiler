@@ -8,6 +8,8 @@ BOOL option_debug_disable_regalloc  = FALSE;
 BOOL option_debug_disable_basic_opt = FALSE;
 BOOL option_enable_optimization     = FALSE;
 
+char option_output_filename[MAX_PATH];
+
 
 //
 // Current file/line handling.
@@ -95,7 +97,7 @@ void aux_fatal_error(const char *text, ...)
     errors_count++;
 
 #ifdef _DEBUG
-    *(int *)0 = 0;
+    __asm int 3;
 #else
     exit(0);
 #endif

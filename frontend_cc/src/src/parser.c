@@ -1,6 +1,6 @@
 
 /*
- *	A Bison parser, made from d:\prog\compilers\src\scripts\parser.y
+ *	A Bison parser, made from d:\prog\compilers2\frontend_cc\scripts\parser.y
  *	by Win32 bison -- compiled by Palvelev Artyom [cppguru@mail.ru]
  */
 
