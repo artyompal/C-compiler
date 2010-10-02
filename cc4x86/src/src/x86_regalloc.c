@@ -163,7 +163,7 @@ void x86_analyze_registers_usage(function_desc *function)
             ASSERT(reg < pseudoregs_cnt);
 
             if (REG_IS_REGVAR(reg)) {
-                // Хак: считается, что регистровые переменные используются до конца функции.
+                // FIXME: считается, что регистровые переменные используются до конца функции.
                 // Это нужно потому, что переход может вернуть нас в область её использования.
                 pseudoregs_map[reg].reg_last_read = last;
             } else {
