@@ -266,7 +266,7 @@ static void _replace_boolean_with_jumps(expression *expr, void *unused)
     label   = unit_create_label(_current_function);
 
 
-    // »з-за того, что список выражений односв€зный, нам приходитс€ вставл€ть инструкции в обратном пор€дке.
+    // FIXME: »з-за того, что список выражений односв€зный, нам приходитс€ вставл€ть инструкции в обратном пор€дке.
     _unit_insert_label_after(label, previous_expr);
 
     _unit_insert_expression_after(expr_create_binary(
@@ -325,7 +325,7 @@ static void _calc_complexity_cb(expression *expr, void *unused)
     case code_expr_arithmetic:
         if (IS_UNARY_OP(expr->data.arithm.opcode)) {
             if (expr->data.arithm.opcode == op_dereference || expr->data.arithm.opcode == op_get_address) {
-                // BTW dereference can cost something
+                // BTW, dereference can cost something.
                 expr->expr_complexity = expr->data.arithm.operand1->expr_complexity;
             } else {
                 expr->expr_complexity = expr->data.arithm.operand1->expr_complexity + 1;
