@@ -146,11 +146,9 @@ __declspec(noreturn) void aux_unimplemented_error(const char *text)
 
 void aux_replace_file_extension(char *dst, const char *path, const char *extension)
 {
-    const char *pos = strrchr(path, '\\');
     char *dot;
 
-    pos = (pos ? pos + 1 : path);
-    strcpy(dst, pos);
+    strcpy(dst, path);
 
     dot = strrchr(dst, '.');
     if (dot) *dot = '\0';

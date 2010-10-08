@@ -14,8 +14,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <windows.h>
-
 
 #if defined(_MSC_VER)
 
@@ -39,6 +37,13 @@
 
 #define MIN(A, B) ((A) < (B) ? (A) : (B))
 #define MAX(A, B) ((A) > (B) ? (A) : (B))
+
+typedef int BOOL;
+
+#define TRUE 1
+#define FALSE 0
+
+#define MAX_PATH 260
 
 
 #include "allocator.h"
