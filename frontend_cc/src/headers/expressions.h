@@ -89,7 +89,7 @@ typedef struct expression_list_decl {
 typedef struct expr_jump_decl {
     int             destination;
     expression      *condition;
-    BOOL            invert_cond:1;
+    BOOL            invert_cond;
 } expr_jump;
 
 typedef struct arithm_decl {
@@ -102,7 +102,7 @@ typedef struct arithm_decl {
 typedef struct expression_decl {
     expression_code expr_code;          // see above
     data_type *     expr_type;          // pointer to the root of types tree
-    BOOL            expr_lvalue:1;      // means that expression type is really a pointer to that type
+    BOOL            expr_lvalue;        // means that expression type is really a pointer to that type
     int             expr_source_line;   // line numbers support
     expression      *expr_next;         // linked list for comma expressions and function arguments
     expression      *expr_parent;       // used for operands of arithmetic expressions to maintain tree structure
