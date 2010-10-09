@@ -20,17 +20,13 @@
 // TODO: remove it when all C constructions will be supported in parser code.
 #pragma warning(disable:4702)   // unreachable code
 
-// TODO: pack structures, deal with alignment
-#pragma warning(disable:4820)   // 'expression_decl' : '3' bytes padding added after data member 'expr_lvalue'
-
-// TODO: periodically check with this warning enabled
+// periodically check with this warning enabled
 #pragma warning(disable:4100)   // 'parameters_total_size' : unreferenced formal parameter
 
+#pragma warning(disable:4244)   // conversion from 'int' to 'BOOL', possible loss of data
 #pragma warning(disable:4127)   // conditional expression is constant
 #pragma warning(disable:4996)   // 'strcpy' was declared deprecated
 #pragma warning(disable:4711)   // function '_alloc_fragment' selected for automatic inline expansion
-
-#pragma warning(disable:4204)   // nonstandard extension used : non-constant aggregate initializer)
 
 #endif // _MSC_VER
 
