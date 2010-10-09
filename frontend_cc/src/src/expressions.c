@@ -204,7 +204,7 @@ static expression *_expr_evaluate_const_int_unary_expression(arithmetic_opcode o
     return expr_create_from_integer(res, type);
 }
 
-static expression *_expr_evaluate_const_float_unary_expression(arithmetic_opcode opcode, float value, data_type *type)
+static expression *_expr_evaluate_const_float_unary_expression(arithmetic_opcode opcode, double value, data_type *type)
 {
     if (opcode == op_convert_float2int) {
         return expr_create_from_integer((int) value, type);
@@ -247,7 +247,7 @@ static expression *_expr_evaluate_const_int_binary_expression(arithmetic_opcode 
     return res;
 }
 
-static expression *_expr_evaluate_const_float_binary_expression(arithmetic_opcode opcode, float val1, float val2, data_type *type)
+static expression *_expr_evaluate_const_float_binary_expression(arithmetic_opcode opcode, double val1, double val2, data_type *type)
 {
     expression *res;
 
@@ -535,7 +535,7 @@ expression *expr_create_from_identifier(symbol *sym)
     return res;
 }
 
-expression *expr_create_from_integer(int val, data_type *type)
+expression *expr_create_from_integer(long val, data_type *type)
 {
     expression *res     = _expr_create(code_expr_int_constant, type);
 
@@ -543,7 +543,7 @@ expression *expr_create_from_integer(int val, data_type *type)
     return res;
 }
 
-expression *expr_create_from_float(float val, data_type *type)
+expression *expr_create_from_float(double val, data_type *type)
 {
     expression *res    = _expr_create(code_expr_float_constant, type);
 

@@ -43,21 +43,53 @@ int token_identifier(const char *token, int token_len)
 
 int token_integer_literal(const char *token, int unused)
 {
-    int val     = strtol(token, 0, 0);
+    char *endptr;
+    long val = strtol(token, &endptr, 0);
 
-    // TODO: parse postfixes ulUL and deduce the type.
-    yylval.expr = expr_create_from_integer(val, type_create_arithmetic(code_type_int));
+    // parse postfixes ulUL and deduce the type
+    data_type_code type = code_type_int;
 
+    while (*endptr) {
+        if (*endptr == 'u' || *endptr == 'U')
+            type = (type == code_type_long || type == code_type_unsigned_long) ?
+                code_type_unsigned_long : code_type_unsigned_int;
+        else if (*endptr == 'l' || *endptr == 'L')
+            type = (type == code_type_unsigned_int || type == code_type_unsigned_long) ?
+                code_type_unsigned_long : code_type_long;
+        else
+            ASSERT(FALSE);
+
+        endptr++;
+    }
+
+    yylval.expr = expr_create_from_integer(val, type_create_arithmetic(type));
     return lxm_constant;
 }
 
 int token_float_literal(const char *token, int unused)
 {
-    float val   = (float) atof(token);
+    char *endptr;
+    double val = strtod(token, &endptr);
 
-    // TODO: parse postfixes lfLF and deduce the type.
-    yylval.expr = expr_create_from_float(val, type_create_arithmetic(code_type_float));
+    // parse postfixes lfLF and deduce the type
+    data_type_code type = code_type_double;
 
+    while (*endptr) {
+        if (*endptr == 'f' || *endptr == 'F')
+            if (type == code_type_double)
+                type = code_type_float;
+            else
+                aux_error("invalid floating number suffix combination");
+        else if (*endptr == 'l' || *endptr == 'L')
+            if (type == code_type_double)
+                type = code_type_long_double;
+            else
+                aux_error("invalid floating number suffix combination");
+
+        endptr++;
+    }
+
+    yylval.expr = expr_create_from_float(val, type_create_arithmetic(type));
     return lxm_constant;
 }
 

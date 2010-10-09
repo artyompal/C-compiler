@@ -266,7 +266,7 @@ void bincode_create_operand_from_label(x86_operand *op, int label)
 //  Handling floating-point constants.
 //
 
-x86_instruction_code bincode_encode_float_constant(float val)
+x86_instruction_code bincode_encode_float_constant(double val)
 {
     if (val == 0.0) {
         return x86instr_float_zero;

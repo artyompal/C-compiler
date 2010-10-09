@@ -16,7 +16,7 @@ static section_type _current_section = section_unknown;
 
 
 typedef struct float_symbol_decl {
-    float       value;
+    double      value;
     symbol *    sym;
 } float_symbol;
 
@@ -56,7 +56,7 @@ void x86data_enter_text_section(void)
     }
 }
 
-symbol *x86data_insert_float_constant(float constant)
+symbol *x86data_insert_float_constant(double constant)
 {
     float_symbol *key = allocator_alloc(allocator_temporary_pool, sizeof(float_symbol));
     float_symbol *found;
@@ -85,13 +85,13 @@ void x86data_declare_uninitialized_bytes(symbol *sym, int size)
     text_output_declare_uninitialized_bytes(sym, size);
 }
 
-void x86data_declare_initialized_int(symbol *sym, int value)
+void x86data_declare_initialized_int(symbol *sym, long value)
 {
     _ensure_data_section();
     text_output_declare_initialized_int(sym, value);
 }
 
-void x86data_declare_initialized_float(symbol *sym, float value)
+void x86data_declare_initialized_float(symbol *sym, double value)
 {
     _ensure_data_section();
     text_output_declare_initialized_float(sym, value);
