@@ -569,28 +569,47 @@ static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruc
 void x86_optimization_after_regvar_allocation(function_desc *function)
 {
     x86_instruction *instr, *next;
-    BOOL was_smth = FALSE;
+    BOOL was_smth;
+    int orig_insn_count, insn_count;
 
+    for (;;) {
+        was_smth = FALSE;
 
-    for (instr = function->func_binary_code; instr; instr = next) {
-        next = instr->in_next;
+        // Пробуем устранить лишние копирования регистров.
+        for (instr = function->func_binary_code; instr; instr = next) {
+            next = instr->in_next;
 
-        if (instr->in_code == x86instr_int_mov && OP_IS_PSEUDO_REG(instr->in_op1) && OP_IS_PSEUDO_REG(instr->in_op2)) {
-            if (_try_kill_copies_of_regvar(function, instr) || _try_optimize_regvar_evaluation(function, instr)) {
-                was_smth = TRUE;
+            if (instr->in_code == x86instr_int_mov && OP_IS_PSEUDO_REG(instr->in_op1) && OP_IS_PSEUDO_REG(instr->in_op2)) {
+                if (_try_kill_copies_of_regvar(function, instr) || _try_optimize_regvar_evaluation(function, instr)) {
+                    was_smth = TRUE;
+                }
             }
         }
-    }
 
-    if (was_smth) {
+        if (!was_smth)
+            return;
+
+        // Считаем число инструкций в функции.
+        for (insn_count = 0, instr = function->func_binary_code; instr; instr = instr->in_next)
+            insn_count++;
+
         // Регистровая статистика стала невалидной, поэтому мы обязаны её перестроить.
         x86_analyze_registers_usage(function);
 
-        // Возможно, стало возможно оптимизировать новые фрагменты кода.
-        x86_optimization_after_codegen(function);
+        // Пока оптимизация даёт результаты, её можно повторять.
+        do {
+            orig_insn_count = insn_count;
 
-        // FIXME: нужно придумать правильный способ выполнять оптимизации, пока это приносит результаты.
-        x86_optimization_after_codegen(function);
+            // Выполняем итерацию оптимизации.
+            x86_optimization_after_codegen(function);
+
+            // Считаем число инструкций в функции.
+            for (insn_count = 0, instr = function->func_binary_code; instr; instr = instr->in_next)
+                insn_count++;
+
+            // Лишние инструкции появиться не должны.
+            ASSERT(insn_count <= orig_insn_count);
+        } while (insn_count != orig_insn_count);
     }
 }
 

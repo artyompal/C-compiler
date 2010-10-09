@@ -666,4 +666,3 @@ void unit_push_binary_instruction(x86_instruction_code code, x86_operand *op1, x
     _last_instruction       = res;
 }
 
-

@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory="D:\prog\compilers2\cc4x86\bin\debug"
-				CommandArguments="--debug_disable_codegen ..\..\tests\visual\rasterizer\rasterizer.c"
+				CommandArguments="--optimize --debug_disable_regalloc ..\..\tests\visual\rasterizer\rasterizer.c"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"
