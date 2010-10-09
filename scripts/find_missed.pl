@@ -10,6 +10,8 @@ my $item;
 sub parse {
 	my ($name, $filename) = @_;
 
+	return unless ($name !~ /common\.h/);
+
     open(FILE, $name) or return;
     while (<FILE>) {
     	if (/((TODO|FIXME|unimplemented).*)$/i) {
