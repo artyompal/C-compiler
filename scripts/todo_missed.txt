@@ -17,8 +17,6 @@ x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(_real_registers_cnt < X86_TMP_REGISTERS_COUNT);
 x86_text_output.c:  FIXME: assumed that operand can either be int or float
 common.h:           TODO: remove it when all C constructions will be supported in parser code.
-common.h:           TODO: pack structures, deal with alignment
-common.h:           TODO: periodically check with this warning enabled
 common.h:           unimplemented_error(const char *text);
 common.h:           UNIMPLEMENTED_ASSERT(EXPR) \
 common.h:           UNIMPLEMENTED_ASSERT(EXPR) \

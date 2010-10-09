@@ -58,7 +58,6 @@ static data_type **_type_find_terminal(data_type **type)
     case code_type_incomplete_union:
     default:
         aux_unimplemented_error("unsupported type for overriding declaration specifiers");
-        return NULL;
     }
 }
 
