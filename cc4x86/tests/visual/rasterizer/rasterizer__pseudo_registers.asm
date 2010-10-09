@@ -928,8 +928,8 @@ _rasterizer_begin_frame endp
 
 _rasterizer_set_mvproj proc
 	x86instr_create_stack_frame	0
-	mov	reg3,[ebp+8]
-	lea	reg4,[reg3]
+	mov	reg2,[ebp+8]
+	lea	reg4,[reg2]
 	lea	reg5,[__mvproj_matrix]
 	mov	reg6,16
 label0000:
@@ -2031,31 +2031,31 @@ label0002:
 	cmp	reg52,[reg53+192]
 	jge	label0003
 	x86instr_push_all
-	imul	reg15,reg52,24
-	mov	reg17,reg53
-	add	reg17,reg15
-	push	reg17
-	mov	reg20,reg52
-	sal	reg20,4
-	lea	reg21,[ebp-132]
-	add	reg21,reg20
-	push	reg21
+	mov	reg15,reg53
+	imul	reg17,reg52,24
+	add	reg15,reg17
+	push	reg15
+	lea	reg18,[ebp-132]
+	mov	reg21,reg52
+	sal	reg21,4
+	add	reg18,reg21
+	push	reg18
 	call	__transform_to_screen_space
 	add	esp,8
 	x86instr_pop_all
-	mov	reg24,reg52
-	sal	reg24,4
-	lea	reg25,[ebp-132]
-	add	reg25,reg24
-	add	reg25,8
-	imul	reg28,reg52,24
-	mov	reg30,reg53
-	add	reg30,reg28
-	add	reg30,16
-	mov	reg32,[reg30]
-	mov	reg33,[reg30+4]
-	mov	[reg25],reg32
-	mov	[reg25+4],reg33
+	lea	reg22,[ebp-132]
+	mov	reg25,reg52
+	sal	reg25,4
+	add	reg22,reg25
+	add	reg22,8
+	mov	reg28,reg53
+	imul	reg30,reg52,24
+	add	reg28,reg30
+	add	reg28,16
+	mov	reg32,[reg28]
+	mov	reg33,[reg28+4]
+	mov	[reg22],reg32
+	mov	[reg22+4],reg33
 	inc	reg52
 	jmp	label0002
 label0003:
@@ -2066,11 +2066,11 @@ label0004:
 	cmp	reg52,reg41
 	jge	label0005
 	x86instr_push_all
-	mov	reg44,reg52
-	sal	reg44,4
-	lea	reg45,[ebp-132]
-	add	reg45,reg44
-	push	reg45
+	lea	reg42,[ebp-132]
+	mov	reg45,reg52
+	sal	reg45,4
+	add	reg42,reg45
+	push	reg42
 	mov	reg48,reg52
 	dec	reg48
 	sal	reg48,4

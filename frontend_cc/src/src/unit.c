@@ -324,8 +324,7 @@ static void _calc_complexity_cb(expression *expr, void *unused)
 
     case code_expr_arithmetic:
         if (IS_UNARY_OP(expr->data.arithm.opcode)) {
-            if (expr->data.arithm.opcode == op_dereference || expr->data.arithm.opcode == op_get_address) {
-                // FIXME: dereference can cost something.
+            if (expr->data.arithm.opcode == op_get_address) {
                 expr->expr_complexity = expr->data.arithm.operand1->expr_complexity;
             } else {
                 expr->expr_complexity = expr->data.arithm.operand1->expr_complexity + 1;
