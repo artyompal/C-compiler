@@ -2100,30 +2100,30 @@ label0001:
 label0002:
 	cmp	esi,[edi+192]
 	jge	label0003
-	imul	eax,esi,24
-	mov	ecx,edi
-	add	ecx,eax
-	push	ecx
-	mov	eax,esi
-	sal	eax,4
-	lea	ecx,[ebp-132]
-	add	ecx,eax
-	push	ecx
+	mov	eax,edi
+	imul	ecx,esi,24
+	add	eax,ecx
+	push	eax
+	lea	eax,[ebp-132]
+	mov	ecx,esi
+	sal	ecx,4
+	add	eax,ecx
+	push	eax
 	call	__transform_to_screen_space
 	add	esp,8
-	mov	eax,esi
-	sal	eax,4
-	lea	ecx,[ebp-132]
-	add	ecx,eax
-	add	ecx,8
-	imul	eax,esi,24
-	mov	edx,edi
-	add	edx,eax
-	add	edx,16
-	mov	eax,[edx]
-	mov	ebx,[edx+4]
-	mov	[ecx],eax
-	mov	[ecx+4],ebx
+	lea	eax,[ebp-132]
+	mov	ecx,esi
+	sal	ecx,4
+	add	eax,ecx
+	add	eax,8
+	mov	ecx,edi
+	imul	edx,esi,24
+	add	ecx,edx
+	add	ecx,16
+	mov	edx,[ecx]
+	mov	ebx,[ecx+4]
+	mov	[eax],edx
+	mov	[eax+4],ebx
 	inc	esi
 	jmp	label0002
 label0003:
@@ -2133,11 +2133,11 @@ label0004:
 	dec	eax
 	cmp	esi,eax
 	jge	label0005
-	mov	eax,esi
-	sal	eax,4
-	lea	ecx,[ebp-132]
-	add	ecx,eax
-	push	ecx
+	lea	eax,[ebp-132]
+	mov	ecx,esi
+	sal	ecx,4
+	add	eax,ecx
+	push	eax
 	mov	eax,esi
 	dec	eax
 	sal	eax,4

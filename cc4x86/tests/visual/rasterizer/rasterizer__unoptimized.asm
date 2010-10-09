@@ -1831,11 +1831,11 @@ _rasterizer_begin_frame endp
 
 _rasterizer_set_mvproj proc
 	x86instr_create_stack_frame	0
-	lea	reg1,[__mvproj_matrix]
-	lea	reg2,[ebp+8]
-	mov	reg3,[reg2]
-	lea	reg4,[reg3]
-	lea	reg5,[reg1]
+	lea	reg1,[ebp+8]
+	mov	reg2,[reg1]
+	lea	reg3,[__mvproj_matrix]
+	lea	reg4,[reg2]
+	lea	reg5,[reg3]
 	mov	reg6,16
 label0000:
 	mov	reg7,[reg4]
@@ -1981,11 +1981,11 @@ label0000:
 	fld	dword ptr [reg29]
 	fdivp
 	fstp	dword ptr [reg27]
-	lea	reg30,[ebp-28]
-	lea	reg31,[ebp-4]
-	mov	reg32,[reg31]
-	mov	reg33,[reg32]
-	mov	[reg30],reg33
+	lea	reg30,[ebp-4]
+	mov	reg31,[reg30]
+	lea	reg32,[ebp-28]
+	mov	reg33,[reg31]
+	mov	[reg32],reg33
 	lea	reg34,[ebp-28]
 	mov	reg35,65280
 	mov	reg36,[reg34]
@@ -2887,11 +2887,11 @@ label0006:
 	add	reg307,[reg306]
 	fld	dword ptr [reg305]
 	fsub	dword ptr [reg307]
-	lea	reg308,[ebp-12]
-	lea	reg309,[ebp+12]
-	mov	reg310,[reg309]
-	mov	reg311,[reg308]
-	sub	reg311,[reg310]
+	lea	reg308,[ebp+12]
+	mov	reg309,[reg308]
+	lea	reg310,[ebp-12]
+	mov	reg311,[reg310]
+	sub	reg311,[reg309]
 	mov	[ebp-44],reg311
 	fild	dword ptr [ebp-44]
 	fdivp
@@ -2905,11 +2905,11 @@ label0006:
 	add	reg315,reg316
 	fld	dword ptr [reg313]
 	fsub	dword ptr [reg315]
-	lea	reg317,[ebp-12]
-	lea	reg318,[ebp+12]
-	mov	reg319,[reg318]
-	mov	reg320,[reg317]
-	sub	reg320,[reg319]
+	lea	reg317,[ebp+12]
+	mov	reg318,[reg317]
+	lea	reg319,[ebp-12]
+	mov	reg320,[reg319]
+	sub	reg320,[reg318]
 	mov	[ebp-44],reg320
 	fild	dword ptr [ebp-44]
 	fdivp
@@ -3252,10 +3252,10 @@ __clip_on_plain proc
 	add	reg2,[reg1]
 	mov	reg3,0
 	mov	[reg2],reg3
-	lea	reg4,[ebp-4]
-	lea	reg5,[ebp+12]
-	mov	reg6,[reg5]
-	mov	[reg4],reg6
+	lea	reg4,[ebp+12]
+	mov	reg5,[reg4]
+	lea	reg6,[ebp-4]
+	mov	[reg6],reg5
 	lea	reg7,[ebp+12]
 	mov	reg8,[reg7]
 	mov	reg9,24
@@ -3718,43 +3718,43 @@ label0002:
 	cmp	reg13,[reg12]
 	jge	label0003
 	x86instr_push_all
-	lea	reg14,[ebp-136]
-	mov	reg15,24
-	imul	reg15,[reg14]
-	lea	reg16,[ebp+8]
-	mov	reg17,[reg16]
-	add	reg17,reg15
-	push	reg17
-	lea	reg18,[ebp-136]
-	mov	reg19,4
-	mov	reg20,[reg18]
-	sal	reg20,reg19
-	lea	reg21,[ebp-132]
-	add	reg21,reg20
-	push	reg21
+	lea	reg14,[ebp+8]
+	mov	reg15,[reg14]
+	lea	reg16,[ebp-136]
+	mov	reg17,24
+	imul	reg17,[reg16]
+	add	reg15,reg17
+	push	reg15
+	lea	reg18,[ebp-132]
+	lea	reg19,[ebp-136]
+	mov	reg20,4
+	mov	reg21,[reg19]
+	sal	reg21,reg20
+	add	reg18,reg21
+	push	reg18
 	call	__transform_to_screen_space
 	add	esp,8
 	x86instr_pop_all
-	lea	reg22,[ebp-136]
-	mov	reg23,4
-	mov	reg24,[reg22]
-	sal	reg24,reg23
-	lea	reg25,[ebp-132]
-	add	reg25,reg24
+	lea	reg22,[ebp-132]
+	lea	reg23,[ebp-136]
+	mov	reg24,4
+	mov	reg25,[reg23]
+	sal	reg25,reg24
+	add	reg22,reg25
 	mov	reg26,8
-	add	reg25,reg26
-	lea	reg27,[ebp-136]
-	mov	reg28,24
-	imul	reg28,[reg27]
-	lea	reg29,[ebp+8]
-	mov	reg30,[reg29]
-	add	reg30,reg28
+	add	reg22,reg26
+	lea	reg27,[ebp+8]
+	mov	reg28,[reg27]
+	lea	reg29,[ebp-136]
+	mov	reg30,24
+	imul	reg30,[reg29]
+	add	reg28,reg30
 	mov	reg31,16
-	add	reg30,reg31
-	mov	reg32,[reg30]
-	mov	reg33,[reg30+4]
-	mov	[reg25],reg32
-	mov	[reg25+4],reg33
+	add	reg28,reg31
+	mov	reg32,[reg28]
+	mov	reg33,[reg28+4]
+	mov	[reg22],reg32
+	mov	[reg22+4],reg33
 	lea	reg34,[ebp-136]
 	inc	dword ptr [reg34]
 	jmp	label0002
@@ -3773,13 +3773,13 @@ label0004:
 	cmp	[reg37],reg41
 	jge	label0005
 	x86instr_push_all
-	lea	reg42,[ebp-136]
-	mov	reg43,4
-	mov	reg44,[reg42]
-	sal	reg44,reg43
-	lea	reg45,[ebp-132]
-	add	reg45,reg44
-	push	reg45
+	lea	reg42,[ebp-132]
+	lea	reg43,[ebp-136]
+	mov	reg44,4
+	mov	reg45,[reg43]
+	sal	reg45,reg44
+	add	reg42,reg45
+	push	reg42
 	lea	reg46,[ebp-136]
 	mov	reg47,1
 	mov	reg48,[reg46]
