@@ -110,11 +110,11 @@ typedef struct expression_decl {
 
     union {
         // code_expr_int_constant
-        int                 int_const;
+        long                int_const;
 
         // code_expr_float_constant
         struct float_const_decl {
-            float           val;
+            double          val;
             symbol          *sym;
         } float_const;
 
@@ -168,8 +168,8 @@ expression *    expr_create_unary               (expression *e, arithmetic_opcod
 expression *    expr_create_binary              (expression *e1, expression *e2, arithmetic_opcode opcode);
 expression *    expr_create_ternary             (expression *e1, expression *e2, expression *e3);
 expression *    expr_create_from_identifier     (symbol *sym);
-expression *    expr_create_from_integer        (int val, data_type *type);
-expression *    expr_create_from_float          (float val, data_type *type);
+expression *    expr_create_from_integer        (long val, data_type *type);
+expression *    expr_create_from_float          (double val, data_type *type);
 
 expression *    expr_create_jump                (int destination, expression *condition, BOOL invert_condition);
 expression *    expr_create_return              (expression *result);

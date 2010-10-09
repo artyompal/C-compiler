@@ -217,7 +217,7 @@ void    bincode_create_operand_addr_from_esp_offset     (x86_operand *op, int of
 void    bincode_create_operand_from_symbol              (x86_operand *op, symbol *sym);
 void    bincode_create_operand_from_label               (x86_operand *op, int label);
 
-x86_instruction_code    bincode_encode_float_constant   (float constant);
+x86_instruction_code    bincode_encode_float_constant   (double constant);
 x86_instruction *       bincode_create_instruction      (x86_instruction_code code, x86_operand *op1, x86_operand *op2);
 
 void    bincode_insert_instruction                      (function_desc *function, x86_instruction *pos,

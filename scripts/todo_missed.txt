@@ -32,8 +32,6 @@ expressions.c:      TODO: type check and arithmetic transformations.
 expressions.c:      TODO: check types and probably insert a type cast.
 expressions.c:      FIXME: sizeof should return unsigned type.
 expressions.c:      TODO: support all possible type conversations
-lexer_actions.c:    TODO: parse postfixes ulUL and deduce the type.
-lexer_actions.c:    TODO: parse postfixes lfLF and deduce the type.
 parser.c:           TODO: fix this for structure declarations. */ aux_warning("empty declaration"); ;
 parser.c:           unimplemented_error("enum_specifier"); ;
 parser.c:           unimplemented_error("enum_specifier"); ;

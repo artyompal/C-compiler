@@ -47,12 +47,12 @@ void text_output_declare_uninitialized_bytes(symbol *sym, int size)
     }
 }
 
-void text_output_declare_initialized_int(symbol *sym, int value)
+void text_output_declare_initialized_int(symbol *sym, long value)
 {
     fprintf(asm_file, "_%s\tdd\t%d\n", sym->sym_name, value);
 }
 
-void text_output_declare_initialized_float(symbol *sym, float value)
+void text_output_declare_initialized_float(symbol *sym, double value)
 {
     fprintf(asm_file, "_%s\tdd\t%f\n", sym->sym_name, value);
 }
