@@ -10,16 +10,18 @@ sub run {
 chdir("../cc4x86/bin/release/") or die("chdir: $!");
 
 # generate XML
-run("cc4x86.exe --debug_disable_codegen ..\\..\\tests\\rasterizer.c");
+run("cc4x86.exe --debug_disable_codegen ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 
 # generate unoptimized listing
-run("cc4x86.exe --debug_disable_basic_opt --debug_disable_regalloc --output_file_name ..\\..\\tests\\rasterizer__unoptimized.asm ..\\..\\tests\\rasterizer.c");
+run("cc4x86.exe --debug_disable_basic_opt --debug_disable_regalloc --output_file_name ..\\..\\tests\\visual\\rasterizer\\rasterizer__unoptimized.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 
 # generate optimized listing with pseudo-registers
-run("cc4x86.exe --optimize --debug_disable_regalloc --output_file_name ..\\..\\tests\\rasterizer__pseudo_registers.asm ..\\..\\tests\\rasterizer.c");
+run("cc4x86.exe --optimize --debug_disable_regalloc --output_file_name ..\\..\\tests\\visual\\rasterizer\\rasterizer__pseudo_registers.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 
 # generate finally optimized listing
-run("cc4x86.exe --optimize ..\\..\\tests\\rasterizer.c");
+run("cc4x86.exe --optimize ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 
-system("c:\\bin\\msvs8\\VC\\bin\\ml /Fl ..\\..\\tests\\rasterizer.asm");
+# assemble the test
+chdir("../../tests/visual/rasterizer") or die("chdir: $!");
+system("c:\\bin\\msvs8\\VC\\bin\\ml /Fl rasterizer.asm");
 
