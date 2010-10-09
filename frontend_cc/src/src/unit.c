@@ -8,11 +8,9 @@
 #include "x86_text_output.h"
 
 
-static expression *_last_expression         = NULL;
-
 static function_desc *_first_function       = NULL;
 static function_desc *_last_function        = NULL;
-static function_desc *_current_function     = NULL;
+static function_desc *_curr_func            = NULL;
 
 static x86_instruction *_last_instruction   = NULL;
 
@@ -23,23 +21,23 @@ static x86_instruction *_last_instruction   = NULL;
 
 void unit_push_expression(expression *expr)
 {
-    ASSERT(_current_function);
+    ASSERT(_curr_func);
 
     if (!expr) {
         return;
     }
 
-    // inserting into double-linked list
-    if (!_current_function->func_body) {
-        _current_function->func_body    = expr;
-        expr->expr_prev                 = NULL;
+    // вставка элемента в двусвязный список
+    if (!_curr_func->func_body) {
+        _curr_func->func_body   = expr;
+        expr->expr_prev         = NULL;
     } else {
-        _last_expression->expr_next     = expr;
-        expr->expr_prev                 = _last_expression;
+        _curr_func->func_body_end->expr_next = expr;
+        expr->expr_prev         = _curr_func->func_body_end;
     }
 
-    _last_expression    = expr;
-    expr->expr_next     = NULL;
+    _curr_func->func_body_end   = expr;
+    expr->expr_next             = NULL;
 }
 
 void unit_push_return(expression *result)
@@ -55,7 +53,7 @@ int unit_create_label(function_desc *function)
 
 int unit_push_label(void)
 {
-    int label = unit_create_label(_current_function);
+    int label = unit_create_label(_curr_func);
     unit_place_label(label);
     return label;
 }
@@ -67,7 +65,7 @@ void unit_push_jump(int dest, expression *condition, BOOL invert_condition)
 
 int unit_create_label_and_push_jump(expression *condition, BOOL invert_condition)
 {
-    int label = unit_create_label(_current_function);
+    int label = unit_create_label(_curr_func);
     unit_push_jump(label, condition, invert_condition);
     return label;
 }
@@ -80,7 +78,7 @@ void unit_place_label(int label)
 
 expression *unit_get_last_expression(void)
 {
-    return _last_expression;
+    return _curr_func->func_body_end;
 }
 
 expression *unit_extract_slice(expression *expr)
@@ -89,12 +87,12 @@ expression *unit_extract_slice(expression *expr)
         return NULL;
     }
 
-    if (_current_function->func_body == expr) {
-        _current_function->func_body = _last_expression = NULL;
+    if (_curr_func->func_body == expr) {
+        _curr_func->func_body = _curr_func->func_body_end = NULL;
     } else {
-        _last_expression            = expr->expr_prev;
-        _last_expression->expr_next = NULL;
-        expr->expr_prev             = NULL;
+        _curr_func->func_body_end               = expr->expr_prev;
+        _curr_func->func_body_end->expr_next    = NULL;
+        expr->expr_prev                         = NULL;
     }
 
     return expr;
@@ -102,25 +100,29 @@ expression *unit_extract_slice(expression *expr)
 
 void unit_insert_slice(expression *list)
 {
-    ASSERT(_current_function);
+    expression *end;
 
+    ASSERT(_curr_func);
     if (!list) {
         return;
     }
 
-    // inserting into double-linked list
-    if (!_current_function->func_body) {
-        _current_function->func_body    = list;
+    // вставка подсписка в двусвязный список
+    if (!_curr_func->func_body) {
+        _curr_func->func_body                   = list;
     } else {
-        _last_expression->expr_next     = list;
+        _curr_func->func_body_end->expr_next    = list;
     }
 
-    list->expr_prev     = _last_expression;
-    _last_expression    = list;
 
-    while (_last_expression->expr_next) {
-        _last_expression = _last_expression->expr_next;
+    // находим новый конец списка
+    end = _curr_func->func_body_end;
+
+    for (end = list; end->expr_next; ) {
+        end = end->expr_next;
     }
+
+    _curr_func->func_body_end   = end;
 }
 
 
@@ -135,14 +137,14 @@ symbol *unit_create_temporary_variable(data_type *type)
     symbol *tmp         = symbol_create_temporary(type);
     tmp->sym_is_local   = TRUE;
 
-    ASSERT(_current_function);
+    ASSERT(_curr_func);
 
-    if (_current_function->func_locals.list_last) {
-        _current_function->func_locals.list_last->sym_next  = tmp;
-        _current_function->func_locals.list_last            = tmp;
+    if (_curr_func->func_locals.list_last) {
+        _curr_func->func_locals.list_last->sym_next  = tmp;
+        _curr_func->func_locals.list_last            = tmp;
     } else {
-        _current_function->func_locals.list_first           = tmp;
-        _current_function->func_locals.list_last            = tmp;
+        _curr_func->func_locals.list_first           = tmp;
+        _curr_func->func_locals.list_last            = tmp;
     }
 
     return tmp;
@@ -151,13 +153,13 @@ symbol *unit_create_temporary_variable(data_type *type)
 
 static void _unit_insert_expression_before(expression *expr, expression *position)
 {
-    ASSERT(_current_function);
+    ASSERT(_curr_func);
 
     expr->expr_next     = position;
     position->expr_prev = expr;
 
-    if (_current_function->func_body == position) {
-        _current_function->func_body    = expr;
+    if (_curr_func->func_body == position) {
+        _curr_func->func_body    = expr;
     }
 }
 
@@ -180,7 +182,7 @@ static void _eliminate_meaningless_expressions(void)
 {
     expression *expr;
 
-    for (expr = _current_function->func_body; expr; expr = expr->expr_next) {
+    for (expr = _curr_func->func_body; expr; expr = expr->expr_next) {
         switch (expr->expr_code) {
         case code_expr_int_constant:
         case code_expr_float_constant:
@@ -188,9 +190,9 @@ static void _eliminate_meaningless_expressions(void)
             aux_warning("useless expression");
 
             if (expr->expr_prev) {
-                expr->expr_prev->expr_next      = expr->expr_next;
+                expr->expr_prev->expr_next  = expr->expr_next;
             } else {
-                _current_function->func_body    = expr->expr_next;
+                _curr_func->func_body       = expr->expr_next;
             }
 
             break;
@@ -237,7 +239,7 @@ static void _process_boolean_operations_in_jumps(void)
 {
     expression *expr;
 
-    for (expr = _current_function->func_body; expr; expr = expr->expr_next) {
+    for (expr = _curr_func->func_body; expr; expr = expr->expr_next) {
         if (expr->expr_code == code_expr_jump && expr->data.jump.condition) {
             _replace_boolean_operations_in_jump(expr->data.jump.condition);
         }
@@ -265,7 +267,7 @@ static void _replace_boolean_with_jumps(expression *expr, void *unused)
     aux_warning("logical and/or outside of 'if', performance hit because of extra branching");
 
     tmp     = unit_create_temporary_variable(arithm->operand1->expr_type);
-    label   = unit_create_label(_current_function);
+    label   = unit_create_label(_curr_func);
 
 
     _unit_insert_expression_before(
@@ -299,7 +301,7 @@ static void _process_general_boolean_arithmetic(void)
 {
     expression *expr;
 
-    for (expr = _current_function->func_body; expr; expr = expr->expr_next) {
+    for (expr = _curr_func->func_body; expr; expr = expr->expr_next) {
         expr_iterate_through_subexpressions(expr, code_expr_arithmetic,
             EXPR_IT_APPLY_FILTER | EXPR_IT_CHILDREN_FIRST | EXPR_IT_DONT_ADVANCE, _replace_boolean_with_jumps, NULL);
     }
@@ -358,7 +360,7 @@ static void _calc_complexity_cb(expression *expr, void *unused)
 
 static void _calc_expressions_complexity(void)
 {
-    expr_iterate_through_subexpressions(_current_function->func_body, 0, EXPR_IT_CHILDREN_FIRST, _calc_complexity_cb, 0);
+    expr_iterate_through_subexpressions(_curr_func->func_body, 0, EXPR_IT_CHILDREN_FIRST, _calc_complexity_cb, 0);
 }
 
 
@@ -388,7 +390,7 @@ static void _remove_local_variables_from_symtable(void)
 {
     symbol *sym;
 
-    for (sym = _current_function->func_locals.list_first; sym; sym = sym->sym_next) {
+    for (sym = _curr_func->func_locals.list_first; sym; sym = sym->sym_next) {
         symbol_remove_from_table(sym, FALSE);
     }
 }
@@ -410,7 +412,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
     type_apply_decl_specifiers_to_vars(decl_spec, symbols);
 
     for (sym = symbols->list_first; sym; sym = sym->sym_next) {
-        sym->sym_is_local = !!_current_function;
+        sym->sym_is_local = !!_curr_func;
 
         // remove nested variables (i.e. parameters of pointer-to-function variables)
         if (TYPE_IS_FUNCTION(sym->sym_type) || TYPE_IS_POINTER_TO_FUNCTION(sym->sym_type)) {
@@ -429,7 +431,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
         } else if (sym->sym_init) {
             UNIMPLEMENTED_ASSERT(sym->sym_init->init_code == code_terminal_initializer);
 
-            if (!_current_function) {
+            if (!_curr_func) {
                 expression *val = sym->sym_init->init_data.value;
 
                 if (val->expr_code == code_expr_int_constant) {
@@ -445,19 +447,19 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
 
                 unit_push_expression(expr);
             }
-        } else if (!_current_function && sym->sym_code != code_sym_function) {
+        } else if (!_curr_func && sym->sym_code != code_sym_function) {
             x86data_declare_uninitialized_bytes(sym, type_calculate_sizeof(sym->sym_type));
         }
     }
 
     // inserting the variable into the list of variables
-    if (_current_function) {
-        if (_current_function->func_locals.list_last) {
-            _current_function->func_locals.list_last->sym_next  = symbols->list_first;
-            _current_function->func_locals.list_last            = symbols->list_last;
+    if (_curr_func) {
+        if (_curr_func->func_locals.list_last) {
+            _curr_func->func_locals.list_last->sym_next  = symbols->list_first;
+            _curr_func->func_locals.list_last            = symbols->list_last;
         } else {
-            _current_function->func_locals.list_first           = symbols->list_first;
-            _current_function->func_locals.list_last            = symbols->list_last;
+            _curr_func->func_locals.list_first           = symbols->list_first;
+            _curr_func->func_locals.list_last            = symbols->list_last;
         }
     }
 }
@@ -502,22 +504,22 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
 
 
     // making function descriptor
-    _current_function                           = allocator_alloc(allocator_temporary_pool, sizeof(function_desc));
-    memset(_current_function, 0, sizeof(function_desc));
+    _curr_func                  = allocator_alloc(allocator_temporary_pool, sizeof(function_desc));
+    memset(_curr_func, 0, sizeof(function_desc));
 
-    _current_function->func_sym                 = sym;
-    _current_function->func_is_static           = spec->spec_static;
-    _current_function->func_params              = sym->sym_type->data.function.parameters_list;
+    _curr_func->func_sym        = sym;
+    _curr_func->func_is_static  = spec->spec_static;
+    _curr_func->func_params     = sym->sym_type->data.function.parameters_list;
 
-    _last_expression                            = NULL;
+    _curr_func->func_body_end   = NULL;
 
 
     // insert function into the list of functions in the current unit
     if (!_first_function) {
-        _first_function = _last_function = _current_function;
+        _first_function = _last_function = _curr_func;
     } else {
-        _last_function->func_next = _current_function;
-        _last_function = _current_function;
+        _last_function->func_next   = _curr_func;
+        _last_function              = _curr_func;
     }
 }
 
@@ -530,10 +532,10 @@ void unit_handle_function_body(symbol *sym)
     ASSERT(TYPE_IS_FUNCTION(sym->sym_type));
 
     // add "return" statement if needed and warn if it's non-void function
-    if (!_current_function->func_body) {
+    if (!_curr_func->func_body) {
         unit_push_return(NULL);
     } else {
-        expression *expr = _current_function->func_body;
+        expression *expr = _curr_func->func_body;
 
         while (expr->expr_next) {
             expr = expr->expr_next;
@@ -542,7 +544,7 @@ void unit_handle_function_body(symbol *sym)
         if (expr->expr_code != code_expr_return) {
             // TODO: чтобы выдавать этот варнинг, нужно статическим анализом доказать достижимость этого кода.
             //
-            //data_type *func_type = _current_function->func_sym->sym_type;
+            //data_type *func_type = _curr_func->func_sym->sym_type;
             //
             //if (func_type->data.function.result_type->type_code != code_type_void) {
             //    aux_warning("non-void function does not return anything");
@@ -572,7 +574,7 @@ void unit_handle_function_body(symbol *sym)
     _remove_local_variables_from_symtable();
 
 
-    _current_function   = NULL;
+    _curr_func   = NULL;
     _last_instruction   = NULL;
 }
 
@@ -602,31 +604,31 @@ static void _unit_output_function_code(function_desc *func)
 
 void unit_codegen(void)
 {
-    for (_current_function = _first_function; _current_function; _current_function = _current_function->func_next) {
-        ASSERT(_current_function->func_body);
+    for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
+        ASSERT(_curr_func->func_body);
         _last_instruction = NULL;
 
-        x86_stack_frame_begin_function(_current_function);
-        x86_codegen_do_function(_current_function);
-        x86_stack_frame_end_function(_current_function);
+        x86_stack_frame_begin_function(_curr_func);
+        x86_codegen_do_function(_curr_func);
+        x86_stack_frame_end_function(_curr_func);
 
-        _current_function->func_start_of_regvars = INT_MAX;
+        _curr_func->func_start_of_regvars = INT_MAX;
 
-        x86_analyze_registers_usage(_current_function);
+        x86_analyze_registers_usage(_curr_func);
 
         if (!option_debug_disable_basic_opt) {
-            x86_optimization_after_codegen(_current_function);
+            x86_optimization_after_codegen(_curr_func);
         }
 
         if (option_enable_optimization) {
-            x86_create_register_variables(_current_function);
+            x86_create_register_variables(_curr_func);
         }
 
         if (!option_debug_disable_regalloc) {
-            x86_allocate_registers(_current_function);
+            x86_allocate_registers(_curr_func);
         }
 
-        _unit_output_function_code(_current_function);
+        _unit_output_function_code(_curr_func);
         allocator_reset_temporary();
     }
 }
@@ -650,10 +652,10 @@ void unit_push_binary_instruction(x86_instruction_code code, x86_operand *op1, x
 {
     x86_instruction *res    = bincode_create_instruction(code, op1, op2);
 
-    ASSERT(_current_function);
+    ASSERT(_curr_func);
 
     if (!_last_instruction) {
-        _current_function->func_binary_code = res;
+        _curr_func->func_binary_code = res;
     } else {
         _last_instruction->in_next = res;
     }
