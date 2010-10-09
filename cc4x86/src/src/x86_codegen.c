@@ -7,7 +7,7 @@
 
 
 static int _last_int_pseudoreg              = 1;
-static function_desc *_current_function     = NULL;
+static function_desc *_curr_func     = NULL;
 
 
 static void _evaluate_nested_expression(expression *expr, x86_operand *res);
@@ -457,7 +457,7 @@ static void _generate_binary_arithm_expr(expression *expr, x86_operand *res)
     }
 
     if (is_structure_op) {
-        x86_intrinsic_static_memcpy(_current_function, res, &op1, &op2, type_calculate_sizeof(expr->expr_type));
+        x86_intrinsic_static_memcpy(_curr_func, res, &op1, &op2, type_calculate_sizeof(expr->expr_type));
     } else if (is_int_op) {
         _generate_int_binary_expr(expr, res, &op1, &op2);
     } else {
@@ -750,7 +750,7 @@ static void _generate_conditional_jump(expression *condition, int destination, B
 
 static void _generate_jumps_for_and(expression *cond1, expression *cond2, int destination, BOOL invert_operands)
 {
-    int label = unit_create_label(_current_function);
+    int label = unit_create_label(_curr_func);
     x86_operand op;
 
     _generate_conditional_jump(cond1, label, !invert_operands);
@@ -893,7 +893,7 @@ static void _walk_through_expressions(void)
     x86_operand label;
     expression *expr;
 
-    for (expr = _current_function->func_body; expr; expr = expr->expr_next) {
+    for (expr = _curr_func->func_body; expr; expr = expr->expr_next) {
         switch (expr->expr_code) {
         case code_expr_label:
             bincode_create_operand_from_label(&label, expr->data.label);
@@ -935,7 +935,7 @@ static void _extract_float_constants(expression *expr, void *unused)
 
 static void _place_float_constants_into_data_section(void)
 {
-    expr_iterate_through_subexpressions(_current_function->func_body, code_expr_float_constant, EXPR_IT_APPLY_FILTER,
+    expr_iterate_through_subexpressions(_curr_func->func_body, code_expr_float_constant, EXPR_IT_APPLY_FILTER,
         _extract_float_constants, NULL);
     x86data_enter_text_section();
 }
@@ -946,12 +946,12 @@ static void _place_float_constants_into_data_section(void)
 void x86_codegen_do_function(function_desc *function)
 {
     _last_int_pseudoreg = 1;
-    _current_function   = function;
+    _curr_func   = function;
 
     _place_float_constants_into_data_section();
     _generate_prolog();
     _walk_through_expressions();
 
-    _current_function   = NULL;
+    _curr_func   = NULL;
 }
 
