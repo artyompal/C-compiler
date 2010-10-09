@@ -17,6 +17,7 @@ static expression *_expr_create(expression_code code, data_type *type)
     res->expr_lvalue        = (code == code_expr_symbol);
     res->expr_source_line   = aux_get_current_line();
     res->expr_next          = NULL;
+    res->expr_prev          = NULL;
     res->expr_parent        = NULL;
 
     return res;
@@ -697,7 +698,7 @@ expression *expr_create_indirect_field_access(expression *expr, symbol *sym)
 expression *expr_create_function_call(expression *address, expression_list *args)
 {
     data_type *address_type;
-    expression *res, *arg, *converted, *prev;
+    expression *res, *arg, *converted;
     parameter *param;
     int i;
 
@@ -730,9 +731,8 @@ expression *expr_create_function_call(expression *address, expression_list *args
     // check argument type matching and do proper type casting
     param   = address_type->data.function.parameters_list->param_first;
     arg     = args->expr_first;
-    prev    = NULL;
 
-    for (i = 0; param && arg; i++, prev = arg, arg = arg->expr_next) {
+    for (i = 0; param && arg; i++, arg = arg->expr_next) {
         if (!param || !arg) {
             aux_error("function call: number of actual parameters differs from number of format parameters");
             return NULL;
@@ -746,15 +746,20 @@ expression *expr_create_function_call(expression *address, expression_list *args
         if (!type_are_same(param->param_type, arg->expr_type)) {
             // if we can silently convert types, do that
             if (TYPE_IS_ARITHMETIC(param->param_type) && TYPE_IS_ARITHMETIC(arg->expr_type)) {
-                converted               = expr_create_type_cast(arg, param->param_type);
-                converted->expr_next    = arg->expr_next;
-                arg                     = converted;
+                converted                   = expr_create_type_cast(arg, param->param_type);
+                converted->expr_next        = arg->expr_next;
+                converted->expr_prev        = arg->expr_prev;
 
-                if (prev) {
-                    prev->expr_next     = converted;
-                } else {
-                    args->expr_first    = converted;
-                }
+                if (arg->expr_next)
+                    arg->expr_next->expr_prev = converted;
+                if (arg->expr_prev)
+                    arg->expr_prev->expr_next = converted;
+                else
+                    args->expr_first        = converted;
+
+                arg->expr_next              = NULL;
+                arg->expr_prev              = NULL;
+                arg                         = converted;
             } else {
                 aux_error("function call: wrong type of parameter #%d", i);
                 return NULL;
@@ -788,6 +793,7 @@ expression_list *expr_add_expression_to_list(expression_list *comma_list, expres
     expr            = _expr_generate_pointer(expr, TRUE, TRUE);
 
     comma_list->expr_last->expr_next    = expr;
+    expr->expr_prev                     = comma_list->expr_last;
     comma_list->expr_last               = expr;
 
     return comma_list;

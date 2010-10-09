@@ -29,14 +29,17 @@ void unit_push_expression(expression *expr)
         return;
     }
 
-    // inserting in expressions list
+    // inserting into double-linked list
     if (!_current_function->func_body) {
-        _current_function->func_body = expr;
+        _current_function->func_body    = expr;
+        expr->expr_prev                 = NULL;
     } else {
-        _last_expression->expr_next = expr;
+        _last_expression->expr_next     = expr;
+        expr->expr_prev                 = _last_expression;
     }
 
-    _last_expression = expr;
+    _last_expression    = expr;
+    expr->expr_next     = NULL;
 }
 
 void unit_push_return(expression *result)
@@ -80,36 +83,40 @@ expression *unit_get_last_expression(void)
     return _last_expression;
 }
 
-expression *unit_extract_expressions_since(expression *expr)
+expression *unit_extract_slice(expression *expr)
 {
-    expression *prev;
-
-    expr = expr->expr_next;
-
     if (!expr) {
         return NULL;
     }
 
-    // FIXME: quadratic complexity!!!
     if (_current_function->func_body == expr) {
         _current_function->func_body = _last_expression = NULL;
     } else {
-        for (prev = _current_function->func_body; ; prev = prev->expr_next) {
-            ASSERT(prev);
-
-            if (prev->expr_next == expr) {
-                _last_expression = prev;
-                break;
-            }
-        }
+        _last_expression            = expr->expr_prev;
+        _last_expression->expr_next = NULL;
+        expr->expr_prev             = NULL;
     }
 
     return expr;
 }
 
-void unit_push_expressions(expression *list)
+void unit_insert_slice(expression *list)
 {
-    unit_push_expression(list);
+    ASSERT(_current_function);
+
+    if (!list) {
+        return;
+    }
+
+    // inserting into double-linked list
+    if (!_current_function->func_body) {
+        _current_function->func_body    = list;
+    } else {
+        _last_expression->expr_next     = list;
+    }
+
+    list->expr_prev     = _last_expression;
+    _last_expression    = list;
 
     while (_last_expression->expr_next) {
         _last_expression = _last_expression->expr_next;
@@ -142,27 +149,26 @@ symbol *unit_create_temporary_variable(data_type *type)
 }
 
 
-static void _unit_insert_expression_after(expression *expr, expression *position)
+static void _unit_insert_expression_before(expression *expr, expression *position)
 {
     ASSERT(_current_function);
 
-    if (!position) {
-        expr->expr_next     = _current_function->func_body;
-        _current_function->func_body = expr;
-    } else {
-        expr->expr_next     = position->expr_next;
-        position->expr_next = expr;
+    expr->expr_next     = position;
+    position->expr_prev = expr;
+
+    if (_current_function->func_body == position) {
+        _current_function->func_body    = expr;
     }
 }
 
-static void _unit_insert_jump_after(int dest, expression *condition, BOOL invert_condition, expression *position)
+static void _unit_insert_jump_before(int dest, expression *condition, BOOL invert_condition, expression *position)
 {
-    _unit_insert_expression_after(expr_create_jump(dest, condition, invert_condition), position);
+    _unit_insert_expression_before(expr_create_jump(dest, condition, invert_condition), position);
 }
 
-static void _unit_insert_label_after(int label, expression *position)
+static void _unit_insert_label_before(int label, expression *position)
 {
-    _unit_insert_expression_after(expr_create_label(label), position);
+    _unit_insert_expression_before(expr_create_label(label), position);
 }
 
 
@@ -172,17 +178,17 @@ static void _unit_insert_label_after(int label, expression *position)
 
 static void _eliminate_meaningless_expressions(void)
 {
-    expression *expr, *prev;
+    expression *expr;
 
-    for (expr = _current_function->func_body, prev = 0; expr; prev = expr, expr = expr->expr_next) {
+    for (expr = _current_function->func_body; expr; expr = expr->expr_next) {
         switch (expr->expr_code) {
         case code_expr_int_constant:
         case code_expr_float_constant:
         case code_expr_symbol:
             aux_warning("useless expression");
 
-            if (prev) {
-                prev->expr_next                 = expr->expr_next;
+            if (expr->expr_prev) {
+                expr->expr_prev->expr_next      = expr->expr_next;
             } else {
                 _current_function->func_body    = expr->expr_next;
             }
@@ -244,62 +250,56 @@ static void _process_boolean_operations_in_jumps(void)
 //  на условный переход + сохранение во временную переменную.
 //
 
-static expression *previous_expr = NULL;
-
 static void _replace_boolean_with_jumps(expression *expr, void *unused)
 {
     expr_arithm *arithm = &expr->data.arithm;
     int label;
     symbol *tmp;
     expression saved;
-    expression *next    = (previous_expr ? previous_expr->expr_next : _current_function->func_body);
 
 
     if (arithm->opcode != op_logical_and && arithm->opcode != op_logical_or) {
         return;
     }
 
-    // TODO: можно анализировать операнд на наличие side-effects и возможность убрать джампы.
-    aux_warning("logical and/or outside a jump, performance hit because of extra jumps");
+    aux_warning("logical and/or outside of 'if', performance hit because of extra branching");
 
     tmp     = unit_create_temporary_variable(arithm->operand1->expr_type);
     label   = unit_create_label(_current_function);
 
 
-    // FIXME: Из-за того, что список выражений односвязный, нам приходится вставлять инструкции в обратном порядке.
-    _unit_insert_label_after(label, previous_expr);
+    _unit_insert_expression_before(
+        expr_create_binary(
+            expr_create_from_identifier(tmp),
+            expr_create_from_integer(arithm->opcode == op_logical_or ? 1 : 0, type_create_arithmetic(code_type_int)),
+            op_assign),
+        expr);
 
-    _unit_insert_expression_after(expr_create_binary(
-        expr_create_from_identifier(tmp), expr_create_unary(arithm->operand2, op_notnot), op_assign), previous_expr);
+    _unit_insert_jump_before(label, arithm->operand1, arithm->opcode == op_logical_and ? 1 : 0, expr);
 
-    _unit_insert_jump_after(label, arithm->operand1, arithm->opcode == op_logical_and ? 1 : 0, previous_expr);
+    _unit_insert_expression_before(
+        expr_create_binary(
+            expr_create_from_identifier(tmp),
+            expr_create_unary(arithm->operand2, op_notnot),
+            op_assign),
+        expr);
 
-    _unit_insert_expression_after(expr_create_binary(expr_create_from_identifier(tmp),
-        expr_create_from_integer(arithm->opcode == op_logical_or ? 1 : 0,
-            type_create_arithmetic(code_type_int)), op_assign), previous_expr);
+    _unit_insert_label_before(label, expr);
 
-
-    if (previous_expr) {
-        previous_expr       = previous_expr->expr_next->expr_next->expr_next->expr_next;
-    } else {
-        previous_expr       = _current_function->func_body->expr_next->expr_next->expr_next;
-    }
-
-    ASSERT(previous_expr->expr_next == next);
 
     saved                   = *expr;
     *expr                   = *expr_create_from_identifier(tmp);
 
     expr->expr_next         = saved.expr_next;
+    expr->expr_prev         = saved.expr_prev;
     expr->expr_parent       = saved.expr_parent;
 }
 
 static void _process_general_boolean_arithmetic(void)
 {
-    expression *expr, *prev;
+    expression *expr;
 
-    for (expr = _current_function->func_body, prev = NULL; expr; prev = expr, expr = expr->expr_next) {
-        previous_expr = prev;
+    for (expr = _current_function->func_body; expr; expr = expr->expr_next) {
         expr_iterate_through_subexpressions(expr, code_expr_arithmetic,
             EXPR_IT_APPLY_FILTER | EXPR_IT_CHILDREN_FIRST | EXPR_IT_DONT_ADVANCE, _replace_boolean_with_jumps, NULL);
     }
@@ -325,7 +325,7 @@ static void _calc_complexity_cb(expression *expr, void *unused)
     case code_expr_arithmetic:
         if (IS_UNARY_OP(expr->data.arithm.opcode)) {
             if (expr->data.arithm.opcode == op_dereference || expr->data.arithm.opcode == op_get_address) {
-                // BTW, dereference can cost something.
+                // FIXME: dereference can cost something.
                 expr->expr_complexity = expr->data.arithm.operand1->expr_complexity;
             } else {
                 expr->expr_complexity = expr->data.arithm.operand1->expr_complexity + 1;
@@ -541,10 +541,12 @@ void unit_handle_function_body(symbol *sym)
         }
 
         if (expr->expr_code != code_expr_return) {
+            // TODO: чтобы выдавать этот варнинг, нужно статическим анализом доказать достижимость этого кода.
+            //
             //data_type *func_type = _current_function->func_sym->sym_type;
             //
             //if (func_type->data.function.result_type->type_code != code_type_void) {
-            //    aux_warning("non-void function does not return anything, is it ok?");
+            //    aux_warning("non-void function does not return anything");
             //}
 
             unit_push_return(NULL);

@@ -671,11 +671,11 @@ statement
             }
             expression ')'
             {
-                for_postcondition = unit_extract_expressions_since(for_postcondition);
+                for_postcondition = unit_extract_slice(for_postcondition->expr_next);
             }
             statement
             {
-                unit_push_expressions(for_postcondition);
+                unit_insert_slice(for_postcondition);
                 unit_push_expression($4);
                 unit_push_jump($<label>1, NULL, TRUE);
                 unit_place_label($<label>3);

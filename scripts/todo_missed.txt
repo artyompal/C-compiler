@@ -46,8 +46,7 @@ types.c:            unimplemented_error("type_add_abstract_unsized_array_node");
 types.c:            unimplemented_error("type_add_abstract_sized_array_node");
 types.c:            unimplemented_error("type_add_abstract_function_node");
 types.c:            UNIMPLEMENTED_ASSERT("unsupported type specifiers");
-unit.c:             FIXME: quadratic complexity!!!
-unit.c:             TODO: можно анализировать операнд на наличие side-effects и возможность убрать джампы.
-unit.c:             FIXME: Из-за того, что список выражений односвязный, нам приходится вставлять инструкции в обратном порядке.
+unit.c:             FIXME: dereference can cost something.
 unit.c:             UNIMPLEMENTED_ASSERT(sym->sym_init->init_code == code_terminal_initializer);
+unit.c:             TODO: чтобы выдавать этот варнинг, нужно статическим анализом доказать достижимость этого кода.
 unit.c:             TODO: поддержка локальных переменных во вложенных блоках с правильными областями видимости.

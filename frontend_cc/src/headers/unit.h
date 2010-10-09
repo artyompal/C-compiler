@@ -49,8 +49,8 @@ int             unit_create_label_and_push_jump     (expression *condition, BOOL
 void            unit_place_label                    (int label);
 
 expression *    unit_get_last_expression            (void);
-expression *    unit_extract_expressions_since      (expression *expr);
-void            unit_push_expressions               (expression *list);
+expression *    unit_extract_slice                  (expression *expr);
+void            unit_insert_slice                   (expression *list);
 
 void            unit_codegen                        (void);
 
