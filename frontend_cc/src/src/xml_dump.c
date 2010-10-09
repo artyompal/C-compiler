@@ -2,7 +2,7 @@
 #include <stdarg.h>
 
 #include "common.h"
-#include "debug.h"
+#include "xml_dump.h"
 #include "unit.h"
 
 
