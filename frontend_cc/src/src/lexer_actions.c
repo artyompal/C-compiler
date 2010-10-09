@@ -32,7 +32,7 @@ int token_identifier(const char *token, int token_len)
 
     sym = symbol_lookup(token, token_len);
 
-    if (sym->sym_code == sym_typedef) {
+    if (sym->sym_code == code_sym_type) {
         yylval.type = sym->sym_type;
         return lxm_typedef_name;
     } else {
@@ -174,7 +174,7 @@ int token_string_literal(const char *token, int token_len)
     ASSERT(j == count - 1);
     data[j] = '\0';
 
-    sym = symbol_create_unnamed("string", sym_variable, type_create_arithmetic(code_type_char));
+    sym = symbol_create_unnamed("string", code_sym_variable, type_create_arithmetic(code_type_char));
     type_add_sized_array_node(sym, expr_create_from_integer(count, type_create_arithmetic(code_type_int)));
     x86data_declare_initialized_string(sym, data, count);
 

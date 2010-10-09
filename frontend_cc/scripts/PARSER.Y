@@ -258,7 +258,7 @@ constant_expression
 
 declaration
         : declaration_specifiers ';'
-            { /* TODO: fix this for structure declarations. */ aux_warning("empty declaration"); }
+            { unit_handle_variable_declarations($1, NULL); }
         | declaration_specifiers init_declarator_list ';'
             { unit_handle_variable_declarations($1, $2); }
         | declaration_specifiers error ';'
@@ -393,24 +393,23 @@ init_declarator
 
 enum_specifier
         : lxm_enum '{' enumerator_list '}'
-            { aux_unimplemented_error("enum_specifier"); }
+            { $$ = type_declare_enumeration(NULL); }
         | lxm_enum lxm_identifier '{' enumerator_list '}'
-            { aux_unimplemented_error("enum_specifier"); }
+            { $$ = type_declare_enumeration($2); }
         | lxm_enum lxm_identifier
-            { aux_unimplemented_error("enum_specifier"); }
+            { $$ = type_declare_incomplete_enumeration($2); }
         ;
 
 enumerator_list
         : enumerator
         | enumerator_list ',' enumerator
-            { aux_unimplemented_error("enumerator_list"); }
         ;
 
 enumerator
         : lxm_identifier
-            { aux_unimplemented_error("enumerator"); }
+            { type_declare_enum_item($1, NULL); }
         | lxm_identifier '=' constant_expression
-            { aux_unimplemented_error("enumerator"); }
+            { type_declare_enum_item($1, $3); }
         ;
 
 declarator
@@ -590,8 +589,8 @@ expression_statement
 if_statement
         : lxm_if '(' expression ')'
             {
-				$<label>$ = unit_create_label_and_push_jump($3, TRUE);
-			}
+                $<label>$ = unit_create_label_and_push_jump($3, TRUE);
+            }
         ;
 
 for_statement
@@ -624,8 +623,8 @@ statement
 
         | if_statement statement
             {
-				unit_place_label($<label>1);
-			}
+                unit_place_label($<label>1);
+            }
         | if_statement statement lxm_else
             {
                 $<label>$ = unit_create_label_and_push_jump(NULL, FALSE);
@@ -633,13 +632,13 @@ statement
             }
             statement
             {
-				unit_place_label($<label>4);
-			}
+                unit_place_label($<label>4);
+            }
         | lxm_while '(' expression ')'
             {
                 $<label>$ = unit_push_label();
             }
-			// two different actions aren't a mistake!
+            // two different actions aren't a mistake!
             {
                 $<label>$ = unit_create_label_and_push_jump($3, TRUE);
             }
@@ -649,17 +648,17 @@ statement
                 unit_place_label($<label>6);
             }
         | lxm_do
-			{
-				$<label>$ = unit_push_label();
-			}
-			statement lxm_while '(' expression ')' ';'
             {
-				unit_push_jump($<label>2, $6, FALSE);
-			}
+                $<label>$ = unit_push_label();
+            }
+            statement lxm_while '(' expression ')' ';'
+            {
+                unit_push_jump($<label>2, $6, FALSE);
+            }
         | for_statement expression_statement
             {
-				$<label>$ = unit_create_label_and_push_jump($2, TRUE);
-			}
+                $<label>$ = unit_create_label_and_push_jump($2, TRUE);
+            }
             ')' statement
             {
                 unit_push_jump($<label>1, NULL, TRUE);
@@ -667,16 +666,16 @@ statement
             }
         | for_statement expression_statement
             {
-				$<label>$ = unit_create_label_and_push_jump($2, TRUE);
-				for_postcondition = unit_get_last_expression();
-			}
+                $<label>$ = unit_create_label_and_push_jump($2, TRUE);
+                for_postcondition = unit_get_last_expression();
+            }
             expression ')'
-			{
-				for_postcondition = unit_extract_expressions_since(for_postcondition);
-			}
-			statement
             {
-				unit_push_expressions(for_postcondition);
+                for_postcondition = unit_extract_expressions_since(for_postcondition);
+            }
+            statement
+            {
+                unit_push_expressions(for_postcondition);
                 unit_push_expression($4);
                 unit_push_jump($<label>1, NULL, TRUE);
                 unit_place_label($<label>3);

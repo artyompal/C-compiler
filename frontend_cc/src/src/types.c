@@ -168,7 +168,7 @@ struct_union_field *type_create_field(symbol *sym, expression *width)
     struct_union_field *res = allocator_alloc(allocator_persistent_pool, sizeof(struct_union_field));
 
     sym                 = symbol_remove_from_table(sym, FALSE);
-    sym->sym_code       = sym_field;
+    sym->sym_code       = code_sym_field;
 
     res->field_sym      = sym;
     res->field_offset   = 0;
@@ -221,13 +221,13 @@ data_type *type_create_complete_structure(symbol *sym, fields_list *fields)
     res                         = _type_create(code_type_structure);
 
     if (!sym) {
-        sym = symbol_create_unnamed("struct", sym_struct, res);
+        sym = symbol_create_unnamed("struct", code_sym_type, res);
     }
 
     res->data.struct_union.sym  = sym;
     res->data.struct_union.list = *fields;
 
-    sym->sym_code               = sym_struct;
+    sym->sym_code               = code_sym_type;
     sym->sym_type               = res;
 
     // calculate field's offsets
@@ -247,15 +247,14 @@ data_type *type_create_complete_union(symbol *sym, fields_list *fields)
     res                         = _type_create(code_type_union);
 
     if (!sym) {
-        sym = symbol_create_unnamed("union", sym_union, res);
+        sym = symbol_create_unnamed("union", code_sym_type, res);
     }
 
     res->data.struct_union.sym  = sym;
     res->data.struct_union.list = *fields;
 
-    sym->sym_code               = sym_union;
+    sym->sym_code               = code_sym_type;
     sym->sym_type               = res;
-
     return sym->sym_type;
 }
 
@@ -263,8 +262,7 @@ data_type *type_create_incomplete_structure(symbol *sym)
 {
     if (!sym) { return NULL; }
 
-    // TODO: support of incomplete structures
-    sym->sym_code   = sym_struct;
+    sym->sym_code   = code_sym_type;
     sym->sym_type   = _type_create(code_type_incomplete_structure);
 
     return sym->sym_type;
@@ -274,8 +272,7 @@ data_type *type_create_incomplete_union(symbol *sym)
 {
     if (!sym) { return NULL; }
 
-    // TODO: support of incomplete unions
-    sym->sym_code   = sym_struct;
+    sym->sym_code   = code_sym_type;
     sym->sym_type   = _type_create(code_type_incomplete_union);
 
     return sym->sym_type;
@@ -603,5 +600,48 @@ data_type *type_create_pointer_with_spec_to_type(decl_specifier decl_spec, data_
     ptr->data.ptr.is_volatile   = decl_spec.spec_volatile;
 
     return ptr;
+}
+
+
+static int last_enum_item = 0;
+
+data_type *type_declare_enumeration(symbol *sym)
+{
+    data_type *res = _type_create(code_type_enum);
+
+    if (!sym) {
+        sym = symbol_create_unnamed("enum", code_sym_type, res);
+    }
+
+    res->data.enum_or_incomplete.sym = sym;
+    sym->sym_code   = code_sym_type;
+
+    last_enum_item  = 0;
+
+    return res;
+}
+
+data_type *type_declare_incomplete_enumeration(symbol *sym)
+{
+    data_type *res  = _type_create(code_type_incomplete_enum);
+
+    res->data.enum_or_incomplete.sym = sym;
+    sym->sym_code   = code_sym_type;
+
+    return res;
+}
+
+void type_declare_enum_item(symbol *sym, expression *value)
+{
+    sym->sym_code   = code_sym_enum;
+
+    if (!value)
+        sym->sym_value = last_enum_item++;
+    else if (value->expr_code == code_expr_int_constant) {
+        sym->sym_value = value->data.int_const;
+    } else {
+        aux_error("enumeration item must be an integer constant");
+        sym->sym_value = last_enum_item++;
+    }
 }
 

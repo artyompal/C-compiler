@@ -234,17 +234,17 @@ static const short yyrline[] = { 0,
    302,   304,   306,   308,   310,   312,   314,   316,   321,   323,
    325,   327,   329,   331,   336,   337,   342,   344,   349,   350,
    352,   353,   358,   360,   365,   367,   372,   374,   376,   381,
-   383,   388,   390,   395,   397,   399,   404,   405,   410,   412,
-   417,   419,   423,   425,   427,   429,   434,   436,   438,   443,
-   448,   450,   452,   454,   459,   460,   465,   466,   471,   473,
-   477,   479,   481,   486,   488,   493,   494,   495,   500,   502,
-   504,   506,   511,   513,   515,   520,   522,   524,   529,   531,
-   533,   538,   540,   542,   547,   548,   560,   562,   564,   569,
-   570,   574,   575,   576,   581,   582,   585,   587,   591,   598,
-   606,   608,   610,   612,   614,   616,   618,   621,   623,   625,
-   629,   635,   638,   643,   647,   651,   655,   659,   663,   668,
-   673,   678,   685,   687,   699,   700,   704,   705,   710,   711,
-   712,   713
+   383,   388,   390,   395,   397,   399,   404,   405,   409,   411,
+   416,   418,   422,   424,   426,   428,   433,   435,   437,   442,
+   447,   449,   451,   453,   458,   459,   464,   465,   470,   472,
+   476,   478,   480,   485,   487,   492,   493,   494,   499,   501,
+   503,   505,   510,   512,   514,   519,   521,   523,   528,   530,
+   532,   537,   539,   541,   546,   547,   559,   561,   563,   568,
+   569,   573,   574,   575,   580,   581,   584,   586,   590,   597,
+   605,   607,   609,   611,   613,   615,   617,   620,   622,   624,
+   628,   634,   637,   642,   646,   650,   654,   658,   662,   667,
+   672,   677,   684,   686,   698,   699,   703,   704,   709,   710,
+   711,   712
 };
 #endif
 
@@ -1323,7 +1323,7 @@ case 71:
 { unit_push_expression(yyvsp[-2].expr); yyval.expr = yyvsp[0].expr; ;
     break;}
 case 73:
-{ /* TODO: fix this for structure declarations. */ aux_warning("empty declaration"); ;
+{ unit_handle_variable_declarations(yyvsp[-1].spec, NULL); ;
     break;}
 case 74:
 { unit_handle_variable_declarations(yyvsp[-2].spec, yyvsp[-1].symlist); ;
@@ -1458,22 +1458,19 @@ case 123:
 { yyval.sym = parser_attach_initializer(yyvsp[-2].sym, yyvsp[0].init); ;
     break;}
 case 124:
-{ aux_unimplemented_error("enum_specifier"); ;
+{ yyval.type = type_declare_enumeration(NULL); ;
     break;}
 case 125:
-{ aux_unimplemented_error("enum_specifier"); ;
+{ yyval.type = type_declare_enumeration(yyvsp[-3].sym); ;
     break;}
 case 126:
-{ aux_unimplemented_error("enum_specifier"); ;
-    break;}
-case 128:
-{ aux_unimplemented_error("enumerator_list"); ;
+{ yyval.type = type_declare_incomplete_enumeration(yyvsp[0].sym); ;
     break;}
 case 129:
-{ aux_unimplemented_error("enumerator"); ;
+{ type_declare_enum_item(yyvsp[0].sym, NULL); ;
     break;}
 case 130:
-{ aux_unimplemented_error("enumerator"); ;
+{ type_declare_enum_item(yyvsp[-2].sym, yyvsp[0].expr); ;
     break;}
 case 131:
 { yyval.sym = type_add_pointers_to_symbol_type(yyvsp[-1].type, yyvsp[0].sym); ;
@@ -1630,8 +1627,8 @@ case 187:
     break;}
 case 189:
 {
-				yyval.label = unit_create_label_and_push_jump(yyvsp[-1].expr, TRUE);
-			;
+                yyval.label = unit_create_label_and_push_jump(yyvsp[-1].expr, TRUE);
+            ;
     break;}
 case 190:
 {
@@ -1665,8 +1662,8 @@ case 198:
     break;}
 case 200:
 {
-				unit_place_label(yyvsp[-1].label);
-			;
+                unit_place_label(yyvsp[-1].label);
+            ;
     break;}
 case 201:
 {
@@ -1676,8 +1673,8 @@ case 201:
     break;}
 case 202:
 {
-				unit_place_label(yyvsp[-1].label);
-			;
+                unit_place_label(yyvsp[-1].label);
+            ;
     break;}
 case 203:
 {
@@ -1697,18 +1694,18 @@ case 205:
     break;}
 case 206:
 {
-				yyval.label = unit_push_label();
-			;
+                yyval.label = unit_push_label();
+            ;
     break;}
 case 207:
 {
-				unit_push_jump(yyvsp[-6].label, yyvsp[-2].expr, FALSE);
-			;
+                unit_push_jump(yyvsp[-6].label, yyvsp[-2].expr, FALSE);
+            ;
     break;}
 case 208:
 {
-				yyval.label = unit_create_label_and_push_jump(yyvsp[0].expr, TRUE);
-			;
+                yyval.label = unit_create_label_and_push_jump(yyvsp[0].expr, TRUE);
+            ;
     break;}
 case 209:
 {
@@ -1718,18 +1715,18 @@ case 209:
     break;}
 case 210:
 {
-				yyval.label = unit_create_label_and_push_jump(yyvsp[0].expr, TRUE);
-				for_postcondition = unit_get_last_expression();
-			;
+                yyval.label = unit_create_label_and_push_jump(yyvsp[0].expr, TRUE);
+                for_postcondition = unit_get_last_expression();
+            ;
     break;}
 case 211:
 {
-				for_postcondition = unit_extract_expressions_since(for_postcondition);
-			;
+                for_postcondition = unit_extract_expressions_since(for_postcondition);
+            ;
     break;}
 case 212:
 {
-				unit_push_expressions(for_postcondition);
+                unit_push_expressions(for_postcondition);
                 unit_push_expression(yyvsp[-3].expr);
                 unit_push_jump(yyvsp[-6].label, NULL, TRUE);
                 unit_place_label(yyvsp[-4].label);

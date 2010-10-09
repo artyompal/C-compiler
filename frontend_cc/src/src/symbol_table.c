@@ -39,7 +39,7 @@ static symbol *_symbol_lookup(const char *str)
 
     memset(sym, 0, sizeof(symbol));
     sym->sym_name   = str;
-    sym->sym_code   = sym_unknown;
+    sym->sym_code   = code_sym_unknown;
 
     found = hash_find(symbol_table, sym);
     if (found) {
@@ -92,8 +92,8 @@ symbol *symbol_create_variable(symbol *sym)
     char *hidden_symbol_name;
     symbol *hidden_symbol;
 
-    if (sym->sym_code != sym_unknown) {
-        if (sym->sym_code == sym_function) {
+    if (sym->sym_code != code_sym_unknown) {
+        if (sym->sym_code == code_sym_function) {
             // FIXME: we only allow override functions. extern declarations and typedefs are not supported yet.
             // We create special hidden symbol and later check types matching.
             hidden_symbol_name = allocator_alloc(allocator_persistent_pool, strlen(sym->sym_name) + 2);
@@ -101,7 +101,7 @@ symbol *symbol_create_variable(symbol *sym)
 
             hidden_symbol = _symbol_lookup(hidden_symbol_name);
             // TODO: more flexible behavior? symbols can have multiple duplications
-            ASSERT(hidden_symbol->sym_code == sym_unknown);
+            ASSERT(hidden_symbol->sym_code == code_sym_unknown);
             return hidden_symbol;
         } else {
             aux_error("identifier '%s' is already defined", sym->sym_name);
@@ -110,7 +110,7 @@ symbol *symbol_create_variable(symbol *sym)
         }
     } else {
         hash_insert(symbol_table, sym);
-        sym->sym_code = sym_variable;
+        sym->sym_code = code_sym_variable;
         return sym;
     }
 }
@@ -153,7 +153,7 @@ symbol *symbol_create_temporary(data_type *type)
     memset(sym, 0, sizeof(symbol));
 
     sym->sym_name   = name;
-    sym->sym_code   = sym_variable;
+    sym->sym_code   = code_sym_variable;
     sym->sym_type   = type;
 
     ASSERT(!hash_find(symbol_table, sym));
@@ -187,7 +187,7 @@ symbol *symbol_remove_from_table(symbol *sym, BOOL discard_token)
 
 void symbol_transform_to_typedef(symbol *sym)
 {
-    sym->sym_code = sym_typedef;
+    sym->sym_code = code_sym_type;
 }
 
 

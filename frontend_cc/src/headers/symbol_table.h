@@ -12,24 +12,24 @@ typedef struct initializer_decl initializer;
 
 
 typedef enum symbol_code_decl {
-    sym_unknown,
-    sym_variable,
-    sym_field,
-    sym_struct,
-    sym_union,
-    sym_function,
-    sym_typedef,
+    code_sym_unknown,
+    code_sym_variable,
+    code_sym_field,
+    code_sym_type,
+    code_sym_function,
+    code_sym_enum,
 } symbol_code;
 
 typedef struct symbol_decl {
     const char *        sym_name;           // текстовое имя идентификатора
     symbol_code         sym_code;           // класс идентификатора - по идее, должны быть независимые неймспейсы
     data_type *         sym_type;           // тип символа
-    BOOL                sym_is_local :1;    // TRUE для локальных и формальных параметров, FALSE для глобальнях
+    BOOL                sym_is_local;       // TRUE для локальных и формальных параметров, FALSE для глобальнях
     int                 sym_offset;         // смещение в стеке - используется кодогенератором
     initializer *       sym_init;           // инициализатор - используется парсером
     int                 sym_usage_count;    // счётчик использования в коде - используется кодогенератором
     struct symbol_decl *sym_next;           // указатель на следующий элемент, для списков
+    long                sym_value;          // значение - используется только для enum
 } symbol;
 
 typedef struct symbol_list_decl {

@@ -281,8 +281,8 @@ parameter_list *parser_push_parameter(parameter_list *param_list, parameter *par
 {
     if (!param_list) { return NULL; }
 
-    if (!param_list->param_last) {
-        aux_error("unexpected function formal parameter (already seen void or ellipsys)");
+    if (!param_list->param_last || param_list->param_last->param_code == code_ellipsis_parameter) {
+        aux_error("unexpected function formal parameter (already seen void or ellipsis)");
         return param_list;
     }
 
