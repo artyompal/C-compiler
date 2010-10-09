@@ -417,7 +417,6 @@ int type_calculate_offsetof(data_type *type, symbol *field_name, data_type **fie
 
 BOOL type_are_same(data_type *type1, data_type *type2)
 {
-    // TODO: better type handling - support of incomplete struct/union/enum, arrays and pointers are the same, etc
     if (type1->type_code != type2->type_code) {
         return FALSE;
     }
@@ -475,7 +474,7 @@ BOOL type_are_same(data_type *type1, data_type *type2)
     case code_type_enum:
     case code_type_incomplete_structure:
     case code_type_incomplete_union:
-        UNIMPLEMENTED_ASSERT("enums and incomplete structures/unions aren't supported yet");
+        return !strcmp(type1->data.enum_or_incomplete.sym->sym_name, type2->data.enum_or_incomplete.sym->sym_name);
 
     default:
         ASSERT(FALSE);

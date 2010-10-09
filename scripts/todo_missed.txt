@@ -45,8 +45,6 @@ types.c:            unimplemented_error("unsupported type for overriding declara
 types.c:            unimplemented_error("type_add_abstract_unsized_array_node");
 types.c:            unimplemented_error("type_add_abstract_sized_array_node");
 types.c:            unimplemented_error("type_add_abstract_function_node");
-types.c:            TODO: better type handling - support of incomplete struct/union/enum, arrays and pointers are the same, etc
-types.c:            UNIMPLEMENTED_ASSERT("enums and incomplete structures/unions aren't supported yet");
 types.c:            UNIMPLEMENTED_ASSERT("unsupported type specifiers");
 unit.c:             FIXME: quadratic complexity!!!
 unit.c:             TODO: можно анализировать операнд на наличие side-effects и возможность убрать джампы.
