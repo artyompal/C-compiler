@@ -6,10 +6,10 @@
 static hash_id symbol_table;
 
 
-// TODO: find better hash function?
+// djb2 hash function
 static unsigned int _symbol_hash(symbol *key)
 {
-    unsigned int res = 0;
+    unsigned int res = 5381;
     const char *name = key->sym_name;
 
     while (*name) {

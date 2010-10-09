@@ -38,7 +38,6 @@ parser.c:           unimplemented_error("goto"); ;
 parser.c:           unimplemented_error("continue"); ;
 parser.c:           unimplemented_error("break"); ;
 parser_actions.c:   TODO: semantic check: type correspondence, type promotion and casting.
-symbol_table.c:     TODO: find better hash function?
 symbol_table.c:     FIXME: we only allow override functions. extern declarations and typedefs are not supported yet.
 symbol_table.c:     TODO: more flexible behavior? symbols can have multiple duplications
 types.c:            unimplemented_error("unsupported type for overriding declaration specifiers");

@@ -109,7 +109,7 @@ void hash_delete(hash_id hash, void *value)
 
     // Если следующая ячейка должна быть на месте текущей, передвигаем её.
     while (hash->data[value_to_move] &&
-            hash->hash_func(hash->data[value_to_move]) == value_to_erase) {
+            hash->hash_func(hash->data[value_to_move]) % hash->reserved == value_to_erase) {
         hash->data[value_to_erase] = hash->data[value_to_move];
 
         value_to_erase  = value_to_move;
