@@ -70,7 +70,7 @@ symbol *x86data_insert_float_constant(double constant)
         return found->sym;
     }
 
-    sym         = symbol_create_unnamed("float", sym_variable, type_create_arithmetic(code_type_float));
+    sym         = symbol_create_unnamed("float", code_sym_variable, type_create_arithmetic(code_type_float));
     key->sym    = sym;
     hash_insert(float_table, key);
 

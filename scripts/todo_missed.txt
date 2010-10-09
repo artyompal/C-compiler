@@ -32,13 +32,6 @@ expressions.c:      TODO: type check and arithmetic transformations.
 expressions.c:      TODO: check types and probably insert a type cast.
 expressions.c:      FIXME: sizeof should return unsigned type.
 expressions.c:      TODO: support all possible type conversations
-parser.c:           TODO: fix this for structure declarations. */ aux_warning("empty declaration"); ;
-parser.c:           unimplemented_error("enum_specifier"); ;
-parser.c:           unimplemented_error("enum_specifier"); ;
-parser.c:           unimplemented_error("enum_specifier"); ;
-parser.c:           unimplemented_error("enumerator_list"); ;
-parser.c:           unimplemented_error("enumerator"); ;
-parser.c:           unimplemented_error("enumerator"); ;
 parser.c:           unimplemented_error("label"); ;
 parser.c:           unimplemented_error("switch-case"); ;
 parser.c:           unimplemented_error("switch-default"); ;
@@ -54,8 +47,6 @@ types.c:            unimplemented_error("unsupported type for overriding declara
 types.c:            unimplemented_error("type_add_abstract_unsized_array_node");
 types.c:            unimplemented_error("type_add_abstract_sized_array_node");
 types.c:            unimplemented_error("type_add_abstract_function_node");
-types.c:            TODO: support of incomplete structures
-types.c:            TODO: support of incomplete unions
 types.c:            TODO: better type handling - support of incomplete struct/union/enum, arrays and pointers are the same, etc
 types.c:            UNIMPLEMENTED_ASSERT("enums and incomplete structures/unions aren't supported yet");
 types.c:            UNIMPLEMENTED_ASSERT("unsupported type specifiers");

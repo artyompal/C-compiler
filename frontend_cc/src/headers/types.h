@@ -38,6 +38,7 @@ typedef enum data_type_code_decl {
     code_type_enum,
     code_type_incomplete_structure,
     code_type_incomplete_union,
+    code_type_incomplete_enum,
 
     code_type_count,
     code_type_count_of_arithmetic = code_type_pointer,
@@ -66,8 +67,8 @@ typedef struct data_type_decl {
         // code_type_pointer
         struct ptr_decl {
             data_type *     item_type;
-            BOOL            is_const:1;
-            BOOL            is_volatile:1;
+            BOOL            is_const;
+            BOOL            is_volatile;
         } ptr;
 
         // code_type_sized_array, code_type_unsized_array
@@ -81,6 +82,11 @@ typedef struct data_type_decl {
             symbol *        sym;
             fields_list     list;
         } struct_union;
+
+        // code_type_enum, code_type_incomplete_structure, code_type_incomplete_union, code_type_incomplete_enum,
+        struct enum_decl {
+            symbol *        sym;
+        } enum_or_incomplete;
 
         // code_type_function
         struct function_decl {
@@ -181,6 +187,10 @@ data_type *         type_create_pointer                 (void);
 data_type *         type_create_pointer_with_spec       (decl_specifier decl_spec);
 data_type *         type_create_pointer_to_type         (data_type *type);
 data_type *         type_create_pointer_with_spec_to_type(decl_specifier decl_spec, data_type *type);
+
+data_type *         type_declare_enumeration            (symbol *sym);
+data_type *         type_declare_incomplete_enumeration (symbol *sym);
+void                type_declare_enum_item              (symbol *sym, expression *value);
 
 
 #else

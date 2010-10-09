@@ -416,7 +416,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
         // remove nested variables (i.e. parameters of pointer-to-function variables)
         if (TYPE_IS_FUNCTION(sym->sym_type) || TYPE_IS_POINTER_TO_FUNCTION(sym->sym_type)) {
             if (TYPE_IS_FUNCTION(sym->sym_type)) {
-                sym->sym_code = sym_function;
+                sym->sym_code = code_sym_function;
             }
 
             _remove_function_params_from_symtable(sym->sym_type);
@@ -446,7 +446,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
 
                 unit_push_expression(expr);
             }
-        } else if (!_current_function && sym->sym_code != sym_function) {
+        } else if (!_current_function && sym->sym_code != code_sym_function) {
             x86data_declare_uninitialized_bytes(sym, type_calculate_sizeof(sym->sym_type));
         }
     }
@@ -473,7 +473,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     }
 
     // handling function type
-    sym->sym_code       = sym_function;
+    sym->sym_code       = code_sym_function;
     sym->sym_is_local   = FALSE;
 
     if (!TYPE_IS_FUNCTION(sym->sym_type)) {

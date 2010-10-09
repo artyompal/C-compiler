@@ -524,7 +524,7 @@ expression *expr_create_from_identifier(symbol *sym)
 {
     expression *res;
 
-    if (sym->sym_code == sym_unknown) {
+    if (sym->sym_code == code_sym_unknown) {
         aux_error("unknown identifier: '%s'", sym->sym_name);
         symbol_free(sym, TRUE);
     }

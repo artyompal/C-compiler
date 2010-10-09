@@ -19,7 +19,7 @@ typedef struct x86_operand_decl         x86_operand;
 typedef struct function_desc_decl {
     symbol *                    func_sym;                   // идентификатор функции
     expression *                func_body;                  // код функции в виде дерева выражений
-    BOOL                        func_is_static:1;           // флаги
+    BOOL                        func_is_static;             // флаги
     symbol_list                 func_locals;                // список локальных переменных функции
     parameter_list *            func_params;                // список формальных параметров функции
     x86_instruction *           func_binary_code;           // код функции в промежуточном представлении

@@ -21,7 +21,7 @@ typedef struct x86_pseudoreg_info_decl {
     x86_instruction *       reg_last_read;
     x86_register_status     reg_status;
     int                     reg_location;   // 0 - X86_TMP_REGISTERS_COUNT-1 for real register, tmp. variable id for swapped
-    BOOL                    reg_changes_value:1;
+    BOOL                    reg_changes_value;
 } x86_pseudoreg_info;
 
 

@@ -38,7 +38,7 @@
 #define MIN(A, B) ((A) < (B) ? (A) : (B))
 #define MAX(A, B) ((A) > (B) ? (A) : (B))
 
-typedef int BOOL;
+typedef char BOOL;
 
 #define TRUE 1
 #define FALSE 0
