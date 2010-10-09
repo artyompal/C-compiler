@@ -1,2 +1,2 @@
 
-system "..\\..\\tools\\gnu_flex\\bin\\flex.exe -o..\\src\\lexer.c -L lexer.l";
+system "..\\..\\tools\\gnu_flex\\bin\\flex.exe -o..\\src\\src\\lexer.c -L lexer.l";
