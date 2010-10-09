@@ -1721,12 +1721,12 @@ case 210:
     break;}
 case 211:
 {
-                for_postcondition = unit_extract_expressions_since(for_postcondition);
+                for_postcondition = unit_extract_slice(for_postcondition->expr_next);
             ;
     break;}
 case 212:
 {
-                unit_push_expressions(for_postcondition);
+                unit_insert_slice(for_postcondition);
                 unit_push_expression(yyvsp[-3].expr);
                 unit_push_jump(yyvsp[-6].label, NULL, TRUE);
                 unit_place_label(yyvsp[-4].label);

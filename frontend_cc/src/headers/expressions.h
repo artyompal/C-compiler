@@ -96,17 +96,17 @@ typedef struct arithm_decl {
     arithmetic_opcode   opcode;
     expression          *operand1;
     expression          *operand2;
-    int                 step;           // for increment/decrement
+    int                 step;               // for increment/decrement
 } expr_arithm;
 
 typedef struct expression_decl {
-    expression_code expr_code;          // see above
-    data_type *     expr_type;          // pointer to the root of types tree
-    BOOL            expr_lvalue;        // means that expression type is really a pointer to that type
-    int             expr_source_line;   // line numbers support
-    expression      *expr_next;         // linked list for comma expressions and function arguments
-    expression      *expr_parent;       // used for operands of arithmetic expressions to maintain tree structure
-    int             expr_complexity;    // used by code generator
+    expression_code expr_code;              // see above
+    data_type *     expr_type;              // pointer to the root of types tree
+    BOOL            expr_lvalue;            // means that expression type is really a pointer to that type
+    int             expr_source_line;       // line numbers support
+    expression      *expr_next, *expr_prev; // linked list for comma expressions and function arguments
+    expression      *expr_parent;           // used for operands of arithmetic expressions to maintain tree structure
+    int             expr_complexity;        // used by code generator
 
     union {
         // code_expr_int_constant

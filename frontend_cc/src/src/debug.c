@@ -198,6 +198,9 @@ static const char *_dump_bool(BOOL b)
     }
 }
 
+#define VALIDATE_STANDALONE_EXPR(EXPR, PARENT)  ((EXPR)->expr_next == NULL && (EXPR)->expr_prev == NULL && (EXPR)->expr_parent == (PARENT))
+#define VALIDATE_LINKED_EXPR(EXPR, PARENT)      ((!(EXPR)->expr_next || (EXPR)->expr_next->expr_prev == (EXPR)) && (EXPR)->expr_parent == (PARENT))
+
 static void _dump_expression(FILE *file, int align, const char *name, expression *expr)
 {
     char type[256];
@@ -239,9 +242,11 @@ static void _dump_expression(FILE *file, int align, const char *name, expression
         }
 
         _xml_tag_end_complex_open(file);
+        VALIDATE_STANDALONE_EXPR(expr->data.arithm.operand1, expr);
         _dump_expression(file, align + 2, "operand_1", expr->data.arithm.operand1);
 
         if (IS_BINARY_OP(expr->data.arithm.opcode)) {
+            VALIDATE_STANDALONE_EXPR(expr->data.arithm.operand2, expr);
             _dump_expression(file, align + 2, "operand_2", expr->data.arithm.operand2);
         }
 
@@ -255,6 +260,7 @@ static void _dump_expression(FILE *file, int align, const char *name, expression
 
         for (arg = expr->data.function_call.args->expr_first; arg; arg = arg->expr_next) {
             sprintf(buf, "func_argument_%d", i++);
+            VALIDATE_LINKED_EXPR(arg, expr);
             _dump_expression(file, align + 2, buf, arg);
         }
 
@@ -271,6 +277,7 @@ static void _dump_expression(FILE *file, int align, const char *name, expression
             _xml_attribute(file, "invert_condition", _dump_bool(expr->data.jump.invert_cond));
             _xml_tag_end_complex_open(file);
 
+            VALIDATE_STANDALONE_EXPR(expr->data.jump.condition, expr);
             _dump_expression(file, align + 2, "condition", expr->data.jump.condition);
             _xml_tag_close(file, align, name);
         }
@@ -285,6 +292,7 @@ static void _dump_expression(FILE *file, int align, const char *name, expression
         } else {
             _xml_tag_end_complex_open(file);
 
+            VALIDATE_STANDALONE_EXPR(expr->data.ret_value, expr);
             _dump_expression(file, align + 2, "retvalue", expr->data.ret_value);
             _xml_tag_close(file, align, name);
         }
@@ -373,6 +381,7 @@ static void _dump_functions(FILE *file)
         _xml_tag_simple_open(file, 6, "body");
 
         for (expr = func->func_body; expr; expr = expr = expr->expr_next) {
+            VALIDATE_LINKED_EXPR(expr, NULL);
             _dump_expression(file, 8, "expression", expr);
         }
 
