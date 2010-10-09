@@ -159,10 +159,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\debug.c"
-				>
-			</File>
-			<File
 				RelativePath=".\src\expressions.c"
 				>
 			</File>
@@ -210,6 +206,10 @@
 				RelativePath=".\src\unit.c"
 				>
 			</File>
+			<File
+				RelativePath=".\src\xml_dump.c"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -222,10 +222,6 @@
 			</File>
 			<File
 				RelativePath=".\headers\common.h"
-				>
-			</File>
-			<File
-				RelativePath=".\headers\debug.h"
 				>
 			</File>
 			<File
@@ -270,6 +266,10 @@
 			</File>
 			<File
 				RelativePath=".\headers\unit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\headers\xml_dump.h"
 				>
 			</File>
 		</Filter>

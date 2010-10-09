@@ -1,6 +1,6 @@
 
 #include "common.h"
-#include "debug.h"
+#include "xml_dump.h"
 #include "unit.h"
 #include "x86_data.h"
 #include "x86_text_output.h"
