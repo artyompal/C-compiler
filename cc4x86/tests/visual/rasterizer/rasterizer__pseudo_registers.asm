@@ -1050,7 +1050,7 @@ label0000:
 	and	reg23,255
 	mov	[ebp-40],reg23
 	cmp	dword ptr [ebp-40],0
-	je	label0001
+	je	label0002
 	fild	dword ptr [ebp-40]
 	fld	[___unnamed_float_3]
 	fdivp
@@ -1094,7 +1094,7 @@ label0000:
 	sal	reg84,8
 	add	reg84,[ebp-24]
 	mov	[reg80],reg84
-label0001:
+label0002:
 	fld	dword ptr [ebp+20]
 	fadd	dword ptr [ebp+28]
 	fstp	dword ptr [ebp+20]
@@ -1104,6 +1104,7 @@ label0001:
 	add	reg80,4
 	cmp	reg80,reg83
 	jle	label0000
+label0001:
 	x86instr_destroy_stack_frame	48
 	ret
 __rasterize_horiz_line endp	

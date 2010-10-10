@@ -503,15 +503,25 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
     int reg, regvar, *regs_arr[MAX_REGISTERS_PER_INSTR], regs_cnt, i;
     x86_instruction *instr2;
 
+    // если регистр где-то изменяется, его нельзя удалять
     reg     = instr->in_op1.data.reg;
     if (function->func_pseudoregs_map[reg].reg_changes_value) {
         return FALSE;
     }
 
+    // если второй операнд - не регистровая переменная, выходим
     regvar  = instr->in_op2.data.reg;
     if (regvar < function->func_start_of_regvars) {
         return FALSE;
     }
+
+    // если переменная меняет значение до конца жизни регистра либо туда возможны переходы, то нельзя удалять
+    for (instr2 = function->func_pseudoregs_map[reg].reg_first_write;
+        instr2 != function->func_pseudoregs_map[reg].reg_last_read; instr2 = instr2->in_next)
+            if (IS_INT_MUTABLE_INSTR(instr2->in_code) && instr2->in_op1.data.reg == instr->in_op2.data.reg
+                || instr2->in_code == x86instr_label) {
+                    return FALSE;
+                }
 
     instr2  = instr->in_next;
     bincode_erase_instruction(function, instr);

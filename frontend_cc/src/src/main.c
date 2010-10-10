@@ -18,6 +18,7 @@ struct option_decl {
     {"debug_disable_regalloc",  &option_debug_disable_regalloc,     "don't replace pseudo-registers with real registers"},
     {"debug_disable_basic_opt", &option_debug_disable_basic_opt,    "don't optimize well-known sequences after code generation"},
     {"optimize",                &option_enable_optimization,        "enables code optimization"},
+    {"debug_xml_dump",          &option_debug_xml_dump,             "dumps syntax tree as xml"},
     {"output_file_name",        0,                                  "lets to specify the name of the output file"},
     {NULL, NULL, NULL},
 };
@@ -83,7 +84,9 @@ static void compile_unit(const char *filename)
         aux_fatal_error("unrecoverable syntax error");
     }
 
-    debug_dump_unit(filename);
+    if (option_debug_xml_dump) {
+        debug_dump_unit(filename);
+    }
 
     if (!option_debug_disable_codegen && !aux_get_errors_count()) {
         unit_codegen();

@@ -182,13 +182,14 @@ static const char *_x86_instructions[] = {
 
     "cdq",
     NULL,   // movzx reg, al
-    "cmp",
-    "lea",
-    "test",
     "fucomip\tst,st(1)\n\tfstp\tst",
     "cld",
     "rep\tmovsb",
     "rep\tmovsd",
+
+    "cmp",
+    "lea",
+    "test",
     "imul",  // imul reg, reg/mem, const
     "xchg",
 

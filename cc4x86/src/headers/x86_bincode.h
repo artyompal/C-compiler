@@ -142,13 +142,14 @@ typedef enum x86_instruction_code_decl {
     // internally-generated instructions:
     x86instr_cdq,
     x86instr_movzx_al,
-    x86instr_int_cmp,
-    x86instr_lea,
-    x86instr_int_test,
     x86instr_float_cmp,
     x86instr_cld,
     x86instr_rep_movsb,
     x86instr_rep_movsd,
+
+    x86instr_int_cmp,       // mutable instructions
+    x86instr_lea,
+    x86instr_int_test,
     x86instr_imul_const,
     x86instr_int_xchg,
 
@@ -178,6 +179,7 @@ typedef struct x86_instruction_decl {
 #define IS_FLOAT_INSTR(INSTR)           ((INSTR) >= x86instr_float_ld && (INSTR) <= x86instr_float_ln_2)
 #define IS_JMP_INSTR(INSTR)             ((INSTR) >= x86instr_jmp && (INSTR) <= x86instr_ja)
 #define IS_CONSTANT_INSTR(INSTR)        ((INSTR) == x86instr_int_cmp || (INSTR) == x86instr_int_test)
+#define IS_INT_MUTABLE_INSTR(INSTR)     (IS_INT_INSTR(INSTR) || (INSTR) >= x86instr_int_cmp && (INSTR) <= x86instr_int_xchg)
 
 #define IS_FLOAT_STP_INSTR(INSTR)           ((INSTR) >= x86instr_float_stp && (INSTR) <= x86instr_float_stp_double)
 #define IS_FLOAT_UNARY_ARITHM_INSTR(INSTR)  ((INSTR) >= x86instr_float_identity && (INSTR) <= x86instr_float_ln_2)
