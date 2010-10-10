@@ -32,4 +32,5 @@ chdir("../cc4x86/tests/regressive/current_test") or die("chdir: $!");
 run_test("simple_test.c");
 run_test("goto.c");
 run_test("while.c");
+run_test("while_break.c");
 

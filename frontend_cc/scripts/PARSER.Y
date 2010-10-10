@@ -641,28 +641,29 @@ statement
             }
         | lxm_while '(' expression ')'
             {
-                $<label>$ = unit_push_label();  // continue label
+                $<label>$ = unit_push_label();          // place continue label
             }
             // two different actions aren't a mistake! we push two label tokens here.
             {
-                int break_label = unit_create_label_and_push_jump($3, TRUE);
+                int break_label = unit_create_label_and_push_jump($3, TRUE);    // create break label and conditional jump
                 $<label>$ = break_label;
                 unit_push_continue_break_targets($<label>5, break_label);
             }
             statement
             {
-                unit_push_jump($<label>5, NULL, FALSE);
-                unit_place_label($<label>6);
+                unit_push_jump($<label>5, NULL, FALSE); // do continue
+                unit_place_label($<label>6);            // place break label
                 unit_pop_continue_break_targets();
             }
         | lxm_do
             {
-                $<label>$ = unit_push_label();      // continue label
+                $<label>$ = unit_push_label();      // break label
             }
+            // two actions, two tokens
             {
-                int break_label = unit_create_label();    // break label
-                $<label>$ = break_label;
-                unit_push_continue_break_targets($<label>2, break_label);
+                int continue_label = unit_create_label();
+                $<label>$ = continue_label;
+                unit_push_continue_break_targets(continue_label, $<label>2);
             }
             statement lxm_while '(' expression ')' ';'
             {

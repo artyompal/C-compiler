@@ -244,8 +244,8 @@ static const short yyrline[] = { 0,
    569,   573,   574,   575,   580,   581,   584,   586,   590,   597,
    605,   608,   608,   611,   611,   614,   614,   617,   618,   620,
    622,   625,   627,   629,   633,   639,   642,   647,   653,   658,
-   662,   667,   673,   677,   682,   687,   692,   699,   701,   713,
-   714,   718,   719,   724,   725,   726,   727
+   663,   668,   674,   678,   683,   688,   693,   700,   702,   714,
+   715,   719,   720,   725,   726,   727,   728
 };
 #endif
 
@@ -1700,33 +1700,33 @@ case 206:
     break;}
 case 207:
 {
-                yyval.label = unit_push_label();  // continue label
+                yyval.label = unit_push_label();          // place continue label
             ;
     break;}
 case 208:
 {
-                int break_label = unit_create_label_and_push_jump(yyvsp[-2].expr, TRUE);
+                int break_label = unit_create_label_and_push_jump(yyvsp[-2].expr, TRUE);    // create break label and conditional jump
                 yyval.label = break_label;
                 unit_push_continue_break_targets(yyvsp[0].label, break_label);
             ;
     break;}
 case 209:
 {
-                unit_push_jump(yyvsp[-2].label, NULL, FALSE);
-                unit_place_label(yyvsp[-1].label);
+                unit_push_jump(yyvsp[-2].label, NULL, FALSE); // do continue
+                unit_place_label(yyvsp[-1].label);            // place break label
                 unit_pop_continue_break_targets();
             ;
     break;}
 case 210:
 {
-                yyval.label = unit_push_label();      // continue label
+                yyval.label = unit_push_label();      // break label
             ;
     break;}
 case 211:
 {
-                int break_label = unit_create_label();    // break label
-                yyval.label = break_label;
-                unit_push_continue_break_targets(yyvsp[0].label, break_label);
+                int continue_label = unit_create_label();
+                yyval.label = continue_label;
+                unit_push_continue_break_targets(continue_label, yyvsp[0].label);
             ;
     break;}
 case 212:
