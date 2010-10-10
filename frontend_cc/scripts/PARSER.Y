@@ -8,7 +8,7 @@
 #include "unit.h"
 #include "parser_actions.h"
 
-expression *for_postcondition;
+expression *for_postaction;
 
 %}
 
@@ -677,28 +677,39 @@ statement
             }
         | for_statement expression_statement
             {
-                $<label>$ = unit_create_label_and_push_jump($2, TRUE);
+                int continue_label = unit_push_label();                         // place continue label
+                int break_label = unit_create_label_and_push_jump($2, TRUE);    // create break label
+                $<label>$ = break_label;
+                unit_push_continue_break_targets(continue_label, break_label);
             }
             ')' statement
             {
                 unit_push_jump($<label>1, NULL, TRUE);
-                unit_place_label($<label>3);
+                unit_place_label($<label>3);                                    // place break label
             }
         | for_statement expression_statement
             {
-                $<label>$ = unit_create_label_and_push_jump($2, TRUE);
-                for_postcondition = unit_get_last_expression();
+                $<label>$ = unit_push_label();                                  // push restart label
+            }
+            {
+                $<label>$ = unit_create_label_and_push_jump($2, TRUE);          // create break label and conditional jump
             }
             expression ')'
             {
-                for_postcondition = unit_extract_slice(for_postcondition->expr_next);
+                int continue_label;
+
+                for_postaction  = $5;
+                continue_label  = unit_create_label();                          // create continue label
+                $<label>$       = continue_label;
+                unit_push_continue_break_targets(continue_label, $<label>4);
             }
             statement
             {
-                unit_insert_slice(for_postcondition);
-                unit_push_expression($4);
-                unit_push_jump($<label>1, NULL, TRUE);
-                unit_place_label($<label>3);
+                unit_pop_continue_break_targets();
+                unit_place_label($<label>7);                                    // place continue label
+                unit_push_expression(for_postaction);
+                unit_push_jump($<label>3, NULL, TRUE);                          // place jump to restart
+                unit_place_label($<label>4);                                    // place break label
             }
 
         | lxm_return ';'

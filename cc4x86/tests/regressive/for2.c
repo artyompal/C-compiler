@@ -1,6 +1,6 @@
 
 
-const char *test_name = "for.c";
+const char *test_name = "for2.c";
 
 extern int test()
 {
@@ -10,6 +10,6 @@ extern int test()
         if (i == 4) break;
         i++;
     }
-    
+
     return (i == 4 && j == 2) ? 0 : 1;
 }

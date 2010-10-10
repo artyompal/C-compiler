@@ -4,12 +4,12 @@ const char *test_name = "for.c";
 
 extern int test()
 {
-    int i, j = 0, k;
+    int i, j, k;
 
-    for (i = 0; i < 8; i++, j++) {
+    for (i = 0; i < 8; ) {
         if (i == 4) break;
         i++;
     }
-    
-    return (i == 4 && j == 2) ? 0 : 1;
+
+    return (i != 4);
 }

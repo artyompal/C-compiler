@@ -1436,9 +1436,10 @@ label0003:
 	mov	eax,[ebx+4]
 	mov	[ebp-16],eax
 label0005:
+label0006:
 	mov	eax,[ebp-16]
 	cmp	eax,[esi+4]
-	jge	label0006
+	jge	label0007
 	mov	eax,[ebp-16]
 	sub	eax,[ebx+4]
 	mov	ecx,[esi]
@@ -1562,9 +1563,10 @@ label0005:
 	push	dword ptr [ebp-8]
 	call	__rasterize_horiz_line__unordered
 	add	esp,36
+label0008:
 	inc	dword ptr [ebp-16]
-	jmp	label0005
-label0006:
+	jmp	label0006
+label0007:
 	mov	eax,[esi+4]
 	sub	eax,[ebx+4]
 	mov	ecx,[edi]
@@ -1649,10 +1651,11 @@ label0006:
 	mov	eax,1
 	add	eax,[esi+4]
 	mov	[ebp-16],eax
-label0007:
+label0009:
+label000a:
 	mov	eax,[ebp-16]
 	cmp	eax,[edi+4]
-	jge	label0008
+	jge	label000b
 	mov	eax,[ebp-16]
 	sub	eax,[esi+4]
 	mov	ecx,[edi]
@@ -1776,9 +1779,10 @@ label0007:
 	push	dword ptr [ebp-8]
 	call	__rasterize_horiz_line__unordered
 	add	esp,36
+label000c:
 	inc	dword ptr [ebp-16]
-	jmp	label0007
-label0008:
+	jmp	label000a
+label000b:
 	pop	ebx
 	pop	esi
 	pop	edi
@@ -1800,12 +1804,14 @@ __clip_on_plain proc
 	mov	ebx,[ebp+12]
 	add	ebx,24
 label0000:
+label0001:
 	mov	eax,[ebp+12]
 	imul	ecx,[eax+192],24
 	mov	eax,[ebp+12]
 	add	eax,ecx
 	cmp	ebx,eax
-	jge	label0001
+	jge	label0002
+	add	esi,24
 	push	dword ptr [ebp+16]
 	mov	eax,esi
 	push	eax
@@ -1836,7 +1842,7 @@ label0000:
 	fld	dword ptr [ebp-52]
 	fucomip	st,st(1)
 	fstp	st
-	jb	label0002
+	jb	label0004
 	mov	eax,[edi+192]
 	inc	dword ptr [edi+192]
 	imul	eax,24
@@ -1854,29 +1860,29 @@ label0000:
 	mov	edx,[esi+20]
 	mov	[ecx+16],eax
 	mov	[ecx+20],edx
-label0002:
-	fldz
-	fld	dword ptr [ebp-52]
-	fucomip	st,st(1)
-	fstp	st
-	jbe	label0005
-	fldz
-	fld	dword ptr [ebp-56]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0004
-label0005:
-	fldz
-	fld	dword ptr [ebp-56]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0003
-	fldz
-	fld	dword ptr [ebp-52]
-	fucomip	st,st(1)
-	fstp	st
-	jae	label0003
 label0004:
+	fldz
+	fld	dword ptr [ebp-52]
+	fucomip	st,st(1)
+	fstp	st
+	jbe	label0007
+	fldz
+	fld	dword ptr [ebp-56]
+	fucomip	st,st(1)
+	fstp	st
+	jb	label0006
+label0007:
+	fldz
+	fld	dword ptr [ebp-56]
+	fucomip	st,st(1)
+	fstp	st
+	jb	label0005
+	fldz
+	fld	dword ptr [ebp-52]
+	fucomip	st,st(1)
+	fstp	st
+	jae	label0005
+label0006:
 	mov	eax,esi
 	push	eax
 	push	dword ptr [ebp+16]
@@ -1953,11 +1959,11 @@ label0004:
 	call	_vec2f_add
 	add	esp,12
 	inc	dword ptr [edi+192]
+label0005:
 label0003:
-	add	esi,24
 	add	ebx,24
-	jmp	label0000
-label0001:
+	jmp	label0001
+label0002:
 	mov	eax,[edi+192]
 	inc	dword ptr [edi+192]
 	imul	eax,24
@@ -2127,8 +2133,9 @@ label0000:
 label0001:
 	mov	esi,0
 label0002:
+label0003:
 	cmp	esi,[edi+192]
-	jge	label0003
+	jge	label0004
 	mov	eax,edi
 	imul	ecx,esi,24
 	add	eax,ecx
@@ -2153,15 +2160,17 @@ label0002:
 	mov	ebx,[ecx+4]
 	mov	[eax],edx
 	mov	[eax+4],ebx
+label0005:
 	inc	esi
-	jmp	label0002
-label0003:
-	mov	esi,2
+	jmp	label0003
 label0004:
+	mov	esi,2
+label0006:
+label0007:
 	mov	eax,[edi+192]
 	dec	eax
 	cmp	esi,eax
-	jge	label0005
+	jge	label0008
 	lea	eax,[ebp-132]
 	mov	ecx,esi
 	sal	ecx,4
@@ -2177,9 +2186,10 @@ label0004:
 	push	eax
 	call	__rasterize_triangle_2i
 	add	esp,12
+label0009:
 	inc	esi
-	jmp	label0004
-label0005:
+	jmp	label0007
+label0008:
 	pop	ebx
 	pop	esi
 	pop	edi
