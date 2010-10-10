@@ -97,9 +97,19 @@ void x86data_declare_initialized_float(symbol *sym, double value)
     text_output_declare_initialized_float(sym, value);
 }
 
-void x86data_declare_initialized_string(symbol *sym, const char *value, int length)
+void x86data_declare_initialized_string(symbol *sym, const char *value)
 {
     _ensure_data_section();
-    text_output_declare_initialized_string(sym, value, length);
+    text_output_declare_initialized_string(sym, value);
+}
+
+void x86data_declare_ptr_to_initialized_string(symbol *sym, const char *value)
+{
+    symbol *rel_sym;
+
+    _ensure_data_section();
+    rel_sym = symbol_create_unnamed("string", code_sym_variable, sym->sym_type);
+    text_output_declare_initialized_string(rel_sym, value);
+    text_output_declare_ptr_to_relocable(sym, rel_sym);
 }
 

@@ -79,6 +79,13 @@ static data_type *_type_create(data_type_code type_code)
     return res;
 }
 
+data_type *type_create_string()
+{
+    data_type *res  = _type_create(code_type_unsized_array);
+    res->data.array.item_type = type_create_arithmetic(code_type_char);
+    return res;
+}
+
 symbol *type_add_sized_array_node(symbol *sym, expression *size)
 {
     data_type *res;
@@ -631,7 +638,7 @@ data_type *type_declare_incomplete_enumeration(symbol *sym)
 
 void type_declare_enum_item(symbol *sym, expression *value)
 {
-    sym->sym_code   = code_sym_enum;
+    sym->sym_code   = code_sym_type;
 
     if (!value)
         sym->sym_value = last_enum_item++;

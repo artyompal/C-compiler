@@ -23,5 +23,6 @@ run("cc4x86.exe --optimize ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 
 # assemble the test
 chdir("../../tests/visual/rasterizer") or die("chdir: $!");
-system("c:\\bin\\msvs8\\VC\\bin\\ml /Fl rasterizer.asm");
+system("c:\\bin\\msvs8\\VC\\bin\\ml /Fl /nologo rasterizer.asm");
 
+chdir("../../../../scripts") or die("chdir: $!");

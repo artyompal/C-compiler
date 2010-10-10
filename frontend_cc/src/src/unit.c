@@ -14,9 +14,14 @@ static function_desc *_curr_func            = NULL;
 
 static x86_instruction *_last_instruction   = NULL;
 
+#define INVALID_LABEL (-1)
+
+static int last_break_target                = INVALID_LABEL;
+static int last_continue_target             = INVALID_LABEL;
+
 
 //
-//  Handling expressions.
+// Добавление выражений.
 //
 
 void unit_push_expression(expression *expr)
@@ -45,6 +50,57 @@ void unit_push_return(expression *result)
     unit_push_expression(expr_create_return(result));
 }
 
+function_desc *unit_get_functions_list(void)
+{
+    return _first_function;
+}
+
+
+symbol *unit_create_temporary_variable(data_type *type)
+{
+    symbol *tmp         = symbol_create_temporary(type);
+    tmp->sym_is_local   = TRUE;
+
+    ASSERT(_curr_func);
+
+    if (_curr_func->func_locals.list_last) {
+        _curr_func->func_locals.list_last->sym_next  = tmp;
+        _curr_func->func_locals.list_last            = tmp;
+    } else {
+        _curr_func->func_locals.list_first           = tmp;
+        _curr_func->func_locals.list_last            = tmp;
+    }
+
+    return tmp;
+}
+
+
+static void _unit_insert_expression_before(expression *expr, expression *position)
+{
+    ASSERT(_curr_func);
+
+    expr->expr_next     = position;
+    position->expr_prev = expr;
+
+    if (_curr_func->func_body == position) {
+        _curr_func->func_body    = expr;
+    }
+}
+
+static void _unit_insert_jump_before(int dest, expression *condition, BOOL invert_condition, expression *position)
+{
+    _unit_insert_expression_before(expr_create_jump(dest, condition, invert_condition), position);
+}
+
+static void _unit_insert_label_before(int label, expression *position)
+{
+    _unit_insert_expression_before(expr_create_label(label), position);
+}
+
+
+//
+// Поддержка циклов.
+//
 
 int unit_create_label(function_desc *function)
 {
@@ -75,6 +131,76 @@ void unit_place_label(int label)
     unit_push_expression(expr_create_label(label));
 }
 
+
+//
+// Поддержка goto.
+//
+
+void unit_push_named_label(symbol *label_name)
+{
+    int label = unit_create_label(_curr_func);
+    unit_place_label(label);
+
+    label_name->sym_code    = code_sym_label;
+    label_name->sym_value   = label;
+}
+
+void unit_push_jump_to_named_label(symbol *label_name)
+{
+    unit_push_jump(label_name->sym_value, NULL, FALSE);
+}
+
+
+//
+// Поддержка break/continue.
+//
+
+void unit_push_continue()
+{
+    if (last_continue_target != INVALID_LABEL)
+        unit_push_jump(last_continue_target, NULL, FALSE);
+    else
+        aux_error("continue outside a loop");
+}
+
+void unit_push_break()
+{
+    if (last_break_target != INVALID_LABEL)
+        unit_push_jump(last_break_target, NULL, FALSE);
+    else
+        aux_error("break outside a loop or switch");
+}
+
+void unit_push_continue_break_target(int label)
+{
+// тут надо поддерживать стек break/continue
+}
+
+
+//
+// Поддержка switch/case/default.
+//
+
+void unit_push_case_label(expression *value)
+{
+// тут надо генерировать условный переход
+}
+
+void unit_push_default_stmt()
+{
+    // тут надо создавать метку, на которую генерировать переход в конце оператора switch
+    //return unit_create_label(_curr_func);
+}
+
+void unit_push_switch_stmt(expression *value)
+{
+// тут надо класть в стек break и вычислять выражение во временную переменную
+}
+
+
+//
+// Поддержка цикла for (вырезание третьей инструкции и вставка её после тела цикла).
+//
 
 expression *unit_get_last_expression(void)
 {
@@ -123,54 +249,6 @@ void unit_insert_slice(expression *list)
     }
 
     _curr_func->func_body_end   = end;
-}
-
-
-function_desc *unit_get_functions_list(void)
-{
-    return _first_function;
-}
-
-
-symbol *unit_create_temporary_variable(data_type *type)
-{
-    symbol *tmp         = symbol_create_temporary(type);
-    tmp->sym_is_local   = TRUE;
-
-    ASSERT(_curr_func);
-
-    if (_curr_func->func_locals.list_last) {
-        _curr_func->func_locals.list_last->sym_next  = tmp;
-        _curr_func->func_locals.list_last            = tmp;
-    } else {
-        _curr_func->func_locals.list_first           = tmp;
-        _curr_func->func_locals.list_last            = tmp;
-    }
-
-    return tmp;
-}
-
-
-static void _unit_insert_expression_before(expression *expr, expression *position)
-{
-    ASSERT(_curr_func);
-
-    expr->expr_next     = position;
-    position->expr_prev = expr;
-
-    if (_curr_func->func_body == position) {
-        _curr_func->func_body    = expr;
-    }
-}
-
-static void _unit_insert_jump_before(int dest, expression *condition, BOOL invert_condition, expression *position)
-{
-    _unit_insert_expression_before(expr_create_jump(dest, condition, invert_condition), position);
-}
-
-static void _unit_insert_label_before(int label, expression *position)
-{
-    _unit_insert_expression_before(expr_create_label(label), position);
 }
 
 
@@ -438,8 +516,17 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
                     x86data_declare_initialized_int(sym, val->data.int_const);
                 } else if (val->expr_code == code_expr_float_constant) {
                     x86data_declare_initialized_float(sym, val->data.float_const.val);
+                } else if (val->expr_code == code_expr_string) {
+                    if (sym->sym_type->type_code == code_type_unsized_array
+                        && sym->sym_type->data.array.item_type->type_code == code_type_char)
+                            x86data_declare_initialized_string(sym, val->data.str);
+                    else if (sym->sym_type->type_code == code_type_pointer
+                        && sym->sym_type->data.ptr.item_type->type_code == code_type_char)
+                            x86data_declare_ptr_to_initialized_string(sym, val->data.str);
+                    else
+                        aux_error("string literal can only be used to initialize char * or char[]");
                 } else {
-                    aux_error("initializer of a global variable must be constant expression");
+                    aux_error("initializer of global variable must be a constant expression");
                 }
             } else {
                 expression *id      = expr_create_from_identifier(sym);
@@ -586,7 +673,7 @@ void unit_after_global_declaration(void)
 
 
 //
-//  Code generation.
+//  Кодогенерация.
 //
 
 static void _unit_output_function_code(function_desc *func)
@@ -633,10 +720,6 @@ void unit_codegen(void)
     }
 }
 
-
-//
-//  Maintaining instructions list.
-//
 
 void unit_push_nullary_instruction(x86_instruction_code code)
 {

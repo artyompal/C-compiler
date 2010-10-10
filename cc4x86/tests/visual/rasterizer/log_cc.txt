@@ -1,0 +1,7 @@
+10.10.2010 17:30:22.375 common: starting
+10.10.2010 17:30:22.390 ddraw: init fullscreen
+10.10.2010 17:30:22.421 ddraw: initialized 1280x1024, 32 bit (pitch 5120 bytes)
+10.10.2010 17:30:22.421 common: running main loop
+10.10.2010 17:30:29.859 common: main loop ended
+10.10.2010 17:30:29.859 ddraw: termination
+10.10.2010 17:30:29.906 common: quiting

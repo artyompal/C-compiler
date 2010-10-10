@@ -17,19 +17,19 @@ typedef enum symbol_code_decl {
     code_sym_field,
     code_sym_type,
     code_sym_function,
-    code_sym_enum,
+    code_sym_label,
 } symbol_code;
 
 typedef struct symbol_decl {
     const char *        sym_name;           // текстовое имя идентификатора
-    symbol_code         sym_code;           // класс идентификатора - по идее, должны быть независимые неймспейсы
+    symbol_code         sym_code;           // класс идентификатора. TODO: независимые неймспейсы для меток/мемберов/тайпдефов
     data_type *         sym_type;           // тип символа
-    BOOL                sym_is_local;       // TRUE для локальных и формальных параметров, FALSE для глобальнях
+    BOOL                sym_is_local;       // TRUE для локальных и формальных параметров, FALSE для глобальных
     int                 sym_offset;         // смещение в стеке - используется кодогенератором
     initializer *       sym_init;           // инициализатор - используется парсером
     int                 sym_usage_count;    // счётчик использования в коде - используется кодогенератором
     struct symbol_decl *sym_next;           // указатель на следующий элемент, для списков
-    long                sym_value;          // значение - используется только для enum
+    long                sym_value;          // значение - используется для enum и для label
 } symbol;
 
 typedef struct symbol_list_decl {

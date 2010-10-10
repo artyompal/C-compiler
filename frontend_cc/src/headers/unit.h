@@ -34,6 +34,7 @@ typedef struct function_desc_decl {
 } function_desc;
 
 
+// поддержка объ€влений функций и переменных
 function_desc * unit_get_functions_list             (void);
 symbol *        unit_create_temporary_variable      (data_type *type);
 void            unit_handle_variable_declarations   (decl_specifier decl_spec, symbol_list *symbols);
@@ -41,6 +42,7 @@ void            unit_handle_function_prototype      (decl_specifier *spec, symbo
 void            unit_handle_function_body           (symbol *sym);
 void            unit_after_global_declaration       (void);
 
+// поддержка циклов
 void            unit_push_return                    (expression *result);
 void            unit_push_expression                (expression *expr);
 int             unit_create_label                   (function_desc *function);
@@ -49,12 +51,27 @@ void            unit_push_jump                      (int dest, expression *condi
 int             unit_create_label_and_push_jump     (expression *condition, BOOL invert_condition);
 void            unit_place_label                    (int label);
 
+// поддержка goto
+void            unit_push_named_label               (symbol *label);
+void            unit_push_jump_to_named_label       (symbol *label);
+
+// поддержка break/continue
+void            unit_push_continue                  ();
+void            unit_push_break                     ();
+void            unit_push_continue_break_target     (int label);
+
+// поддержка switch/case/default
+void            unit_push_case_label                (expression *value);
+void            unit_push_default_stmt              ();
+void            unit_push_switch_stmt               (expression *value);
+
+// поддержка цикла for (вырезание третьей инструкции и вставка еЄ после тела цикла)
 expression *    unit_get_last_expression            (void);
 expression *    unit_extract_slice                  (expression *expr);
 void            unit_insert_slice                   (expression *list);
 
+// поддержка кодогенератора
 void            unit_codegen                        (void);
-
 void            unit_push_nullary_instruction       (x86_instruction_code code);
 void            unit_push_unary_instruction         (x86_instruction_code code, x86_operand *op);
 void            unit_push_binary_instruction        (x86_instruction_code code, x86_operand *op1, x86_operand *op2);

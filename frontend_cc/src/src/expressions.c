@@ -552,6 +552,14 @@ expression *expr_create_from_float(double val, data_type *type)
     return res;
 }
 
+expression *expr_create_from_string(char *str)
+{
+    expression *res    = _expr_create(code_expr_string, type_create_string());
+
+    res->data.str = str;
+    return res;
+}
+
 
 expression *expr_create_jump(int destination, expression *condition, BOOL invert_condition)
 {

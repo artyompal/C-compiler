@@ -10,7 +10,7 @@ my $item;
 sub parse {
 	my ($name, $filename) = @_;
 
-	return unless ($name !~ /common\.h/);
+	return unless ($name !~ /common\.[hc]/);
 
     open(FILE, $name) or return;
     while (<FILE>) {

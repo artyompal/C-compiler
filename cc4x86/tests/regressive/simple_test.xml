@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unit>
+  <general>
+    <source_module>..\simple_test.c</source_module>
+  </general>
+  <functions_list>
+    <function>
+      <name>test</name>
+      <parameters>
+      </parameters>
+      <local_variables>
+        <variable name="a" type="int"/>
+        <variable name="b" type="int"/>
+        <variable name="res" type="int"/>
+      </local_variables>
+      <body>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="3" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="res"/>
+          <operand_2 type="int" lvalue="no" complexity="2" code="mul">
+            <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+            <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+          </operand_2>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0000" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="2" code="equal">
+            <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="res"/>
+            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="4"/>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="return" retvalue="void"/>
+      </body>
+    </function>
+  </functions_list>
+</unit>

@@ -602,20 +602,24 @@ for_statement
         ;
 
 statement
-        : lxm_identifier ':' statement
-            { aux_unimplemented_error("label"); }
-        | lxm_case constant_expression ':' statement
-            { aux_unimplemented_error("switch-case"); }
-        | lxm_default ':' statement
-            { aux_unimplemented_error("switch-default"); }
-        | lxm_switch '(' expression ')' statement
-            { aux_unimplemented_error("switch"); }
+        : lxm_identifier ':'
+            { unit_push_named_label($1); }
+          statement
+        | lxm_case constant_expression ':'
+            { unit_push_case_label($2); }
+          statement
+        | lxm_default ':'
+            { unit_push_default_stmt(); }
+          statement
+        | lxm_switch '(' expression ')'
+            { unit_push_switch_stmt($3); }
+          statement
         | lxm_goto lxm_identifier ';'
-            { aux_unimplemented_error("goto"); }
+            { unit_push_jump_to_named_label($2); }
         | lxm_continue ';'
-            { aux_unimplemented_error("continue"); }
+            { unit_push_continue(); }
         | lxm_break ';'
-            { aux_unimplemented_error("break"); }
+            { unit_push_break(); }
 
         | expression_statement
             { unit_push_expression($1); }
@@ -638,7 +642,7 @@ statement
             {
                 $<label>$ = unit_push_label();
             }
-            // two different actions aren't a mistake!
+            // two different actions aren't a mistake! we push two label tokens here.
             {
                 $<label>$ = unit_create_label_and_push_jump($3, TRUE);
             }

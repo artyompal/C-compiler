@@ -75,7 +75,7 @@ typedef enum expression_code_decl {
     code_expr_return,
     code_expr_arithmetic,
     code_expr_label,
-    code_expr_count,
+    code_expr_string,
 } expression_code;
 
 
@@ -141,6 +141,9 @@ typedef struct expression_decl {
 
         // code_expr_label
         int                 label;
+
+        // code_expr_string
+        char                *str;
     } data;
 } expression;
 
@@ -170,6 +173,7 @@ expression *    expr_create_ternary             (expression *e1, expression *e2,
 expression *    expr_create_from_identifier     (symbol *sym);
 expression *    expr_create_from_integer        (long val, data_type *type);
 expression *    expr_create_from_float          (double val, data_type *type);
+expression *    expr_create_from_string         (char *str);
 
 expression *    expr_create_jump                (int destination, expression *condition, BOOL invert_condition);
 expression *    expr_create_return              (expression *result);

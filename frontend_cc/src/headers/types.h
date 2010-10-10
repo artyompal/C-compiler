@@ -148,6 +148,7 @@ typedef struct decl_specifier_decl {
 
 
 data_type *         type_create_arithmetic              (data_type_code code);
+data_type *         type_create_string                  ();
 
 symbol *            type_add_sized_array_node           (symbol *sym, expression *size);
 symbol *            type_add_unsized_array_node         (symbol *sym);

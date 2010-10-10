@@ -191,38 +191,42 @@ rule 187  expression_statement -> ';'
 rule 188  expression_statement -> expression ';'
 rule 189  if_statement -> lxm_if '(' expression ')'
 rule 190  for_statement -> lxm_for '(' expression_statement
-rule 191  statement -> lxm_identifier ':' statement
-rule 192  statement -> lxm_case constant_expression ':' statement
-rule 193  statement -> lxm_default ':' statement
-rule 194  statement -> lxm_switch '(' expression ')' statement
-rule 195  statement -> lxm_goto lxm_identifier ';'
-rule 196  statement -> lxm_continue ';'
-rule 197  statement -> lxm_break ';'
-rule 198  statement -> expression_statement
-rule 199  statement -> compound_statement
-rule 200  statement -> if_statement statement
-rule 201  @2 ->		/* empty */
-rule 202  statement -> if_statement statement lxm_else @2 statement
-rule 203  @3 ->		/* empty */
-rule 204  @4 ->		/* empty */
-rule 205  statement -> lxm_while '(' expression ')' @3 @4 statement
-rule 206  @5 ->		/* empty */
-rule 207  statement -> lxm_do @5 statement lxm_while '(' expression ')' ';'
-rule 208  @6 ->		/* empty */
-rule 209  statement -> for_statement expression_statement @6 ')' statement
-rule 210  @7 ->		/* empty */
-rule 211  @8 ->		/* empty */
-rule 212  statement -> for_statement expression_statement @7 expression ')' @8 statement
-rule 213  statement -> lxm_return ';'
-rule 214  statement -> lxm_return expression ';'
-rule 215  translation_unit -> external_declaration
-rule 216  translation_unit -> translation_unit external_declaration
-rule 217  external_declaration -> function_definition
-rule 218  external_declaration -> declaration
-rule 219  @9 ->		/* empty */
-rule 220  function_definition -> declaration_specifiers declarator @9 compound_statement
-rule 221  @10 ->		/* empty */
-rule 222  function_definition -> declarator @10 compound_statement
+rule 191  @2 ->		/* empty */
+rule 192  statement -> lxm_identifier ':' @2 statement
+rule 193  @3 ->		/* empty */
+rule 194  statement -> lxm_case constant_expression ':' @3 statement
+rule 195  @4 ->		/* empty */
+rule 196  statement -> lxm_default ':' @4 statement
+rule 197  @5 ->		/* empty */
+rule 198  statement -> lxm_switch '(' expression ')' @5 statement
+rule 199  statement -> lxm_goto lxm_identifier ';'
+rule 200  statement -> lxm_continue ';'
+rule 201  statement -> lxm_break ';'
+rule 202  statement -> expression_statement
+rule 203  statement -> compound_statement
+rule 204  statement -> if_statement statement
+rule 205  @6 ->		/* empty */
+rule 206  statement -> if_statement statement lxm_else @6 statement
+rule 207  @7 ->		/* empty */
+rule 208  @8 ->		/* empty */
+rule 209  statement -> lxm_while '(' expression ')' @7 @8 statement
+rule 210  @9 ->		/* empty */
+rule 211  statement -> lxm_do @9 statement lxm_while '(' expression ')' ';'
+rule 212  @10 ->		/* empty */
+rule 213  statement -> for_statement expression_statement @10 ')' statement
+rule 214  @11 ->		/* empty */
+rule 215  @12 ->		/* empty */
+rule 216  statement -> for_statement expression_statement @11 expression ')' @12 statement
+rule 217  statement -> lxm_return ';'
+rule 218  statement -> lxm_return expression ';'
+rule 219  translation_unit -> external_declaration
+rule 220  translation_unit -> translation_unit external_declaration
+rule 221  external_declaration -> function_definition
+rule 222  external_declaration -> declaration
+rule 223  @13 ->		/* empty */
+rule 224  function_definition -> declaration_specifiers declarator @13 compound_statement
+rule 225  @14 ->		/* empty */
+rule 226  function_definition -> declarator @14 compound_statement
 
 Terminals, with rules where they appear
 
@@ -231,17 +235,17 @@ $ (-1)
 '%' (37) 31
 '&' (38) 20 47
 '(' (40) 4 11 12 19 27 134 138 139 140 159 166 167 168 169 170 171
-    189 190 194 205 207
+    189 190 198 209 211
 ')' (41) 4 11 12 19 27 134 138 139 140 159 166 167 168 169 170 171
-    189 194 205 207 209 212
+    189 198 209 211 213 216
 '*' (42) 21 29 141 142 143 144
 '+' (43) 22 33
 ',' (44) 14 71 116 121 128 148 150 174 176
 '-' (45) 23 34
 '.' (46) 9
 '/' (47) 30
-':' (58) 57 118 119 191 192 193
-';' (59) 73 74 75 113 114 179 187 188 195 196 197 207 213 214
+':' (58) 57 118 119 192 194 196
+';' (59) 73 74 75 113 114 179 187 188 199 200 201 211 217 218
 '<' (60) 39
 '=' (61) 59 123 130
 '>' (62) 40
@@ -254,8 +258,8 @@ $ (-1)
 '}' (125) 99 100 101 102 124 125 173 174 182 183 184
 '~' (126) 24
 error (256) 75 114 136 139 162 165 168 171 179 184
-lxm_identifier (257) 1 9 10 99 100 103 104 125 126 129 130 133 191
-    195
+lxm_identifier (257) 1 9 10 99 100 103 104 125 126 129 130 133 192
+    199
 lxm_typedef_name (258) 98
 lxm_constant (259) 2
 lxm_string_literal (260) 3
@@ -282,37 +286,37 @@ lxm_and_assign (280) 67
 lxm_xor_assign (281) 68
 lxm_or_assign (282) 69
 lxm_auto (283) 85
-lxm_break (284) 197
-lxm_case (285) 192
+lxm_break (284) 201
+lxm_case (285) 194
 lxm_char (286) 88
 lxm_const (287) 107
-lxm_continue (288) 196
-lxm_default (289) 193
-lxm_do (290) 207
+lxm_continue (288) 200
+lxm_default (289) 196
+lxm_do (290) 211
 lxm_double (291) 93
-lxm_else (292) 202
+lxm_else (292) 206
 lxm_enum (293) 124 125 126
 lxm_extern (294) 83
 lxm_float (295) 92
 lxm_for (296) 190
-lxm_goto (297) 195
+lxm_goto (297) 199
 lxm_if (298) 189
 lxm_int (299) 90
 lxm_long (300) 91
 lxm_register (301) 86
-lxm_return (302) 213 214
+lxm_return (302) 217 218
 lxm_short (303) 89
 lxm_signed (304) 94
 lxm_sizeof (305) 18 19
 lxm_static (306) 84
 lxm_struct (307) 99 101 103
-lxm_switch (308) 194
+lxm_switch (308) 198
 lxm_typedef (309) 82
 lxm_union (310) 100 102 104
 lxm_unsigned (311) 95
 lxm_void (312) 87
 lxm_volatile (313) 108
-lxm_while (314) 205 207
+lxm_while (314) 209 211
 
 Nonterminals, with rules where they appear
 
@@ -353,14 +357,14 @@ assignment_expression (101)
     on left: 58 59 60 61 62 63 64 65 66 67 68 69, on right: 13 14 59
     60 61 62 63 64 65 66 67 68 69 70 71 172
 expression (102)
-    on left: 70 71, on right: 4 8 57 71 188 189 194 205 207 212 214
+    on left: 70 71, on right: 4 8 57 71 188 189 198 209 211 216 218
 constant_expression (103)
-    on left: 72, on right: 118 119 130 135 161 164 192
+    on left: 72, on right: 118 119 130 135 161 164 194
 declaration (104)
-    on left: 73 74 75, on right: 177 218
+    on left: 73 74 75, on right: 177 222
 declaration_specifiers (105)
     on left: 76 77 78 79 80 81, on right: 73 74 75 77 79 81 151 152
-    153 220
+    153 224
 storage_class_specifier (106)
     on left: 82 83 84 85 86, on right: 76 77
 type_specifier (107)
@@ -391,7 +395,7 @@ enumerator_list (118)
 enumerator (119)
     on left: 129 130, on right: 127 128
 declarator (120)
-    on left: 131 132, on right: 117 119 122 123 134 151 220 222
+    on left: 131 132, on right: 117 119 122 123 134 151 224 226
 direct_declarator (121)
     on left: 133 134 135 136 137 138 139 140, on right: 131 132 135
     136 137 138 139 140
@@ -423,43 +427,51 @@ declaration_or_statement_list (133)
 compound_statement_rest (134)
     on left: 182 183 184, on right: 186
 compound_statement (135)
-    on left: 186, on right: 199 220 222
+    on left: 186, on right: 203 224 226
 @1 (136)
     on left: 185, on right: 186
 expression_statement (137)
-    on left: 187 188, on right: 190 198 209 212
+    on left: 187 188, on right: 190 202 213 216
 if_statement (138)
-    on left: 189, on right: 200 202
+    on left: 189, on right: 204 206
 for_statement (139)
-    on left: 190, on right: 209 212
+    on left: 190, on right: 213 216
 statement (140)
-    on left: 191 192 193 194 195 196 197 198 199 200 202 205 207 209
-    212 213 214, on right: 178 191 192 193 194 200 202 205 207 209
-    212
+    on left: 192 194 196 198 199 200 201 202 203 204 206 209 211 213
+    216 217 218, on right: 178 192 194 196 198 204 206 209 211 213
+    216
 @2 (141)
-    on left: 201, on right: 202
+    on left: 191, on right: 192
 @3 (142)
-    on left: 203, on right: 205
+    on left: 193, on right: 194
 @4 (143)
-    on left: 204, on right: 205
+    on left: 195, on right: 196
 @5 (144)
-    on left: 206, on right: 207
+    on left: 197, on right: 198
 @6 (145)
-    on left: 208, on right: 209
+    on left: 205, on right: 206
 @7 (146)
-    on left: 210, on right: 212
+    on left: 207, on right: 209
 @8 (147)
-    on left: 211, on right: 212
-translation_unit (148)
-    on left: 215 216, on right: 216
-external_declaration (149)
-    on left: 217 218, on right: 215 216
-function_definition (150)
-    on left: 220 222, on right: 217
-@9 (151)
-    on left: 219, on right: 220
-@10 (152)
-    on left: 221, on right: 222
+    on left: 208, on right: 209
+@9 (148)
+    on left: 210, on right: 211
+@10 (149)
+    on left: 212, on right: 213
+@11 (150)
+    on left: 214, on right: 216
+@12 (151)
+    on left: 215, on right: 216
+translation_unit (152)
+    on left: 219 220, on right: 220
+external_declaration (153)
+    on left: 221 222, on right: 219 220
+function_definition (154)
+    on left: 224 226, on right: 221
+@13 (155)
+    on left: 223, on right: 224
+@14 (156)
+    on left: 225, on right: 226
 
 
 state 0
@@ -716,9 +728,9 @@ state 23
 
 state 24
 
-    external_declaration  ->  declaration .   (rule 218)
+    external_declaration  ->  declaration .   (rule 222)
 
-    $default	reduce using rule 218 (external_declaration)
+    $default	reduce using rule 222 (external_declaration)
 
 
 
@@ -730,7 +742,7 @@ state 25
     declaration_specifiers  ->  declaration_specifiers . storage_class_specifier   (rule 77)
     declaration_specifiers  ->  declaration_specifiers . type_specifier   (rule 79)
     declaration_specifiers  ->  declaration_specifiers . type_qualifier   (rule 81)
-    function_definition  ->  declaration_specifiers . declarator @9 compound_statement   (rule 220)
+    function_definition  ->  declaration_specifiers . declarator @13 compound_statement   (rule 224)
 
     error	shift, and go to state 47
     lxm_identifier	shift, and go to state 1
@@ -813,11 +825,11 @@ state 30
 
 state 31
 
-    function_definition  ->  declarator . @10 compound_statement   (rule 222)
+    function_definition  ->  declarator . @14 compound_statement   (rule 226)
 
-    $default	reduce using rule 221 (@10)
+    $default	reduce using rule 225 (@14)
 
-    @10 	go to state 55
+    @14 	go to state 55
 
 
 
@@ -851,9 +863,9 @@ state 33
 
 state 34
 
-    translation_unit  ->  translation_unit . external_declaration   (rule 216)
+    translation_unit  ->  translation_unit . external_declaration   (rule 220)
 
-    $   	go to state 384
+    $   	go to state 388
     lxm_identifier	shift, and go to state 1
     lxm_typedef_name	shift, and go to state 2
     lxm_auto	shift, and go to state 3
@@ -895,17 +907,17 @@ state 34
 
 state 35
 
-    translation_unit  ->  external_declaration .   (rule 215)
+    translation_unit  ->  external_declaration .   (rule 219)
 
-    $default	reduce using rule 215 (translation_unit)
+    $default	reduce using rule 219 (translation_unit)
 
 
 
 state 36
 
-    external_declaration  ->  function_definition .   (rule 217)
+    external_declaration  ->  function_definition .   (rule 221)
 
-    $default	reduce using rule 217 (external_declaration)
+    $default	reduce using rule 221 (external_declaration)
 
 
 
@@ -1118,20 +1130,20 @@ state 54
 
     init_declarator  ->  declarator .   (rule 122)
     init_declarator  ->  declarator . '=' initializer   (rule 123)
-    function_definition  ->  declaration_specifiers declarator . @9 compound_statement   (rule 220)
+    function_definition  ->  declaration_specifiers declarator . @13 compound_statement   (rule 224)
 
     '=' 	shift, and go to state 79
 
-    '{' 	reduce using rule 219 (@9)
+    '{' 	reduce using rule 223 (@13)
     $default	reduce using rule 122 (init_declarator)
 
-    @9  	go to state 80
+    @13 	go to state 80
 
 
 
 state 55
 
-    function_definition  ->  declarator @10 . compound_statement   (rule 222)
+    function_definition  ->  declarator @14 . compound_statement   (rule 226)
 
     '{' 	shift, and go to state 81
 
@@ -1240,9 +1252,9 @@ state 58
 
 state 59
 
-    translation_unit  ->  translation_unit external_declaration .   (rule 216)
+    translation_unit  ->  translation_unit external_declaration .   (rule 220)
 
-    $default	reduce using rule 216 (translation_unit)
+    $default	reduce using rule 220 (translation_unit)
 
 
 
@@ -1578,7 +1590,7 @@ state 79
 
 state 80
 
-    function_definition  ->  declaration_specifiers declarator @9 . compound_statement   (rule 220)
+    function_definition  ->  declaration_specifiers declarator @13 . compound_statement   (rule 224)
 
     '{' 	shift, and go to state 81
 
@@ -1598,9 +1610,9 @@ state 81
 
 state 82
 
-    function_definition  ->  declarator @10 compound_statement .   (rule 222)
+    function_definition  ->  declarator @14 compound_statement .   (rule 226)
 
-    $default	reduce using rule 222 (function_definition)
+    $default	reduce using rule 226 (function_definition)
 
 
 
@@ -2570,9 +2582,9 @@ state 142
 
 state 143
 
-    function_definition  ->  declaration_specifiers declarator @9 compound_statement .   (rule 220)
+    function_definition  ->  declaration_specifiers declarator @13 compound_statement .   (rule 224)
 
-    $default	reduce using rule 220 (function_definition)
+    $default	reduce using rule 224 (function_definition)
 
 
 
@@ -4315,7 +4327,7 @@ state 218
 state 219
 
     primary_expression  ->  lxm_identifier .   (rule 1)
-    statement  ->  lxm_identifier . ':' statement   (rule 191)
+    statement  ->  lxm_identifier . ':' @2 statement   (rule 192)
 
     ':' 	shift, and go to state 304
 
@@ -4325,7 +4337,7 @@ state 219
 
 state 220
 
-    statement  ->  lxm_break . ';'   (rule 197)
+    statement  ->  lxm_break . ';'   (rule 201)
 
     ';' 	shift, and go to state 305
 
@@ -4333,7 +4345,7 @@ state 220
 
 state 221
 
-    statement  ->  lxm_case . constant_expression ':' statement   (rule 192)
+    statement  ->  lxm_case . constant_expression ':' @3 statement   (rule 194)
 
     lxm_identifier	shift, and go to state 90
     lxm_constant	shift, and go to state 91
@@ -4370,7 +4382,7 @@ state 221
 
 state 222
 
-    statement  ->  lxm_continue . ';'   (rule 196)
+    statement  ->  lxm_continue . ';'   (rule 200)
 
     ';' 	shift, and go to state 307
 
@@ -4378,7 +4390,7 @@ state 222
 
 state 223
 
-    statement  ->  lxm_default . ':' statement   (rule 193)
+    statement  ->  lxm_default . ':' @4 statement   (rule 196)
 
     ':' 	shift, and go to state 308
 
@@ -4386,11 +4398,11 @@ state 223
 
 state 224
 
-    statement  ->  lxm_do . @5 statement lxm_while '(' expression ')' ';'   (rule 207)
+    statement  ->  lxm_do . @9 statement lxm_while '(' expression ')' ';'   (rule 211)
 
-    $default	reduce using rule 206 (@5)
+    $default	reduce using rule 210 (@9)
 
-    @5  	go to state 309
+    @9  	go to state 309
 
 
 
@@ -4404,7 +4416,7 @@ state 225
 
 state 226
 
-    statement  ->  lxm_goto . lxm_identifier ';'   (rule 195)
+    statement  ->  lxm_goto . lxm_identifier ';'   (rule 199)
 
     lxm_identifier	shift, and go to state 311
 
@@ -4420,8 +4432,8 @@ state 227
 
 state 228
 
-    statement  ->  lxm_return . ';'   (rule 213)
-    statement  ->  lxm_return . expression ';'   (rule 214)
+    statement  ->  lxm_return . ';'   (rule 217)
+    statement  ->  lxm_return . expression ';'   (rule 218)
 
     lxm_identifier	shift, and go to state 90
     lxm_constant	shift, and go to state 91
@@ -4460,7 +4472,7 @@ state 228
 
 state 229
 
-    statement  ->  lxm_switch . '(' expression ')' statement   (rule 194)
+    statement  ->  lxm_switch . '(' expression ')' @5 statement   (rule 198)
 
     '(' 	shift, and go to state 315
 
@@ -4468,7 +4480,7 @@ state 229
 
 state 230
 
-    statement  ->  lxm_while . '(' expression ')' @3 @4 statement   (rule 205)
+    statement  ->  lxm_while . '(' expression ')' @7 @8 statement   (rule 209)
 
     '(' 	shift, and go to state 316
 
@@ -4662,24 +4674,24 @@ state 238
 
 state 239
 
-    statement  ->  compound_statement .   (rule 199)
+    statement  ->  compound_statement .   (rule 203)
 
-    $default	reduce using rule 199 (statement)
+    $default	reduce using rule 203 (statement)
 
 
 
 state 240
 
-    statement  ->  expression_statement .   (rule 198)
+    statement  ->  expression_statement .   (rule 202)
 
-    $default	reduce using rule 198 (statement)
+    $default	reduce using rule 202 (statement)
 
 
 
 state 241
 
-    statement  ->  if_statement . statement   (rule 200)
-    statement  ->  if_statement . statement lxm_else @2 statement   (rule 202)
+    statement  ->  if_statement . statement   (rule 204)
+    statement  ->  if_statement . statement lxm_else @6 statement   (rule 206)
 
     lxm_identifier	shift, and go to state 219
     lxm_constant	shift, and go to state 91
@@ -4735,8 +4747,8 @@ state 241
 
 state 242
 
-    statement  ->  for_statement . expression_statement @6 ')' statement   (rule 209)
-    statement  ->  for_statement . expression_statement @7 expression ')' @8 statement   (rule 212)
+    statement  ->  for_statement . expression_statement @10 ')' statement   (rule 213)
+    statement  ->  for_statement . expression_statement @11 expression ')' @12 statement   (rule 216)
 
     lxm_identifier	shift, and go to state 90
     lxm_constant	shift, and go to state 91
@@ -5549,71 +5561,25 @@ state 303
 
 state 304
 
-    statement  ->  lxm_identifier ':' . statement   (rule 191)
+    statement  ->  lxm_identifier ':' . @2 statement   (rule 192)
 
-    lxm_identifier	shift, and go to state 219
-    lxm_constant	shift, and go to state 91
-    lxm_string_literal	shift, and go to state 92
-    lxm_inc	shift, and go to state 93
-    lxm_dec	shift, and go to state 94
-    lxm_break	shift, and go to state 220
-    lxm_case	shift, and go to state 221
-    lxm_continue	shift, and go to state 222
-    lxm_default	shift, and go to state 223
-    lxm_do	shift, and go to state 224
-    lxm_for	shift, and go to state 225
-    lxm_goto	shift, and go to state 226
-    lxm_if	shift, and go to state 227
-    lxm_return	shift, and go to state 228
-    lxm_sizeof	shift, and go to state 95
-    lxm_switch	shift, and go to state 229
-    lxm_while	shift, and go to state 230
-    '(' 	shift, and go to state 96
-    '&' 	shift, and go to state 98
-    '*' 	shift, and go to state 99
-    '+' 	shift, and go to state 100
-    '-' 	shift, and go to state 101
-    '~' 	shift, and go to state 102
-    '!' 	shift, and go to state 103
-    ';' 	shift, and go to state 231
-    '{' 	shift, and go to state 81
+    $default	reduce using rule 191 (@2)
 
-    primary_expression	go to state 104
-    postfix_expression	go to state 105
-    unary_expression	go to state 139
-    cast_expression	go to state 107
-    multiplicative_expression	go to state 108
-    additive_expression	go to state 109
-    shift_expression	go to state 110
-    relational_expression	go to state 111
-    equality_expression	go to state 112
-    and_expression	go to state 113
-    exclusive_or_expression	go to state 114
-    inclusive_or_expression	go to state 115
-    logical_and_expression	go to state 116
-    logical_or_expression	go to state 117
-    conditional_expression	go to state 140
-    assignment_expression	go to state 160
-    expression	go to state 233
-    compound_statement	go to state 239
-    expression_statement	go to state 240
-    if_statement	go to state 241
-    for_statement	go to state 242
-    statement	go to state 343
+    @2  	go to state 343
 
 
 
 state 305
 
-    statement  ->  lxm_break ';' .   (rule 197)
+    statement  ->  lxm_break ';' .   (rule 201)
 
-    $default	reduce using rule 197 (statement)
+    $default	reduce using rule 201 (statement)
 
 
 
 state 306
 
-    statement  ->  lxm_case constant_expression . ':' statement   (rule 192)
+    statement  ->  lxm_case constant_expression . ':' @3 statement   (rule 194)
 
     ':' 	shift, and go to state 344
 
@@ -5621,71 +5587,25 @@ state 306
 
 state 307
 
-    statement  ->  lxm_continue ';' .   (rule 196)
+    statement  ->  lxm_continue ';' .   (rule 200)
 
-    $default	reduce using rule 196 (statement)
+    $default	reduce using rule 200 (statement)
 
 
 
 state 308
 
-    statement  ->  lxm_default ':' . statement   (rule 193)
+    statement  ->  lxm_default ':' . @4 statement   (rule 196)
 
-    lxm_identifier	shift, and go to state 219
-    lxm_constant	shift, and go to state 91
-    lxm_string_literal	shift, and go to state 92
-    lxm_inc	shift, and go to state 93
-    lxm_dec	shift, and go to state 94
-    lxm_break	shift, and go to state 220
-    lxm_case	shift, and go to state 221
-    lxm_continue	shift, and go to state 222
-    lxm_default	shift, and go to state 223
-    lxm_do	shift, and go to state 224
-    lxm_for	shift, and go to state 225
-    lxm_goto	shift, and go to state 226
-    lxm_if	shift, and go to state 227
-    lxm_return	shift, and go to state 228
-    lxm_sizeof	shift, and go to state 95
-    lxm_switch	shift, and go to state 229
-    lxm_while	shift, and go to state 230
-    '(' 	shift, and go to state 96
-    '&' 	shift, and go to state 98
-    '*' 	shift, and go to state 99
-    '+' 	shift, and go to state 100
-    '-' 	shift, and go to state 101
-    '~' 	shift, and go to state 102
-    '!' 	shift, and go to state 103
-    ';' 	shift, and go to state 231
-    '{' 	shift, and go to state 81
+    $default	reduce using rule 195 (@4)
 
-    primary_expression	go to state 104
-    postfix_expression	go to state 105
-    unary_expression	go to state 139
-    cast_expression	go to state 107
-    multiplicative_expression	go to state 108
-    additive_expression	go to state 109
-    shift_expression	go to state 110
-    relational_expression	go to state 111
-    equality_expression	go to state 112
-    and_expression	go to state 113
-    exclusive_or_expression	go to state 114
-    inclusive_or_expression	go to state 115
-    logical_and_expression	go to state 116
-    logical_or_expression	go to state 117
-    conditional_expression	go to state 140
-    assignment_expression	go to state 160
-    expression	go to state 233
-    compound_statement	go to state 239
-    expression_statement	go to state 240
-    if_statement	go to state 241
-    for_statement	go to state 242
-    statement	go to state 345
+    @4  	go to state 345
 
 
 
 state 309
 
-    statement  ->  lxm_do @5 . statement lxm_while '(' expression ')' ';'   (rule 207)
+    statement  ->  lxm_do @9 . statement lxm_while '(' expression ')' ';'   (rule 211)
 
     lxm_identifier	shift, and go to state 219
     lxm_constant	shift, and go to state 91
@@ -5781,7 +5701,7 @@ state 310
 
 state 311
 
-    statement  ->  lxm_goto lxm_identifier . ';'   (rule 195)
+    statement  ->  lxm_goto lxm_identifier . ';'   (rule 199)
 
     ';' 	shift, and go to state 348
 
@@ -5827,16 +5747,16 @@ state 312
 
 state 313
 
-    statement  ->  lxm_return ';' .   (rule 213)
+    statement  ->  lxm_return ';' .   (rule 217)
 
-    $default	reduce using rule 213 (statement)
+    $default	reduce using rule 217 (statement)
 
 
 
 state 314
 
     expression  ->  expression . ',' assignment_expression   (rule 71)
-    statement  ->  lxm_return expression . ';'   (rule 214)
+    statement  ->  lxm_return expression . ';'   (rule 218)
 
     ',' 	shift, and go to state 258
     ';' 	shift, and go to state 350
@@ -5845,7 +5765,7 @@ state 314
 
 state 315
 
-    statement  ->  lxm_switch '(' . expression ')' statement   (rule 194)
+    statement  ->  lxm_switch '(' . expression ')' @5 statement   (rule 198)
 
     lxm_identifier	shift, and go to state 90
     lxm_constant	shift, and go to state 91
@@ -5883,7 +5803,7 @@ state 315
 
 state 316
 
-    statement  ->  lxm_while '(' . expression ')' @3 @4 statement   (rule 205)
+    statement  ->  lxm_while '(' . expression ')' @7 @8 statement   (rule 209)
 
     lxm_identifier	shift, and go to state 90
     lxm_constant	shift, and go to state 91
@@ -5955,26 +5875,26 @@ state 320
 
 state 321
 
-    statement  ->  if_statement statement .   (rule 200)
-    statement  ->  if_statement statement . lxm_else @2 statement   (rule 202)
+    statement  ->  if_statement statement .   (rule 204)
+    statement  ->  if_statement statement . lxm_else @6 statement   (rule 206)
 
     lxm_else	shift, and go to state 354
 
-    lxm_else	[reduce using rule 200 (statement)]
-    $default	reduce using rule 200 (statement)
+    lxm_else	[reduce using rule 204 (statement)]
+    $default	reduce using rule 204 (statement)
 
 
 
 state 322
 
-    statement  ->  for_statement expression_statement . @6 ')' statement   (rule 209)
-    statement  ->  for_statement expression_statement . @7 expression ')' @8 statement   (rule 212)
+    statement  ->  for_statement expression_statement . @10 ')' statement   (rule 213)
+    statement  ->  for_statement expression_statement . @11 expression ')' @12 statement   (rule 216)
 
-    ')' 	reduce using rule 208 (@6)
-    $default	reduce using rule 210 (@7)
+    ')' 	reduce using rule 212 (@10)
+    $default	reduce using rule 214 (@11)
 
-    @6  	go to state 355
-    @7  	go to state 356
+    @10 	go to state 355
+    @11 	go to state 356
 
 
 
@@ -6197,15 +6117,7 @@ state 342
 
 state 343
 
-    statement  ->  lxm_identifier ':' statement .   (rule 191)
-
-    $default	reduce using rule 191 (statement)
-
-
-
-state 344
-
-    statement  ->  lxm_case constant_expression ':' . statement   (rule 192)
+    statement  ->  lxm_identifier ':' @2 . statement   (rule 192)
 
     lxm_identifier	shift, and go to state 219
     lxm_constant	shift, and go to state 91
@@ -6259,19 +6171,77 @@ state 344
 
 
 
+state 344
+
+    statement  ->  lxm_case constant_expression ':' . @3 statement   (rule 194)
+
+    $default	reduce using rule 193 (@3)
+
+    @3  	go to state 364
+
+
+
 state 345
 
-    statement  ->  lxm_default ':' statement .   (rule 193)
+    statement  ->  lxm_default ':' @4 . statement   (rule 196)
 
-    $default	reduce using rule 193 (statement)
+    lxm_identifier	shift, and go to state 219
+    lxm_constant	shift, and go to state 91
+    lxm_string_literal	shift, and go to state 92
+    lxm_inc	shift, and go to state 93
+    lxm_dec	shift, and go to state 94
+    lxm_break	shift, and go to state 220
+    lxm_case	shift, and go to state 221
+    lxm_continue	shift, and go to state 222
+    lxm_default	shift, and go to state 223
+    lxm_do	shift, and go to state 224
+    lxm_for	shift, and go to state 225
+    lxm_goto	shift, and go to state 226
+    lxm_if	shift, and go to state 227
+    lxm_return	shift, and go to state 228
+    lxm_sizeof	shift, and go to state 95
+    lxm_switch	shift, and go to state 229
+    lxm_while	shift, and go to state 230
+    '(' 	shift, and go to state 96
+    '&' 	shift, and go to state 98
+    '*' 	shift, and go to state 99
+    '+' 	shift, and go to state 100
+    '-' 	shift, and go to state 101
+    '~' 	shift, and go to state 102
+    '!' 	shift, and go to state 103
+    ';' 	shift, and go to state 231
+    '{' 	shift, and go to state 81
+
+    primary_expression	go to state 104
+    postfix_expression	go to state 105
+    unary_expression	go to state 139
+    cast_expression	go to state 107
+    multiplicative_expression	go to state 108
+    additive_expression	go to state 109
+    shift_expression	go to state 110
+    relational_expression	go to state 111
+    equality_expression	go to state 112
+    and_expression	go to state 113
+    exclusive_or_expression	go to state 114
+    inclusive_or_expression	go to state 115
+    logical_and_expression	go to state 116
+    logical_or_expression	go to state 117
+    conditional_expression	go to state 140
+    assignment_expression	go to state 160
+    expression	go to state 233
+    compound_statement	go to state 239
+    expression_statement	go to state 240
+    if_statement	go to state 241
+    for_statement	go to state 242
+    statement	go to state 365
 
 
 
 state 346
 
-    statement  ->  lxm_do @5 statement . lxm_while '(' expression ')' ';'   (rule 207)
+    statement  ->  lxm_do @9 statement . lxm_while '(' expression ')' ';'   (rule 211)
 
-    lxm_while	shift, and go to state 364
+    lxm_while	shift, and go to state 366
 
 
 
@@ -6285,9 +6255,9 @@ state 347
 
 state 348
 
-    statement  ->  lxm_goto lxm_identifier ';' .   (rule 195)
+    statement  ->  lxm_goto lxm_identifier ';' .   (rule 199)
 
-    $default	reduce using rule 195 (statement)
+    $default	reduce using rule 199 (statement)
 
 
 
@@ -6296,25 +6266,25 @@ state 349
     expression  ->  expression . ',' assignment_expression   (rule 71)
     if_statement  ->  lxm_if '(' expression . ')'   (rule 189)
 
-    ')' 	shift, and go to state 365
+    ')' 	shift, and go to state 367
     ',' 	shift, and go to state 258
 
 
 
 state 350
 
-    statement  ->  lxm_return expression ';' .   (rule 214)
+    statement  ->  lxm_return expression ';' .   (rule 218)
 
-    $default	reduce using rule 214 (statement)
+    $default	reduce using rule 218 (statement)
 
 
 
 state 351
 
     expression  ->  expression . ',' assignment_expression   (rule 71)
-    statement  ->  lxm_switch '(' expression . ')' statement   (rule 194)
+    statement  ->  lxm_switch '(' expression . ')' @5 statement   (rule 198)
 
-    ')' 	shift, and go to state 366
+    ')' 	shift, and go to state 368
     ',' 	shift, and go to state 258
 
 
@@ -6322,9 +6292,9 @@ state 351
 state 352
 
     expression  ->  expression . ',' assignment_expression   (rule 71)
-    statement  ->  lxm_while '(' expression . ')' @3 @4 statement   (rule 205)
+    statement  ->  lxm_while '(' expression . ')' @7 @8 statement   (rule 209)
 
-    ')' 	shift, and go to state 367
+    ')' 	shift, and go to state 369
     ',' 	shift, and go to state 258
 
 
@@ -6339,25 +6309,25 @@ state 353
 
 state 354
 
-    statement  ->  if_statement statement lxm_else . @2 statement   (rule 202)
+    statement  ->  if_statement statement lxm_else . @6 statement   (rule 206)
 
-    $default	reduce using rule 201 (@2)
+    $default	reduce using rule 205 (@6)
 
-    @2  	go to state 368
+    @6  	go to state 370
 
 
 
 state 355
 
-    statement  ->  for_statement expression_statement @6 . ')' statement   (rule 209)
+    statement  ->  for_statement expression_statement @10 . ')' statement   (rule 213)
 
-    ')' 	shift, and go to state 369
+    ')' 	shift, and go to state 371
 
 
 
 state 356
 
-    statement  ->  for_statement expression_statement @7 . expression ')' @8 statement   (rule 212)
+    statement  ->  for_statement expression_statement @11 . expression ')' @12 statement   (rule 216)
 
     lxm_identifier	shift, and go to state 90
     lxm_constant	shift, and go to state 91
@@ -6389,7 +6359,7 @@ state 356
     logical_or_expression	go to state 117
     conditional_expression	go to state 140
     assignment_expression	go to state 160
-    expression	go to state 370
+    expression	go to state 372
 
 
 
@@ -6443,7 +6413,7 @@ state 362
 
 state 363
 
-    statement  ->  lxm_case constant_expression ':' statement .   (rule 192)
+    statement  ->  lxm_identifier ':' @2 statement .   (rule 192)
 
     $default	reduce using rule 192 (statement)
 
@@ -6451,13 +6421,77 @@ state 363
 
 state 364
 
-    statement  ->  lxm_do @5 statement lxm_while . '(' expression ')' ';'   (rule 207)
+    statement  ->  lxm_case constant_expression ':' @3 . statement   (rule 194)
 
-    '(' 	shift, and go to state 371
+    lxm_identifier	shift, and go to state 219
+    lxm_constant	shift, and go to state 91
+    lxm_string_literal	shift, and go to state 92
+    lxm_inc	shift, and go to state 93
+    lxm_dec	shift, and go to state 94
+    lxm_break	shift, and go to state 220
+    lxm_case	shift, and go to state 221
+    lxm_continue	shift, and go to state 222
+    lxm_default	shift, and go to state 223
+    lxm_do	shift, and go to state 224
+    lxm_for	shift, and go to state 225
+    lxm_goto	shift, and go to state 226
+    lxm_if	shift, and go to state 227
+    lxm_return	shift, and go to state 228
+    lxm_sizeof	shift, and go to state 95
+    lxm_switch	shift, and go to state 229
+    lxm_while	shift, and go to state 230
+    '(' 	shift, and go to state 96
+    '&' 	shift, and go to state 98
+    '*' 	shift, and go to state 99
+    '+' 	shift, and go to state 100
+    '-' 	shift, and go to state 101
+    '~' 	shift, and go to state 102
+    '!' 	shift, and go to state 103
+    ';' 	shift, and go to state 231
+    '{' 	shift, and go to state 81
+
+    primary_expression	go to state 104
+    postfix_expression	go to state 105
+    unary_expression	go to state 139
+    cast_expression	go to state 107
+    multiplicative_expression	go to state 108
+    additive_expression	go to state 109
+    shift_expression	go to state 110
+    relational_expression	go to state 111
+    equality_expression	go to state 112
+    and_expression	go to state 113
+    exclusive_or_expression	go to state 114
+    inclusive_or_expression	go to state 115
+    logical_and_expression	go to state 116
+    logical_or_expression	go to state 117
+    conditional_expression	go to state 140
+    assignment_expression	go to state 160
+    expression	go to state 233
+    compound_statement	go to state 239
+    expression_statement	go to state 240
+    if_statement	go to state 241
+    for_statement	go to state 242
+    statement	go to state 373
 
 
 
 state 365
+
+    statement  ->  lxm_default ':' @4 statement .   (rule 196)
+
+    $default	reduce using rule 196 (statement)
+
+
+
+state 366
+
+    statement  ->  lxm_do @9 statement lxm_while . '(' expression ')' ';'   (rule 211)
+
+    '(' 	shift, and go to state 374
+
+
+
+state 367
 
     if_statement  ->  lxm_if '(' expression ')' .   (rule 189)
 
@@ -6465,131 +6499,29 @@ state 365
 
 
 
-state 366
-
-    statement  ->  lxm_switch '(' expression ')' . statement   (rule 194)
-
-    lxm_identifier	shift, and go to state 219
-    lxm_constant	shift, and go to state 91
-    lxm_string_literal	shift, and go to state 92
-    lxm_inc	shift, and go to state 93
-    lxm_dec	shift, and go to state 94
-    lxm_break	shift, and go to state 220
-    lxm_case	shift, and go to state 221
-    lxm_continue	shift, and go to state 222
-    lxm_default	shift, and go to state 223
-    lxm_do	shift, and go to state 224
-    lxm_for	shift, and go to state 225
-    lxm_goto	shift, and go to state 226
-    lxm_if	shift, and go to state 227
-    lxm_return	shift, and go to state 228
-    lxm_sizeof	shift, and go to state 95
-    lxm_switch	shift, and go to state 229
-    lxm_while	shift, and go to state 230
-    '(' 	shift, and go to state 96
-    '&' 	shift, and go to state 98
-    '*' 	shift, and go to state 99
-    '+' 	shift, and go to state 100
-    '-' 	shift, and go to state 101
-    '~' 	shift, and go to state 102
-    '!' 	shift, and go to state 103
-    ';' 	shift, and go to state 231
-    '{' 	shift, and go to state 81
-
-    primary_expression	go to state 104
-    postfix_expression	go to state 105
-    unary_expression	go to state 139
-    cast_expression	go to state 107
-    multiplicative_expression	go to state 108
-    additive_expression	go to state 109
-    shift_expression	go to state 110
-    relational_expression	go to state 111
-    equality_expression	go to state 112
-    and_expression	go to state 113
-    exclusive_or_expression	go to state 114
-    inclusive_or_expression	go to state 115
-    logical_and_expression	go to state 116
-    logical_or_expression	go to state 117
-    conditional_expression	go to state 140
-    assignment_expression	go to state 160
-    expression	go to state 233
-    compound_statement	go to state 239
-    expression_statement	go to state 240
-    if_statement	go to state 241
-    for_statement	go to state 242
-    statement	go to state 372
-
-
-
-state 367
-
-    statement  ->  lxm_while '(' expression ')' . @3 @4 statement   (rule 205)
-
-    $default	reduce using rule 203 (@3)
-
-    @3  	go to state 373
-
-
-
 state 368
 
-    statement  ->  if_statement statement lxm_else @2 . statement   (rule 202)
+    statement  ->  lxm_switch '(' expression ')' . @5 statement   (rule 198)
 
-    lxm_identifier	shift, and go to state 219
-    lxm_constant	shift, and go to state 91
-    lxm_string_literal	shift, and go to state 92
-    lxm_inc	shift, and go to state 93
-    lxm_dec	shift, and go to state 94
-    lxm_break	shift, and go to state 220
-    lxm_case	shift, and go to state 221
-    lxm_continue	shift, and go to state 222
-    lxm_default	shift, and go to state 223
-    lxm_do	shift, and go to state 224
-    lxm_for	shift, and go to state 225
-    lxm_goto	shift, and go to state 226
-    lxm_if	shift, and go to state 227
-    lxm_return	shift, and go to state 228
-    lxm_sizeof	shift, and go to state 95
-    lxm_switch	shift, and go to state 229
-    lxm_while	shift, and go to state 230
-    '(' 	shift, and go to state 96
-    '&' 	shift, and go to state 98
-    '*' 	shift, and go to state 99
-    '+' 	shift, and go to state 100
-    '-' 	shift, and go to state 101
-    '~' 	shift, and go to state 102
-    '!' 	shift, and go to state 103
-    ';' 	shift, and go to state 231
-    '{' 	shift, and go to state 81
+    $default	reduce using rule 197 (@5)
 
-    primary_expression	go to state 104
-    postfix_expression	go to state 105
-    unary_expression	go to state 139
-    cast_expression	go to state 107
-    multiplicative_expression	go to state 108
-    additive_expression	go to state 109
-    shift_expression	go to state 110
-    relational_expression	go to state 111
-    equality_expression	go to state 112
-    and_expression	go to state 113
-    exclusive_or_expression	go to state 114
-    inclusive_or_expression	go to state 115
-    logical_and_expression	go to state 116
-    logical_or_expression	go to state 117
-    conditional_expression	go to state 140
-    assignment_expression	go to state 160
-    expression	go to state 233
-    compound_statement	go to state 239
-    expression_statement	go to state 240
-    if_statement	go to state 241
-    for_statement	go to state 242
-    statement	go to state 374
+    @5  	go to state 375
 
 
 
 state 369
 
-    statement  ->  for_statement expression_statement @6 ')' . statement   (rule 209)
+    statement  ->  lxm_while '(' expression ')' . @7 @8 statement   (rule 209)
+
+    $default	reduce using rule 207 (@7)
+
+    @7  	go to state 376
+
+
+
+state 370
+
+    statement  ->  if_statement statement lxm_else @6 . statement   (rule 206)
 
     lxm_identifier	shift, and go to state 219
     lxm_constant	shift, and go to state 91
@@ -6639,23 +6571,87 @@ state 369
     expression_statement	go to state 240
     if_statement	go to state 241
     for_statement	go to state 242
-    statement	go to state 375
-
-
-
-state 370
-
-    expression  ->  expression . ',' assignment_expression   (rule 71)
-    statement  ->  for_statement expression_statement @7 expression . ')' @8 statement   (rule 212)
-
-    ')' 	shift, and go to state 376
-    ',' 	shift, and go to state 258
+    statement	go to state 377
 
 
 
 state 371
 
-    statement  ->  lxm_do @5 statement lxm_while '(' . expression ')' ';'   (rule 207)
+    statement  ->  for_statement expression_statement @10 ')' . statement   (rule 213)
+
+    lxm_identifier	shift, and go to state 219
+    lxm_constant	shift, and go to state 91
+    lxm_string_literal	shift, and go to state 92
+    lxm_inc	shift, and go to state 93
+    lxm_dec	shift, and go to state 94
+    lxm_break	shift, and go to state 220
+    lxm_case	shift, and go to state 221
+    lxm_continue	shift, and go to state 222
+    lxm_default	shift, and go to state 223
+    lxm_do	shift, and go to state 224
+    lxm_for	shift, and go to state 225
+    lxm_goto	shift, and go to state 226
+    lxm_if	shift, and go to state 227
+    lxm_return	shift, and go to state 228
+    lxm_sizeof	shift, and go to state 95
+    lxm_switch	shift, and go to state 229
+    lxm_while	shift, and go to state 230
+    '(' 	shift, and go to state 96
+    '&' 	shift, and go to state 98
+    '*' 	shift, and go to state 99
+    '+' 	shift, and go to state 100
+    '-' 	shift, and go to state 101
+    '~' 	shift, and go to state 102
+    '!' 	shift, and go to state 103
+    ';' 	shift, and go to state 231
+    '{' 	shift, and go to state 81
+
+    primary_expression	go to state 104
+    postfix_expression	go to state 105
+    unary_expression	go to state 139
+    cast_expression	go to state 107
+    multiplicative_expression	go to state 108
+    additive_expression	go to state 109
+    shift_expression	go to state 110
+    relational_expression	go to state 111
+    equality_expression	go to state 112
+    and_expression	go to state 113
+    exclusive_or_expression	go to state 114
+    inclusive_or_expression	go to state 115
+    logical_and_expression	go to state 116
+    logical_or_expression	go to state 117
+    conditional_expression	go to state 140
+    assignment_expression	go to state 160
+    expression	go to state 233
+    compound_statement	go to state 239
+    expression_statement	go to state 240
+    if_statement	go to state 241
+    for_statement	go to state 242
+    statement	go to state 378
+
+
+
+state 372
+
+    expression  ->  expression . ',' assignment_expression   (rule 71)
+    statement  ->  for_statement expression_statement @11 expression . ')' @12 statement   (rule 216)
+
+    ')' 	shift, and go to state 379
+    ',' 	shift, and go to state 258
+
+
+
+state 373
+
+    statement  ->  lxm_case constant_expression ':' @3 statement .   (rule 194)
+
+    $default	reduce using rule 194 (statement)
+
+
+
+state 374
+
+    statement  ->  lxm_do @9 statement lxm_while '(' . expression ')' ';'   (rule 211)
 
     lxm_identifier	shift, and go to state 90
     lxm_constant	shift, and go to state 91
@@ -6687,67 +6683,13 @@ state 371
     logical_or_expression	go to state 117
     conditional_expression	go to state 140
     assignment_expression	go to state 160
-    expression	go to state 377
-
-
-
-state 372
-
-    statement  ->  lxm_switch '(' expression ')' statement .   (rule 194)
-
-    $default	reduce using rule 194 (statement)
-
-
-
-state 373
-
-    statement  ->  lxm_while '(' expression ')' @3 . @4 statement   (rule 205)
-
-    $default	reduce using rule 204 (@4)
-
-    @4  	go to state 378
-
-
-
-state 374
-
-    statement  ->  if_statement statement lxm_else @2 statement .   (rule 202)
-
-    $default	reduce using rule 202 (statement)
+    expression	go to state 380
 
 
 
 state 375
 
-    statement  ->  for_statement expression_statement @6 ')' statement .   (rule 209)
-
-    $default	reduce using rule 209 (statement)
-
-
-
-state 376
-
-    statement  ->  for_statement expression_statement @7 expression ')' . @8 statement   (rule 212)
-
-    $default	reduce using rule 211 (@8)
-
-    @8  	go to state 379
-
-
-
-state 377
-
-    expression  ->  expression . ',' assignment_expression   (rule 71)
-    statement  ->  lxm_do @5 statement lxm_while '(' expression . ')' ';'   (rule 207)
-
-    ')' 	shift, and go to state 380
-    ',' 	shift, and go to state 258
-
-
-
-state 378
-
-    statement  ->  lxm_while '(' expression ')' @3 @4 . statement   (rule 205)
+    statement  ->  lxm_switch '(' expression ')' @5 . statement   (rule 198)
 
     lxm_identifier	shift, and go to state 219
     lxm_constant	shift, and go to state 91
@@ -6801,9 +6743,63 @@ state 378
 
 
 
+state 376
+
+    statement  ->  lxm_while '(' expression ')' @7 . @8 statement   (rule 209)
+
+    $default	reduce using rule 208 (@8)
+
+    @8  	go to state 382
+
+
+
+state 377
+
+    statement  ->  if_statement statement lxm_else @6 statement .   (rule 206)
+
+    $default	reduce using rule 206 (statement)
+
+
+
+state 378
+
+    statement  ->  for_statement expression_statement @10 ')' statement .   (rule 213)
+
+    $default	reduce using rule 213 (statement)
+
+
+
 state 379
 
-    statement  ->  for_statement expression_statement @7 expression ')' @8 . statement   (rule 212)
+    statement  ->  for_statement expression_statement @11 expression ')' . @12 statement   (rule 216)
+
+    $default	reduce using rule 215 (@12)
+
+    @12 	go to state 383
+
+
+
+state 380
+
+    expression  ->  expression . ',' assignment_expression   (rule 71)
+    statement  ->  lxm_do @9 statement lxm_while '(' expression . ')' ';'   (rule 211)
+
+    ')' 	shift, and go to state 384
+    ',' 	shift, and go to state 258
+
+
+
+state 381
+
+    statement  ->  lxm_switch '(' expression ')' @5 statement .   (rule 198)
+
+    $default	reduce using rule 198 (statement)
+
+
+
+state 382
+
+    statement  ->  lxm_while '(' expression ')' @7 @8 . statement   (rule 209)
 
     lxm_identifier	shift, and go to state 219
     lxm_constant	shift, and go to state 91
@@ -6853,48 +6849,104 @@ state 379
     expression_statement	go to state 240
     if_statement	go to state 241
     for_statement	go to state 242
-    statement	go to state 382
-
-
-
-state 380
-
-    statement  ->  lxm_do @5 statement lxm_while '(' expression ')' . ';'   (rule 207)
-
-    ';' 	shift, and go to state 383
-
-
-
-state 381
-
-    statement  ->  lxm_while '(' expression ')' @3 @4 statement .   (rule 205)
-
-    $default	reduce using rule 205 (statement)
-
-
-
-state 382
-
-    statement  ->  for_statement expression_statement @7 expression ')' @8 statement .   (rule 212)
-
-    $default	reduce using rule 212 (statement)
+    statement	go to state 385
 
 
 
 state 383
 
-    statement  ->  lxm_do @5 statement lxm_while '(' expression ')' ';' .   (rule 207)
+    statement  ->  for_statement expression_statement @11 expression ')' @12 . statement   (rule 216)
 
-    $default	reduce using rule 207 (statement)
+    lxm_identifier	shift, and go to state 219
+    lxm_constant	shift, and go to state 91
+    lxm_string_literal	shift, and go to state 92
+    lxm_inc	shift, and go to state 93
+    lxm_dec	shift, and go to state 94
+    lxm_break	shift, and go to state 220
+    lxm_case	shift, and go to state 221
+    lxm_continue	shift, and go to state 222
+    lxm_default	shift, and go to state 223
+    lxm_do	shift, and go to state 224
+    lxm_for	shift, and go to state 225
+    lxm_goto	shift, and go to state 226
+    lxm_if	shift, and go to state 227
+    lxm_return	shift, and go to state 228
+    lxm_sizeof	shift, and go to state 95
+    lxm_switch	shift, and go to state 229
+    lxm_while	shift, and go to state 230
+    '(' 	shift, and go to state 96
+    '&' 	shift, and go to state 98
+    '*' 	shift, and go to state 99
+    '+' 	shift, and go to state 100
+    '-' 	shift, and go to state 101
+    '~' 	shift, and go to state 102
+    '!' 	shift, and go to state 103
+    ';' 	shift, and go to state 231
+    '{' 	shift, and go to state 81
+
+    primary_expression	go to state 104
+    postfix_expression	go to state 105
+    unary_expression	go to state 139
+    cast_expression	go to state 107
+    multiplicative_expression	go to state 108
+    additive_expression	go to state 109
+    shift_expression	go to state 110
+    relational_expression	go to state 111
+    equality_expression	go to state 112
+    and_expression	go to state 113
+    exclusive_or_expression	go to state 114
+    inclusive_or_expression	go to state 115
+    logical_and_expression	go to state 116
+    logical_or_expression	go to state 117
+    conditional_expression	go to state 140
+    assignment_expression	go to state 160
+    expression	go to state 233
+    compound_statement	go to state 239
+    expression_statement	go to state 240
+    if_statement	go to state 241
+    for_statement	go to state 242
+    statement	go to state 386
 
 
 
 state 384
 
-    $   	go to state 385
+    statement  ->  lxm_do @9 statement lxm_while '(' expression ')' . ';'   (rule 211)
+
+    ';' 	shift, and go to state 387
 
 
 
 state 385
+
+    statement  ->  lxm_while '(' expression ')' @7 @8 statement .   (rule 209)
+
+    $default	reduce using rule 209 (statement)
+
+
+
+state 386
+
+    statement  ->  for_statement expression_statement @11 expression ')' @12 statement .   (rule 216)
+
+    $default	reduce using rule 216 (statement)
+
+
+
+state 387
+
+    statement  ->  lxm_do @9 statement lxm_while '(' expression ')' ';' .   (rule 211)
+
+    $default	reduce using rule 211 (statement)
+
+
+
+state 388
+
+    $   	go to state 389
+
+
+
+state 389
 
     $default	accept
