@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory="D:\prog\compilers2\cc4x86\bin\debug"
-				CommandArguments="--optimize ..\..\tests\regressive\simple_test.c"
+				CommandArguments="--optimize ..\..\tests\regressive\goto.c"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"

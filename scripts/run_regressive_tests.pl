@@ -29,5 +29,6 @@ sub run_test {
 
 
 chdir("../cc4x86/tests/regressive/current_test") or die("chdir: $!");
-run_test("simple_test.c")
+run_test("simple_test.c");
+run_test("goto.c");
 

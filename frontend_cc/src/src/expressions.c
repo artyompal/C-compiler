@@ -582,6 +582,16 @@ expression *expr_create_jump(int destination, expression *condition, BOOL invert
     return res;
 }
 
+expression *expr_create_jump_to_named_label(symbol *label_name)
+{
+    expression *res;
+
+    res                     = _expr_create(code_expr_jump_by_name, NULL);
+    res->data.jump_by_name  = label_name;
+
+    return res;
+}
+
 expression *expr_create_return(expression *result)
 {
     expression *res;
