@@ -15,23 +15,16 @@ x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(_real_registers_cnt < X86_TMP_REGISTERS_COUNT);
 x86_text_output.c:  FIXME: assumed that operand can either be int or float
+symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов
 allocator.c:        TODO: linked chain of fixed size allocator blocks.
 allocator.c:        TODO: VirtualAlloc instead of _aligned_malloc.
 allocator.c:        TODO: implement _reset_allocator()
-common.c:           unimplemented_error(const char *text)
 expressions.c:      TODO: type check
 expressions.c:      FIXME: support arithmetic transformations for all types.
 expressions.c:      TODO: type check and arithmetic transformations.
 expressions.c:      TODO: check types and probably insert a type cast.
 expressions.c:      FIXME: sizeof should return unsigned type.
 expressions.c:      TODO: support all possible type conversations
-parser.c:           unimplemented_error("label"); ;
-parser.c:           unimplemented_error("switch-case"); ;
-parser.c:           unimplemented_error("switch-default"); ;
-parser.c:           unimplemented_error("switch"); ;
-parser.c:           unimplemented_error("goto"); ;
-parser.c:           unimplemented_error("continue"); ;
-parser.c:           unimplemented_error("break"); ;
 parser_actions.c:   TODO: semantic check: type correspondence, type promotion and casting.
 symbol_table.c:     FIXME: we only allow override functions. extern declarations and typedefs are not supported yet.
 symbol_table.c:     TODO: more flexible behavior? symbols can have multiple duplications

@@ -158,7 +158,6 @@ int token_string_literal(const char *token, int token_len)
     char value;
     int i, j, count = 0, length;
     char *data;
-    symbol *sym;
 
     for (i = 1; token[i] != '"'; i += length, count++) {
         _parse_character(token + i, &length, &value);
@@ -174,11 +173,7 @@ int token_string_literal(const char *token, int token_len)
     ASSERT(j == count - 1);
     data[j] = '\0';
 
-    sym = symbol_create_unnamed("string", code_sym_variable, type_create_arithmetic(code_type_char));
-    type_add_sized_array_node(sym, expr_create_from_integer(count, type_create_arithmetic(code_type_int)));
-    x86data_declare_initialized_string(sym, data, count);
-
-    yylval.expr = expr_create_from_identifier(sym);
+    yylval.expr = expr_create_from_string(data);
     return lxm_string_literal;
 }
 

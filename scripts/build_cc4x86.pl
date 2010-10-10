@@ -32,8 +32,10 @@ do("find_missed.pl") == 0 or die("find_missed.pl is absent or misconfigured: $!"
 chdir("../") or die("chdir: $!");
 build_compilers2("Debug");
 build_compilers2("Release");
-
 chdir("./scripts") or die("chdir: $!");
-system("perl run_tests.pl");
+
+system("perl make_rasterizer_test.pl");
+system("perl run_regressive_tests.pl");
+
 system("pause");
 

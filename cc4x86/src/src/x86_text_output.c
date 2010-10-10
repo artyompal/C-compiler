@@ -45,21 +45,26 @@ void text_output_declare_uninitialized_bytes(symbol *sym, int size)
     } else {
         fprintf(asm_file, "_%s\tdb\t %d dup (?)\n", sym->sym_name, size);
     }
+
+    fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
 
 void text_output_declare_initialized_int(symbol *sym, long value)
 {
     fprintf(asm_file, "_%s\tdd\t%d\n", sym->sym_name, value);
+    fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
 
 void text_output_declare_initialized_float(symbol *sym, double value)
 {
     fprintf(asm_file, "_%s\tdd\t%f\n", sym->sym_name, value);
+    fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
 
-void text_output_declare_initialized_string(symbol *sym, const char *value, int length)
+void text_output_declare_initialized_string(symbol *sym, const char *value)
 {
     int i;
+    int length = strlen(value) + 1;
 
     fprintf(asm_file, "_%s\tdb\t", sym->sym_name);
 
@@ -77,7 +82,15 @@ void text_output_declare_initialized_string(symbol *sym, const char *value, int 
     }
 
     fputc('\n', asm_file);
+    fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
+
+void text_output_declare_ptr_to_relocable(symbol *ptr_sym, symbol *rel_sym)
+{
+    fprintf(asm_file, "_%s\tdd\toffset _%s\n", ptr_sym->sym_name, rel_sym->sym_name);
+    fprintf(asm_file, "public\t_%s\n", ptr_sym->sym_name);
+}
+
 
 void text_output_begin_text_section(void)
 {
