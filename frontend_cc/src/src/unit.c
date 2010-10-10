@@ -14,8 +14,6 @@ static function_desc *_curr_func            = NULL;
 
 static x86_instruction *_last_instruction   = NULL;
 
-#define INVALID_LABEL (-1)
-
 static int last_break_target                = INVALID_LABEL;
 static int last_continue_target             = INVALID_LABEL;
 
@@ -147,7 +145,31 @@ void unit_push_named_label(symbol *label_name)
 
 void unit_push_jump_to_named_label(symbol *label_name)
 {
-    unit_push_jump(label_name->sym_value, NULL, FALSE);
+    expression *jump;
+
+    if (label_name->sym_code == code_sym_label) {
+        jump = expr_create_jump(label_name->sym_value, NULL, FALSE);
+    } else {
+        jump = expr_create_jump_to_named_label(symbol_create_variable(label_name));
+    }
+
+    unit_push_expression(jump);
+}
+
+static void _resolve_jumps_to_names_labels(void)
+{
+    expression *expr;
+
+    for (expr = _curr_func->func_body; expr; expr = expr->expr_next) {
+        if (expr->expr_code == code_expr_jump_by_name) {
+            int label                   = expr->data.jump_by_name->sym_value;
+
+            expr->expr_code             = code_expr_jump;
+            expr->data.jump.destination = label;
+            expr->data.jump.condition   = NULL;
+            expr->data.jump.invert_cond = FALSE;
+        }
+    }
 }
 
 
@@ -641,6 +663,9 @@ void unit_handle_function_body(symbol *sym)
         }
     }
 
+
+    // Разрешаем ссылки на неопределённые метки на момент компиляции goto.
+    _resolve_jumps_to_names_labels();
 
     // Сначала выкидываем бессмысленные, с точки зрения кодогенератора, выражения.
     _eliminate_meaningless_expressions();

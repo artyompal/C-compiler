@@ -72,6 +72,7 @@ typedef enum expression_code_decl {
     code_expr_symbol,
     code_expr_function_call,
     code_expr_jump,
+    code_expr_jump_by_name,         // используется для разрешения меток goto
     code_expr_return,
     code_expr_arithmetic,
     code_expr_label,
@@ -133,6 +134,9 @@ typedef struct expression_decl {
         // code_expr_jump
         expr_jump           jump;
 
+        // code_expr_jump_by_name
+        symbol              *jump_by_name;
+
         // code_expr_return
         expression          *ret_value;
 
@@ -147,6 +151,8 @@ typedef struct expression_decl {
     } data;
 } expression;
 
+
+#define INVALID_LABEL (-1)
 
 #define IS_INT_CONSTANT_EXPR(EXPR)  ((EXPR)->expr_code == code_expr_int_constant)
 #define IS_FLOAT_CONSTANT_EXPR(EXPR)((EXPR)->expr_code == code_expr_float_constant)
@@ -176,6 +182,7 @@ expression *    expr_create_from_float          (double val, data_type *type);
 expression *    expr_create_from_string         (char *str);
 
 expression *    expr_create_jump                (int destination, expression *condition, BOOL invert_condition);
+expression *    expr_create_jump_to_named_label (symbol *label_name);
 expression *    expr_create_return              (expression *result);
 
 expression *    expr_create_array_indexing      (expression *e1, expression *e2);
