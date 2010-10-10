@@ -1109,7 +1109,7 @@ label0000:
 	and	eax,255
 	mov	[ebp-40],eax
 	cmp	dword ptr [ebp-40],0
-	je	label0002
+	je	label0003
 	fild	dword ptr [ebp-40]
 	fld	[___unnamed_float_3]
 	fdivp
@@ -1153,17 +1153,18 @@ label0000:
 	sal	eax,8
 	add	eax,[ebp-24]
 	mov	[esi],eax
-label0002:
+label0003:
 	fld	dword ptr [ebp+20]
 	fadd	dword ptr [ebp+28]
 	fstp	dword ptr [ebp+20]
 	fld	dword ptr [ebp+24]
 	fadd	dword ptr [ebp+32]
 	fstp	dword ptr [ebp+24]
+label0001:
 	add	esi,4
 	cmp	esi,ebx
 	jle	label0000
-label0001:
+label0002:
 	pop	ebx
 	pop	esi
 	pop	edi

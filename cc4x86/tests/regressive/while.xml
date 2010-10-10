@@ -55,14 +55,15 @@
         <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="k"/>
         </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0004"/>
         <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0003" invert_condition="no">
           <condition type="int" lvalue="no" complexity="2" code="less_then">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="j"/>
             <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="65536"/>
           </condition>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0004"/>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0005" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0005"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0006" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="2" code="non_equal">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="k"/>
             <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="16"/>
@@ -71,7 +72,7 @@
         <expression type="null" lvalue="no" complexity="0" code="return">
           <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0005"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0006"/>
         <expression type="null" lvalue="no" complexity="0" code="return">
           <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
         </expression>

@@ -657,18 +657,22 @@ statement
             }
         | lxm_do
             {
-                $<label>$ = unit_push_label();      // break label
+                $<label>$ = unit_push_label();          // place restart label
             }
-            // two actions, two tokens
+            // three actions, three tokens
             {
-                int continue_label = unit_create_label();
-                $<label>$ = continue_label;
-                unit_push_continue_break_targets(continue_label, $<label>2);
+                $<label>$ = unit_create_label();        // create continue label;
+            }
+            {
+                int break_label = unit_create_label();  // create break label
+                $<label>$ = break_label;
+                unit_push_continue_break_targets($<label>3, break_label);
             }
             statement lxm_while '(' expression ')' ';'
             {
-                unit_push_jump($<label>2, $7, FALSE);
-                unit_place_label($<label>3);
+                unit_place_label($<label>3);            // place continue label
+                unit_push_jump($<label>2, $8, FALSE);   // create conditional jump
+                unit_place_label($<label>4);            // place break label
                 unit_pop_continue_break_targets();
             }
         | for_statement expression_statement

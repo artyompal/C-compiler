@@ -2000,7 +2000,7 @@ label0000:
 	mov	[reg25],reg23
 	lea	reg26,[ebp-40]
 	cmp	dword ptr [reg26],0
-	je	label0002
+	je	label0003
 	lea	reg27,[ebp-44]
 	lea	reg28,[ebp-40]
 	fild	dword ptr [reg28]
@@ -2084,7 +2084,7 @@ label0000:
 	lea	reg71,[ebp-16]
 	mov	reg72,[reg71]
 	mov	[reg70],reg72
-label0002:
+label0003:
 	lea	reg73,[ebp+20]
 	lea	reg74,[ebp+28]
 	fld	dword ptr [reg73]
@@ -2095,13 +2095,14 @@ label0002:
 	fld	dword ptr [reg75]
 	fadd	dword ptr [reg76]
 	fstp	dword ptr [reg75]
+label0001:
 	lea	reg77,[ebp-4]
 	add	dword ptr [reg77],4
 	lea	reg78,[ebp-8]
 	mov	reg79,[reg77]
 	cmp	reg79,[reg78]
 	jle	label0000
-label0001:
+label0002:
 	x86instr_destroy_stack_frame	48
 	ret
 __rasterize_horiz_line endp	
