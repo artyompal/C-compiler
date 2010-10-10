@@ -307,7 +307,7 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
 
 
 //
-// Глобальная точка входа в аллокатор регистров для регистровых переменных.
+// Глобальная точка входа в аллокатор регистровых переменных.
 void x86_create_register_variables(function_desc *function)
 {
     int free_registers, last_pseudo_register;

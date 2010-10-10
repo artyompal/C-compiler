@@ -55,6 +55,7 @@ void yyerror(const char *txt);
 __declspec(noreturn) void aux_assertion_failed(const char *file, int line, const char *cond);
 __declspec(noreturn) void aux_unimplemented_error(const char *text);
 
+// assertions must be enabled in all configurations
 #ifdef _DEBUG
 #define ASSERT(COND) \
     if (!(COND)) { aux_assertion_failed(__FILE__, __LINE__, #COND); }
@@ -110,6 +111,7 @@ extern BOOL option_debug_disable_codegen;
 extern BOOL option_debug_disable_regalloc;
 extern BOOL option_debug_disable_basic_opt;
 extern BOOL option_enable_optimization;
+extern BOOL option_debug_xml_dump;
 
 extern char option_output_filename[];
 

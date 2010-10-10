@@ -7,6 +7,7 @@ BOOL option_debug_disable_codegen   = FALSE;
 BOOL option_debug_disable_regalloc  = FALSE;
 BOOL option_debug_disable_basic_opt = FALSE;
 BOOL option_enable_optimization     = FALSE;
+BOOL option_debug_xml_dump          = FALSE;
 
 char option_output_filename[MAX_PATH];
 

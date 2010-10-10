@@ -100,9 +100,9 @@ static void _unit_insert_label_before(int label, expression *position)
 // ѕоддержка циклов.
 //
 
-int unit_create_label(function_desc *function)
+int unit_create_label()
 {
-    return function->func_last_label++;
+    return _curr_func->func_last_label++;
 }
 
 int unit_push_label(void)
@@ -119,7 +119,7 @@ void unit_push_jump(int dest, expression *condition, BOOL invert_condition)
 
 int unit_create_label_and_push_jump(expression *condition, BOOL invert_condition)
 {
-    int label = unit_create_label(_curr_func);
+    int label = unit_create_label();
     unit_push_jump(label, condition, invert_condition);
     return label;
 }
@@ -177,6 +177,20 @@ static void _resolve_jumps_to_names_labels(void)
 // ѕоддержка break/continue.
 //
 
+#define MAX_NEESTED_LABELS 64
+
+static int _continue_targets[MAX_NEESTED_LABELS];
+static int _break_targets[MAX_NEESTED_LABELS];
+static int _last_continue_target;
+static int _last_break_target;
+
+
+static void _unit_reset_break_continue_targets()
+{
+    _last_continue_target   = -1;
+    _last_break_target      = -1;
+}
+
 void unit_push_continue()
 {
     if (last_continue_target != INVALID_LABEL)
@@ -193,9 +207,19 @@ void unit_push_break()
         aux_error("break outside a loop or switch");
 }
 
-void unit_push_continue_break_target(int label)
+void unit_push_continue_break_targets(int continue_target, int break_target)
 {
-// тут надо поддерживать стек break/continue
+    ASSERT(++_last_continue_target < MAX_NEESTED_LABELS);
+    _continue_targets[_last_continue_target] = continue_target;
+
+    ASSERT(++_last_break_target < MAX_NEESTED_LABELS);
+    _break_targets[_last_break_target] = break_target;
+}
+
+void unit_pop_continue_break_targets()
+{
+    ASSERT(_last_continue_target-- >= 0);
+    ASSERT(_last_break_target-- >= 0);
 }
 
 
@@ -203,20 +227,23 @@ void unit_push_continue_break_target(int label)
 // ѕоддержка switch/case/default.
 //
 
+void unit_open_switch_stmt(expression *value)
+{
+    // тут надо класть в стек break и вычисл€ть выражение во временную переменную
+}
+
 void unit_push_case_label(expression *value)
 {
-// тут надо генерировать условный переход
+    // тут надо генерировать условный переход
 }
 
 void unit_push_default_stmt()
 {
     // тут надо создавать метку, на которую генерировать переход в конце оператора switch
-    //return unit_create_label(_curr_func);
 }
 
-void unit_push_switch_stmt(expression *value)
+void unit_close_switch_stmt()
 {
-// тут надо класть в стек break и вычисл€ть выражение во временную переменную
 }
 
 
@@ -630,6 +657,9 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
         _last_function->func_next   = _curr_func;
         _last_function              = _curr_func;
     }
+
+
+    _unit_reset_break_continue_targets();
 }
 
 void unit_handle_function_body(symbol *sym)
