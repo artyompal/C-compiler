@@ -327,7 +327,7 @@ void x86_create_register_variables(function_desc *function)
     }
 
 
-    last_pseudo_register            = function->func_pseudoregs_cnt;
+    last_pseudo_register            = function->func_pseudoregs_cnt+1;
     function->func_start_of_regvars = last_pseudo_register;
     reg_var                         = _register_vars_list.first;
 

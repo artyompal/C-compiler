@@ -14,9 +14,6 @@ static function_desc *_curr_func            = NULL;
 
 static x86_instruction *_last_instruction   = NULL;
 
-static int last_break_target                = INVALID_LABEL;
-static int last_continue_target             = INVALID_LABEL;
-
 
 //
 // Добавление выражений.
@@ -177,15 +174,15 @@ static void _resolve_jumps_to_names_labels(void)
 // Поддержка break/continue.
 //
 
-#define MAX_NEESTED_LABELS 64
+#define MAX_NEESTED_LOOPS 64
 
-static int _continue_targets[MAX_NEESTED_LABELS];
-static int _break_targets[MAX_NEESTED_LABELS];
+static int _continue_targets[MAX_NEESTED_LOOPS];
+static int _break_targets[MAX_NEESTED_LOOPS];
 static int _last_continue_target;
 static int _last_break_target;
 
 
-static void _unit_reset_break_continue_targets()
+static void _unit_reset_continue_break_targets()
 {
     _last_continue_target   = -1;
     _last_break_target      = -1;
@@ -193,27 +190,27 @@ static void _unit_reset_break_continue_targets()
 
 void unit_push_continue()
 {
-    if (last_continue_target != INVALID_LABEL)
-        unit_push_jump(last_continue_target, NULL, FALSE);
+    if (_last_continue_target != INVALID_LABEL)
+        unit_push_jump(_continue_targets[_last_continue_target], NULL, FALSE);
     else
         aux_error("continue outside a loop");
 }
 
 void unit_push_break()
 {
-    if (last_break_target != INVALID_LABEL)
-        unit_push_jump(last_break_target, NULL, FALSE);
+    if (_last_break_target != INVALID_LABEL)
+        unit_push_jump(_break_targets[_last_break_target], NULL, FALSE);
     else
         aux_error("break outside a loop or switch");
 }
 
 void unit_push_continue_break_targets(int continue_target, int break_target)
 {
-    ASSERT(++_last_continue_target < MAX_NEESTED_LABELS);
-    _continue_targets[_last_continue_target] = continue_target;
+    if (++_last_continue_target >= MAX_NEESTED_LOOPS || ++_last_break_target >= MAX_NEESTED_LOOPS)
+        aux_fatal_error("too many nested loops");
 
-    ASSERT(++_last_break_target < MAX_NEESTED_LABELS);
-    _break_targets[_last_break_target] = break_target;
+    _continue_targets[_last_continue_target]    = continue_target;
+    _break_targets[_last_break_target]          = break_target;
 }
 
 void unit_pop_continue_break_targets()
@@ -229,12 +226,12 @@ void unit_pop_continue_break_targets()
 
 void unit_open_switch_stmt(expression *value)
 {
-    // тут надо класть в стек break и вычислять выражение во временную переменную
+    // тут надо класть в стек break/default и вычислять выражение во временную переменную
 }
 
 void unit_push_case_label(expression *value)
 {
-    // тут надо генерировать условный переход
+    // тут надо генерировать сравнение и условный переход
 }
 
 void unit_push_default_stmt()
@@ -244,6 +241,7 @@ void unit_push_default_stmt()
 
 void unit_close_switch_stmt()
 {
+    // тут надо восстанавливать break/default
 }
 
 
@@ -659,7 +657,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     }
 
 
-    _unit_reset_break_continue_targets();
+    _unit_reset_continue_break_targets();
 }
 
 void unit_handle_function_body(symbol *sym)
