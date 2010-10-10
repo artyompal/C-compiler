@@ -8,8 +8,6 @@
 #include "unit.h"
 #include "parser_actions.h"
 
-expression *for_postaction;
-
 %}
 
 %token <sym>    lxm_identifier
@@ -696,18 +694,15 @@ statement
             }
             expression ')'
             {
-                int continue_label;
-
-                for_postaction  = $5;
-                continue_label  = unit_create_label();                          // create continue label
-                $<label>$       = continue_label;
+                int continue_label  = unit_create_label();                      // create continue label
+                $<label>$           = continue_label;
                 unit_push_continue_break_targets(continue_label, $<label>4);
             }
             statement
             {
                 unit_pop_continue_break_targets();
                 unit_place_label($<label>7);                                    // place continue label
-                unit_push_expression(for_postaction);
+                unit_push_expression($5);
                 unit_push_jump($<label>3, NULL, TRUE);                          // place jump to restart
                 unit_place_label($<label>4);                                    // place break label
             }
