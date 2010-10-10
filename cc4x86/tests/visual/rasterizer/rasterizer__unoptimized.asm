@@ -2501,6 +2501,7 @@ label0003:
 	mov	reg84,[reg81]
 	mov	[reg83],reg84
 label0005:
+label0006:
 	lea	reg85,[ebp-16]
 	lea	reg86,[ebp+12]
 	mov	reg87,[reg86]
@@ -2508,7 +2509,7 @@ label0005:
 	add	reg87,reg88
 	mov	reg89,[reg85]
 	cmp	reg89,[reg87]
-	jge	label0006
+	jge	label0007
 	lea	reg90,[ebp+8]
 	mov	reg91,[reg90]
 	mov	reg92,4
@@ -2783,10 +2784,11 @@ label0005:
 	call	__rasterize_horiz_line__unordered
 	add	esp,36
 	x86instr_pop_all
+label0008:
 	lea	reg235,[ebp-16]
 	inc	dword ptr [reg235]
-	jmp	label0005
-label0006:
+	jmp	label0006
+label0007:
 	lea	reg236,[ebp+12]
 	mov	reg237,[reg236]
 	mov	reg238,4
@@ -2983,7 +2985,8 @@ label0006:
 	add	reg339,[reg337]
 	lea	reg340,[ebp-16]
 	mov	[reg340],reg339
-label0007:
+label0009:
+label000a:
 	lea	reg341,[ebp-16]
 	lea	reg342,[ebp+16]
 	mov	reg343,[reg342]
@@ -2991,7 +2994,7 @@ label0007:
 	add	reg343,reg344
 	mov	reg345,[reg341]
 	cmp	reg345,[reg343]
-	jge	label0008
+	jge	label000b
 	lea	reg346,[ebp+12]
 	mov	reg347,[reg346]
 	mov	reg348,4
@@ -3266,10 +3269,11 @@ label0007:
 	call	__rasterize_horiz_line__unordered
 	add	esp,36
 	x86instr_pop_all
+label000c:
 	lea	reg491,[ebp-16]
 	inc	dword ptr [reg491]
-	jmp	label0007
-label0008:
+	jmp	label000a
+label000b:
 	x86instr_destroy_stack_frame	44
 	ret
 __rasterize_triangle_2i endp	
@@ -3292,6 +3296,7 @@ __clip_on_plain proc
 	lea	reg10,[ebp-8]
 	mov	[reg10],reg8
 label0000:
+label0001:
 	lea	reg11,[ebp-8]
 	lea	reg12,[ebp+12]
 	mov	reg13,192
@@ -3302,228 +3307,229 @@ label0000:
 	mov	reg16,[reg15]
 	add	reg16,reg14
 	cmp	[reg11],reg16
-	jge	label0001
+	jge	label0002
+	lea	reg17,[ebp-4]
+	add	dword ptr [reg17],24
 	x86instr_push_all
-	lea	reg17,[ebp+16]
-	push	dword ptr [reg17]
-	lea	reg18,[ebp-4]
-	mov	reg19,[reg18]
-	push	reg19
-	lea	reg20,[ebp-24]
+	lea	reg18,[ebp+16]
+	push	dword ptr [reg18]
+	lea	reg19,[ebp-4]
+	mov	reg20,[reg19]
 	push	reg20
+	lea	reg21,[ebp-24]
+	push	reg21
 	call	_vec4f_subtract
 	add	esp,12
 	x86instr_pop_all
-	lea	reg21,[ebp-52]
+	lea	reg22,[ebp-52]
 	x86instr_push_all
-	lea	reg22,[ebp+20]
-	push	dword ptr [reg22]
-	lea	reg23,[ebp-24]
-	push	reg23
+	lea	reg23,[ebp+20]
+	push	dword ptr [reg23]
+	lea	reg24,[ebp-24]
+	push	reg24
 	call	_vec4f_dot
 	add	esp,8
 	x86instr_pop_all
-	fstp	dword ptr [reg21]
+	fstp	dword ptr [reg22]
 	x86instr_push_all
-	lea	reg24,[ebp+16]
-	push	dword ptr [reg24]
-	lea	reg25,[ebp-8]
-	mov	reg26,[reg25]
-	push	reg26
-	lea	reg27,[ebp-24]
+	lea	reg25,[ebp+16]
+	push	dword ptr [reg25]
+	lea	reg26,[ebp-8]
+	mov	reg27,[reg26]
 	push	reg27
+	lea	reg28,[ebp-24]
+	push	reg28
 	call	_vec4f_subtract
 	add	esp,12
 	x86instr_pop_all
-	lea	reg28,[ebp-56]
+	lea	reg29,[ebp-56]
 	x86instr_push_all
-	lea	reg29,[ebp+20]
-	push	dword ptr [reg29]
-	lea	reg30,[ebp-24]
-	push	reg30
+	lea	reg30,[ebp+20]
+	push	dword ptr [reg30]
+	lea	reg31,[ebp-24]
+	push	reg31
 	call	_vec4f_dot
 	add	esp,8
 	x86instr_pop_all
-	fstp	dword ptr [reg28]
-	lea	reg31,[ebp-52]
+	fstp	dword ptr [reg29]
+	lea	reg32,[ebp-52]
 	fldz
-	fld	dword ptr [reg31]
+	fld	dword ptr [reg32]
 	fucomip	st,st(1)
 	fstp	st
-	jb	label0002
-	lea	reg32,[ebp+8]
-	mov	reg33,192
-	add	reg33,[reg32]
-	mov	reg34,[reg33]
-	inc	dword ptr [reg33]
-	mov	reg35,24
-	imul	reg34,reg35
-	lea	reg36,[ebp+8]
-	mov	reg37,[reg36]
-	add	reg37,reg34
-	lea	reg38,[ebp-4]
-	mov	reg39,[reg38]
+	jb	label0004
+	lea	reg33,[ebp+8]
+	mov	reg34,192
+	add	reg34,[reg33]
+	mov	reg35,[reg34]
+	inc	dword ptr [reg34]
+	mov	reg36,24
+	imul	reg35,reg36
+	lea	reg37,[ebp+8]
+	mov	reg38,[reg37]
+	add	reg38,reg35
+	lea	reg39,[ebp-4]
 	mov	reg40,[reg39]
-	mov	reg41,[reg39+4]
-	mov	[reg37],reg40
-	mov	[reg37+4],reg41
-	mov	reg40,[reg39+8]
-	mov	reg41,[reg39+12]
-	mov	[reg37+8],reg40
-	mov	[reg37+12],reg41
-	mov	reg40,[reg39+16]
-	mov	reg41,[reg39+20]
-	mov	[reg37+16],reg40
-	mov	[reg37+20],reg41
-label0002:
-	lea	reg42,[ebp-52]
-	fldz
-	fld	dword ptr [reg42]
-	fucomip	st,st(1)
-	fstp	st
-	jbe	label0005
-	lea	reg43,[ebp-56]
+	mov	reg41,[reg40]
+	mov	reg42,[reg40+4]
+	mov	[reg38],reg41
+	mov	[reg38+4],reg42
+	mov	reg41,[reg40+8]
+	mov	reg42,[reg40+12]
+	mov	[reg38+8],reg41
+	mov	[reg38+12],reg42
+	mov	reg41,[reg40+16]
+	mov	reg42,[reg40+20]
+	mov	[reg38+16],reg41
+	mov	[reg38+20],reg42
+label0004:
+	lea	reg43,[ebp-52]
 	fldz
 	fld	dword ptr [reg43]
 	fucomip	st,st(1)
 	fstp	st
-	jb	label0004
-label0005:
+	jbe	label0007
 	lea	reg44,[ebp-56]
 	fldz
 	fld	dword ptr [reg44]
 	fucomip	st,st(1)
 	fstp	st
-	jb	label0003
-	lea	reg45,[ebp-52]
+	jb	label0006
+label0007:
+	lea	reg45,[ebp-56]
 	fldz
 	fld	dword ptr [reg45]
 	fucomip	st,st(1)
 	fstp	st
-	jae	label0003
-label0004:
+	jb	label0005
+	lea	reg46,[ebp-52]
+	fldz
+	fld	dword ptr [reg46]
+	fucomip	st,st(1)
+	fstp	st
+	jae	label0005
+label0006:
 	x86instr_push_all
-	lea	reg46,[ebp-4]
-	mov	reg47,[reg46]
-	push	reg47
-	lea	reg48,[ebp+16]
-	push	dword ptr [reg48]
-	lea	reg49,[ebp-24]
-	push	reg49
+	lea	reg47,[ebp-4]
+	mov	reg48,[reg47]
+	push	reg48
+	lea	reg49,[ebp+16]
+	push	dword ptr [reg49]
+	lea	reg50,[ebp-24]
+	push	reg50
 	call	_vec4f_subtract
 	add	esp,12
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg50,[ebp-4]
-	mov	reg51,[reg50]
-	push	reg51
-	lea	reg52,[ebp-8]
-	mov	reg53,[reg52]
-	push	reg53
-	lea	reg54,[ebp-40]
+	lea	reg51,[ebp-4]
+	mov	reg52,[reg51]
+	push	reg52
+	lea	reg53,[ebp-8]
+	mov	reg54,[reg53]
 	push	reg54
+	lea	reg55,[ebp-40]
+	push	reg55
 	call	_vec4f_subtract
 	add	esp,12
 	x86instr_pop_all
-	lea	reg55,[ebp-60]
+	lea	reg56,[ebp-60]
 	x86instr_push_all
-	lea	reg56,[ebp+20]
-	push	dword ptr [reg56]
-	lea	reg57,[ebp-24]
-	push	reg57
+	lea	reg57,[ebp+20]
+	push	dword ptr [reg57]
+	lea	reg58,[ebp-24]
+	push	reg58
 	call	_vec4f_dot
 	add	esp,8
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg58,[ebp+20]
-	push	dword ptr [reg58]
-	lea	reg59,[ebp-40]
-	push	reg59
+	lea	reg59,[ebp+20]
+	push	dword ptr [reg59]
+	lea	reg60,[ebp-40]
+	push	reg60
 	call	_vec4f_dot
 	add	esp,8
 	x86instr_pop_all
 	fdivp
-	fstp	dword ptr [reg55]
+	fstp	dword ptr [reg56]
 	x86instr_push_all
-	lea	reg60,[ebp-60]
-	push	dword ptr [reg60]
-	lea	reg61,[ebp-40]
-	push	reg61
+	lea	reg61,[ebp-60]
+	push	dword ptr [reg61]
+	lea	reg62,[ebp-40]
+	push	reg62
 	call	_vec4f_mul
 	add	esp,8
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg62,[ebp-40]
-	push	reg62
-	lea	reg63,[ebp-4]
-	mov	reg64,[reg63]
-	push	reg64
-	lea	reg65,[ebp+8]
-	mov	reg66,192
-	add	reg66,[reg65]
-	mov	reg67,24
-	imul	reg67,[reg66]
-	lea	reg68,[ebp+8]
-	mov	reg69,[reg68]
-	add	reg69,reg67
-	push	reg69
+	lea	reg63,[ebp-40]
+	push	reg63
+	lea	reg64,[ebp-4]
+	mov	reg65,[reg64]
+	push	reg65
+	lea	reg66,[ebp+8]
+	mov	reg67,192
+	add	reg67,[reg66]
+	mov	reg68,24
+	imul	reg68,[reg67]
+	lea	reg69,[ebp+8]
+	mov	reg70,[reg69]
+	add	reg70,reg68
+	push	reg70
 	call	_vec4f_add
 	add	esp,12
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg70,[ebp-4]
-	mov	reg71,16
-	add	reg71,[reg70]
-	push	reg71
-	lea	reg72,[ebp-8]
-	mov	reg73,16
-	add	reg73,[reg72]
-	push	reg73
-	lea	reg74,[ebp-48]
+	lea	reg71,[ebp-4]
+	mov	reg72,16
+	add	reg72,[reg71]
+	push	reg72
+	lea	reg73,[ebp-8]
+	mov	reg74,16
+	add	reg74,[reg73]
 	push	reg74
+	lea	reg75,[ebp-48]
+	push	reg75
 	call	_vec2f_subtract
 	add	esp,12
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg75,[ebp-60]
-	push	dword ptr [reg75]
-	lea	reg76,[ebp-48]
-	push	reg76
+	lea	reg76,[ebp-60]
+	push	dword ptr [reg76]
+	lea	reg77,[ebp-48]
+	push	reg77
 	call	_vec2f_mul
 	add	esp,8
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg77,[ebp-48]
-	push	reg77
-	lea	reg78,[ebp-4]
-	mov	reg79,16
-	add	reg79,[reg78]
-	push	reg79
-	lea	reg80,[ebp+8]
-	mov	reg81,192
-	add	reg81,[reg80]
-	mov	reg82,24
-	imul	reg82,[reg81]
-	lea	reg83,[ebp+8]
-	mov	reg84,[reg83]
-	add	reg84,reg82
-	mov	reg85,16
-	add	reg84,reg85
-	push	reg84
+	lea	reg78,[ebp-48]
+	push	reg78
+	lea	reg79,[ebp-4]
+	mov	reg80,16
+	add	reg80,[reg79]
+	push	reg80
+	lea	reg81,[ebp+8]
+	mov	reg82,192
+	add	reg82,[reg81]
+	mov	reg83,24
+	imul	reg83,[reg82]
+	lea	reg84,[ebp+8]
+	mov	reg85,[reg84]
+	add	reg85,reg83
+	mov	reg86,16
+	add	reg85,reg86
+	push	reg85
 	call	_vec2f_add
 	add	esp,12
 	x86instr_pop_all
-	lea	reg86,[ebp+8]
-	mov	reg87,192
-	add	reg87,[reg86]
-	inc	dword ptr [reg87]
+	lea	reg87,[ebp+8]
+	mov	reg88,192
+	add	reg88,[reg87]
+	inc	dword ptr [reg88]
+label0005:
 label0003:
-	lea	reg88,[ebp-4]
-	add	dword ptr [reg88],24
 	lea	reg89,[ebp-8]
 	add	dword ptr [reg89],24
-	jmp	label0000
-label0001:
+	jmp	label0001
+label0002:
 	lea	reg90,[ebp+8]
 	mov	reg91,192
 	add	reg91,[reg90]
@@ -3739,13 +3745,14 @@ label0001:
 	mov	reg9,0
 	mov	[reg8],reg9
 label0002:
+label0003:
 	lea	reg10,[ebp-136]
 	lea	reg11,[ebp+8]
 	mov	reg12,192
 	add	reg12,[reg11]
 	mov	reg13,[reg10]
 	cmp	reg13,[reg12]
-	jge	label0003
+	jge	label0004
 	x86instr_push_all
 	lea	reg14,[ebp+8]
 	mov	reg15,[reg14]
@@ -3784,14 +3791,16 @@ label0002:
 	mov	reg33,[reg28+4]
 	mov	[reg22],reg32
 	mov	[reg22+4],reg33
+label0005:
 	lea	reg34,[ebp-136]
 	inc	dword ptr [reg34]
-	jmp	label0002
-label0003:
+	jmp	label0003
+label0004:
 	lea	reg35,[ebp-136]
 	mov	reg36,2
 	mov	[reg35],reg36
-label0004:
+label0006:
+label0007:
 	lea	reg37,[ebp-136]
 	lea	reg38,[ebp+8]
 	mov	reg39,192
@@ -3800,7 +3809,7 @@ label0004:
 	mov	reg41,[reg39]
 	sub	reg41,reg40
 	cmp	[reg37],reg41
-	jge	label0005
+	jge	label0008
 	x86instr_push_all
 	lea	reg42,[ebp-132]
 	lea	reg43,[ebp-136]
@@ -3823,10 +3832,11 @@ label0004:
 	call	__rasterize_triangle_2i
 	add	esp,12
 	x86instr_pop_all
+label0009:
 	lea	reg52,[ebp-136]
 	inc	dword ptr [reg52]
-	jmp	label0004
-label0005:
+	jmp	label0007
+label0008:
 	x86instr_destroy_stack_frame	136
 	ret
 __rasterize_polygon_4f endp	

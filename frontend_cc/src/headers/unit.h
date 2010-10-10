@@ -68,11 +68,6 @@ void            unit_push_case_label                (expression *value);
 void            unit_push_default_stmt              ();
 void            unit_close_switch_stmt              ();
 
-// поддержка цикла for (вырезание третьей инструкции и вставка её после тела цикла)
-expression *    unit_get_last_expression            (void);
-expression *    unit_extract_slice                  (expression *expr);
-void            unit_insert_slice                   (expression *list);
-
 // поддержка кодогенератора
 void            unit_codegen                        (void);
 void            unit_push_nullary_instruction       (x86_instruction_code code);

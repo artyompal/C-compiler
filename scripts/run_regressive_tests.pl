@@ -33,4 +33,6 @@ run_test("simple_test.c");
 run_test("goto.c");
 run_test("while.c");
 run_test("while_break.c");
+run_test("for.c");
+run_test("for2.c");
 
