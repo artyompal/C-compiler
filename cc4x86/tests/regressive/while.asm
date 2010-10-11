@@ -22,11 +22,11 @@ _test proc
 label0000:
 	mov	eax,edi
 	inc	edi
-	cld	eax,10
+	cmp	eax,10
 	jge	label0001
 	jmp	label0000
 label0001:
-	cld	edi,11
+	cmp	edi,11
 	je	label0002
 	mov	eax,1
 	pop	ebx
@@ -41,11 +41,12 @@ label0002:
 label0003:
 	sal	esi,1
 	inc	ebx
-	cld	esi,65536
-	jl	label0003
 label0004:
-	cld	ebx,16
-	je	label0005
+	cmp	esi,65536
+	jl	label0003
+label0005:
+	cmp	ebx,16
+	je	label0006
 	mov	eax,1
 	pop	ebx
 	pop	esi
@@ -53,7 +54,7 @@ label0004:
 	add	esp,12
 	pop	ebp
 	ret
-label0005:
+label0006:
 	mov	eax,0
 	pop	ebx
 	pop	esi

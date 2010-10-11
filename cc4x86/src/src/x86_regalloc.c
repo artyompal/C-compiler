@@ -314,18 +314,20 @@ void x86_allocate_registers(function_desc *function)
             real_reg    = ~instr->in_op1.data.reg;
             reg         = instr->in_op2.data.reg;
 
-            ASSERT(pseudoregs_map[reg].reg_last_read == instr);
+            ASSERT(pseudoregs_map[reg].reg_last_read == instr || REG_IS_REGVAR(reg));
 
             if (pseudoregs_map[reg].reg_location == real_reg) {
                 bincode_erase_instruction(function, instr);
                 _free_real_register(real_reg);
             } else if (_is_real_register_free(real_reg)) {
                 instr->in_op2.data.reg              = ~pseudoregs_map[reg].reg_location;
-                _free_real_register(pseudoregs_map[reg].reg_location);
+
+                if (pseudoregs_map[reg].reg_last_read == instr)
+                    _free_real_register(pseudoregs_map[reg].reg_location);
             } else {
                 reg2                                = _real_registers_map[real_reg];
                 real_reg2                           = pseudoregs_map[reg].reg_location;
-                ASSERT(!REG_IS_REGVAR(reg2));
+                UNIMPLEMENTED_ASSERT(!REG_IS_REGVAR(reg2));
 
                 instr->in_code                      = x86instr_int_xchg;
                 instr->in_op2.data.reg              = ~real_reg2;

@@ -8,6 +8,8 @@
 #include "unit.h"
 #include "parser_actions.h"
 
+expression *for_postaction;
+
 %}
 
 %token <sym>    lxm_identifier
@@ -687,23 +689,23 @@ statement
             }
         | for_statement expression_statement
             {
-                $<label>$ = unit_push_label();                                  // push restart label
+                $<label>$ = unit_push_label();                                  // push continue label
             }
             {
                 $<label>$ = unit_create_label_and_push_jump($2, TRUE);          // create break label and conditional jump
+                for_postaction = unit_get_last_expression();                    // remember lastest expression
             }
             expression ')'
             {
-                int continue_label  = unit_create_label();                      // create continue label
-                $<label>$           = continue_label;
-                unit_push_continue_break_targets(continue_label, $<label>4);
+                unit_push_expression($5);                                       // push the rest of post-action
+                $<expr>$ = unit_extract_slice(for_postaction->expr_next);       // extract post-action code
+                unit_push_continue_break_targets($<label>3, $<label>4);
             }
             statement
             {
                 unit_pop_continue_break_targets();
-                unit_place_label($<label>7);                                    // place continue label
-                unit_push_expression($5);
-                unit_push_jump($<label>3, NULL, TRUE);                          // place jump to restart
+                unit_insert_slice($<expr>7);
+                unit_push_jump($<label>3, NULL, TRUE);                          // place jump to continue
                 unit_place_label($<label>4);                                    // place break label
             }
 

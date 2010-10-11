@@ -1563,7 +1563,6 @@ label0006:
 	push	dword ptr [ebp-8]
 	call	__rasterize_horiz_line__unordered
 	add	esp,36
-label0008:
 	inc	dword ptr [ebp-16]
 	jmp	label0006
 label0007:
@@ -1651,11 +1650,11 @@ label0007:
 	mov	eax,1
 	add	eax,[esi+4]
 	mov	[ebp-16],eax
+label0008:
 label0009:
-label000a:
 	mov	eax,[ebp-16]
 	cmp	eax,[edi+4]
-	jge	label000b
+	jge	label000a
 	mov	eax,[ebp-16]
 	sub	eax,[esi+4]
 	mov	ecx,[edi]
@@ -1779,10 +1778,9 @@ label000a:
 	push	dword ptr [ebp-8]
 	call	__rasterize_horiz_line__unordered
 	add	esp,36
-label000c:
 	inc	dword ptr [ebp-16]
-	jmp	label000a
-label000b:
+	jmp	label0009
+label000a:
 	pop	ebx
 	pop	esi
 	pop	edi
@@ -1811,7 +1809,6 @@ label0001:
 	add	eax,ecx
 	cmp	ebx,eax
 	jge	label0002
-	add	esi,24
 	push	dword ptr [ebp+16]
 	mov	eax,esi
 	push	eax
@@ -1842,7 +1839,7 @@ label0001:
 	fld	dword ptr [ebp-52]
 	fucomip	st,st(1)
 	fstp	st
-	jb	label0004
+	jb	label0003
 	mov	eax,[edi+192]
 	inc	dword ptr [edi+192]
 	imul	eax,24
@@ -1860,29 +1857,29 @@ label0001:
 	mov	edx,[esi+20]
 	mov	[ecx+16],eax
 	mov	[ecx+20],edx
-label0004:
+label0003:
 	fldz
 	fld	dword ptr [ebp-52]
 	fucomip	st,st(1)
 	fstp	st
-	jbe	label0007
-	fldz
-	fld	dword ptr [ebp-56]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0006
-label0007:
+	jbe	label0006
 	fldz
 	fld	dword ptr [ebp-56]
 	fucomip	st,st(1)
 	fstp	st
 	jb	label0005
+label0006:
+	fldz
+	fld	dword ptr [ebp-56]
+	fucomip	st,st(1)
+	fstp	st
+	jb	label0004
 	fldz
 	fld	dword ptr [ebp-52]
 	fucomip	st,st(1)
 	fstp	st
-	jae	label0005
-label0006:
+	jae	label0004
+label0005:
 	mov	eax,esi
 	push	eax
 	push	dword ptr [ebp+16]
@@ -1959,8 +1956,8 @@ label0006:
 	call	_vec2f_add
 	add	esp,12
 	inc	dword ptr [edi+192]
-label0005:
-label0003:
+label0004:
+	add	esi,24
 	add	ebx,24
 	jmp	label0001
 label0002:
@@ -2160,17 +2157,16 @@ label0003:
 	mov	ebx,[ecx+4]
 	mov	[eax],edx
 	mov	[eax+4],ebx
-label0005:
 	inc	esi
 	jmp	label0003
 label0004:
 	mov	esi,2
+label0005:
 label0006:
-label0007:
 	mov	eax,[edi+192]
 	dec	eax
 	cmp	esi,eax
-	jge	label0008
+	jge	label0007
 	lea	eax,[ebp-132]
 	mov	ecx,esi
 	sal	ecx,4
@@ -2186,10 +2182,9 @@ label0007:
 	push	eax
 	call	__rasterize_triangle_2i
 	add	esp,12
-label0009:
 	inc	esi
-	jmp	label0007
-label0008:
+	jmp	label0006
+label0007:
 	pop	ebx
 	pop	esi
 	pop	edi
