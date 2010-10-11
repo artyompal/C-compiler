@@ -43,17 +43,18 @@ label0003:
 	mov	ebx,0
 label0004:
 	cmp	esi,50
-	jne	label0006
+	jne	label0007
 	add	esi,50
 	jmp	label0005
-label0006:
+label0007:
 	inc	esi
 	inc	ebx
+label0005:
 	cmp	esi,100
 	jl	label0004
-label0005:
+label0006:
 	cmp	ebx,50
-	je	label0007
+	je	label0008
 	mov	eax,1
 	pop	ebx
 	pop	esi
@@ -61,7 +62,7 @@ label0005:
 	add	esp,12
 	pop	ebp
 	ret
-label0007:
+label0008:
 	mov	eax,0
 	pop	ebx
 	pop	esi

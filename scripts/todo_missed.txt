@@ -13,6 +13,7 @@ x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < x86reg_count);
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(!REG_IS_REGVAR(reg2));
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(_real_registers_cnt < X86_TMP_REGISTERS_COUNT);
 x86_text_output.c:  FIXME: assumed that operand can either be int or float
 symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов

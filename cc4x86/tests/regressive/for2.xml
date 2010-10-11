@@ -31,27 +31,26 @@
             <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="8"/>
           </condition>
         </expression>
-        <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
-          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
-        </expression>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0004" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0003" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="2" code="equal">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
             <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="4"/>
           </condition>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0002"/>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0004"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
         <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
+        <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
+        </expression>
         <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="j"/>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0001"/>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0002"/>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0005" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0004" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="3" code="logical_and_in_jump">
             <operand_1 type="int" lvalue="no" complexity="2" code="equal">
               <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
@@ -67,13 +66,13 @@
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="__tmp0"/>
           <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0006"/>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0005"/>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0005"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0004"/>
         <expression type="int" lvalue="no" complexity="2" code="assign">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="__tmp0"/>
           <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0006"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0005"/>
         <expression type="null" lvalue="no" complexity="0" code="return">
           <retvalue type="int" lvalue="yes" complexity="1" code="variable" name="__tmp0"/>
         </expression>

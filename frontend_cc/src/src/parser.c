@@ -72,6 +72,8 @@
 #include "unit.h"
 #include "parser_actions.h"
 
+expression *for_postaction;
+
 
 #define	YYFINAL		392
 #define	YYFLAG		-32768
@@ -221,29 +223,29 @@ static const short yyrhs[] = {     3,
 
 #if YYDEBUG != 0
 static const short yyrline[] = { 0,
-    64,    66,    67,    68,    73,    74,    76,    79,    81,    83,
-    86,    88,    93,    95,   100,   101,   103,   106,   108,   111,
-   113,   116,   118,   120,   122,   127,   128,   133,   134,   136,
-   138,   143,   144,   146,   151,   152,   154,   159,   160,   162,
-   164,   166,   171,   172,   174,   179,   180,   185,   186,   191,
-   192,   197,   198,   203,   204,   209,   210,   215,   216,   218,
-   220,   222,   224,   226,   228,   230,   232,   234,   236,   241,
-   242,   247,   258,   260,   262,   267,   268,   270,   271,   273,
-   274,   279,   281,   283,   285,   287,   292,   294,   296,   298,
-   300,   302,   304,   306,   308,   310,   312,   314,   319,   321,
-   323,   325,   327,   329,   334,   335,   340,   342,   347,   348,
-   350,   351,   356,   358,   363,   365,   370,   372,   374,   379,
-   381,   386,   388,   393,   395,   397,   402,   403,   407,   409,
-   414,   416,   420,   422,   424,   426,   431,   433,   435,   440,
-   445,   447,   449,   451,   456,   457,   462,   463,   468,   470,
-   474,   476,   478,   483,   485,   490,   491,   492,   497,   499,
-   501,   503,   508,   510,   512,   517,   519,   521,   526,   528,
-   530,   535,   537,   539,   544,   545,   557,   559,   561,   566,
-   567,   571,   572,   573,   578,   579,   582,   584,   588,   595,
-   603,   606,   606,   609,   609,   612,   612,   615,   616,   618,
-   620,   623,   625,   627,   631,   637,   640,   645,   651,   656,
-   661,   664,   669,   676,   683,   688,   692,   695,   702,   710,
-   712,   724,   725,   729,   730,   735,   736,   737,   738
+    66,    68,    69,    70,    75,    76,    78,    81,    83,    85,
+    88,    90,    95,    97,   102,   103,   105,   108,   110,   113,
+   115,   118,   120,   122,   124,   129,   130,   135,   136,   138,
+   140,   145,   146,   148,   153,   154,   156,   161,   162,   164,
+   166,   168,   173,   174,   176,   181,   182,   187,   188,   193,
+   194,   199,   200,   205,   206,   211,   212,   217,   218,   220,
+   222,   224,   226,   228,   230,   232,   234,   236,   238,   243,
+   244,   249,   260,   262,   264,   269,   270,   272,   273,   275,
+   276,   281,   283,   285,   287,   289,   294,   296,   298,   300,
+   302,   304,   306,   308,   310,   312,   314,   316,   321,   323,
+   325,   327,   329,   331,   336,   337,   342,   344,   349,   350,
+   352,   353,   358,   360,   365,   367,   372,   374,   376,   381,
+   383,   388,   390,   395,   397,   399,   404,   405,   409,   411,
+   416,   418,   422,   424,   426,   428,   433,   435,   437,   442,
+   447,   449,   451,   453,   458,   459,   464,   465,   470,   472,
+   476,   478,   480,   485,   487,   492,   493,   494,   499,   501,
+   503,   505,   510,   512,   514,   519,   521,   523,   528,   530,
+   532,   537,   539,   541,   546,   547,   559,   561,   563,   568,
+   569,   573,   574,   575,   580,   581,   584,   586,   590,   597,
+   605,   608,   608,   611,   611,   614,   614,   617,   618,   620,
+   622,   625,   627,   629,   633,   639,   642,   647,   653,   658,
+   663,   666,   671,   678,   685,   690,   694,   698,   705,   712,
+   714,   726,   727,   731,   732,   737,   738,   739,   740
 };
 #endif
 
@@ -1758,27 +1760,27 @@ case 215:
     break;}
 case 216:
 {
-                yyval.label = unit_push_label();                                  // push restart label
+                yyval.label = unit_push_label();                                  // push continue label
             ;
     break;}
 case 217:
 {
                 yyval.label = unit_create_label_and_push_jump(yyvsp[-1].expr, TRUE);          // create break label and conditional jump
+                for_postaction = unit_get_last_expression();                    // remember lastest expression
             ;
     break;}
 case 218:
 {
-                int continue_label  = unit_create_label();                      // create continue label
-                yyval.label           = continue_label;
-                unit_push_continue_break_targets(continue_label, yyvsp[-2].label);
+                unit_push_expression(yyvsp[-1].expr);                                       // push the rest of post-action
+                yyval.expr = unit_extract_slice(for_postaction->expr_next);       // extract post-action code
+                unit_push_continue_break_targets(yyvsp[-3].label, yyvsp[-2].label);
             ;
     break;}
 case 219:
 {
                 unit_pop_continue_break_targets();
-                unit_place_label(yyvsp[-1].label);                                    // place continue label
-                unit_push_expression(yyvsp[-3].expr);
-                unit_push_jump(yyvsp[-5].label, NULL, TRUE);                          // place jump to restart
+                unit_insert_slice(yyvsp[-1].expr);
+                unit_push_jump(yyvsp[-5].label, NULL, TRUE);                          // place jump to continue
                 unit_place_label(yyvsp[-4].label);                                    // place break label
             ;
     break;}

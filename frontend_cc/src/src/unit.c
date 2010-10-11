@@ -246,6 +246,60 @@ void unit_close_switch_stmt()
 
 
 //
+// Поддержка цикла for (вырезание третьей инструкции и вставка её после тела цикла).
+//
+
+expression *unit_get_last_expression(void)
+{
+    return _curr_func->func_body_end;
+}
+
+expression *unit_extract_slice(expression *expr)
+{
+    if (!expr) {
+        return NULL;
+    }
+
+    if (_curr_func->func_body == expr) {
+        _curr_func->func_body = _curr_func->func_body_end = NULL;
+    } else {
+        _curr_func->func_body_end               = expr->expr_prev;
+        _curr_func->func_body_end->expr_next    = NULL;
+        expr->expr_prev                         = NULL;
+    }
+
+    return expr;
+}
+
+void unit_insert_slice(expression *list)
+{
+    expression *end;
+
+    ASSERT(_curr_func);
+    if (!list) {
+        return;
+    }
+
+    // вставка подсписка в двусвязный список
+    if (!_curr_func->func_body) {
+        _curr_func->func_body                   = list;
+    } else {
+        _curr_func->func_body_end->expr_next    = list;
+    }
+
+
+    // находим новый конец списка
+    end = _curr_func->func_body_end;
+
+    for (end = list; end->expr_next; ) {
+        end = end->expr_next;
+    }
+
+    _curr_func->func_body_end   = end;
+}
+
+
+//
 //  Удаление выражений, бессмысленных с точки зрения кодогенерации.
 //
 
