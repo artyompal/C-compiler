@@ -25,6 +25,8 @@ typedef struct x86_pseudoreg_info_decl {
 } x86_pseudoreg_info;
 
 
+#define REG_IS_REGVAR(REG)  ((REG) >= function->func_start_of_regvars)
+
 #define X86_TMP_REGISTERS_COUNT     (6)
 
 

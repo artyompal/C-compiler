@@ -1654,7 +1654,7 @@ case 189:
 case 190:
 {
                 unit_push_expression(yyvsp[0].expr);
-                yyval.label = unit_push_label();
+                yyval.label = unit_create_and_push_label();
             ;
     break;}
 case 191:
@@ -1686,23 +1686,23 @@ case 202:
     break;}
 case 204:
 {
-                unit_place_label(yyvsp[-1].label);
+                unit_push_label(yyvsp[-1].label);
             ;
     break;}
 case 205:
 {
                 yyval.label = unit_create_label_and_push_jump(NULL, FALSE);
-                unit_place_label(yyvsp[-2].label);
+                unit_push_label(yyvsp[-2].label);
             ;
     break;}
 case 206:
 {
-                unit_place_label(yyvsp[-1].label);
+                unit_push_label(yyvsp[-1].label);
             ;
     break;}
 case 207:
 {
-                yyval.label = unit_push_label();          // place continue label
+                yyval.label = unit_create_and_push_label();          // place continue label
             ;
     break;}
 case 208:
@@ -1715,38 +1715,38 @@ case 208:
 case 209:
 {
                 unit_push_jump(yyvsp[-2].label, NULL, FALSE); // do continue
-                unit_place_label(yyvsp[-1].label);            // place break label
+                unit_push_label(yyvsp[-1].label);             // place break label
                 unit_pop_continue_break_targets();
             ;
     break;}
 case 210:
 {
-                yyval.label = unit_push_label();          // place restart label
+                yyval.label = unit_create_and_push_label();          // place restart label
             ;
     break;}
 case 211:
 {
-                yyval.label = unit_create_label();        // create continue label;
+                yyval.label = unit_create_label();       // create continue label;
             ;
     break;}
 case 212:
 {
-                int break_label = unit_create_label();  // create break label
+                int break_label = unit_create_label(); // create break label
                 yyval.label = break_label;
                 unit_push_continue_break_targets(yyvsp[0].label, break_label);
             ;
     break;}
 case 213:
 {
-                unit_place_label(yyvsp[-7].label);            // place continue label
-                unit_push_jump(yyvsp[-8].label, yyvsp[-2].expr, FALSE);   // create conditional jump
-                unit_place_label(yyvsp[-6].label);            // place break label
+                unit_push_label(yyvsp[-7].label);            // place continue label
+                unit_push_jump(yyvsp[-8].label, yyvsp[-2].expr, FALSE);  // create conditional jump
+                unit_push_label(yyvsp[-6].label);            // place break label
                 unit_pop_continue_break_targets();
             ;
     break;}
 case 214:
 {
-                int continue_label = unit_push_label();                         // place continue label
+                int continue_label = unit_create_and_push_label();              // place continue label
                 int break_label = unit_create_label_and_push_jump(yyvsp[0].expr, TRUE);    // create break label
                 yyval.label = break_label;
                 unit_push_continue_break_targets(continue_label, break_label);
@@ -1755,12 +1755,12 @@ case 214:
 case 215:
 {
                 unit_push_jump(yyvsp[-4].label, NULL, TRUE);
-                unit_place_label(yyvsp[-2].label);                                    // place break label
+                unit_push_label(yyvsp[-2].label);                                     // place break label
             ;
     break;}
 case 216:
 {
-                yyval.label = unit_push_label();                                  // push continue label
+                yyval.label = unit_create_and_push_label();                       // push continue label
             ;
     break;}
 case 217:
@@ -1781,7 +1781,7 @@ case 219:
                 unit_pop_continue_break_targets();
                 unit_insert_slice(yyvsp[-1].expr);
                 unit_push_jump(yyvsp[-5].label, NULL, TRUE);                          // place jump to continue
-                unit_place_label(yyvsp[-4].label);                                    // place break label
+                unit_push_label(yyvsp[-4].label);                                     // place break label
             ;
     break;}
 case 220:

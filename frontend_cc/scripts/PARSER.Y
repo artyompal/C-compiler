@@ -597,7 +597,7 @@ for_statement
         : lxm_for '(' expression_statement
             {
                 unit_push_expression($3);
-                $<label>$ = unit_push_label();
+                $<label>$ = unit_create_and_push_label();
             }
         ;
 
@@ -628,20 +628,20 @@ statement
 
         | if_statement statement
             {
-                unit_place_label($<label>1);
+                unit_push_label($<label>1);
             }
         | if_statement statement lxm_else
             {
                 $<label>$ = unit_create_label_and_push_jump(NULL, FALSE);
-                unit_place_label($<label>1);
+                unit_push_label($<label>1);
             }
             statement
             {
-                unit_place_label($<label>4);
+                unit_push_label($<label>4);
             }
         | lxm_while '(' expression ')'
             {
-                $<label>$ = unit_push_label();          // place continue label
+                $<label>$ = unit_create_and_push_label();          // place continue label
             }
             // two different actions aren't a mistake! we push two label tokens here.
             {
@@ -652,32 +652,32 @@ statement
             statement
             {
                 unit_push_jump($<label>5, NULL, FALSE); // do continue
-                unit_place_label($<label>6);            // place break label
+                unit_push_label($<label>6);             // place break label
                 unit_pop_continue_break_targets();
             }
         | lxm_do
             {
-                $<label>$ = unit_push_label();          // place restart label
+                $<label>$ = unit_create_and_push_label();          // place restart label
             }
             // three actions, three tokens
             {
-                $<label>$ = unit_create_label();        // create continue label;
+                $<label>$ = unit_create_label();       // create continue label;
             }
             {
-                int break_label = unit_create_label();  // create break label
+                int break_label = unit_create_label(); // create break label
                 $<label>$ = break_label;
                 unit_push_continue_break_targets($<label>3, break_label);
             }
             statement lxm_while '(' expression ')' ';'
             {
-                unit_place_label($<label>3);            // place continue label
-                unit_push_jump($<label>2, $8, FALSE);   // create conditional jump
-                unit_place_label($<label>4);            // place break label
+                unit_push_label($<label>3);            // place continue label
+                unit_push_jump($<label>2, $8, FALSE);  // create conditional jump
+                unit_push_label($<label>4);            // place break label
                 unit_pop_continue_break_targets();
             }
         | for_statement expression_statement
             {
-                int continue_label = unit_push_label();                         // place continue label
+                int continue_label = unit_create_and_push_label();              // place continue label
                 int break_label = unit_create_label_and_push_jump($2, TRUE);    // create break label
                 $<label>$ = break_label;
                 unit_push_continue_break_targets(continue_label, break_label);
@@ -685,11 +685,11 @@ statement
             ')' statement
             {
                 unit_push_jump($<label>1, NULL, TRUE);
-                unit_place_label($<label>3);                                    // place break label
+                unit_push_label($<label>3);                                     // place break label
             }
         | for_statement expression_statement
             {
-                $<label>$ = unit_push_label();                                  // push continue label
+                $<label>$ = unit_create_and_push_label();                       // push continue label
             }
             {
                 $<label>$ = unit_create_label_and_push_jump($2, TRUE);          // create break label and conditional jump
@@ -706,7 +706,7 @@ statement
                 unit_pop_continue_break_targets();
                 unit_insert_slice($<expr>7);
                 unit_push_jump($<label>3, NULL, TRUE);                          // place jump to continue
-                unit_place_label($<label>4);                                    // place break label
+                unit_push_label($<label>4);                                     // place break label
             }
 
         | lxm_return ';'

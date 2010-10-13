@@ -15,6 +15,23 @@ static function_desc *_curr_func            = NULL;
 static x86_instruction *_last_instruction   = NULL;
 
 
+typedef struct switch_data_decl {
+    symbol *        switch_value;
+    expression *    conditions_insertion_point;
+    int             default_label;
+} switch_data;
+
+#define MAX_NEESTED_LOOPS 64
+
+static int          _continue_targets[MAX_NEESTED_LOOPS];
+static int          _break_targets[MAX_NEESTED_LOOPS];
+static switch_data  _switch_values[MAX_NEESTED_LOOPS];
+
+static int _last_continue_target;
+static int _last_break_target;
+static int _last_switch_value;
+
+
 //
 // ƒобавление выражений.
 //
@@ -74,12 +91,16 @@ static void _unit_insert_expression_before(expression *expr, expression *positio
 {
     ASSERT(_curr_func);
 
-    expr->expr_next     = position;
-    position->expr_prev = expr;
+    expr->expr_next = position;
+    expr->expr_prev = position->expr_prev;
 
-    if (_curr_func->func_body == position) {
+    if (position->expr_prev) {
+        position->expr_prev->expr_next = expr;
+    } else {
         _curr_func->func_body    = expr;
     }
+
+    position->expr_prev = expr;
 }
 
 static void _unit_insert_jump_before(int dest, expression *condition, BOOL invert_condition, expression *position)
@@ -92,6 +113,31 @@ static void _unit_insert_label_before(int label, expression *position)
     _unit_insert_expression_before(expr_create_label(label), position);
 }
 
+static void _unit_insert_expression_after(expression *expr, expression *position)
+{
+    ASSERT(_curr_func);
+
+    expr->expr_prev = position;
+    expr->expr_next = position->expr_next;
+
+    if (position->expr_next)
+        position->expr_next->expr_prev = expr;
+    else
+        _curr_func->func_body_end = expr;
+
+    position->expr_next = expr;
+}
+
+static void _unit_insert_jump_after(int dest, expression *condition, BOOL invert_condition, expression *position)
+{
+    _unit_insert_expression_after(expr_create_jump(dest, condition, invert_condition), position);
+}
+
+static void _unit_insert_label_after(int label, expression *position)
+{
+    _unit_insert_expression_after(expr_create_label(label), position);
+}
+
 
 //
 // ѕоддержка циклов.
@@ -102,10 +148,10 @@ int unit_create_label()
     return _curr_func->func_last_label++;
 }
 
-int unit_push_label(void)
+int unit_create_and_push_label(void)
 {
     int label = unit_create_label(_curr_func);
-    unit_place_label(label);
+    unit_push_label(label);
     return label;
 }
 
@@ -121,7 +167,7 @@ int unit_create_label_and_push_jump(expression *condition, BOOL invert_condition
     return label;
 }
 
-void unit_place_label(int label)
+void unit_push_label(int label)
 {
     unit_push_expression(expr_create_label(label));
 }
@@ -134,7 +180,7 @@ void unit_place_label(int label)
 void unit_push_named_label(symbol *label_name)
 {
     int label = unit_create_label(_curr_func);
-    unit_place_label(label);
+    unit_push_label(label);
 
     label_name->sym_code    = code_sym_label;
     label_name->sym_value   = label;
@@ -174,18 +220,11 @@ static void _resolve_jumps_to_names_labels(void)
 // ѕоддержка break/continue.
 //
 
-#define MAX_NEESTED_LOOPS 64
-
-static int _continue_targets[MAX_NEESTED_LOOPS];
-static int _break_targets[MAX_NEESTED_LOOPS];
-static int _last_continue_target;
-static int _last_break_target;
-
-
-static void _unit_reset_continue_break_targets()
+static void _unit_reset_continue_break_switch_targets()
 {
     _last_continue_target   = -1;
     _last_break_target      = -1;
+    _last_switch_value      = -1;
 }
 
 void unit_push_continue()
@@ -224,24 +263,85 @@ void unit_pop_continue_break_targets()
 // ѕоддержка switch/case/default.
 //
 
+
+// ѕомещаем в стек break/default и вычисл€ем выражение во временную переменную.
+
 void unit_open_switch_stmt(expression *value)
 {
-    // тут надо класть в стек break/default и вычисл€ть выражение во временную переменную
+    symbol *tmp;
+
+    if (!TYPE_IS_INTEGRAL(value->expr_type)) {
+        aux_error("switch operator requires expression of integral type");
+        return;
+    }
+
+    tmp = unit_create_temporary_variable(value->expr_type);
+
+    unit_push_expression(
+        expr_create_binary(
+            expr_create_from_identifier(tmp),
+            value,
+            op_assign));
+
+    if (++_last_break_target >= MAX_NEESTED_LOOPS || ++_last_switch_value >= MAX_NEESTED_LOOPS)
+        aux_fatal_error("too many nested switches");
+
+    _break_targets[_last_break_target]                              = unit_create_label();
+    _switch_values[_last_switch_value].switch_value                 = tmp;
+    _switch_values[_last_switch_value].default_label                = INVALID_LABEL;
+    _switch_values[_last_switch_value].conditions_insertion_point   = _curr_func->func_body_end;
 }
+
+// ¬ставл€ем метку и вставл€ем сравнение + условный переход.
 
 void unit_push_case_label(expression *value)
 {
-    // тут надо генерировать сравнение и условный переход
+    int label           = unit_create_and_push_label();
+    expression *place   = _switch_values[_last_switch_value].conditions_insertion_point;
+
+    _unit_insert_jump_after(
+        label,
+        expr_create_binary(
+            expr_create_from_identifier(_switch_values[_last_switch_value].switch_value),
+            value,
+            op_equal),
+        FALSE,
+        place);
+
+    _switch_values[_last_switch_value].conditions_insertion_point = place->expr_next;
 }
+
+// ¬ставл€ем метку и вставл€ем безусловный переход.
 
 void unit_push_default_stmt()
 {
-    // тут надо создавать метку, на которую генерировать переход в конце оператора switch
+    int label           = unit_create_and_push_label();
+    expression *place   = _switch_values[_last_switch_value].conditions_insertion_point;
+
+    if (_switch_values[_last_switch_value].default_label != INVALID_LABEL) {
+        aux_error("more than one default label");
+        return;
+    }
+
+    _switch_values[_last_switch_value].default_label = label;
+
+    _unit_insert_jump_after(
+        label,
+        NULL,
+        FALSE,
+        place);
+
+    _switch_values[_last_switch_value].conditions_insertion_point = place->expr_next;
 }
+
+// ¬ставл€ем метку дл€ break и восстанавливаем стеки.
 
 void unit_close_switch_stmt()
 {
-    // тут надо восстанавливать break/default
+    unit_push_label(_break_targets[_last_break_target]);
+
+    ASSERT(_last_break_target-- >= 0);
+    ASSERT(_last_switch_value-- >= 0);
 }
 
 
@@ -657,7 +757,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     }
 
 
-    _unit_reset_continue_break_targets();
+    _unit_reset_continue_break_switch_targets();
 }
 
 void unit_handle_function_body(symbol *sym)
