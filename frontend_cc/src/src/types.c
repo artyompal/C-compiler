@@ -86,14 +86,17 @@ data_type *type_create_string()
     return res;
 }
 
-symbol *type_add_sized_array_node(symbol *sym, expression *size)
+
+//
+// Конструктор рекуррентно-заданных типов данных.
+//
+
+static data_type *_type_add_sized_array_node(data_type **type, expression *size)
 {
     data_type *res;
     data_type **terminal_type;
 
-    if (!sym) { return NULL; }
-
-    terminal_type               = _type_find_terminal(&sym->sym_type);
+    terminal_type               = _type_find_terminal(type);
 
     res                         = _type_create(code_type_sized_array);
     res->data.array.item_type   = *terminal_type;
@@ -110,33 +113,29 @@ symbol *type_add_sized_array_node(symbol *sym, expression *size)
     }
 
     *terminal_type              = res;
-    return sym;
+    return *type;
 }
 
-symbol *type_add_unsized_array_node(symbol *sym)
+static data_type *_type_add_unsized_array_node(data_type **type)
 {
     data_type *res;
     data_type **terminal_type;
 
-    if (!sym) { return NULL; }
-
-    terminal_type               = _type_find_terminal(&sym->sym_type);
+    terminal_type               = _type_find_terminal(type);
 
     res                         = _type_create(code_type_unsized_array);
     res->data.array.item_type   = *terminal_type;
 
     *terminal_type              = res;
-    return sym;
+    return *type;
 }
 
-symbol *type_add_function_node(symbol *sym, parameter_list *params)
+static data_type *_type_add_function_node(data_type **type, parameter_list *params)
 {
     data_type *res;
     data_type **terminal_type;
 
-    if (!sym) { return NULL; }
-
-    terminal_type                       = _type_find_terminal(&sym->sym_type);
+    terminal_type                       = _type_find_terminal(type);
 
     res                                 = _type_create(code_type_function);
     res->data.function.result_type      = *terminal_type;
@@ -149,23 +148,54 @@ symbol *type_add_function_node(symbol *sym, parameter_list *params)
     res->data.function.parameters_list  = params;
     *terminal_type                      = res;
 
-    return sym;
+    return *type;
 }
 
 
-data_type *type_add_abstract_unsized_array_node(data_type *unused)
+symbol *type_add_sized_array_node(symbol *sym, expression *size)
 {
-    aux_unimplemented_error("type_add_abstract_unsized_array_node");
+    if (!sym) {
+        return NULL;
+    } else {
+        _type_add_sized_array_node(&sym->sym_type, size);
+        return sym;
+    }
 }
 
-data_type *type_add_abstract_sized_array_node(data_type *unused, expression *unused2)
+symbol *type_add_unsized_array_node(symbol *sym)
 {
-    aux_unimplemented_error("type_add_abstract_sized_array_node");
+    if (!sym) {
+        return NULL;
+    } else {
+        _type_add_unsized_array_node(&sym->sym_type);
+        return sym;
+    }
 }
 
-data_type *type_add_abstract_function_node(data_type *unused, parameter_list *unused2)
+symbol *type_add_function_node(symbol *sym, parameter_list *params)
 {
-    aux_unimplemented_error("type_add_abstract_function_node");
+    if (!sym) {
+        return NULL;
+    } else {
+        _type_add_function_node(&sym->sym_type, params);
+        return sym;
+    }
+}
+
+
+data_type *type_add_abstract_sized_array_node(data_type *type, expression *size)
+{
+    return _type_add_sized_array_node(&type, size);
+}
+
+data_type *type_add_abstract_unsized_array_node(data_type *type)
+{
+    return _type_add_unsized_array_node(&type);
+}
+
+data_type *type_add_abstract_function_node(data_type *type, parameter_list *params)
+{
+    return _type_add_function_node(&type, params);
 }
 
 

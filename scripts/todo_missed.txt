@@ -30,9 +30,6 @@ parser_actions.c:   TODO: semantic check: type correspondence, type promotion an
 symbol_table.c:     FIXME: we only allow override functions. extern declarations and typedefs are not supported yet.
 symbol_table.c:     TODO: more flexible behavior? symbols can have multiple duplications
 types.c:            unimplemented_error("unsupported type for overriding declaration specifiers");
-types.c:            unimplemented_error("type_add_abstract_unsized_array_node");
-types.c:            unimplemented_error("type_add_abstract_sized_array_node");
-types.c:            unimplemented_error("type_add_abstract_function_node");
 types.c:            UNIMPLEMENTED_ASSERT("unsupported type specifiers");
 unit.c:             UNIMPLEMENTED_ASSERT(sym->sym_init->init_code == code_terminal_initializer);
 unit.c:             TODO: чтобы выдавать этот варнинг, нужно статическим анализом доказать достижимость этого кода.

@@ -154,8 +154,8 @@ symbol *            type_add_sized_array_node           (symbol *sym, expression
 symbol *            type_add_unsized_array_node         (symbol *sym);
 symbol *            type_add_function_node              (symbol *sym, parameter_list *params);
 
-data_type *         type_add_abstract_unsized_array_node(data_type *element);
 data_type *         type_add_abstract_sized_array_node  (data_type *element, expression *size);
+data_type *         type_add_abstract_unsized_array_node(data_type *element);
 data_type *         type_add_abstract_function_node     (data_type *result, parameter_list *params);
 
 struct_union_field *type_create_field                   (symbol *sym, expression *width);
