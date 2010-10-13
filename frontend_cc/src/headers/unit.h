@@ -46,10 +46,10 @@ void            unit_after_global_declaration       (void);
 void            unit_push_return                    (expression *result);
 void            unit_push_expression                (expression *expr);
 int             unit_create_label                   ();
-int             unit_push_label                     (void);
+int             unit_create_and_push_label          (void);
 void            unit_push_jump                      (int dest, expression *condition, BOOL invert_condition);
 int             unit_create_label_and_push_jump     (expression *condition, BOOL invert_condition);
-void            unit_place_label                    (int label);
+void            unit_push_label                     (int label);
 
 // поддержка goto
 void            unit_push_named_label               (symbol *label);

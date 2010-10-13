@@ -296,6 +296,8 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
     x86_pseudoreg_info *pseudoreg_info  = &function->func_pseudoregs_map[reg];
     int val                             = instr->in_op2.data.int_val;
 
+    if (REG_IS_REGVAR(reg))
+        return;
 
     // Если регистр нигде не модифицируется, просто подставляем его как константу вместо регистрового операнда
     // или корректируем смещение адреса на эту константу везде, где он используется в адресе.

@@ -8,9 +8,6 @@ static int _real_registers_cnt;
 static int _real_registers_map[x86reg_count];   // positive - pseudo-register, -1 - free, otherwise - invalid
 
 
-#define REG_IS_REGVAR(REG)  ((REG) >= function->func_start_of_regvars)
-
-
 static void clear_register_map(void)
 {
     int i;

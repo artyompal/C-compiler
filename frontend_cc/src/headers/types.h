@@ -127,7 +127,7 @@ typedef struct decl_specifier_decl {
 
 
 #define TYPE_IS_INTEGRAL(TYPE) \
-    ((TYPE)->type_code >= code_type_char && (TYPE)->type_code <= code_type_unsigned_long)
+    ((TYPE)->type_code >= code_type_char && (TYPE)->type_code <= code_type_unsigned_long || (TYPE)->type_code == code_type_enum)
 #define TYPE_IS_ARITHMETIC(TYPE) \
     ((TYPE)->type_code >= code_type_char && (TYPE)->type_code <= code_type_long_double)
 #define TYPE_IS_POINTER(TYPE) \

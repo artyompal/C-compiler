@@ -510,12 +510,12 @@ expression *expr_create_ternary(expression *e1, expression *e2, expression *e3)
     unit_push_expression(expr);
 
     end_dest    = unit_create_label_and_push_jump(NULL, TRUE);
-    unit_place_label(if_dest);
+    unit_push_label(if_dest);
 
     expr        = expr_create_binary(expr_create_from_identifier(tmp), e3, op_assign);
     unit_push_expression(expr);
 
-    unit_place_label(end_dest);
+    unit_push_label(end_dest);
 
     expr        = expr_create_from_identifier(tmp);
     return expr;
