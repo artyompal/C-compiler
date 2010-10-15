@@ -4,8 +4,8 @@
 
 .data
 
-_dbgprintf	dd	?
-public	_dbgprintf
+__dbgprintf	dd	?
+public	__dbgprintf
 __width	dd	?
 public	__width
 __height	dd	?
@@ -731,7 +731,7 @@ _rasterizer_init proc
 	mov	ebp,esp
 	sub	esp,8
 	mov	eax,[ebp+8]
-	mov	[_dbgprintf],eax
+	mov	[__dbgprintf],eax
 	mov	eax,[ebp+12]
 	mov	[__width],eax
 	mov	eax,[ebp+16]
@@ -1163,7 +1163,7 @@ label0003:
 label0001:
 	add	esi,4
 	cmp	esi,ebx
-	jle	label0000
+	jl	label0000
 label0002:
 	pop	ebx
 	pop	esi
