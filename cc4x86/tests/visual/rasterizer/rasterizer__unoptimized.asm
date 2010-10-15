@@ -4,8 +4,8 @@
 
 .data
 
-_dbgprintf	dd	?
-public	_dbgprintf
+__dbgprintf	dd	?
+public	__dbgprintf
 __width	dd	?
 public	__width
 __height	dd	?
@@ -1523,7 +1523,7 @@ public	___unnamed_float_2
 
 _rasterizer_init proc
 	x86instr_create_stack_frame	8
-	lea	reg1,[_dbgprintf]
+	lea	reg1,[__dbgprintf]
 	lea	reg2,[ebp+8]
 	mov	reg3,[reg2]
 	mov	[reg1],reg3
@@ -2101,7 +2101,7 @@ label0001:
 	lea	reg78,[ebp-8]
 	mov	reg79,[reg77]
 	cmp	reg79,[reg78]
-	jle	label0000
+	jl	label0000
 label0002:
 	x86instr_destroy_stack_frame	48
 	ret

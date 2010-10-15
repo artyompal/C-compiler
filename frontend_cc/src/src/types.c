@@ -598,6 +598,8 @@ symbol *type_add_pointers_to_symbol_type(data_type *pointers, symbol *sym)
 {
     data_type **sym_term_type, **ptrs_term_type;
 
+    if (!sym) return NULL;
+
     sym_term_type       = _type_find_terminal(&sym->sym_type);
     ptrs_term_type      = _type_find_terminal(&pointers);
 

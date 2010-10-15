@@ -44,7 +44,7 @@ typedef struct matrix4f_decl {
 } matrix4f;
 
 
-static void (*dbgprintf)(const char *msg, ...);
+static void (*_dbgprintf)(const char *msg, ...);
 
 
 static void matrix4f_make_identity(matrix4f *dst);
@@ -53,7 +53,7 @@ static void matrix4f_make_viewport(matrix4f *dst, float width, float height, flo
 static void matrix4f_mul(matrix4f *dst, const matrix4f *lhs, const matrix4f *lhr);
 static void matrix4f_transform(vec4f *dst, const vec4f *src, const matrix4f *mat);
 
-void rasterizer_init(void (*_dbgprintf)(const char *msg, ...), int width, int height, int pitch, float znear, float zfar, float tan_fovy2);
+void rasterizer_init(void (*__dbgprintf)(const char *msg, ...), int width, int height, int pitch, float znear, float zfar, float tan_fovy2);
 void rasterizer_begin_frame(void *videomem);
 void rasterizer_triangle3f(const vec3f *a, const vec3f *b, const vec3f *c,
                            const vec2f *a_tex, const vec2f *b_tex, const vec2f *c_tex);
@@ -254,9 +254,9 @@ static void matrix4f_transpose(matrix4f *mat)
 // Rasterizer initialization.
 //
 
-void rasterizer_init(void (*_dbgprintf)(const char *msg, ...), int width, int height, int pitch, float znear, float zfar, float tan_fovy2)
+void rasterizer_init(void (*__dbgprintf)(const char *msg, ...), int width, int height, int pitch, float znear, float zfar, float tan_fovy2)
 {
-    dbgprintf = _dbgprintf;
+    _dbgprintf = __dbgprintf;
 
     _width   = width;
     _height  = height;
@@ -379,35 +379,35 @@ static void _rasterize_horiz_line(int x1, int x2, int y, float u, float v, float
         //// texturing with alpha-blending test (requires #define EXTRA_BUFFERING 1 in test_main.cpp)
         src_color   = _tex2d(u, v);
         int_alpha   = (src_color >> 24) & 0xFF;
-        
+
         if (int_alpha) {
             float_alpha = int_alpha / 255.0f;
-            
+
             dst_color   = *pixel;
             dst_green   = (dst_color & 0x0000FF00) >> 8;
             dst_blue    = dst_color & 0x000000FF;
-        
+
             green       = (src_color & 0x0000FF00) >> 8;
             blue        = src_color & 0x000000FF;
-        
+
             green       = green * float_alpha + dst_green * (1 - float_alpha);
             blue        = blue * float_alpha + dst_blue * (1 - float_alpha);
-        
+
             //if (green < 0 || green > 255 || blue < 0 || blue > 255) {
             //    *(int *)0 = 0;
             //}
-        
+
             res_color   = (green << 8) + blue;
-        
-        
-        
+
+
+
             *pixel      = res_color;
         }
 
 
         u += dudx;
         v += dvdx;
-    } while (++pixel <= line_end);
+    } while (++pixel < line_end);
 }
 
 static void _rasterize_horiz_line__unordered(int x1, int x2, int y, float u1, float v1, float u2, float v2,

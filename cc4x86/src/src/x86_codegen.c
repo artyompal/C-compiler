@@ -6,8 +6,8 @@
 #include "x86_stack_frame.h"
 
 
-static int _last_int_pseudoreg              = 1;
-static function_desc *_curr_func     = NULL;
+static int _last_int_pseudoreg      = 1;
+static function_desc *_curr_func    = NULL;
 
 
 static void _evaluate_nested_expression(expression *expr, x86_operand *res);
