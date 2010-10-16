@@ -160,11 +160,9 @@ static void _try_create_register_variable(function_desc *function, symbol *sym)
         return;
     }
 
-    // TODO: при парсинге прототипов функций нужно все массивы-параметры функций делать unsized.
-    if (sym->sym_type->type_code != code_type_int && sym->sym_type->type_code != code_type_pointer
-        && sym->sym_type->type_code != code_type_unsized_array) {
-            return;
-        }
+    if (sym->sym_type->type_code != code_type_int && !TYPE_IS_ARRAY(sym->sym_type) && !TYPE_IS_POINTER(sym->sym_type)) {
+        return;
+    }
 
     // Проверяем, что нигде не берётся адрес этой переменной.
     expr_iterate_through_subexpressions(function->func_body, code_expr_arithmetic, EXPR_IT_APPLY_FILTER,
@@ -335,8 +333,7 @@ void x86_create_register_variables(function_desc *function)
         function->func_sym->sym_name, function->func_start_of_regvars));
 
 
-    // TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные,
-    // если эти регистры используются как специальные.
+    // TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные, если эти регистры используются как специальные.
 
     do {
         LOG(("x86_create_register_variables iteration\n"));

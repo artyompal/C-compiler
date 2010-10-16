@@ -182,8 +182,7 @@ void unit_push_named_label(symbol *label_name)
     int label = unit_create_label(_curr_func);
     unit_push_label(label);
 
-    label_name->sym_code    = code_sym_label;
-    label_name->sym_value   = label;
+    label_name = symbol_create_label(label_name, label);
 }
 
 void unit_push_jump_to_named_label(symbol *label_name)
@@ -193,7 +192,7 @@ void unit_push_jump_to_named_label(symbol *label_name)
     if (label_name->sym_code == code_sym_label) {
         jump = expr_create_jump(label_name->sym_value, NULL, FALSE);
     } else {
-        jump = expr_create_jump_to_named_label(symbol_create_variable(label_name));
+        jump = expr_create_jump_to_named_label(symbol_create_label(label_name, INVALID_LABEL));
     }
 
     unit_push_expression(jump);
@@ -206,6 +205,11 @@ static void _resolve_jumps_to_names_labels(void)
     for (expr = _curr_func->func_body; expr; expr = expr->expr_next) {
         if (expr->expr_code == code_expr_jump_by_name) {
             int label                   = expr->data.jump_by_name->sym_value;
+
+            if (label == INVALID_LABEL) {
+                aux_error("unknown label: '%s'", expr->data.jump_by_name->sym_name);
+                label = 0;
+            }
 
             expr->expr_code             = code_expr_jump;
             expr->data.jump.destination = label;

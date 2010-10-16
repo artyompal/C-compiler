@@ -42,6 +42,7 @@ void            symbol_init_table               (void);
 
 symbol *        symbol_lookup                   (const char *str, int len);
 symbol *        symbol_create_variable          (symbol *sym);
+symbol *        symbol_create_label             (symbol *sym, int label);
 symbol *        symbol_create_unnamed           (const char *default_name, symbol_code code, data_type *type);
 symbol *        symbol_create_temporary         (data_type *type);
 symbol *        symbol_unhide                   (symbol *sym);

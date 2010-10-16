@@ -1,6 +1,7 @@
 
 #include "common.h"
 #include "symbol_table.h"
+#include "expressions.h"
 
 
 static hash_id symbol_table;
@@ -92,7 +93,7 @@ symbol *symbol_create_variable(symbol *sym)
     char *hidden_symbol_name;
     symbol *hidden_symbol;
 
-    if (sym->sym_code != code_sym_unknown) {
+    if (sym->sym_code != code_sym_unknown && (sym->sym_code != code_sym_label || sym->sym_value != INVALID_LABEL)) {
         if (sym->sym_code == code_sym_function) {
             // FIXME: we only allow override functions. extern declarations and typedefs are not supported yet.
             // We create special hidden symbol and later check types matching.
@@ -113,6 +114,15 @@ symbol *symbol_create_variable(symbol *sym)
         sym->sym_code = code_sym_variable;
         return sym;
     }
+}
+
+symbol *symbol_create_label(symbol *sym, int label)
+{
+    sym             = symbol_create_variable(sym);
+    sym->sym_code   = code_sym_label;
+    sym->sym_value  = label;
+
+    return sym;
 }
 
 symbol *symbol_create_unnamed(const char *default_name, symbol_code code, data_type *type)
