@@ -5,9 +5,8 @@ x86_codegen.c:      TODO: for now, we cannot evaluate floating operands in rever
 x86_codegen.c:      UNIMPLEMENTED_ASSERT(param_size == 4);
 x86_codegen.c:      TODO: evaluate operands in proper order, according to complexity.
 x86_intrinsics.c:   unimplemented_error("_memcpy_via_byte_movs_loop needs byte registers to be implemented");
-x86_opt_regvar.c:   TODO: при парсинге прототипов функций нужно все массивы-параметры функций делать unsized.
 x86_opt_regvar.c:   TODO: нужно давать больший приоритет переменным, использующимся во внутренних циклах.
-x86_opt_regvar.c:   TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные,
+x86_opt_regvar.c:   TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные, если эти регистры используются как специальные.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < x86reg_count);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < x86reg_count);
