@@ -193,6 +193,8 @@ initializer *parser_create_simple_initializer(expression *expr)
 {
     initializer *res;
 
+    if (!expr) { return NULL; }
+
     res                     = allocator_alloc(allocator_temporary_pool, sizeof(initializer));
     res->init_code          = code_terminal_initializer;
     res->init_next          = NULL;
@@ -205,6 +207,8 @@ initializer *parser_create_complex_initializer(initializer *child)
 {
     initializer *res;
 
+    if (!child) { return NULL; }
+
     res                 = allocator_alloc(allocator_temporary_pool, sizeof(initializer));
     res->init_code      = code_compound_initializer;
     res->init_next      = NULL;
@@ -215,12 +219,16 @@ initializer *parser_create_complex_initializer(initializer *child)
 
 initializer *parser_add_initializer(initializer *node, initializer *next)
 {
+    if (!node || !next) { return NULL; }
+
     node->init_next = next;
     return next;
 }
 
 symbol *parser_attach_initializer(symbol *sym, initializer *value)
 {
+    if (!sym) { return NULL; }
+
     // TODO: semantic check: type correspondence, type promotion and casting.
     sym->sym_init = value;
     return sym;
@@ -248,7 +256,11 @@ parameter *parser_create_named_parameter(decl_specifier spec, symbol *sym)
 
 parameter *parser_create_unnamed_parameter(decl_specifier spec, data_type *type)
 {
-    parameter *res = allocator_alloc(allocator_temporary_pool, sizeof(parameter));
+    parameter *res;
+
+    if (!type) { return NULL; }
+
+    res                 = allocator_alloc(allocator_temporary_pool, sizeof(parameter));
 
     res->param_code     = code_type_parameter;
     res->param_next     = NULL;
@@ -279,7 +291,7 @@ parameter_list *parser_create_parameter_list(parameter *param)
 
 parameter_list *parser_push_parameter(parameter_list *param_list, parameter *param)
 {
-    if (!param_list) { return NULL; }
+    if (!param_list || !param) { return NULL; }
 
     if (!param_list->param_last || param_list->param_last->param_code == code_ellipsis_parameter) {
         aux_error("unexpected function formal parameter (already seen void or ellipsis)");

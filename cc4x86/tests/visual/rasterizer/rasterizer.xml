@@ -469,7 +469,7 @@
       </local_variables>
       <body>
         <expression type="void" lvalue="no" complexity="19" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_subtract"/>
+          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_subtract"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
           </func_argument_0>
@@ -479,7 +479,7 @@
         <expression type="float" lvalue="no" complexity="19" code="assign">
           <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="len_sqr"/>
           <operand_2 type="float" lvalue="no" complexity="18" code="function call">
-            <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_dot"/>
+            <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_dot"/>
             <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
               <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
             </func_argument_0>
@@ -490,7 +490,7 @@
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="return">
           <retvalue type="int" lvalue="no" complexity="2" code="less_then">
-            <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="len_sqr"/>
+            <operand_1 type="double" lvalue="yes" complexity="1" code="variable" name="len_sqr"/>
             <operand_2 type="double" lvalue="no" complexity="1" code="float literal" value="0.000100"/>
           </retvalue>
         </expression>
@@ -2483,7 +2483,7 @@
     <function>
       <name>rasterizer_init</name>
       <parameters>
-        <parameter name="_dbgprintf" type="void (char *, ...) *"/>
+        <parameter name="__dbgprintf" type="void (char *, ...) *"/>
         <parameter name="width" type="int"/>
         <parameter name="height" type="int"/>
         <parameter name="pitch" type="int"/>
@@ -2497,8 +2497,8 @@
       </local_variables>
       <body>
         <expression type="void (char *, ...) *" lvalue="no" complexity="2" code="assign">
-          <operand_1 type="void (char *, ...) *" lvalue="yes" complexity="1" code="variable" name="dbgprintf"/>
-          <operand_2 type="void (char *, ...) *" lvalue="yes" complexity="1" code="variable" name="_dbgprintf"/>
+          <operand_1 type="void (char *, ...) *" lvalue="yes" complexity="1" code="variable" name="_dbgprintf"/>
+          <operand_2 type="void (char *, ...) *" lvalue="yes" complexity="1" code="variable" name="__dbgprintf"/>
         </expression>
         <expression type="int" lvalue="no" complexity="2" code="assign">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="_width"/>
@@ -2513,7 +2513,7 @@
           <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="pitch"/>
         </expression>
         <expression type="void" lvalue="no" complexity="23" code="function call">
-          <func_address type="void (struct matrix4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="matrix4f_make_perspective"/>
+          <func_address type="void (struct matrix4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="matrix4f_make_perspective"/>
           <func_argument_0 type="struct matrix4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct matrix4f_decl" lvalue="yes" complexity="1" code="variable" name="_mvproj_matrix"/>
           </func_argument_0>
@@ -2530,7 +2530,7 @@
           </func_argument_4>
         </expression>
         <expression type="void" lvalue="no" complexity="23" code="function call">
-          <func_address type="void (struct matrix4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="matrix4f_make_viewport"/>
+          <func_address type="void (struct matrix4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="matrix4f_make_viewport"/>
           <func_argument_0 type="struct matrix4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct matrix4f_decl" lvalue="yes" complexity="1" code="variable" name="_viewport_matrix"/>
           </func_argument_0>
@@ -2544,7 +2544,7 @@
           <func_argument_4 type="float" lvalue="yes" complexity="1" code="variable" name="zfar"/>
         </expression>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_z_near_base"/>
           </func_argument_0>
@@ -2571,7 +2571,7 @@
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_z_near_norm"/>
           </func_argument_0>
@@ -2581,7 +2581,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_z_far_base"/>
           </func_argument_0>
@@ -2608,7 +2608,7 @@
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_z_far_norm"/>
           </func_argument_0>
@@ -2618,7 +2618,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="24" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_plane_left_base"/>
           </func_argument_0>
@@ -2636,7 +2636,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_plane_left_norm"/>
           </func_argument_0>
@@ -2646,7 +2646,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="24" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_plane_right_base"/>
           </func_argument_0>
@@ -2664,7 +2664,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_plane_right_norm"/>
           </func_argument_0>
@@ -2674,7 +2674,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="24" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_plane_top_base"/>
           </func_argument_0>
@@ -2692,7 +2692,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_plane_top_norm"/>
           </func_argument_0>
@@ -2702,7 +2702,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_plane_bottom_base"/>
           </func_argument_0>
@@ -2712,7 +2712,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="_clip_plane_bottom_norm"/>
           </func_argument_0>
@@ -2907,7 +2907,7 @@
         <expression type="int" lvalue="no" complexity="19" code="assign">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="src_color"/>
           <operand_2 type="int" lvalue="no" complexity="18" code="function call">
-            <func_address type="int (float, float)" lvalue="yes" complexity="0" code="variable" name="_tex2d"/>
+            <func_address type="int (float, float)" lvalue="yes" complexity="1" code="variable" name="_tex2d"/>
             <func_argument_0 type="float" lvalue="yes" complexity="1" code="variable" name="u"/>
             <func_argument_1 type="float" lvalue="yes" complexity="1" code="variable" name="v"/>
           </operand_2>
@@ -2922,7 +2922,7 @@
             <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="255"/>
           </operand_2>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0002" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0003" invert_condition="yes">
           <condition type="int" lvalue="yes" complexity="1" code="variable" name="int_alpha"/>
         </expression>
         <expression type="float" lvalue="no" complexity="4" code="assign">
@@ -3034,7 +3034,7 @@
           </operand_1>
           <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="res_color"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0002"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
         <expression type="float" lvalue="no" complexity="2" code="add_assign">
           <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="u"/>
           <operand_2 type="float" lvalue="yes" complexity="1" code="variable" name="dudx"/>
@@ -3043,15 +3043,16 @@
           <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="v"/>
           <operand_2 type="float" lvalue="yes" complexity="1" code="variable" name="dvdx"/>
         </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
         <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0000" invert_condition="no">
-          <condition type="int" lvalue="no" complexity="3" code="less_equal">
+          <condition type="int" lvalue="no" complexity="3" code="less_then">
             <operand_1 type="int *" lvalue="no" complexity="2" code="increment" step="4">
               <operand_1 type="int *" lvalue="yes" complexity="1" code="variable" name="pixel"/>
             </operand_1>
             <operand_2 type="int *" lvalue="yes" complexity="1" code="variable" name="line_end"/>
           </condition>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0002"/>
         <expression type="null" lvalue="no" complexity="0" code="return" retvalue="void"/>
       </body>
     </function>
@@ -3076,7 +3077,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="23" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line"/>
+          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x1"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -3088,7 +3089,7 @@
         <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0001"/>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
         <expression type="void" lvalue="no" complexity="23" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line"/>
+          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x1"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -3128,7 +3129,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="26" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line"/>
+          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x1"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x3"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -3153,7 +3154,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="26" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line"/>
+          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x3"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -3172,7 +3173,7 @@
         <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0004"/>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
         <expression type="void" lvalue="no" complexity="26" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line"/>
+          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x1"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -3199,7 +3200,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="28" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line"/>
+          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x3"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x1"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -3228,7 +3229,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="28" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line"/>
+          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x3"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -3251,7 +3252,7 @@
         <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0009"/>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0008"/>
         <expression type="void" lvalue="no" complexity="28" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line"/>
+          <func_address type="void (int, int, int, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x1"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -3463,7 +3464,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="40" code="function call">
-          <func_address type="void (int, int, int, int, struct vec2f_decl *, struct vec2f_decl *, struct vec2f_decl *, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_triangle_1i"/>
+          <func_address type="void (int, int, int, int, struct vec2f_decl *, struct vec2f_decl *, struct vec2f_decl *, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_triangle_1i"/>
           <func_argument_0 type="int" lvalue="yes" complexity="3" code="dereference">
             <operand_1 type="struct vec2i_decl *" lvalue="no" complexity="2" code="get_address">
               <operand_1 type="struct vec2i_decl" lvalue="yes" complexity="2" code="dereference">
@@ -3539,7 +3540,8 @@
           </operand_2>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0005"/>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0006" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0006"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0007" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="5" code="less_then">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
             <operand_2 type="int" lvalue="yes" complexity="4" code="dereference">
@@ -4057,7 +4059,7 @@
           </operand_2>
         </expression>
         <expression type="void" lvalue="no" complexity="25" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line__unordered"/>
+          <func_address type="void (int, int, int, float, float, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line__unordered"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x1"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -4071,8 +4073,8 @@
         <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0005"/>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0006"/>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0006"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0007"/>
         <expression type="int" lvalue="no" complexity="9" code="assign">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <operand_2 type="int" lvalue="no" complexity="8" code="add">
@@ -4400,7 +4402,7 @@
           </operand_2>
         </expression>
         <expression type="void" lvalue="no" complexity="37" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line__unordered"/>
+          <func_address type="void (int, int, int, float, float, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line__unordered"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <func_argument_1 type="int" lvalue="yes" complexity="3" code="dereference">
             <operand_1 type="struct vec2i_decl *" lvalue="no" complexity="2" code="get_address">
@@ -4463,8 +4465,9 @@
             <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>
           </operand_2>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0007"/>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0008" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0008"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0009"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label000a" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="5" code="less_then">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
             <operand_2 type="int" lvalue="yes" complexity="4" code="dereference">
@@ -4982,7 +4985,7 @@
           </operand_2>
         </expression>
         <expression type="void" lvalue="no" complexity="25" code="function call">
-          <func_address type="void (int, int, int, float, float, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="_rasterize_horiz_line__unordered"/>
+          <func_address type="void (int, int, int, float, float, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="_rasterize_horiz_line__unordered"/>
           <func_argument_0 type="int" lvalue="yes" complexity="1" code="variable" name="x1"/>
           <func_argument_1 type="int" lvalue="yes" complexity="1" code="variable" name="x2"/>
           <func_argument_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
@@ -4996,8 +4999,8 @@
         <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0007"/>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0008"/>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0009"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label000a"/>
         <expression type="null" lvalue="no" complexity="0" code="return" retvalue="void"/>
       </body>
     </function>
@@ -5049,7 +5052,8 @@
           </operand_2>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0001" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0002" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="6" code="less_then">
             <operand_1 type="struct vertex4f_decl *" lvalue="yes" complexity="1" code="variable" name="j"/>
             <operand_2 type="struct vertex4f_decl *" lvalue="no" complexity="5" code="add">
@@ -5071,7 +5075,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="20" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_subtract"/>
+          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_subtract"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
           </func_argument_0>
@@ -5085,7 +5089,7 @@
         <expression type="float" lvalue="no" complexity="19" code="assign">
           <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="mul_beg"/>
           <operand_2 type="float" lvalue="no" complexity="18" code="function call">
-            <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_dot"/>
+            <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_dot"/>
             <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
               <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
             </func_argument_0>
@@ -5093,7 +5097,7 @@
           </operand_2>
         </expression>
         <expression type="void" lvalue="no" complexity="20" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_subtract"/>
+          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_subtract"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
           </func_argument_0>
@@ -5107,14 +5111,14 @@
         <expression type="float" lvalue="no" complexity="19" code="assign">
           <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="mul_end"/>
           <operand_2 type="float" lvalue="no" complexity="18" code="function call">
-            <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_dot"/>
+            <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_dot"/>
             <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
               <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
             </func_argument_0>
             <func_argument_1 type="struct vec4f_decl *" lvalue="yes" complexity="1" code="variable" name="normal"/>
           </operand_2>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0002" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0003" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="2" code="greater_equal">
             <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="mul_beg"/>
             <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="0.000000"/>
@@ -5145,8 +5149,8 @@
             <operand_1 type="struct vertex4f_decl *" lvalue="yes" complexity="1" code="variable" name="i"/>
           </operand_2>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0002"/>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0003" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0004" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="4" code="logical_or_in_jump">
             <operand_1 type="int" lvalue="no" complexity="3" code="logical_and_in_jump">
               <operand_1 type="int" lvalue="no" complexity="2" code="greater_then">
@@ -5171,7 +5175,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="20" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_subtract"/>
+          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_subtract"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
           </func_argument_0>
@@ -5183,7 +5187,7 @@
           </func_argument_2>
         </expression>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_subtract"/>
+          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_subtract"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp2"/>
           </func_argument_0>
@@ -5202,14 +5206,14 @@
           <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="scale"/>
           <operand_2 type="float" lvalue="no" complexity="19" code="div">
             <operand_1 type="float" lvalue="no" complexity="18" code="function call">
-              <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_dot"/>
+              <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_dot"/>
               <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
                 <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
               </func_argument_0>
               <func_argument_1 type="struct vec4f_decl *" lvalue="yes" complexity="1" code="variable" name="normal"/>
             </operand_1>
             <operand_2 type="float" lvalue="no" complexity="18" code="function call">
-              <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_dot"/>
+              <func_address type="float (struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_dot"/>
               <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
                 <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp2"/>
               </func_argument_0>
@@ -5218,14 +5222,14 @@
           </operand_2>
         </expression>
         <expression type="void" lvalue="no" complexity="18" code="function call">
-          <func_address type="void (struct vec4f_decl *, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_mul"/>
+          <func_address type="void (struct vec4f_decl *, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_mul"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp2"/>
           </func_argument_0>
           <func_argument_1 type="float" lvalue="yes" complexity="1" code="variable" name="scale"/>
         </expression>
         <expression type="void" lvalue="no" complexity="26" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec4f_add"/>
+          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec4f_add"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="7" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="7" code="dereference">
               <operand_1 type="struct vertex4f_decl *" lvalue="no" complexity="6" code="get_address">
@@ -5260,7 +5264,7 @@
           </func_argument_2>
         </expression>
         <expression type="void" lvalue="no" complexity="23" code="function call">
-          <func_address type="void (struct vec2f_decl *, struct vec2f_decl *, struct vec2f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec2f_subtract"/>
+          <func_address type="void (struct vec2f_decl *, struct vec2f_decl *, struct vec2f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec2f_subtract"/>
           <func_argument_0 type="struct vec2f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec2f_decl" lvalue="yes" complexity="1" code="variable" name="texcoord_diff"/>
           </func_argument_0>
@@ -5282,14 +5286,14 @@
           </func_argument_2>
         </expression>
         <expression type="void" lvalue="no" complexity="18" code="function call">
-          <func_address type="void (struct vec2f_decl *, float)" lvalue="yes" complexity="0" code="variable" name="vec2f_mul"/>
+          <func_address type="void (struct vec2f_decl *, float)" lvalue="yes" complexity="1" code="variable" name="vec2f_mul"/>
           <func_argument_0 type="struct vec2f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec2f_decl" lvalue="yes" complexity="1" code="variable" name="texcoord_diff"/>
           </func_argument_0>
           <func_argument_1 type="float" lvalue="yes" complexity="1" code="variable" name="scale"/>
         </expression>
         <expression type="void" lvalue="no" complexity="28" code="function call">
-          <func_address type="void (struct vec2f_decl *, struct vec2f_decl *, struct vec2f_decl *)" lvalue="yes" complexity="0" code="variable" name="vec2f_add"/>
+          <func_address type="void (struct vec2f_decl *, struct vec2f_decl *, struct vec2f_decl *)" lvalue="yes" complexity="1" code="variable" name="vec2f_add"/>
           <func_argument_0 type="struct vec2f_decl *" lvalue="no" complexity="8" code="get_address">
             <operand_1 type="struct vec2f_decl" lvalue="yes" complexity="8" code="dereference">
               <operand_1 type="struct vertex4f_decl *" lvalue="no" complexity="7" code="add">
@@ -5337,15 +5341,15 @@
             </operand_1>
           </operand_1>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0004"/>
         <expression type="struct vertex4f_decl *" lvalue="no" complexity="2" code="post_increment" step="24">
           <operand_1 type="struct vertex4f_decl *" lvalue="yes" complexity="1" code="variable" name="i"/>
         </expression>
         <expression type="struct vertex4f_decl *" lvalue="no" complexity="2" code="post_increment" step="24">
           <operand_1 type="struct vertex4f_decl *" lvalue="yes" complexity="1" code="variable" name="j"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0000"/>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0002"/>
         <expression type="struct vertex4f_decl" lvalue="no" complexity="8" code="assign">
           <operand_1 type="struct vertex4f_decl" lvalue="yes" complexity="7" code="dereference">
             <operand_1 type="struct vertex4f_decl *" lvalue="no" complexity="6" code="add">
@@ -5388,7 +5392,7 @@
       </local_variables>
       <body>
         <expression type="void" lvalue="no" complexity="20" code="function call">
-          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="_clip_on_plain"/>
+          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="_clip_on_plain"/>
           <func_argument_0 type="struct polygon4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct polygon4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
           </func_argument_0>
@@ -5401,7 +5405,7 @@
           </func_argument_3>
         </expression>
         <expression type="void" lvalue="no" complexity="20" code="function call">
-          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="_clip_on_plain"/>
+          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="_clip_on_plain"/>
           <func_argument_0 type="struct polygon4f_decl *" lvalue="yes" complexity="1" code="variable" name="poly"/>
           <func_argument_1 type="struct polygon4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct polygon4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
@@ -5414,7 +5418,7 @@
           </func_argument_3>
         </expression>
         <expression type="void" lvalue="no" complexity="20" code="function call">
-          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="_clip_on_plain"/>
+          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="_clip_on_plain"/>
           <func_argument_0 type="struct polygon4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct polygon4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
           </func_argument_0>
@@ -5427,7 +5431,7 @@
           </func_argument_3>
         </expression>
         <expression type="void" lvalue="no" complexity="20" code="function call">
-          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="_clip_on_plain"/>
+          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="_clip_on_plain"/>
           <func_argument_0 type="struct polygon4f_decl *" lvalue="yes" complexity="1" code="variable" name="poly"/>
           <func_argument_1 type="struct polygon4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct polygon4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
@@ -5440,7 +5444,7 @@
           </func_argument_3>
         </expression>
         <expression type="void" lvalue="no" complexity="20" code="function call">
-          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="_clip_on_plain"/>
+          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="_clip_on_plain"/>
           <func_argument_0 type="struct polygon4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct polygon4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
           </func_argument_0>
@@ -5453,7 +5457,7 @@
           </func_argument_3>
         </expression>
         <expression type="void" lvalue="no" complexity="20" code="function call">
-          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="_clip_on_plain"/>
+          <func_address type="void (struct polygon4f_decl *, struct polygon4f_decl *, struct vec4f_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="_clip_on_plain"/>
           <func_argument_0 type="struct polygon4f_decl *" lvalue="yes" complexity="1" code="variable" name="poly"/>
           <func_argument_1 type="struct polygon4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct polygon4f_decl" lvalue="yes" complexity="1" code="variable" name="tmp"/>
@@ -5490,7 +5494,7 @@
       </local_variables>
       <body>
         <expression type="void" lvalue="no" complexity="19" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct matrix4f_decl *)" lvalue="yes" complexity="0" code="variable" name="matrix4f_transform"/>
+          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct matrix4f_decl *)" lvalue="yes" complexity="1" code="variable" name="matrix4f_transform"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="viewport_coord"/>
           </func_argument_0>
@@ -5610,7 +5614,7 @@
         <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0000" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="18" code="not">
             <operand_1 type="int" lvalue="no" complexity="17" code="function call">
-              <func_address type="int (struct polygon4f_decl *)" lvalue="yes" complexity="0" code="variable" name="_clip_poligon"/>
+              <func_address type="int (struct polygon4f_decl *)" lvalue="yes" complexity="1" code="variable" name="_clip_poligon"/>
               <func_argument_0 type="struct polygon4f_decl *" lvalue="yes" complexity="1" code="variable" name="poly"/>
             </operand_1>
           </condition>
@@ -5619,13 +5623,13 @@
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
         <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0001" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="4" code="greater_then">
-            <operand_1 type="int" lvalue="yes" complexity="3" code="dereference">
+            <operand_1 type="unsigned int" lvalue="yes" complexity="3" code="dereference">
               <operand_1 type="struct polygon4f_decl *" lvalue="no" complexity="2" code="add">
                 <operand_1 type="struct polygon4f_decl *" lvalue="yes" complexity="1" code="variable" name="poly"/>
                 <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="192"/>
               </operand_1>
             </operand_1>
-            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="8"/>
+            <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="8"/>
           </condition>
         </expression>
         <expression type="int" lvalue="no" complexity="3" code="assign">
@@ -5640,7 +5644,8 @@
           <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0002"/>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0003" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0004" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="4" code="less_then">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
             <operand_2 type="int" lvalue="yes" complexity="3" code="dereference">
@@ -5652,7 +5657,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="26" code="function call">
-          <func_address type="void (struct vec2i_decl *, struct vec4f_decl *)" lvalue="yes" complexity="0" code="variable" name="_transform_to_screen_space"/>
+          <func_address type="void (struct vec2i_decl *, struct vec4f_decl *)" lvalue="yes" complexity="1" code="variable" name="_transform_to_screen_space"/>
           <func_argument_0 type="struct vec2i_decl *" lvalue="no" complexity="5" code="get_address">
             <operand_1 type="struct vec2i_decl" lvalue="yes" complexity="5" code="dereference">
               <operand_1 type="struct vertex2i_decl *" lvalue="no" complexity="4" code="get_address">
@@ -5741,14 +5746,15 @@
         <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0002"/>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0003"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0004"/>
         <expression type="int" lvalue="no" complexity="2" code="assign">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
           <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0004"/>
-        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0005" invert_condition="yes">
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0005"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0006"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0007" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="5" code="less_then">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
             <operand_2 type="int" lvalue="no" complexity="4" code="sub">
@@ -5763,7 +5769,7 @@
           </condition>
         </expression>
         <expression type="void" lvalue="no" complexity="28" code="function call">
-          <func_address type="void (struct vertex2i_decl *, struct vertex2i_decl *, struct vertex2i_decl *)" lvalue="yes" complexity="0" code="variable" name="_rasterize_triangle_2i"/>
+          <func_address type="void (struct vertex2i_decl *, struct vertex2i_decl *, struct vertex2i_decl *)" lvalue="yes" complexity="1" code="variable" name="_rasterize_triangle_2i"/>
           <func_argument_0 type="struct vertex2i_decl *" lvalue="no" complexity="3" code="get_address">
             <operand_1 type="struct vertex2i_decl" lvalue="yes" complexity="3" code="dereference">
               <operand_1 type="struct vertex2i_decl *" lvalue="no" complexity="2" code="get_address">
@@ -5816,8 +5822,8 @@
         <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="i"/>
         </expression>
-        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0004"/>
-        <expression type="null" lvalue="no" complexity="0" code="label" name="label0005"/>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0006"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0007"/>
         <expression type="null" lvalue="no" complexity="0" code="return" retvalue="void"/>
       </body>
     </function>
@@ -5832,7 +5838,7 @@
       </local_variables>
       <body>
         <expression type="void" lvalue="no" complexity="26" code="function call">
-          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="0" code="variable" name="vec4f_assign"/>
+          <func_address type="void (struct vec4f_decl *, float, float, float, float)" lvalue="yes" complexity="1" code="variable" name="vec4f_assign"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="vertex"/>
           </func_argument_0>
@@ -5854,7 +5860,7 @@
           <func_argument_4 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
         </expression>
         <expression type="void" lvalue="no" complexity="19" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct matrix4f_decl *)" lvalue="yes" complexity="0" code="variable" name="matrix4f_transform"/>
+          <func_address type="void (struct vec4f_decl *, struct vec4f_decl *, struct matrix4f_decl *)" lvalue="yes" complexity="1" code="variable" name="matrix4f_transform"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="yes" complexity="1" code="variable" name="dst"/>
           <func_argument_1 type="struct vec4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="1" code="variable" name="vertex"/>
@@ -5881,7 +5887,7 @@
       </local_variables>
       <body>
         <expression type="void" lvalue="no" complexity="21" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec3f_decl *)" lvalue="yes" complexity="0" code="variable" name="_transform_to_projection_space"/>
+          <func_address type="void (struct vec4f_decl *, struct vec3f_decl *)" lvalue="yes" complexity="1" code="variable" name="_transform_to_projection_space"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="4" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="4" code="dereference">
               <operand_1 type="struct vertex4f_decl *" lvalue="no" complexity="3" code="get_address">
@@ -5921,7 +5927,7 @@
           </operand_2>
         </expression>
         <expression type="void" lvalue="no" complexity="22" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec3f_decl *)" lvalue="yes" complexity="0" code="variable" name="_transform_to_projection_space"/>
+          <func_address type="void (struct vec4f_decl *, struct vec3f_decl *)" lvalue="yes" complexity="1" code="variable" name="_transform_to_projection_space"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="5" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="5" code="dereference">
               <operand_1 type="struct vertex4f_decl *" lvalue="no" complexity="4" code="get_address">
@@ -5967,7 +5973,7 @@
           </operand_2>
         </expression>
         <expression type="void" lvalue="no" complexity="22" code="function call">
-          <func_address type="void (struct vec4f_decl *, struct vec3f_decl *)" lvalue="yes" complexity="0" code="variable" name="_transform_to_projection_space"/>
+          <func_address type="void (struct vec4f_decl *, struct vec3f_decl *)" lvalue="yes" complexity="1" code="variable" name="_transform_to_projection_space"/>
           <func_argument_0 type="struct vec4f_decl *" lvalue="no" complexity="5" code="get_address">
             <operand_1 type="struct vec4f_decl" lvalue="yes" complexity="5" code="dereference">
               <operand_1 type="struct vertex4f_decl *" lvalue="no" complexity="4" code="get_address">
@@ -6047,7 +6053,7 @@
           <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="4"/>
         </expression>
         <expression type="void" lvalue="no" complexity="17" code="function call">
-          <func_address type="void (struct polygon4f_decl *)" lvalue="yes" complexity="0" code="variable" name="_rasterize_polygon_4f"/>
+          <func_address type="void (struct polygon4f_decl *)" lvalue="yes" complexity="1" code="variable" name="_rasterize_polygon_4f"/>
           <func_argument_0 type="struct polygon4f_decl *" lvalue="no" complexity="1" code="get_address">
             <operand_1 type="struct polygon4f_decl" lvalue="yes" complexity="1" code="variable" name="poly"/>
           </func_argument_0>

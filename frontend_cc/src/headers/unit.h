@@ -16,6 +16,11 @@ typedef enum x86_instruction_code_decl  x86_instruction_code;
 typedef struct x86_operand_decl         x86_operand;
 
 
+typedef struct register_stat_decl {
+    x86_pseudoreg_info *        ptr;                        // массив с информацией об использовании псевдорегистров
+    int                         count;                      // длина этого массива
+} register_stat;
+
 typedef struct function_desc_decl {
     symbol *                    func_sym;                   // идентификатор функции
     expression *                func_body;                  // код функции в виде дерева выражений
@@ -24,14 +29,23 @@ typedef struct function_desc_decl {
     symbol_list                 func_locals;                // список локальных переменных функции
     parameter_list *            func_params;                // список формальных параметров функции
     x86_instruction *           func_binary_code;           // код функции в промежуточном представлении
+    x86_instruction *           func_binary_code_end;       // указатель на конец списка
     int                         func_parameters_sz;         // суммарный размер, в байтах, параметров функции
     int                         func_local_vars_sz;         // суммарный размер, в байтах, локальных переменных
-    x86_pseudoreg_info *        func_pseudoregs_map;        // массив с информацией об использовании псевдорегистров
-    int                         func_pseudoregs_cnt;        // длина предыдущего массива
+
+    register_stat               func_byte_regstat;          // регистровые статистики дл€ соответствующих наборов регистров
+    register_stat               func_word_regstat;
+    register_stat               func_dword_regstat;
+    register_stat               func_sse2_regstat;
+
     int                         func_start_of_regvars;      // перва€ регистрова€ переменна€ (номер псевдорегистра)
     int                         func_last_label;            // последн€€ аллоцированна€ метка в функции
     struct function_desc_decl * func_next;
 } function_desc;
+
+
+// текуща€ функци€ в парсере
+function_desc * unit_get_current_function           (void);
 
 
 // поддержка объ€влений функций и переменных
@@ -43,7 +57,7 @@ void            unit_handle_function_body           (symbol *sym);
 void            unit_after_global_declaration       (void);
 
 // поддержка циклов
-void            unit_push_return                    (expression *result);
+void            unit_push_return                    (expression *result, BOOL allow_empty_return);
 void            unit_push_expression                (expression *expr);
 int             unit_create_label                   ();
 int             unit_create_and_push_label          (void);

@@ -12,8 +12,6 @@ static function_desc *_first_function       = NULL;
 static function_desc *_last_function        = NULL;
 static function_desc *_curr_func            = NULL;
 
-static x86_instruction *_last_instruction   = NULL;
-
 
 typedef struct switch_data_decl {
     symbol *        switch_value;
@@ -31,6 +29,11 @@ static int _last_continue_target;
 static int _last_break_target;
 static int _last_switch_value;
 
+
+function_desc * unit_get_current_function(void)
+{
+    return _curr_func;
+}
 
 //
 // Добавление выражений.
@@ -57,9 +60,9 @@ void unit_push_expression(expression *expr)
     expr->expr_next             = NULL;
 }
 
-void unit_push_return(expression *result)
+void unit_push_return(expression *result, BOOL allow_empty_return)
 {
-    unit_push_expression(expr_create_return(result));
+    unit_push_expression(expr_create_return(result, allow_empty_return));
 }
 
 function_desc *unit_get_functions_list(void)
@@ -198,7 +201,7 @@ void unit_push_jump_to_named_label(symbol *label_name)
     unit_push_expression(jump);
 }
 
-static void _resolve_jumps_to_names_labels(void)
+static void _resolve_jumps_to_named_labels(void)
 {
     expression *expr;
 
@@ -774,7 +777,7 @@ void unit_handle_function_body(symbol *sym)
 
     // add "return" statement if needed and warn if it's non-void function
     if (!_curr_func->func_body) {
-        unit_push_return(NULL);
+        unit_push_return(NULL, TRUE);
     } else {
         expression *expr = _curr_func->func_body;
 
@@ -791,13 +794,13 @@ void unit_handle_function_body(symbol *sym)
             //    aux_warning("non-void function does not return anything");
             //}
 
-            unit_push_return(NULL);
+            unit_push_return(NULL, TRUE);
         }
     }
 
 
     // Разрешаем ссылки на неопределённые метки на момент компиляции goto.
-    _resolve_jumps_to_names_labels();
+    _resolve_jumps_to_named_labels();
 
     // Сначала выкидываем бессмысленные, с точки зрения кодогенератора, выражения.
     _eliminate_meaningless_expressions();
@@ -818,8 +821,7 @@ void unit_handle_function_body(symbol *sym)
     _remove_local_variables_from_symtable();
 
 
-    _curr_func   = NULL;
-    _last_instruction   = NULL;
+    _curr_func = NULL;
 }
 
 
@@ -850,7 +852,7 @@ void unit_codegen(void)
 {
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
         ASSERT(_curr_func->func_body);
-        _last_instruction = NULL;
+        _curr_func->func_binary_code = _curr_func->func_binary_code_end = NULL;
 
         x86_stack_frame_begin_function(_curr_func);
         x86_codegen_do_function(_curr_func);
@@ -894,15 +896,15 @@ void unit_push_binary_instruction(x86_instruction_code code, x86_operand *op1, x
 
     ASSERT(_curr_func);
 
-    if (!_last_instruction) {
+    if (!_curr_func->func_binary_code) {
         _curr_func->func_binary_code = res;
     } else {
-        _last_instruction->in_next = res;
+        _curr_func->func_binary_code_end->in_next = res;
     }
 
     res->in_next            = NULL;
-    res->in_prev            = _last_instruction;
+    res->in_prev            = _curr_func->func_binary_code_end;
 
-    _last_instruction       = res;
+    _curr_func->func_binary_code_end = res;
 }
 

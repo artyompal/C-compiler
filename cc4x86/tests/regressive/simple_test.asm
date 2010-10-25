@@ -4,7 +4,7 @@
 
 .data
 
-___unnamed_string_0	db	115, 105, 109, 112, 108, 101, 46, 99, 0
+___unnamed_string_0	db	115, 105, 109, 112, 108, 101, 95, 116, 101, 115, 116, 46, 99, 0
 public	___unnamed_string_0
 _test_name	dd	offset ___unnamed_string_0
 public	_test_name

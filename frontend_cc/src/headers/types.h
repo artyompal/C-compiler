@@ -24,6 +24,9 @@ typedef enum data_type_code_decl {
     code_type_unsigned_int,
     code_type_long,
     code_type_unsigned_long,
+    code_type_long_long,
+    code_type_unsigned_long_long,
+    code_type_enum,
     code_type_float,
     code_type_double,
     code_type_long_double,
@@ -35,7 +38,6 @@ typedef enum data_type_code_decl {
     code_type_structure,
     code_type_union,
     code_type_function,
-    code_type_enum,
     code_type_incomplete_structure,
     code_type_incomplete_union,
     code_type_incomplete_enum,
@@ -127,13 +129,17 @@ typedef struct decl_specifier_decl {
 
 
 #define TYPE_IS_INTEGRAL(TYPE) \
-    ((TYPE)->type_code >= code_type_char && (TYPE)->type_code <= code_type_unsigned_long || (TYPE)->type_code == code_type_enum)
+    ((TYPE)->type_code >= code_type_char && (TYPE)->type_code <= code_type_enum)
+#define TYPE_IS_FLOATING(TYPE) \
+    ((TYPE)->type_code >= code_type_float && (TYPE)->type_code <= code_type_long_double)
 #define TYPE_IS_ARITHMETIC(TYPE) \
     ((TYPE)->type_code >= code_type_char && (TYPE)->type_code <= code_type_long_double)
 #define TYPE_IS_POINTER(TYPE) \
-    ((TYPE)->type_code == code_type_pointer)
+    ((TYPE)->type_code == code_type_pointer || (TYPE)->type_code == code_type_unsized_array)
+#define TYPE_IS_INTEGRAL_OR_POINTER(TYPE) \
+    (TYPE_IS_INTEGRAL(TYPE) || TYPE_IS_POINTER(TYPE))
 #define TYPE_IS_ARRAY(TYPE) \
-    ((TYPE)->type_code == code_type_sized_array || (TYPE)->type_code == code_type_sized_array)
+    ((TYPE)->type_code == code_type_sized_array)
 #define TYPE_IS_VOID(TYPE) \
     ((TYPE)->type_code == code_type_void)
 #define TYPE_IS_FUNCTION(TYPE) \
@@ -144,6 +150,19 @@ typedef struct decl_specifier_decl {
     ((TYPE)->type_code == code_type_structure || (TYPE)->type_code == code_type_union)
 #define TYPE_IS_POINTER_TO_FUNCTION(TYPE) \
     (TYPE_IS_POINTER(TYPE) && TYPE_IS_FUNCTION((TYPE)->data.ptr.item_type))
+
+#define TYPE_IS_X86_BYTE(TYPE) \
+    ((TYPE)->type_code == code_type_char || (TYPE)->type_code == code_type_unsigned_char)
+#define TYPE_IS_X86_WORD(TYPE) \
+    ((TYPE)->type_code == code_type_short || (TYPE)->type_code == code_type_unsigned_short)
+#define TYPE_IS_X86_DWORD(TYPE) \
+    ((TYPE)->type_code == code_type_int || (TYPE)->type_code == code_type_unsigned_int \
+        || (TYPE)->type_code == code_type_long || (TYPE)->type_code == code_type_unsigned_long \
+        || (TYPE)->type_code == code_type_enum || (TYPE)->type_code == code_type_pointer)
+#define TYPE_IS_X86_QWORD(TYPE) \
+    ((TYPE)->type_code == code_type_long_long || (TYPE)->type_code == code_type_unsigned_long_long)
+#define TYPE_IS_FLOATING(TYPE) \
+    ((TYPE)->type_code >= code_type_float && (TYPE)->type_code <= code_type_long_double)
 
 
 

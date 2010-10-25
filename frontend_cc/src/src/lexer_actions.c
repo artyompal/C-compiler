@@ -51,11 +51,25 @@ int token_integer_literal(const char *token, int unused)
 
     while (*endptr) {
         if (*endptr == 'u' || *endptr == 'U')
-            type = (type == code_type_long || type == code_type_unsigned_long) ?
-                code_type_unsigned_long : code_type_unsigned_int;
+            if (type == code_type_int)
+                type = code_type_long;
+            else if (type == code_type_long)
+                type = code_type_unsigned_long;
+            else if (type == code_type_long_long)
+                type = code_type_unsigned_long_long;
+            else
+                aux_error("invalid integer number suffix");
         else if (*endptr == 'l' || *endptr == 'L')
-            type = (type == code_type_unsigned_int || type == code_type_unsigned_long) ?
-                code_type_unsigned_long : code_type_long;
+            if (type == code_type_int)
+                type = code_type_long;
+            else if (type == code_type_unsigned_int)
+                type = code_type_unsigned_long;
+            else if (type == code_type_long)
+                type = code_type_long_long;
+            else if (type == code_type_unsigned_long)
+                type = code_type_unsigned_long_long;
+            else
+                aux_error("invalid integer number suffix");
         else
             ASSERT(FALSE);
 
@@ -79,12 +93,14 @@ int token_float_literal(const char *token, int unused)
             if (type == code_type_double)
                 type = code_type_float;
             else
-                aux_error("invalid floating number suffix combination");
+                aux_error("invalid floating number suffix");
         else if (*endptr == 'l' || *endptr == 'L')
             if (type == code_type_double)
                 type = code_type_long_double;
             else
-                aux_error("invalid floating number suffix combination");
+                aux_error("invalid floating number suffix");
+        else
+            ASSERT(FALSE);
 
         endptr++;
     }
@@ -101,24 +117,17 @@ static BOOL isodigit(char c)
 
 static void _parse_character(const char *str, int *length, char *value)
 {
+    char *str_end;
     int len = 1;
 
     if (*str != '\\') {
         *value  = *str;
     } else if (str[1] == 'x') {
-        *value  = (char) strtol(str + 2, NULL, 16);
-        len     = 2;
-
-        while (isxdigit(str[len])) {
-            len++;
-        }
+        *value  = (char) strtol(str + 2, &str_end, 16);
+        len     = str_end - str;
     } else if (isodigit(str[1])) {
-        *value  = (char) strtol(str + 1, NULL, 8);
-        len     = 1;
-
-        while (isodigit(str[len])) {
-            len++;
-        }
+        *value  = (char) strtol(str + 1, &str_end, 8);
+        len     = str_end - str;
     } else {
         len     = 2;
 
