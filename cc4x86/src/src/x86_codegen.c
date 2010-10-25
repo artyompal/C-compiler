@@ -125,7 +125,7 @@ static void _generate_convert_int2float(x86_operand *res, x86_operand *op)
     ASSERT(OP_IS_INT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
     if (option_use_sse2) {
-        bincode_create_operand_and_alloc_pseudoreg(res, x86reg_sse2);
+        bincode_create_operand_and_alloc_pseudoreg(res, x86reg_float);
         unit_push_binary_instruction(x86insn_sse_load_int, res, op);
     } else {
         if (OP_IS_REGISTER(*op)) {
@@ -147,18 +147,30 @@ static void _generate_convert_float2int(x86_operand *res, x86_operand *op)
 
     if (option_use_sse2) {
         if (OP_IS_ADDRESS(*op)) {
-            bincode_create_operand_and_alloc_pseudoreg(res, x86reg_sse2);
+            bincode_create_operand_and_alloc_pseudoreg(res, x86reg_float);
         }
 
         unit_push_binary_instruction(x86insn_sse_store_int, res, op);
     } else {
         if (OP_IS_ADDRESS(*op)) {
             x86_operand tmp;
-            bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_sse2);
+            bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_float);
             unit_push_binary_instruction(x86insn_sse_mov, &tmp, op);
         }
 
         unit_push_unary_instruction(x86insn_fpu_float2int, res);
+    }
+}
+
+static void _generate_convert_float2double(x86_operand *res, x86_operand *op)
+{
+    ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
+
+    if (OP_IS_ADDRESS(*op)) {
+        bincode_create_operand_and_alloc_pseudoreg(res, x86reg_float);
+        unit_push_unary_instruction(x86insn_fpu_ld, op);
+    } else {
+        *res = *op;
     }
 }
 
@@ -351,7 +363,6 @@ static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_
 
     ASSERT(OP_IS_FLOAT(*op1) && OP_IS_REGISTER_OR_ADDRESS(*op1));
     ASSERT(OP_IS_FLOAT(*op2) && OP_IS_REGISTER_OR_ADDRESS(*op2));
-    ASSERT(op1->op_type == op2->op_type);
 
     *res = *op1;
 
@@ -428,6 +439,9 @@ static void _generate_unary_arithm_expr(expression *expr, x86_operand *res)
         _generate_convert_int2float(res, &op);
     } else if (expr->data.arithm.opcode == op_convert_float2int) {
         _generate_convert_float2int(res, &op);
+    } else if (expr->data.arithm.opcode == op_convert_float2double ||
+        expr->data.arithm.opcode == op_convert_double2float) {
+            _generate_convert_float2double(res, &op);
     } else if (expr->data.arithm.opcode == op_dereference) {
         _generate_dereference(res, &op, expr->expr_type);
     } else if (expr->data.arithm.opcode == op_get_address) {

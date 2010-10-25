@@ -498,9 +498,8 @@ x86_operand_type bincode_encode_type(data_type *type)
     case code_type_float:
         return x86op_float;
     case code_type_double:
-        return x86op_double;
     case code_type_long_double:
-        return x86op_long_double;
+        return x86op_double;
 
     case code_type_structure:
     case code_type_union:

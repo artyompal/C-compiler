@@ -489,8 +489,10 @@
           </operand_2>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="return">
-          <retvalue type="int" lvalue="no" complexity="2" code="less_then">
-            <operand_1 type="double" lvalue="yes" complexity="1" code="variable" name="len_sqr"/>
+          <retvalue type="int" lvalue="no" complexity="3" code="less_then">
+            <operand_1 type="double" lvalue="no" complexity="2" code="convert_float2double">
+              <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="len_sqr"/>
+            </operand_1>
             <operand_2 type="double" lvalue="no" complexity="1" code="float literal" value="0.000100"/>
           </retvalue>
         </expression>

@@ -71,7 +71,6 @@ typedef enum x86_operand_type_decl {
     x86op_qword,    // x86reg_qword эмулируется кодогенератором
     x86op_float,
     x86op_double,
-    x86op_long_double,
     x86op_unused,
 } x86_operand_type;
 
@@ -81,7 +80,7 @@ typedef enum x86_register_type_decl {
     x86reg_byte     = x86op_byte,
     x86reg_word     = x86op_word,
     x86reg_dword    = x86op_dword,
-    x86reg_sse2     = x86op_float,
+    x86reg_float    = x86op_float,
 
     x86reg_count,
 } x86_register_type;
@@ -101,7 +100,7 @@ typedef struct x86_operand_decl {
     x86_operand_type        op_type;
 
     union data_decl {
-        // x86op_byte - x86op_long_double:
+        // x86op_byte - x86op_double:
         // 0 - unused, positive value - pseudo-register, negative value - x86 register
         int         reg;
 
@@ -268,7 +267,7 @@ typedef struct x86_instruction_decl {
 
 #define OP_IS_INT(OP)                   ((OP).op_type >= x86op_byte && (OP).op_type <= x86op_qword)
 #define OP_IS_DWORD(OP)                 ((OP).op_type == x86op_dword)
-#define OP_IS_FLOAT(OP)                 ((OP).op_type >= x86op_float && (OP).op_type <= x86op_long_double)
+#define OP_IS_FLOAT(OP)                 ((OP).op_type >= x86op_float && (OP).op_type <= x86op_double)
 #define OP_IS_REGISTER(OP)              ((OP).op_loc == x86loc_register)
 #define OP_IS_ADDRESS(OP)               ((OP).op_loc == x86loc_address)
 #define OP_IS_REGISTER_OR_ADDRESS(OP)   ((OP).op_loc == x86loc_register || (OP).op_loc == x86loc_address)
