@@ -1,30 +1,34 @@
-x86_codegen.c:      unimplemented_error("types other then int and float aren't supported");
-x86_codegen.c:      TODO: provide an optimized codepath for (*mem) = float2int/int2float(val): just save to the given memory location.
-x86_codegen.c:      TODO: provide an optimized codepath for x86op_address case: return value in register if it will be reused.
+x86_bincode.h:      TODO: убрать структуру x86_register_type либо корректно работать с ней
+x86_codegen.c:      TODO: provide an optimized codepath for x86loc_address case: return value in the register if it will be reused.
+x86_codegen.c:      TODO: unsigned div/mod, compare, mul, shr/sar
+x86_codegen.c:      TODO: generate SHL/SHR eax,cl
+x86_codegen.c:      TODO: support long long arithmetics.
 x86_codegen.c:      TODO: for now, we cannot evaluate floating operands in reverse order. Flag "invert" needed.
-x86_codegen.c:      UNIMPLEMENTED_ASSERT(param_size == 4);
-x86_codegen.c:      TODO: evaluate operands in proper order, according to complexity.
-x86_intrinsics.c:   unimplemented_error("_memcpy_via_byte_movs_loop needs byte registers to be implemented");
+x86_codegen.c:      TODO: возвращать результат типа QWORD
+x86_codegen.c:      UNIMPLEMENTED_ASSERT(res.op_loc == x86loc_register);
+x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD
+x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD + MOVSB
+x86_opt_basic.c:    TODO: заменять [reg+ofs] на [offset symbol+ofs]
 x86_opt_regvar.c:   TODO: нужно давать больший приоритет переменным, использующимся во внутренних циклах.
 x86_opt_regvar.c:   TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные, если эти регистры используются как специальные.
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < x86reg_count);
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < x86reg_count);
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
+x86_regalloc.c:     FIXME: без memset всё падает, видимо, кто-то пытается читать неинициализированную память. Also, всё падает в релизе.
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(!REG_IS_REGVAR(reg2));
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(_real_registers_cnt < X86_TMP_REGISTERS_COUNT);
-x86_text_output.c:  FIXME: assumed that operand can either be int or float
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
+x86_regalloc.c:     TODO: для MOV EAX/EDX,reg делать бэк-треккинг и аллоцировать этот псевдорегистр в указанный регистр
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(!X86_IS_REGVAR(reg2) || type != x86reg_dword);
+x86_regalloc.c:     TODO: надо не генерировать SETcc, если parent - JUMP
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+x86_regalloc.c:     TODO: при выделении word регистров надо учитывать регистры, занятые byte; при выделении dword надо учитывать word
 symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов
 allocator.c:        TODO: linked chain of fixed size allocator blocks.
 allocator.c:        TODO: VirtualAlloc instead of _aligned_malloc.
 allocator.c:        TODO: implement _reset_allocator()
-expressions.c:      TODO: type check
-expressions.c:      FIXME: support arithmetic transformations for all types.
-expressions.c:      TODO: type check and arithmetic transformations.
-expressions.c:      TODO: check types and probably insert a type cast.
-expressions.c:      FIXME: sizeof should return unsigned type.
-expressions.c:      TODO: support all possible type conversations
+expressions.c:      TODO: нужно поддержать вычитание указателей
+expressions.c:      TODO: convert_int2double, etc
 parser_actions.c:   TODO: semantic check: type correspondence, type promotion and casting.
 symbol_table.c:     FIXME: we only allow override functions. extern declarations and typedefs are not supported yet.
 symbol_table.c:     TODO: more flexible behavior? symbols can have multiple duplications

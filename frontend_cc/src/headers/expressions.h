@@ -63,6 +63,30 @@ typedef enum arithmetic_opcode_decl {
     // internal unary operations
     op_convert_int2float,
     op_convert_float2int,
+    op_convert_char2short,
+    op_convert_char2int,
+    op_convert_char2longlong,
+    op_convert_uchar2ushort,
+    op_convert_uchar2uint,
+    op_convert_uchar2ulonglong,
+    op_convert_short2char,
+    op_convert_short2int,
+    op_convert_short2longlong,
+    op_convert_ushort2uchar,
+    op_convert_ushort2uint,
+    op_convert_ushort2ulonglong,
+    op_convert_int2char,
+    op_convert_int2short,
+    op_convert_int2longlong,
+    op_convert_uint2uchar,
+    op_convert_uint2ushort,
+    op_convert_uint2ulonglong,
+    op_convert_longlong2char,
+    op_convert_longlong2short,
+    op_convert_longlong2int,
+    op_convert_ulonglong2uchar,
+    op_convert_ulonglong2ushort,
+    op_convert_ulonglong2uint,
     op_notnot,
 } arithmetic_opcode;
 
@@ -126,10 +150,7 @@ typedef struct expression_decl {
         struct function_call_decl {
             expression      *address;
             expression_list *args;
-            int             ellipsis_position;
         } function_call;
-
-        // expression_list  comma_list;
 
         // code_expr_jump
         expr_jump           jump;
@@ -183,7 +204,7 @@ expression *    expr_create_from_string         (char *str);
 
 expression *    expr_create_jump                (int destination, expression *condition, BOOL invert_condition);
 expression *    expr_create_jump_to_named_label (symbol *label_name);
-expression *    expr_create_return              (expression *result);
+expression *    expr_create_return              (expression *result, BOOL allow_empty_return);
 
 expression *    expr_create_array_indexing      (expression *e1, expression *e2);
 expression *    expr_create_direct_field_access (expression *e, symbol *sym);
@@ -197,7 +218,6 @@ expression *    expr_create_sizeof_type         (data_type *type);
 expression *    expr_get_address                (expression *expr);
 expression *    expr_dereference                (expression *expr);
 expression *    expr_create_type_cast           (expression *expr, data_type *type);
-expression **   expr_list2array                 (expression *first_in_list, int *dst_length);
 expression *    expr_create_label               (int label);
 
 

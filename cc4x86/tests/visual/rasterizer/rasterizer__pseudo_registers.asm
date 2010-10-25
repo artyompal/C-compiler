@@ -55,118 +55,118 @@ public	__texture_height
 
 _vec2f_add proc
 	x86instr_create_stack_frame	0
-	mov	reg16,[ebp+16]
-	mov	reg15,[ebp+12]
-	mov	reg14,[ebp+8]
-	fld	dword ptr [reg15]
-	fadd	dword ptr [reg16]
-	fstp	dword ptr [reg14]
-	fld	dword ptr [reg15+4]
-	fadd	dword ptr [reg16+4]
-	fstp	dword ptr [reg14+4]
+	mov	dword16,[ebp+16]
+	mov	dword15,[ebp+12]
+	mov	dword14,[ebp+8]
+	fld	dword ptr [dword15]
+	fadd	dword ptr [dword16]
+	fstp	dword ptr [dword14]
+	fld	dword ptr [dword15+4]
+	fadd	dword ptr [dword16+4]
+	fstp	dword ptr [dword14+4]
 	x86instr_destroy_stack_frame	0
 	ret
 _vec2f_add endp	
 
 _vec2f_subtract proc
 	x86instr_create_stack_frame	0
-	mov	reg16,[ebp+16]
-	mov	reg15,[ebp+12]
-	mov	reg14,[ebp+8]
-	fld	dword ptr [reg15]
-	fsub	dword ptr [reg16]
-	fstp	dword ptr [reg14]
-	fld	dword ptr [reg15+4]
-	fsub	dword ptr [reg16+4]
-	fstp	dword ptr [reg14+4]
+	mov	dword16,[ebp+16]
+	mov	dword15,[ebp+12]
+	mov	dword14,[ebp+8]
+	fld	dword ptr [dword15]
+	fsub	dword ptr [dword16]
+	fstp	dword ptr [dword14]
+	fld	dword ptr [dword15+4]
+	fsub	dword ptr [dword16+4]
+	fstp	dword ptr [dword14+4]
 	x86instr_destroy_stack_frame	0
 	ret
 _vec2f_subtract endp	
 
 _vec2f_mul proc
 	x86instr_create_stack_frame	0
-	mov	reg7,[ebp+8]
-	fld	dword ptr [reg7]
+	mov	dword8,[ebp+8]
+	fld	dword ptr [dword8]
 	fmul	dword ptr [ebp+12]
-	fstp	dword ptr [reg7]
-	fld	dword ptr [reg7+4]
+	fstp	dword ptr [dword8]
+	fld	dword ptr [dword8+4]
 	fmul	dword ptr [ebp+12]
-	fstp	dword ptr [reg7+4]
+	fstp	dword ptr [dword8+4]
 	x86instr_destroy_stack_frame	0
 	ret
 _vec2f_mul endp	
 
 _vec4f_assign proc
 	x86instr_create_stack_frame	0
-	mov	reg13,[ebp+8]
+	mov	dword14,[ebp+8]
 	fld	dword ptr [ebp+12]
-	fstp	dword ptr [reg13]
+	fstp	dword ptr [dword14]
 	fld	dword ptr [ebp+16]
-	fstp	dword ptr [reg13+4]
+	fstp	dword ptr [dword14+4]
 	fld	dword ptr [ebp+20]
-	fstp	dword ptr [reg13+8]
+	fstp	dword ptr [dword14+8]
 	fld	dword ptr [ebp+24]
-	fstp	dword ptr [reg13+12]
+	fstp	dword ptr [dword14+12]
 	x86instr_destroy_stack_frame	0
 	ret
 _vec4f_assign endp	
 
 _vec4f_add proc
 	x86instr_create_stack_frame	0
-	mov	reg28,[ebp+16]
-	mov	reg27,[ebp+12]
-	mov	reg26,[ebp+8]
-	fld	dword ptr [reg27]
-	fadd	dword ptr [reg28]
-	fstp	dword ptr [reg26]
-	fld	dword ptr [reg27+4]
-	fadd	dword ptr [reg28+4]
-	fstp	dword ptr [reg26+4]
-	fld	dword ptr [reg27+8]
-	fadd	dword ptr [reg28+8]
-	fstp	dword ptr [reg26+8]
-	fld	dword ptr [reg27+12]
-	fadd	dword ptr [reg28+12]
-	fstp	dword ptr [reg26+12]
+	mov	dword28,[ebp+16]
+	mov	dword27,[ebp+12]
+	mov	dword26,[ebp+8]
+	fld	dword ptr [dword27]
+	fadd	dword ptr [dword28]
+	fstp	dword ptr [dword26]
+	fld	dword ptr [dword27+4]
+	fadd	dword ptr [dword28+4]
+	fstp	dword ptr [dword26+4]
+	fld	dword ptr [dword27+8]
+	fadd	dword ptr [dword28+8]
+	fstp	dword ptr [dword26+8]
+	fld	dword ptr [dword27+12]
+	fadd	dword ptr [dword28+12]
+	fstp	dword ptr [dword26+12]
 	x86instr_destroy_stack_frame	0
 	ret
 _vec4f_add endp	
 
 _vec4f_subtract proc
 	x86instr_create_stack_frame	0
-	mov	reg28,[ebp+16]
-	mov	reg27,[ebp+12]
-	mov	reg26,[ebp+8]
-	fld	dword ptr [reg27]
-	fsub	dword ptr [reg28]
-	fstp	dword ptr [reg26]
-	fld	dword ptr [reg27+4]
-	fsub	dword ptr [reg28+4]
-	fstp	dword ptr [reg26+4]
-	fld	dword ptr [reg27+8]
-	fsub	dword ptr [reg28+8]
-	fstp	dword ptr [reg26+8]
-	fld	dword ptr [reg27+12]
-	fsub	dword ptr [reg28+12]
-	fstp	dword ptr [reg26+12]
+	mov	dword28,[ebp+16]
+	mov	dword27,[ebp+12]
+	mov	dword26,[ebp+8]
+	fld	dword ptr [dword27]
+	fsub	dword ptr [dword28]
+	fstp	dword ptr [dword26]
+	fld	dword ptr [dword27+4]
+	fsub	dword ptr [dword28+4]
+	fstp	dword ptr [dword26+4]
+	fld	dword ptr [dword27+8]
+	fsub	dword ptr [dword28+8]
+	fstp	dword ptr [dword26+8]
+	fld	dword ptr [dword27+12]
+	fsub	dword ptr [dword28+12]
+	fstp	dword ptr [dword26+12]
 	x86instr_destroy_stack_frame	0
 	ret
 _vec4f_subtract endp	
 
 _vec4f_dot proc
 	x86instr_create_stack_frame	0
-	mov	reg19,[ebp+12]
-	mov	reg18,[ebp+8]
-	fld	dword ptr [reg18]
-	fmul	dword ptr [reg19]
-	fld	dword ptr [reg18+4]
-	fmul	dword ptr [reg19+4]
+	mov	dword19,[ebp+12]
+	mov	dword18,[ebp+8]
+	fld	dword ptr [dword18]
+	fmul	dword ptr [dword19]
+	fld	dword ptr [dword18+4]
+	fmul	dword ptr [dword19+4]
 	faddp
-	fld	dword ptr [reg18+8]
-	fmul	dword ptr [reg19+8]
+	fld	dword ptr [dword18+8]
+	fmul	dword ptr [dword19+8]
 	faddp
-	fld	dword ptr [reg18+12]
-	fmul	dword ptr [reg19+12]
+	fld	dword ptr [dword18+12]
+	fmul	dword ptr [dword19+12]
 	faddp
 	x86instr_destroy_stack_frame	0
 	ret
@@ -174,19 +174,19 @@ _vec4f_dot endp
 
 _vec4f_mul proc
 	x86instr_create_stack_frame	0
-	mov	reg13,[ebp+8]
-	fld	dword ptr [reg13]
+	mov	dword14,[ebp+8]
+	fld	dword ptr [dword14]
 	fmul	dword ptr [ebp+12]
-	fstp	dword ptr [reg13]
-	fld	dword ptr [reg13+4]
+	fstp	dword ptr [dword14]
+	fld	dword ptr [dword14+4]
 	fmul	dword ptr [ebp+12]
-	fstp	dword ptr [reg13+4]
-	fld	dword ptr [reg13+8]
+	fstp	dword ptr [dword14+4]
+	fld	dword ptr [dword14+8]
 	fmul	dword ptr [ebp+12]
-	fstp	dword ptr [reg13+8]
-	fld	dword ptr [reg13+12]
+	fstp	dword ptr [dword14+8]
+	fld	dword ptr [dword14+12]
 	fmul	dword ptr [ebp+12]
-	fstp	dword ptr [reg13+12]
+	fstp	dword ptr [dword14+12]
 	x86instr_destroy_stack_frame	0
 	ret
 _vec4f_mul endp	
@@ -201,75 +201,75 @@ public	___unnamed_float_0
 _vec4f_is_equal proc
 	x86instr_create_stack_frame	20
 	x86instr_push_all
-	push	dword ptr [ebp+12]
-	push	dword ptr [ebp+8]
-	lea	reg3,[ebp-16]
-	push	reg3
+	push_arg	dword ptr [ebp+12]
+	push_arg	dword ptr [ebp+8]
+	lea	dword3,[ebp-16]
+	push_arg	dword3
 	call	_vec4f_subtract
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg5,[ebp-16]
-	push	reg5
-	lea	reg6,[ebp-16]
-	push	reg6
+	lea	dword5,[ebp-16]
+	push_arg	dword5
+	lea	dword6,[ebp-16]
+	push_arg	dword6
 	call	_vec4f_dot
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
 	fstp	dword ptr [ebp-20]
 	fld	[___unnamed_float_0]
-	fld	dword ptr [ebp-20]
+	fld	qword ptr [ebp-20]
 	fucomip	st,st(1)
 	fstp	st
-	setb	al
-	movzx	reg9,al
-	mov	eax,reg9
+	setb	byte1
+	movzx	dword9,byte1
+	mov	eax,dword9
 	x86instr_destroy_stack_frame	20
 	ret
 _vec4f_is_equal endp	
 
 _matrix4f_make_identity proc
 	x86instr_create_stack_frame	0
-	mov	reg34,[ebp+8]
+	mov	dword34,[ebp+8]
 	fld1
-	fstp	dword ptr [reg34]
+	fstp	dword ptr [dword34]
 	fldz
-	fstp	dword ptr [reg34+4]
+	fstp	dword ptr [dword34+4]
 	fldz
-	fstp	dword ptr [reg34+8]
+	fstp	dword ptr [dword34+8]
 	fldz
-	fstp	dword ptr [reg34+12]
+	fstp	dword ptr [dword34+12]
 	fldz
-	fstp	dword ptr [reg34+16]
+	fstp	dword ptr [dword34+16]
 	fld1
-	fstp	dword ptr [reg34+20]
+	fstp	dword ptr [dword34+20]
 	fldz
-	fstp	dword ptr [reg34+24]
+	fstp	dword ptr [dword34+24]
 	fldz
-	fstp	dword ptr [reg34+28]
+	fstp	dword ptr [dword34+28]
 	fldz
-	fstp	dword ptr [reg34+32]
+	fstp	dword ptr [dword34+32]
 	fldz
-	fstp	dword ptr [reg34+36]
+	fstp	dword ptr [dword34+36]
 	fld1
-	fstp	dword ptr [reg34+40]
+	fstp	dword ptr [dword34+40]
 	fldz
-	fstp	dword ptr [reg34+44]
+	fstp	dword ptr [dword34+44]
 	fldz
-	fstp	dword ptr [reg34+48]
+	fstp	dword ptr [dword34+48]
 	fldz
-	fstp	dword ptr [reg34+52]
+	fstp	dword ptr [dword34+52]
 	fldz
-	fstp	dword ptr [reg34+56]
+	fstp	dword ptr [dword34+56]
 	fld1
-	fstp	dword ptr [reg34+60]
+	fstp	dword ptr [dword34+60]
 	x86instr_destroy_stack_frame	0
 	ret
 _matrix4f_make_identity endp	
 
 _matrix4f_make_perspective proc
 	x86instr_create_stack_frame	8
-	mov	reg51,[ebp+8]
+	mov	dword51,[ebp+8]
 	fld	dword ptr [ebp+20]
 	fmul	dword ptr [ebp+12]
 	fstp	dword ptr [ebp-4]
@@ -278,44 +278,44 @@ _matrix4f_make_perspective proc
 	fstp	dword ptr [ebp-8]
 	fld	dword ptr [ebp+12]
 	fdiv	dword ptr [ebp-8]
-	fstp	dword ptr [reg51]
+	fstp	dword ptr [dword51]
 	fldz
-	fstp	dword ptr [reg51+4]
+	fstp	dword ptr [dword51+4]
 	fldz
-	fstp	dword ptr [reg51+8]
+	fstp	dword ptr [dword51+8]
 	fldz
-	fstp	dword ptr [reg51+12]
+	fstp	dword ptr [dword51+12]
 	fldz
-	fstp	dword ptr [reg51+16]
+	fstp	dword ptr [dword51+16]
 	fld	dword ptr [ebp+12]
 	fdiv	dword ptr [ebp-4]
-	fstp	dword ptr [reg51+20]
+	fstp	dword ptr [dword51+20]
 	fldz
-	fstp	dword ptr [reg51+24]
+	fstp	dword ptr [dword51+24]
 	fldz
-	fstp	dword ptr [reg51+28]
+	fstp	dword ptr [dword51+28]
 	fldz
-	fstp	dword ptr [reg51+32]
+	fstp	dword ptr [dword51+32]
 	fldz
-	fstp	dword ptr [reg51+36]
+	fstp	dword ptr [dword51+36]
 	fld	dword ptr [ebp+16]
 	fsub	dword ptr [ebp+12]
 	fdivr	dword ptr [ebp+16]
-	fstp	dword ptr [reg51+40]
+	fstp	dword ptr [dword51+40]
 	fld1
-	fstp	dword ptr [reg51+44]
+	fstp	dword ptr [dword51+44]
 	fldz
-	fstp	dword ptr [reg51+48]
+	fstp	dword ptr [dword51+48]
 	fldz
-	fstp	dword ptr [reg51+52]
+	fstp	dword ptr [dword51+52]
 	fld	dword ptr [ebp+12]
 	fmul	dword ptr [ebp+16]
 	fld	dword ptr [ebp+12]
 	fsub	dword ptr [ebp+16]
 	fdivp
-	fstp	dword ptr [reg51+56]
+	fstp	dword ptr [dword51+56]
 	fldz
-	fstp	dword ptr [reg51+60]
+	fstp	dword ptr [dword51+60]
 	x86instr_destroy_stack_frame	8
 	ret
 _matrix4f_make_perspective endp	
@@ -329,324 +329,324 @@ public	___unnamed_float_1
 
 _matrix4f_make_viewport proc
 	x86instr_create_stack_frame	0
-	mov	reg45,[ebp+8]
+	mov	dword45,[ebp+8]
 	fld	[___unnamed_float_1]
 	fdivr	dword ptr [ebp+12]
-	fstp	dword ptr [reg45]
+	fstp	dword ptr [dword45]
 	fldz
-	fstp	dword ptr [reg45+4]
+	fstp	dword ptr [dword45+4]
 	fldz
-	fstp	dword ptr [reg45+8]
+	fstp	dword ptr [dword45+8]
 	fldz
-	fstp	dword ptr [reg45+12]
+	fstp	dword ptr [dword45+12]
 	fldz
-	fstp	dword ptr [reg45+16]
+	fstp	dword ptr [dword45+16]
 	fld	dword ptr [ebp+16]
 	fldz
 	fsubrp
 	fld	[___unnamed_float_1]
 	fdivp
-	fstp	dword ptr [reg45+20]
+	fstp	dword ptr [dword45+20]
 	fldz
-	fstp	dword ptr [reg45+24]
+	fstp	dword ptr [dword45+24]
 	fldz
-	fstp	dword ptr [reg45+28]
+	fstp	dword ptr [dword45+28]
 	fldz
-	fstp	dword ptr [reg45+32]
+	fstp	dword ptr [dword45+32]
 	fldz
-	fstp	dword ptr [reg45+36]
+	fstp	dword ptr [dword45+36]
 	fld	dword ptr [ebp+24]
 	fsub	dword ptr [ebp+20]
-	fstp	dword ptr [reg45+40]
+	fstp	dword ptr [dword45+40]
 	fldz
-	fstp	dword ptr [reg45+44]
+	fstp	dword ptr [dword45+44]
 	fld	[___unnamed_float_1]
 	fdivr	dword ptr [ebp+12]
-	fstp	dword ptr [reg45+48]
+	fstp	dword ptr [dword45+48]
 	fld	[___unnamed_float_1]
 	fdivr	dword ptr [ebp+16]
-	fstp	dword ptr [reg45+52]
+	fstp	dword ptr [dword45+52]
 	fld	dword ptr [ebp+20]
-	fstp	dword ptr [reg45+56]
+	fstp	dword ptr [dword45+56]
 	fld1
-	fstp	dword ptr [reg45+60]
+	fstp	dword ptr [dword45+60]
 	x86instr_destroy_stack_frame	0
 	ret
 _matrix4f_make_viewport endp	
 
 _matrix4f_mul proc
 	x86instr_create_stack_frame	0
-	mov	reg292,[ebp+8]
-	mov	reg291,[ebp+16]
-	mov	reg290,[ebp+12]
-	fld	dword ptr [reg290]
-	fmul	dword ptr [reg291]
-	fld	dword ptr [reg290+4]
-	fmul	dword ptr [reg291+16]
+	mov	dword292,[ebp+8]
+	mov	dword291,[ebp+16]
+	mov	dword290,[ebp+12]
+	fld	dword ptr [dword290]
+	fmul	dword ptr [dword291]
+	fld	dword ptr [dword290+4]
+	fmul	dword ptr [dword291+16]
 	faddp
-	fld	dword ptr [reg290+8]
-	fmul	dword ptr [reg291+32]
+	fld	dword ptr [dword290+8]
+	fmul	dword ptr [dword291+32]
 	faddp
-	fld	dword ptr [reg290+12]
-	fmul	dword ptr [reg291+48]
+	fld	dword ptr [dword290+12]
+	fmul	dword ptr [dword291+48]
 	faddp
-	fstp	dword ptr [reg292]
-	fld	dword ptr [reg290]
-	fmul	dword ptr [reg291+4]
-	fld	dword ptr [reg290+4]
-	fmul	dword ptr [reg291+20]
+	fstp	dword ptr [dword292]
+	fld	dword ptr [dword290]
+	fmul	dword ptr [dword291+4]
+	fld	dword ptr [dword290+4]
+	fmul	dword ptr [dword291+20]
 	faddp
-	fld	dword ptr [reg290+8]
-	fmul	dword ptr [reg291+36]
+	fld	dword ptr [dword290+8]
+	fmul	dword ptr [dword291+36]
 	faddp
-	fld	dword ptr [reg290+12]
-	fmul	dword ptr [reg291+52]
+	fld	dword ptr [dword290+12]
+	fmul	dword ptr [dword291+52]
 	faddp
-	fstp	dword ptr [reg292+4]
-	fld	dword ptr [reg290]
-	fmul	dword ptr [reg291+8]
-	fld	dword ptr [reg290+4]
-	fmul	dword ptr [reg291+24]
+	fstp	dword ptr [dword292+4]
+	fld	dword ptr [dword290]
+	fmul	dword ptr [dword291+8]
+	fld	dword ptr [dword290+4]
+	fmul	dword ptr [dword291+24]
 	faddp
-	fld	dword ptr [reg290+8]
-	fmul	dword ptr [reg291+40]
+	fld	dword ptr [dword290+8]
+	fmul	dword ptr [dword291+40]
 	faddp
-	fld	dword ptr [reg290+12]
-	fmul	dword ptr [reg291+56]
+	fld	dword ptr [dword290+12]
+	fmul	dword ptr [dword291+56]
 	faddp
-	fstp	dword ptr [reg292+8]
-	fld	dword ptr [reg290]
-	fmul	dword ptr [reg291+12]
-	fld	dword ptr [reg290+4]
-	fmul	dword ptr [reg291+28]
+	fstp	dword ptr [dword292+8]
+	fld	dword ptr [dword290]
+	fmul	dword ptr [dword291+12]
+	fld	dword ptr [dword290+4]
+	fmul	dword ptr [dword291+28]
 	faddp
-	fld	dword ptr [reg290+8]
-	fmul	dword ptr [reg291+44]
+	fld	dword ptr [dword290+8]
+	fmul	dword ptr [dword291+44]
 	faddp
-	fld	dword ptr [reg290+12]
-	fmul	dword ptr [reg291+60]
+	fld	dword ptr [dword290+12]
+	fmul	dword ptr [dword291+60]
 	faddp
-	fstp	dword ptr [reg292+12]
-	fld	dword ptr [reg290+16]
-	fmul	dword ptr [reg291]
-	fld	dword ptr [reg290+20]
-	fmul	dword ptr [reg291+16]
+	fstp	dword ptr [dword292+12]
+	fld	dword ptr [dword290+16]
+	fmul	dword ptr [dword291]
+	fld	dword ptr [dword290+20]
+	fmul	dword ptr [dword291+16]
 	faddp
-	fld	dword ptr [reg290+24]
-	fmul	dword ptr [reg291+32]
+	fld	dword ptr [dword290+24]
+	fmul	dword ptr [dword291+32]
 	faddp
-	fld	dword ptr [reg290+28]
-	fmul	dword ptr [reg291+48]
+	fld	dword ptr [dword290+28]
+	fmul	dword ptr [dword291+48]
 	faddp
-	fstp	dword ptr [reg292+16]
-	fld	dword ptr [reg290+16]
-	fmul	dword ptr [reg291+4]
-	fld	dword ptr [reg290+20]
-	fmul	dword ptr [reg291+20]
+	fstp	dword ptr [dword292+16]
+	fld	dword ptr [dword290+16]
+	fmul	dword ptr [dword291+4]
+	fld	dword ptr [dword290+20]
+	fmul	dword ptr [dword291+20]
 	faddp
-	fld	dword ptr [reg290+24]
-	fmul	dword ptr [reg291+36]
+	fld	dword ptr [dword290+24]
+	fmul	dword ptr [dword291+36]
 	faddp
-	fld	dword ptr [reg290+28]
-	fmul	dword ptr [reg291+52]
+	fld	dword ptr [dword290+28]
+	fmul	dword ptr [dword291+52]
 	faddp
-	fstp	dword ptr [reg292+20]
-	fld	dword ptr [reg290+16]
-	fmul	dword ptr [reg291+8]
-	fld	dword ptr [reg290+20]
-	fmul	dword ptr [reg291+24]
+	fstp	dword ptr [dword292+20]
+	fld	dword ptr [dword290+16]
+	fmul	dword ptr [dword291+8]
+	fld	dword ptr [dword290+20]
+	fmul	dword ptr [dword291+24]
 	faddp
-	fld	dword ptr [reg290+24]
-	fmul	dword ptr [reg291+40]
+	fld	dword ptr [dword290+24]
+	fmul	dword ptr [dword291+40]
 	faddp
-	fld	dword ptr [reg290+28]
-	fmul	dword ptr [reg291+56]
+	fld	dword ptr [dword290+28]
+	fmul	dword ptr [dword291+56]
 	faddp
-	fstp	dword ptr [reg292+24]
-	fld	dword ptr [reg290+16]
-	fmul	dword ptr [reg291+12]
-	fld	dword ptr [reg290+20]
-	fmul	dword ptr [reg291+28]
+	fstp	dword ptr [dword292+24]
+	fld	dword ptr [dword290+16]
+	fmul	dword ptr [dword291+12]
+	fld	dword ptr [dword290+20]
+	fmul	dword ptr [dword291+28]
 	faddp
-	fld	dword ptr [reg290+24]
-	fmul	dword ptr [reg291+44]
+	fld	dword ptr [dword290+24]
+	fmul	dword ptr [dword291+44]
 	faddp
-	fld	dword ptr [reg290+28]
-	fmul	dword ptr [reg291+60]
+	fld	dword ptr [dword290+28]
+	fmul	dword ptr [dword291+60]
 	faddp
-	fstp	dword ptr [reg292+28]
-	fld	dword ptr [reg290+32]
-	fmul	dword ptr [reg291]
-	fld	dword ptr [reg290+36]
-	fmul	dword ptr [reg291+16]
+	fstp	dword ptr [dword292+28]
+	fld	dword ptr [dword290+32]
+	fmul	dword ptr [dword291]
+	fld	dword ptr [dword290+36]
+	fmul	dword ptr [dword291+16]
 	faddp
-	fld	dword ptr [reg290+40]
-	fmul	dword ptr [reg291+32]
+	fld	dword ptr [dword290+40]
+	fmul	dword ptr [dword291+32]
 	faddp
-	fld	dword ptr [reg290+44]
-	fmul	dword ptr [reg291+48]
+	fld	dword ptr [dword290+44]
+	fmul	dword ptr [dword291+48]
 	faddp
-	fstp	dword ptr [reg292+32]
-	fld	dword ptr [reg290+32]
-	fmul	dword ptr [reg291+4]
-	fld	dword ptr [reg290+36]
-	fmul	dword ptr [reg291+20]
+	fstp	dword ptr [dword292+32]
+	fld	dword ptr [dword290+32]
+	fmul	dword ptr [dword291+4]
+	fld	dword ptr [dword290+36]
+	fmul	dword ptr [dword291+20]
 	faddp
-	fld	dword ptr [reg290+40]
-	fmul	dword ptr [reg291+36]
+	fld	dword ptr [dword290+40]
+	fmul	dword ptr [dword291+36]
 	faddp
-	fld	dword ptr [reg290+44]
-	fmul	dword ptr [reg291+52]
+	fld	dword ptr [dword290+44]
+	fmul	dword ptr [dword291+52]
 	faddp
-	fstp	dword ptr [reg292+36]
-	fld	dword ptr [reg290+32]
-	fmul	dword ptr [reg291+8]
-	fld	dword ptr [reg290+36]
-	fmul	dword ptr [reg291+24]
+	fstp	dword ptr [dword292+36]
+	fld	dword ptr [dword290+32]
+	fmul	dword ptr [dword291+8]
+	fld	dword ptr [dword290+36]
+	fmul	dword ptr [dword291+24]
 	faddp
-	fld	dword ptr [reg290+40]
-	fmul	dword ptr [reg291+40]
+	fld	dword ptr [dword290+40]
+	fmul	dword ptr [dword291+40]
 	faddp
-	fld	dword ptr [reg290+44]
-	fmul	dword ptr [reg291+56]
+	fld	dword ptr [dword290+44]
+	fmul	dword ptr [dword291+56]
 	faddp
-	fstp	dword ptr [reg292+40]
-	fld	dword ptr [reg290+32]
-	fmul	dword ptr [reg291+12]
-	fld	dword ptr [reg290+36]
-	fmul	dword ptr [reg291+28]
+	fstp	dword ptr [dword292+40]
+	fld	dword ptr [dword290+32]
+	fmul	dword ptr [dword291+12]
+	fld	dword ptr [dword290+36]
+	fmul	dword ptr [dword291+28]
 	faddp
-	fld	dword ptr [reg290+40]
-	fmul	dword ptr [reg291+44]
+	fld	dword ptr [dword290+40]
+	fmul	dword ptr [dword291+44]
 	faddp
-	fld	dword ptr [reg290+44]
-	fmul	dword ptr [reg291+60]
+	fld	dword ptr [dword290+44]
+	fmul	dword ptr [dword291+60]
 	faddp
-	fstp	dword ptr [reg292+44]
-	fld	dword ptr [reg290+48]
-	fmul	dword ptr [reg291]
-	fld	dword ptr [reg290+52]
-	fmul	dword ptr [reg291+16]
+	fstp	dword ptr [dword292+44]
+	fld	dword ptr [dword290+48]
+	fmul	dword ptr [dword291]
+	fld	dword ptr [dword290+52]
+	fmul	dword ptr [dword291+16]
 	faddp
-	fld	dword ptr [reg290+56]
-	fmul	dword ptr [reg291+32]
+	fld	dword ptr [dword290+56]
+	fmul	dword ptr [dword291+32]
 	faddp
-	fld	dword ptr [reg290+60]
-	fmul	dword ptr [reg291+48]
+	fld	dword ptr [dword290+60]
+	fmul	dword ptr [dword291+48]
 	faddp
-	fstp	dword ptr [reg292+48]
-	fld	dword ptr [reg290+48]
-	fmul	dword ptr [reg291+4]
-	fld	dword ptr [reg290+52]
-	fmul	dword ptr [reg291+20]
+	fstp	dword ptr [dword292+48]
+	fld	dword ptr [dword290+48]
+	fmul	dword ptr [dword291+4]
+	fld	dword ptr [dword290+52]
+	fmul	dword ptr [dword291+20]
 	faddp
-	fld	dword ptr [reg290+56]
-	fmul	dword ptr [reg291+36]
+	fld	dword ptr [dword290+56]
+	fmul	dword ptr [dword291+36]
 	faddp
-	fld	dword ptr [reg290+60]
-	fmul	dword ptr [reg291+52]
+	fld	dword ptr [dword290+60]
+	fmul	dword ptr [dword291+52]
 	faddp
-	fstp	dword ptr [reg292+52]
-	fld	dword ptr [reg290+48]
-	fmul	dword ptr [reg291+8]
-	fld	dword ptr [reg290+52]
-	fmul	dword ptr [reg291+24]
+	fstp	dword ptr [dword292+52]
+	fld	dword ptr [dword290+48]
+	fmul	dword ptr [dword291+8]
+	fld	dword ptr [dword290+52]
+	fmul	dword ptr [dword291+24]
 	faddp
-	fld	dword ptr [reg290+56]
-	fmul	dword ptr [reg291+40]
+	fld	dword ptr [dword290+56]
+	fmul	dword ptr [dword291+40]
 	faddp
-	fld	dword ptr [reg290+60]
-	fmul	dword ptr [reg291+56]
+	fld	dword ptr [dword290+60]
+	fmul	dword ptr [dword291+56]
 	faddp
-	fstp	dword ptr [reg292+56]
-	fld	dword ptr [reg290+48]
-	fmul	dword ptr [reg291+12]
-	fld	dword ptr [reg290+52]
-	fmul	dword ptr [reg291+28]
+	fstp	dword ptr [dword292+56]
+	fld	dword ptr [dword290+48]
+	fmul	dword ptr [dword291+12]
+	fld	dword ptr [dword290+52]
+	fmul	dword ptr [dword291+28]
 	faddp
-	fld	dword ptr [reg290+56]
-	fmul	dword ptr [reg291+44]
+	fld	dword ptr [dword290+56]
+	fmul	dword ptr [dword291+44]
 	faddp
-	fld	dword ptr [reg290+60]
-	fmul	dword ptr [reg291+60]
+	fld	dword ptr [dword290+60]
+	fmul	dword ptr [dword291+60]
 	faddp
-	fstp	dword ptr [reg292+60]
+	fstp	dword ptr [dword292+60]
 	x86instr_destroy_stack_frame	0
 	ret
 _matrix4f_mul endp	
 
 _matrix4f_transform proc
 	x86instr_create_stack_frame	0
-	mov	reg76,[ebp+8]
-	mov	reg75,[ebp+16]
-	mov	reg74,[ebp+12]
-	fld	dword ptr [reg74]
-	fmul	dword ptr [reg75]
-	fld	dword ptr [reg74+4]
-	fmul	dword ptr [reg75+16]
+	mov	dword76,[ebp+8]
+	mov	dword75,[ebp+16]
+	mov	dword74,[ebp+12]
+	fld	dword ptr [dword74]
+	fmul	dword ptr [dword75]
+	fld	dword ptr [dword74+4]
+	fmul	dword ptr [dword75+16]
 	faddp
-	fld	dword ptr [reg74+8]
-	fmul	dword ptr [reg75+32]
+	fld	dword ptr [dword74+8]
+	fmul	dword ptr [dword75+32]
 	faddp
-	fld	dword ptr [reg74+12]
-	fmul	dword ptr [reg75+48]
+	fld	dword ptr [dword74+12]
+	fmul	dword ptr [dword75+48]
 	faddp
-	fstp	dword ptr [reg76]
-	fld	dword ptr [reg74]
-	fmul	dword ptr [reg75+4]
-	fld	dword ptr [reg74+4]
-	fmul	dword ptr [reg75+20]
+	fstp	dword ptr [dword76]
+	fld	dword ptr [dword74]
+	fmul	dword ptr [dword75+4]
+	fld	dword ptr [dword74+4]
+	fmul	dword ptr [dword75+20]
 	faddp
-	fld	dword ptr [reg74+8]
-	fmul	dword ptr [reg75+36]
+	fld	dword ptr [dword74+8]
+	fmul	dword ptr [dword75+36]
 	faddp
-	fld	dword ptr [reg74+12]
-	fmul	dword ptr [reg75+52]
+	fld	dword ptr [dword74+12]
+	fmul	dword ptr [dword75+52]
 	faddp
-	fstp	dword ptr [reg76+4]
-	fld	dword ptr [reg74]
-	fmul	dword ptr [reg75+8]
-	fld	dword ptr [reg74+4]
-	fmul	dword ptr [reg75+24]
+	fstp	dword ptr [dword76+4]
+	fld	dword ptr [dword74]
+	fmul	dword ptr [dword75+8]
+	fld	dword ptr [dword74+4]
+	fmul	dword ptr [dword75+24]
 	faddp
-	fld	dword ptr [reg74+8]
-	fmul	dword ptr [reg75+40]
+	fld	dword ptr [dword74+8]
+	fmul	dword ptr [dword75+40]
 	faddp
-	fld	dword ptr [reg74+12]
-	fmul	dword ptr [reg75+56]
+	fld	dword ptr [dword74+12]
+	fmul	dword ptr [dword75+56]
 	faddp
-	fstp	dword ptr [reg76+8]
-	fld	dword ptr [reg74]
-	fmul	dword ptr [reg75+12]
-	fld	dword ptr [reg74+4]
-	fmul	dword ptr [reg75+28]
+	fstp	dword ptr [dword76+8]
+	fld	dword ptr [dword74]
+	fmul	dword ptr [dword75+12]
+	fld	dword ptr [dword74+4]
+	fmul	dword ptr [dword75+28]
 	faddp
-	fld	dword ptr [reg74+8]
-	fmul	dword ptr [reg75+44]
+	fld	dword ptr [dword74+8]
+	fmul	dword ptr [dword75+44]
 	faddp
-	fld	dword ptr [reg74+12]
-	fmul	dword ptr [reg75+60]
+	fld	dword ptr [dword74+12]
+	fmul	dword ptr [dword75+60]
 	faddp
-	fstp	dword ptr [reg76+12]
+	fstp	dword ptr [dword76+12]
 	x86instr_destroy_stack_frame	0
 	ret
 _matrix4f_transform endp	
 
 _matrix4f_transpose proc
 	x86instr_create_stack_frame	0
-	mov	reg26,[ebp+8]
-	fld	dword ptr [reg26+16]
-	fstp	dword ptr [reg26+4]
-	fld	dword ptr [reg26+32]
-	fstp	dword ptr [reg26+8]
-	fld	dword ptr [reg26+48]
-	fstp	dword ptr [reg26+12]
-	fld	dword ptr [reg26+36]
-	fstp	dword ptr [reg26+24]
-	fld	dword ptr [reg26+52]
-	fstp	dword ptr [reg26+28]
-	fld	dword ptr [reg26+56]
-	fstp	dword ptr [reg26+44]
+	mov	dword26,[ebp+8]
+	fld	dword ptr [dword26+16]
+	fstp	dword ptr [dword26+4]
+	fld	dword ptr [dword26+32]
+	fstp	dword ptr [dword26+8]
+	fld	dword ptr [dword26+48]
+	fstp	dword ptr [dword26+12]
+	fld	dword ptr [dword26+36]
+	fstp	dword ptr [dword26+24]
+	fld	dword ptr [dword26+52]
+	fstp	dword ptr [dword26+28]
+	fld	dword ptr [dword26+56]
+	fstp	dword ptr [dword26+44]
 	x86instr_destroy_stack_frame	0
 	ret
 _matrix4f_transpose endp	
@@ -660,57 +660,51 @@ public	___unnamed_float_2
 
 _rasterizer_init proc
 	x86instr_create_stack_frame	8
-	mov	reg3,[ebp+8]
-	mov	[__dbgprintf],reg3
-	mov	reg6,[ebp+12]
-	mov	[__width],reg6
-	mov	reg9,[ebp+16]
-	mov	[__height],reg9
-	mov	reg12,[ebp+20]
-	mov	[__pitch],reg12
+	mov	dword3,[ebp+8]
+	mov	[__dbgprintf],dword3
+	mov	dword6,[ebp+12]
+	mov	[__width],dword6
+	mov	dword9,[ebp+16]
+	mov	[__height],dword9
+	mov	dword12,[ebp+20]
+	mov	[__pitch],dword12
 	x86instr_push_all
 	fild	dword ptr [ebp+12]
 	fild	dword ptr [ebp+16]
 	fdivp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	push	dword ptr [ebp+32]
-	push	dword ptr [ebp+28]
-	push	dword ptr [ebp+24]
-	lea	reg18,[__mvproj_matrix]
-	push	reg18
+	push_argp
+	push_arg	dword ptr [ebp+32]
+	push_arg	dword ptr [ebp+28]
+	push_arg	dword ptr [ebp+24]
+	lea	dword18,[__mvproj_matrix]
+	push_arg	dword18
 	call	_matrix4f_make_perspective
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
-	push	dword ptr [ebp+28]
-	push	dword ptr [ebp+24]
+	push_arg	dword ptr [ebp+28]
+	push_arg	dword ptr [ebp+24]
 	fild	dword ptr [ebp+16]
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fild	dword ptr [ebp+12]
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg23,[__viewport_matrix]
-	push	reg23
+	push_argp
+	lea	dword23,[__viewport_matrix]
+	push_arg	dword23
 	call	_matrix4f_make_viewport
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	push	dword ptr [ebp+24]
+	push_argp
+	push_arg	dword ptr [ebp+24]
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg25,[__clip_z_near_base]
-	push	reg25
+	push_argp
+	lea	dword25,[__clip_z_near_base]
+	push_arg	dword25
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	fld	dword ptr [ebp+24]
 	fld	dword ptr [ebp+28]
@@ -726,35 +720,29 @@ label0000:
 label0001:
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	push	dword ptr [ebp-4]
+	push_argp
+	push_arg	dword ptr [ebp-4]
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg32,[__clip_z_near_norm]
-	push	reg32
+	push_argp
+	lea	dword32,[__clip_z_near_norm]
+	push_arg	dword32
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	push	dword ptr [ebp+28]
+	push_argp
+	push_arg	dword ptr [ebp+28]
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg34,[__clip_z_far_base]
-	push	reg34
+	push_argp
+	lea	dword34,[__clip_z_far_base]
+	push_arg	dword34
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	fld	dword ptr [ebp+24]
 	fld	dword ptr [ebp+28]
@@ -770,175 +758,140 @@ label0002:
 label0003:
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	push	dword ptr [ebp-8]
+	push_argp
+	push_arg	dword ptr [ebp-8]
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg41,[__clip_z_far_norm]
-	push	reg41
+	push_argp
+	lea	dword41,[__clip_z_far_norm]
+	push_arg	dword41
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld	[___unnamed_float_2]
 	fld1
 	fild	dword ptr [ebp+12]
 	fdivp
 	faddp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg44,[__clip_plane_left_base]
-	push	reg44
+	push_argp
+	lea	dword44,[__clip_plane_left_base]
+	push_arg	dword44
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg45,[__clip_plane_left_norm]
-	push	reg45
+	push_argp
+	lea	dword45,[__clip_plane_left_norm]
+	push_arg	dword45
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld1
 	fld1
 	fild	dword ptr [ebp+12]
 	fdivp
 	fsubp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg47,[__clip_plane_right_base]
-	push	reg47
+	push_argp
+	lea	dword47,[__clip_plane_right_base]
+	push_arg	dword47
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld	[___unnamed_float_2]
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg49,[__clip_plane_right_norm]
-	push	reg49
+	push_argp
+	lea	dword49,[__clip_plane_right_norm]
+	push_arg	dword49
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld	[___unnamed_float_2]
 	fld1
 	fild	dword ptr [ebp+16]
 	fdivp
 	faddp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg52,[__clip_plane_top_base]
-	push	reg52
+	push_argp
+	lea	dword52,[__clip_plane_top_base]
+	push_arg	dword52
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg53,[__clip_plane_top_norm]
-	push	reg53
+	push_argp
+	lea	dword53,[__clip_plane_top_norm]
+	push_arg	dword53
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg54,[__clip_plane_bottom_base]
-	push	reg54
+	push_argp
+	lea	dword54,[__clip_plane_bottom_base]
+	push_arg	dword54
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld	[___unnamed_float_2]
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	lea	reg56,[__clip_plane_bottom_norm]
-	push	reg56
+	push_argp
+	lea	dword56,[__clip_plane_bottom_norm]
+	push_arg	dword56
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_destroy_stack_frame	8
 	ret
@@ -946,72 +899,91 @@ _rasterizer_init endp
 
 _rasterizer_begin_frame proc
 	x86instr_create_stack_frame	0
-	mov	reg3,[ebp+8]
-	mov	[__videomem],reg3
+	mov	dword3,[ebp+8]
+	mov	[__videomem],dword3
 	x86instr_destroy_stack_frame	0
 	ret
 _rasterizer_begin_frame endp	
 
 _rasterizer_set_mvproj proc
 	x86instr_create_stack_frame	0
-	mov	reg2,[ebp+8]
-	lea	reg4,[reg2]
-	lea	reg5,[__mvproj_matrix]
-	mov	reg6,16
-label0000:
-	mov	reg7,[reg4]
-	mov	[reg5],reg7
-	dec	reg6
-	lea	reg4,[reg4+4]
-	lea	reg5,[reg5+4]
-	jne	label0000
+	mov	dword2,[ebp+8]
+	lea	dword3,[__mvproj_matrix]
+	mov	dword4,[dword2]
+	mov	dword5,[dword2+4]
+	mov	[__mvproj_matrix],dword4
+	mov	[dword3+4],dword5
+	mov	dword4,[dword2+8]
+	mov	dword5,[dword2+12]
+	mov	[dword3+8],dword4
+	mov	[dword3+12],dword5
+	mov	dword4,[dword2+16]
+	mov	dword5,[dword2+20]
+	mov	[dword3+16],dword4
+	mov	[dword3+20],dword5
+	mov	dword4,[dword2+24]
+	mov	dword5,[dword2+28]
+	mov	[dword3+24],dword4
+	mov	[dword3+28],dword5
+	mov	dword4,[dword2+32]
+	mov	dword5,[dword2+36]
+	mov	[dword3+32],dword4
+	mov	[dword3+36],dword5
+	mov	dword4,[dword2+40]
+	mov	dword5,[dword2+44]
+	mov	[dword3+40],dword4
+	mov	[dword3+44],dword5
+	mov	dword4,[dword2+48]
+	mov	dword5,[dword2+52]
+	mov	[dword3+48],dword4
+	mov	[dword3+52],dword5
+	mov	dword4,[dword2+56]
+	mov	dword5,[dword2+60]
+	mov	[dword3+56],dword4
+	mov	[dword3+60],dword5
 	x86instr_destroy_stack_frame	0
 	ret
 _rasterizer_set_mvproj endp	
 
 _rasterizer_set_color proc
 	x86instr_create_stack_frame	0
-	mov	reg3,[ebp+8]
-	mov	[__color],reg3
+	mov	dword3,[ebp+8]
+	mov	[__color],dword3
 	x86instr_destroy_stack_frame	0
 	ret
 _rasterizer_set_color endp	
 
 _rasterizer_set_texture proc
 	x86instr_create_stack_frame	0
-	mov	reg3,[ebp+8]
-	mov	[__texture_data],reg3
-	mov	reg6,[ebp+12]
-	mov	[__texture_width],reg6
-	mov	reg9,[ebp+16]
-	mov	[__texture_height],reg9
+	mov	dword3,[ebp+8]
+	mov	[__texture_data],dword3
+	mov	dword6,[ebp+12]
+	mov	[__texture_width],dword6
+	mov	dword9,[ebp+16]
+	mov	[__texture_height],dword9
 	x86instr_destroy_stack_frame	0
 	ret
 _rasterizer_set_texture endp	
 
 __tex2d proc
-	x86instr_create_stack_frame	12
-	mov	reg3,[__texture_width]
-	dec	reg3
-	mov	[ebp-12],reg3
-	fild	dword ptr [ebp-12]
+	x86instr_create_stack_frame	8
+	mov	dword3,[__texture_width]
+	dec	dword3
+	int2float	dword3
 	fmul	dword ptr [ebp+8]
-	fistp	dword ptr [ebp-12]
-	mov	reg17,[ebp-12]
-	mov	reg9,[__texture_height]
-	dec	reg9
-	mov	[ebp-12],reg9
-	fild	dword ptr [ebp-12]
+	float2int	dword20
+	mov	dword9,[__texture_height]
+	dec	dword9
+	int2float	dword9
 	fmul	dword ptr [ebp+12]
-	fistp	dword ptr [ebp-12]
-	mov	reg18,[ebp-12]
-	mov	reg15,reg18
-	imul	reg15,[__texture_width]
-	add	reg15,reg17
-	sal	reg15,2
-	add	reg15,[__texture_data]
-	mov	eax,[reg15]
-	x86instr_destroy_stack_frame	12
+	float2int	dword21
+	mov	dword15,dword21
+	imul	dword15,[__texture_width]
+	add	dword15,dword20
+	sal	dword15,2
+	add	dword15,[__texture_data]
+	mov	eax,[dword15]
+	x86instr_destroy_stack_frame	8
 	ret
 __tex2d endp	
 
@@ -1023,53 +995,53 @@ public	___unnamed_float_3
 .code
 
 __rasterize_horiz_line proc
-	x86instr_create_stack_frame	48
-	mov	reg86,[ebp+8]
-	mov	reg81,[__pitch]
-	imul	reg81,[ebp+16]
-	add	reg81,[__videomem]
-	mov	reg7,reg86
-	sal	reg7,2
-	add	reg81,reg7
-	mov	reg84,[ebp+12]
-	sal	reg84,2
-	add	reg84,reg81
-	mov	reg15,reg86
-	sal	reg15,2
-	sub	reg84,reg15
+	x86instr_create_stack_frame	44
+	mov	dword85,[ebp+8]
+	mov	dword80,[__pitch]
+	imul	dword80,[ebp+16]
+	add	dword80,[__videomem]
+	mov	dword7,dword85
+	sal	dword7,2
+	add	dword80,dword7
+	mov	dword83,[ebp+12]
+	sal	dword83,2
+	add	dword83,dword80
+	mov	dword15,dword85
+	sal	dword15,2
+	sub	dword83,dword15
 label0000:
 	x86instr_push_all
-	push	dword ptr [ebp+24]
-	push	dword ptr [ebp+20]
+	push_arg	dword ptr [ebp+24]
+	push_arg	dword ptr [ebp+20]
 	call	__tex2d
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
-	mov	reg82,eax
-	mov	reg23,reg82
-	sar	reg23,24
-	and	reg23,255
-	mov	[ebp-40],reg23
+	mov	dword81,eax
+	mov	dword22,dword81
+	sar	dword22,24
+	and	dword22,255
+	mov	[ebp-40],dword22
 	cmp	dword ptr [ebp-40],0
 	je	label0003
 	fild	dword ptr [ebp-40]
 	fld	[___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-44]
-	mov	reg83,[reg81]
-	mov	reg36,reg83
-	and	reg36,65280
-	sar	reg36,8
-	mov	[ebp-32],reg36
-	mov	reg41,reg83
-	and	reg41,255
-	mov	[ebp-36],reg41
-	mov	reg45,reg82
-	and	reg45,65280
-	sar	reg45,8
-	mov	[ebp-20],reg45
-	mov	reg50,reg82
-	and	reg50,255
-	mov	[ebp-24],reg50
+	mov	dword82,[dword80]
+	mov	dword35,dword82
+	and	dword35,65280
+	sar	dword35,8
+	mov	[ebp-32],dword35
+	mov	dword40,dword82
+	and	dword40,255
+	mov	[ebp-36],dword40
+	mov	dword44,dword81
+	and	dword44,65280
+	sar	dword44,8
+	mov	[ebp-20],dword44
+	mov	dword49,dword81
+	and	dword49,255
+	mov	[ebp-24],dword49
 	fild	dword ptr [ebp-20]
 	fmul	dword ptr [ebp-44]
 	fild	dword ptr [ebp-32]
@@ -1077,9 +1049,8 @@ label0000:
 	fsub	dword ptr [ebp-44]
 	fmulp
 	faddp
-	fistp	dword ptr [ebp-48]
-	mov	reg57,[ebp-48]
-	mov	[ebp-20],reg57
+	float2int	dword55
+	mov	[ebp-20],dword55
 	fild	dword ptr [ebp-24]
 	fmul	dword ptr [ebp-44]
 	fild	dword ptr [ebp-36]
@@ -1087,13 +1058,12 @@ label0000:
 	fsub	dword ptr [ebp-44]
 	fmulp
 	faddp
-	fistp	dword ptr [ebp-48]
-	mov	reg63,[ebp-48]
-	mov	[ebp-24],reg63
-	mov	reg85,[ebp-20]
-	sal	reg85,8
-	add	reg85,[ebp-24]
-	mov	[reg81],reg85
+	float2int	dword61
+	mov	[ebp-24],dword61
+	mov	dword84,[ebp-20]
+	sal	dword84,8
+	add	dword84,[ebp-24]
+	mov	[dword80],dword84
 label0003:
 	fld	dword ptr [ebp+20]
 	fadd	dword ptr [ebp+28]
@@ -1102,44 +1072,44 @@ label0003:
 	fadd	dword ptr [ebp+32]
 	fstp	dword ptr [ebp+24]
 label0001:
-	add	reg81,4
-	cmp	reg81,reg84
+	add	dword80,4
+	cmp	dword80,dword83
 	jl	label0000
 label0002:
-	x86instr_destroy_stack_frame	48
+	x86instr_destroy_stack_frame	44
 	ret
 __rasterize_horiz_line endp	
 
 __rasterize_horiz_line__unordered proc
 	x86instr_create_stack_frame	0
-	mov	reg7,[ebp+16]
-	mov	reg6,[ebp+12]
-	mov	reg5,[ebp+8]
-	cmp	reg5,reg6
+	mov	dword21,[ebp+16]
+	mov	dword20,[ebp+12]
+	mov	dword19,[ebp+8]
+	cmp	dword19,dword20
 	jg	label0000
 	x86instr_push_all
-	push	dword ptr [ebp+40]
-	push	dword ptr [ebp+36]
-	push	dword ptr [ebp+24]
-	push	dword ptr [ebp+20]
-	push	reg7
-	push	reg6
-	push	reg5
+	push_arg	dword ptr [ebp+40]
+	push_arg	dword ptr [ebp+36]
+	push_arg	dword ptr [ebp+24]
+	push_arg	dword ptr [ebp+20]
+	push_arg	dword21
+	push_arg	dword20
+	push_arg	dword19
 	call	__rasterize_horiz_line
-	add	esp,28
+	restore_stack	28
 	x86instr_pop_all
 	jmp	label0001
 label0000:
 	x86instr_push_all
-	push	dword ptr [ebp+40]
-	push	dword ptr [ebp+36]
-	push	dword ptr [ebp+32]
-	push	dword ptr [ebp+28]
-	push	reg7
-	push	reg5
-	push	reg6
+	push_arg	dword ptr [ebp+40]
+	push_arg	dword ptr [ebp+36]
+	push_arg	dword ptr [ebp+32]
+	push_arg	dword ptr [ebp+28]
+	push_arg	dword21
+	push_arg	dword19
+	push_arg	dword20
 	call	__rasterize_horiz_line
-	add	esp,28
+	restore_stack	28
 	x86instr_pop_all
 label0001:
 	x86instr_destroy_stack_frame	0
@@ -1148,107 +1118,103 @@ __rasterize_horiz_line__unordered endp
 
 __rasterize_triangle_1i proc
 	x86instr_create_stack_frame	0
-	mov	reg72,[ebp+24]
-	mov	reg71,[ebp+20]
-	mov	reg70,[ebp+12]
-	mov	reg69,[ebp+8]
-	mov	reg68,[ebp+16]
-	cmp	reg69,reg70
+	mov	dword75,[ebp+24]
+	mov	dword74,[ebp+20]
+	mov	dword73,[ebp+12]
+	mov	dword72,[ebp+8]
+	mov	dword71,[ebp+16]
+	cmp	dword72,dword73
 	jge	label0000
-	cmp	reg68,reg70
+	cmp	dword71,dword73
 	jle	label0001
 	x86instr_push_all
-	push	dword ptr [ebp+40]
-	push	dword ptr [ebp+36]
-	push	dword ptr [reg72+4]
-	push	dword ptr [reg72]
-	push	reg71
-	push	reg68
-	push	reg69
+	push_arg	dword ptr [ebp+40]
+	push_arg	dword ptr [ebp+36]
+	push_arg	dword ptr [dword75+4]
+	push_arg	dword ptr [dword75]
+	push_arg	dword74
+	push_arg	dword71
+	push_arg	dword72
 	call	__rasterize_horiz_line
-	add	esp,28
+	restore_stack	28
 	x86instr_pop_all
 	jmp	label0002
 label0001:
-	cmp	reg68,reg69
+	cmp	dword71,dword72
 	jge	label0003
 	x86instr_push_all
-	push	dword ptr [ebp+40]
-	push	dword ptr [ebp+36]
-	mov	reg22,[ebp+32]
-	push	dword ptr [reg22+4]
-	mov	reg24,[ebp+32]
-	push	dword ptr [reg24]
-	push	reg71
-	push	reg70
-	push	reg68
+	push_arg	dword ptr [ebp+40]
+	push_arg	dword ptr [ebp+36]
+	mov	dword22,[ebp+32]
+	push_arg	dword ptr [dword22+4]
+	mov	dword24,[ebp+32]
+	push_arg	dword ptr [dword24]
+	push_arg	dword74
+	push_arg	dword73
+	push_arg	dword71
 	call	__rasterize_horiz_line
-	add	esp,28
+	restore_stack	28
 	x86instr_pop_all
 	jmp	label0004
 label0003:
 	x86instr_push_all
-	push	dword ptr [ebp+40]
-	push	dword ptr [ebp+36]
-	push	dword ptr [reg72+4]
-	push	dword ptr [reg72]
-	push	reg71
-	push	reg70
-	push	reg69
+	push_arg	dword ptr [ebp+40]
+	push_arg	dword ptr [ebp+36]
+	push_arg	dword ptr [dword75+4]
+	push_arg	dword ptr [dword75]
+	push_arg	dword74
+	push_arg	dword73
+	push_arg	dword72
 	call	__rasterize_horiz_line
-	add	esp,28
+	restore_stack	28
 	x86instr_pop_all
 label0004:
 label0002:
 	jmp	label0005
 label0000:
-	cmp	reg68,reg70
+	cmp	dword71,dword73
 	jge	label0006
 	x86instr_push_all
 	fld	dword ptr [ebp+40]
 	fldz
 	fsubrp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld	dword ptr [ebp+36]
 	fldz
 	fsubrp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	mov	reg43,[ebp+32]
-	push	dword ptr [reg43+4]
-	mov	reg45,[ebp+32]
-	push	dword ptr [reg45]
-	push	reg71
-	push	reg69
-	push	reg68
+	push_argp
+	mov	dword43,[ebp+32]
+	push_arg	dword ptr [dword43+4]
+	mov	dword45,[ebp+32]
+	push_arg	dword ptr [dword45]
+	push_arg	dword74
+	push_arg	dword72
+	push_arg	dword71
 	call	__rasterize_horiz_line
-	add	esp,28
+	restore_stack	28
 	x86instr_pop_all
 	jmp	label0007
 label0006:
-	cmp	reg68,reg69
+	cmp	dword71,dword72
 	jle	label0008
 	x86instr_push_all
 	fld	dword ptr [ebp+40]
 	fldz
 	fsubrp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld	dword ptr [ebp+36]
 	fldz
 	fsubrp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	mov	reg55,[ebp+28]
-	push	dword ptr [reg55+4]
-	mov	reg57,[ebp+28]
-	push	dword ptr [reg57]
-	push	reg71
-	push	reg68
-	push	reg70
+	push_argp
+	mov	dword55,[ebp+28]
+	push_arg	dword ptr [dword55+4]
+	mov	dword57,[ebp+28]
+	push_arg	dword ptr [dword57]
+	push_arg	dword74
+	push_arg	dword71
+	push_arg	dword73
 	call	__rasterize_horiz_line
-	add	esp,28
+	restore_stack	28
 	x86instr_pop_all
 	jmp	label0009
 label0008:
@@ -1256,22 +1222,20 @@ label0008:
 	fld	dword ptr [ebp+40]
 	fldz
 	fsubrp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fld	dword ptr [ebp+36]
 	fldz
 	fsubrp
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	mov	reg64,[ebp+28]
-	push	dword ptr [reg64+4]
-	mov	reg66,[ebp+28]
-	push	dword ptr [reg66]
-	push	reg71
-	push	reg69
-	push	reg70
+	push_argp
+	mov	dword64,[ebp+28]
+	push_arg	dword ptr [dword64+4]
+	mov	dword66,[ebp+28]
+	push_arg	dword ptr [dword66]
+	push_arg	dword74
+	push_arg	dword72
+	push_arg	dword73
 	call	__rasterize_horiz_line
-	add	esp,28
+	restore_stack	28
 	x86instr_pop_all
 label0009:
 label0007:
@@ -1281,481 +1245,448 @@ label0005:
 __rasterize_triangle_1i endp	
 
 __rasterize_triangle_2i proc
-	x86instr_create_stack_frame	44
-	mov	reg485,[ebp+16]
-	mov	reg484,[ebp+12]
-	mov	reg483,[ebp+8]
-	mov	reg7,[reg483+4]
-	cmp	reg7,[reg484+4]
+	x86instr_create_stack_frame	40
+	mov	dword490,[ebp+16]
+	mov	dword489,[ebp+12]
+	mov	dword488,[ebp+8]
+	mov	dword7,[dword488+4]
+	cmp	dword7,[dword489+4]
 	jle	label0000
-	mov	[ebp-4],reg483
-	mov	reg483,reg484
-	mov	reg484,[ebp-4]
+	mov	[ebp-4],dword488
+	mov	dword488,dword489
+	mov	dword489,[ebp-4]
 label0000:
-	mov	reg23,[reg483+4]
-	cmp	reg23,[reg485+4]
+	mov	dword23,[dword488+4]
+	cmp	dword23,[dword490+4]
 	jle	label0001
-	mov	[ebp-4],reg483
-	mov	reg483,reg485
-	mov	reg485,[ebp-4]
+	mov	[ebp-4],dword488
+	mov	dword488,dword490
+	mov	dword490,[ebp-4]
 label0001:
-	mov	reg39,[reg484+4]
-	cmp	reg39,[reg485+4]
+	mov	dword39,[dword489+4]
+	cmp	dword39,[dword490+4]
 	jle	label0002
-	mov	[ebp-4],reg484
-	mov	reg484,reg485
-	mov	reg485,[ebp-4]
+	mov	[ebp-4],dword489
+	mov	dword489,dword490
+	mov	dword490,[ebp-4]
 label0002:
-	mov	reg55,[reg483+4]
-	cmp	reg55,[reg485+4]
+	mov	dword55,[dword488+4]
+	cmp	dword55,[dword490+4]
 	jne	label0003
-	cmp	dword ptr [reg483+4],0
+	cmp	dword ptr [dword488+4],0
 	jl	label0004
-	mov	reg64,[reg483+4]
-	cmp	reg64,[__height]
+	mov	dword64,[dword488+4]
+	cmp	dword64,[__height]
 	jge	label0004
 	x86instr_push_all
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	push_argp
 	fldz
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	mov	reg66,8
-	add	reg66,reg485
-	push	reg66
-	mov	reg68,8
-	add	reg68,reg484
-	push	reg68
-	mov	reg70,8
-	add	reg70,reg483
-	push	reg70
-	push	dword ptr [reg483+4]
-	push	dword ptr [reg485]
-	push	dword ptr [reg484]
-	push	dword ptr [reg483]
+	push_argp
+	mov	dword66,8
+	add	dword66,dword490
+	push_arg	dword66
+	mov	dword68,8
+	add	dword68,dword489
+	push_arg	dword68
+	mov	dword70,8
+	add	dword70,dword488
+	push_arg	dword70
+	push_arg	dword ptr [dword488+4]
+	push_arg	dword ptr [dword490]
+	push_arg	dword ptr [dword489]
+	push_arg	dword ptr [dword488]
 	call	__rasterize_triangle_1i
-	add	esp,36
+	restore_stack	36
 	x86instr_pop_all
 label0004:
-	x86instr_destroy_stack_frame	44
+	x86instr_destroy_stack_frame	40
 	ret
 label0003:
-	mov	reg84,[reg483+4]
-	mov	[ebp-16],reg84
+	mov	dword84,[dword488+4]
+	mov	[ebp-16],dword84
 label0005:
 label0006:
-	mov	reg89,[ebp-16]
-	cmp	reg89,[reg484+4]
-	jge	label0007
-	mov	reg94,[ebp-16]
-	sub	reg94,[reg483+4]
-	mov	reg99,[reg484]
-	sub	reg99,[reg483]
-	imul	reg94,reg99
-	mov	reg106,[reg484+4]
-	sub	reg106,[reg483+4]
-	mov	eax,reg94
+	mov	dword89,[dword489+4]
+	cmp	dword89,[ebp-16]
+	jl	label0007
+	mov	dword94,[ebp-16]
+	sub	dword94,[dword488+4]
+	mov	dword99,[dword489]
+	sub	dword99,[dword488]
+	imul	dword94,dword99
+	mov	dword106,[dword489+4]
+	sub	dword106,[dword488+4]
+	mov	eax,dword94
 	cdq
-	idiv	reg106
-	mov	reg107,eax
-	add	reg107,[reg483]
-	mov	[ebp-8],reg107
-	mov	reg115,[ebp-16]
-	sub	reg115,[reg483+4]
-	mov	reg120,[reg485]
-	sub	reg120,[reg483]
-	imul	reg115,reg120
-	mov	reg127,[reg485+4]
-	sub	reg127,[reg483+4]
-	mov	eax,reg115
+	idiv	dword106
+	add	eax,[dword488]
+	mov	[ebp-8],eax
+	mov	dword114,[ebp-16]
+	sub	dword114,[dword488+4]
+	mov	dword119,[dword490]
+	sub	dword119,[dword488]
+	imul	dword114,dword119
+	mov	dword126,[dword490+4]
+	sub	dword126,[dword488+4]
+	mov	eax,dword114
 	cdq
-	idiv	reg127
-	mov	reg128,eax
-	add	reg128,[reg483]
-	mov	[ebp-12],reg128
-	mov	reg137,[ebp-16]
-	sub	reg137,[reg483+4]
-	mov	[ebp-44],reg137
-	fild	dword ptr [ebp-44]
-	fld	dword ptr [reg484+8]
-	fsub	dword ptr [reg483+8]
+	idiv	dword126
+	add	eax,[dword488]
+	mov	[ebp-12],eax
+	mov	dword135,[ebp-16]
+	sub	dword135,[dword488+4]
+	int2float	dword135
+	fld	dword ptr [dword489+8]
+	fsub	dword ptr [dword488+8]
 	fmulp
-	mov	reg148,[reg484+4]
-	sub	reg148,[reg483+4]
-	mov	[ebp-44],reg148
-	fild	dword ptr [ebp-44]
+	mov	dword146,[dword489+4]
+	sub	dword146,[dword488+4]
+	int2float	dword146
 	fdivp
-	fadd	dword ptr [reg483+8]
+	fadd	dword ptr [dword488+8]
 	fstp	dword ptr [ebp-20]
-	mov	reg156,[ebp-16]
-	sub	reg156,[reg483+4]
-	mov	[ebp-44],reg156
-	fild	dword ptr [ebp-44]
-	fld	dword ptr [reg485+8]
-	fsub	dword ptr [reg483+8]
+	mov	dword154,[ebp-16]
+	sub	dword154,[dword488+4]
+	int2float	dword154
+	fld	dword ptr [dword490+8]
+	fsub	dword ptr [dword488+8]
 	fmulp
-	mov	reg167,[reg485+4]
-	sub	reg167,[reg483+4]
-	mov	[ebp-44],reg167
-	fild	dword ptr [ebp-44]
+	mov	dword165,[dword490+4]
+	sub	dword165,[dword488+4]
+	int2float	dword165
 	fdivp
-	fadd	dword ptr [reg483+8]
+	fadd	dword ptr [dword488+8]
 	fstp	dword ptr [ebp-28]
-	mov	reg175,[ebp-16]
-	sub	reg175,[reg483+4]
-	mov	[ebp-44],reg175
-	fild	dword ptr [ebp-44]
-	mov	reg177,8
-	add	reg177,reg484
-	add	reg177,4
-	mov	reg180,8
-	add	reg180,reg483
-	add	reg180,4
-	fld	dword ptr [reg177]
-	fsub	dword ptr [reg180]
+	mov	dword173,[ebp-16]
+	sub	dword173,[dword488+4]
+	int2float	dword173
+	mov	dword175,8
+	add	dword175,dword489
+	add	dword175,4
+	mov	dword178,8
+	add	dword178,dword488
+	add	dword178,4
+	fld	dword ptr [dword175]
+	fsub	dword ptr [dword178]
 	fmulp
-	mov	reg188,[reg484+4]
-	sub	reg188,[reg483+4]
-	mov	[ebp-44],reg188
-	fild	dword ptr [ebp-44]
+	mov	dword186,[dword489+4]
+	sub	dword186,[dword488+4]
+	int2float	dword186
 	fdivp
-	mov	reg190,8
-	add	reg190,reg483
-	add	reg190,4
-	fadd	dword ptr [reg190]
+	mov	dword188,8
+	add	dword188,dword488
+	add	dword188,4
+	fadd	dword ptr [dword188]
 	fstp	dword ptr [ebp-24]
-	mov	reg197,[ebp-16]
-	sub	reg197,[reg483+4]
-	mov	[ebp-44],reg197
-	fild	dword ptr [ebp-44]
-	mov	reg199,8
-	add	reg199,reg485
-	add	reg199,4
-	mov	reg202,8
-	add	reg202,reg483
-	add	reg202,4
-	fld	dword ptr [reg199]
-	fsub	dword ptr [reg202]
+	mov	dword195,[ebp-16]
+	sub	dword195,[dword488+4]
+	int2float	dword195
+	mov	dword197,8
+	add	dword197,dword490
+	add	dword197,4
+	mov	dword200,8
+	add	dword200,dword488
+	add	dword200,4
+	fld	dword ptr [dword197]
+	fsub	dword ptr [dword200]
 	fmulp
-	mov	reg210,[reg485+4]
-	sub	reg210,[reg483+4]
-	mov	[ebp-44],reg210
-	fild	dword ptr [ebp-44]
+	mov	dword208,[dword490+4]
+	sub	dword208,[dword488+4]
+	int2float	dword208
 	fdivp
-	mov	reg212,8
-	add	reg212,reg483
-	add	reg212,4
-	fadd	dword ptr [reg212]
+	mov	dword210,8
+	add	dword210,dword488
+	add	dword210,4
+	fadd	dword ptr [dword210]
 	fstp	dword ptr [ebp-32]
 	fld	dword ptr [ebp-28]
 	fsub	dword ptr [ebp-20]
-	mov	reg219,[ebp-12]
-	sub	reg219,[ebp-8]
-	mov	[ebp-44],reg219
-	fild	dword ptr [ebp-44]
+	mov	dword217,[ebp-12]
+	sub	dword217,[ebp-8]
+	int2float	dword217
 	fdivp
 	fstp	dword ptr [ebp-36]
 	fld	dword ptr [ebp-32]
 	fsub	dword ptr [ebp-24]
-	mov	reg225,[ebp-12]
-	sub	reg225,[ebp-8]
-	mov	[ebp-44],reg225
-	fild	dword ptr [ebp-44]
+	mov	dword223,[ebp-12]
+	sub	dword223,[ebp-8]
+	int2float	dword223
 	fdivp
 	fstp	dword ptr [ebp-40]
 	x86instr_push_all
-	push	dword ptr [ebp-40]
-	push	dword ptr [ebp-36]
-	push	dword ptr [ebp-32]
-	push	dword ptr [ebp-28]
-	push	dword ptr [ebp-24]
-	push	dword ptr [ebp-20]
-	push	dword ptr [ebp-16]
-	push	dword ptr [ebp-12]
-	push	dword ptr [ebp-8]
+	push_arg	dword ptr [ebp-40]
+	push_arg	dword ptr [ebp-36]
+	push_arg	dword ptr [ebp-32]
+	push_arg	dword ptr [ebp-28]
+	push_arg	dword ptr [ebp-24]
+	push_arg	dword ptr [ebp-20]
+	push_arg	dword ptr [ebp-16]
+	push_arg	dword ptr [ebp-12]
+	push_arg	dword ptr [ebp-8]
 	call	__rasterize_horiz_line__unordered
-	add	esp,36
+	restore_stack	36
 	x86instr_pop_all
 	inc	dword ptr [ebp-16]
 	jmp	label0006
 label0007:
-	mov	reg242,[reg484+4]
-	sub	reg242,[reg483+4]
-	mov	reg247,[reg485]
-	sub	reg247,[reg483]
-	imul	reg242,reg247
-	mov	reg254,[reg485+4]
-	sub	reg254,[reg483+4]
-	mov	eax,reg242
+	mov	dword240,[dword489+4]
+	sub	dword240,[dword488+4]
+	mov	dword245,[dword490]
+	sub	dword245,[dword488]
+	imul	dword240,dword245
+	mov	dword252,[dword490+4]
+	sub	dword252,[dword488+4]
+	mov	eax,dword240
 	cdq
-	idiv	reg254
-	mov	reg255,eax
-	add	reg255,[reg483]
-	mov	[ebp-12],reg255
-	mov	reg266,[reg484+4]
-	sub	reg266,[reg483+4]
-	mov	[ebp-44],reg266
-	fild	dword ptr [ebp-44]
-	fld	dword ptr [reg485+8]
-	fsub	dword ptr [reg483+8]
+	idiv	dword252
+	add	eax,[dword488]
+	mov	[ebp-12],eax
+	mov	dword263,[dword489+4]
+	sub	dword263,[dword488+4]
+	int2float	dword263
+	fld	dword ptr [dword490+8]
+	fsub	dword ptr [dword488+8]
 	fmulp
-	mov	reg277,[reg485+4]
-	sub	reg277,[reg483+4]
-	mov	[ebp-44],reg277
-	fild	dword ptr [ebp-44]
+	mov	dword274,[dword490+4]
+	sub	dword274,[dword488+4]
+	int2float	dword274
 	fdivp
-	fadd	dword ptr [reg483+8]
+	fadd	dword ptr [dword488+8]
 	fstp	dword ptr [ebp-28]
-	mov	reg287,[reg484+4]
-	sub	reg287,[reg483+4]
-	mov	[ebp-44],reg287
-	fild	dword ptr [ebp-44]
-	mov	reg289,8
-	add	reg289,reg485
-	add	reg289,4
-	mov	reg292,8
-	add	reg292,reg483
-	add	reg292,4
-	fld	dword ptr [reg289]
-	fsub	dword ptr [reg292]
+	mov	dword284,[dword489+4]
+	sub	dword284,[dword488+4]
+	int2float	dword284
+	mov	dword286,8
+	add	dword286,dword490
+	add	dword286,4
+	mov	dword289,8
+	add	dword289,dword488
+	add	dword289,4
+	fld	dword ptr [dword286]
+	fsub	dword ptr [dword289]
 	fmulp
-	mov	reg300,[reg485+4]
-	sub	reg300,[reg483+4]
-	mov	[ebp-44],reg300
-	fild	dword ptr [ebp-44]
+	mov	dword297,[dword490+4]
+	sub	dword297,[dword488+4]
+	int2float	dword297
 	fdivp
-	mov	reg302,8
-	add	reg302,reg483
-	add	reg302,4
-	fadd	dword ptr [reg302]
+	mov	dword299,8
+	add	dword299,dword488
+	add	dword299,4
+	fadd	dword ptr [dword299]
 	fstp	dword ptr [ebp-32]
 	fld	dword ptr [ebp-28]
-	fsub	dword ptr [reg484+8]
-	mov	reg311,[ebp-12]
-	sub	reg311,[reg484]
-	mov	[ebp-44],reg311
-	fild	dword ptr [ebp-44]
+	fsub	dword ptr [dword489+8]
+	mov	dword308,[ebp-12]
+	sub	dword308,[dword489]
+	int2float	dword308
 	fdivp
 	fstp	dword ptr [ebp-36]
-	mov	reg315,8
-	add	reg315,reg484
-	add	reg315,4
+	mov	dword312,8
+	add	dword312,dword489
+	add	dword312,4
 	fld	dword ptr [ebp-32]
-	fsub	dword ptr [reg315]
-	mov	reg320,[ebp-12]
-	sub	reg320,[reg484]
-	mov	[ebp-44],reg320
-	fild	dword ptr [ebp-44]
+	fsub	dword ptr [dword312]
+	mov	dword317,[ebp-12]
+	sub	dword317,[dword489]
+	int2float	dword317
 	fdivp
 	fstp	dword ptr [ebp-40]
 	x86instr_push_all
-	push	dword ptr [ebp-40]
-	push	dword ptr [ebp-36]
-	mov	reg324,8
-	add	reg324,reg484
-	add	reg324,4
-	push	dword ptr [reg324]
-	push	dword ptr [reg484+8]
-	push	dword ptr [ebp-32]
-	push	dword ptr [ebp-28]
-	push	dword ptr [reg484+4]
-	push	dword ptr [reg484]
-	push	dword ptr [ebp-12]
+	push_arg	dword ptr [ebp-40]
+	push_arg	dword ptr [ebp-36]
+	mov	dword321,8
+	add	dword321,dword489
+	add	dword321,4
+	push_arg	dword ptr [dword321]
+	push_arg	dword ptr [dword489+8]
+	push_arg	dword ptr [ebp-32]
+	push_arg	dword ptr [ebp-28]
+	push_arg	dword ptr [dword489+4]
+	push_arg	dword ptr [dword489]
+	push_arg	dword ptr [ebp-12]
 	call	__rasterize_horiz_line__unordered
-	add	esp,36
+	restore_stack	36
 	x86instr_pop_all
-	mov	reg339,1
-	add	reg339,[reg484+4]
-	mov	[ebp-16],reg339
+	mov	dword336,1
+	add	dword336,[dword489+4]
+	mov	[ebp-16],dword336
 label0008:
 label0009:
-	mov	reg345,[ebp-16]
-	cmp	reg345,[reg485+4]
-	jge	label000a
-	mov	reg350,[ebp-16]
-	sub	reg350,[reg484+4]
-	mov	reg355,[reg485]
-	sub	reg355,[reg484]
-	imul	reg350,reg355
-	mov	reg362,[reg485+4]
-	sub	reg362,[reg484+4]
-	mov	eax,reg350
+	mov	dword342,[dword490+4]
+	cmp	dword342,[ebp-16]
+	jl	label000a
+	mov	dword347,[ebp-16]
+	sub	dword347,[dword489+4]
+	mov	dword352,[dword490]
+	sub	dword352,[dword489]
+	imul	dword347,dword352
+	mov	dword359,[dword490+4]
+	sub	dword359,[dword489+4]
+	mov	eax,dword347
 	cdq
-	idiv	reg362
-	mov	reg363,eax
-	add	reg363,[reg484]
-	mov	[ebp-8],reg363
-	mov	reg371,[ebp-16]
-	sub	reg371,[reg483+4]
-	mov	reg376,[reg485]
-	sub	reg376,[reg483]
-	imul	reg371,reg376
-	mov	reg383,[reg485+4]
-	sub	reg383,[reg483+4]
-	mov	eax,reg371
+	idiv	dword359
+	add	eax,[dword489]
+	mov	[ebp-8],eax
+	mov	dword367,[ebp-16]
+	sub	dword367,[dword488+4]
+	mov	dword372,[dword490]
+	sub	dword372,[dword488]
+	imul	dword367,dword372
+	mov	dword379,[dword490+4]
+	sub	dword379,[dword488+4]
+	mov	eax,dword367
 	cdq
-	idiv	reg383
-	mov	reg384,eax
-	add	reg384,[reg483]
-	mov	[ebp-12],reg384
-	mov	reg393,[ebp-16]
-	sub	reg393,[reg484+4]
-	mov	[ebp-44],reg393
-	fild	dword ptr [ebp-44]
-	fld	dword ptr [reg485+8]
-	fsub	dword ptr [reg484+8]
+	idiv	dword379
+	add	eax,[dword488]
+	mov	[ebp-12],eax
+	mov	dword388,[ebp-16]
+	sub	dword388,[dword489+4]
+	int2float	dword388
+	fld	dword ptr [dword490+8]
+	fsub	dword ptr [dword489+8]
 	fmulp
-	mov	reg404,[reg485+4]
-	sub	reg404,[reg484+4]
-	mov	[ebp-44],reg404
-	fild	dword ptr [ebp-44]
+	mov	dword399,[dword490+4]
+	sub	dword399,[dword489+4]
+	int2float	dword399
 	fdivp
-	fadd	dword ptr [reg484+8]
+	fadd	dword ptr [dword489+8]
 	fstp	dword ptr [ebp-20]
-	mov	reg412,[ebp-16]
-	sub	reg412,[reg483+4]
-	mov	[ebp-44],reg412
-	fild	dword ptr [ebp-44]
-	fld	dword ptr [reg485+8]
-	fsub	dword ptr [reg483+8]
+	mov	dword407,[ebp-16]
+	sub	dword407,[dword488+4]
+	int2float	dword407
+	fld	dword ptr [dword490+8]
+	fsub	dword ptr [dword488+8]
 	fmulp
-	mov	reg423,[reg485+4]
-	sub	reg423,[reg483+4]
-	mov	[ebp-44],reg423
-	fild	dword ptr [ebp-44]
+	mov	dword418,[dword490+4]
+	sub	dword418,[dword488+4]
+	int2float	dword418
 	fdivp
-	fadd	dword ptr [reg483+8]
+	fadd	dword ptr [dword488+8]
 	fstp	dword ptr [ebp-28]
-	mov	reg431,[ebp-16]
-	sub	reg431,[reg484+4]
-	mov	[ebp-44],reg431
-	fild	dword ptr [ebp-44]
-	mov	reg433,8
-	add	reg433,reg485
-	add	reg433,4
-	mov	reg436,8
-	add	reg436,reg484
-	add	reg436,4
-	fld	dword ptr [reg433]
-	fsub	dword ptr [reg436]
+	mov	dword426,[ebp-16]
+	sub	dword426,[dword489+4]
+	int2float	dword426
+	mov	dword428,8
+	add	dword428,dword490
+	add	dword428,4
+	mov	dword431,8
+	add	dword431,dword489
+	add	dword431,4
+	fld	dword ptr [dword428]
+	fsub	dword ptr [dword431]
 	fmulp
-	mov	reg444,[reg485+4]
-	sub	reg444,[reg484+4]
-	mov	[ebp-44],reg444
-	fild	dword ptr [ebp-44]
+	mov	dword439,[dword490+4]
+	sub	dword439,[dword489+4]
+	int2float	dword439
 	fdivp
-	mov	reg446,8
-	add	reg446,reg484
-	add	reg446,4
-	fadd	dword ptr [reg446]
+	mov	dword441,8
+	add	dword441,dword489
+	add	dword441,4
+	fadd	dword ptr [dword441]
 	fstp	dword ptr [ebp-24]
-	mov	reg453,[ebp-16]
-	sub	reg453,[reg483+4]
-	mov	[ebp-44],reg453
-	fild	dword ptr [ebp-44]
-	mov	reg455,8
-	add	reg455,reg485
-	add	reg455,4
-	mov	reg458,8
-	add	reg458,reg483
-	add	reg458,4
-	fld	dword ptr [reg455]
-	fsub	dword ptr [reg458]
+	mov	dword448,[ebp-16]
+	sub	dword448,[dword488+4]
+	int2float	dword448
+	mov	dword450,8
+	add	dword450,dword490
+	add	dword450,4
+	mov	dword453,8
+	add	dword453,dword488
+	add	dword453,4
+	fld	dword ptr [dword450]
+	fsub	dword ptr [dword453]
 	fmulp
-	mov	reg466,[reg485+4]
-	sub	reg466,[reg483+4]
-	mov	[ebp-44],reg466
-	fild	dword ptr [ebp-44]
+	mov	dword461,[dword490+4]
+	sub	dword461,[dword488+4]
+	int2float	dword461
 	fdivp
-	mov	reg468,8
-	add	reg468,reg483
-	add	reg468,4
-	fadd	dword ptr [reg468]
+	mov	dword463,8
+	add	dword463,dword488
+	add	dword463,4
+	fadd	dword ptr [dword463]
 	fstp	dword ptr [ebp-32]
 	fld	dword ptr [ebp-28]
 	fsub	dword ptr [ebp-20]
-	mov	reg475,[ebp-12]
-	sub	reg475,[ebp-8]
-	mov	[ebp-44],reg475
-	fild	dword ptr [ebp-44]
+	mov	dword470,[ebp-12]
+	sub	dword470,[ebp-8]
+	int2float	dword470
 	fdivp
 	fstp	dword ptr [ebp-36]
 	fld	dword ptr [ebp-32]
 	fsub	dword ptr [ebp-24]
-	mov	reg481,[ebp-12]
-	sub	reg481,[ebp-8]
-	mov	[ebp-44],reg481
-	fild	dword ptr [ebp-44]
+	mov	dword476,[ebp-12]
+	sub	dword476,[ebp-8]
+	int2float	dword476
 	fdivp
 	fstp	dword ptr [ebp-40]
 	x86instr_push_all
-	push	dword ptr [ebp-40]
-	push	dword ptr [ebp-36]
-	push	dword ptr [ebp-32]
-	push	dword ptr [ebp-28]
-	push	dword ptr [ebp-24]
-	push	dword ptr [ebp-20]
-	push	dword ptr [ebp-16]
-	push	dword ptr [ebp-12]
-	push	dword ptr [ebp-8]
+	push_arg	dword ptr [ebp-40]
+	push_arg	dword ptr [ebp-36]
+	push_arg	dword ptr [ebp-32]
+	push_arg	dword ptr [ebp-28]
+	push_arg	dword ptr [ebp-24]
+	push_arg	dword ptr [ebp-20]
+	push_arg	dword ptr [ebp-16]
+	push_arg	dword ptr [ebp-12]
+	push_arg	dword ptr [ebp-8]
 	call	__rasterize_horiz_line__unordered
-	add	esp,36
+	restore_stack	36
 	x86instr_pop_all
 	inc	dword ptr [ebp-16]
 	jmp	label0009
 label000a:
-	x86instr_destroy_stack_frame	44
+	x86instr_destroy_stack_frame	40
 	ret
 __rasterize_triangle_2i endp	
 
 __clip_on_plain proc
 	x86instr_create_stack_frame	60
-	mov	reg101,[ebp+8]
-	mov	dword ptr [reg101+192],0
-	mov	reg102,[ebp+12]
-	mov	reg103,[ebp+12]
-	add	reg103,24
+	mov	dword101,[ebp+8]
+	mov	dword ptr [dword101+192],0
+	mov	dword102,[ebp+12]
+	mov	dword103,[ebp+12]
+	add	dword103,24
 label0000:
 label0001:
-	mov	reg13,[ebp+12]
-	imul	reg14,[reg13+192],24
-	mov	reg16,[ebp+12]
-	add	reg16,reg14
-	cmp	reg103,reg16
-	jge	label0002
+	mov	dword12,[ebp+12]
+	imul	dword13,[dword12+192],24
+	mov	dword15,[ebp+12]
+	add	dword15,dword13
+	cmp	dword15,dword103
+	jl	label0002
 	x86instr_push_all
-	push	dword ptr [ebp+16]
-	mov	reg19,reg102
-	push	reg19
-	lea	reg20,[ebp-24]
-	push	reg20
+	push_arg	dword ptr [ebp+16]
+	mov	dword19,dword102
+	push_arg	dword19
+	lea	dword20,[ebp-24]
+	push_arg	dword20
 	call	_vec4f_subtract
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
 	x86instr_push_all
-	push	dword ptr [ebp+20]
-	lea	reg23,[ebp-24]
-	push	reg23
+	push_arg	dword ptr [ebp+20]
+	lea	dword23,[ebp-24]
+	push_arg	dword23
 	call	_vec4f_dot
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
 	fstp	dword ptr [ebp-52]
 	x86instr_push_all
-	push	dword ptr [ebp+16]
-	mov	reg26,reg103
-	push	reg26
-	lea	reg27,[ebp-24]
-	push	reg27
+	push_arg	dword ptr [ebp+16]
+	mov	dword26,dword103
+	push_arg	dword26
+	lea	dword27,[ebp-24]
+	push_arg	dword27
 	call	_vec4f_subtract
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
 	x86instr_push_all
-	push	dword ptr [ebp+20]
-	lea	reg30,[ebp-24]
-	push	reg30
+	push_arg	dword ptr [ebp+20]
+	lea	dword30,[ebp-24]
+	push_arg	dword30
 	call	_vec4f_dot
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
 	fstp	dword ptr [ebp-56]
 	fldz
@@ -1763,23 +1694,23 @@ label0001:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label0003
-	mov	reg34,[reg101+192]
-	inc	dword ptr [reg101+192]
-	imul	reg34,24
-	mov	reg37,reg101
-	add	reg37,reg34
-	mov	reg40,[reg102]
-	mov	reg41,[reg102+4]
-	mov	[reg37],reg40
-	mov	[reg37+4],reg41
-	mov	reg40,[reg102+8]
-	mov	reg41,[reg102+12]
-	mov	[reg37+8],reg40
-	mov	[reg37+12],reg41
-	mov	reg40,[reg102+16]
-	mov	reg41,[reg102+20]
-	mov	[reg37+16],reg40
-	mov	[reg37+20],reg41
+	mov	dword34,[dword101+192]
+	inc	dword ptr [dword101+192]
+	imul	dword34,24
+	mov	dword37,dword101
+	add	dword37,dword34
+	mov	dword40,[dword102]
+	mov	dword41,[dword102+4]
+	mov	[dword37],dword40
+	mov	[dword37+4],dword41
+	mov	dword40,[dword102+8]
+	mov	dword41,[dword102+12]
+	mov	[dword37+8],dword40
+	mov	[dword37+12],dword41
+	mov	dword40,[dword102+16]
+	mov	dword41,[dword102+20]
+	mov	[dword37+16],dword40
+	mov	[dword37+20],dword41
 label0003:
 	fldz
 	fld	dword ptr [ebp-52]
@@ -1804,319 +1735,317 @@ label0006:
 	jae	label0004
 label0005:
 	x86instr_push_all
-	mov	reg47,reg102
-	push	reg47
-	push	dword ptr [ebp+16]
-	lea	reg49,[ebp-24]
-	push	reg49
+	mov	dword47,dword102
+	push_arg	dword47
+	push_arg	dword ptr [ebp+16]
+	lea	dword49,[ebp-24]
+	push_arg	dword49
 	call	_vec4f_subtract
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
 	x86instr_push_all
-	mov	reg51,reg102
-	push	reg51
-	mov	reg53,reg103
-	push	reg53
-	lea	reg54,[ebp-40]
-	push	reg54
+	mov	dword51,dword102
+	push_arg	dword51
+	mov	dword53,dword103
+	push_arg	dword53
+	lea	dword54,[ebp-40]
+	push_arg	dword54
 	call	_vec4f_subtract
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
 	x86instr_push_all
-	push	dword ptr [ebp+20]
-	lea	reg57,[ebp-24]
-	push	reg57
+	push_arg	dword ptr [ebp+20]
+	lea	dword57,[ebp-24]
+	push_arg	dword57
 	call	_vec4f_dot
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
 	x86instr_push_all
-	push	dword ptr [ebp+20]
-	lea	reg59,[ebp-40]
-	push	reg59
+	push_arg	dword ptr [ebp+20]
+	lea	dword59,[ebp-40]
+	push_arg	dword59
 	call	_vec4f_dot
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
 	fdivp
 	fstp	dword ptr [ebp-60]
 	x86instr_push_all
-	push	dword ptr [ebp-60]
-	lea	reg61,[ebp-40]
-	push	reg61
+	push_arg	dword ptr [ebp-60]
+	lea	dword61,[ebp-40]
+	push_arg	dword61
 	call	_vec4f_mul
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg62,[ebp-40]
-	push	reg62
-	mov	reg64,reg102
-	push	reg64
-	imul	reg67,[reg101+192],24
-	mov	reg69,reg101
-	add	reg69,reg67
-	push	reg69
+	lea	dword62,[ebp-40]
+	push_arg	dword62
+	mov	dword64,dword102
+	push_arg	dword64
+	imul	dword67,[dword101+192],24
+	mov	dword69,dword101
+	add	dword69,dword67
+	push_arg	dword69
 	call	_vec4f_add
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
 	x86instr_push_all
-	mov	reg71,16
-	add	reg71,reg102
-	push	reg71
-	mov	reg73,16
-	add	reg73,reg103
-	push	reg73
-	lea	reg74,[ebp-48]
-	push	reg74
+	mov	dword71,16
+	add	dword71,dword102
+	push_arg	dword71
+	mov	dword73,16
+	add	dword73,dword103
+	push_arg	dword73
+	lea	dword74,[ebp-48]
+	push_arg	dword74
 	call	_vec2f_subtract
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
 	x86instr_push_all
-	push	dword ptr [ebp-60]
-	lea	reg76,[ebp-48]
-	push	reg76
+	push_arg	dword ptr [ebp-60]
+	lea	dword76,[ebp-48]
+	push_arg	dword76
 	call	_vec2f_mul
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg77,[ebp-48]
-	push	reg77
-	mov	reg79,16
-	add	reg79,reg102
-	push	reg79
-	imul	reg82,[reg101+192],24
-	mov	reg84,reg101
-	add	reg84,reg82
-	add	reg84,16
-	push	reg84
+	lea	dword77,[ebp-48]
+	push_arg	dword77
+	mov	dword79,16
+	add	dword79,dword102
+	push_arg	dword79
+	imul	dword82,[dword101+192],24
+	mov	dword84,dword101
+	add	dword84,dword82
+	add	dword84,16
+	push_arg	dword84
 	call	_vec2f_add
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
-	inc	dword ptr [reg101+192]
+	inc	dword ptr [dword101+192]
 label0004:
-	add	reg102,24
-	add	reg103,24
+	add	dword102,24
+	add	dword103,24
 	jmp	label0001
 label0002:
-	mov	reg92,[reg101+192]
-	inc	dword ptr [reg101+192]
-	imul	reg92,24
-	mov	reg95,reg101
-	add	reg95,reg92
-	mov	reg98,[reg101]
-	mov	reg99,[reg101+4]
-	mov	[reg95],reg98
-	mov	[reg95+4],reg99
-	mov	reg98,[reg101+8]
-	mov	reg99,[reg101+12]
-	mov	[reg95+8],reg98
-	mov	[reg95+12],reg99
-	mov	reg98,[reg101+16]
-	mov	reg99,[reg101+20]
-	mov	[reg95+16],reg98
-	mov	[reg95+20],reg99
+	mov	dword92,[dword101+192]
+	inc	dword ptr [dword101+192]
+	imul	dword92,24
+	mov	dword95,dword101
+	add	dword95,dword92
+	mov	dword98,[dword101]
+	mov	dword99,[dword101+4]
+	mov	[dword95],dword98
+	mov	[dword95+4],dword99
+	mov	dword98,[dword101+8]
+	mov	dword99,[dword101+12]
+	mov	[dword95+8],dword98
+	mov	[dword95+12],dword99
+	mov	dword98,[dword101+16]
+	mov	dword99,[dword101+20]
+	mov	[dword95+16],dword98
+	mov	[dword95+20],dword99
 	x86instr_destroy_stack_frame	60
 	ret
 __clip_on_plain endp	
 
 __clip_poligon proc
 	x86instr_create_stack_frame	196
-	mov	reg30,[ebp+8]
+	mov	dword30,[ebp+8]
 	x86instr_push_all
-	lea	reg1,[__clip_z_far_norm]
-	push	reg1
-	lea	reg2,[__clip_z_far_base]
-	push	reg2
-	push	reg30
-	lea	reg4,[ebp-196]
-	push	reg4
+	lea	dword1,[__clip_z_far_norm]
+	push_arg	dword1
+	lea	dword2,[__clip_z_far_base]
+	push_arg	dword2
+	push_arg	dword30
+	lea	dword4,[ebp-196]
+	push_arg	dword4
 	call	__clip_on_plain
-	add	esp,16
+	restore_stack	16
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg5,[__clip_z_near_norm]
-	push	reg5
-	lea	reg6,[__clip_z_near_base]
-	push	reg6
-	lea	reg7,[ebp-196]
-	push	reg7
-	push	reg30
+	lea	dword5,[__clip_z_near_norm]
+	push_arg	dword5
+	lea	dword6,[__clip_z_near_base]
+	push_arg	dword6
+	lea	dword7,[ebp-196]
+	push_arg	dword7
+	push_arg	dword30
 	call	__clip_on_plain
-	add	esp,16
+	restore_stack	16
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg9,[__clip_plane_left_norm]
-	push	reg9
-	lea	reg10,[__clip_plane_left_base]
-	push	reg10
-	push	reg30
-	lea	reg12,[ebp-196]
-	push	reg12
+	lea	dword9,[__clip_plane_left_norm]
+	push_arg	dword9
+	lea	dword10,[__clip_plane_left_base]
+	push_arg	dword10
+	push_arg	dword30
+	lea	dword12,[ebp-196]
+	push_arg	dword12
 	call	__clip_on_plain
-	add	esp,16
+	restore_stack	16
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg13,[__clip_plane_right_norm]
-	push	reg13
-	lea	reg14,[__clip_plane_right_base]
-	push	reg14
-	lea	reg15,[ebp-196]
-	push	reg15
-	push	reg30
+	lea	dword13,[__clip_plane_right_norm]
+	push_arg	dword13
+	lea	dword14,[__clip_plane_right_base]
+	push_arg	dword14
+	lea	dword15,[ebp-196]
+	push_arg	dword15
+	push_arg	dword30
 	call	__clip_on_plain
-	add	esp,16
+	restore_stack	16
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg17,[__clip_plane_top_norm]
-	push	reg17
-	lea	reg18,[__clip_plane_top_base]
-	push	reg18
-	push	reg30
-	lea	reg20,[ebp-196]
-	push	reg20
+	lea	dword17,[__clip_plane_top_norm]
+	push_arg	dword17
+	lea	dword18,[__clip_plane_top_base]
+	push_arg	dword18
+	push_arg	dword30
+	lea	dword20,[ebp-196]
+	push_arg	dword20
 	call	__clip_on_plain
-	add	esp,16
+	restore_stack	16
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg21,[__clip_plane_bottom_norm]
-	push	reg21
-	lea	reg22,[__clip_plane_bottom_base]
-	push	reg22
-	lea	reg23,[ebp-196]
-	push	reg23
-	push	reg30
+	lea	dword21,[__clip_plane_bottom_norm]
+	push_arg	dword21
+	lea	dword22,[__clip_plane_bottom_base]
+	push_arg	dword22
+	lea	dword23,[ebp-196]
+	push_arg	dword23
+	push_arg	dword30
 	call	__clip_on_plain
-	add	esp,16
+	restore_stack	16
 	x86instr_pop_all
-	cmp	dword ptr [reg30+192],1
-	setg	al
-	movzx	reg28,al
-	mov	eax,reg28
+	cmp	dword ptr [dword30+192],1
+	setg	byte1
+	movzx	dword28,byte1
+	mov	eax,dword28
 	x86instr_destroy_stack_frame	196
 	ret
 __clip_poligon endp	
 
 __transform_to_screen_space proc
-	x86instr_create_stack_frame	24
-	mov	reg33,[ebp+8]
+	x86instr_create_stack_frame	20
+	mov	dword35,[ebp+8]
 	x86instr_push_all
-	lea	reg1,[__viewport_matrix]
-	push	reg1
-	push	dword ptr [ebp+12]
-	lea	reg3,[ebp-16]
-	push	reg3
+	lea	dword1,[__viewport_matrix]
+	push_arg	dword1
+	push_arg	dword ptr [ebp+12]
+	lea	dword3,[ebp-16]
+	push_arg	dword3
 	call	_matrix4f_transform
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
 	fld1
-	lea	reg5,[ebp-16]
-	add	reg5,12
-	fdiv	dword ptr [reg5]
+	lea	dword5,[ebp-16]
+	add	dword5,12
+	fdiv	dword ptr [dword5]
 	fstp	dword ptr [ebp-20]
 	fld	dword ptr [ebp-16]
 	fmul	dword ptr [ebp-20]
-	fistp	dword ptr [ebp-24]
-	mov	reg11,[ebp-24]
-	mov	[reg33],reg11
-	lea	reg12,[ebp-16]
-	add	reg12,4
-	fld	dword ptr [reg12]
+	float2int	dword9
+	mov	[dword35],dword9
+	lea	dword12,[ebp-16]
+	add	dword12,4
+	fld	dword ptr [dword12]
 	fmul	dword ptr [ebp-20]
-	fistp	dword ptr [ebp-24]
-	mov	reg17,[ebp-24]
-	mov	[reg33+4],reg17
-	cmp	dword ptr [reg33],0
+	float2int	dword15
+	mov	[dword35+4],dword15
+	cmp	dword ptr [dword35],0
 	jl	label0001
-	mov	reg24,[reg33]
-	cmp	reg24,[__width]
+	mov	dword24,[dword35]
+	cmp	dword24,[__width]
 	jge	label0001
-	cmp	dword ptr [reg33+4],0
+	cmp	dword ptr [dword35+4],0
 	jl	label0001
-	mov	reg31,[reg33+4]
-	cmp	reg31,[__height]
+	mov	dword31,[dword35+4]
+	cmp	dword31,[__height]
 	jl	label0000
 label0001:
 	mov	dword ptr ds:[0],0
 label0000:
-	x86instr_destroy_stack_frame	24
+	x86instr_destroy_stack_frame	20
 	ret
 __transform_to_screen_space endp	
 
 __rasterize_polygon_4f proc
 	x86instr_create_stack_frame	136
-	mov	reg54,[ebp+8]
+	mov	dword54,[ebp+8]
 	x86instr_push_all
-	push	reg54
+	push_arg	dword54
 	call	__clip_poligon
-	add	esp,4
+	restore_stack	4
 	x86instr_pop_all
-	mov	reg2,eax
-	cmp	reg2,0
+	cmp	eax,0
 	jne	label0000
 	x86instr_destroy_stack_frame	136
 	ret
 label0000:
-	cmp	dword ptr [reg54+192],8
+	cmp	dword ptr [dword54+192],8
 	jle	label0001
 	mov	dword ptr ds:[0],0
 label0001:
-	mov	reg53,0
+	mov	dword53,0
 label0002:
 label0003:
-	cmp	reg53,[reg54+192]
-	jge	label0004
+	mov	dword12,[dword54+192]
+	cmp	dword12,dword53
+	jl	label0004
 	x86instr_push_all
-	mov	reg15,reg54
-	imul	reg17,reg53,24
-	add	reg15,reg17
-	push	reg15
-	lea	reg18,[ebp-132]
-	mov	reg21,reg53
-	sal	reg21,4
-	add	reg18,reg21
-	push	reg18
+	mov	dword14,dword54
+	imul	dword16,dword53,24
+	add	dword14,dword16
+	push_arg	dword14
+	lea	dword17,[ebp-132]
+	mov	dword20,dword53
+	sal	dword20,4
+	add	dword17,dword20
+	push_arg	dword17
 	call	__transform_to_screen_space
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
-	lea	reg22,[ebp-132]
-	mov	reg25,reg53
-	sal	reg25,4
-	add	reg22,reg25
-	add	reg22,8
-	mov	reg28,reg54
-	imul	reg30,reg53,24
-	add	reg28,reg30
-	add	reg28,16
-	mov	reg32,[reg28]
-	mov	reg33,[reg28+4]
-	mov	[reg22],reg32
-	mov	[reg22+4],reg33
-	inc	reg53
+	lea	dword21,[ebp-132]
+	mov	dword24,dword53
+	sal	dword24,4
+	add	dword21,dword24
+	add	dword21,8
+	mov	dword27,dword54
+	imul	dword29,dword53,24
+	add	dword27,dword29
+	add	dword27,16
+	mov	dword31,[dword27]
+	mov	dword32,[dword27+4]
+	mov	[dword21],dword31
+	mov	[dword21+4],dword32
+	inc	dword53
 	jmp	label0003
 label0004:
-	mov	reg53,2
+	mov	dword53,2
 label0005:
 label0006:
-	mov	reg41,[reg54+192]
-	dec	reg41
-	cmp	reg53,reg41
-	jge	label0007
+	mov	dword39,[dword54+192]
+	dec	dword39
+	cmp	dword39,dword53
+	jl	label0007
 	x86instr_push_all
-	lea	reg42,[ebp-132]
-	mov	reg45,reg53
-	sal	reg45,4
-	add	reg42,reg45
-	push	reg42
-	mov	reg48,reg53
-	dec	reg48
-	sal	reg48,4
-	lea	reg50,[ebp-132]
-	add	reg50,reg48
-	push	reg50
-	lea	reg51,[ebp-132]
-	push	reg51
+	lea	dword41,[ebp-132]
+	mov	dword44,dword53
+	sal	dword44,4
+	add	dword41,dword44
+	push_arg	dword41
+	mov	dword47,dword53
+	dec	dword47
+	sal	dword47,4
+	lea	dword49,[ebp-132]
+	add	dword49,dword47
+	push_arg	dword49
+	lea	dword50,[ebp-132]
+	push_arg	dword50
 	call	__rasterize_triangle_2i
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
-	inc	reg53
+	inc	dword53
 	jmp	label0006
 label0007:
 	x86instr_destroy_stack_frame	136
@@ -2125,27 +2054,26 @@ __rasterize_polygon_4f endp
 
 __transform_to_projection_space proc
 	x86instr_create_stack_frame	16
-	mov	reg11,[ebp+12]
+	mov	dword12,[ebp+12]
 	x86instr_push_all
 	fld1
-	fstp	dword ptr [esp-4]
-	sub	esp,4
-	push	dword ptr [reg11+8]
-	push	dword ptr [reg11+4]
-	push	dword ptr [reg11]
-	lea	reg7,[ebp-16]
-	push	reg7
+	push_argp
+	push_arg	dword ptr [dword12+8]
+	push_arg	dword ptr [dword12+4]
+	push_arg	dword ptr [dword12]
+	lea	dword7,[ebp-16]
+	push_arg	dword7
 	call	_vec4f_assign
-	add	esp,20
+	restore_stack	20
 	x86instr_pop_all
 	x86instr_push_all
-	lea	reg8,[__mvproj_matrix]
-	push	reg8
-	lea	reg9,[ebp-16]
-	push	reg9
-	push	dword ptr [ebp+8]
+	lea	dword8,[__mvproj_matrix]
+	push_arg	dword8
+	lea	dword9,[ebp-16]
+	push_arg	dword9
+	push_arg	dword ptr [ebp+8]
 	call	_matrix4f_transform
-	add	esp,12
+	restore_stack	12
 	x86instr_pop_all
 	x86instr_destroy_stack_frame	16
 	ret
@@ -2154,73 +2082,73 @@ __transform_to_projection_space endp
 _rasterizer_triangle3f proc
 	x86instr_create_stack_frame	196
 	x86instr_push_all
-	push	dword ptr [ebp+8]
-	lea	reg2,[ebp-196]
-	push	reg2
+	push_arg	dword ptr [ebp+8]
+	lea	dword2,[ebp-196]
+	push_arg	dword2
 	call	__transform_to_projection_space
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
-	lea	reg3,[ebp-196]
-	add	reg3,16
-	mov	reg6,[ebp+20]
-	mov	reg7,[reg6]
-	mov	reg8,[reg6+4]
-	mov	[reg3],reg7
-	mov	[reg3+4],reg8
+	lea	dword3,[ebp-196]
+	add	dword3,16
+	mov	dword6,[ebp+20]
+	mov	dword7,[dword6]
+	mov	dword8,[dword6+4]
+	mov	[dword3],dword7
+	mov	[dword3+4],dword8
 	x86instr_push_all
-	push	dword ptr [ebp+12]
-	lea	reg10,[ebp-196]
-	add	reg10,24
-	push	reg10
+	push_arg	dword ptr [ebp+12]
+	lea	dword10,[ebp-196]
+	add	dword10,24
+	push_arg	dword10
 	call	__transform_to_projection_space
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
-	lea	reg12,[ebp-196]
-	add	reg12,24
-	add	reg12,16
-	mov	reg16,[ebp+24]
-	mov	reg17,[reg16]
-	mov	reg18,[reg16+4]
-	mov	[reg12],reg17
-	mov	[reg12+4],reg18
+	lea	dword12,[ebp-196]
+	add	dword12,24
+	add	dword12,16
+	mov	dword16,[ebp+24]
+	mov	dword17,[dword16]
+	mov	dword18,[dword16+4]
+	mov	[dword12],dword17
+	mov	[dword12+4],dword18
 	x86instr_push_all
-	push	dword ptr [ebp+16]
-	lea	reg20,[ebp-196]
-	add	reg20,48
-	push	reg20
+	push_arg	dword ptr [ebp+16]
+	lea	dword20,[ebp-196]
+	add	dword20,48
+	push_arg	dword20
 	call	__transform_to_projection_space
-	add	esp,8
+	restore_stack	8
 	x86instr_pop_all
-	lea	reg22,[ebp-196]
-	add	reg22,48
-	add	reg22,16
-	mov	reg26,[ebp+28]
-	mov	reg27,[reg26]
-	mov	reg28,[reg26+4]
-	mov	[reg22],reg27
-	mov	[reg22+4],reg28
-	lea	reg29,[ebp-196]
-	add	reg29,72
-	mov	reg32,[ebp-196]
-	mov	reg33,[ebp-192]
-	mov	[reg29],reg32
-	mov	[reg29+4],reg33
-	mov	reg32,[ebp-188]
-	mov	reg33,[ebp-184]
-	mov	[reg29+8],reg32
-	mov	[reg29+12],reg33
-	mov	reg32,[ebp-180]
-	mov	reg33,[ebp-176]
-	mov	[reg29+16],reg32
-	mov	[reg29+20],reg33
-	lea	reg34,[ebp-196]
-	add	reg34,192
-	mov	dword ptr [reg34],4
+	lea	dword22,[ebp-196]
+	add	dword22,48
+	add	dword22,16
+	mov	dword26,[ebp+28]
+	mov	dword27,[dword26]
+	mov	dword28,[dword26+4]
+	mov	[dword22],dword27
+	mov	[dword22+4],dword28
+	lea	dword29,[ebp-196]
+	add	dword29,72
+	mov	dword32,[ebp-196]
+	mov	dword33,[ebp-192]
+	mov	[dword29],dword32
+	mov	[dword29+4],dword33
+	mov	dword32,[ebp-188]
+	mov	dword33,[ebp-184]
+	mov	[dword29+8],dword32
+	mov	[dword29+12],dword33
+	mov	dword32,[ebp-180]
+	mov	dword33,[ebp-176]
+	mov	[dword29+16],dword32
+	mov	[dword29+20],dword33
+	lea	dword34,[ebp-196]
+	add	dword34,192
+	mov	dword ptr [dword34],4
 	x86instr_push_all
-	lea	reg37,[ebp-196]
-	push	reg37
+	lea	dword37,[ebp-196]
+	push_arg	dword37
 	call	__rasterize_polygon_4f
-	add	esp,4
+	restore_stack	4
 	x86instr_pop_all
 	x86instr_destroy_stack_frame	196
 	ret

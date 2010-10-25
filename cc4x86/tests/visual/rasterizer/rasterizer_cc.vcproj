@@ -65,7 +65,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ddraw.lib "
+				AdditionalDependencies="ddraw.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -272,25 +272,14 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rasterizer.c"
+				RelativePath=".\rasterizer.asm"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="invoking cc"
-						CommandLine="cd ..\..\..\bin&#x0D;&#x0A;perl compile_rasterizer.pl&#x0D;&#x0A;"
-						Outputs="rasterizer.obj"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="invoking cc4x86"
-						CommandLine="chdir ..\..\..\..\scripts &#x0D;&#x0A;make_rasterizer_test.pl"
+						CommandLine="ml /Fl /c rasterizer.asm"
 						Outputs="rasterizer.obj"
 					/>
 				</FileConfiguration>

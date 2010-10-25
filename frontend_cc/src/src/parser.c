@@ -1785,10 +1785,10 @@ case 219:
             ;
     break;}
 case 220:
-{ unit_push_return(NULL); ;
+{ unit_push_return(NULL, FALSE); ;
     break;}
 case 221:
-{ unit_push_return(yyvsp[-1].expr); ;
+{ unit_push_return(yyvsp[-1].expr, FALSE); ;
     break;}
 case 226:
 { unit_handle_function_prototype(&yyvsp[-1].spec, yyvsp[0].sym); ;

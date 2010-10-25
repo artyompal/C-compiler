@@ -710,9 +710,9 @@ statement
             }
 
         | lxm_return ';'
-            { unit_push_return(NULL); }
+            { unit_push_return(NULL, FALSE); }
         | lxm_return expression ';'
-            { unit_push_return($2); }
+            { unit_push_return($2, FALSE); }
         ;
 
 

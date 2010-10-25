@@ -5,13 +5,13 @@
 
 
 static int _local_vars_size;
-static int _float2int_tmp_offset;
 
 
 //
-//  Stack layout.
+//  Схема выделения памяти в стеке.
 //
-//  Suppose, we have formal parameters "int x, y", local variables "float a, b" and tmp. float value.
+//  Допустим, у нас есть два формальных параметра "int x, y", локальные переменные "float a, b"
+//  и временные переменные кодогенератора
 //
 //  offset  content
 //  +12     y
@@ -37,7 +37,7 @@ static void _calculate_stack_offsets_for_locals(function_desc *function)
 static void _calculate_stack_offsets_for_params(function_desc *function)
 {
     data_type *func_type    = function->func_sym->sym_type;
-    int stack_base          = 8;    // 4 bytes for saved EBP and 4 bytes for return address
+    int stack_base          = 8;    // 4 байта для сохранённого EBP и 4 байта для адреса возврата
     int parameters_total_sz = 0;
     parameter *param;
 
@@ -56,13 +56,12 @@ static void _calculate_stack_offsets_for_params(function_desc *function)
 
 
 //
-//  Unit interface.
+// Внешний интерфейс.
 //
 
 void x86_stack_frame_begin_function(function_desc *function)
 {
-    _local_vars_size        = 0;
-    _float2int_tmp_offset   = -1;
+    _local_vars_size = 0;
 
     _calculate_stack_offsets_for_locals(function);
     _calculate_stack_offsets_for_params(function);
@@ -72,11 +71,11 @@ void x86_stack_frame_end_function(function_desc *function)
 {
     x86_instruction *instr;
 
-    // insert prologue and epilogue, if required
+    // если были локальные переменные, корректируем код пролога и эпилога
     if (_local_vars_size) {
         instr = function->func_binary_code;
 
-        ASSERT(instr->in_code == x86instr_create_stack_frame && instr->in_op1.op_type == x86op_int_constant);
+        ASSERT(instr->in_code == x86instr_create_stack_frame && instr->in_op1.op_loc == x86loc_int_constant);
         instr->in_op1.data.int_val = _local_vars_size;
 
         for (instr = function->func_binary_code; instr; instr = instr->in_next) {
@@ -87,16 +86,6 @@ void x86_stack_frame_end_function(function_desc *function)
     }
 
     function->func_local_vars_sz = _local_vars_size;
-}
-
-
-int x86_stack_frame_get_float2int_tmp(void)
-{
-    if (_float2int_tmp_offset == -1) {
-        _float2int_tmp_offset = x86_stack_frame_alloc_tmp_var(4);
-    }
-
-    return _float2int_tmp_offset;
 }
 
 int x86_stack_frame_alloc_tmp_var(int size)

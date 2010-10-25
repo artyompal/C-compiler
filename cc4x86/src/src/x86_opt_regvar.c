@@ -160,7 +160,7 @@ static void _try_create_register_variable(function_desc *function, symbol *sym)
         return;
     }
 
-    if (sym->sym_type->type_code != code_type_int && !TYPE_IS_ARRAY(sym->sym_type) && !TYPE_IS_POINTER(sym->sym_type)) {
+    if (!TYPE_IS_X86_DWORD(sym->sym_type)) {
         return;
     }
 
@@ -232,22 +232,22 @@ static void _choose_possible_register_variables(function_desc *function)
 }
 
 //
-// Оценивает, сколько регистров всегда остаются свободными в данной функции.
+// Вычисляет максимальное число одновременно выделенных регистров в данной функции.
 static int _estimate_num_of_used_pseudo_registers(function_desc *function)
 {
     x86_instruction *instr;
-    int max_registers, current_regs_cnt, regs_arr[MAX_REGISTERS_PER_INSTR], regs_cnt, i;
-    x86_pseudoreg_info *reg_info = function->func_pseudoregs_map;
-
+    int max_registers, current_regs_cnt, regs_cnt, i;
+    x86_register regs_arr[MAX_REGISTERS_PER_INSTR];
+    x86_pseudoreg_info *reg_info = function->func_dword_regstat.ptr;
 
     LOG(("_estimate_num_of_used_pseudo_registers(%s)\n", function->func_sym->sym_name));
     max_registers = current_regs_cnt = 0;
 
     for (instr = function->func_binary_code; instr; instr = instr->in_next) {
-        bincode_extract_pseudoregs_from_instr_wo_dupes(instr, regs_arr, &regs_cnt);
+        bincode_extract_pseudoregs_from_instr_wo_dupes(instr, x86reg_dword, regs_arr, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
-            if (instr == reg_info[regs_arr[i]].reg_first_write) {
+            if (instr == reg_info[regs_arr[i].reg_value].reg_first_write) {
                 current_regs_cnt++;
             }
         }
@@ -265,7 +265,7 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function)
         }
 
         for (i = 0; i < regs_cnt; i++) {
-            if (instr == reg_info[regs_arr[i]].reg_last_read) {
+            if (instr == reg_info[regs_arr[i].reg_value].reg_last_read) {
                 current_regs_cnt--;
                 ASSERT(current_regs_cnt >= 0);
             }
@@ -291,14 +291,14 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
     instr = instr->in_next;
 
     if (var_offset > 0) {
-        bincode_insert_int_reg_ebp_offset(function, instr, x86instr_int_mov, var_reg, var_offset);
+        bincode_insert_int_reg_ebp_offset(function, instr, x86instr_int_mov, x86reg_dword, var_reg, var_offset);
     }
 
     for (; instr; instr = instr->in_next) {
         if (OP_IS_SPEC_EBP_OFFSET(instr->in_op1, var_offset)) {
-            bincode_create_operand_from_int_pseudoreg(&instr->in_op1, var_reg);
+            bincode_create_operand_from_pseudoreg(&instr->in_op1, x86reg_dword, var_reg);
         } else if (OP_IS_SPEC_EBP_OFFSET(instr->in_op2, var_offset)) {
-            bincode_create_operand_from_int_pseudoreg(&instr->in_op2, var_reg);
+            bincode_create_operand_from_pseudoreg(&instr->in_op2, x86reg_dword, var_reg);
         }
     }
 }
@@ -325,7 +325,7 @@ void x86_create_register_variables(function_desc *function)
     }
 
 
-    last_pseudo_register            = function->func_pseudoregs_cnt+1;
+    last_pseudo_register            = function->func_dword_regstat.count+1;
     function->func_start_of_regvars = last_pseudo_register;
     reg_var                         = _register_vars_list.first;
 
@@ -359,4 +359,3 @@ void x86_create_register_variables(function_desc *function)
         free_registers = X86_TMP_REGISTERS_COUNT - _estimate_num_of_used_pseudo_registers(function);
     } while (free_registers > 0);
 }
-

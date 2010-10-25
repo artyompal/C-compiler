@@ -13,6 +13,9 @@ static data_type _arithmetic_types[code_type_count_of_arithmetic] = {
     { code_type_unsigned_int, },
     { code_type_long, },
     { code_type_unsigned_long, },
+    { code_type_long_long, },
+    { code_type_unsigned_long_long, },
+    { code_type_enum, },
     { code_type_float, },
     { code_type_double, },
     { code_type_long_double, },
@@ -64,7 +67,7 @@ static data_type **_type_find_terminal(data_type **type)
 
 data_type *type_create_arithmetic(data_type_code code)
 {
-    ASSERT((unsigned) code < code_type_count_of_arithmetic);
+    ASSERT(code < code_type_count_of_arithmetic);
     return &_arithmetic_types[code];
 }
 
@@ -266,7 +269,7 @@ data_type *type_create_complete_structure(symbol *sym, fields_list *fields)
     sym->sym_code               = code_sym_type;
     sym->sym_type               = res;
 
-    // calculate field's offsets
+    // вычисляем смещение каждого поля структуры
     field = fields->fields_first->field_next;
 
     for (prev = fields->fields_first; field; prev = field, field = field->field_next) {
@@ -291,6 +294,7 @@ data_type *type_create_complete_union(symbol *sym, fields_list *fields)
 
     sym->sym_code               = code_sym_type;
     sym->sym_type               = res;
+
     return sym->sym_type;
 }
 

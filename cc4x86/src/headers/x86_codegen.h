@@ -10,7 +10,7 @@
 #include "x86_bincode.h"
 
 
-int     x86_codegen_alloc_pseudoreg     (void);
+int     x86_codegen_alloc_pseudoreg     (x86_operand_type type);
 void    x86_codegen_do_function         (function_desc *function);
 
 

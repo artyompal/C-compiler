@@ -55,7 +55,7 @@ void yyerror(const char *txt);
 __declspec(noreturn) void aux_assertion_failed(const char *file, int line, const char *cond);
 __declspec(noreturn) void aux_unimplemented_error(const char *text);
 
-// assertions must be enabled in all configurations
+// assertions must not have side-effects
 #ifdef _DEBUG
 #define ASSERT(COND) \
     if (!(COND)) { aux_assertion_failed(__FILE__, __LINE__, #COND); }
@@ -111,6 +111,7 @@ extern BOOL option_debug_disable_codegen;
 extern BOOL option_debug_disable_regalloc;
 extern BOOL option_debug_disable_basic_opt;
 extern BOOL option_enable_optimization;
+extern BOOL option_use_sse2;
 extern BOOL option_debug_xml_dump;
 
 extern char option_output_filename[];
@@ -122,6 +123,16 @@ typedef struct x86_instruction_decl x86_instruction;
 void debug_print_instruction(x86_instruction *instr);
 
 #endif // _DEBUG
+
+
+#define IS_POT(X) ((X & (X - 1)) == 0)
+
+static int log2(int x)
+{
+    int res = 0;
+    while (x >>= 1) res++;
+    return res;
+}
 
 
 #else
