@@ -133,114 +133,114 @@ typedef struct x86_operand_decl {
 
 typedef enum x86_instruction_code_decl {
     // function-calling instructions:
-    x86instr_call,              // 1st argument is address, 2nd is result type
-    x86instr_ret,
+    x86insn_call,              // 1st argument is address, 2nd is result type
+    x86insn_ret,
 
     // jump instructions:
-    x86instr_jmp,
-    x86instr_je,
-    x86instr_jne,
-    x86instr_jle,
-    x86instr_jl,
-    x86instr_jge,
-    x86instr_jg,
-    x86instr_jbe,
-    x86instr_jb,
-    x86instr_jae,
-    x86instr_ja,
+    x86insn_jmp,
+    x86insn_je,
+    x86insn_jne,
+    x86insn_jle,
+    x86insn_jl,
+    x86insn_jge,
+    x86insn_jg,
+    x86insn_jbe,
+    x86insn_jb,
+    x86insn_jae,
+    x86insn_ja,
 
     // integer instructions:
-    x86instr_int_inc,
-    x86instr_int_dec,
-    x86instr_int_neg,
-    x86instr_int_not,
+    x86insn_int_inc,
+    x86insn_int_dec,
+    x86insn_int_neg,
+    x86insn_int_not,
 
-    x86instr_int_mov,
-    x86instr_int_add,
-    x86instr_int_sub,
-    x86instr_int_imul,
-    x86instr_int_idiv,
-    x86instr_int_sal,
-    x86instr_int_sar,
-    x86instr_int_and,
-    x86instr_int_xor,
-    x86instr_int_or,
+    x86insn_int_mov,
+    x86insn_int_add,
+    x86insn_int_sub,
+    x86insn_int_imul,
+    x86insn_int_idiv,
+    x86insn_int_sal,
+    x86insn_int_sar,
+    x86insn_int_and,
+    x86insn_int_xor,
+    x86insn_int_or,
 
-    x86instr_int_sete,
-    x86instr_int_setne,
-    x86instr_int_setle,
-    x86instr_int_setl,
-    x86instr_int_setge,
-    x86instr_int_setg,
-    x86instr_int_setbe,
-    x86instr_int_setb,
-    x86instr_int_setae,
-    x86instr_int_seta,
+    x86insn_int_sete,
+    x86insn_int_setne,
+    x86insn_int_setle,
+    x86insn_int_setl,
+    x86insn_int_setge,
+    x86insn_int_setg,
+    x86insn_int_setbe,
+    x86insn_int_setb,
+    x86insn_int_setae,
+    x86insn_int_seta,
 
     // FPU instructions:
-    x86instr_fpu_ld,
-    x86instr_fpu_ld_int,
-    x86instr_fpu_st,
-    x86instr_fpu_stp,
-    x86instr_fpu_stp_int,
-    x86instr_fpu_add,
-    x86instr_fpu_sub,
-    x86instr_fpu_mul,
-    x86instr_fpu_div,
-    x86instr_fpu_subr,
-    x86instr_fpu_divr,
+    x86insn_fpu_ld,
+    x86insn_fpu_ld_int,
+    x86insn_fpu_st,
+    x86insn_fpu_stp,
+    x86insn_fpu_stp_int,
+    x86insn_fpu_add,
+    x86insn_fpu_sub,
+    x86insn_fpu_mul,
+    x86insn_fpu_div,
+    x86insn_fpu_subr,
+    x86insn_fpu_divr,
 
-    x86instr_fpu_identity,
-    x86instr_fpu_zero,
-    x86instr_fpu_log2_10,
-    x86instr_fpu_log2_e,
-    x86instr_fpu_pi,
-    x86instr_fpu_lg_2,
-    x86instr_fpu_ln_2,
+    x86insn_fpu_identity,
+    x86insn_fpu_zero,
+    x86insn_fpu_log2_10,
+    x86insn_fpu_log2_e,
+    x86insn_fpu_pi,
+    x86insn_fpu_lg_2,
+    x86insn_fpu_ln_2,
 
-    x86instr_fpu_int2float,
-    x86instr_fpu_float2int,
+    x86insn_fpu_int2float,
+    x86insn_fpu_float2int,
 
     // SSE2 instructions:
-    x86instr_sse_mov,
-    x86instr_sse_load_int,
-    x86instr_sse_store_int,
-    x86instr_sse_add,
-    x86instr_sse_sub,
-    x86instr_sse_mul,
-    x86instr_sse_div,
+    x86insn_sse_mov,
+    x86insn_sse_load_int,
+    x86insn_sse_store_int,
+    x86insn_sse_add,
+    x86insn_sse_sub,
+    x86insn_sse_mul,
+    x86insn_sse_div,
 
     // internally-generated instructions.
     // arithmetic:
-    x86instr_cdq,
-    x86instr_fpu_cmp,
-    x86instr_cld,
-    x86instr_rep_movsb,
-    x86instr_rep_movsd,
-    x86instr_imul_const,
-    x86instr_int_xchg,
-    x86instr_lea,
-    x86instr_movsx,
-    x86instr_movzx,
+    x86insn_cdq,
+    x86insn_fpu_cmp,
+    x86insn_cld,
+    x86insn_rep_movsb,
+    x86insn_rep_movsd,
+    x86insn_imul_const,
+    x86insn_int_xchg,
+    x86insn_lea,
+    x86insn_movsx,
+    x86insn_movzx,
 
     // stack handling:
-    x86instr_push,
-    x86instr_pop,
-    x86instr_push_arg,          // parameter can be argument of any type
-    x86instr_restore_stack,     // parameter is summary parameters size
+    x86insn_push,
+    x86insn_pop,
+    x86insn_push_arg,          // parameter can be argument of any type
+    x86insn_restore_stack,     // parameter is summary parameters size
 
     // read-only instructions:
-    x86instr_int_cmp,
-    x86instr_int_test,
+    x86insn_int_cmp,
+    x86insn_int_test,
 
     // pseudo-instructions:
-    x86instr_label,
-    x86instr_push_all,
-    x86instr_pop_all,
-    x86instr_create_stack_frame,
-    x86instr_destroy_stack_frame,
+    x86insn_label,
+    x86insn_push_all,
+    x86insn_pop_all,
+    x86insn_create_stack_frame,
+    x86insn_destroy_stack_frame,
 
-    x86instr_count,
+    x86insn_count,
 } x86_instruction_code;
 
 typedef struct x86_instruction_decl {
@@ -253,18 +253,18 @@ typedef struct x86_instruction_decl {
 } x86_instruction;
 
 
-#define IS_CALL_INSTR(INSTR)            ((INSTR) >= x86instr_call && (INSTR) <= x86instr_call_float)
-#define IS_INT_INSTR(INSTR)             ((INSTR) >= x86instr_int_inc && (INSTR) <= x86instr_int_seta)
-#define IS_SET_INSTR(INSTR)             ((INSTR) >= x86instr_int_sete && (INSTR) <= x86instr_int_seta)
-#define IS_FLOAT_INSTR(INSTR)           ((INSTR) >= x86instr_fpu_ld && (INSTR) <= x86instr_fpu_ln_2)
-#define IS_JMP_INSTR(INSTR)             ((INSTR) >= x86instr_jmp && (INSTR) <= x86instr_ja)
-#define IS_CONSTANT_INSTR(INSTR)        ((INSTR) == x86instr_int_cmp || (INSTR) == x86instr_int_test)
-#define IS_INT_MUTABLE_INSTR(INSTR)     (IS_INT_INSTR(INSTR) || (INSTR) >= x86instr_int_cmp && (INSTR) <= x86instr_int_xchg)
+#define IS_CALL_INSN(INSN)              ((INSN) >= x86insn_call && (INSN) <= x86insn_call_float)
+#define IS_INT_INSN(INSN)               ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta)
+#define IS_SET_INSN(INSN)               ((INSN) >= x86insn_int_sete && (INSN) <= x86insn_int_seta)
+#define IS_FLOAT_INSN(INSN)             ((INSN) >= x86insn_fpu_ld && (INSN) <= x86insn_fpu_ln_2)
+#define IS_JMP_INSN(INSN)               ((INSN) >= x86insn_jmp && (INSN) <= x86insn_ja)
+#define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
+#define IS_INT_MUTABLE_INSN(INSN)       (IS_INT_INSN(INSN) || (INSN) >= x86insn_int_cmp && (INSN) <= x86insn_int_xchg)
 
-#define IS_FLOAT_UNARY_ARITHM_INSTR(INSTR)  ((INSTR) >= x86instr_fpu_identity && (INSTR) <= x86instr_fpu_ln_2)
-#define IS_FLOAT_BINARY_ARITHM_INSTR(INSTR) ((INSTR) >= x86instr_fpu_add && (INSTR) <= x86instr_fpu_divr)
+#define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)
+#define IS_FLOAT_BINARY_ARITHM_INSN(INSN) ((INSN) >= x86insn_fpu_add && (INSN) <= x86insn_fpu_divr)
 
-#define MAX_REGISTERS_PER_INSTR         (3)
+#define MAX_REGISTERS_PER_INSN          (3)
 
 #define OP_IS_INT(OP)                   ((OP).op_type >= x86op_byte && (OP).op_type <= x86op_qword)
 #define OP_IS_DWORD(OP)                 ((OP).op_type == x86op_dword)
@@ -284,14 +284,14 @@ typedef struct x86_instruction_decl {
                                             && (OP).data.address.index == 0 && (OP).data.address.offset == (OFS))
 
 
-void    bincode_extract_pseudoregs_from_operand         (x86_operand *op, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt);
-void    bincode_extract_pseudoregs_from_instr           (x86_instruction *instr, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt);
-void    bincode_extract_pseudoregs_from_instr_wo_dupes  (x86_instruction *instr, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt);
-void    bincode_extract_real_registers_from_instr       (x86_instruction *instr, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt);
-BOOL    bincode_instr_contains_register                 (x86_instruction *instr, x86_register_type type, int reg);
+void    bincode_extract_pseudoregs_from_operand         (x86_operand *op, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_from_insn            (x86_instruction *insn, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_from_insn_wo_dupes   (x86_instruction *insn, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_real_registers_from_insn        (x86_instruction *insn, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+BOOL    bincode_insn_contains_register                  (x86_instruction *insn, x86_register_type type, int reg);
 BOOL    bincode_operand_contains_register               (x86_operand *op, x86_register_type type, int reg);
-void    bincode_extract_pseudoregs_read_by_instr        (x86_instruction *instr, x86_register regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt);
-void    bincode_extract_pseudoregs_written_by_instr     (x86_instruction *instr, x86_register regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt);
+void    bincode_extract_pseudoregs_read_by_insn         (x86_instruction *insn, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_written_by_insn      (x86_instruction *insn, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 
 void    bincode_create_operand_from_int_constant        (x86_operand *op, x86_operand_type type, int constant);
 void    bincode_create_operand_from_register            (x86_operand *op, x86_operand_type type, int reg);
@@ -328,7 +328,7 @@ void    bincode_insert_pop_reg                          (function_desc *function
 void    bincode_insert_fp_esp_offset                    (function_desc *function, x86_instruction *next,
                                                             x86_instruction_code code, x86_operand_type type, int ofs);
 
-void    bincode_erase_instruction                       (function_desc *function, x86_instruction *instr);
+void    bincode_erase_instruction                       (function_desc *function, x86_instruction *insn);
 
 
 #else

@@ -205,13 +205,13 @@ static const char *_x86_instructions[] = {
     "cmp",
     "test",
 
-    "x86instr_label",
-    "x86instr_push_all",
-    "x86instr_pop_all",
-    "x86instr_create_stack_frame",
-    "x86instr_destroy_stack_frame",
+    "label",
+    "push_all",
+    "pop_all",
+    "create_stack_frame",
+    "destroy_stack_frame",
 };
-AUX_CASSERT(AUX_ARRAY_LENGTH(_x86_instructions) == x86instr_count);
+AUX_CASSERT(AUX_ARRAY_LENGTH(_x86_instructions) == x86insn_count);
 
 static const char *_x86_byte_registers[] = {
     "al", "cl", "dl", "bl", "ah", "ch", "dh", "bh",
@@ -229,9 +229,9 @@ static const char *_x86_dword_registers[] = {
 AUX_CASSERT(AUX_ARRAY_LENGTH(_x86_dword_registers) == x86_dword_reg_count)
 
 
-static void _print_instr(FILE *output, x86_instruction_code code)
+static void _print_insn(FILE *output, x86_instruction_code code)
 {
-    ASSERT(code < x86instr_count);
+    ASSERT(code < x86insn_count);
     fprintf(output, "\t%s", _x86_instructions[code]);
 }
 
@@ -359,7 +359,7 @@ static void _print_op(FILE *output, x86_operand *op)
 
 static void _output_push_nullary_instruction(FILE *output, x86_instruction_code code)
 {
-    _print_instr(output, code);
+    _print_insn(output, code);
     fputc('\n', output);
 }
 
@@ -381,14 +381,14 @@ static const char *_encode_hw_type(x86_operand_type hw_type)
 
 static void _output_push_unary_instruction(FILE *output, x86_instruction_code code, x86_operand *op)
 {
-    if (code == x86instr_label) {
+    if (code == x86insn_label) {
         _print_op(output, op);
         fputc(':', output);
     } else if (op->op_loc == x86loc_register && OP_IS_FLOAT(*op)) {
-        ASSERT(code < x86instr_count);
+        ASSERT(code < x86insn_count);
         fprintf(output, "\t%sp", _x86_instructions[code]);
     } else {
-        _print_instr(output, code);
+        _print_insn(output, code);
         fputc('\t', output);
 
         if (op->op_loc == x86loc_address) {
@@ -403,7 +403,7 @@ static void _output_push_unary_instruction(FILE *output, x86_instruction_code co
 
 static void _output_push_binary_instruction(FILE *output, x86_instruction_code code, x86_operand *op1, x86_operand *op2)
 {
-    _print_instr(output, code);
+    _print_insn(output, code);
     fputc('\t', output);
 
     if (op1->op_loc == x86loc_address && op2->op_loc == x86loc_int_constant) {
@@ -418,7 +418,7 @@ static void _output_push_binary_instruction(FILE *output, x86_instruction_code c
 
 static void _output_push_ternary_instruction(FILE *output, x86_instruction_code code, x86_operand *op1, x86_operand *op2, int op3)
 {
-    _print_instr(output, code);
+    _print_insn(output, code);
     fputc('\t', output);
     _print_op(output, op1);
     fputc(',', output);
@@ -426,31 +426,31 @@ static void _output_push_ternary_instruction(FILE *output, x86_instruction_code 
     fprintf(output, ",%d\n", op3);
 }
 
-static void _output_push_instruction(FILE *output, x86_instruction *instr)
+static void _output_push_instruction(FILE *output, x86_instruction *insn)
 {
-    if (instr->in_op1.op_loc == x86loc_none) {
-        _output_push_nullary_instruction(output, instr->in_code);
-    } else if (instr->in_op2.op_loc == x86loc_none || instr->in_code == x86instr_call) {
-        _output_push_unary_instruction(output, instr->in_code, &instr->in_op1);
-    } else if (instr->in_code != x86instr_imul_const) {
-        _output_push_binary_instruction(output, instr->in_code, &instr->in_op1, &instr->in_op2);
+    if (insn->in_op1.op_loc == x86loc_none) {
+        _output_push_nullary_instruction(output, insn->in_code);
+    } else if (insn->in_op2.op_loc == x86loc_none || insn->in_code == x86insn_call) {
+        _output_push_unary_instruction(output, insn->in_code, &insn->in_op1);
+    } else if (insn->in_code != x86insn_imul_const) {
+        _output_push_binary_instruction(output, insn->in_code, &insn->in_op1, &insn->in_op2);
     } else {
-        _output_push_ternary_instruction(output, instr->in_code, &instr->in_op1, &instr->in_op2, instr->in_op3);
+        _output_push_ternary_instruction(output, insn->in_code, &insn->in_op1, &insn->in_op2, insn->in_op3);
     }
 }
 
 
-void text_output_push_instruction(x86_instruction *instr)
+void text_output_push_instruction(x86_instruction *insn)
 {
-    _output_push_instruction(asm_file, instr);
+    _output_push_instruction(asm_file, insn);
 }
 
 
 #ifdef _DEBUG
 
-void debug_print_instruction(x86_instruction *instr)
+void debug_print_instruction(x86_instruction *insn)
 {
-    _output_push_instruction(stdout, instr);
+    _output_push_instruction(stdout, insn);
 }
 
 #endif // _DEBUG

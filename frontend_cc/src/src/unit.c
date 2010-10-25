@@ -90,7 +90,7 @@ symbol *unit_create_temporary_variable(data_type *type)
 }
 
 
-static void _unit_insert_expression_before(expression *expr, expression *position)
+static void _insert_expression_before(expression *expr, expression *position)
 {
     ASSERT(_curr_func);
 
@@ -106,17 +106,17 @@ static void _unit_insert_expression_before(expression *expr, expression *positio
     position->expr_prev = expr;
 }
 
-static void _unit_insert_jump_before(int dest, expression *condition, BOOL invert_condition, expression *position)
+static void _insert_jump_before(int dest, expression *condition, BOOL invert_condition, expression *position)
 {
-    _unit_insert_expression_before(expr_create_jump(dest, condition, invert_condition), position);
+    _insert_expression_before(expr_create_jump(dest, condition, invert_condition), position);
 }
 
-static void _unit_insert_label_before(int label, expression *position)
+static void _insert_label_before(int label, expression *position)
 {
-    _unit_insert_expression_before(expr_create_label(label), position);
+    _insert_expression_before(expr_create_label(label), position);
 }
 
-static void _unit_insert_expression_after(expression *expr, expression *position)
+static void _insert_expression_after(expression *expr, expression *position)
 {
     ASSERT(_curr_func);
 
@@ -131,14 +131,14 @@ static void _unit_insert_expression_after(expression *expr, expression *position
     position->expr_next = expr;
 }
 
-static void _unit_insert_jump_after(int dest, expression *condition, BOOL invert_condition, expression *position)
+static void _insert_jump_after(int dest, expression *condition, BOOL invert_condition, expression *position)
 {
-    _unit_insert_expression_after(expr_create_jump(dest, condition, invert_condition), position);
+    _insert_expression_after(expr_create_jump(dest, condition, invert_condition), position);
 }
 
-static void _unit_insert_label_after(int label, expression *position)
+static void _insert_label_after(int label, expression *position)
 {
-    _unit_insert_expression_after(expr_create_label(label), position);
+    _insert_expression_after(expr_create_label(label), position);
 }
 
 
@@ -227,7 +227,7 @@ static void _resolve_jumps_to_named_labels(void)
 // Поддержка break/continue.
 //
 
-static void _unit_reset_continue_break_switch_targets()
+static void _reset_continue_break_switch_targets()
 {
     _last_continue_target   = -1;
     _last_break_target      = -1;
@@ -306,7 +306,7 @@ void unit_push_case_label(expression *value)
     int label           = unit_create_and_push_label();
     expression *place   = _switch_values[_last_switch_value].conditions_insertion_point;
 
-    _unit_insert_jump_after(
+    _insert_jump_after(
         label,
         expr_create_binary(
             expr_create_from_identifier(_switch_values[_last_switch_value].switch_value),
@@ -332,7 +332,7 @@ void unit_push_default_stmt()
 
     _switch_values[_last_switch_value].default_label = label;
 
-    _unit_insert_jump_after(
+    _insert_jump_after(
         label,
         NULL,
         FALSE,
@@ -502,23 +502,23 @@ static void _replace_boolean_with_jumps(expression *expr, void *unused)
     label   = unit_create_label(_curr_func);
 
 
-    _unit_insert_expression_before(
+    _insert_expression_before(
         expr_create_binary(
             expr_create_from_identifier(tmp),
             expr_create_from_integer(arithm->opcode == op_logical_or ? 1 : 0, type_create_arithmetic(code_type_int)),
             op_assign),
         expr);
 
-    _unit_insert_jump_before(label, arithm->operand1, arithm->opcode == op_logical_and ? 1 : 0, expr);
+    _insert_jump_before(label, arithm->operand1, arithm->opcode == op_logical_and ? 1 : 0, expr);
 
-    _unit_insert_expression_before(
+    _insert_expression_before(
         expr_create_binary(
             expr_create_from_identifier(tmp),
             expr_create_unary(arithm->operand2, op_notnot),
             op_assign),
         expr);
 
-    _unit_insert_label_before(label, expr);
+    _insert_label_before(label, expr);
 
 
     saved                   = *expr;
@@ -764,7 +764,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     }
 
 
-    _unit_reset_continue_break_switch_targets();
+    _reset_continue_break_switch_targets();
 }
 
 void unit_handle_function_body(symbol *sym)
@@ -835,14 +835,14 @@ void unit_after_global_declaration(void)
 //  Кодогенерация.
 //
 
-static void _unit_output_function_code(function_desc *func)
+static void _output_function_code(function_desc *func)
 {
-    x86_instruction *instr;
+    x86_instruction *insn;
 
     text_output_begin_function(func);
 
-    for (instr = func->func_binary_code; instr; instr = instr->in_next) {
-        text_output_push_instruction(instr);
+    for (insn = func->func_binary_code; insn; insn = insn->in_next) {
+        text_output_push_instruction(insn);
     }
 
     text_output_end_function(func);
@@ -874,7 +874,7 @@ void unit_codegen(void)
             x86_allocate_registers(_curr_func);
         }
 
-        _unit_output_function_code(_curr_func);
+        _output_function_code(_curr_func);
         allocator_reset_temporary();
     }
 }

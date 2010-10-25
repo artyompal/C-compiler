@@ -25,12 +25,12 @@ void    text_output_declare_initialized_float   (symbol *sym, double value);
 void    text_output_declare_initialized_string  (symbol *sym, const char *value);
 void    text_output_declare_ptr_to_relocable    (symbol *ptr_sym, symbol *rel_sym);
 
-void    text_output_push_instruction            (x86_instruction *instr);
+void    text_output_push_instruction            (x86_instruction *insn);
 
 
 #ifdef _DEBUG
 
-void    debug_print_instruction                 (x86_instruction *instr);
+void    debug_print_instruction                 (x86_instruction *insn);
 
 #endif // _DEBUG
 

@@ -72,7 +72,7 @@ data_type *type_create_arithmetic(data_type_code code)
 }
 
 
-static data_type *_type_create(data_type_code type_code)
+static data_type *_create_type(data_type_code type_code)
 {
     data_type *res;
 
@@ -84,7 +84,7 @@ static data_type *_type_create(data_type_code type_code)
 
 data_type *type_create_string()
 {
-    data_type *res  = _type_create(code_type_unsized_array);
+    data_type *res  = _create_type(code_type_unsized_array);
     res->data.array.item_type = type_create_arithmetic(code_type_char);
     return res;
 }
@@ -94,14 +94,14 @@ data_type *type_create_string()
 // Конструктор рекуррентно-заданных типов данных.
 //
 
-static data_type *_type_add_sized_array_node(data_type **type, expression *size)
+static data_type *_add_sized_array_node(data_type **type, expression *size)
 {
     data_type *res;
     data_type **terminal_type;
 
     terminal_type               = _type_find_terminal(type);
 
-    res                         = _type_create(code_type_sized_array);
+    res                         = _create_type(code_type_sized_array);
     res->data.array.item_type   = *terminal_type;
 
     if (!size) {
@@ -119,28 +119,28 @@ static data_type *_type_add_sized_array_node(data_type **type, expression *size)
     return *type;
 }
 
-static data_type *_type_add_unsized_array_node(data_type **type)
+static data_type *_add_unsized_array_node(data_type **type)
 {
     data_type *res;
     data_type **terminal_type;
 
     terminal_type               = _type_find_terminal(type);
 
-    res                         = _type_create(code_type_unsized_array);
+    res                         = _create_type(code_type_unsized_array);
     res->data.array.item_type   = *terminal_type;
 
     *terminal_type              = res;
     return *type;
 }
 
-static data_type *_type_add_function_node(data_type **type, parameter_list *params)
+static data_type *_add_function_node(data_type **type, parameter_list *params)
 {
     data_type *res;
     data_type **terminal_type;
 
     terminal_type                       = _type_find_terminal(type);
 
-    res                                 = _type_create(code_type_function);
+    res                                 = _create_type(code_type_function);
     res->data.function.result_type      = *terminal_type;
 
     if (!params) {
@@ -160,7 +160,7 @@ symbol *type_add_sized_array_node(symbol *sym, expression *size)
     if (!sym) {
         return NULL;
     } else {
-        _type_add_sized_array_node(&sym->sym_type, size);
+        _add_sized_array_node(&sym->sym_type, size);
         return sym;
     }
 }
@@ -170,7 +170,7 @@ symbol *type_add_unsized_array_node(symbol *sym)
     if (!sym) {
         return NULL;
     } else {
-        _type_add_unsized_array_node(&sym->sym_type);
+        _add_unsized_array_node(&sym->sym_type);
         return sym;
     }
 }
@@ -180,7 +180,7 @@ symbol *type_add_function_node(symbol *sym, parameter_list *params)
     if (!sym) {
         return NULL;
     } else {
-        _type_add_function_node(&sym->sym_type, params);
+        _add_function_node(&sym->sym_type, params);
         return sym;
     }
 }
@@ -188,17 +188,17 @@ symbol *type_add_function_node(symbol *sym, parameter_list *params)
 
 data_type *type_add_abstract_sized_array_node(data_type *type, expression *size)
 {
-    return _type_add_sized_array_node(&type, size);
+    return _add_sized_array_node(&type, size);
 }
 
 data_type *type_add_abstract_unsized_array_node(data_type *type)
 {
-    return _type_add_unsized_array_node(&type);
+    return _add_unsized_array_node(&type);
 }
 
 data_type *type_add_abstract_function_node(data_type *type, parameter_list *params)
 {
-    return _type_add_function_node(&type, params);
+    return _add_function_node(&type, params);
 }
 
 
@@ -257,7 +257,7 @@ data_type *type_create_complete_structure(symbol *sym, fields_list *fields)
     data_type *res;
     struct_union_field *field, *prev;
 
-    res                         = _type_create(code_type_structure);
+    res                         = _create_type(code_type_structure);
 
     if (!sym) {
         sym = symbol_create_unnamed("struct", code_sym_type, res);
@@ -283,7 +283,7 @@ data_type *type_create_complete_union(symbol *sym, fields_list *fields)
 {
     data_type *res;
 
-    res                         = _type_create(code_type_union);
+    res                         = _create_type(code_type_union);
 
     if (!sym) {
         sym = symbol_create_unnamed("union", code_sym_type, res);
@@ -303,7 +303,7 @@ data_type *type_create_incomplete_structure(symbol *sym)
     if (!sym) { return NULL; }
 
     sym->sym_code   = code_sym_type;
-    sym->sym_type   = _type_create(code_type_incomplete_structure);
+    sym->sym_type   = _create_type(code_type_incomplete_structure);
 
     return sym->sym_type;
 }
@@ -313,7 +313,7 @@ data_type *type_create_incomplete_union(symbol *sym)
     if (!sym) { return NULL; }
 
     sym->sym_code   = code_sym_type;
-    sym->sym_type   = _type_create(code_type_incomplete_union);
+    sym->sym_type   = _create_type(code_type_incomplete_union);
 
     return sym->sym_type;
 }
@@ -524,7 +524,7 @@ BOOL type_are_same(data_type *type1, data_type *type2)
 
 data_type *type_create_pointer_node(data_type *pointee)
 {
-    data_type *res              = _type_create(code_type_pointer);
+    data_type *res              = _create_type(code_type_pointer);
 
     res->data.ptr.item_type     = pointee;
     res->data.ptr.is_const      = FALSE;
@@ -648,7 +648,7 @@ static int last_enum_item = 0;
 
 data_type *type_declare_enumeration(symbol *sym)
 {
-    data_type *res = _type_create(code_type_enum);
+    data_type *res = _create_type(code_type_enum);
 
     if (!sym) {
         sym = symbol_create_unnamed("enum", code_sym_type, res);
@@ -664,7 +664,7 @@ data_type *type_declare_enumeration(symbol *sym)
 
 data_type *type_declare_incomplete_enumeration(symbol *sym)
 {
-    data_type *res  = _type_create(code_type_incomplete_enum);
+    data_type *res  = _create_type(code_type_incomplete_enum);
 
     res->data.enum_or_incomplete.sym = sym;
     sym->sym_code   = code_sym_type;

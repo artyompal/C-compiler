@@ -69,18 +69,18 @@ void x86_stack_frame_begin_function(function_desc *function)
 
 void x86_stack_frame_end_function(function_desc *function)
 {
-    x86_instruction *instr;
+    x86_instruction *insn;
 
     // если были локальные переменные, корректируем код пролога и эпилога
     if (_local_vars_size) {
-        instr = function->func_binary_code;
+        insn = function->func_binary_code;
 
-        ASSERT(instr->in_code == x86instr_create_stack_frame && instr->in_op1.op_loc == x86loc_int_constant);
-        instr->in_op1.data.int_val = _local_vars_size;
+        ASSERT(insn->in_code == x86insn_create_stack_frame && insn->in_op1.op_loc == x86loc_int_constant);
+        insn->in_op1.data.int_val = _local_vars_size;
 
-        for (instr = function->func_binary_code; instr; instr = instr->in_next) {
-            if (instr->in_code == x86instr_destroy_stack_frame) {
-                instr->in_op1.data.int_val = _local_vars_size;
+        for (insn = function->func_binary_code; insn; insn = insn->in_next) {
+            if (insn->in_code == x86insn_destroy_stack_frame) {
+                insn->in_op1.data.int_val = _local_vars_size;
             }
         }
     }

@@ -235,24 +235,24 @@ static void _choose_possible_register_variables(function_desc *function)
 // Вычисляет максимальное число одновременно выделенных регистров в данной функции.
 static int _estimate_num_of_used_pseudo_registers(function_desc *function)
 {
-    x86_instruction *instr;
+    x86_instruction *insn;
     int max_registers, current_regs_cnt, regs_cnt, i;
-    x86_register regs_arr[MAX_REGISTERS_PER_INSTR];
+    x86_register regs_arr[MAX_REGISTERS_PER_INSN];
     x86_pseudoreg_info *reg_info = function->func_dword_regstat.ptr;
 
     LOG(("_estimate_num_of_used_pseudo_registers(%s)\n", function->func_sym->sym_name));
     max_registers = current_regs_cnt = 0;
 
-    for (instr = function->func_binary_code; instr; instr = instr->in_next) {
-        bincode_extract_pseudoregs_from_instr_wo_dupes(instr, x86reg_dword, regs_arr, &regs_cnt);
+    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
+        bincode_extract_pseudoregs_from_insn_wo_dupes(insn, x86reg_dword, regs_arr, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
-            if (instr == reg_info[regs_arr[i].reg_value].reg_first_write) {
+            if (insn == reg_info[regs_arr[i].reg_value].reg_first_write) {
                 current_regs_cnt++;
             }
         }
 
-        if (instr->in_code == x86instr_cdq) {
+        if (insn->in_code == x86insn_cdq) {
             current_regs_cnt += 2;
         }
 
@@ -260,12 +260,12 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function)
             max_registers = current_regs_cnt;
         }
 
-        if (instr->in_code == x86instr_int_idiv) {
+        if (insn->in_code == x86insn_int_idiv) {
             current_regs_cnt -= 2;
         }
 
         for (i = 0; i < regs_cnt; i++) {
-            if (instr == reg_info[regs_arr[i].reg_value].reg_last_read) {
+            if (insn == reg_info[regs_arr[i].reg_value].reg_last_read) {
                 current_regs_cnt--;
                 ASSERT(current_regs_cnt >= 0);
             }
@@ -279,26 +279,26 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function)
 // Заменяет все вхождения регистровой переменной на регистр.
 static void _replace_variable_with_register(function_desc *function, x86_register_var *reg_var)
 {
-    x86_instruction *instr;
+    x86_instruction *insn;
     int var_offset  = reg_var->sym->sym_offset;
     int var_reg     = reg_var->pseudo_reg;
 
     LOG(("_replace_variable_with_register(sym=%s offset=%d count=%d)\n",
         reg_var->sym->sym_name, reg_var->sym->sym_offset, reg_var->sym->sym_usage_count));
 
-    instr = function->func_binary_code;
-    ASSERT(instr->in_code == x86instr_create_stack_frame);
-    instr = instr->in_next;
+    insn = function->func_binary_code;
+    ASSERT(insn->in_code == x86insn_create_stack_frame);
+    insn = insn->in_next;
 
     if (var_offset > 0) {
-        bincode_insert_int_reg_ebp_offset(function, instr, x86instr_int_mov, x86reg_dword, var_reg, var_offset);
+        bincode_insert_int_reg_ebp_offset(function, insn, x86insn_int_mov, x86reg_dword, var_reg, var_offset);
     }
 
-    for (; instr; instr = instr->in_next) {
-        if (OP_IS_SPEC_EBP_OFFSET(instr->in_op1, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&instr->in_op1, x86reg_dword, var_reg);
-        } else if (OP_IS_SPEC_EBP_OFFSET(instr->in_op2, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&instr->in_op2, x86reg_dword, var_reg);
+    for (; insn; insn = insn->in_next) {
+        if (OP_IS_SPEC_EBP_OFFSET(insn->in_op1, var_offset)) {
+            bincode_create_operand_from_pseudoreg(&insn->in_op1, x86reg_dword, var_reg);
+        } else if (OP_IS_SPEC_EBP_OFFSET(insn->in_op2, var_offset)) {
+            bincode_create_operand_from_pseudoreg(&insn->in_op2, x86reg_dword, var_reg);
         }
     }
 }

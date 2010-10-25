@@ -10,10 +10,10 @@
 // анализируют, какие регистры используются данной функцией или данным операндом.
 //
 
-static void _extract_pseudoregs_from_operand(x86_operand *op, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt)
+static void _extract_pseudoregs_from_operand(x86_operand *op, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
     if (OP_IS_REGISTER(*op)) {
-        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSTR - 1);
+        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
         if (op->data.reg > 0 && op->op_type == type) {
             regs[*regs_cnt].reg_type    = op->op_type;
@@ -21,7 +21,7 @@ static void _extract_pseudoregs_from_operand(x86_operand *op, x86_register_type 
             ++*regs_cnt;
         }
     } else if (OP_IS_ADDRESS(*op) && type == x86reg_dword) {
-        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSTR - 2);
+        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 2);
 
         if (op->data.address.base > 0) {
             regs[*regs_cnt].reg_type    = x86reg_dword;
@@ -37,28 +37,28 @@ static void _extract_pseudoregs_from_operand(x86_operand *op, x86_register_type 
     }
 }
 
-void bincode_extract_pseudoregs_from_operand(x86_operand *op, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt)
+void bincode_extract_pseudoregs_from_operand(x86_operand *op, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
     *regs_cnt = 0;
     _extract_pseudoregs_from_operand(op, type, regs, regs_cnt);
 }
 
-void bincode_extract_pseudoregs_from_instr(x86_instruction *instr, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt)
+void bincode_extract_pseudoregs_from_insn(x86_instruction *insn, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
     *regs_cnt = 0;
 
-    _extract_pseudoregs_from_operand(&instr->in_op1, type, regs, regs_cnt);
+    _extract_pseudoregs_from_operand(&insn->in_op1, type, regs, regs_cnt);
 
-    if (instr->in_code != x86instr_call)
-        _extract_pseudoregs_from_operand(&instr->in_op2, type, regs, regs_cnt);
+    if (insn->in_code != x86insn_call)
+        _extract_pseudoregs_from_operand(&insn->in_op2, type, regs, regs_cnt);
 }
 
-void bincode_extract_pseudoregs_from_instr_wo_dupes(x86_instruction *instr, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt)
+void bincode_extract_pseudoregs_from_insn_wo_dupes(x86_instruction *insn, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
-    x86_register_ref tmp_regs[MAX_REGISTERS_PER_INSTR];
+    x86_register_ref tmp_regs[MAX_REGISTERS_PER_INSN];
     int tmp_regs_cnt, i, j, cnt;
 
-    bincode_extract_pseudoregs_from_instr(instr, type, tmp_regs, &tmp_regs_cnt);
+    bincode_extract_pseudoregs_from_insn(insn, type, tmp_regs, &tmp_regs_cnt);
     cnt = 0;
 
     for (i = 0; i < tmp_regs_cnt; i++) {
@@ -79,43 +79,43 @@ void bincode_extract_pseudoregs_from_instr_wo_dupes(x86_instruction *instr, x86_
     *regs_cnt = cnt;
 }
 
-void bincode_extract_real_registers_from_instr(x86_instruction *instr, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt)
+void bincode_extract_real_registers_from_insn(x86_instruction *insn, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
     *regs_cnt = 0;
 
-    if (OP_IS_REAL_REG(instr->in_op1) &&
-        (instr->in_op1.op_type != x86reg_dword || instr->in_op1.data.reg != ~x86reg_esp) &&
-        instr->in_op1.op_type == type) {
-            regs[*regs_cnt].reg_type    = instr->in_op1.op_type;
-            regs[*regs_cnt].reg_value   = ~instr->in_op1.data.reg;
+    if (OP_IS_REAL_REG(insn->in_op1) &&
+        (insn->in_op1.op_type != x86reg_dword || insn->in_op1.data.reg != ~x86reg_esp) &&
+        insn->in_op1.op_type == type) {
+            regs[*regs_cnt].reg_type    = insn->in_op1.op_type;
+            regs[*regs_cnt].reg_value   = ~insn->in_op1.data.reg;
             ++*regs_cnt;
         }
 
-    if (OP_IS_REAL_REG(instr->in_op2) && instr->in_code != x86instr_call &&
-        (instr->in_op2.op_type != x86reg_dword || instr->in_op2.data.reg != ~x86reg_esp) &&
-        instr->in_op2.op_type == type) {
-            regs[*regs_cnt].reg_type    = instr->in_op2.op_type;
-            regs[*regs_cnt].reg_value   = ~instr->in_op2.data.reg;
+    if (OP_IS_REAL_REG(insn->in_op2) && insn->in_code != x86insn_call &&
+        (insn->in_op2.op_type != x86reg_dword || insn->in_op2.data.reg != ~x86reg_esp) &&
+        insn->in_op2.op_type == type) {
+            regs[*regs_cnt].reg_type    = insn->in_op2.op_type;
+            regs[*regs_cnt].reg_value   = ~insn->in_op2.data.reg;
             ++*regs_cnt;
         }
 
-    if (instr->in_code == x86instr_cdq && type != x86reg_dword) {
+    if (insn->in_code == x86insn_cdq && type != x86reg_dword) {
         regs[*regs_cnt].reg_value   = x86reg_dword;
         regs[*regs_cnt].reg_value   = x86reg_edx;
         ++*regs_cnt;
-    } else if (IS_SET_INSTR(instr->in_code) && type != x86reg_dword) {
+    } else if (IS_SET_INSN(insn->in_code) && type != x86reg_dword) {
         regs[*regs_cnt].reg_value   = x86reg_dword;
         regs[*regs_cnt].reg_value   = x86reg_eax;
         ++*regs_cnt;
     }
 }
 
-BOOL bincode_instr_contains_register(x86_instruction *instr, x86_register_type type, int reg)
+BOOL bincode_insn_contains_register(x86_instruction *insn, x86_register_type type, int reg)
 {
-    x86_register_ref regs_arr[MAX_REGISTERS_PER_INSTR];
+    x86_register_ref regs_arr[MAX_REGISTERS_PER_INSN];
     int regs_count, i;
 
-    bincode_extract_pseudoregs_from_instr(instr, type, regs_arr, &regs_count);
+    bincode_extract_pseudoregs_from_insn(insn, type, regs_arr, &regs_count);
 
     for (i = 0; i < regs_count; i++) {
         if (regs_arr[i].reg_type == type && *regs_arr[i].reg_addr == reg) {
@@ -128,7 +128,7 @@ BOOL bincode_instr_contains_register(x86_instruction *instr, x86_register_type t
 
 BOOL bincode_operand_contains_register(x86_operand *op, x86_register_type type, int reg)
 {
-    x86_register_ref regs_arr[MAX_REGISTERS_PER_INSTR];
+    x86_register_ref regs_arr[MAX_REGISTERS_PER_INSN];
     int regs_count, i;
 
     bincode_extract_pseudoregs_from_operand(op, type, regs_arr, &regs_count);
@@ -142,69 +142,69 @@ BOOL bincode_operand_contains_register(x86_operand *op, x86_register_type type, 
     return FALSE;
 }
 
-void bincode_extract_pseudoregs_read_by_instr(x86_instruction *instr, x86_register regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt)
+void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
     *regs_cnt = 0;
 
-    if (OP_IS_ADDRESS(instr->in_op1)) {
-        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSTR - 2);
+    if (OP_IS_ADDRESS(insn->in_op1)) {
+        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 2);
 
-        if (instr->in_op1.data.address.base > 0) {
+        if (insn->in_op1.data.address.base > 0) {
             regs[*regs_cnt].reg_type    = x86reg_dword;
-            regs[*regs_cnt].reg_value   = instr->in_op1.data.address.base;
+            regs[*regs_cnt].reg_value   = insn->in_op1.data.address.base;
             ++*regs_cnt;
         }
 
-        if (instr->in_op1.data.address.index > 0) {
+        if (insn->in_op1.data.address.index > 0) {
             regs[*regs_cnt].reg_type    = x86reg_dword;
-            regs[*regs_cnt].reg_value   = instr->in_op1.data.address.index;
+            regs[*regs_cnt].reg_value   = insn->in_op1.data.address.index;
             ++*regs_cnt;
         }
-    } else if (IS_CONSTANT_INSTR(instr->in_code) && OP_IS_REGISTER(instr->in_op1)) {
-        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSTR - 1);
+    } else if (IS_CONSTANT_INSN(insn->in_code) && OP_IS_REGISTER(insn->in_op1)) {
+        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
-        if (instr->in_op1.data.reg > 0) {
-            regs[*regs_cnt].reg_type    = instr->in_op1.op_type;
-            regs[*regs_cnt].reg_value   = instr->in_op1.data.reg;
+        if (insn->in_op1.data.reg > 0) {
+            regs[*regs_cnt].reg_type    = insn->in_op1.op_type;
+            regs[*regs_cnt].reg_value   = insn->in_op1.data.reg;
             ++*regs_cnt;
         }
     }
 
-    if (OP_IS_REGISTER(instr->in_op2)) {
-        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSTR - 1);
+    if (OP_IS_REGISTER(insn->in_op2)) {
+        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
-        if (instr->in_op2.data.reg > 0) {
-            regs[*regs_cnt].reg_type    = instr->in_op2.op_type;
-            regs[*regs_cnt].reg_value   = instr->in_op2.data.reg;
+        if (insn->in_op2.data.reg > 0) {
+            regs[*regs_cnt].reg_type    = insn->in_op2.op_type;
+            regs[*regs_cnt].reg_value   = insn->in_op2.data.reg;
             ++*regs_cnt;
         }
-    } else if (OP_IS_ADDRESS(instr->in_op2)) {
-        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSTR - 2);
+    } else if (OP_IS_ADDRESS(insn->in_op2)) {
+        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 2);
 
-        if (instr->in_op2.data.address.base > 0) {
+        if (insn->in_op2.data.address.base > 0) {
             regs[*regs_cnt].reg_type    = x86reg_dword;
-            regs[*regs_cnt].reg_value   = instr->in_op2.data.address.base;
+            regs[*regs_cnt].reg_value   = insn->in_op2.data.address.base;
             ++*regs_cnt;
         }
 
-        if (instr->in_op2.data.address.index > 0) {
+        if (insn->in_op2.data.address.index > 0) {
             regs[*regs_cnt].reg_type    = x86reg_dword;
-            regs[*regs_cnt].reg_value   = instr->in_op2.data.address.index;
+            regs[*regs_cnt].reg_value   = insn->in_op2.data.address.index;
             ++*regs_cnt;
         }
     }
 }
 
-void bincode_extract_pseudoregs_written_by_instr(x86_instruction *instr, x86_register regs[MAX_REGISTERS_PER_INSTR], int *regs_cnt)
+void bincode_extract_pseudoregs_written_by_insn(x86_instruction *insn, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
     *regs_cnt = 0;
 
-    if (OP_IS_REGISTER(instr->in_op1) && !IS_CONSTANT_INSTR(instr->in_code)) {
-        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSTR - 1);
+    if (OP_IS_REGISTER(insn->in_op1) && !IS_CONSTANT_INSN(insn->in_code)) {
+        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
-        if (instr->in_op1.data.reg > 0) {
-            regs[*regs_cnt].reg_type    = instr->in_op1.op_type;
-            regs[*regs_cnt].reg_value   = instr->in_op1.data.reg;
+        if (insn->in_op1.data.reg > 0) {
+            regs[*regs_cnt].reg_type    = insn->in_op1.op_type;
+            regs[*regs_cnt].reg_value   = insn->in_op1.data.reg;
             ++*regs_cnt;
         }
     }
@@ -321,13 +321,13 @@ void bincode_create_operand_from_label(x86_operand *op, int label)
 x86_instruction_code bincode_encode_float_constant(double val)
 {
     if (val == 0.0) {
-        return x86instr_fpu_zero;
+        return x86insn_fpu_zero;
     } else if (val == 1.0) {
-        return x86instr_fpu_identity;
+        return x86insn_fpu_identity;
     } else if (val == 3.14159265358979323846) {
-        return x86instr_fpu_pi;
+        return x86insn_fpu_pi;
     } else {
-        return x86instr_count;
+        return x86insn_count;
     }
 }
 
@@ -434,7 +434,7 @@ void bincode_insert_push_reg(function_desc *function, x86_instruction *next, x86
     x86_operand op;
 
     bincode_create_operand_from_pseudoreg(&op, type, reg);
-    bincode_insert_instruction(function, next, x86instr_push, &op, NULL);
+    bincode_insert_instruction(function, next, x86insn_push, &op, NULL);
 }
 
 void bincode_insert_pop_reg(function_desc *function, x86_instruction *next, x86_operand_type type, int reg)
@@ -442,7 +442,7 @@ void bincode_insert_pop_reg(function_desc *function, x86_instruction *next, x86_
     x86_operand op;
 
     bincode_create_operand_from_pseudoreg(&op, type, reg);
-    bincode_insert_instruction(function, next, x86instr_pop, &op, NULL);
+    bincode_insert_instruction(function, next, x86insn_pop, &op, NULL);
 }
 
 void bincode_insert_fp_esp_offset(function_desc *function, x86_instruction *next, x86_instruction_code code, x86_operand_type type, int ofs)
@@ -453,18 +453,18 @@ void bincode_insert_fp_esp_offset(function_desc *function, x86_instruction *next
     bincode_insert_instruction(function, next, code, &op, NULL);
 }
 
-void bincode_erase_instruction(function_desc *function, x86_instruction *instr)
+void bincode_erase_instruction(function_desc *function, x86_instruction *insn)
 {
-    if (instr->in_next) {
-        instr->in_next->in_prev         = instr->in_prev;
+    if (insn->in_next) {
+        insn->in_next->in_prev         = insn->in_prev;
     } else {
-        function->func_binary_code_end  = instr->in_prev;
+        function->func_binary_code_end  = insn->in_prev;
     }
 
-    if (instr->in_prev) {
-        instr->in_prev->in_next         = instr->in_next;
+    if (insn->in_prev) {
+        insn->in_prev->in_next         = insn->in_next;
     } else {
-        function->func_binary_code      = instr->in_next;
+        function->func_binary_code      = insn->in_next;
     }
 }
 

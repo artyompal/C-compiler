@@ -28,7 +28,6 @@ allocator.c:        TODO: linked chain of fixed size allocator blocks.
 allocator.c:        TODO: VirtualAlloc instead of _aligned_malloc.
 allocator.c:        TODO: implement _reset_allocator()
 expressions.c:      TODO: нужно поддержать вычитание указателей
-expressions.c:      TODO: convert_int2double, etc
 parser_actions.c:   TODO: semantic check: type correspondence, type promotion and casting.
 symbol_table.c:     FIXME: we only allow override functions. extern declarations and typedefs are not supported yet.
 symbol_table.c:     TODO: more flexible behavior? symbols can have multiple duplications
