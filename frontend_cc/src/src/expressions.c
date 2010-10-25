@@ -3,15 +3,15 @@
 #include "unit.h"
 
 
-static expression * _expr_get_address                   (expression *expr);
-static expression * _expr_create_binary_arithm_expr     (arithmetic_opcode opcode, expression *op1, expression *op2, data_type *type);
-static BOOL         _expr_is_allowed_cast_of_same_size  (data_type *from, data_type *to);
-static BOOL         _expr_try_generate_int_cast         (expression **res, data_type *from, data_type *to);
-static BOOL         _expr_try_generate_float_cast       (expression **res, data_type *from, data_type *to);
-static void         _expr_silent_cast_to_arithmetic_type(expression **expr, data_type_code code);
+static expression * _get_address                   (expression *expr);
+static expression * _create_binary_arithm_expr     (arithmetic_opcode opcode, expression *op1, expression *op2, data_type *type);
+static BOOL         _is_allowed_cast_of_same_size  (data_type *from, data_type *to);
+static BOOL         _try_generate_int_cast         (expression **res, data_type *from, data_type *to);
+static BOOL         _try_generate_float_cast       (expression **res, data_type *from, data_type *to);
+static void         _silent_cast_to_arithmetic_type(expression **expr, data_type_code code);
 
 
-static expression *_expr_create(expression_code code, data_type *type)
+static expression *_create_expr(expression_code code, data_type *type)
 {
     expression *res;
 
@@ -27,9 +27,9 @@ static expression *_expr_create(expression_code code, data_type *type)
     return res;
 }
 
-static expression *_expr_create_arithmetic(data_type *type)
+static expression *_create_arithmetic(data_type *type)
 {
-    return _expr_create(code_expr_arithmetic, type);
+    return _create_expr(code_expr_arithmetic, type);
 }
 
 
@@ -133,16 +133,16 @@ char const *expr_print_opcode_to_debug(arithmetic_opcode code)
     }
 }
 
-static expression *_expr_add_offset_to_raw_pointer(expression *ptr, expression *index, int subtract)
+static expression *_add_offset_to_raw_pointer(expression *ptr, expression *index, int subtract)
 {
     if (index->expr_code == code_expr_int_constant && index->data.int_const == 0) {
         return ptr;
     } else {
-        return _expr_create_binary_arithm_expr((subtract ? op_sub : op_add), ptr, index, ptr->expr_type);
+        return _create_binary_arithm_expr((subtract ? op_sub : op_add), ptr, index, ptr->expr_type);
     }
 }
 
-static expression *_expr_add_offset_to_sized_pointer(expression *ptr, expression *index, BOOL subtract)
+static expression *_add_offset_to_sized_pointer(expression *ptr, expression *index, BOOL subtract)
 {
     int             item_type_size;
     expression *    res;
@@ -156,27 +156,27 @@ static expression *_expr_add_offset_to_sized_pointer(expression *ptr, expression
         return NULL;
     } else if (item_type_size > 1) {
         int_type    = type_create_arithmetic(code_type_int);
-        index       = _expr_create_binary_arithm_expr(op_mul, index, expr_create_from_integer(item_type_size, int_type), int_type);
+        index       = _create_binary_arithm_expr(op_mul, index, expr_create_from_integer(item_type_size, int_type), int_type);
     }
 
-    res             = _expr_add_offset_to_raw_pointer(ptr, index, subtract);
+    res             = _add_offset_to_raw_pointer(ptr, index, subtract);
     res->expr_type  = ptr->expr_type;
 
     return res;
 }
 
-static expression *_expr_generate_pointer(expression *expr, BOOL allow_array, BOOL allow_function)
+static expression *_generate_pointer(expression *expr, BOOL allow_array, BOOL allow_function)
 {
     expression *res = expr;
 
     if (TYPE_IS_ARRAY(expr->expr_type)) {
         if (allow_array) {
-            res             = _expr_get_address(expr);
+            res             = _get_address(expr);
             res->expr_type  = type_create_pointer_node(expr->expr_type->data.array.item_type);
         }
     } else if (TYPE_IS_FUNCTION(expr->expr_type)) {
         if (allow_function) {
-            res             = _expr_get_address(expr);
+            res             = _get_address(expr);
             res->expr_type  = type_create_pointer_node(expr->expr_type);
         }
     }
@@ -187,14 +187,14 @@ static expression *_expr_generate_pointer(expression *expr, BOOL allow_array, BO
 static expression *_integral_promotion(expression *expr)
 {
     if (expr->expr_type->type_code >= code_type_char && expr->expr_type->type_code <= code_type_unsigned_short) {
-        _expr_silent_cast_to_arithmetic_type(&expr, code_type_int);
+        _silent_cast_to_arithmetic_type(&expr, code_type_int);
     }
 
     return expr;
 }
 
 
-static expression *_expr_evaluate_const_int_unary_expression(arithmetic_opcode opcode, int value, data_type *type)
+static expression *_evaluate_const_int_unary_expression(arithmetic_opcode opcode, int value, data_type *type)
 {
     int res;
 
@@ -213,7 +213,7 @@ static expression *_expr_evaluate_const_int_unary_expression(arithmetic_opcode o
     return expr_create_from_integer(res, type);
 }
 
-static expression *_expr_evaluate_const_float_unary_expression(arithmetic_opcode opcode, double value, data_type *type)
+static expression *_evaluate_const_float_unary_expression(arithmetic_opcode opcode, double value, data_type *type)
 {
     if (opcode == op_convert_float2int) {
         return expr_create_from_integer((int) value, type);
@@ -223,9 +223,9 @@ static expression *_expr_evaluate_const_float_unary_expression(arithmetic_opcode
     }
 }
 
-static expression *_expr_evaluate_const_int_binary_expression(arithmetic_opcode opcode, int val1, int val2, data_type *type)
+static expression *_evaluate_const_int_binary_expression(arithmetic_opcode opcode, int val1, int val2, data_type *type)
 {
-    expression *res = _expr_create(code_expr_int_constant, type);
+    expression *res = _create_expr(code_expr_int_constant, type);
 
     switch (opcode) {
     case op_add:            res->data.int_const = val1 + val2; break;
@@ -256,14 +256,14 @@ static expression *_expr_evaluate_const_int_binary_expression(arithmetic_opcode 
     return res;
 }
 
-static expression *_expr_evaluate_const_float_binary_expression(arithmetic_opcode opcode, double val1, double val2, data_type *type)
+static expression *_evaluate_const_float_binary_expression(arithmetic_opcode opcode, double val1, double val2, data_type *type)
 {
     expression *res;
 
     if (IS_COMPARE_OP(opcode)) {
-        res = _expr_create(code_expr_int_constant, type);
+        res = _create_expr(code_expr_int_constant, type);
     } else {
-        res = _expr_create(code_expr_float_constant, type);
+        res = _create_expr(code_expr_float_constant, type);
     }
 
     switch (opcode) {
@@ -294,7 +294,7 @@ expression *expr_create_unary(expression *expr, arithmetic_opcode opcode)
         return NULL;
     }
 
-    expr = _expr_generate_pointer(expr, !IS_INCREMENT_DECREMENT(opcode), TRUE);
+    expr = _generate_pointer(expr, !IS_INCREMENT_DECREMENT(opcode), TRUE);
     expr = _integral_promotion(expr);
 
     // семантические проверки
@@ -325,7 +325,7 @@ expression *expr_create_unary(expression *expr, arithmetic_opcode opcode)
     }
 
     // создаём результирующее выражение
-    res                         = _expr_create_arithmetic(expr->expr_type);
+    res                         = _create_arithmetic(expr->expr_type);
     res->data.arithm.opcode     = opcode;
     res->data.arithm.operand1   = expr;
     expr->expr_parent           = res;
@@ -340,17 +340,17 @@ expression *expr_create_unary(expression *expr, arithmetic_opcode opcode)
     // вычисляем константные выражения
     if (IS_INT_CONSTANT_EXPR(expr)) {
         if (opcode != op_dereference) {
-            res = _expr_evaluate_const_int_unary_expression(opcode, expr->data.int_const, res->expr_type);
+            res = _evaluate_const_int_unary_expression(opcode, expr->data.int_const, res->expr_type);
         }
     } else if (IS_FLOAT_CONSTANT_EXPR(expr)) {
-        res = _expr_evaluate_const_float_unary_expression(opcode, expr->data.float_const.val, res->expr_type);
+        res = _evaluate_const_float_unary_expression(opcode, expr->data.float_const.val, res->expr_type);
     }
 
     return res;
 }
 
 
-static expression *_expr_try_optimize_constant_operand(arithmetic_opcode opcode, expression *e1, expression *e2, data_type *type)
+static expression *_try_optimize_constant_operand(arithmetic_opcode opcode, expression *e1, expression *e2, data_type *type)
 {
     int val = e2->data.int_const;
     expression *log;
@@ -371,7 +371,7 @@ static expression *_expr_try_optimize_constant_operand(arithmetic_opcode opcode,
         } else if (opcode == op_mod) {
             return expr_create_from_integer(0, type);
         } else if (opcode == op_mod_assign) {
-            return _expr_create_binary_arithm_expr(op_assign, e1, expr_create_from_integer(1, type), type);
+            return _create_binary_arithm_expr(op_assign, e1, expr_create_from_integer(1, type), type);
         }
     }
 
@@ -379,26 +379,26 @@ static expression *_expr_try_optimize_constant_operand(arithmetic_opcode opcode,
         log = expr_create_from_integer(log2(val), type);
 
         if (opcode == op_mul) {
-            return _expr_create_binary_arithm_expr(op_shl, e1, log, type);
+            return _create_binary_arithm_expr(op_shl, e1, log, type);
         } else if (opcode == op_mul_assign) {
-            return _expr_create_binary_arithm_expr(op_shl_assign, e1, log, type);
+            return _create_binary_arithm_expr(op_shl_assign, e1, log, type);
         } else if (opcode == op_div) {
-            return _expr_create_binary_arithm_expr(op_shr, e1, log, type);
+            return _create_binary_arithm_expr(op_shr, e1, log, type);
         } else if (opcode == op_div_assign) {
-            return _expr_create_binary_arithm_expr(op_shr_assign, e1, log, type);
+            return _create_binary_arithm_expr(op_shr_assign, e1, log, type);
         } else if (opcode == op_mod) {
             log->data.int_const--;
-            return _expr_create_binary_arithm_expr(op_and, e1, log, type);
+            return _create_binary_arithm_expr(op_and, e1, log, type);
         } else if (opcode == op_mod_assign) {
             log->data.int_const--;
-            return _expr_create_binary_arithm_expr(op_and_assign, e1, log, type);
+            return _create_binary_arithm_expr(op_and_assign, e1, log, type);
         }
     }
 
     return NULL;
 }
 
-static expression *_expr_create_binary_arithm_expr(arithmetic_opcode opcode, expression *e1, expression *e2, data_type *type)
+static expression *_create_binary_arithm_expr(arithmetic_opcode opcode, expression *e1, expression *e2, data_type *type)
 {
     expression *res;
 
@@ -411,20 +411,20 @@ static expression *_expr_create_binary_arithm_expr(arithmetic_opcode opcode, exp
 
     // если выражение константное, тривиально вычисляем его
     if (IS_INT_CONSTANT_EXPR(e1) && IS_INT_CONSTANT_EXPR(e2)) {
-        return _expr_evaluate_const_int_binary_expression(opcode, e1->data.int_const, e2->data.int_const, type);
+        return _evaluate_const_int_binary_expression(opcode, e1->data.int_const, e2->data.int_const, type);
     } else if (IS_FLOAT_CONSTANT_EXPR(e1) && IS_FLOAT_CONSTANT_EXPR(e2)) {
-        return _expr_evaluate_const_float_binary_expression(opcode, e1->data.float_const.val, e2->data.float_const.val, type);
+        return _evaluate_const_float_binary_expression(opcode, e1->data.float_const.val, e2->data.float_const.val, type);
     }
 
     // заменяем умножение/деление на константную степень двойки битовыми сдвигами
     if (IS_INT_CONSTANT_EXPR(e2)) {
-        res = _expr_try_optimize_constant_operand(opcode, e1, e2, type);
+        res = _try_optimize_constant_operand(opcode, e1, e2, type);
 
         if (res) {
             return res;
         }
     } else if (IS_INT_CONSTANT_EXPR(e1) && (opcode == op_mul || opcode == op_add)) {
-        res = _expr_try_optimize_constant_operand(opcode, e2, e1, type);
+        res = _try_optimize_constant_operand(opcode, e2, e1, type);
 
         if (res) {
             return res;
@@ -432,7 +432,7 @@ static expression *_expr_create_binary_arithm_expr(arithmetic_opcode opcode, exp
     }
 
     // создаём ноду выражения
-    res = _expr_create_arithmetic(type);
+    res = _create_arithmetic(type);
     res->data.arithm.opcode     = opcode;
     res->data.arithm.operand1   = e1;
     res->data.arithm.operand2   = e2;
@@ -443,15 +443,15 @@ static expression *_expr_create_binary_arithm_expr(arithmetic_opcode opcode, exp
     return res;
 }
 
-static void _expr_silent_cast_to_arithmetic_type(expression **expr, data_type_code code)
+static void _silent_cast_to_arithmetic_type(expression **expr, data_type_code code)
 {
     data_type *type = type_create_arithmetic(code);
 
-    if (_expr_is_allowed_cast_of_same_size((*expr)->expr_type, type)) {
+    if (_is_allowed_cast_of_same_size((*expr)->expr_type, type)) {
         (*expr)->expr_type = type;
-    } else if (_expr_try_generate_float_cast(expr, (*expr)->expr_type, type)) {
+    } else if (_try_generate_float_cast(expr, (*expr)->expr_type, type)) {
         (*expr)->expr_type = type;
-    } else if (!_expr_try_generate_int_cast(expr, (*expr)->expr_type, type)) {
+    } else if (!_try_generate_int_cast(expr, (*expr)->expr_type, type)) {
         ASSERT(FALSE);
     }
 }
@@ -459,32 +459,32 @@ static void _expr_silent_cast_to_arithmetic_type(expression **expr, data_type_co
 static void _arithmetic_transformations(expression **e1, expression **e2)
 {
     if ((*e1)->expr_type->type_code == code_type_long_double || (*e2)->expr_type->type_code == code_type_long_double) {
-        _expr_silent_cast_to_arithmetic_type(e1, code_type_long_double);
-        _expr_silent_cast_to_arithmetic_type(e2, code_type_long_double);
+        _silent_cast_to_arithmetic_type(e1, code_type_long_double);
+        _silent_cast_to_arithmetic_type(e2, code_type_long_double);
     } else if ((*e1)->expr_type->type_code == code_type_double || (*e2)->expr_type->type_code == code_type_double) {
-        _expr_silent_cast_to_arithmetic_type(e1, code_type_double);
-        _expr_silent_cast_to_arithmetic_type(e2, code_type_double);
+        _silent_cast_to_arithmetic_type(e1, code_type_double);
+        _silent_cast_to_arithmetic_type(e2, code_type_double);
     } else if ((*e1)->expr_type->type_code == code_type_float || (*e2)->expr_type->type_code == code_type_float) {
-        _expr_silent_cast_to_arithmetic_type(e1, code_type_float);
-        _expr_silent_cast_to_arithmetic_type(e2, code_type_float);
+        _silent_cast_to_arithmetic_type(e1, code_type_float);
+        _silent_cast_to_arithmetic_type(e2, code_type_float);
     } else if ((*e1)->expr_type->type_code == code_type_unsigned_long_long || (*e2)->expr_type->type_code == code_type_unsigned_long_long) {
-        _expr_silent_cast_to_arithmetic_type(e1, code_type_unsigned_long_long);
-        _expr_silent_cast_to_arithmetic_type(e2, code_type_unsigned_long_long);
+        _silent_cast_to_arithmetic_type(e1, code_type_unsigned_long_long);
+        _silent_cast_to_arithmetic_type(e2, code_type_unsigned_long_long);
     } else if ((*e1)->expr_type->type_code == code_type_long_long || (*e2)->expr_type->type_code == code_type_long_long) {
-        _expr_silent_cast_to_arithmetic_type(e1, code_type_long_long);
-        _expr_silent_cast_to_arithmetic_type(e2, code_type_long_long);
+        _silent_cast_to_arithmetic_type(e1, code_type_long_long);
+        _silent_cast_to_arithmetic_type(e2, code_type_long_long);
     } else if ((*e1)->expr_type->type_code == code_type_unsigned_long || (*e2)->expr_type->type_code == code_type_unsigned_long) {
-        _expr_silent_cast_to_arithmetic_type(e1, code_type_unsigned_long);
-        _expr_silent_cast_to_arithmetic_type(e2, code_type_unsigned_long);
+        _silent_cast_to_arithmetic_type(e1, code_type_unsigned_long);
+        _silent_cast_to_arithmetic_type(e2, code_type_unsigned_long);
     } else if ((*e1)->expr_type->type_code == code_type_long || (*e2)->expr_type->type_code == code_type_long) {
-        _expr_silent_cast_to_arithmetic_type(e1, code_type_long);
-        _expr_silent_cast_to_arithmetic_type(e2, code_type_long);
+        _silent_cast_to_arithmetic_type(e1, code_type_long);
+        _silent_cast_to_arithmetic_type(e2, code_type_long);
     } else if ((*e1)->expr_type->type_code == code_type_unsigned_int || (*e2)->expr_type->type_code == code_type_unsigned_int) {
-        _expr_silent_cast_to_arithmetic_type(e1, code_type_unsigned_int);
-        _expr_silent_cast_to_arithmetic_type(e2, code_type_unsigned_int);
+        _silent_cast_to_arithmetic_type(e1, code_type_unsigned_int);
+        _silent_cast_to_arithmetic_type(e2, code_type_unsigned_int);
     } else {
-        _expr_silent_cast_to_arithmetic_type(e1, code_type_int);
-        _expr_silent_cast_to_arithmetic_type(e2, code_type_int);
+        _silent_cast_to_arithmetic_type(e1, code_type_int);
+        _silent_cast_to_arithmetic_type(e2, code_type_int);
     }
 }
 
@@ -496,8 +496,8 @@ expression *expr_create_binary(expression *e1, expression *e2, arithmetic_opcode
         return NULL;
     }
 
-    e1 = _expr_generate_pointer(e1, !IS_ASSIGN_OP(opcode), TRUE);
-    e2 = _expr_generate_pointer(e2, TRUE, TRUE);
+    e1 = _generate_pointer(e1, !IS_ASSIGN_OP(opcode), TRUE);
+    e2 = _generate_pointer(e2, TRUE, TRUE);
 
     // проверяем допустимость типов операндов
     if (type_are_same(e1->expr_type, e2->expr_type)) {
@@ -513,9 +513,9 @@ expression *expr_create_binary(expression *e1, expression *e2, arithmetic_opcode
         TYPE_IS_INTEGRAL(e1->expr_type) && TYPE_IS_POINTER(e2->expr_type)) &&
             opcode == op_add || opcode == op_sub) {
                 if (TYPE_IS_POINTER(e1->expr_type)) {
-                    return _expr_add_offset_to_sized_pointer(e1, e2, opcode == op_sub);
+                    return _add_offset_to_sized_pointer(e1, e2, opcode == op_sub);
                 } else {
-                    return _expr_add_offset_to_sized_pointer(e2, e1, opcode == op_sub);
+                    return _add_offset_to_sized_pointer(e2, e1, opcode == op_sub);
                 }
     } else {
         aux_error("type mismatch");
@@ -554,7 +554,7 @@ expression *expr_create_binary(expression *e1, expression *e2, arithmetic_opcode
         res_type = e1->expr_type;
     }
 
-    return _expr_create_binary_arithm_expr(opcode, e1, e2, res_type);
+    return _create_binary_arithm_expr(opcode, e1, e2, res_type);
 }
 
 expression *expr_create_ternary(expression *e1, expression *e2, expression *e3)
@@ -567,9 +567,9 @@ expression *expr_create_ternary(expression *e1, expression *e2, expression *e3)
         return NULL;
     }
 
-    e1 = _expr_generate_pointer(e1, TRUE, TRUE);
-    e2 = _expr_generate_pointer(e2, TRUE, TRUE);
-    e3 = _expr_generate_pointer(e3, TRUE, TRUE);
+    e1 = _generate_pointer(e1, TRUE, TRUE);
+    e2 = _generate_pointer(e2, TRUE, TRUE);
+    e3 = _generate_pointer(e3, TRUE, TRUE);
 
     if (!type_are_same(e2->expr_type, e3->expr_type)) {
         aux_error("operator ?: second and third operand must have the same type");
@@ -607,7 +607,7 @@ expression *expr_create_from_identifier(symbol *sym)
         symbol_free(sym, TRUE);
     }
 
-    res             = _expr_create(code_expr_symbol, sym->sym_type);
+    res             = _create_expr(code_expr_symbol, sym->sym_type);
     res->data.sym   = sym;
 
     return res;
@@ -621,7 +621,7 @@ expression *expr_create_from_integer(long val, data_type *type)
         return NULL;
     }
 
-    res                 = _expr_create(code_expr_int_constant, type);
+    res                 = _create_expr(code_expr_int_constant, type);
     res->data.int_const = val;
     return res;
 }
@@ -634,14 +634,14 @@ expression *expr_create_from_float(double val, data_type *type)
         return NULL;
     }
 
-    res                         = _expr_create(code_expr_float_constant, type);
+    res                         = _create_expr(code_expr_float_constant, type);
     res->data.float_const.val   = val;
     return res;
 }
 
 expression *expr_create_from_string(char *str)
 {
-    expression *res    = _expr_create(code_expr_string, type_create_string());
+    expression *res    = _create_expr(code_expr_string, type_create_string());
 
     res->data.str = str;
     return res;
@@ -657,7 +657,7 @@ expression *expr_create_jump(int destination, expression *condition, BOOL invert
         return NULL;
     }
 
-    res                         = _expr_create(code_expr_jump, NULL);
+    res                         = _create_expr(code_expr_jump, NULL);
     res->data.jump.destination  = destination;
     res->data.jump.condition    = condition;
     res->data.jump.invert_cond  = invert_condition;
@@ -673,18 +673,18 @@ expression *expr_create_jump_to_named_label(symbol *label_name)
 {
     expression *res;
 
-    res                     = _expr_create(code_expr_jump_by_name, NULL);
+    res                     = _create_expr(code_expr_jump_by_name, NULL);
     res->data.jump_by_name  = label_name;
 
     return res;
 }
 
-BOOL _expr_try_silently_cast(expression **expr, data_type *type)
+BOOL _try_silently_cast(expression **expr, data_type *type)
 {
     if (type_are_same((*expr)->expr_type, type)) return TRUE;
 
     if (TYPE_IS_ARITHMETIC((*expr)->expr_type) && TYPE_IS_ARITHMETIC(type)) {
-        _expr_silent_cast_to_arithmetic_type(expr, type->type_code);
+        _silent_cast_to_arithmetic_type(expr, type->type_code);
         return TRUE;
     } else {
         return FALSE;
@@ -700,7 +700,7 @@ expression *expr_create_return(expression *result, BOOL allow_empty_return)
     ASSERT(function_type->type_code == code_type_function);
 
     if (result) {
-        if (!_expr_try_silently_cast(&result, function_type->data.function.result_type)) {
+        if (!_try_silently_cast(&result, function_type->data.function.result_type)) {
             aux_error("invalid function return type");
             return NULL;
         }
@@ -711,7 +711,7 @@ expression *expr_create_return(expression *result, BOOL allow_empty_return)
         }
     }
 
-    res                 = _expr_create(code_expr_return, NULL);
+    res                 = _create_expr(code_expr_return, NULL);
     res->data.ret_value = result;
 
     if (result) {
@@ -730,13 +730,13 @@ expression *expr_create_array_indexing(expression *e1, expression *e2)
         return NULL;
     }
 
-    e1 = _expr_generate_pointer(e1, TRUE, TRUE);
-    e2 = _expr_generate_pointer(e2, TRUE, TRUE);
+    e1 = _generate_pointer(e1, TRUE, TRUE);
+    e2 = _generate_pointer(e2, TRUE, TRUE);
 
     if (TYPE_IS_POINTER(e1->expr_type) && TYPE_IS_INTEGRAL(e2->expr_type)) {
-        res = _expr_add_offset_to_sized_pointer(e1, e2, FALSE);
+        res = _add_offset_to_sized_pointer(e1, e2, FALSE);
     } else if (TYPE_IS_POINTER(e2->expr_type) &&  TYPE_IS_POINTER(e1->expr_type)) {
-        return _expr_add_offset_to_sized_pointer(e2, e1, FALSE);
+        return _add_offset_to_sized_pointer(e2, e1, FALSE);
     } else {
         aux_error("invalid types for '[]'");
         return NULL;
@@ -746,11 +746,11 @@ expression *expr_create_array_indexing(expression *e1, expression *e2)
     return res;
 }
 
-static expression *_expr_dereference(expression *expr, data_type *type)
+static expression *_dereference(expression *expr, data_type *type)
 {
     expression *res;
 
-    res                         = _expr_create_arithmetic(type);
+    res                         = _create_arithmetic(type);
     res->data.arithm.opcode     = op_dereference;
     res->data.arithm.operand1   = expr;
     res->expr_lvalue            = TRUE;
@@ -765,17 +765,17 @@ expression *expr_dereference(expression *expr)
         return NULL;
     }
 
-    expr = _expr_generate_pointer(expr, TRUE, TRUE);
+    expr = _generate_pointer(expr, TRUE, TRUE);
 
     if (!TYPE_IS_POINTER(expr->expr_type)) {
         aux_error("operator '*' needs pointer");
         return NULL;
     }
 
-    return _expr_dereference(expr, expr->expr_type->data.ptr.item_type);
+    return _dereference(expr, expr->expr_type->data.ptr.item_type);
 }
 
-expression *_expr_real_indirect_field_access(expression *expr, symbol *sym, data_type *struct_type)
+expression *_real_indirect_field_access(expression *expr, symbol *sym, data_type *struct_type)
 {
     expression *res = expr;
     data_type *member_type;
@@ -789,11 +789,11 @@ expression *_expr_real_indirect_field_access(expression *expr, symbol *sym, data
     }
 
     if (member_offset) {
-        res = _expr_add_offset_to_raw_pointer(expr, expr_create_from_integer(member_offset,
+        res = _add_offset_to_raw_pointer(expr, expr_create_from_integer(member_offset,
             type_create_arithmetic(code_type_int)), FALSE);
     }
 
-    res = _expr_dereference(res, member_type);
+    res = _dereference(res, member_type);
     return res;
 }
 
@@ -816,7 +816,7 @@ expression *expr_create_direct_field_access(expression *expr, symbol *sym)
     }
 
     res = expr_get_address(expr);
-    res = _expr_real_indirect_field_access(res, sym, expr->expr_type);
+    res = _real_indirect_field_access(res, sym, expr->expr_type);
     return res;
 }
 
@@ -840,7 +840,7 @@ expression *expr_create_indirect_field_access(expression *expr, symbol *sym)
         return NULL;
     }
 
-    return _expr_real_indirect_field_access(expr, sym, struct_type);
+    return _real_indirect_field_access(expr, sym, struct_type);
 }
 
 expression *expr_create_function_call(expression *address, expression_list *args)
@@ -875,7 +875,7 @@ expression *expr_create_function_call(expression *address, expression_list *args
 
 
     // создаём результирующее выражение
-    res = _expr_create(code_expr_function_call, address_type->data.function.result_type);
+    res = _create_expr(code_expr_function_call, address_type->data.function.result_type);
     res->data.function_call.address = address;
     res->data.function_call.args    = args;
 
@@ -905,12 +905,12 @@ expression *expr_create_function_call(expression *address, expression_list *args
 
         if (ellipsis_reached) {
             if (arg->expr_type->type_code == code_type_float) {
-                _expr_silent_cast_to_arithmetic_type(&new_arg, code_type_double);
+                _silent_cast_to_arithmetic_type(&new_arg, code_type_double);
             } else {
                 new_arg = _integral_promotion(new_arg);
             }
         } else if (!type_are_same(param->param_type, arg->expr_type)) {
-            if (!_expr_try_silently_cast(&new_arg, param->param_type)) {
+            if (!_try_silently_cast(&new_arg, param->param_type)) {
                 aux_error("function call: wrong type of parameter #%d", i);
                 return NULL;
             }
@@ -950,7 +950,7 @@ expression_list *expr_create_expression_list(expression *expr)
     }
 
     res             = allocator_alloc(allocator_temporary_pool, sizeof(expression_list));
-    expr            = _expr_generate_pointer(expr, TRUE, TRUE);
+    expr            = _generate_pointer(expr, TRUE, TRUE);
 
     res->expr_first = expr;
     res->expr_last  = expr;
@@ -964,7 +964,7 @@ expression_list *expr_add_expression_to_list(expression_list *comma_list, expres
         return NULL;
     }
 
-    expr            = _expr_generate_pointer(expr, TRUE, TRUE);
+    expr            = _generate_pointer(expr, TRUE, TRUE);
 
     comma_list->expr_last->expr_next    = expr;
     expr->expr_prev                     = comma_list->expr_last;
@@ -979,7 +979,7 @@ expression *expr_create_sizeof(expression *expr)
         return NULL;
     }
 
-    expr = _expr_generate_pointer(expr, FALSE, TRUE);
+    expr = _generate_pointer(expr, FALSE, TRUE);
     return expr_create_sizeof_type(expr->expr_type);
 }
 
@@ -996,13 +996,13 @@ expression *expr_create_sizeof_type(data_type *type)
 }
 
 
-static expression *_expr_get_address(expression *expr)
+static expression *_get_address(expression *expr)
 {
     expression *res;
 
     ASSERT(expr->expr_lvalue);
 
-    res                         = _expr_create_arithmetic(type_create_pointer_node(expr->expr_type));
+    res                         = _create_arithmetic(type_create_pointer_node(expr->expr_type));
     res->data.arithm.opcode     = op_get_address;
     res->data.arithm.operand1   = expr;
     res->expr_lvalue            = FALSE;
@@ -1017,17 +1017,17 @@ expression *expr_get_address(expression *expr)
         return NULL;
     }
 
-    expr = _expr_generate_pointer(expr, TRUE, FALSE);
+    expr = _generate_pointer(expr, TRUE, FALSE);
 
     if (!expr->expr_lvalue) {
         aux_error("operator '&' needs lvalue");
         return NULL;
     }
 
-    return _expr_get_address(expr);
+    return _get_address(expr);
 }
 
-static BOOL _expr_is_allowed_cast_of_same_size(data_type *from, data_type *to)
+static BOOL _is_allowed_cast_of_same_size(data_type *from, data_type *to)
 {
     if (TYPE_IS_X86_BYTE(from) && TYPE_IS_X86_BYTE(to)) {
         return TRUE;
@@ -1041,7 +1041,7 @@ static BOOL _expr_is_allowed_cast_of_same_size(data_type *from, data_type *to)
         return FALSE;
 }
 
-static BOOL _expr_try_generate_int_cast(expression **res, data_type *from, data_type *to)
+static BOOL _try_generate_int_cast(expression **res, data_type *from, data_type *to)
 {
     arithmetic_opcode type_cast;
 
@@ -1053,7 +1053,7 @@ static BOOL _expr_try_generate_int_cast(expression **res, data_type *from, data_
         else if (TYPE_IS_X86_QWORD(to))
             type_cast = op_convert_int2longlong;
         else
-            ASSERT(FALSE);  // должно быть обработано в _expr_is_allowed_cast_of_same_size
+            ASSERT(FALSE);  // должно быть обработано в _is_allowed_cast_of_same_size
 
         return TRUE;
     } else if (TYPE_IS_INTEGRAL(from) && TYPE_IS_POINTER(to)) {
@@ -1070,7 +1070,7 @@ static BOOL _expr_try_generate_int_cast(expression **res, data_type *from, data_
         else if (from->type_code == code_type_unsigned_long_long)
             type_cast = op_convert_ushort2uint;
         else
-            ASSERT(FALSE);  // должно быть обработано в _expr_is_allowed_cast_of_same_size
+            ASSERT(FALSE);  // должно быть обработано в _is_allowed_cast_of_same_size
 
         return TRUE;
     } else if (TYPE_IS_ARITHMETIC(from) && TYPE_IS_ARITHMETIC(to)) {
@@ -1157,7 +1157,7 @@ static BOOL _expr_try_generate_int_cast(expression **res, data_type *from, data_
     return TRUE;
 }
 
-static BOOL _expr_try_generate_float_cast(expression **res, data_type *from, data_type *to)
+static BOOL _try_generate_float_cast(expression **res, data_type *from, data_type *to)
 {
     BOOL allowed;
 
@@ -1165,18 +1165,17 @@ static BOOL _expr_try_generate_float_cast(expression **res, data_type *from, dat
         return TRUE;
     } else if (TYPE_IS_INTEGRAL(from) && TYPE_IS_FLOATING(to)) {
         if (!TYPE_IS_X86_DWORD(from)) {
-            allowed = _expr_try_generate_int_cast(res, from, type_create_arithmetic(code_type_int));
+            allowed = _try_generate_int_cast(res, from, type_create_arithmetic(code_type_int));
             ASSERT(allowed);
         }
 
         *res = expr_create_unary(*res, op_convert_int2float);
-        // TODO: convert_int2double, etc
         return TRUE;
     } else if (TYPE_IS_FLOATING(from) && TYPE_IS_INTEGRAL(to)) {
         *res = expr_create_unary(*res, op_convert_float2int);
 
         if (!TYPE_IS_X86_DWORD(to)) {
-            allowed = _expr_try_generate_int_cast(res, type_create_arithmetic(code_type_int), to);
+            allowed = _try_generate_int_cast(res, type_create_arithmetic(code_type_int), to);
             ASSERT(allowed);
         }
 
@@ -1193,15 +1192,15 @@ expression *expr_create_type_cast(expression *expr, data_type *type)
         return NULL;
     }
 
-    expr = _expr_generate_pointer(expr, TRUE, TRUE);
+    expr = _generate_pointer(expr, TRUE, TRUE);
 
     if (type_are_same(expr->expr_type, type)) {
         res = expr;
-    } else if (_expr_try_generate_float_cast(&res, expr->expr_type, type)) {
+    } else if (_try_generate_float_cast(&res, expr->expr_type, type)) {
         res->expr_type = type;
-    } else if (_expr_is_allowed_cast_of_same_size(expr->expr_type, type)) {
+    } else if (_is_allowed_cast_of_same_size(expr->expr_type, type)) {
         res->expr_type = type;
-    } else if (_expr_try_generate_int_cast(&res, expr->expr_type, type)) {
+    } else if (_try_generate_int_cast(&res, expr->expr_type, type)) {
         res->expr_type = type;
     } else {
         aux_error("invalid type cast");
@@ -1213,7 +1212,7 @@ expression *expr_create_type_cast(expression *expr, data_type *type)
 
 // Итератор для рекурсивного обхода подвыражений.
 
-static void _expr_inner_iterate_subexpr(expression *expr, expression_code filter, int flags,
+static void _inner_iterate_subexpr(expression *expr, expression_code filter, int flags,
     void (*callback)(expression *, void *), void *arg)
 {
     expression *argument;
@@ -1232,30 +1231,30 @@ static void _expr_inner_iterate_subexpr(expression *expr, expression_code filter
             break;
 
         case code_expr_arithmetic:
-            _expr_inner_iterate_subexpr(expr->data.arithm.operand1, filter, flags, callback, arg);
+            _inner_iterate_subexpr(expr->data.arithm.operand1, filter, flags, callback, arg);
 
             if (!IS_UNARY_OP(expr->data.arithm.opcode)) {
-                _expr_inner_iterate_subexpr(expr->data.arithm.operand2, filter, flags, callback, arg);
+                _inner_iterate_subexpr(expr->data.arithm.operand2, filter, flags, callback, arg);
             }
             break;
 
         case code_expr_function_call:
-            _expr_inner_iterate_subexpr(expr->data.function_call.address, filter, flags, callback, arg);
+            _inner_iterate_subexpr(expr->data.function_call.address, filter, flags, callback, arg);
 
             for (argument = expr->data.function_call.args->expr_first; argument; argument = argument->expr_next) {
-                _expr_inner_iterate_subexpr(argument, filter, flags, callback, arg);
+                _inner_iterate_subexpr(argument, filter, flags, callback, arg);
             }
             break;
 
         case code_expr_return:
             if (expr->data.ret_value) {
-                _expr_inner_iterate_subexpr(expr->data.ret_value, filter, flags, callback, arg);
+                _inner_iterate_subexpr(expr->data.ret_value, filter, flags, callback, arg);
             }
             break;
 
         case code_expr_jump:
             if (expr->data.jump.condition) {
-                _expr_inner_iterate_subexpr(expr->data.jump.condition, filter, flags, callback, arg);
+                _inner_iterate_subexpr(expr->data.jump.condition, filter, flags, callback, arg);
             }
             break;
 
@@ -1283,7 +1282,7 @@ void expr_iterate_through_subexpressions(expression *root, expression_code filte
         case code_expr_return:
         case code_expr_jump:
         case code_expr_label:
-            _expr_inner_iterate_subexpr(expr, filter, flags, callback, arg);
+            _inner_iterate_subexpr(expr, filter, flags, callback, arg);
             break;
 
         default:
@@ -1300,7 +1299,7 @@ expression *expr_create_label(int label)
 {
     expression *res;
 
-    res             = _expr_create(code_expr_label, NULL);
+    res             = _create_expr(code_expr_label, NULL);
     res->data.label = label;
 
     return res;

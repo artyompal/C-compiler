@@ -54,7 +54,7 @@ public	__texture_height
 .code
 
 _vec2f_add proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -76,12 +76,12 @@ _vec2f_add proc
 	fld	dword ptr [dword10]
 	fadd	dword ptr [dword12]
 	fstp	dword ptr [dword8]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _vec2f_add endp	
 
 _vec2f_subtract proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -103,12 +103,12 @@ _vec2f_subtract proc
 	fld	dword ptr [dword10]
 	fsub	dword ptr [dword12]
 	fstp	dword ptr [dword8]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _vec2f_subtract endp	
 
 _vec2f_mul proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -122,12 +122,12 @@ _vec2f_mul proc
 	fld	dword ptr [dword5]
 	fmul	dword ptr [dword6]
 	fstp	dword ptr [dword5]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _vec2f_mul endp	
 
 _vec4f_assign proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -151,12 +151,12 @@ _vec4f_assign proc
 	lea	dword12,[ebp+24]
 	fld	dword ptr [dword12]
 	fstp	dword ptr [dword11]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _vec4f_assign endp	
 
 _vec4f_add proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -202,12 +202,12 @@ _vec4f_add proc
 	fld	dword ptr [dword22]
 	fadd	dword ptr [dword24]
 	fstp	dword ptr [dword20]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _vec4f_add endp	
 
 _vec4f_subtract proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -253,12 +253,12 @@ _vec4f_subtract proc
 	fld	dword ptr [dword22]
 	fsub	dword ptr [dword24]
 	fstp	dword ptr [dword20]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _vec4f_subtract endp	
 
 _vec4f_dot proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -292,12 +292,12 @@ _vec4f_dot proc
 	fld	dword ptr [dword14]
 	fmul	dword ptr [dword16]
 	faddp
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _vec4f_dot endp	
 
 _vec4f_mul proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -325,7 +325,7 @@ _vec4f_mul proc
 	fld	dword ptr [dword11]
 	fmul	dword ptr [dword12]
 	fstp	dword ptr [dword11]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _vec4f_mul endp	
 
@@ -337,8 +337,8 @@ public	___unnamed_float_0
 .code
 
 _vec4f_is_equal proc
-	x86instr_create_stack_frame	20
-	x86instr_push_all
+	create_stack_frame	20
+	push_all
 	lea	dword1,[ebp+12]
 	push_arg	dword ptr [dword1]
 	lea	dword2,[ebp+8]
@@ -347,16 +347,16 @@ _vec4f_is_equal proc
 	push_arg	dword3
 	call	_vec4f_subtract
 	restore_stack	12
-	x86instr_pop_all
+	pop_all
 	lea	dword4,[ebp-20]
-	x86instr_push_all
+	push_all
 	lea	dword5,[ebp-16]
 	push_arg	dword5
 	lea	dword6,[ebp-16]
 	push_arg	dword6
 	call	_vec4f_dot
 	restore_stack	8
-	x86instr_pop_all
+	pop_all
 	fstp	dword ptr [dword4]
 	lea	dword7,[ebp-20]
 	lea	dword8,[___unnamed_float_0]
@@ -367,12 +367,12 @@ _vec4f_is_equal proc
 	setb	byte1
 	movzx	dword9,byte1
 	mov	eax,dword9
-	x86instr_destroy_stack_frame	20
+	destroy_stack_frame	20
 	ret
 _vec4f_is_equal endp	
 
 _matrix4f_make_identity proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	fld1
@@ -452,12 +452,12 @@ _matrix4f_make_identity proc
 	add	dword32,[dword31]
 	fld1
 	fstp	dword ptr [dword32]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _matrix4f_make_identity endp	
 
 _matrix4f_make_perspective proc
-	x86instr_create_stack_frame	8
+	create_stack_frame	8
 	lea	dword1,[ebp-4]
 	lea	dword2,[ebp+20]
 	lea	dword3,[ebp+12]
@@ -568,7 +568,7 @@ _matrix4f_make_perspective proc
 	add	dword49,[dword48]
 	fldz
 	fstp	dword ptr [dword49]
-	x86instr_destroy_stack_frame	8
+	destroy_stack_frame	8
 	ret
 _matrix4f_make_perspective endp	
 
@@ -580,7 +580,7 @@ public	___unnamed_float_1
 .code
 
 _matrix4f_make_viewport proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -679,12 +679,12 @@ _matrix4f_make_viewport proc
 	add	dword43,[dword42]
 	fld1
 	fstp	dword ptr [dword43]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _matrix4f_make_viewport endp	
 
 _matrix4f_mul proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -1300,12 +1300,12 @@ _matrix4f_mul proc
 	fmul	dword ptr [dword288]
 	faddp
 	fstp	dword ptr [dword272]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _matrix4f_mul endp	
 
 _matrix4f_transform proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[ebp+12]
@@ -1456,12 +1456,12 @@ _matrix4f_transform proc
 	fmul	dword ptr [dword72]
 	faddp
 	fstp	dword ptr [dword56]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _matrix4f_transform endp	
 
 _matrix4f_transpose proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,4
 	add	dword2,[dword1]
@@ -1510,7 +1510,7 @@ _matrix4f_transpose proc
 	add	dword24,[dword23]
 	fld	dword ptr [dword24]
 	fstp	dword ptr [dword22]
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _matrix4f_transpose endp	
 
@@ -1522,7 +1522,7 @@ public	___unnamed_float_2
 .code
 
 _rasterizer_init proc
-	x86instr_create_stack_frame	8
+	create_stack_frame	8
 	lea	dword1,[__dbgprintf]
 	lea	dword2,[ebp+8]
 	mov	dword3,[dword2]
@@ -1539,7 +1539,7 @@ _rasterizer_init proc
 	lea	dword11,[ebp+20]
 	mov	dword12,[dword11]
 	mov	[dword10],dword12
-	x86instr_push_all
+	push_all
 	lea	dword13,[ebp+12]
 	fild	dword ptr [dword13]
 	lea	dword14,[ebp+16]
@@ -1556,8 +1556,8 @@ _rasterizer_init proc
 	push_arg	dword18
 	call	_matrix4f_make_perspective
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword19,[ebp+28]
 	push_arg	dword ptr [dword19]
 	lea	dword20,[ebp+24]
@@ -1572,8 +1572,8 @@ _rasterizer_init proc
 	push_arg	dword23
 	call	_matrix4f_make_viewport
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	lea	dword24,[ebp+24]
@@ -1586,7 +1586,7 @@ _rasterizer_init proc
 	push_arg	dword25
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
+	pop_all
 	lea	dword26,[ebp+28]
 	lea	dword27,[ebp+24]
 	fld	dword ptr [dword27]
@@ -1604,7 +1604,7 @@ label0000:
 	fld	dword ptr [dword30]
 	fstp	dword ptr [dword29]
 label0001:
-	x86instr_push_all
+	push_all
 	fld1
 	push_argp
 	lea	dword31,[ebp-4]
@@ -1617,8 +1617,8 @@ label0001:
 	push_arg	dword32
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	lea	dword33,[ebp+28]
@@ -1631,7 +1631,7 @@ label0001:
 	push_arg	dword34
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
+	pop_all
 	lea	dword35,[ebp+28]
 	lea	dword36,[ebp+24]
 	fld	dword ptr [dword36]
@@ -1649,7 +1649,7 @@ label0002:
 	fld1
 	fstp	dword ptr [dword39]
 label0003:
-	x86instr_push_all
+	push_all
 	fld1
 	push_argp
 	lea	dword40,[ebp-8]
@@ -1662,8 +1662,8 @@ label0003:
 	push_arg	dword41
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	fldz
@@ -1682,8 +1682,8 @@ label0003:
 	push_arg	dword44
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	fldz
@@ -1696,8 +1696,8 @@ label0003:
 	push_arg	dword45
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	fldz
@@ -1715,8 +1715,8 @@ label0003:
 	push_arg	dword47
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	fldz
@@ -1730,8 +1730,8 @@ label0003:
 	push_arg	dword49
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	fldz
@@ -1750,8 +1750,8 @@ label0003:
 	push_arg	dword52
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	fldz
@@ -1764,8 +1764,8 @@ label0003:
 	push_arg	dword53
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	fldz
@@ -1778,8 +1778,8 @@ label0003:
 	push_arg	dword54
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	fld1
 	push_argp
 	fldz
@@ -1793,23 +1793,23 @@ label0003:
 	push_arg	dword56
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_destroy_stack_frame	8
+	pop_all
+	destroy_stack_frame	8
 	ret
 _rasterizer_init endp	
 
 _rasterizer_begin_frame proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[__videomem]
 	lea	dword2,[ebp+8]
 	mov	dword3,[dword2]
 	mov	[dword1],dword3
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _rasterizer_begin_frame endp	
 
 _rasterizer_set_mvproj proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	lea	dword3,[__mvproj_matrix]
@@ -1845,22 +1845,22 @@ _rasterizer_set_mvproj proc
 	mov	dword5,[dword2+60]
 	mov	[dword3+56],dword4
 	mov	[dword3+60],dword5
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _rasterizer_set_mvproj endp	
 
 _rasterizer_set_color proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[__color]
 	lea	dword2,[ebp+8]
 	mov	dword3,[dword2]
 	mov	[dword1],dword3
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _rasterizer_set_color endp	
 
 _rasterizer_set_texture proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[__texture_data]
 	lea	dword2,[ebp+8]
 	mov	dword3,[dword2]
@@ -1873,12 +1873,12 @@ _rasterizer_set_texture proc
 	lea	dword8,[ebp+16]
 	mov	dword9,[dword8]
 	mov	[dword7],dword9
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 _rasterizer_set_texture endp	
 
 __tex2d proc
-	x86instr_create_stack_frame	8
+	create_stack_frame	8
 	lea	dword1,[__texture_width]
 	mov	dword2,1
 	mov	dword3,[dword1]
@@ -1910,7 +1910,7 @@ __tex2d proc
 	lea	dword18,[__texture_data]
 	add	dword15,[dword18]
 	mov	eax,[dword15]
-	x86instr_destroy_stack_frame	8
+	destroy_stack_frame	8
 	ret
 __tex2d endp	
 
@@ -1922,7 +1922,7 @@ public	___unnamed_float_3
 .code
 
 __rasterize_horiz_line proc
-	x86instr_create_stack_frame	44
+	create_stack_frame	44
 	lea	dword1,[__pitch]
 	lea	dword2,[ebp+16]
 	mov	dword3,[dword1]
@@ -1950,14 +1950,14 @@ __rasterize_horiz_line proc
 	lea	dword16,[ebp-8]
 	mov	[dword16],dword11
 label0000:
-	x86instr_push_all
+	push_all
 	lea	dword17,[ebp+24]
 	push_arg	dword ptr [dword17]
 	lea	dword18,[ebp+20]
 	push_arg	dword ptr [dword18]
 	call	__tex2d
 	restore_stack	8
-	x86instr_pop_all
+	pop_all
 	lea	dword19,[ebp-12]
 	mov	[dword19],eax
 	lea	dword20,[ebp-12]
@@ -2071,18 +2071,18 @@ label0001:
 	cmp	dword78,[dword77]
 	jl	label0000
 label0002:
-	x86instr_destroy_stack_frame	44
+	destroy_stack_frame	44
 	ret
 __rasterize_horiz_line endp	
 
 __rasterize_horiz_line__unordered proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	lea	dword2,[ebp+12]
 	mov	dword3,[dword1]
 	cmp	dword3,[dword2]
 	jg	label0000
-	x86instr_push_all
+	push_all
 	lea	dword4,[ebp+40]
 	push_arg	dword ptr [dword4]
 	lea	dword5,[ebp+36]
@@ -2099,10 +2099,10 @@ __rasterize_horiz_line__unordered proc
 	push_arg	dword ptr [dword10]
 	call	__rasterize_horiz_line
 	restore_stack	28
-	x86instr_pop_all
+	pop_all
 	jmp	label0001
 label0000:
-	x86instr_push_all
+	push_all
 	lea	dword11,[ebp+40]
 	push_arg	dword ptr [dword11]
 	lea	dword12,[ebp+36]
@@ -2119,14 +2119,14 @@ label0000:
 	push_arg	dword ptr [dword17]
 	call	__rasterize_horiz_line
 	restore_stack	28
-	x86instr_pop_all
+	pop_all
 label0001:
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 __rasterize_horiz_line__unordered endp	
 
 __rasterize_triangle_1i proc
-	x86instr_create_stack_frame	0
+	create_stack_frame	0
 	lea	dword1,[ebp+8]
 	lea	dword2,[ebp+12]
 	mov	dword3,[dword1]
@@ -2137,7 +2137,7 @@ __rasterize_triangle_1i proc
 	mov	dword6,[dword4]
 	cmp	dword6,[dword5]
 	jle	label0001
-	x86instr_push_all
+	push_all
 	lea	dword7,[ebp+40]
 	push_arg	dword ptr [dword7]
 	lea	dword8,[ebp+36]
@@ -2157,7 +2157,7 @@ __rasterize_triangle_1i proc
 	push_arg	dword ptr [dword15]
 	call	__rasterize_horiz_line
 	restore_stack	28
-	x86instr_pop_all
+	pop_all
 	jmp	label0002
 label0001:
 	lea	dword16,[ebp+16]
@@ -2165,7 +2165,7 @@ label0001:
 	mov	dword18,[dword16]
 	cmp	dword18,[dword17]
 	jge	label0003
-	x86instr_push_all
+	push_all
 	lea	dword19,[ebp+40]
 	push_arg	dword ptr [dword19]
 	lea	dword20,[ebp+36]
@@ -2185,10 +2185,10 @@ label0001:
 	push_arg	dword ptr [dword27]
 	call	__rasterize_horiz_line
 	restore_stack	28
-	x86instr_pop_all
+	pop_all
 	jmp	label0004
 label0003:
-	x86instr_push_all
+	push_all
 	lea	dword28,[ebp+40]
 	push_arg	dword ptr [dword28]
 	lea	dword29,[ebp+36]
@@ -2208,7 +2208,7 @@ label0003:
 	push_arg	dword ptr [dword36]
 	call	__rasterize_horiz_line
 	restore_stack	28
-	x86instr_pop_all
+	pop_all
 label0004:
 label0002:
 	jmp	label0005
@@ -2218,7 +2218,7 @@ label0000:
 	mov	dword39,[dword37]
 	cmp	dword39,[dword38]
 	jge	label0006
-	x86instr_push_all
+	push_all
 	lea	dword40,[ebp+40]
 	fld	dword ptr [dword40]
 	fldz
@@ -2244,7 +2244,7 @@ label0000:
 	push_arg	dword ptr [dword48]
 	call	__rasterize_horiz_line
 	restore_stack	28
-	x86instr_pop_all
+	pop_all
 	jmp	label0007
 label0006:
 	lea	dword49,[ebp+16]
@@ -2252,7 +2252,7 @@ label0006:
 	mov	dword51,[dword49]
 	cmp	dword51,[dword50]
 	jle	label0008
-	x86instr_push_all
+	push_all
 	lea	dword52,[ebp+40]
 	fld	dword ptr [dword52]
 	fldz
@@ -2278,10 +2278,10 @@ label0006:
 	push_arg	dword ptr [dword60]
 	call	__rasterize_horiz_line
 	restore_stack	28
-	x86instr_pop_all
+	pop_all
 	jmp	label0009
 label0008:
-	x86instr_push_all
+	push_all
 	lea	dword61,[ebp+40]
 	fld	dword ptr [dword61]
 	fldz
@@ -2307,16 +2307,16 @@ label0008:
 	push_arg	dword ptr [dword69]
 	call	__rasterize_horiz_line
 	restore_stack	28
-	x86instr_pop_all
+	pop_all
 label0009:
 label0007:
 label0005:
-	x86instr_destroy_stack_frame	0
+	destroy_stack_frame	0
 	ret
 __rasterize_triangle_1i endp	
 
 __rasterize_triangle_2i proc
-	x86instr_create_stack_frame	40
+	create_stack_frame	40
 	lea	dword1,[ebp+8]
 	mov	dword2,[dword1]
 	mov	dword3,4
@@ -2415,7 +2415,7 @@ label0002:
 	mov	dword64,[dword61]
 	cmp	dword64,[dword63]
 	jge	label0004
-	x86instr_push_all
+	push_all
 	fldz
 	push_argp
 	fldz
@@ -2448,9 +2448,9 @@ label0002:
 	push_arg	dword ptr [dword79]
 	call	__rasterize_triangle_1i
 	restore_stack	36
-	x86instr_pop_all
+	pop_all
 label0004:
-	x86instr_destroy_stack_frame	40
+	destroy_stack_frame	40
 	ret
 label0003:
 	lea	dword80,[ebp+8]
@@ -2710,7 +2710,7 @@ label0006:
 	int2float	dword223
 	fdivp
 	fstp	dword ptr [dword218]
-	x86instr_push_all
+	push_all
 	lea	dword224,[ebp-40]
 	push_arg	dword ptr [dword224]
 	lea	dword225,[ebp-36]
@@ -2731,7 +2731,7 @@ label0006:
 	push_arg	dword ptr [dword232]
 	call	__rasterize_horiz_line__unordered
 	restore_stack	36
-	x86instr_pop_all
+	pop_all
 	lea	dword233,[ebp-16]
 	inc	dword ptr [dword233]
 	jmp	label0006
@@ -2885,7 +2885,7 @@ label0007:
 	int2float	dword317
 	fdivp
 	fstp	dword ptr [dword309]
-	x86instr_push_all
+	push_all
 	lea	dword318,[ebp-40]
 	push_arg	dword ptr [dword318]
 	lea	dword319,[ebp-36]
@@ -2916,7 +2916,7 @@ label0007:
 	push_arg	dword ptr [dword332]
 	call	__rasterize_horiz_line__unordered
 	restore_stack	36
-	x86instr_pop_all
+	pop_all
 	lea	dword333,[ebp+12]
 	mov	dword334,[dword333]
 	mov	dword335,4
@@ -3175,7 +3175,7 @@ label0009:
 	int2float	dword476
 	fdivp
 	fstp	dword ptr [dword471]
-	x86instr_push_all
+	push_all
 	lea	dword477,[ebp-40]
 	push_arg	dword ptr [dword477]
 	lea	dword478,[ebp-36]
@@ -3196,17 +3196,17 @@ label0009:
 	push_arg	dword ptr [dword485]
 	call	__rasterize_horiz_line__unordered
 	restore_stack	36
-	x86instr_pop_all
+	pop_all
 	lea	dword486,[ebp-16]
 	inc	dword ptr [dword486]
 	jmp	label0009
 label000a:
-	x86instr_destroy_stack_frame	40
+	destroy_stack_frame	40
 	ret
 __rasterize_triangle_2i endp	
 
 __clip_on_plain proc
-	x86instr_create_stack_frame	60
+	create_stack_frame	60
 	lea	dword1,[ebp+8]
 	mov	dword2,192
 	add	dword2,[dword1]
@@ -3235,7 +3235,7 @@ label0001:
 	lea	dword16,[ebp-8]
 	cmp	dword15,[dword16]
 	jl	label0002
-	x86instr_push_all
+	push_all
 	lea	dword17,[ebp+16]
 	push_arg	dword ptr [dword17]
 	lea	dword18,[ebp-4]
@@ -3245,18 +3245,18 @@ label0001:
 	push_arg	dword20
 	call	_vec4f_subtract
 	restore_stack	12
-	x86instr_pop_all
+	pop_all
 	lea	dword21,[ebp-52]
-	x86instr_push_all
+	push_all
 	lea	dword22,[ebp+20]
 	push_arg	dword ptr [dword22]
 	lea	dword23,[ebp-24]
 	push_arg	dword23
 	call	_vec4f_dot
 	restore_stack	8
-	x86instr_pop_all
+	pop_all
 	fstp	dword ptr [dword21]
-	x86instr_push_all
+	push_all
 	lea	dword24,[ebp+16]
 	push_arg	dword ptr [dword24]
 	lea	dword25,[ebp-8]
@@ -3266,16 +3266,16 @@ label0001:
 	push_arg	dword27
 	call	_vec4f_subtract
 	restore_stack	12
-	x86instr_pop_all
+	pop_all
 	lea	dword28,[ebp-56]
-	x86instr_push_all
+	push_all
 	lea	dword29,[ebp+20]
 	push_arg	dword ptr [dword29]
 	lea	dword30,[ebp-24]
 	push_arg	dword30
 	call	_vec4f_dot
 	restore_stack	8
-	x86instr_pop_all
+	pop_all
 	fstp	dword ptr [dword28]
 	lea	dword31,[ebp-52]
 	fldz
@@ -3334,7 +3334,7 @@ label0006:
 	fstp	st
 	jae	label0004
 label0005:
-	x86instr_push_all
+	push_all
 	lea	dword46,[ebp-4]
 	mov	dword47,[dword46]
 	push_arg	dword47
@@ -3344,8 +3344,8 @@ label0005:
 	push_arg	dword49
 	call	_vec4f_subtract
 	restore_stack	12
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword50,[ebp-4]
 	mov	dword51,[dword50]
 	push_arg	dword51
@@ -3356,35 +3356,35 @@ label0005:
 	push_arg	dword54
 	call	_vec4f_subtract
 	restore_stack	12
-	x86instr_pop_all
+	pop_all
 	lea	dword55,[ebp-60]
-	x86instr_push_all
+	push_all
 	lea	dword56,[ebp+20]
 	push_arg	dword ptr [dword56]
 	lea	dword57,[ebp-24]
 	push_arg	dword57
 	call	_vec4f_dot
 	restore_stack	8
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword58,[ebp+20]
 	push_arg	dword ptr [dword58]
 	lea	dword59,[ebp-40]
 	push_arg	dword59
 	call	_vec4f_dot
 	restore_stack	8
-	x86instr_pop_all
+	pop_all
 	fdivp
 	fstp	dword ptr [dword55]
-	x86instr_push_all
+	push_all
 	lea	dword60,[ebp-60]
 	push_arg	dword ptr [dword60]
 	lea	dword61,[ebp-40]
 	push_arg	dword61
 	call	_vec4f_mul
 	restore_stack	8
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword62,[ebp-40]
 	push_arg	dword62
 	lea	dword63,[ebp-4]
@@ -3401,8 +3401,8 @@ label0005:
 	push_arg	dword69
 	call	_vec4f_add
 	restore_stack	12
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword70,[ebp-4]
 	mov	dword71,16
 	add	dword71,[dword70]
@@ -3415,16 +3415,16 @@ label0005:
 	push_arg	dword74
 	call	_vec2f_subtract
 	restore_stack	12
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword75,[ebp-60]
 	push_arg	dword ptr [dword75]
 	lea	dword76,[ebp-48]
 	push_arg	dword76
 	call	_vec2f_mul
 	restore_stack	8
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword77,[ebp-48]
 	push_arg	dword77
 	lea	dword78,[ebp-4]
@@ -3444,7 +3444,7 @@ label0005:
 	push_arg	dword84
 	call	_vec2f_add
 	restore_stack	12
-	x86instr_pop_all
+	pop_all
 	lea	dword86,[ebp+8]
 	mov	dword87,192
 	add	dword87,[dword86]
@@ -3480,13 +3480,13 @@ label0002:
 	mov	dword99,[dword97+20]
 	mov	[dword95+16],dword98
 	mov	[dword95+20],dword99
-	x86instr_destroy_stack_frame	60
+	destroy_stack_frame	60
 	ret
 __clip_on_plain endp	
 
 __clip_poligon proc
-	x86instr_create_stack_frame	196
-	x86instr_push_all
+	create_stack_frame	196
+	push_all
 	lea	dword1,[__clip_z_far_norm]
 	push_arg	dword1
 	lea	dword2,[__clip_z_far_base]
@@ -3497,8 +3497,8 @@ __clip_poligon proc
 	push_arg	dword4
 	call	__clip_on_plain
 	restore_stack	16
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword5,[__clip_z_near_norm]
 	push_arg	dword5
 	lea	dword6,[__clip_z_near_base]
@@ -3509,8 +3509,8 @@ __clip_poligon proc
 	push_arg	dword ptr [dword8]
 	call	__clip_on_plain
 	restore_stack	16
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword9,[__clip_plane_left_norm]
 	push_arg	dword9
 	lea	dword10,[__clip_plane_left_base]
@@ -3521,8 +3521,8 @@ __clip_poligon proc
 	push_arg	dword12
 	call	__clip_on_plain
 	restore_stack	16
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword13,[__clip_plane_right_norm]
 	push_arg	dword13
 	lea	dword14,[__clip_plane_right_base]
@@ -3533,8 +3533,8 @@ __clip_poligon proc
 	push_arg	dword ptr [dword16]
 	call	__clip_on_plain
 	restore_stack	16
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword17,[__clip_plane_top_norm]
 	push_arg	dword17
 	lea	dword18,[__clip_plane_top_base]
@@ -3545,8 +3545,8 @@ __clip_poligon proc
 	push_arg	dword20
 	call	__clip_on_plain
 	restore_stack	16
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword21,[__clip_plane_bottom_norm]
 	push_arg	dword21
 	lea	dword22,[__clip_plane_bottom_base]
@@ -3557,7 +3557,7 @@ __clip_poligon proc
 	push_arg	dword ptr [dword24]
 	call	__clip_on_plain
 	restore_stack	16
-	x86instr_pop_all
+	pop_all
 	lea	dword25,[ebp+8]
 	mov	dword26,192
 	add	dword26,[dword25]
@@ -3566,13 +3566,13 @@ __clip_poligon proc
 	setg	byte1
 	movzx	dword28,byte1
 	mov	eax,dword28
-	x86instr_destroy_stack_frame	196
+	destroy_stack_frame	196
 	ret
 __clip_poligon endp	
 
 __transform_to_screen_space proc
-	x86instr_create_stack_frame	20
-	x86instr_push_all
+	create_stack_frame	20
+	push_all
 	lea	dword1,[__viewport_matrix]
 	push_arg	dword1
 	lea	dword2,[ebp+12]
@@ -3581,7 +3581,7 @@ __transform_to_screen_space proc
 	push_arg	dword3
 	call	_matrix4f_transform
 	restore_stack	12
-	x86instr_pop_all
+	pop_all
 	lea	dword4,[ebp-20]
 	fld1
 	lea	dword5,[ebp-16]
@@ -3637,21 +3637,21 @@ label0001:
 	mov	dword33,0
 	mov	[dword32],dword33
 label0000:
-	x86instr_destroy_stack_frame	20
+	destroy_stack_frame	20
 	ret
 __transform_to_screen_space endp	
 
 __rasterize_polygon_4f proc
-	x86instr_create_stack_frame	136
-	x86instr_push_all
+	create_stack_frame	136
+	push_all
 	lea	dword1,[ebp+8]
 	push_arg	dword ptr [dword1]
 	call	__clip_poligon
 	restore_stack	4
-	x86instr_pop_all
+	pop_all
 	cmp	eax,0
 	jne	label0000
-	x86instr_destroy_stack_frame	136
+	destroy_stack_frame	136
 	ret
 label0000:
 	lea	dword2,[ebp+8]
@@ -3676,7 +3676,7 @@ label0003:
 	mov	dword12,[dword10]
 	cmp	dword12,[dword11]
 	jl	label0004
-	x86instr_push_all
+	push_all
 	lea	dword13,[ebp+8]
 	mov	dword14,[dword13]
 	lea	dword15,[ebp-136]
@@ -3693,7 +3693,7 @@ label0003:
 	push_arg	dword17
 	call	__transform_to_screen_space
 	restore_stack	8
-	x86instr_pop_all
+	pop_all
 	lea	dword21,[ebp-132]
 	lea	dword22,[ebp-136]
 	mov	dword23,4
@@ -3732,7 +3732,7 @@ label0006:
 	lea	dword40,[ebp-136]
 	cmp	dword39,[dword40]
 	jl	label0007
-	x86instr_push_all
+	push_all
 	lea	dword41,[ebp-132]
 	lea	dword42,[ebp-136]
 	mov	dword43,4
@@ -3753,18 +3753,18 @@ label0006:
 	push_arg	dword50
 	call	__rasterize_triangle_2i
 	restore_stack	12
-	x86instr_pop_all
+	pop_all
 	lea	dword51,[ebp-136]
 	inc	dword ptr [dword51]
 	jmp	label0006
 label0007:
-	x86instr_destroy_stack_frame	136
+	destroy_stack_frame	136
 	ret
 __rasterize_polygon_4f endp	
 
 __transform_to_projection_space proc
-	x86instr_create_stack_frame	16
-	x86instr_push_all
+	create_stack_frame	16
+	push_all
 	fld1
 	push_argp
 	lea	dword1,[ebp+12]
@@ -3782,8 +3782,8 @@ __transform_to_projection_space proc
 	push_arg	dword7
 	call	_vec4f_assign
 	restore_stack	20
-	x86instr_pop_all
-	x86instr_push_all
+	pop_all
+	push_all
 	lea	dword8,[__mvproj_matrix]
 	push_arg	dword8
 	lea	dword9,[ebp-16]
@@ -3792,21 +3792,21 @@ __transform_to_projection_space proc
 	push_arg	dword ptr [dword10]
 	call	_matrix4f_transform
 	restore_stack	12
-	x86instr_pop_all
-	x86instr_destroy_stack_frame	16
+	pop_all
+	destroy_stack_frame	16
 	ret
 __transform_to_projection_space endp	
 
 _rasterizer_triangle3f proc
-	x86instr_create_stack_frame	196
-	x86instr_push_all
+	create_stack_frame	196
+	push_all
 	lea	dword1,[ebp+8]
 	push_arg	dword ptr [dword1]
 	lea	dword2,[ebp-196]
 	push_arg	dword2
 	call	__transform_to_projection_space
 	restore_stack	8
-	x86instr_pop_all
+	pop_all
 	lea	dword3,[ebp-196]
 	mov	dword4,16
 	add	dword3,dword4
@@ -3816,7 +3816,7 @@ _rasterizer_triangle3f proc
 	mov	dword8,[dword6+4]
 	mov	[dword3],dword7
 	mov	[dword3+4],dword8
-	x86instr_push_all
+	push_all
 	lea	dword9,[ebp+12]
 	push_arg	dword ptr [dword9]
 	lea	dword10,[ebp-196]
@@ -3825,7 +3825,7 @@ _rasterizer_triangle3f proc
 	push_arg	dword10
 	call	__transform_to_projection_space
 	restore_stack	8
-	x86instr_pop_all
+	pop_all
 	lea	dword12,[ebp-196]
 	mov	dword13,24
 	add	dword12,dword13
@@ -3837,7 +3837,7 @@ _rasterizer_triangle3f proc
 	mov	dword18,[dword16+4]
 	mov	[dword12],dword17
 	mov	[dword12+4],dword18
-	x86instr_push_all
+	push_all
 	lea	dword19,[ebp+16]
 	push_arg	dword ptr [dword19]
 	lea	dword20,[ebp-196]
@@ -3846,7 +3846,7 @@ _rasterizer_triangle3f proc
 	push_arg	dword20
 	call	__transform_to_projection_space
 	restore_stack	8
-	x86instr_pop_all
+	pop_all
 	lea	dword22,[ebp-196]
 	mov	dword23,48
 	add	dword22,dword23
@@ -3879,13 +3879,13 @@ _rasterizer_triangle3f proc
 	add	dword34,dword35
 	mov	dword36,4
 	mov	[dword34],dword36
-	x86instr_push_all
+	push_all
 	lea	dword37,[ebp-196]
 	push_arg	dword37
 	call	__rasterize_polygon_4f
 	restore_stack	4
-	x86instr_pop_all
-	x86instr_destroy_stack_frame	196
+	pop_all
+	destroy_stack_frame	196
 	ret
 _rasterizer_triangle3f endp	
 

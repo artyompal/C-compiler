@@ -120,7 +120,7 @@ extern char option_output_filename[];
 #ifdef _DEBUG
 
 typedef struct x86_instruction_decl x86_instruction;
-void debug_print_instruction(x86_instruction *instr);
+void debug_print_instruction(x86_instruction *insn);
 
 #endif // _DEBUG
 

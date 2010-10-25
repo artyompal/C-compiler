@@ -28,12 +28,12 @@ int x86_codegen_alloc_pseudoreg(x86_operand_type type)
 static x86_instruction_code _opcode_to_unary_int_instruction(arithmetic_opcode opcode)
 {
     switch (opcode) {
-    case op_neg:            return x86instr_int_neg;
-    case op_bitnot:         return x86instr_int_not;
+    case op_neg:            return x86insn_int_neg;
+    case op_bitnot:         return x86insn_int_not;
     case op_increment:
-    case op_post_increment: return x86instr_int_inc;
+    case op_post_increment: return x86insn_int_inc;
     case op_decrement:
-    case op_post_decrement: return x86instr_int_dec;
+    case op_post_decrement: return x86insn_int_dec;
     default:                ASSERT(FALSE);
     }
 }
@@ -41,36 +41,36 @@ static x86_instruction_code _opcode_to_unary_int_instruction(arithmetic_opcode o
 static x86_instruction_code _opcode_to_binary_int_instruction(arithmetic_opcode opcode)
 {
     switch (opcode) {
-    case op_add:            return x86instr_int_add;
-    case op_sub:            return x86instr_int_sub;
-    case op_mul:            return x86instr_int_imul;
-    case op_div:            return x86instr_int_idiv;
-    case op_mod:            return x86instr_int_idiv;
-    case op_shl:            return x86instr_int_sal;
-    case op_shr:            return x86instr_int_sar;
+    case op_add:            return x86insn_int_add;
+    case op_sub:            return x86insn_int_sub;
+    case op_mul:            return x86insn_int_imul;
+    case op_div:            return x86insn_int_idiv;
+    case op_mod:            return x86insn_int_idiv;
+    case op_shl:            return x86insn_int_sal;
+    case op_shr:            return x86insn_int_sar;
 
-    case op_and:            return x86instr_int_and;
-    case op_xor:            return x86instr_int_xor;
-    case op_or:             return x86instr_int_or;
+    case op_and:            return x86insn_int_and;
+    case op_xor:            return x86insn_int_xor;
+    case op_or:             return x86insn_int_or;
 
-    case op_assign:         return x86instr_int_mov;
-    case op_add_assign:     return x86instr_int_add;
-    case op_sub_assign:     return x86instr_int_sub;
-    case op_mul_assign:     return x86instr_int_imul;
-    case op_div_assign:     return x86instr_int_idiv;
-    case op_mod_assign:     return x86instr_int_idiv;
-    case op_shl_assign:     return x86instr_int_sal;
-    case op_shr_assign:     return x86instr_int_sar;
-    case op_and_assign:     return x86instr_int_and;
-    case op_xor_assign:     return x86instr_int_xor;
-    case op_or_assign:      return x86instr_int_or;
+    case op_assign:         return x86insn_int_mov;
+    case op_add_assign:     return x86insn_int_add;
+    case op_sub_assign:     return x86insn_int_sub;
+    case op_mul_assign:     return x86insn_int_imul;
+    case op_div_assign:     return x86insn_int_idiv;
+    case op_mod_assign:     return x86insn_int_idiv;
+    case op_shl_assign:     return x86insn_int_sal;
+    case op_shr_assign:     return x86insn_int_sar;
+    case op_and_assign:     return x86insn_int_and;
+    case op_xor_assign:     return x86insn_int_xor;
+    case op_or_assign:      return x86insn_int_or;
 
-    case op_equal:          return x86instr_int_sete;
-    case op_non_equal:      return x86instr_int_setne;
-    case op_less_equal:     return x86instr_int_setle;
-    case op_less_then:      return x86instr_int_setl;
-    case op_greater_equal:  return x86instr_int_setge;
-    case op_greater_then:   return x86instr_int_setg;
+    case op_equal:          return x86insn_int_sete;
+    case op_non_equal:      return x86insn_int_setne;
+    case op_less_equal:     return x86insn_int_setle;
+    case op_less_then:      return x86insn_int_setl;
+    case op_greater_equal:  return x86insn_int_setge;
+    case op_greater_then:   return x86insn_int_setg;
 
     default:                ASSERT(FALSE);
     }
@@ -79,23 +79,23 @@ static x86_instruction_code _opcode_to_binary_int_instruction(arithmetic_opcode 
 static x86_instruction_code _opcode_to_float_arithm_instruction(arithmetic_opcode opcode)
 {
     switch (opcode) {
-    case op_add:            return x86instr_fpu_add;
-    case op_sub:            return x86instr_fpu_sub;
-    case op_mul:            return x86instr_fpu_mul;
-    case op_div:            return x86instr_fpu_div;
+    case op_add:            return x86insn_fpu_add;
+    case op_sub:            return x86insn_fpu_sub;
+    case op_mul:            return x86insn_fpu_mul;
+    case op_div:            return x86insn_fpu_div;
 
-    case op_assign:         return x86instr_fpu_ld;
-    case op_add_assign:     return x86instr_fpu_add;
-    case op_sub_assign:     return x86instr_fpu_sub;
-    case op_mul_assign:     return x86instr_fpu_mul;
-    case op_div_assign:     return x86instr_fpu_div;
+    case op_assign:         return x86insn_fpu_ld;
+    case op_add_assign:     return x86insn_fpu_add;
+    case op_sub_assign:     return x86insn_fpu_sub;
+    case op_mul_assign:     return x86insn_fpu_mul;
+    case op_div_assign:     return x86insn_fpu_div;
 
-    case op_equal:          return x86instr_int_sete;
-    case op_non_equal:      return x86instr_int_setne;
-    case op_less_equal:     return x86instr_int_setbe;
-    case op_less_then:      return x86instr_int_setb;
-    case op_greater_equal:  return x86instr_int_setae;
-    case op_greater_then:   return x86instr_int_seta;
+    case op_equal:          return x86insn_int_sete;
+    case op_non_equal:      return x86insn_int_setne;
+    case op_less_equal:     return x86insn_int_setbe;
+    case op_less_then:      return x86insn_int_setb;
+    case op_greater_equal:  return x86insn_int_setae;
+    case op_greater_then:   return x86insn_int_seta;
 
     default:                ASSERT(FALSE);
     }
@@ -104,12 +104,12 @@ static x86_instruction_code _opcode_to_float_arithm_instruction(arithmetic_opcod
 static x86_instruction_code _invert_compare_instruction(arithmetic_opcode opcode)
 {
     switch (opcode) {
-    case x86instr_int_setne:    return x86instr_int_setne;
-    case x86instr_int_sete:     return x86instr_int_sete;
-    case x86instr_int_setg:     return x86instr_int_setl;
-    case x86instr_int_setge:    return x86instr_int_setle;
-    case x86instr_int_setl:     return x86instr_int_setg;
-    case x86instr_int_setle:    return x86instr_int_setge;
+    case x86insn_int_setne:    return x86insn_int_setne;
+    case x86insn_int_sete:     return x86insn_int_sete;
+    case x86insn_int_setg:     return x86insn_int_setl;
+    case x86insn_int_setge:    return x86insn_int_setle;
+    case x86insn_int_setl:     return x86insn_int_setg;
+    case x86insn_int_setle:    return x86insn_int_setge;
 
     default:                    ASSERT(FALSE);
     }
@@ -126,12 +126,12 @@ static void _generate_convert_int2float(x86_operand *res, x86_operand *op)
 
     if (option_use_sse2) {
         bincode_create_operand_and_alloc_pseudoreg(res, x86reg_sse2);
-        unit_push_binary_instruction(x86instr_sse_load_int, res, op);
+        unit_push_binary_instruction(x86insn_sse_load_int, res, op);
     } else {
         if (OP_IS_REGISTER(*op)) {
-            unit_push_unary_instruction(x86instr_fpu_int2float, op);
+            unit_push_unary_instruction(x86insn_fpu_int2float, op);
         } else {
-            unit_push_unary_instruction(x86instr_fpu_ld_int, op);
+            unit_push_unary_instruction(x86insn_fpu_ld_int, op);
         }
 
         res->op_loc     = x86loc_register;
@@ -150,15 +150,15 @@ static void _generate_convert_float2int(x86_operand *res, x86_operand *op)
             bincode_create_operand_and_alloc_pseudoreg(res, x86reg_sse2);
         }
 
-        unit_push_binary_instruction(x86instr_sse_store_int, res, op);
+        unit_push_binary_instruction(x86insn_sse_store_int, res, op);
     } else {
         if (OP_IS_ADDRESS(*op)) {
             x86_operand tmp;
             bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_sse2);
-            unit_push_binary_instruction(x86instr_sse_mov, &tmp, op);
+            unit_push_binary_instruction(x86insn_sse_mov, &tmp, op);
         }
 
-        unit_push_unary_instruction(x86instr_fpu_float2int, res);
+        unit_push_unary_instruction(x86insn_fpu_float2int, res);
     }
 }
 
@@ -170,7 +170,7 @@ static void _generate_dereference(x86_operand *res, x86_operand *op, data_type *
         bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), op->data.reg);
     } else {
         bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
-        unit_push_binary_instruction(x86instr_int_mov, res, op);
+        unit_push_binary_instruction(x86insn_int_mov, res, op);
 
         bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), res->data.reg);
     }
@@ -184,7 +184,7 @@ static void _generate_get_address(x86_operand *res, x86_operand *op)
         bincode_create_operand_from_pseudoreg(res, x86reg_dword, op->data.address.base);
     } else {
         bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
-        unit_push_binary_instruction(x86instr_lea, res, op);
+        unit_push_binary_instruction(x86insn_lea, res, op);
     }
 }
 
@@ -196,14 +196,14 @@ static void _generate_int2bool(x86_operand *res, x86_operand *op, BOOL invert)
 
     if (op->op_loc == x86loc_address) {
         bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_dword);
-        unit_push_binary_instruction(x86instr_int_mov, &tmp, op);
-        unit_push_binary_instruction(x86instr_int_test, &tmp, &tmp);
+        unit_push_binary_instruction(x86insn_int_mov, &tmp, op);
+        unit_push_binary_instruction(x86insn_int_test, &tmp, &tmp);
     } else {
-        unit_push_binary_instruction(x86instr_int_test, op, op);
+        unit_push_binary_instruction(x86insn_int_test, op, op);
     }
 
     bincode_create_operand_and_alloc_pseudoreg(res, x86reg_byte);
-    unit_push_unary_instruction(invert ? x86instr_int_sete : x86instr_int_setne, res);
+    unit_push_unary_instruction(invert ? x86insn_int_sete : x86insn_int_setne, res);
 }
 
 
@@ -211,19 +211,19 @@ static void _generate_int2bool(x86_operand *res, x86_operand *op, BOOL invert)
 
 static void _generate_inc_dec(expr_arithm *arithm, x86_operand *op, data_type *type)
 {
-    x86_instruction_code instr = _opcode_to_unary_int_instruction(arithm->opcode);
+    x86_instruction_code insn = _opcode_to_unary_int_instruction(arithm->opcode);
 
     ASSERT(OP_IS_INT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
     // TODO: provide an optimized codepath for x86loc_address case: return value in the register if it will be reused.
 
     if (IS_INCREMENT_DECREMENT(arithm->opcode) && arithm->step != 1) {
-        x86_instruction_code bin = CONVERT_INCDEC_TO_BINARY(instr);
+        x86_instruction_code bin = CONVERT_INCDEC_TO_BINARY(insn);
         x86_operand op2;
 
         bincode_create_operand_from_int_constant(&op2, bincode_encode_type(type), arithm->step);
         unit_push_binary_instruction(bin, op, &op2);
     } else {
-        unit_push_unary_instruction(instr, op);
+        unit_push_unary_instruction(insn, op);
     }
 }
 
@@ -239,7 +239,7 @@ static void _generate_common_unary_arithm_expr(expression *expr, x86_operand *re
             } else {
                 if (IS_POST_OPERATION(expr->data.arithm.opcode)) {
                     bincode_create_operand_and_alloc_pseudoreg(res, op->op_type);
-                    unit_push_binary_instruction(x86instr_int_mov, res, op);
+                    unit_push_binary_instruction(x86insn_int_mov, res, op);
                     _generate_inc_dec(&expr->data.arithm, op, expr->expr_type);
                 } else {
                     _generate_inc_dec(&expr->data.arithm, op, expr->expr_type);
@@ -252,13 +252,13 @@ static void _generate_common_unary_arithm_expr(expression *expr, x86_operand *re
         ASSERT(expr->data.arithm.opcode == op_neg);
 
         if (op->op_loc == x86loc_address) {
-            unit_push_unary_instruction(x86instr_fpu_ld, op);
+            unit_push_unary_instruction(x86insn_fpu_ld, op);
         }
 
-        unit_push_nullary_instruction(x86instr_fpu_zero);
+        unit_push_nullary_instruction(x86insn_fpu_zero);
 
         bincode_create_operand_and_alloc_pseudoreg(res, op->op_type);
-        unit_push_unary_instruction(x86instr_fpu_subr, res);
+        unit_push_unary_instruction(x86insn_fpu_subr, res);
     }
 }
 
@@ -269,7 +269,7 @@ static void _generate_common_unary_arithm_expr(expression *expr, x86_operand *re
 
 static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_operand *op1, x86_operand *op2)
 {
-    x86_instruction_code instr = _opcode_to_binary_int_instruction(expr->data.arithm.opcode);
+    x86_instruction_code insn = _opcode_to_binary_int_instruction(expr->data.arithm.opcode);
     x86_operand tmp;
 
     ASSERT(OP_IS_INT(*op1) && OP_IS_REGISTER_OR_ADDRESS(*op1));
@@ -285,22 +285,22 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
     if (IS_COMPARE_OP(expr->data.arithm.opcode)) {
         if (op1->op_loc == x86loc_address && op2->op_loc == x86loc_address) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);
-            unit_push_binary_instruction(x86instr_int_mov, &tmp, op1);
-            unit_push_binary_instruction(x86instr_int_cmp, &tmp, op2);
+            unit_push_binary_instruction(x86insn_int_mov, &tmp, op1);
+            unit_push_binary_instruction(x86insn_int_cmp, &tmp, op2);
         } else {
-            unit_push_binary_instruction(x86instr_int_cmp, op1, op2);
+            unit_push_binary_instruction(x86insn_int_cmp, op1, op2);
         }
 
         bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_byte);
-        unit_push_unary_instruction(instr, &tmp);
+        unit_push_unary_instruction(insn, &tmp);
 
         bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
-        unit_push_binary_instruction(x86instr_movzx, res, &tmp);
+        unit_push_binary_instruction(x86insn_movzx, res, &tmp);
     } else if (IS_DIVISION_OP(expr->data.arithm.opcode) || IS_MODULO_OP(expr->data.arithm.opcode)) {
         bincode_create_operand_from_register(res, x86reg_dword, x86reg_eax);
-        unit_push_binary_instruction(x86instr_int_mov, res, op1);
-        unit_push_nullary_instruction(x86instr_cdq);
-        unit_push_unary_instruction(x86instr_int_idiv, op2);
+        unit_push_binary_instruction(x86insn_int_mov, res, op1);
+        unit_push_nullary_instruction(x86insn_cdq);
+        unit_push_unary_instruction(x86insn_int_idiv, op2);
 
         if (IS_MODULO_OP(expr->data.arithm.opcode)) {
             bincode_create_operand_from_register(res, x86reg_dword, x86reg_edx);
@@ -311,43 +311,43 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
         if (op2->op_loc == x86loc_address) {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
 
-            if (instr != x86instr_int_mov) {
-                unit_push_binary_instruction(x86instr_int_mov, res, op1);
+            if (insn != x86insn_int_mov) {
+                unit_push_binary_instruction(x86insn_int_mov, res, op1);
             }
 
-            unit_push_binary_instruction(instr, res, op2);
-            unit_push_binary_instruction(x86instr_int_mov, op1, res);
+            unit_push_binary_instruction(insn, res, op2);
+            unit_push_binary_instruction(x86insn_int_mov, op1, res);
         } else {
-            unit_push_binary_instruction(instr, op1, op2);
+            unit_push_binary_instruction(insn, op1, op2);
         }
     } else if (op1->op_loc == x86loc_address) {
-        if (op2->op_loc == x86loc_register && (instr == x86instr_int_add || instr == x86instr_int_imul)) {
-            unit_push_binary_instruction(instr, op2, res);
+        if (op2->op_loc == x86loc_register && (insn == x86insn_int_add || insn == x86insn_int_imul)) {
+            unit_push_binary_instruction(insn, op2, res);
             *res = *op2;
         } else {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
-            unit_push_binary_instruction(x86instr_int_mov, res, op1);
-            unit_push_binary_instruction(instr, res, op2);
+            unit_push_binary_instruction(x86insn_int_mov, res, op1);
+            unit_push_binary_instruction(insn, res, op2);
         }
     } else {
-        unit_push_binary_instruction(instr, op1, op2);
+        unit_push_binary_instruction(insn, op1, op2);
     }
 }
 
-static x86_instruction_code _negate_float_instr(x86_instruction_code instr)
+static x86_instruction_code _negate_float_insn(x86_instruction_code insn)
 {
-    if (instr == x86instr_fpu_sub) {
-        return x86instr_fpu_subr;
-    } else if (instr == x86instr_fpu_div) {
-        return x86instr_fpu_divr;
+    if (insn == x86insn_fpu_sub) {
+        return x86insn_fpu_subr;
+    } else if (insn == x86insn_fpu_div) {
+        return x86insn_fpu_divr;
     } else {
-        return instr;
+        return insn;
     }
 }
 
 static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_operand *op1, x86_operand *op2)
 {
-    x86_instruction_code instr = _opcode_to_float_arithm_instruction(expr->data.arithm.opcode);
+    x86_instruction_code insn = _opcode_to_float_arithm_instruction(expr->data.arithm.opcode);
 
     ASSERT(OP_IS_FLOAT(*op1) && OP_IS_REGISTER_OR_ADDRESS(*op1));
     ASSERT(OP_IS_FLOAT(*op2) && OP_IS_REGISTER_OR_ADDRESS(*op2));
@@ -360,17 +360,17 @@ static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_
 
         if (expr->data.arithm.opcode == op_assign) {
             if (op2->op_loc == x86loc_address) {
-                unit_push_unary_instruction(x86instr_fpu_ld, op2);
+                unit_push_unary_instruction(x86insn_fpu_ld, op2);
             }
 
-            unit_push_unary_instruction((expr->expr_parent ? x86instr_fpu_st : x86instr_fpu_stp), op1);
+            unit_push_unary_instruction((expr->expr_parent ? x86insn_fpu_st : x86insn_fpu_stp), op1);
         } else {
             if (op1->op_loc == x86loc_address) {
-                unit_push_unary_instruction(x86instr_fpu_ld, op1);
+                unit_push_unary_instruction(x86insn_fpu_ld, op1);
             }
 
-            unit_push_unary_instruction(instr, op2);
-            unit_push_unary_instruction((expr->expr_parent ? x86instr_fpu_st : x86instr_fpu_stp), op1);
+            unit_push_unary_instruction(insn, op2);
+            unit_push_unary_instruction((expr->expr_parent ? x86insn_fpu_st : x86insn_fpu_stp), op1);
         }
 
         if (!expr->expr_parent) {
@@ -378,35 +378,35 @@ static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_
         }
     } else if (IS_COMPARE_OP(expr->data.arithm.opcode)) {
         if (op2->op_loc == x86loc_address) {
-            unit_push_unary_instruction(x86instr_fpu_ld, op2);
+            unit_push_unary_instruction(x86insn_fpu_ld, op2);
         }
 
         if (op1->op_loc == x86loc_address) {
-            unit_push_unary_instruction(x86instr_fpu_ld, op1);
+            unit_push_unary_instruction(x86insn_fpu_ld, op1);
         }
 
         if (op1->op_loc != x86loc_address && op2->op_loc == x86loc_address) {
-            instr = _invert_compare_instruction(instr);
+            insn = _invert_compare_instruction(insn);
         }
 
-        unit_push_nullary_instruction(x86instr_fpu_cmp);
+        unit_push_nullary_instruction(x86insn_fpu_cmp);
 
         bincode_create_operand_and_alloc_pseudoreg(op2, x86reg_byte);
-        unit_push_unary_instruction(instr, op2);
+        unit_push_unary_instruction(insn, op2);
 
         bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
-        unit_push_binary_instruction(x86instr_movzx, res, op2);
+        unit_push_binary_instruction(x86insn_movzx, res, op2);
     } else {
         if (op1->op_loc == x86loc_address) {
             if (op2->op_loc == x86loc_register) {
-                instr = _negate_float_instr(instr);
-                unit_push_unary_instruction(instr, op1);
+                insn = _negate_float_insn(insn);
+                unit_push_unary_instruction(insn, op1);
             } else {
-                unit_push_unary_instruction(x86instr_fpu_ld, op1);
-                unit_push_unary_instruction(instr, op2);
+                unit_push_unary_instruction(x86insn_fpu_ld, op1);
+                unit_push_unary_instruction(insn, op2);
             }
         } else {
-            unit_push_unary_instruction(instr, op2);
+            unit_push_unary_instruction(insn, op2);
         }
 
         bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
@@ -489,14 +489,14 @@ static void _generate_call(expression *call, x86_operand *res)
 
 
     // сохраняем все используемые регистры
-    unit_push_nullary_instruction(x86instr_push_all);
+    unit_push_nullary_instruction(x86insn_push_all);
 
     // вычисляем аргументы в обратном порядке и кладём их в стек
     for (arg = call->data.function_call.args->expr_last; arg; arg = arg->expr_prev) {
         _evaluate_nested_expression(arg, &tmp);
 
         param_size = type_calculate_sizeof(arg->expr_type);
-        unit_push_unary_instruction(x86instr_push_arg, &tmp);
+        unit_push_unary_instruction(x86insn_push_arg, &tmp);
 
         params_total_size += param_size;
     }
@@ -513,16 +513,16 @@ static void _generate_call(expression *call, x86_operand *res)
     // выдаём инструкцию CALL и сохраняем информацию о типе результата во второй операнд
     tmp2.op_loc     = x86loc_register;  // al/ax/eax/eax:edx/st0/xmm1
     tmp2.op_type    = bincode_encode_type(call->expr_type);
-    unit_push_binary_instruction(x86instr_call, &tmp, &tmp2);
+    unit_push_binary_instruction(x86insn_call, &tmp, &tmp2);
 
     // удаляем параметры из стека
     if (params_total_size) {
         bincode_create_operand_from_int_constant(&tmp, x86op_dword, params_total_size);
-        unit_push_unary_instruction(x86instr_restore_stack, &tmp);
+        unit_push_unary_instruction(x86insn_restore_stack, &tmp);
     }
 
     // восстанавливаем сохранённые регистры
-    unit_push_nullary_instruction(x86instr_pop_all);
+    unit_push_nullary_instruction(x86insn_pop_all);
 
     // возвращаем результат, если он есть
     if (TYPE_IS_VOID(call->expr_type)) {
@@ -545,7 +545,7 @@ static void _load_symbol(symbol *sym, data_type *type, x86_operand *res)
     }
 
     bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
-    unit_push_binary_instruction(x86instr_lea, res, &tmp);
+    unit_push_binary_instruction(x86insn_lea, res, &tmp);
 
     bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), res->data.reg);
 }
@@ -571,17 +571,17 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res)
     case code_expr_int_constant:
         bincode_create_operand_and_alloc_pseudoreg(res, bincode_encode_type(expr->expr_type));
         bincode_create_operand_from_int_constant(&tmp, bincode_encode_type(expr->expr_type), expr->data.int_const);
-        unit_push_binary_instruction(x86instr_int_mov, res, &tmp);
+        unit_push_binary_instruction(x86insn_int_mov, res, &tmp);
         break;
 
     case code_expr_float_constant:
         val = bincode_encode_float_constant(expr->data.float_const.val);
 
-        if (val != x86instr_count) {
+        if (val != x86insn_count) {
             unit_push_nullary_instruction(val);
         } else {
             _load_symbol(expr->data.float_const.sym, expr->expr_type, res);
-            unit_push_unary_instruction(x86instr_fpu_ld, res);
+            unit_push_unary_instruction(x86insn_fpu_ld, res);
         }
 
         bincode_create_operand_and_alloc_pseudoreg(res, bincode_encode_type(expr->expr_type));
@@ -602,7 +602,7 @@ static void _generate_prolog(void)
     x86_operand op;
 
     bincode_create_operand_from_int_constant(&op, x86op_dword, 0);
-    unit_push_unary_instruction(x86instr_create_stack_frame, &op);
+    unit_push_unary_instruction(x86insn_create_stack_frame, &op);
 }
 
 static void _generate_epilog(void)
@@ -610,7 +610,7 @@ static void _generate_epilog(void)
     x86_operand op;
 
     bincode_create_operand_from_int_constant(&op, x86op_dword, 0);
-    unit_push_unary_instruction(x86instr_destroy_stack_frame, &op);
+    unit_push_unary_instruction(x86insn_destroy_stack_frame, &op);
 }
 
 static void _generate_return(expression *ret_value)
@@ -623,36 +623,36 @@ static void _generate_return(expression *ret_value)
 
         if (res.op_type == x86op_byte) {
             bincode_create_operand_from_register(&tmp, x86reg_byte, x86reg_al);
-            unit_push_binary_instruction(x86instr_int_mov, &tmp, &res);
+            unit_push_binary_instruction(x86insn_int_mov, &tmp, &res);
         } else if (res.op_type == x86op_word) {
             bincode_create_operand_from_register(&tmp, x86reg_word, x86reg_ax);
-            unit_push_binary_instruction(x86instr_int_mov, &tmp, &res);
+            unit_push_binary_instruction(x86insn_int_mov, &tmp, &res);
         } else if (res.op_type == x86op_dword) {
             bincode_create_operand_from_register(&tmp, x86reg_dword, x86reg_eax);
-            unit_push_binary_instruction(x86instr_int_mov, &tmp, &res);
+            unit_push_binary_instruction(x86insn_int_mov, &tmp, &res);
         } else if (res.op_type == x86op_qword) {
             UNIMPLEMENTED_ASSERT(res.op_loc == x86loc_register);
             bincode_create_operand_from_register(&tmp, x86reg_dword, x86reg_eax);
             bincode_create_operand_from_register(&tmp2, x86reg_dword, res.data.qword.low);
-            unit_push_binary_instruction(x86instr_int_mov, &tmp, &tmp2);
+            unit_push_binary_instruction(x86insn_int_mov, &tmp, &tmp2);
             bincode_create_operand_from_register(&tmp, x86reg_dword, x86reg_edx);
             bincode_create_operand_from_register(&tmp2, x86reg_dword, res.data.qword.high);
-            unit_push_binary_instruction(x86instr_int_mov, &tmp, &tmp2);
+            unit_push_binary_instruction(x86insn_int_mov, &tmp, &tmp2);
         } else {
             if (res.op_loc == x86loc_address) {
-                unit_push_unary_instruction(x86instr_fpu_ld, &res);
+                unit_push_unary_instruction(x86insn_fpu_ld, &res);
             } else {
                 if (!option_use_sse2) {
                     // результат уже находится в st(0)
                 } else {
-                    unit_push_binary_instruction(x86instr_sse_mov, 0, &res);
+                    unit_push_binary_instruction(x86insn_sse_mov, 0, &res);
                 }
             }
         }
     }
 
     _generate_epilog();
-    unit_push_nullary_instruction(x86instr_ret);
+    unit_push_nullary_instruction(x86insn_ret);
 }
 
 
@@ -668,38 +668,38 @@ static void _generate_common_conditional_jump(expression *condition, int destina
     ASSERT(res.op_loc == x86loc_register || res.op_loc == x86loc_address);
 
     bincode_create_operand_from_int_constant(&tmp, bincode_encode_type(condition->expr_type), 0);
-    unit_push_binary_instruction(x86instr_int_cmp, &res, &tmp);
+    unit_push_binary_instruction(x86insn_int_cmp, &res, &tmp);
 
     bincode_create_operand_from_label(&tmp, destination);
-    unit_push_unary_instruction((invert ? x86instr_je : x86instr_jne), &tmp);
+    unit_push_unary_instruction((invert ? x86insn_je : x86insn_jne), &tmp);
 }
 
 static x86_instruction_code _condition_to_jump(arithmetic_opcode opcode, BOOL is_float)
 {
     switch (opcode) {
-    case op_less_then:      return (is_float ? x86instr_jb : x86instr_jl);
-    case op_less_equal:     return (is_float ? x86instr_jbe : x86instr_jle);
-    case op_greater_then:   return (is_float ? x86instr_ja : x86instr_jg);
-    case op_greater_equal:  return (is_float ? x86instr_jae : x86instr_jge);
-    case op_equal:          return x86instr_je;
-    case op_non_equal:      return x86instr_jne;
+    case op_less_then:      return (is_float ? x86insn_jb : x86insn_jl);
+    case op_less_equal:     return (is_float ? x86insn_jbe : x86insn_jle);
+    case op_greater_then:   return (is_float ? x86insn_ja : x86insn_jg);
+    case op_greater_equal:  return (is_float ? x86insn_jae : x86insn_jge);
+    case op_equal:          return x86insn_je;
+    case op_non_equal:      return x86insn_jne;
     default:                ASSERT(FALSE);
     }
 }
 
-static x86_instruction_code _invert_jump(x86_instruction_code jump_instr)
+static x86_instruction_code _invert_jump(x86_instruction_code jump_insn)
 {
-    switch (jump_instr) {
-    case x86instr_je:       return x86instr_jne;
-    case x86instr_jne:      return x86instr_je;
-    case x86instr_jle:      return x86instr_jg;
-    case x86instr_jl:       return x86instr_jge;
-    case x86instr_jge:      return x86instr_jl;
-    case x86instr_jg:       return x86instr_jle;
-    case x86instr_jbe:      return x86instr_ja;
-    case x86instr_jb:       return x86instr_jae;
-    case x86instr_jae:      return x86instr_jb;
-    case x86instr_ja:       return x86instr_jbe;
+    switch (jump_insn) {
+    case x86insn_je:       return x86insn_jne;
+    case x86insn_jne:      return x86insn_je;
+    case x86insn_jle:      return x86insn_jg;
+    case x86insn_jl:       return x86insn_jge;
+    case x86insn_jge:      return x86insn_jl;
+    case x86insn_jg:       return x86insn_jle;
+    case x86insn_jbe:      return x86insn_ja;
+    case x86insn_jb:       return x86insn_jae;
+    case x86insn_jae:      return x86insn_jb;
+    case x86insn_ja:       return x86insn_jbe;
     default:                ASSERT(FALSE);
     }
 }
@@ -714,7 +714,7 @@ static void _generate_jumps_for_and(expression *cond1, expression *cond2, int de
     _generate_conditional_jump(cond1, label, !invert_operands);
     _generate_conditional_jump(cond2, destination, invert_operands);
     bincode_create_operand_from_label(&op, label);
-    unit_push_unary_instruction(x86instr_label, &op);
+    unit_push_unary_instruction(x86insn_label, &op);
 }
 
 static void _generate_jumps_for_or(expression *cond1, expression *cond2, int destination, BOOL invert_operands)
@@ -727,7 +727,7 @@ static void _generate_conditional_jump(expression *condition, int destination, B
 {
     expr_arithm *arithm;
     x86_operand op1, op2, tmp;
-    x86_instruction_code instr;
+    x86_instruction_code insn;
     BOOL is_float;
 
     if (condition->expr_code == code_expr_arithmetic) {
@@ -748,35 +748,35 @@ static void _generate_conditional_jump(expression *condition, int destination, B
             if (!is_float) {
                 if (op1.op_loc == x86loc_address && op2.op_loc == x86loc_address) {
                     bincode_create_operand_and_alloc_pseudoreg(&tmp, op1.op_type);
-                    unit_push_binary_instruction(x86instr_int_mov, &tmp, &op1);
-                    unit_push_binary_instruction(x86instr_int_cmp, &tmp, &op2);
+                    unit_push_binary_instruction(x86insn_int_mov, &tmp, &op1);
+                    unit_push_binary_instruction(x86insn_int_cmp, &tmp, &op2);
                 } else {
-                    unit_push_binary_instruction(x86instr_int_cmp, &op1, &op2);
+                    unit_push_binary_instruction(x86insn_int_cmp, &op1, &op2);
                 }
             } else {
                 if (op2.op_loc == x86loc_address) {
-                    unit_push_unary_instruction(x86instr_fpu_ld, &op2);
+                    unit_push_unary_instruction(x86insn_fpu_ld, &op2);
                 }
 
                 if (op1.op_loc == x86loc_address) {
-                    unit_push_unary_instruction(x86instr_fpu_ld, &op1);
+                    unit_push_unary_instruction(x86insn_fpu_ld, &op1);
                 }
 
                 if (op1.op_loc != x86loc_address && op2.op_loc == x86loc_address) {
                     invert = !invert;
                 }
 
-                unit_push_nullary_instruction(x86instr_fpu_cmp);
+                unit_push_nullary_instruction(x86insn_fpu_cmp);
             }
 
-            instr = _condition_to_jump(arithm->opcode, is_float);
+            insn = _condition_to_jump(arithm->opcode, is_float);
 
             if (invert) {
-                instr = _invert_jump(instr);
+                insn = _invert_jump(insn);
             }
 
             bincode_create_operand_from_label(&tmp, destination);
-            unit_push_unary_instruction(instr, &tmp);
+            unit_push_unary_instruction(insn, &tmp);
         } else if (arithm->opcode == op_not) {
             _generate_conditional_jump(arithm->operand1, destination, !invert);
         } else if (arithm->opcode == op_logical_and_in_jump) {
@@ -805,18 +805,18 @@ static void _generate_jmp(expr_jump *jump)
 
     if (!jump->condition) {
         bincode_create_operand_from_label(&dst, jump->destination);
-        unit_push_unary_instruction(x86instr_jmp, &dst);
+        unit_push_unary_instruction(x86insn_jmp, &dst);
     } else if (jump->condition->expr_code == code_expr_int_constant) {
         if (jump->condition->data.int_const != 0) {
             bincode_create_operand_from_label(&dst, jump->destination);
-            unit_push_unary_instruction(x86instr_jmp, &dst);
+            unit_push_unary_instruction(x86insn_jmp, &dst);
         }
     } else if (jump->condition->expr_code == code_expr_float_constant) {
         aux_warning("exact comparison of float values");
 
         if (jump->condition->data.float_const.val != 0.0f) {
             bincode_create_operand_from_label(&dst, jump->destination);
-            unit_push_unary_instruction(x86instr_jmp, &dst);
+            unit_push_unary_instruction(x86insn_jmp, &dst);
         }
     } else {
         _generate_conditional_jump(jump->condition, jump->destination, jump->invert_cond);
@@ -860,7 +860,7 @@ static void _walk_through_expressions(void)
         switch (expr->expr_code) {
         case code_expr_label:
             bincode_create_operand_from_label(&label, expr->data.label);
-            unit_push_unary_instruction(x86instr_label, &label);
+            unit_push_unary_instruction(x86insn_label, &label);
             break;
 
         case code_expr_arithmetic:
@@ -891,7 +891,7 @@ static void _extract_float_constants(expression *expr, void *unused)
 {
     x86_instruction_code c  = bincode_encode_float_constant(expr->data.float_const.val);
 
-    if (c == x86instr_count) {
+    if (c == x86insn_count) {
         expr->data.float_const.sym = x86data_insert_float_constant(expr->data.float_const.val);
     }
 }

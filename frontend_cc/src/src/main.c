@@ -27,17 +27,17 @@ struct option_decl {
 const char *next_option;
 
 
-static void print_version(void)
+static void _print_version(void)
 {
     puts("CC version 0.04 - proof of concept.");
 }
 
-static void print_help(const char *program_name)
+static void _print_help(const char *program_name)
 {
     const char *p;
     struct option_decl *opt;
 
-    print_version();
+    _print_version();
 
     p = strrchr(program_name, '\\');
     p = (p) ? p + 1 : program_name;
@@ -49,8 +49,7 @@ static void print_help(const char *program_name)
     }
 }
 
-
-static void compile_unit(const char *filename)
+static void _compile_unit(const char *filename)
 {
     FILE *source_file;
     aux_reset_errors_count();
@@ -104,8 +103,7 @@ static void compile_unit(const char *filename)
     exit(!aux_get_errors_count() ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
-
-void interpret_option(const char *option)
+static void _interpret_option(const char *option)
 {
     struct option_decl *opt;
 
@@ -126,9 +124,9 @@ int main(int argc, const char *argv[])
     int i;
 
     if (argc == 1 || !strcmp(argv[1], "--help")) {
-        print_help(argv[0]);
+        _print_help(argv[0]);
     } else if (!strcmp(argv[1], "--version")) {
-        print_version();
+        _print_version();
     } else {
         for (i = 1; i < argc; i++) {
             if (!strcmp(argv[i], "--output_file_name")) {
@@ -137,9 +135,9 @@ int main(int argc, const char *argv[])
                     i++;
                 }
             } else if (argv[i][0] == '-') {
-                interpret_option(argv[i]);
+                _interpret_option(argv[i]);
             } else {
-                compile_unit(argv[i]);
+                _compile_unit(argv[i]);
             }
         }
     }

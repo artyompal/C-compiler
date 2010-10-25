@@ -1,6 +1,6 @@
 
-#ifndef X86_INSTRINSICS_H__INCLUDED
-#define X86_INSTRINSICS_H__INCLUDED
+#ifndef X86_INTRINSICS_H__INCLUDED
+#define X86_INTRINSICS_H__INCLUDED
 
 #if defined(_MSC_VER) && AUX_USE_PRAGMA_ONCE
 #pragma once
@@ -14,5 +14,5 @@ void x86_intrinsic_dynamic_memcpy   (function_desc *func, x86_operand *res, x86_
 
 
 #else
-#error Header x86_instrinsics.h duplicated.
-#endif // X86_INSTRINSICS_H__INCLUDED
+#error Header x86_intrinsics.h duplicated.
+#endif // X86_INTRINSICS_H__INCLUDED

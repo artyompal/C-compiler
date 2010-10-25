@@ -11,8 +11,8 @@ static void _memcpy_via_dword_mov(x86_operand *dst, x86_operand *src, int size_i
 
     if (size_in_dwords == 1) {
         bincode_create_operand_from_pseudoreg(&r0, x86reg_dword, x86_codegen_alloc_pseudoreg(x86reg_dword));
-        unit_push_binary_instruction(x86instr_int_mov, &r0, src);
-        unit_push_binary_instruction(x86instr_int_mov, dst, &r0);
+        unit_push_binary_instruction(x86insn_int_mov, &r0, src);
+        unit_push_binary_instruction(x86insn_int_mov, dst, &r0);
     } else {
         bincode_create_operand_from_pseudoreg(&r0, x86reg_dword, x86_codegen_alloc_pseudoreg(x86reg_dword));
         bincode_create_operand_from_pseudoreg(&r1, x86reg_dword, x86_codegen_alloc_pseudoreg(x86reg_dword));
@@ -22,18 +22,18 @@ static void _memcpy_via_dword_mov(x86_operand *dst, x86_operand *src, int size_i
 
         for (i = 0; i < size_in_dwords; i += 2) {
             if (i < size_in_dwords - 1) {
-                unit_push_binary_instruction(x86instr_int_mov, &r0, &src_ptr);
+                unit_push_binary_instruction(x86insn_int_mov, &r0, &src_ptr);
                 src_ptr.data.address.offset += 4;
-                unit_push_binary_instruction(x86instr_int_mov, &r1, &src_ptr);
+                unit_push_binary_instruction(x86insn_int_mov, &r1, &src_ptr);
                 src_ptr.data.address.offset += 4;
 
-                unit_push_binary_instruction(x86instr_int_mov, &dst_ptr, &r0);
+                unit_push_binary_instruction(x86insn_int_mov, &dst_ptr, &r0);
                 dst_ptr.data.address.offset += 4;
-                unit_push_binary_instruction(x86instr_int_mov, &dst_ptr, &r1);
+                unit_push_binary_instruction(x86insn_int_mov, &dst_ptr, &r1);
                 dst_ptr.data.address.offset += 4;
             } else {
-                unit_push_binary_instruction(x86instr_int_mov, &r0, &src_ptr);
-                unit_push_binary_instruction(x86instr_int_mov, &dst_ptr, &r0);
+                unit_push_binary_instruction(x86insn_int_mov, &r0, &src_ptr);
+                unit_push_binary_instruction(x86insn_int_mov, &dst_ptr, &r0);
             }
         }
     }
@@ -48,31 +48,31 @@ static void _memcpy_via_dword_movs_loop(function_desc *func, x86_operand *dst, x
 
 
     //bincode_create_operand_from_pseudoreg(&src_reg, x86_codegen_alloc_pseudoreg());
-    //unit_push_binary_instruction(x86instr_lea, &src_reg, src);
+    //unit_push_binary_instruction(x86insn_lea, &src_reg, src);
     //bincode_create_operand_from_pseudoreg(&dst_reg, x86_codegen_alloc_pseudoreg());
-    //unit_push_binary_instruction(x86instr_lea, &dst_reg, dst);
+    //unit_push_binary_instruction(x86insn_lea, &dst_reg, dst);
 
     //bincode_create_operand_from_pseudoreg(&cnt, x86_codegen_alloc_pseudoreg());
     //bincode_create_operand_from_int_constant(&tmp, size_in_dwords);
-    //unit_push_binary_instruction(x86instr_int_mov, &cnt, &tmp);
+    //unit_push_binary_instruction(x86insn_int_mov, &cnt, &tmp);
 
     //bincode_create_operand_from_label(&label, unit_create_label(func));
-    //unit_push_unary_instruction(x86instr_label, &label);
+    //unit_push_unary_instruction(x86insn_label, &label);
 
     //bincode_create_operand_from_pseudoreg(&tmp, x86_codegen_alloc_pseudoreg());
     //bincode_create_operand_addr_from_reg(&src_addr, src_reg.data.reg);
-    //unit_push_binary_instruction(x86instr_int_mov, &tmp, &src_addr);
+    //unit_push_binary_instruction(x86insn_int_mov, &tmp, &src_addr);
     //bincode_create_operand_addr_from_reg(&dst_addr, dst_reg.data.reg);
-    //unit_push_binary_instruction(x86instr_int_mov, &dst_addr, &tmp);
+    //unit_push_binary_instruction(x86insn_int_mov, &dst_addr, &tmp);
 
-    //unit_push_unary_instruction(x86instr_int_dec, &cnt);
+    //unit_push_unary_instruction(x86insn_int_dec, &cnt);
 
     //bincode_create_operand_addr_from_reg_offset(&src_addr, src_reg.data.reg, 4);
-    //unit_push_binary_instruction(x86instr_lea, &src_reg, &src_addr);
+    //unit_push_binary_instruction(x86insn_lea, &src_reg, &src_addr);
     //bincode_create_operand_addr_from_reg_offset(&dst_addr, dst_reg.data.reg, 4);
-    //unit_push_binary_instruction(x86instr_lea, &dst_reg, &dst_addr);
+    //unit_push_binary_instruction(x86insn_lea, &dst_reg, &dst_addr);
 
-    //unit_push_unary_instruction(x86instr_jne, &label);
+    //unit_push_unary_instruction(x86insn_jne, &label);
 }
 
 static void _memcpy_via_byte_movs_loop(x86_operand *dst, x86_operand *src, x86_operand *size)
