@@ -268,7 +268,7 @@ static void _print_reg(FILE *output, x86_operand_location type, int reg)
         }
         break;
 
-    case x86reg_sse2:
+    case x86reg_float:
         if (reg < -8) {
             fprintf(output, "sse0x%x", reg);
         } else if (reg < 0) {
@@ -373,7 +373,6 @@ static const char *_encode_hw_type(x86_operand_type hw_type)
     case x86op_dword:   return "dword ptr";
 
     case x86op_double:  return "qword ptr";
-    case x86op_long_double: return "tbyte ptr";
 
     default:            ASSERT(FALSE);
     }

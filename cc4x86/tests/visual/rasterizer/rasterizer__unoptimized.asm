@@ -359,9 +359,9 @@ _vec4f_is_equal proc
 	pop_all
 	fstp	dword ptr [dword4]
 	lea	dword7,[ebp-20]
+	fld	dword ptr [dword7]
 	lea	dword8,[___unnamed_float_0]
 	fld	qword ptr [dword8]
-	fld	qword ptr [dword7]
 	fucomip	st,st(1)
 	fstp	st
 	setb	byte1

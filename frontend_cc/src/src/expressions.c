@@ -76,6 +76,8 @@ char const *expr_print_opcode_to_user(arithmetic_opcode code)
     case op_get_address:    return "& (address)";
     case op_convert_int2float:      return "convert_int2float";
     case op_convert_float2int:      return "convert_float2int";
+    case op_convert_float2double:   return "convert_float2double";
+    case op_convert_double2float:   return "convert_double2float";
     case op_notnot:                 return "!!";
     case op_logical_and_in_jump:    return "&&";
     case op_logical_or_in_jump:     return "||";
@@ -126,6 +128,8 @@ char const *expr_print_opcode_to_debug(arithmetic_opcode code)
     case op_get_address:    return "get_address";
     case op_convert_int2float:      return "convert_int2float";
     case op_convert_float2int:      return "convert_float2int";
+    case op_convert_float2double:   return "convert_float2double";
+    case op_convert_double2float:   return "convert_double2float";
     case op_notnot:                 return "notnot";
     case op_logical_and_in_jump:    return "logical_and_in_jump";
     case op_logical_or_in_jump:     return "logical_or_in_jump";
@@ -1162,6 +1166,12 @@ static BOOL _try_generate_float_cast(expression **res, data_type *from, data_typ
     BOOL allowed;
 
     if (TYPE_IS_FLOATING(from) && TYPE_IS_FLOATING(to)) {
+        if (from->type_code != to->type_code &&
+            (from->type_code == code_type_float || to->type_code == code_type_float)) {
+            *res = expr_create_unary(*res, (from->type_code == code_type_float ?
+                op_convert_float2double : op_convert_double2float));
+        }
+
         return TRUE;
     } else if (TYPE_IS_INTEGRAL(from) && TYPE_IS_FLOATING(to)) {
         if (!TYPE_IS_X86_DWORD(from)) {
@@ -1227,7 +1237,7 @@ static void _inner_iterate_subexpr(expression *expr, expression_code filter, int
         case code_expr_int_constant:
         case code_expr_symbol:
         case code_expr_label:
-            // термильаное выражение
+            // терминальное выражение
             break;
 
         case code_expr_arithmetic:

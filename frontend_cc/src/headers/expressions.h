@@ -63,6 +63,8 @@ typedef enum arithmetic_opcode_decl {
     // internal unary operations
     op_convert_int2float,
     op_convert_float2int,
+    op_convert_float2double,
+    op_convert_double2float,
     op_convert_char2short,
     op_convert_char2int,
     op_convert_char2longlong,

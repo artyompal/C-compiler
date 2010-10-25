@@ -27,7 +27,7 @@ static register_map *_get_register_map(x86_register_type type)
         return &_word_register_map;
     case x86reg_dword:
         return &_dword_register_map;
-    case x86reg_sse2:
+    case x86reg_float:
         return &_sse2_register_map;
     default:
         ASSERT(FALSE);
@@ -46,8 +46,7 @@ x86_register_type x86_encode_register_type(x86_operand_type type)
 
     case x86op_float:
     case x86op_double:
-    case x86op_long_double:
-        return x86reg_sse2;
+        return x86reg_float;
 
     default:
         ASSERT(FALSE);
@@ -259,7 +258,7 @@ void x86_analyze_registers_usage(function_desc *function)
     _analyze_registers_usage(function, &function->func_dword_regstat, x86reg_dword);
 
     if (option_use_sse2) {
-        _analyze_registers_usage(function, &function->func_sse2_regstat, x86reg_sse2);
+        _analyze_registers_usage(function, &function->func_sse2_regstat, x86reg_float);
     }
 }
 
@@ -285,11 +284,11 @@ static void _maintain_fpu_stack(function_desc *function)
         if (insn->in_code == x86insn_push_all && fp_registers_cnt) {
             // вставляем инструкции перед PUSHA
             for (i = fp_registers_cnt; i > 0; i--) {
-                bincode_insert_fp_esp_offset(function, insn, x86insn_fpu_stp, x86op_long_double, -10 * i);
+                bincode_insert_fp_esp_offset(function, insn, x86insn_fpu_stp, x86op_double, -8 * i);
             }
 
             last_pusha_count = fp_registers_cnt;
-            bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86reg_dword, ~x86reg_esp, last_pusha_count * 10);
+            bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86reg_dword, ~x86reg_esp, last_pusha_count * 8);
         } else if (insn->in_code == x86insn_pop_all && last_pusha_count) {
             // вставляем инструкции после POPA
             ASSERT(last_pusha_count != 0);
@@ -299,13 +298,13 @@ static void _maintain_fpu_stack(function_desc *function)
             if (last_pusha_count != fp_registers_cnt) {
                 ASSERT(last_pusha_count + 1 == fp_registers_cnt);
                 num = last_pusha_count + 1;
-                bincode_insert_fp_esp_offset(function, next_insn, x86insn_fpu_stp, x86op_long_double, -10);
+                bincode_insert_fp_esp_offset(function, next_insn, x86insn_fpu_stp, x86op_double, -8);
             } else {
                 num = last_pusha_count;
             }
 
             for (i = last_pusha_count - 1; i >= last_pusha_count - num; i--) {
-                bincode_insert_fp_esp_offset(function, next_insn, x86insn_fpu_ld, x86op_long_double, 10 * i);
+                bincode_insert_fp_esp_offset(function, next_insn, x86insn_fpu_ld, x86op_double, 8 * i);
             }
 
             bincode_insert_int_reg_const(function, next_insn, x86insn_int_add, x86reg_dword, ~x86reg_esp, last_pusha_count * 4);
@@ -336,21 +335,15 @@ static void _maintain_fpu_stack(function_desc *function)
                 }
 
                 bincode_insert_int_reg_ebp_offset(function, next_insn, x86insn_int_mov, x86reg_dword, insn->in_op1.data.reg, tmp);
-                bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86reg_sse2, tmp);
+                bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86reg_float, tmp);
             }
         } else if (insn->in_code == x86insn_push_arg && OP_IS_FLOAT(insn->in_op1)) {
             if (OP_IS_REGISTER(insn->in_op1)) {
                 fp_registers_cnt--;
             }
 
-            if (insn->in_op1.op_type == x86op_float) {
-                sz = 4;
-            } else if (insn->in_op1.op_type == x86op_double) {
-                sz = 8;
-            } else if (insn->in_op1.op_type == x86op_long_double) {
-                sz = 10;
-            } else
-                ASSERT(FALSE);
+            ASSERT(insn->in_op1.op_type == x86op_float || insn->in_op1.op_type == x86op_double)
+            sz = (insn->in_op1.op_type == x86op_float ? 4 : 8);
 
             if (insn->in_op1.op_loc == x86loc_register) {
                 bincode_insert_fp_esp_offset(function, insn, x86insn_fpu_stp, insn->in_op1.op_type, -sz);
@@ -733,7 +726,7 @@ void x86_allocate_registers(function_desc *function)
     _allocate_registers(function, &function->func_dword_regstat, x86reg_dword);
 
     if (option_use_sse2) {
-        _allocate_registers(function, &function->func_sse2_regstat, x86reg_sse2);
+        _allocate_registers(function, &function->func_sse2_regstat, x86reg_float);
     }
 
     // Сохраняем изменённые регистры EBX/ESI/EDI.

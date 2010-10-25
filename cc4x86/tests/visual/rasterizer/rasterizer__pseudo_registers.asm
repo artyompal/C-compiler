@@ -217,8 +217,8 @@ _vec4f_is_equal proc
 	restore_stack	8
 	pop_all
 	fstp	dword ptr [ebp-20]
+	fld	dword ptr [ebp-20]
 	fld	[___unnamed_float_0]
-	fld	qword ptr [ebp-20]
 	fucomip	st,st(1)
 	fstp	st
 	setb	byte1
