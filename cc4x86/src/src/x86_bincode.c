@@ -303,7 +303,8 @@ void bincode_create_operand_from_symbol(x86_operand *op, symbol *sym)
 {
     op->op_loc              = x86loc_symbol;
     op->op_type             = x86op_dword;
-    op->data.sym            = sym;
+    op->data.sym.name       = sym;
+    op->data.sym.offset     = 0;
 }
 
 void bincode_create_operand_from_label(x86_operand *op, int label)

@@ -826,7 +826,7 @@ static void _generate_jmp(expr_jump *jump)
             unit_push_unary_instruction(x86insn_jmp, &dst);
         }
     } else if (jump->condition->expr_code == code_expr_float_constant) {
-        aux_warning("exact comparison of float values");
+        aux_warning("exact comparison of floating values");
 
         if (jump->condition->data.float_const.val != 0.0f) {
             bincode_create_operand_from_label(&dst, jump->destination);

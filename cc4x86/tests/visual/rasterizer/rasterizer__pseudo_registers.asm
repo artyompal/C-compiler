@@ -218,7 +218,7 @@ _vec4f_is_equal proc
 	pop_all
 	fstp	dword ptr [ebp-20]
 	fld	dword ptr [ebp-20]
-	fld	[___unnamed_float_0]
+	fld	qword ptr [___unnamed_float_0]
 	fucomip	st,st(1)
 	fstp	st
 	setb	byte1
@@ -330,7 +330,7 @@ public	___unnamed_float_1
 _matrix4f_make_viewport proc
 	create_stack_frame	0
 	mov	dword45,[ebp+8]
-	fld	[___unnamed_float_1]
+	fld	dword ptr [___unnamed_float_1]
 	fdivr	dword ptr [ebp+12]
 	fstp	dword ptr [dword45]
 	fldz
@@ -344,7 +344,7 @@ _matrix4f_make_viewport proc
 	fld	dword ptr [ebp+16]
 	fldz
 	fsubrp
-	fld	[___unnamed_float_1]
+	fld	dword ptr [___unnamed_float_1]
 	fdivp
 	fstp	dword ptr [dword45+20]
 	fldz
@@ -360,10 +360,10 @@ _matrix4f_make_viewport proc
 	fstp	dword ptr [dword45+40]
 	fldz
 	fstp	dword ptr [dword45+44]
-	fld	[___unnamed_float_1]
+	fld	dword ptr [___unnamed_float_1]
 	fdivr	dword ptr [ebp+12]
 	fstp	dword ptr [dword45+48]
-	fld	[___unnamed_float_1]
+	fld	dword ptr [___unnamed_float_1]
 	fdivr	dword ptr [ebp+16]
 	fstp	dword ptr [dword45+52]
 	fld	dword ptr [ebp+20]
@@ -661,13 +661,13 @@ public	___unnamed_float_2
 _rasterizer_init proc
 	create_stack_frame	8
 	mov	dword3,[ebp+8]
-	mov	[__dbgprintf],dword3
+	mov	dword ptr [__dbgprintf],dword3
 	mov	dword6,[ebp+12]
-	mov	[__width],dword6
+	mov	dword ptr [__width],dword6
 	mov	dword9,[ebp+16]
-	mov	[__height],dword9
+	mov	dword ptr [__height],dword9
 	mov	dword12,[ebp+20]
-	mov	[__pitch],dword12
+	mov	dword ptr [__pitch],dword12
 	push_all
 	fild	dword ptr [ebp+12]
 	fild	dword ptr [ebp+16]
@@ -676,7 +676,7 @@ _rasterizer_init proc
 	push_arg	dword ptr [ebp+32]
 	push_arg	dword ptr [ebp+28]
 	push_arg	dword ptr [ebp+24]
-	lea	dword18,[__mvproj_matrix]
+	lea	dword18,dword ptr [__mvproj_matrix]
 	push_arg	dword18
 	call	_matrix4f_make_perspective
 	restore_stack	20
@@ -688,7 +688,7 @@ _rasterizer_init proc
 	push_argp
 	fild	dword ptr [ebp+12]
 	push_argp
-	lea	dword23,[__viewport_matrix]
+	lea	dword23,dword ptr [__viewport_matrix]
 	push_arg	dword23
 	call	_matrix4f_make_viewport
 	restore_stack	20
@@ -701,7 +701,7 @@ _rasterizer_init proc
 	push_argp
 	fldz
 	push_argp
-	lea	dword25,[__clip_z_near_base]
+	lea	dword25,dword ptr [__clip_z_near_base]
 	push_arg	dword25
 	call	_vec4f_assign
 	restore_stack	20
@@ -715,7 +715,7 @@ _rasterizer_init proc
 	fstp	dword ptr [ebp-4]
 	jmp	label0001
 label0000:
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	fstp	dword ptr [ebp-4]
 label0001:
 	push_all
@@ -726,7 +726,7 @@ label0001:
 	push_argp
 	fldz
 	push_argp
-	lea	dword32,[__clip_z_near_norm]
+	lea	dword32,dword ptr [__clip_z_near_norm]
 	push_arg	dword32
 	call	_vec4f_assign
 	restore_stack	20
@@ -739,7 +739,7 @@ label0001:
 	push_argp
 	fldz
 	push_argp
-	lea	dword34,[__clip_z_far_base]
+	lea	dword34,dword ptr [__clip_z_far_base]
 	push_arg	dword34
 	call	_vec4f_assign
 	restore_stack	20
@@ -749,7 +749,7 @@ label0001:
 	fucomip	st,st(1)
 	fstp	st
 	jbe	label0002
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	fstp	dword ptr [ebp-8]
 	jmp	label0003
 label0002:
@@ -764,7 +764,7 @@ label0003:
 	push_argp
 	fldz
 	push_argp
-	lea	dword41,[__clip_z_far_norm]
+	lea	dword41,dword ptr [__clip_z_far_norm]
 	push_arg	dword41
 	call	_vec4f_assign
 	restore_stack	20
@@ -776,13 +776,13 @@ label0003:
 	push_argp
 	fldz
 	push_argp
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	fld1
 	fild	dword ptr [ebp+12]
 	fdivp
 	faddp
 	push_argp
-	lea	dword44,[__clip_plane_left_base]
+	lea	dword44,dword ptr [__clip_plane_left_base]
 	push_arg	dword44
 	call	_vec4f_assign
 	restore_stack	20
@@ -796,7 +796,7 @@ label0003:
 	push_argp
 	fld1
 	push_argp
-	lea	dword45,[__clip_plane_left_norm]
+	lea	dword45,dword ptr [__clip_plane_left_norm]
 	push_arg	dword45
 	call	_vec4f_assign
 	restore_stack	20
@@ -814,7 +814,7 @@ label0003:
 	fdivp
 	fsubp
 	push_argp
-	lea	dword47,[__clip_plane_right_base]
+	lea	dword47,dword ptr [__clip_plane_right_base]
 	push_arg	dword47
 	call	_vec4f_assign
 	restore_stack	20
@@ -826,9 +826,9 @@ label0003:
 	push_argp
 	fldz
 	push_argp
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	push_argp
-	lea	dword49,[__clip_plane_right_norm]
+	lea	dword49,dword ptr [__clip_plane_right_norm]
 	push_arg	dword49
 	call	_vec4f_assign
 	restore_stack	20
@@ -838,7 +838,7 @@ label0003:
 	push_argp
 	fldz
 	push_argp
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	fld1
 	fild	dword ptr [ebp+16]
 	fdivp
@@ -846,7 +846,7 @@ label0003:
 	push_argp
 	fldz
 	push_argp
-	lea	dword52,[__clip_plane_top_base]
+	lea	dword52,dword ptr [__clip_plane_top_base]
 	push_arg	dword52
 	call	_vec4f_assign
 	restore_stack	20
@@ -860,7 +860,7 @@ label0003:
 	push_argp
 	fldz
 	push_argp
-	lea	dword53,[__clip_plane_top_norm]
+	lea	dword53,dword ptr [__clip_plane_top_norm]
 	push_arg	dword53
 	call	_vec4f_assign
 	restore_stack	20
@@ -874,7 +874,7 @@ label0003:
 	push_argp
 	fldz
 	push_argp
-	lea	dword54,[__clip_plane_bottom_base]
+	lea	dword54,dword ptr [__clip_plane_bottom_base]
 	push_arg	dword54
 	call	_vec4f_assign
 	restore_stack	20
@@ -884,11 +884,11 @@ label0003:
 	push_argp
 	fldz
 	push_argp
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	push_argp
 	fldz
 	push_argp
-	lea	dword56,[__clip_plane_bottom_norm]
+	lea	dword56,dword ptr [__clip_plane_bottom_norm]
 	push_arg	dword56
 	call	_vec4f_assign
 	restore_stack	20
@@ -900,7 +900,7 @@ _rasterizer_init endp
 _rasterizer_begin_frame proc
 	create_stack_frame	0
 	mov	dword3,[ebp+8]
-	mov	[__videomem],dword3
+	mov	dword ptr [__videomem],dword3
 	destroy_stack_frame	0
 	ret
 _rasterizer_begin_frame endp	
@@ -908,39 +908,38 @@ _rasterizer_begin_frame endp
 _rasterizer_set_mvproj proc
 	create_stack_frame	0
 	mov	dword2,[ebp+8]
-	lea	dword3,[__mvproj_matrix]
 	mov	dword4,[dword2]
 	mov	dword5,[dword2+4]
-	mov	[__mvproj_matrix],dword4
-	mov	[dword3+4],dword5
+	mov	dword ptr [__mvproj_matrix],dword4
+	mov	dword ptr [__mvproj_matrix+4],dword5
 	mov	dword4,[dword2+8]
 	mov	dword5,[dword2+12]
-	mov	[dword3+8],dword4
-	mov	[dword3+12],dword5
+	mov	dword ptr [__mvproj_matrix+8],dword4
+	mov	dword ptr [__mvproj_matrix+12],dword5
 	mov	dword4,[dword2+16]
 	mov	dword5,[dword2+20]
-	mov	[dword3+16],dword4
-	mov	[dword3+20],dword5
+	mov	dword ptr [__mvproj_matrix+16],dword4
+	mov	dword ptr [__mvproj_matrix+20],dword5
 	mov	dword4,[dword2+24]
 	mov	dword5,[dword2+28]
-	mov	[dword3+24],dword4
-	mov	[dword3+28],dword5
+	mov	dword ptr [__mvproj_matrix+24],dword4
+	mov	dword ptr [__mvproj_matrix+28],dword5
 	mov	dword4,[dword2+32]
 	mov	dword5,[dword2+36]
-	mov	[dword3+32],dword4
-	mov	[dword3+36],dword5
+	mov	dword ptr [__mvproj_matrix+32],dword4
+	mov	dword ptr [__mvproj_matrix+36],dword5
 	mov	dword4,[dword2+40]
 	mov	dword5,[dword2+44]
-	mov	[dword3+40],dword4
-	mov	[dword3+44],dword5
+	mov	dword ptr [__mvproj_matrix+40],dword4
+	mov	dword ptr [__mvproj_matrix+44],dword5
 	mov	dword4,[dword2+48]
 	mov	dword5,[dword2+52]
-	mov	[dword3+48],dword4
-	mov	[dword3+52],dword5
+	mov	dword ptr [__mvproj_matrix+48],dword4
+	mov	dword ptr [__mvproj_matrix+52],dword5
 	mov	dword4,[dword2+56]
 	mov	dword5,[dword2+60]
-	mov	[dword3+56],dword4
-	mov	[dword3+60],dword5
+	mov	dword ptr [__mvproj_matrix+56],dword4
+	mov	dword ptr [__mvproj_matrix+60],dword5
 	destroy_stack_frame	0
 	ret
 _rasterizer_set_mvproj endp	
@@ -948,7 +947,7 @@ _rasterizer_set_mvproj endp
 _rasterizer_set_color proc
 	create_stack_frame	0
 	mov	dword3,[ebp+8]
-	mov	[__color],dword3
+	mov	dword ptr [__color],dword3
 	destroy_stack_frame	0
 	ret
 _rasterizer_set_color endp	
@@ -956,32 +955,32 @@ _rasterizer_set_color endp
 _rasterizer_set_texture proc
 	create_stack_frame	0
 	mov	dword3,[ebp+8]
-	mov	[__texture_data],dword3
+	mov	dword ptr [__texture_data],dword3
 	mov	dword6,[ebp+12]
-	mov	[__texture_width],dword6
+	mov	dword ptr [__texture_width],dword6
 	mov	dword9,[ebp+16]
-	mov	[__texture_height],dword9
+	mov	dword ptr [__texture_height],dword9
 	destroy_stack_frame	0
 	ret
 _rasterizer_set_texture endp	
 
 __tex2d proc
 	create_stack_frame	8
-	mov	dword3,[__texture_width]
+	mov	dword3,dword ptr [__texture_width]
 	dec	dword3
 	int2float	dword3
 	fmul	dword ptr [ebp+8]
 	float2int	dword20
-	mov	dword9,[__texture_height]
+	mov	dword9,dword ptr [__texture_height]
 	dec	dword9
 	int2float	dword9
 	fmul	dword ptr [ebp+12]
 	float2int	dword21
 	mov	dword15,dword21
-	imul	dword15,[__texture_width]
+	imul	dword15,dword ptr [__texture_width]
 	add	dword15,dword20
 	sal	dword15,2
-	add	dword15,[__texture_data]
+	add	dword15,dword ptr [__texture_data]
 	mov	eax,[dword15]
 	destroy_stack_frame	8
 	ret
@@ -997,9 +996,9 @@ public	___unnamed_float_3
 __rasterize_horiz_line proc
 	create_stack_frame	44
 	mov	dword85,[ebp+8]
-	mov	dword80,[__pitch]
+	mov	dword80,dword ptr [__pitch]
 	imul	dword80,[ebp+16]
-	add	dword80,[__videomem]
+	add	dword80,dword ptr [__videomem]
 	mov	dword7,dword85
 	sal	dword7,2
 	add	dword80,dword7
@@ -1024,7 +1023,7 @@ label0000:
 	cmp	dword ptr [ebp-40],0
 	je	label0003
 	fild	dword ptr [ebp-40]
-	fld	[___unnamed_float_3]
+	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-44]
 	mov	dword82,[dword80]
@@ -1276,7 +1275,7 @@ label0002:
 	cmp	dword ptr [dword488+4],0
 	jl	label0004
 	mov	dword64,[dword488+4]
-	cmp	dword64,[__height]
+	cmp	dword64,dword ptr [__height]
 	jge	label0004
 	push_all
 	fldz
@@ -1852,9 +1851,9 @@ __clip_poligon proc
 	create_stack_frame	196
 	mov	dword30,[ebp+8]
 	push_all
-	lea	dword1,[__clip_z_far_norm]
+	lea	dword1,dword ptr [__clip_z_far_norm]
 	push_arg	dword1
-	lea	dword2,[__clip_z_far_base]
+	lea	dword2,dword ptr [__clip_z_far_base]
 	push_arg	dword2
 	push_arg	dword30
 	lea	dword4,[ebp-196]
@@ -1863,9 +1862,9 @@ __clip_poligon proc
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword5,[__clip_z_near_norm]
+	lea	dword5,dword ptr [__clip_z_near_norm]
 	push_arg	dword5
-	lea	dword6,[__clip_z_near_base]
+	lea	dword6,dword ptr [__clip_z_near_base]
 	push_arg	dword6
 	lea	dword7,[ebp-196]
 	push_arg	dword7
@@ -1874,9 +1873,9 @@ __clip_poligon proc
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword9,[__clip_plane_left_norm]
+	lea	dword9,dword ptr [__clip_plane_left_norm]
 	push_arg	dword9
-	lea	dword10,[__clip_plane_left_base]
+	lea	dword10,dword ptr [__clip_plane_left_base]
 	push_arg	dword10
 	push_arg	dword30
 	lea	dword12,[ebp-196]
@@ -1885,9 +1884,9 @@ __clip_poligon proc
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword13,[__clip_plane_right_norm]
+	lea	dword13,dword ptr [__clip_plane_right_norm]
 	push_arg	dword13
-	lea	dword14,[__clip_plane_right_base]
+	lea	dword14,dword ptr [__clip_plane_right_base]
 	push_arg	dword14
 	lea	dword15,[ebp-196]
 	push_arg	dword15
@@ -1896,9 +1895,9 @@ __clip_poligon proc
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword17,[__clip_plane_top_norm]
+	lea	dword17,dword ptr [__clip_plane_top_norm]
 	push_arg	dword17
-	lea	dword18,[__clip_plane_top_base]
+	lea	dword18,dword ptr [__clip_plane_top_base]
 	push_arg	dword18
 	push_arg	dword30
 	lea	dword20,[ebp-196]
@@ -1907,9 +1906,9 @@ __clip_poligon proc
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword21,[__clip_plane_bottom_norm]
+	lea	dword21,dword ptr [__clip_plane_bottom_norm]
 	push_arg	dword21
-	lea	dword22,[__clip_plane_bottom_base]
+	lea	dword22,dword ptr [__clip_plane_bottom_base]
 	push_arg	dword22
 	lea	dword23,[ebp-196]
 	push_arg	dword23
@@ -1929,7 +1928,7 @@ __transform_to_screen_space proc
 	create_stack_frame	20
 	mov	dword35,[ebp+8]
 	push_all
-	lea	dword1,[__viewport_matrix]
+	lea	dword1,dword ptr [__viewport_matrix]
 	push_arg	dword1
 	push_arg	dword ptr [ebp+12]
 	lea	dword3,[ebp-16]
@@ -1955,12 +1954,12 @@ __transform_to_screen_space proc
 	cmp	dword ptr [dword35],0
 	jl	label0001
 	mov	dword24,[dword35]
-	cmp	dword24,[__width]
+	cmp	dword24,dword ptr [__width]
 	jge	label0001
 	cmp	dword ptr [dword35+4],0
 	jl	label0001
 	mov	dword31,[dword35+4]
-	cmp	dword31,[__height]
+	cmp	dword31,dword ptr [__height]
 	jl	label0000
 label0001:
 	mov	dword ptr ds:[0],0
@@ -2067,7 +2066,7 @@ __transform_to_projection_space proc
 	restore_stack	20
 	pop_all
 	push_all
-	lea	dword8,[__mvproj_matrix]
+	lea	dword8,dword ptr [__mvproj_matrix]
 	push_arg	dword8
 	lea	dword9,[ebp-16]
 	push_arg	dword9
