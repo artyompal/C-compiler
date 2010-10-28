@@ -307,7 +307,7 @@ static void _maintain_fpu_stack(function_desc *function)
                 bincode_insert_fp_esp_offset(function, next_insn, x86insn_fpu_ld, x86op_double, 8 * i);
             }
 
-            bincode_insert_int_reg_const(function, next_insn, x86insn_int_add, x86reg_dword, ~x86reg_esp, last_pusha_count * 4);
+            bincode_insert_int_reg_const(function, next_insn, x86insn_int_add, x86reg_dword, ~x86reg_esp, last_pusha_count * 8);
             last_pusha_count = 0;
         } else if (insn->in_code == x86insn_fpu_int2float) {
             fp_registers_cnt++;
