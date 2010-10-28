@@ -17,6 +17,9 @@ static void _memcpy_via_dword_mov(x86_operand *dst, x86_operand *src, int size_i
         bincode_create_operand_from_pseudoreg(&r0, x86reg_dword, x86_codegen_alloc_pseudoreg(x86reg_dword));
         bincode_create_operand_from_pseudoreg(&r1, x86reg_dword, x86_codegen_alloc_pseudoreg(x86reg_dword));
 
+        src->op_type = x86op_dword;
+        dst->op_type = x86op_dword;
+
         src_ptr = *src;
         dst_ptr = *dst;
 

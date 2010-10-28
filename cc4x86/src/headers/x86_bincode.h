@@ -122,7 +122,10 @@ typedef struct x86_operand_decl {
         int int_val;
 
         // x86loc_symbol, x86loc_symbol_offset
-        symbol *sym;
+        struct op_symbol_decl {
+            symbol *name;
+            int     offset;
+        } sym;
 
         // x86loc_label
         int label;

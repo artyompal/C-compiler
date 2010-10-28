@@ -229,6 +229,21 @@ static const char *_x86_dword_registers[] = {
 AUX_CASSERT(AUX_ARRAY_LENGTH(_x86_dword_registers) == x86_dword_reg_count)
 
 
+static const char *_encode_hw_type(x86_operand_type hw_type)
+{
+    switch (hw_type) {
+    case x86op_byte:    return "byte ptr";
+    case x86op_word:    return "word ptr";
+
+    case x86op_float:
+    case x86op_dword:   return "dword ptr";
+
+    case x86op_double:  return "qword ptr";
+
+    default:            ASSERT(FALSE);
+    }
+}
+
 static void _print_insn(FILE *output, x86_instruction_code code)
 {
     ASSERT(code < x86insn_count);
@@ -336,15 +351,23 @@ static void _print_op(FILE *output, x86_operand *op)
         break;
 
     case x86loc_symbol:
-        if (TYPE_IS_FUNCTION(op->data.sym->sym_type)) {
-            fprintf(output, "_%s", op->data.sym->sym_name);
+        if (TYPE_IS_FUNCTION(op->data.sym.name->sym_type)) {
+            ASSERT(op->data.sym.offset == 0);
+            fprintf(output, "_%s", op->data.sym.name->sym_name);
         } else {
-            fprintf(output, "[_%s]", op->data.sym->sym_name);
+            if (op->data.sym.offset == 0) {
+                fprintf(output, "%s [_%s]", _encode_hw_type(op->op_type), op->data.sym.name->sym_name);
+            } else {
+                fprintf(output, "%s [_%s+%d]", _encode_hw_type(op->op_type), op->data.sym.name->sym_name, op->data.sym.offset);
+            }
         }
         break;
 
     case x86loc_symbol_offset:
-        fprintf(output, "(offset _%s)", op->data.sym->sym_name);
+        if (op->data.sym.offset == 0)
+            fprintf(output, "(offset _%s)", op->data.sym.name->sym_name);
+        else
+            fprintf(output, "(offset _%s)+%d", op->data.sym.name->sym_name, op->data.sym.offset);
         break;
 
     case x86loc_label:
@@ -361,21 +384,6 @@ static void _output_push_nullary_instruction(FILE *output, x86_instruction_code 
 {
     _print_insn(output, code);
     fputc('\n', output);
-}
-
-static const char *_encode_hw_type(x86_operand_type hw_type)
-{
-    switch (hw_type) {
-    case x86op_byte:    return "byte ptr";
-    case x86op_word:    return "word ptr";
-
-    case x86op_float:
-    case x86op_dword:   return "dword ptr";
-
-    case x86op_double:  return "qword ptr";
-
-    default:            ASSERT(FALSE);
-    }
 }
 
 static void _output_push_unary_instruction(FILE *output, x86_instruction_code code, x86_operand *op)
