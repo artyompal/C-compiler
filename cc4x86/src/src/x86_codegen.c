@@ -110,6 +110,10 @@ static x86_instruction_code _invert_compare_instruction(arithmetic_opcode opcode
     case x86insn_int_setge:    return x86insn_int_setle;
     case x86insn_int_setl:     return x86insn_int_setg;
     case x86insn_int_setle:    return x86insn_int_setge;
+    case x86insn_int_seta:     return x86insn_int_setb;
+    case x86insn_int_setae:    return x86insn_int_setbe;
+    case x86insn_int_setb:     return x86insn_int_seta;
+    case x86insn_int_setbe:    return x86insn_int_setae;
 
     default:                    ASSERT(FALSE);
     }
@@ -141,21 +145,22 @@ static void _generate_convert_int2float(x86_operand *res, x86_operand *op)
 
 static void _generate_convert_float2int(x86_operand *res, x86_operand *op)
 {
-    ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
+    x86_operand tmp;
 
+    ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
     bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
 
     if (option_use_sse2) {
         if (OP_IS_ADDRESS(*op)) {
-            bincode_create_operand_and_alloc_pseudoreg(res, x86reg_float);
-        }
-
-        unit_push_binary_instruction(x86insn_sse_store_int, res, op);
-    } else {
-        if (OP_IS_ADDRESS(*op)) {
-            x86_operand tmp;
             bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_float);
             unit_push_binary_instruction(x86insn_sse_mov, &tmp, op);
+        }
+
+        unit_push_binary_instruction(x86insn_sse_store_int, res, &tmp);
+    } else {
+        if (OP_IS_ADDRESS(*op)) {
+            bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_float);
+            unit_push_binary_instruction(x86insn_fpu_ld, &tmp, op);
         }
 
         unit_push_unary_instruction(x86insn_fpu_float2int, res);
@@ -357,7 +362,7 @@ static x86_instruction_code _negate_float_insn(x86_instruction_code insn)
     }
 }
 
-static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_operand *op1, x86_operand *op2)
+static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_operand *op1, x86_operand *op2, BOOL fpu_invert)
 {
     x86_instruction_code insn = _opcode_to_float_arithm_instruction(expr->data.arithm.opcode);
 
@@ -388,12 +393,18 @@ static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_
             res->op_loc = x86loc_none;
         }
     } else if (IS_COMPARE_OP(expr->data.arithm.opcode)) {
+        fpu_invert = !fpu_invert;
+
         if (op2->op_loc == x86loc_address) {
             unit_push_unary_instruction(x86insn_fpu_ld, op2);
         }
 
         if (op1->op_loc == x86loc_address) {
             unit_push_unary_instruction(x86insn_fpu_ld, op1);
+        }
+
+        if (fpu_invert) {
+            insn = _invert_compare_instruction(insn);
         }
 
         if (op1->op_loc != x86loc_address && op2->op_loc == x86loc_address) {
@@ -408,6 +419,10 @@ static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_
         bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
         unit_push_binary_instruction(x86insn_movzx, res, op2);
     } else {
+        if (fpu_invert) {
+            insn = _negate_float_insn(insn);
+        }
+
         if (op1->op_loc == x86loc_address) {
             if (op2->op_loc == x86loc_register) {
                 insn = _negate_float_insn(insn);
@@ -459,16 +474,18 @@ static void _generate_binary_arithm_expr(expression *expr, x86_operand *res)
 {
     x86_operand op1, op2;
     BOOL is_structure_op    = TYPE_IS_STRUCTURE_UNION(expr->expr_type);
-    BOOL is_int_op          = !is_structure_op && TYPE_IS_INTEGRAL_OR_POINTER(expr->data.arithm.operand1->expr_type);
+    BOOL is_fpu_op          = TYPE_IS_FLOATING(expr->expr_type) && !option_use_sse2;
+    BOOL is_int_op          = TYPE_IS_INTEGRAL_OR_POINTER(expr->data.arithm.operand1->expr_type);
+    BOOL fpu_invert;
 
-    // TODO: for now, we cannot evaluate floating operands in reverse order. Flag "invert" needed.
-    if (expr->data.arithm.operand2->expr_complexity > expr->data.arithm.operand1->expr_complexity
-        && (is_structure_op || is_int_op)) {
+    if (expr->data.arithm.operand1->expr_complexity < expr->data.arithm.operand2->expr_complexity) {
         _evaluate_nested_expression(expr->data.arithm.operand2, &op2);
         _evaluate_nested_expression(expr->data.arithm.operand1, &op1);
+        fpu_invert = (op1.op_loc == x86loc_register && op2.op_loc == x86loc_register);
     } else {
         _evaluate_nested_expression(expr->data.arithm.operand1, &op1);
         _evaluate_nested_expression(expr->data.arithm.operand2, &op2);
+        fpu_invert = FALSE;
     }
 
     if (is_structure_op) {
@@ -477,7 +494,7 @@ static void _generate_binary_arithm_expr(expression *expr, x86_operand *res)
     } else if (is_int_op) {
         _generate_int_binary_expr(expr, res, &op1, &op2);
     } else {
-        _generate_float_binary_expr(expr, res, &op1, &op2);
+        _generate_float_binary_expr(expr, res, &op1, &op2, fpu_invert);
     }
 }
 
@@ -613,18 +630,12 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res)
 
 static void _generate_prolog(void)
 {
-    x86_operand op;
-
-    bincode_create_operand_from_int_constant(&op, x86op_dword, 0);
-    unit_push_unary_instruction(x86insn_create_stack_frame, &op);
+    unit_push_nullary_instruction(x86insn_create_stack_frame);
 }
 
 static void _generate_epilog(void)
 {
-    x86_operand op;
-
-    bincode_create_operand_from_int_constant(&op, x86op_dword, 0);
-    unit_push_unary_instruction(x86insn_destroy_stack_frame, &op);
+    unit_push_nullary_instruction(x86insn_destroy_stack_frame);
 }
 
 static void _generate_return(expression *ret_value)

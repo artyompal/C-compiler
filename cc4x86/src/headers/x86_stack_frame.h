@@ -11,8 +11,9 @@ typedef struct function_desc_decl function_desc;
 
 
 void        x86_stack_frame_begin_function      (function_desc *function);
-void        x86_stack_frame_end_function        (function_desc *function);
-int         x86_stack_frame_alloc_tmp_var       (int size);     // возвращает смещение относительно EBP
+
+// Следующая функция возвращает смещение относительно EBP.
+int         x86_stack_frame_alloc_tmp_var       (function_desc *function, int size);
 
 
 #else

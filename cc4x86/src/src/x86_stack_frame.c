@@ -4,14 +4,11 @@
 #include "x86_stack_frame.h"
 
 
-static int _local_vars_size;
-
-
 //
 //  Схема выделения памяти в стеке.
 //
 //  Допустим, у нас есть два формальных параметра "int x, y", локальные переменные "float a, b"
-//  и временные переменные кодогенератора
+//  и временные переменные кодогенератора, тогда схема будет следующей:
 //
 //  offset  content
 //  +12     y
@@ -29,8 +26,8 @@ static void _calculate_stack_offsets_for_locals(function_desc *function)
     symbol *var;
 
     for (var = function->func_locals.list_first; var; var = var->sym_next) {
-        _local_vars_size    += type_calculate_sizeof(var->sym_type);
-        var->sym_offset     = -_local_vars_size;
+        function->func_local_vars_sz    += type_calculate_sizeof(var->sym_type);
+        var->sym_offset                 = -function->func_local_vars_sz;
     }
 }
 
@@ -61,36 +58,14 @@ static void _calculate_stack_offsets_for_params(function_desc *function)
 
 void x86_stack_frame_begin_function(function_desc *function)
 {
-    _local_vars_size = 0;
+    function->func_local_vars_sz = 0;
 
     _calculate_stack_offsets_for_locals(function);
     _calculate_stack_offsets_for_params(function);
 }
 
-void x86_stack_frame_end_function(function_desc *function)
+int x86_stack_frame_alloc_tmp_var(function_desc *function, int size)
 {
-    x86_instruction *insn;
-
-    // если были локальные переменные, корректируем код пролога и эпилога
-    if (_local_vars_size) {
-        insn = function->func_binary_code;
-
-        ASSERT(insn->in_code == x86insn_create_stack_frame && insn->in_op1.op_loc == x86loc_int_constant);
-        insn->in_op1.data.int_val = _local_vars_size;
-
-        for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-            if (insn->in_code == x86insn_destroy_stack_frame) {
-                insn->in_op1.data.int_val = _local_vars_size;
-            }
-        }
-    }
-
-    function->func_local_vars_sz = _local_vars_size;
+    function->func_local_vars_sz += size;
+    return -function->func_local_vars_sz;
 }
-
-int x86_stack_frame_alloc_tmp_var(int size)
-{
-    _local_vars_size += size;
-    return -_local_vars_size;
-}
-
