@@ -775,7 +775,7 @@ void unit_handle_function_body(symbol *sym)
 
     ASSERT(TYPE_IS_FUNCTION(sym->sym_type));
 
-    // add "return" statement if needed and warn if it's non-void function
+    // добавляем инструкцию "return", если её нет в конце функции
     if (!_curr_func->func_body) {
         unit_push_return(NULL, TRUE);
     } else {
@@ -856,7 +856,6 @@ void unit_codegen(void)
 
         x86_stack_frame_begin_function(_curr_func);
         x86_codegen_do_function(_curr_func);
-        x86_stack_frame_end_function(_curr_func);
 
         _curr_func->func_start_of_regvars = INT_MAX;
 

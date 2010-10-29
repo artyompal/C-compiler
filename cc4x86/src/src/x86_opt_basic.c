@@ -30,7 +30,7 @@ static void _try_optimize_add_sub   (function_desc *function, x86_instruction *i
 static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg, symbol *sym)
 {
     if (bincode_operand_contains_register(&insn->in_op1, x86reg_dword, reg)) {
-        if (insn->in_op1.op_loc == x86loc_address && ADDRESS_IS_BASE_OFS(insn->in_op1)) { // TODO: заменять [reg+ofs] на [offset symbol+ofs]
+        if (insn->in_op1.op_loc == x86loc_address && ADDRESS_IS_BASE_OFS(insn->in_op1)) {
             insn->in_op1.op_loc             = x86loc_symbol;
             insn->in_op1.data.sym.name      = sym;
             insn->in_op1.data.sym.offset    = insn->in_op1.data.address.offset;

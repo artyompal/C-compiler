@@ -317,7 +317,7 @@ static void _maintain_fpu_stack(function_desc *function)
 
             if (OP_IS_REGISTER(insn->in_op1)) {
                 if (tmp == 0) {
-                    tmp = x86_stack_frame_alloc_tmp_var(4);
+                    tmp = x86_stack_frame_alloc_tmp_var(function, 4);
                 }
 
                 bincode_insert_int_ebp_offset_reg(function, insn, x86insn_int_mov, x86reg_dword, tmp, insn->in_op1.data.reg);
@@ -331,7 +331,7 @@ static void _maintain_fpu_stack(function_desc *function)
 
             if (OP_IS_REGISTER(insn->in_op1)) {
                 if (tmp == 0) {
-                    tmp = x86_stack_frame_alloc_tmp_var(4);
+                    tmp = x86_stack_frame_alloc_tmp_var(function, 4);
                 }
 
                 bincode_insert_int_reg_ebp_offset(function, next_insn, x86insn_int_mov, x86reg_dword, insn->in_op1.data.reg, tmp);
@@ -512,8 +512,6 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
     return FALSE;
 }
 
-// TODO: надо не генерировать SETcc, если parent - JUMP
-
 static void _allocate_registers(function_desc *function, register_stat *stat, x86_register_type type)
 {
     register_map        *regmap = _get_register_map(type);
@@ -651,8 +649,8 @@ static void _stack_handling(function_desc *function, x86_register_type type)
             bincode_insert_push_reg(function, insn, x86reg_dword, ~x86reg_ebp);
             bincode_insert_int_reg_reg(function, insn, x86insn_int_mov, x86reg_dword, ~x86reg_ebp, ~x86reg_esp);
 
-            if (insn->in_op1.data.int_val) {
-                bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86reg_dword, ~x86reg_esp, insn->in_op1.data.int_val);
+            if (function->func_local_vars_sz) {
+                bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86reg_dword, ~x86reg_esp, function->func_local_vars_sz);
             }
 
             if (real_regs_usage[x86reg_edi]) {
@@ -679,8 +677,8 @@ static void _stack_handling(function_desc *function, x86_register_type type)
                 bincode_insert_pop_reg(function, insn, x86reg_dword, ~x86reg_edi);
             }
 
-            if (insn->in_op1.data.int_val) {
-                bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86reg_dword, ~x86reg_esp, insn->in_op1.data.int_val);
+            if (function->func_local_vars_sz) {
+                bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86reg_dword, ~x86reg_esp, function->func_local_vars_sz);
             }
 
             bincode_insert_pop_reg(function, insn, x86reg_dword, ~x86reg_ebp);
