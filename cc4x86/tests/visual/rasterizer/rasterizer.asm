@@ -194,10 +194,10 @@ _vec4f_dot proc
 	push	esi
 	mov	edi,[ebp+12]
 	mov	esi,[ebp+8]
-	fld	dword ptr [esi]
-	fmul	dword ptr [edi]
 	fld	dword ptr [esi+4]
 	fmul	dword ptr [edi+4]
+	fld	dword ptr [esi]
+	fmul	dword ptr [edi]
 	faddp
 	fld	dword ptr [esi+8]
 	fmul	dword ptr [edi+8]
@@ -257,11 +257,11 @@ _vec4f_is_equal proc
 	call	_vec4f_dot
 	add	esp,8
 	fstp	dword ptr [ebp-20]
-	fld	[___unnamed_float_0]
 	fld	dword ptr [ebp-20]
+	fld	qword ptr [___unnamed_float_0]
 	fucomip	st,st(1)
 	fstp	st
-	setb	al
+	seta	al
 	movzx	eax,al
 	add	esp,20
 	pop	ebp
@@ -380,7 +380,7 @@ _matrix4f_make_viewport proc
 	mov	ebp,esp
 	push	edi
 	mov	edi,[ebp+8]
-	fld	[___unnamed_float_1]
+	fld	dword ptr [___unnamed_float_1]
 	fdivr	dword ptr [ebp+12]
 	fstp	dword ptr [edi]
 	fldz
@@ -394,7 +394,7 @@ _matrix4f_make_viewport proc
 	fld	dword ptr [ebp+16]
 	fldz
 	fsubrp
-	fld	[___unnamed_float_1]
+	fld	dword ptr [___unnamed_float_1]
 	fdivp
 	fstp	dword ptr [edi+20]
 	fldz
@@ -410,10 +410,10 @@ _matrix4f_make_viewport proc
 	fstp	dword ptr [edi+40]
 	fldz
 	fstp	dword ptr [edi+44]
-	fld	[___unnamed_float_1]
+	fld	dword ptr [___unnamed_float_1]
 	fdivr	dword ptr [ebp+12]
 	fstp	dword ptr [edi+48]
-	fld	[___unnamed_float_1]
+	fld	dword ptr [___unnamed_float_1]
 	fdivr	dword ptr [ebp+16]
 	fstp	dword ptr [edi+52]
 	fld	dword ptr [ebp+20]
@@ -434,10 +434,10 @@ _matrix4f_mul proc
 	mov	edi,[ebp+8]
 	mov	esi,[ebp+16]
 	mov	ebx,[ebp+12]
-	fld	dword ptr [ebx]
-	fmul	dword ptr [esi]
 	fld	dword ptr [ebx+4]
 	fmul	dword ptr [esi+16]
+	fld	dword ptr [ebx]
+	fmul	dword ptr [esi]
 	faddp
 	fld	dword ptr [ebx+8]
 	fmul	dword ptr [esi+32]
@@ -642,10 +642,10 @@ _matrix4f_transform proc
 	mov	edi,[ebp+8]
 	mov	esi,[ebp+16]
 	mov	ebx,[ebp+12]
-	fld	dword ptr [ebx]
-	fmul	dword ptr [esi]
 	fld	dword ptr [ebx+4]
 	fmul	dword ptr [esi+16]
+	fld	dword ptr [ebx]
+	fmul	dword ptr [esi]
 	faddp
 	fld	dword ptr [ebx+8]
 	fmul	dword ptr [esi+32]
@@ -731,13 +731,13 @@ _rasterizer_init proc
 	mov	ebp,esp
 	sub	esp,8
 	mov	eax,[ebp+8]
-	mov	[__dbgprintf],eax
+	mov	dword ptr [__dbgprintf],eax
 	mov	eax,[ebp+12]
-	mov	[__width],eax
+	mov	dword ptr [__width],eax
 	mov	eax,[ebp+16]
-	mov	[__height],eax
+	mov	dword ptr [__height],eax
 	mov	eax,[ebp+20]
-	mov	[__pitch],eax
+	mov	dword ptr [__pitch],eax
 	fild	dword ptr [ebp+12]
 	fild	dword ptr [ebp+16]
 	fdivp
@@ -746,7 +746,7 @@ _rasterizer_init proc
 	push	dword ptr [ebp+32]
 	push	dword ptr [ebp+28]
 	push	dword ptr [ebp+24]
-	lea	eax,[__mvproj_matrix]
+	lea	eax,dword ptr [__mvproj_matrix]
 	push	eax
 	call	_matrix4f_make_perspective
 	add	esp,20
@@ -758,7 +758,7 @@ _rasterizer_init proc
 	fild	dword ptr [ebp+12]
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__viewport_matrix]
+	lea	eax,dword ptr [__viewport_matrix]
 	push	eax
 	call	_matrix4f_make_viewport
 	add	esp,20
@@ -772,7 +772,7 @@ _rasterizer_init proc
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_z_near_base]
+	lea	eax,dword ptr [__clip_z_near_base]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -785,7 +785,7 @@ _rasterizer_init proc
 	fstp	dword ptr [ebp-4]
 	jmp	label0001
 label0000:
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	fstp	dword ptr [ebp-4]
 label0001:
 	fld1
@@ -798,7 +798,7 @@ label0001:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_z_near_norm]
+	lea	eax,dword ptr [__clip_z_near_norm]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -812,7 +812,7 @@ label0001:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_z_far_base]
+	lea	eax,dword ptr [__clip_z_far_base]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -821,7 +821,7 @@ label0001:
 	fucomip	st,st(1)
 	fstp	st
 	jbe	label0002
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	fstp	dword ptr [ebp-8]
 	jmp	label0003
 label0002:
@@ -838,7 +838,7 @@ label0003:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_z_far_norm]
+	lea	eax,dword ptr [__clip_z_far_norm]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -851,14 +851,14 @@ label0003:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	fld	[___unnamed_float_2]
-	fld1
 	fild	dword ptr [ebp+12]
-	fdivp
+	fld1
+	fdivrp
+	fld	dword ptr [___unnamed_float_2]
 	faddp
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_plane_left_base]
+	lea	eax,dword ptr [__clip_plane_left_base]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -874,7 +874,7 @@ label0003:
 	fld1
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_plane_left_norm]
+	lea	eax,dword ptr [__clip_plane_left_norm]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -887,14 +887,14 @@ label0003:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	fld1
-	fld1
 	fild	dword ptr [ebp+12]
-	fdivp
-	fsubp
+	fld1
+	fdivrp
+	fld1
+	fsubrp
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_plane_right_base]
+	lea	eax,dword ptr [__clip_plane_right_base]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -907,10 +907,10 @@ label0003:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_plane_right_norm]
+	lea	eax,dword ptr [__clip_plane_right_norm]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -920,17 +920,17 @@ label0003:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	fld	[___unnamed_float_2]
-	fld1
 	fild	dword ptr [ebp+16]
-	fdivp
+	fld1
+	fdivrp
+	fld	dword ptr [___unnamed_float_2]
 	faddp
 	fstp	dword ptr [esp-4]
 	sub	esp,4
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_plane_top_base]
+	lea	eax,dword ptr [__clip_plane_top_base]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -946,7 +946,7 @@ label0003:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_plane_top_norm]
+	lea	eax,dword ptr [__clip_plane_top_norm]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -962,7 +962,7 @@ label0003:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_plane_bottom_base]
+	lea	eax,dword ptr [__clip_plane_bottom_base]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -972,13 +972,13 @@ label0003:
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	fld	[___unnamed_float_2]
+	fld	dword ptr [___unnamed_float_2]
 	fstp	dword ptr [esp-4]
 	sub	esp,4
 	fldz
 	fstp	dword ptr [esp-4]
 	sub	esp,4
-	lea	eax,[__clip_plane_bottom_norm]
+	lea	eax,dword ptr [__clip_plane_bottom_norm]
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
@@ -991,7 +991,7 @@ _rasterizer_begin_frame proc
 	push	ebp
 	mov	ebp,esp
 	mov	eax,[ebp+8]
-	mov	[__videomem],eax
+	mov	dword ptr [__videomem],eax
 	pop	ebp
 	ret
 _rasterizer_begin_frame endp	
@@ -999,19 +999,39 @@ _rasterizer_begin_frame endp
 _rasterizer_set_mvproj proc
 	push	ebp
 	mov	ebp,esp
-	push	ebx
 	mov	eax,[ebp+8]
-	lea	ecx,[eax]
-	lea	eax,[__mvproj_matrix]
-	mov	edx,16
-label0000:
-	mov	ebx,[ecx]
-	mov	[eax],ebx
-	dec	edx
-	lea	ecx,[ecx+4]
-	lea	eax,[eax+4]
-	jne	label0000
-	pop	ebx
+	mov	ecx,[eax]
+	mov	edx,[eax+4]
+	mov	dword ptr [__mvproj_matrix],ecx
+	mov	dword ptr [__mvproj_matrix+4],edx
+	mov	ecx,[eax+8]
+	mov	edx,[eax+12]
+	mov	dword ptr [__mvproj_matrix+8],ecx
+	mov	dword ptr [__mvproj_matrix+12],edx
+	mov	ecx,[eax+16]
+	mov	edx,[eax+20]
+	mov	dword ptr [__mvproj_matrix+16],ecx
+	mov	dword ptr [__mvproj_matrix+20],edx
+	mov	ecx,[eax+24]
+	mov	edx,[eax+28]
+	mov	dword ptr [__mvproj_matrix+24],ecx
+	mov	dword ptr [__mvproj_matrix+28],edx
+	mov	ecx,[eax+32]
+	mov	edx,[eax+36]
+	mov	dword ptr [__mvproj_matrix+32],ecx
+	mov	dword ptr [__mvproj_matrix+36],edx
+	mov	ecx,[eax+40]
+	mov	edx,[eax+44]
+	mov	dword ptr [__mvproj_matrix+40],ecx
+	mov	dword ptr [__mvproj_matrix+44],edx
+	mov	ecx,[eax+48]
+	mov	edx,[eax+52]
+	mov	dword ptr [__mvproj_matrix+48],ecx
+	mov	dword ptr [__mvproj_matrix+52],edx
+	mov	ecx,[eax+56]
+	mov	edx,[eax+60]
+	mov	dword ptr [__mvproj_matrix+56],ecx
+	mov	dword ptr [__mvproj_matrix+60],edx
 	pop	ebp
 	ret
 _rasterizer_set_mvproj endp	
@@ -1020,7 +1040,7 @@ _rasterizer_set_color proc
 	push	ebp
 	mov	ebp,esp
 	mov	eax,[ebp+8]
-	mov	[__color],eax
+	mov	dword ptr [__color],eax
 	pop	ebp
 	ret
 _rasterizer_set_color endp	
@@ -1029,11 +1049,11 @@ _rasterizer_set_texture proc
 	push	ebp
 	mov	ebp,esp
 	mov	eax,[ebp+8]
-	mov	[__texture_data],eax
+	mov	dword ptr [__texture_data],eax
 	mov	eax,[ebp+12]
-	mov	[__texture_width],eax
+	mov	dword ptr [__texture_width],eax
 	mov	eax,[ebp+16]
-	mov	[__texture_height],eax
+	mov	dword ptr [__texture_height],eax
 	pop	ebp
 	ret
 _rasterizer_set_texture endp	
@@ -1044,14 +1064,14 @@ __tex2d proc
 	sub	esp,12
 	push	edi
 	push	esi
-	mov	eax,[__texture_width]
+	mov	eax,dword ptr [__texture_width]
 	dec	eax
 	mov	[ebp-12],eax
 	fild	dword ptr [ebp-12]
 	fmul	dword ptr [ebp+8]
 	fistp	dword ptr [ebp-12]
 	mov	edi,[ebp-12]
-	mov	eax,[__texture_height]
+	mov	eax,dword ptr [__texture_height]
 	dec	eax
 	mov	[ebp-12],eax
 	fild	dword ptr [ebp-12]
@@ -1059,10 +1079,10 @@ __tex2d proc
 	fistp	dword ptr [ebp-12]
 	mov	esi,[ebp-12]
 	mov	eax,esi
-	imul	eax,[__texture_width]
+	imul	eax,dword ptr [__texture_width]
 	add	eax,edi
 	sal	eax,2
-	add	eax,[__texture_data]
+	add	eax,dword ptr [__texture_data]
 	mov	eax,[eax]
 	pop	esi
 	pop	edi
@@ -1086,9 +1106,9 @@ __rasterize_horiz_line proc
 	push	esi
 	push	ebx
 	mov	edi,[ebp+8]
-	mov	esi,[__pitch]
+	mov	esi,dword ptr [__pitch]
 	imul	esi,[ebp+16]
-	add	esi,[__videomem]
+	add	esi,dword ptr [__videomem]
 	mov	eax,edi
 	sal	eax,2
 	add	esi,eax
@@ -1111,7 +1131,7 @@ label0000:
 	cmp	dword ptr [ebp-40],0
 	je	label0003
 	fild	dword ptr [ebp-40]
-	fld	[___unnamed_float_3]
+	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-44]
 	mov	ecx,[esi]
@@ -1402,7 +1422,7 @@ label0002:
 	cmp	dword ptr [ebx+4],0
 	jl	label0004
 	mov	eax,[ebx+4]
-	cmp	eax,[__height]
+	cmp	eax,dword ptr [__height]
 	jge	label0004
 	fldz
 	fstp	dword ptr [esp-4]
@@ -1437,9 +1457,9 @@ label0003:
 	mov	[ebp-16],eax
 label0005:
 label0006:
-	mov	eax,[ebp-16]
-	cmp	eax,[esi+4]
-	jge	label0007
+	mov	eax,[esi+4]
+	cmp	eax,[ebp-16]
+	jle	label0007
 	mov	eax,[ebp-16]
 	sub	eax,[ebx+4]
 	mov	ecx,[esi]
@@ -1536,21 +1556,21 @@ label0006:
 	add	eax,4
 	fadd	dword ptr [eax]
 	fstp	dword ptr [ebp-32]
+	mov	eax,[ebp-12]
+	sub	eax,[ebp-8]
+	mov	[ebp-44],eax
+	fild	dword ptr [ebp-44]
 	fld	dword ptr [ebp-28]
 	fsub	dword ptr [ebp-20]
+	fdivrp
+	fstp	dword ptr [ebp-36]
 	mov	eax,[ebp-12]
 	sub	eax,[ebp-8]
 	mov	[ebp-44],eax
 	fild	dword ptr [ebp-44]
-	fdivp
-	fstp	dword ptr [ebp-36]
 	fld	dword ptr [ebp-32]
 	fsub	dword ptr [ebp-24]
-	mov	eax,[ebp-12]
-	sub	eax,[ebp-8]
-	mov	[ebp-44],eax
-	fild	dword ptr [ebp-44]
-	fdivp
+	fdivrp
 	fstp	dword ptr [ebp-40]
 	push	dword ptr [ebp-40]
 	push	dword ptr [ebp-36]
@@ -1652,9 +1672,9 @@ label0007:
 	mov	[ebp-16],eax
 label0008:
 label0009:
-	mov	eax,[ebp-16]
-	cmp	eax,[edi+4]
-	jge	label000a
+	mov	eax,[edi+4]
+	cmp	eax,[ebp-16]
+	jle	label000a
 	mov	eax,[ebp-16]
 	sub	eax,[esi+4]
 	mov	ecx,[edi]
@@ -1751,21 +1771,21 @@ label0009:
 	add	eax,4
 	fadd	dword ptr [eax]
 	fstp	dword ptr [ebp-32]
+	mov	eax,[ebp-12]
+	sub	eax,[ebp-8]
+	mov	[ebp-44],eax
+	fild	dword ptr [ebp-44]
 	fld	dword ptr [ebp-28]
 	fsub	dword ptr [ebp-20]
+	fdivrp
+	fstp	dword ptr [ebp-36]
 	mov	eax,[ebp-12]
 	sub	eax,[ebp-8]
 	mov	[ebp-44],eax
 	fild	dword ptr [ebp-44]
-	fdivp
-	fstp	dword ptr [ebp-36]
 	fld	dword ptr [ebp-32]
 	fsub	dword ptr [ebp-24]
-	mov	eax,[ebp-12]
-	sub	eax,[ebp-8]
-	mov	[ebp-44],eax
-	fild	dword ptr [ebp-44]
-	fdivp
+	fdivrp
 	fstp	dword ptr [ebp-40]
 	push	dword ptr [ebp-40]
 	push	dword ptr [ebp-36]
@@ -1807,8 +1827,8 @@ label0001:
 	imul	ecx,[eax+192],24
 	mov	eax,[ebp+12]
 	add	eax,ecx
-	cmp	ebx,eax
-	jge	label0002
+	cmp	eax,ebx
+	jle	label0002
 	push	dword ptr [ebp+16]
 	mov	eax,esi
 	push	eax
@@ -1900,17 +1920,17 @@ label0005:
 	push	eax
 	call	_vec4f_dot
 	add	esp,8
-	fstp	dword ptr [esp-4]
-	sub	esp,4
+	fstp	qword ptr [esp-8]
+	sub	esp,8
 	push	dword ptr [ebp+20]
 	lea	eax,[ebp-40]
 	push	eax
 	call	_vec4f_dot
 	add	esp,8
-	fstp	dword ptr [esp-4]
-	fld	dword ptr [esp]
-	fld	dword ptr [esp-4]
-	add	esp,4
+	fstp	qword ptr [esp-8]
+	fld	qword ptr [esp]
+	fld	qword ptr [esp-8]
+	add	esp,8
 	fdivp
 	fstp	dword ptr [ebp-60]
 	push	dword ptr [ebp-60]
@@ -1992,54 +2012,54 @@ __clip_poligon proc
 	sub	esp,196
 	push	edi
 	mov	edi,[ebp+8]
-	lea	eax,[__clip_z_far_norm]
+	lea	eax,dword ptr [__clip_z_far_norm]
 	push	eax
-	lea	eax,[__clip_z_far_base]
-	push	eax
-	push	edi
-	lea	eax,[ebp-196]
-	push	eax
-	call	__clip_on_plain
-	add	esp,16
-	lea	eax,[__clip_z_near_norm]
-	push	eax
-	lea	eax,[__clip_z_near_base]
-	push	eax
-	lea	eax,[ebp-196]
-	push	eax
-	push	edi
-	call	__clip_on_plain
-	add	esp,16
-	lea	eax,[__clip_plane_left_norm]
-	push	eax
-	lea	eax,[__clip_plane_left_base]
+	lea	eax,dword ptr [__clip_z_far_base]
 	push	eax
 	push	edi
 	lea	eax,[ebp-196]
 	push	eax
 	call	__clip_on_plain
 	add	esp,16
-	lea	eax,[__clip_plane_right_norm]
+	lea	eax,dword ptr [__clip_z_near_norm]
 	push	eax
-	lea	eax,[__clip_plane_right_base]
+	lea	eax,dword ptr [__clip_z_near_base]
 	push	eax
 	lea	eax,[ebp-196]
 	push	eax
 	push	edi
 	call	__clip_on_plain
 	add	esp,16
-	lea	eax,[__clip_plane_top_norm]
+	lea	eax,dword ptr [__clip_plane_left_norm]
 	push	eax
-	lea	eax,[__clip_plane_top_base]
+	lea	eax,dword ptr [__clip_plane_left_base]
 	push	eax
 	push	edi
 	lea	eax,[ebp-196]
 	push	eax
 	call	__clip_on_plain
 	add	esp,16
-	lea	eax,[__clip_plane_bottom_norm]
+	lea	eax,dword ptr [__clip_plane_right_norm]
 	push	eax
-	lea	eax,[__clip_plane_bottom_base]
+	lea	eax,dword ptr [__clip_plane_right_base]
+	push	eax
+	lea	eax,[ebp-196]
+	push	eax
+	push	edi
+	call	__clip_on_plain
+	add	esp,16
+	lea	eax,dword ptr [__clip_plane_top_norm]
+	push	eax
+	lea	eax,dword ptr [__clip_plane_top_base]
+	push	eax
+	push	edi
+	lea	eax,[ebp-196]
+	push	eax
+	call	__clip_on_plain
+	add	esp,16
+	lea	eax,dword ptr [__clip_plane_bottom_norm]
+	push	eax
+	lea	eax,dword ptr [__clip_plane_bottom_base]
 	push	eax
 	lea	eax,[ebp-196]
 	push	eax
@@ -2061,16 +2081,16 @@ __transform_to_screen_space proc
 	sub	esp,24
 	push	edi
 	mov	edi,[ebp+8]
-	lea	eax,[__viewport_matrix]
+	lea	eax,dword ptr [__viewport_matrix]
 	push	eax
 	push	dword ptr [ebp+12]
 	lea	eax,[ebp-16]
 	push	eax
 	call	_matrix4f_transform
 	add	esp,12
-	fld1
 	lea	eax,[ebp-16]
 	add	eax,12
+	fld1
 	fdiv	dword ptr [eax]
 	fstp	dword ptr [ebp-20]
 	fld	dword ptr [ebp-16]
@@ -2088,12 +2108,12 @@ __transform_to_screen_space proc
 	cmp	dword ptr [edi],0
 	jl	label0001
 	mov	eax,[edi]
-	cmp	eax,[__width]
+	cmp	eax,dword ptr [__width]
 	jge	label0001
 	cmp	dword ptr [edi+4],0
 	jl	label0001
 	mov	eax,[edi+4]
-	cmp	eax,[__height]
+	cmp	eax,dword ptr [__height]
 	jl	label0000
 label0001:
 	mov	dword ptr ds:[0],0
@@ -2131,8 +2151,9 @@ label0001:
 	mov	esi,0
 label0002:
 label0003:
-	cmp	esi,[edi+192]
-	jge	label0004
+	mov	eax,[edi+192]
+	cmp	eax,esi
+	jle	label0004
 	mov	eax,edi
 	imul	ecx,esi,24
 	add	eax,ecx
@@ -2165,8 +2186,8 @@ label0005:
 label0006:
 	mov	eax,[edi+192]
 	dec	eax
-	cmp	esi,eax
-	jge	label0007
+	cmp	eax,esi
+	jle	label0007
 	lea	eax,[ebp-132]
 	mov	ecx,esi
 	sal	ecx,4
@@ -2209,7 +2230,7 @@ __transform_to_projection_space proc
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
-	lea	eax,[__mvproj_matrix]
+	lea	eax,dword ptr [__mvproj_matrix]
 	push	eax
 	lea	eax,[ebp-16]
 	push	eax
