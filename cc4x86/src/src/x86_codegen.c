@@ -101,7 +101,7 @@ static x86_instruction_code _opcode_to_float_arithm_instruction(arithmetic_opcod
     }
 }
 
-static x86_instruction_code _invert_compare_instruction(arithmetic_opcode opcode)
+static x86_instruction_code _invert_comparison_operands(arithmetic_opcode opcode)
 {
     switch (opcode) {
     case x86insn_int_setne:    return x86insn_int_setne;
@@ -116,6 +116,53 @@ static x86_instruction_code _invert_compare_instruction(arithmetic_opcode opcode
     case x86insn_int_setbe:    return x86insn_int_setae;
 
     default:                    ASSERT(FALSE);
+    }
+}
+
+static x86_instruction_code _condition_to_jump(arithmetic_opcode opcode, BOOL is_float)
+{
+    switch (opcode) {
+    case op_less_then:      return (is_float ? x86insn_jb : x86insn_jl);
+    case op_less_equal:     return (is_float ? x86insn_jbe : x86insn_jle);
+    case op_greater_then:   return (is_float ? x86insn_ja : x86insn_jg);
+    case op_greater_equal:  return (is_float ? x86insn_jae : x86insn_jge);
+    case op_equal:          return x86insn_je;
+    case op_non_equal:      return x86insn_jne;
+    default:                ASSERT(FALSE);
+    }
+}
+
+static x86_instruction_code _invert_jump_condition(x86_instruction_code jump_insn)
+{
+    switch (jump_insn) {
+    case x86insn_je:       return x86insn_jne;
+    case x86insn_jne:      return x86insn_je;
+    case x86insn_jle:      return x86insn_jg;
+    case x86insn_jl:       return x86insn_jge;
+    case x86insn_jge:      return x86insn_jl;
+    case x86insn_jg:       return x86insn_jle;
+    case x86insn_jbe:      return x86insn_ja;
+    case x86insn_jb:       return x86insn_jae;
+    case x86insn_jae:      return x86insn_jb;
+    case x86insn_ja:       return x86insn_jbe;
+    default:                ASSERT(FALSE);
+    }
+}
+
+static x86_instruction_code _invert_jump_operands(x86_instruction_code jump_insn)
+{
+    switch (jump_insn) {
+    case x86insn_je:       return x86insn_je;
+    case x86insn_jne:      return x86insn_jne;
+    case x86insn_jle:      return x86insn_jge;
+    case x86insn_jl:       return x86insn_jg;
+    case x86insn_jge:      return x86insn_jle;
+    case x86insn_jg:       return x86insn_jl;
+    case x86insn_jbe:      return x86insn_jae;
+    case x86insn_jb:       return x86insn_ja;
+    case x86insn_jae:      return x86insn_jbe;
+    case x86insn_ja:       return x86insn_jb;
+    default:                ASSERT(FALSE);
     }
 }
 
@@ -404,11 +451,11 @@ static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_
         }
 
         if (fpu_invert) {
-            insn = _invert_compare_instruction(insn);
+            insn = _invert_comparison_operands(insn);
         }
 
         if (op1->op_loc != x86loc_address && op2->op_loc == x86loc_address) {
-            insn = _invert_compare_instruction(insn);
+            insn = _invert_comparison_operands(insn);
         }
 
         unit_push_nullary_instruction(x86insn_fpu_cmp);
@@ -699,35 +746,6 @@ static void _generate_common_conditional_jump(expression *condition, int destina
     unit_push_unary_instruction((invert ? x86insn_je : x86insn_jne), &tmp);
 }
 
-static x86_instruction_code _condition_to_jump(arithmetic_opcode opcode, BOOL is_float)
-{
-    switch (opcode) {
-    case op_less_then:      return (is_float ? x86insn_jb : x86insn_jl);
-    case op_less_equal:     return (is_float ? x86insn_jbe : x86insn_jle);
-    case op_greater_then:   return (is_float ? x86insn_ja : x86insn_jg);
-    case op_greater_equal:  return (is_float ? x86insn_jae : x86insn_jge);
-    case op_equal:          return x86insn_je;
-    case op_non_equal:      return x86insn_jne;
-    default:                ASSERT(FALSE);
-    }
-}
-
-static x86_instruction_code _invert_jump(x86_instruction_code jump_insn)
-{
-    switch (jump_insn) {
-    case x86insn_je:       return x86insn_jne;
-    case x86insn_jne:      return x86insn_je;
-    case x86insn_jle:      return x86insn_jg;
-    case x86insn_jl:       return x86insn_jge;
-    case x86insn_jge:      return x86insn_jl;
-    case x86insn_jg:       return x86insn_jle;
-    case x86insn_jbe:      return x86insn_ja;
-    case x86insn_jb:       return x86insn_jae;
-    case x86insn_jae:      return x86insn_jb;
-    case x86insn_ja:       return x86insn_jbe;
-    default:                ASSERT(FALSE);
-    }
-}
 
 static void _generate_conditional_jump(expression *condition, int destination, BOOL invert);
 
@@ -748,12 +766,12 @@ static void _generate_jumps_for_or(expression *cond1, expression *cond2, int des
     _generate_conditional_jump(cond2, destination, invert_operands);
 }
 
-static void _generate_conditional_jump(expression *condition, int destination, BOOL invert)
+static void _generate_conditional_jump(expression *condition, int destination, BOOL invert_condition)
 {
     expr_arithm *arithm;
     x86_operand op1, op2, tmp;
     x86_instruction_code insn;
-    BOOL is_float;
+    BOOL is_float, invert_operands = FALSE;
 
     if (condition->expr_code == code_expr_arithmetic) {
         arithm = &condition->data.arithm;
@@ -765,7 +783,7 @@ static void _generate_conditional_jump(expression *condition, int destination, B
             } else {
                 _evaluate_nested_expression(arithm->operand2, &op1);
                 _evaluate_nested_expression(arithm->operand1, &op2);
-                invert = !invert;
+                invert_operands = TRUE;
             }
 
             is_float = (arithm->operand1->expr_type->type_code == code_type_float);
@@ -788,7 +806,7 @@ static void _generate_conditional_jump(expression *condition, int destination, B
                 }
 
                 if (op1.op_loc != x86loc_address && op2.op_loc == x86loc_address) {
-                    invert = !invert;
+                    invert_operands = !invert_operands;
                 }
 
                 unit_push_nullary_instruction(x86insn_fpu_cmp);
@@ -796,31 +814,35 @@ static void _generate_conditional_jump(expression *condition, int destination, B
 
             insn = _condition_to_jump(arithm->opcode, is_float);
 
-            if (invert) {
-                insn = _invert_jump(insn);
+            if (invert_condition) {
+                insn = _invert_jump_condition(insn);
+            }
+
+            if (invert_operands) {
+                insn = _invert_jump_operands(insn);
             }
 
             bincode_create_operand_from_label(&tmp, destination);
             unit_push_unary_instruction(insn, &tmp);
         } else if (arithm->opcode == op_not) {
-            _generate_conditional_jump(arithm->operand1, destination, !invert);
+            _generate_conditional_jump(arithm->operand1, destination, !invert_condition);
         } else if (arithm->opcode == op_logical_and_in_jump) {
-            if (!invert) {
+            if (!invert_condition) {
                 _generate_jumps_for_and(arithm->operand1, arithm->operand2, destination, FALSE);
             } else {
                 _generate_jumps_for_or(arithm->operand1, arithm->operand2, destination, TRUE);
             }
         } else if (arithm->opcode == op_logical_or_in_jump) {
-            if (!invert) {
+            if (!invert_condition) {
                 _generate_jumps_for_or(arithm->operand1, arithm->operand2, destination, FALSE);
             } else {
                 _generate_jumps_for_and(arithm->operand1, arithm->operand2, destination, TRUE);
             }
         } else {
-            _generate_common_conditional_jump(condition, destination, invert);
+            _generate_common_conditional_jump(condition, destination, invert_condition);
         }
     } else {
-        _generate_common_conditional_jump(condition, destination, invert);
+        _generate_common_conditional_jump(condition, destination, invert_condition);
     }
 }
 

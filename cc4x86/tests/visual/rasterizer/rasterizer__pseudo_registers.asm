@@ -1308,7 +1308,7 @@ label0005:
 label0006:
 	mov	dword89,[dword489+4]
 	cmp	dword89,[ebp-16]
-	jl	label0007
+	jle	label0007
 	mov	dword94,[ebp-16]
 	sub	dword94,[dword488+4]
 	mov	dword99,[dword489]
@@ -1514,7 +1514,7 @@ label0008:
 label0009:
 	mov	dword342,[dword490+4]
 	cmp	dword342,[ebp-16]
-	jl	label000a
+	jle	label000a
 	mov	dword347,[ebp-16]
 	sub	dword347,[dword489+4]
 	mov	dword352,[dword490]
@@ -1653,7 +1653,7 @@ label0001:
 	mov	dword15,[ebp+12]
 	add	dword15,dword13
 	cmp	dword15,dword103
-	jl	label0002
+	jle	label0002
 	push_all
 	push_arg	dword ptr [ebp+16]
 	mov	dword19,dword102
@@ -1990,7 +1990,7 @@ label0002:
 label0003:
 	mov	dword12,[dword54+192]
 	cmp	dword12,dword53
-	jl	label0004
+	jle	label0004
 	push_all
 	mov	dword14,dword54
 	imul	dword16,dword53,24
@@ -2026,7 +2026,7 @@ label0006:
 	mov	dword39,[dword54+192]
 	dec	dword39
 	cmp	dword39,dword53
-	jl	label0007
+	jle	label0007
 	push_all
 	lea	dword41,[ebp-132]
 	mov	dword44,dword53
