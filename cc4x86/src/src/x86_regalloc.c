@@ -437,7 +437,7 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
 
     // MOV reg,EAX/EDX.
     // Если reg не регистровая переменная, выделяем этот реальный регистр для reg, удаляем присваивание.
-    if (insn->in_code == x86insn_int_mov && OP_IS_PSEUDO_DWORD_REG(insn->in_op1) && OP_IS_REAL_DWORD_REG(insn->in_op2)) {
+    else if (insn->in_code == x86insn_int_mov && OP_IS_PSEUDO_DWORD_REG(insn->in_op1) && OP_IS_REAL_DWORD_REG(insn->in_op2)) {
         reg         = insn->in_op1.data.reg;
         real_reg    = ~insn->in_op2.data.reg;
 
@@ -455,7 +455,7 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
 
     // CDQ.
     // Мы должны освободить EDX.
-    if (insn->in_code == x86insn_cdq && type == x86reg_dword) {
+    else if (insn->in_code == x86insn_cdq && type == x86reg_dword) {
         if (!_is_real_register_free(regmap, x86reg_edx)) {
             reg         = regmap->real_registers_map[x86reg_edx];
             real_reg    = _alloc_real_register_except_eax(regmap, reg);
@@ -471,27 +471,9 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
         return TRUE;
     }
 
-    //// SETcc.
-    //// Мы должны освободить EAX.
-    //if (IS_SET_INSN(insn->in_code)) {
-    //    if (!_is_real_register_free(x86reg_eax)) {
-    //        reg         = _real_registers_map[x86reg_eax];
-    //        real_reg    = _alloc_real_register_except_eax(reg);
-    //        ASSERT(!X86_IS_REGVAR(reg) || type != x86reg_dword);
-
-    //        ASSERT(pseudoregs_map[reg].reg_status == register_allocated);
-    //        _free_real_register(pseudoregs_map[reg].reg_location);
-    //        pseudoregs_map[reg].reg_location    = real_reg;
-
-    //        bincode_insert_int_reg_reg(function, insn, x86insn_int_mov, ~real_reg, ~x86reg_eax);
-    //    }
-
-    //    return TRUE;
-    //}
-
     // CALL с целочисленным результатом.
     // Мы должны освободить EAX.
-    if (insn->in_code == x86insn_call && OP_IS_INT(insn->in_op2) && type == x86reg_dword) {
+    else if (insn->in_code == x86insn_call && OP_IS_INT(insn->in_op2) && type == x86reg_dword) {
         if (!_is_real_register_free(regmap, x86reg_eax)) {
             reg         = regmap->real_registers_map[x86reg_eax];
             ASSERT(!X86_IS_REGVAR(reg) || type != x86reg_dword);
