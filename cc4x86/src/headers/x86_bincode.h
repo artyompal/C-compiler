@@ -68,7 +68,7 @@ typedef enum x86_operand_type_decl {
     x86op_byte,
     x86op_word,
     x86op_dword,
-    x86op_qword,    // x86reg_qword эмулируется кодогенератором
+    x86op_qword,    // не является хардварным типом x86, эмулируется кодогенератором
     x86op_float,
     x86op_double,
     x86op_unused,
@@ -101,7 +101,7 @@ typedef struct x86_operand_decl {
 
     union data_decl {
         // x86op_byte - x86op_double:
-        // 0 - unused, positive value - pseudo-register, negative value - x86 register
+        // 0 - не используется, >0 - псевдо-регистр, <0 - реальный регистр
         int         reg;
 
         // x86reg_qword
@@ -110,7 +110,7 @@ typedef struct x86_operand_decl {
             int     high;
         } qword;
 
-        // x86loc_address (base and index are x86reg_dword_register's)
+        // x86loc_address (base и index являются 32-битными регистрами x86reg_dword_register)
         struct address_decl {
             int     base;
             int     index;
@@ -134,11 +134,7 @@ typedef struct x86_operand_decl {
 
 
 typedef enum x86_instruction_code_decl {
-    // function-calling instructions:
-    x86insn_call,              // 1st argument is address, 2nd is result type
-    x86insn_ret,
-
-    // jump instructions:
+    // ветвление:
     x86insn_jmp,
     x86insn_je,
     x86insn_jne,
@@ -151,7 +147,7 @@ typedef enum x86_instruction_code_decl {
     x86insn_jae,
     x86insn_ja,
 
-    // integer instructions:
+    // целочисленная арифметика:
     x86insn_int_inc,
     x86insn_int_dec,
     x86insn_int_neg,
@@ -179,7 +175,7 @@ typedef enum x86_instruction_code_decl {
     x86insn_int_setae,
     x86insn_int_seta,
 
-    // FPU instructions:
+    // FPU арифметика:
     x86insn_fpu_ld,
     x86insn_fpu_ld_int,
     x86insn_fpu_st,
@@ -203,7 +199,7 @@ typedef enum x86_instruction_code_decl {
     x86insn_fpu_int2float,
     x86insn_fpu_float2int,
 
-    // SSE2 instructions:
+    // SSE2 арифметика:
     x86insn_sse_mov,
     x86insn_sse_load_int,
     x86insn_sse_store_int,
@@ -212,32 +208,32 @@ typedef enum x86_instruction_code_decl {
     x86insn_sse_mul,
     x86insn_sse_div,
 
-    // internally-generated instructions.
-    // arithmetic:
-    x86insn_cdq,
-    x86insn_fpu_cmp,
-    x86insn_cld,
-    x86insn_rep_movsb,
-    x86insn_rep_movsd,
-
-    // modifying:
+    // Инструкции для внутреннего пользования.
+    // арифметические модифицирующие:
     x86insn_imul_const,
     x86insn_int_xchg,
     x86insn_lea,
     x86insn_movsx,
     x86insn_movzx,
 
-    // stack handling:
+    // управление стеком:
     x86insn_push,
     x86insn_pop,
-    x86insn_push_arg,          // parameter can be argument of any type
-    x86insn_restore_stack,     // parameter is summary parameters size
+    x86insn_call,              // 1ый аргумент адрес, 2ой аргумент тип результата
+    x86insn_ret,
 
-    // read-only instructions:
+    // целочисленные read-only:
     x86insn_int_cmp,
     x86insn_int_test,
 
-    // pseudo-instructions:
+    // псевдо-инструкции:
+    x86insn_cdq,
+    x86insn_fpu_cmp,
+    x86insn_cld,
+    x86insn_rep_movsb,
+    x86insn_rep_movsd,
+    x86insn_push_arg,          // параметр может быть любого типа (эмулируется)
+    x86insn_restore_stack,     // параметр - суммарный размер всех операндов
     x86insn_label,
     x86insn_push_all,
     x86insn_pop_all,
