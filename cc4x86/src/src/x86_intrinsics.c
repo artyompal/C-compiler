@@ -10,12 +10,12 @@ static void _memcpy_via_dword_mov(x86_operand *dst, x86_operand *src, int size_i
     int i;
 
     if (size_in_dwords == 1) {
-        bincode_create_operand_from_pseudoreg(&r0, x86reg_dword, x86_codegen_alloc_pseudoreg(x86reg_dword));
+        bincode_create_operand_from_pseudoreg(&r0, x86op_dword, x86_codegen_alloc_pseudoreg(x86op_dword));
         unit_push_binary_instruction(x86insn_int_mov, &r0, src);
         unit_push_binary_instruction(x86insn_int_mov, dst, &r0);
     } else {
-        bincode_create_operand_from_pseudoreg(&r0, x86reg_dword, x86_codegen_alloc_pseudoreg(x86reg_dword));
-        bincode_create_operand_from_pseudoreg(&r1, x86reg_dword, x86_codegen_alloc_pseudoreg(x86reg_dword));
+        bincode_create_operand_from_pseudoreg(&r0, x86op_dword, x86_codegen_alloc_pseudoreg(x86op_dword));
+        bincode_create_operand_from_pseudoreg(&r1, x86op_dword, x86_codegen_alloc_pseudoreg(x86op_dword));
 
         src->op_type = x86op_dword;
         dst->op_type = x86op_dword;

@@ -271,7 +271,7 @@ static void _print_reg(FILE *output, x86_operand_location type, int reg)
         }
         break;
 
-    case x86reg_word:
+    case x86op_word:
         if (reg < -x86_word_reg_count) {
             fprintf(output, "word0x%x", reg);
         } else if (reg < 0) {
@@ -281,7 +281,7 @@ static void _print_reg(FILE *output, x86_operand_location type, int reg)
         }
         break;
 
-    case x86reg_dword:
+    case x86op_dword:
         if (reg < -x86_dword_reg_count) {
             fprintf(output, "dword0x%x", reg);
         } else if (reg < 0) {
@@ -291,7 +291,7 @@ static void _print_reg(FILE *output, x86_operand_location type, int reg)
         }
         break;
 
-    case x86reg_float:
+    case x86op_float:
         if (reg < -8) {
             fprintf(output, "sse0x%x", reg);
         } else if (reg < 0) {
@@ -328,7 +328,7 @@ static void _print_op(FILE *output, x86_operand *op)
         fputc('[', output);
 
         if (op->data.address.base != 0) {
-            _print_reg(output, x86reg_dword, op->data.address.base);
+            _print_reg(output, x86op_dword, op->data.address.base);
             was_smth = TRUE;
         }
 
@@ -337,7 +337,7 @@ static void _print_op(FILE *output, x86_operand *op)
                 fputc('+', output);
             }
 
-            _print_reg(output, x86reg_dword, op->data.address.index);
+            _print_reg(output, x86op_dword, op->data.address.index);
 
             if (op->data.address.scale > 1) {
                 ASSERT(op->data.address.scale == 2 || op->data.address.scale == 4 || op->data.address.scale == 8);

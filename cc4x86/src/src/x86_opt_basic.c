@@ -29,7 +29,7 @@ static void _try_optimize_add_sub   (function_desc *function, x86_instruction *i
 // Заменяет регистр смещением символа. Используется для устранения LEA.
 static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg, symbol *sym)
 {
-    if (bincode_operand_contains_register(&insn->in_op1, x86reg_dword, reg)) {
+    if (bincode_operand_contains_register(&insn->in_op1, x86op_dword, reg)) {
         if (insn->in_op1.op_loc == x86loc_address && ADDRESS_IS_BASE_OFS(insn->in_op1)) {
             insn->in_op1.op_loc             = x86loc_symbol;
             insn->in_op1.data.sym.name      = sym;
@@ -39,7 +39,7 @@ static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg,
         }
     }
 
-    if (bincode_operand_contains_register(&insn->in_op2, x86reg_dword, reg)) {
+    if (bincode_operand_contains_register(&insn->in_op2, x86op_dword, reg)) {
         if (insn->in_op2.op_loc == x86loc_address && ADDRESS_IS_BASE_OFS(insn->in_op2)) {
             insn->in_op2.op_loc             = x86loc_symbol;
             insn->in_op2.data.sym.name      = sym;
@@ -63,7 +63,7 @@ static void _replace_register_in_instruction(x86_instruction *insn, int reg, int
     x86_register_ref regs[MAX_REGISTERS_PER_INSN];
     int regs_cnt, i;
 
-    bincode_extract_pseudoregs_from_insn(insn, x86reg_dword, regs, &regs_cnt);
+    bincode_extract_pseudoregs_from_insn(insn, x86op_dword, regs, &regs_cnt);
 
     for (i = 0; i < regs_cnt; i++) {
         if (*regs[i].reg_addr == reg) {
@@ -179,7 +179,7 @@ static void _try_optimize_lea_reg_address(function_desc *function, x86_instructi
         for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
             ASSERT(usage);
 
-            if (bincode_insn_contains_register(usage, x86reg_dword, reg)) {
+            if (bincode_insn_contains_register(usage, x86op_dword, reg)) {
                 if (_is_address_using_reg(&usage->in_op1, reg)) {
                     if (!_try_combine_addresses(&usage->in_op1, &insn->in_op2, reg)) {
                         can_eliminate = FALSE;
@@ -231,7 +231,7 @@ static x86_instruction *_is_constant_used_only_for_addition_in_address(function_
 
     // Проверяем, соответствует ли код паттерну.
     for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
-        if (bincode_operand_contains_register(&usage->in_op1, x86reg_dword, reg)) {
+        if (bincode_operand_contains_register(&usage->in_op1, x86op_dword, reg)) {
             if (addition) {
                 if (OP_IS_PSEUDO_REG(usage->in_op1)) {
                     // Неподдерживаемый случай: регистр повторно модифицируется.
@@ -239,7 +239,7 @@ static x86_instruction *_is_constant_used_only_for_addition_in_address(function_
                 }
             } else {
                 if (usage->in_code != x86insn_int_add || !OP_IS_PSEUDO_REG(usage->in_op1)
-                    || bincode_operand_contains_register(&usage->in_op2, x86reg_dword, reg)) {
+                    || bincode_operand_contains_register(&usage->in_op2, x86op_dword, reg)) {
                         // Неподдерживаемый случай: регистр используется до модификации
                         // или модифицируется с зависимостью от собственного значения.
                         return NULL;
@@ -247,7 +247,7 @@ static x86_instruction *_is_constant_used_only_for_addition_in_address(function_
 
                 addition = usage;
             }
-        } else if (bincode_operand_contains_register(&usage->in_op2, x86reg_dword, reg)) {
+        } else if (bincode_operand_contains_register(&usage->in_op2, x86op_dword, reg)) {
             if (addition) {
                 if (OP_IS_PSEUDO_REG(usage->in_op2)) {
                     // Неподдерживаемый случай: регистр используется вне адреса.
@@ -276,14 +276,14 @@ static x86_instruction *_is_constant_used_only_in_imul(function_desc *function, 
     for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
         ASSERT(usage);
 
-        if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, x86reg_dword, reg)) {
-            if (usage->in_code == x86insn_int_imul && !bincode_operand_contains_register(&usage->in_op2, x86reg_dword, reg)
+        if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, x86op_dword, reg)) {
+            if (usage->in_code == x86insn_int_imul && !bincode_operand_contains_register(&usage->in_op2, x86op_dword, reg)
                 && !OP_IS_CONSTANT(usage->in_op2)) {
                     return usage;
             } else {
                 return NULL;
             }
-        } else if (bincode_insn_contains_register(usage, x86reg_dword, reg)) {
+        } else if (bincode_insn_contains_register(usage, x86op_dword, reg)) {
             return NULL;
         }
     }
@@ -308,13 +308,13 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 
             if (_is_address_using_reg(&usage->in_op1, reg)) {
                 _replace_register_in_address_with_constant(&usage->in_op1, reg, val);
-            } else if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, x86reg_dword, reg)) {
+            } else if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, x86op_dword, reg)) {
                 return;
             }
 
             if (_is_address_using_reg(&usage->in_op2, reg)) {
                 _replace_register_in_address_with_constant(&usage->in_op2, reg, val);
-            } else if (OP_IS_THIS_PSEUDO_REG(usage->in_op2, x86reg_dword, reg)) {
+            } else if (OP_IS_THIS_PSEUDO_REG(usage->in_op2, x86op_dword, reg)) {
                 usage->in_op2.op_loc       = x86loc_int_constant;
                 usage->in_op2.data.int_val  = val;
             }
@@ -335,9 +335,9 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 
         // Корректируем все адреса, использующие данные регистр, на константное смещение.
         for (usage = pattern->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
-            if (bincode_operand_contains_register(&usage->in_op1, x86reg_dword, reg)) {
+            if (bincode_operand_contains_register(&usage->in_op1, x86op_dword, reg)) {
                 usage->in_op1.data.address.offset += val;
-            } else if (bincode_operand_contains_register(&usage->in_op2, x86reg_dword, reg)) {
+            } else if (bincode_operand_contains_register(&usage->in_op2, x86op_dword, reg)) {
                 usage->in_op2.data.address.offset += val;
             }
         }
@@ -377,14 +377,14 @@ static BOOL _try_optimize_reg_add_sub_const_into_lea(function_desc *function, x8
 
     mov = pseudoreg_info->reg_first_write;
 
-    if (mov->in_code != x86insn_int_mov || !OP_IS_THIS_PSEUDO_REG(mov->in_op1, x86reg_dword, reg) || mov->in_op2.op_loc != x86loc_register) {
+    if (mov->in_code != x86insn_int_mov || !OP_IS_THIS_PSEUDO_REG(mov->in_op1, x86op_dword, reg) || mov->in_op2.op_loc != x86loc_register) {
         return FALSE;
     }
 
     reg_src = mov->in_op2.data.reg;
 
     for (checked = mov->in_next; checked != insn; checked = checked->in_next) {
-        if (bincode_insn_contains_register(checked, x86reg_dword, reg) || OP_IS_THIS_REAL_REG(checked->in_op1, x86reg_dword, reg_src)) {
+        if (bincode_insn_contains_register(checked, x86op_dword, reg) || OP_IS_THIS_REAL_REG(checked->in_op1, x86op_dword, reg_src)) {
             return FALSE;
         }
     }
@@ -398,7 +398,7 @@ static BOOL _try_optimize_reg_add_sub_const_into_lea(function_desc *function, x8
     }
 
     insn->in_code = x86insn_lea;
-    bincode_create_operand_addr_from_reg_offset(&insn->in_op2, x86reg_dword, reg_src, val);
+    bincode_create_operand_addr_from_reg_offset(&insn->in_op2, x86op_dword, reg_src, val);
 
     return TRUE;
 }
@@ -534,7 +534,7 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
     insn2  = function->func_dword_regstat.ptr[reg].reg_last_read->in_next;
 
     for (; insn != insn2; insn = insn->in_next) {
-        bincode_extract_pseudoregs_from_insn(insn, x86reg_dword, regs_arr, &regs_cnt);
+        bincode_extract_pseudoregs_from_insn(insn, x86op_dword, regs_arr, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             if (*regs_arr[i].reg_addr == reg) {
@@ -564,7 +564,7 @@ static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruc
     }
 
     for (insn2 = function->func_dword_regstat.ptr[reg].reg_first_write; insn2 != insn; insn2 = insn2->in_next) {
-        bincode_extract_pseudoregs_from_insn(insn2, x86reg_dword, regs_arr, &regs_cnt);
+        bincode_extract_pseudoregs_from_insn(insn2, x86op_dword, regs_arr, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             if (*regs_arr[i].reg_addr == reg) {

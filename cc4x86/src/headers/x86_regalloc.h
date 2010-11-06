@@ -29,7 +29,7 @@ typedef struct x86_pseudoreg_info_decl {
 #define X86_TMP_REGISTERS_COUNT     (6)
 
 
-x86_register_type           x86_encode_register_type        (x86_operand_type type);
+x86_operand_type            x86_encode_register_type        (x86_operand_type type);
 void                        x86_analyze_registers_usage     (function_desc *function);
 void                        x86_allocate_registers          (function_desc *function);
 

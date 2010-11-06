@@ -1,4 +1,3 @@
-x86_bincode.h:      TODO: убрать структуру x86_register_type либо корректно работать с ней
 x86_codegen.c:      TODO: provide an optimized codepath for x86loc_address case: return value in the register if it will be reused.
 x86_codegen.c:      TODO: unsigned div/mod, compare, mul, shr/sar
 x86_codegen.c:      TODO: generate SHL/SHR eax,cl
@@ -17,7 +16,7 @@ x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
 x86_regalloc.c:     TODO: для MOV EAX/EDX,reg делать бэк-треккинг и аллоцировать этот псевдорегистр в указанный регистр
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(!X86_IS_REGVAR(reg2) || type != x86reg_dword);
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(!X86_IS_REGVAR(reg2) || type != x86op_dword);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
 x86_regalloc.c:     TODO: при выделении word регистров надо учитывать регистры, занятые byte; при выделении dword надо учитывать word
 symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов
