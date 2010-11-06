@@ -8,7 +8,7 @@
 typedef struct register_map_decl {
     int real_registers_cnt;
     int real_registers_map[X86_MAX_REG];    // положительное число: псевдо-регистр,
-                                            // -1:                  свободый регистр,
+                                            // -1:                  свободный регистр,
                                             // остальное:           ошибка
 } register_map;
 

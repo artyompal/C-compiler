@@ -49,7 +49,7 @@ typedef enum x86_dword_register_decl {
     x86_dword_reg_count,
 } x86_dword_register;
 
-#define X86_MAX_REG (MAX(MAX(x86_byte_reg_count, x86_word_reg_count), x86_dword_reg_count))
+#define X86_MAX_REG (8)
 
 typedef enum x86_operand_location_decl {
     x86loc_none,
@@ -70,11 +70,11 @@ typedef enum x86_operand_type_decl {
     x86op_dword,
     x86op_qword,    // не является хардварным типом x86, эмулируется кодогенератором
     x86op_float,
-    x86op_double,   // для регистров FPU/SSE22 то же, что float; в памяти занимает 8 байт
+    x86op_double,   // для регистров FPU/SSE2 то же, что float; в памяти занимает 8 байт
     x86op_unused,
 } x86_operand_type;
 
-#define X86_REGISTER_TYPES_COUNT ((int)x86op_float)
+#define X86_REGISTER_TYPES_COUNT ((int)x86op_float+1)
 
 typedef struct x86_register_decl {
     x86_operand_type        reg_type;
