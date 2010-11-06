@@ -522,7 +522,7 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
     // если переменная меняет значение до конца жизни регистра либо туда возможны переходы, то нельзя удалять
     for (insn2 = function->func_dword_regstat.ptr[reg].reg_first_write;
         insn2 != function->func_dword_regstat.ptr[reg].reg_last_read; insn2 = insn2->in_next)
-            if (IS_INT_MUTABLE_INSN(insn2->in_code) && insn2->in_op1.data.reg == insn->in_op2.data.reg
+            if (IS_INT_MODIFYING_INSN(insn2->in_code) && insn2->in_op1.data.reg == insn->in_op2.data.reg
                 || insn2->in_code == x86insn_label) {
                     return FALSE;
                 }

@@ -219,6 +219,8 @@ typedef enum x86_instruction_code_decl {
     x86insn_cld,
     x86insn_rep_movsb,
     x86insn_rep_movsd,
+
+    // modifying:
     x86insn_imul_const,
     x86insn_int_xchg,
     x86insn_lea,
@@ -255,13 +257,15 @@ typedef struct x86_instruction_decl {
 } x86_instruction;
 
 
-#define IS_CALL_INSN(INSN)              ((INSN) >= x86insn_call && (INSN) <= x86insn_call_float)
-#define IS_INT_INSN(INSN)               ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta)
+#define IS_INT_INSN(INSN)               ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
+                                        || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_pop)
 #define IS_SET_INSN(INSN)               ((INSN) >= x86insn_int_sete && (INSN) <= x86insn_int_seta)
 #define IS_FLOAT_INSN(INSN)             ((INSN) >= x86insn_fpu_ld && (INSN) <= x86insn_fpu_ln_2)
 #define IS_JMP_INSN(INSN)               ((INSN) >= x86insn_jmp && (INSN) <= x86insn_ja)
 #define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
-#define IS_INT_MUTABLE_INSN(INSN)       (IS_INT_INSN(INSN) || (INSN) >= x86insn_int_cmp && (INSN) <= x86insn_int_xchg)
+#define IS_INT_MODIFYING_INSN(INSN)     ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
+                                        || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \
+                                        || (INSN) == x86insn_pop)
 
 #define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)
 #define IS_FLOAT_BINARY_ARITHM_INSN(INSN) ((INSN) >= x86insn_fpu_add && (INSN) <= x86insn_fpu_divr)
