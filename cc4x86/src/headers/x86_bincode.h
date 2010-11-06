@@ -70,20 +70,11 @@ typedef enum x86_operand_type_decl {
     x86op_dword,
     x86op_qword,    // не является хардварным типом x86, эмулируется кодогенератором
     x86op_float,
-    x86op_double,
+    x86op_double,   // для регистров FPU/SSE22 то же, что float; в памяти занимает 8 байт
     x86op_unused,
 } x86_operand_type;
 
-typedef enum x86_register_type_decl {
-    // TODO: убрать структуру x86_register_type либо корректно работать с ней
-
-    x86reg_byte     = x86op_byte,
-    x86reg_word     = x86op_word,
-    x86reg_dword    = x86op_dword,
-    x86reg_float    = x86op_float,
-
-    x86reg_count,
-} x86_register_type;
+#define X86_REGISTER_TYPES_COUNT ((int)x86op_float)
 
 typedef struct x86_register_decl {
     x86_operand_type        reg_type;
@@ -286,12 +277,12 @@ typedef struct x86_instruction_decl {
                                             && (OP).data.address.index == 0 && (OP).data.address.offset == (OFS))
 
 
-void    bincode_extract_pseudoregs_from_operand         (x86_operand *op, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-void    bincode_extract_pseudoregs_from_insn            (x86_instruction *insn, x86_register_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-void    bincode_extract_pseudoregs_from_insn_wo_dupes   (x86_instruction *insn, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-void    bincode_extract_real_registers_from_insn        (x86_instruction *insn, x86_register_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-BOOL    bincode_insn_contains_register                  (x86_instruction *insn, x86_register_type type, int reg);
-BOOL    bincode_operand_contains_register               (x86_operand *op, x86_register_type type, int reg);
+void    bincode_extract_pseudoregs_from_operand         (x86_operand *op, x86_operand_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_from_insn            (x86_instruction *insn, x86_operand_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_from_insn_wo_dupes   (x86_instruction *insn, x86_operand_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_real_registers_from_insn        (x86_instruction *insn, x86_operand_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+BOOL    bincode_insn_contains_register                  (x86_instruction *insn, x86_operand_type type, int reg);
+BOOL    bincode_operand_contains_register               (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_extract_pseudoregs_read_by_insn         (x86_instruction *insn, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_pseudoregs_written_by_insn      (x86_instruction *insn, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 

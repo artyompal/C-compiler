@@ -7,7 +7,7 @@
 #include "x86_regalloc.h"
 
 
-static int _last_pseudoreg[x86reg_count];
+static int _last_pseudoreg[X86_REGISTER_TYPES_COUNT];
 static function_desc *_curr_func = NULL;
 
 
@@ -17,8 +17,8 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res);
 int x86_codegen_alloc_pseudoreg(x86_operand_type type)
 {
     if (type == x86op_qword) {
-        int res = _last_pseudoreg[x86reg_dword]++;
-        _last_pseudoreg[x86reg_dword]++;
+        int res = _last_pseudoreg[x86op_dword]++;
+        _last_pseudoreg[x86op_dword]++;
         return res;
     } else
         return _last_pseudoreg[x86_encode_register_type(type)]++;
@@ -176,7 +176,7 @@ static void _generate_convert_int2float(x86_operand *res, x86_operand *op)
     ASSERT(OP_IS_INT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
     if (option_use_sse2) {
-        bincode_create_operand_and_alloc_pseudoreg(res, x86reg_float);
+        bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
         unit_push_binary_instruction(x86insn_sse_load_int, res, op);
     } else {
         if (OP_IS_REGISTER(*op)) {
@@ -195,18 +195,18 @@ static void _generate_convert_float2int(x86_operand *res, x86_operand *op)
     x86_operand tmp;
 
     ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
-    bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
+    bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
 
     if (option_use_sse2) {
         if (OP_IS_ADDRESS(*op)) {
-            bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_float);
+            bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_float);
             unit_push_binary_instruction(x86insn_sse_mov, &tmp, op);
         }
 
         unit_push_binary_instruction(x86insn_sse_store_int, res, &tmp);
     } else {
         if (OP_IS_ADDRESS(*op)) {
-            bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_float);
+            bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_float);
             unit_push_binary_instruction(x86insn_fpu_ld, &tmp, op);
         }
 
@@ -219,7 +219,7 @@ static void _generate_convert_float2double(x86_operand *res, x86_operand *op)
     ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
     if (OP_IS_ADDRESS(*op)) {
-        bincode_create_operand_and_alloc_pseudoreg(res, x86reg_float);
+        bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
         unit_push_unary_instruction(x86insn_fpu_ld, op);
     } else {
         *res = *op;
@@ -228,12 +228,12 @@ static void _generate_convert_float2double(x86_operand *res, x86_operand *op)
 
 static void _generate_dereference(x86_operand *res, x86_operand *op, data_type *type)
 {
-    ASSERT(OP_IS_ADDRESS(*op) || OP_IS_REGISTER(*op) && op->op_type == x86reg_dword);
+    ASSERT(OP_IS_ADDRESS(*op) || OP_IS_REGISTER(*op) && op->op_type == x86op_dword);
 
     if (op->op_loc == x86loc_register) {
         bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), op->data.reg);
     } else {
-        bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
+        bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
         unit_push_binary_instruction(x86insn_int_mov, res, op);
 
         bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), res->data.reg);
@@ -245,9 +245,9 @@ static void _generate_get_address(x86_operand *res, x86_operand *op)
     ASSERT(OP_IS_ADDRESS(*op));
 
     if (op->data.address.base != 0 && op->data.address.index == 0 && op->data.address.offset == 0) {
-        bincode_create_operand_from_pseudoreg(res, x86reg_dword, op->data.address.base);
+        bincode_create_operand_from_pseudoreg(res, x86op_dword, op->data.address.base);
     } else {
-        bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
+        bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
         unit_push_binary_instruction(x86insn_lea, res, op);
     }
 }
@@ -259,14 +259,14 @@ static void _generate_int2bool(x86_operand *res, x86_operand *op, BOOL invert)
     ASSERT(OP_IS_INT(*op));
 
     if (op->op_loc == x86loc_address) {
-        bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_dword);
+        bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_dword);
         unit_push_binary_instruction(x86insn_int_mov, &tmp, op);
         unit_push_binary_instruction(x86insn_int_test, &tmp, &tmp);
     } else {
         unit_push_binary_instruction(x86insn_int_test, op, op);
     }
 
-    bincode_create_operand_and_alloc_pseudoreg(res, x86reg_byte);
+    bincode_create_operand_and_alloc_pseudoreg(res, x86op_byte);
     unit_push_unary_instruction(invert ? x86insn_int_sete : x86insn_int_setne, res);
 }
 
@@ -355,19 +355,19 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
             unit_push_binary_instruction(x86insn_int_cmp, op1, op2);
         }
 
-        bincode_create_operand_and_alloc_pseudoreg(&tmp, x86reg_byte);
+        bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_byte);
         unit_push_unary_instruction(insn, &tmp);
 
-        bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
+        bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
         unit_push_binary_instruction(x86insn_movzx, res, &tmp);
     } else if (IS_DIVISION_OP(expr->data.arithm.opcode) || IS_MODULO_OP(expr->data.arithm.opcode)) {
-        bincode_create_operand_from_register(res, x86reg_dword, x86reg_eax);
+        bincode_create_operand_from_register(res, x86op_dword, x86reg_eax);
         unit_push_binary_instruction(x86insn_int_mov, res, op1);
         unit_push_nullary_instruction(x86insn_cdq);
         unit_push_unary_instruction(x86insn_int_idiv, op2);
 
         if (IS_MODULO_OP(expr->data.arithm.opcode)) {
-            bincode_create_operand_from_register(res, x86reg_dword, x86reg_edx);
+            bincode_create_operand_from_register(res, x86op_dword, x86reg_edx);
         }
     } else if (IS_ASSIGN_OP(expr->data.arithm.opcode)) {
         ASSERT(op1->op_loc == x86loc_address);
@@ -460,10 +460,10 @@ static void _generate_float_binary_expr(expression *expr, x86_operand *res, x86_
 
         unit_push_nullary_instruction(x86insn_fpu_cmp);
 
-        bincode_create_operand_and_alloc_pseudoreg(op2, x86reg_byte);
+        bincode_create_operand_and_alloc_pseudoreg(op2, x86op_byte);
         unit_push_unary_instruction(insn, op2);
 
-        bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
+        bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
         unit_push_binary_instruction(x86insn_movzx, res, op2);
     } else {
         if (fpu_invert) {
@@ -622,7 +622,7 @@ static void _load_symbol(symbol *sym, data_type *type, x86_operand *res)
         bincode_create_operand_from_symbol(&tmp, sym);
     }
 
-    bincode_create_operand_and_alloc_pseudoreg(res, x86reg_dword);
+    bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
     unit_push_binary_instruction(x86insn_lea, res, &tmp);
 
     bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), res->data.reg);
@@ -694,21 +694,21 @@ static void _generate_return(expression *ret_value)
         ASSERT(res.op_loc == x86loc_register || res.op_loc == x86loc_address);
 
         if (res.op_type == x86op_byte) {
-            bincode_create_operand_from_register(&tmp, x86reg_byte, x86reg_al);
+            bincode_create_operand_from_register(&tmp, x86op_byte, x86reg_al);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, &res);
         } else if (res.op_type == x86op_word) {
-            bincode_create_operand_from_register(&tmp, x86reg_word, x86reg_ax);
+            bincode_create_operand_from_register(&tmp, x86op_word, x86reg_ax);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, &res);
         } else if (res.op_type == x86op_dword) {
-            bincode_create_operand_from_register(&tmp, x86reg_dword, x86reg_eax);
+            bincode_create_operand_from_register(&tmp, x86op_dword, x86reg_eax);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, &res);
         } else if (res.op_type == x86op_qword) {
             UNIMPLEMENTED_ASSERT(res.op_loc == x86loc_register);
-            bincode_create_operand_from_register(&tmp, x86reg_dword, x86reg_eax);
-            bincode_create_operand_from_register(&tmp2, x86reg_dword, res.data.qword.low);
+            bincode_create_operand_from_register(&tmp, x86op_dword, x86reg_eax);
+            bincode_create_operand_from_register(&tmp2, x86op_dword, res.data.qword.low);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, &tmp2);
-            bincode_create_operand_from_register(&tmp, x86reg_dword, x86reg_edx);
-            bincode_create_operand_from_register(&tmp2, x86reg_dword, res.data.qword.high);
+            bincode_create_operand_from_register(&tmp, x86op_dword, x86reg_edx);
+            bincode_create_operand_from_register(&tmp2, x86op_dword, res.data.qword.high);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, &tmp2);
         } else {
             if (res.op_loc == x86loc_address) {
@@ -957,7 +957,7 @@ void x86_codegen_do_function(function_desc *function)
 {
     int type;
 
-    for (type = 0; type < x86reg_count; type++)
+    for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++)
         _last_pseudoreg[type] = 1;
 
     _curr_func   = function;

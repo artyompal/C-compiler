@@ -244,7 +244,7 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function)
     max_registers = current_regs_cnt = 0;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        bincode_extract_pseudoregs_from_insn_wo_dupes(insn, x86reg_dword, regs_arr, &regs_cnt);
+        bincode_extract_pseudoregs_from_insn_wo_dupes(insn, x86op_dword, regs_arr, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             if (insn == reg_info[regs_arr[i].reg_value].reg_first_write) {
@@ -291,14 +291,14 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
     insn = insn->in_next;
 
     if (var_offset > 0) {
-        bincode_insert_int_reg_ebp_offset(function, insn, x86insn_int_mov, x86reg_dword, var_reg, var_offset);
+        bincode_insert_int_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, var_reg, var_offset);
     }
 
     for (; insn; insn = insn->in_next) {
         if (OP_IS_SPEC_EBP_OFFSET(insn->in_op1, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&insn->in_op1, x86reg_dword, var_reg);
+            bincode_create_operand_from_pseudoreg(&insn->in_op1, x86op_dword, var_reg);
         } else if (OP_IS_SPEC_EBP_OFFSET(insn->in_op2, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&insn->in_op2, x86reg_dword, var_reg);
+            bincode_create_operand_from_pseudoreg(&insn->in_op2, x86op_dword, var_reg);
         }
     }
 }
