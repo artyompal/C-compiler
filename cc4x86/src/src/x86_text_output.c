@@ -113,9 +113,7 @@ void text_output_end_function(function_desc *function)
 //
 
 static const char *_x86_instructions[] = {
-    "call",
-    "ret",
-
+    // ветвление:
     "jmp",
     "je",
     "jne",
@@ -128,6 +126,7 @@ static const char *_x86_instructions[] = {
     "jae",
     "ja",
 
+    // целочисленная арифметика:
     "inc",
     "dec",
     "neg",
@@ -155,6 +154,7 @@ static const char *_x86_instructions[] = {
     "setae",
     "seta",
 
+    // FPU арифметика:
     "fld",
     "fild",
     "fst",
@@ -178,6 +178,7 @@ static const char *_x86_instructions[] = {
     "int2float",
     "float2int",
 
+    // SSE2 арифметика:
     "movss",
     "cvtsi2ss",
     "cvttss2si",
@@ -186,25 +187,32 @@ static const char *_x86_instructions[] = {
     "mulss",
     "divss",
 
-    "cdq",
-    "fucomip\tst,st(1)\n\tfstp\tst",
-    "cld",
-    "rep\tmovsb",
-    "rep\tmovsd",
+    // Инструкции для внутреннего пользования.
+    // арифметические модифицирующие:
     "imul",  // imul reg, reg/mem, const
     "xchg",
     "lea",
     "movsx",
     "movzx",
+
+    // управление стеком:
     "push",
     "pop",
+    "call",
+    "ret",
 
-    "push_arg",
-    "restore_stack",
-
+    // целочисленные read-only:
     "cmp",
     "test",
 
+    // псевдо-инструкции:
+    "cdq",
+    "fucomip\tst,st(1)\n\tfstp\tst",
+    "cld",
+    "rep\tmovsb",
+    "rep\tmovsd",
+    "push_arg",
+    "restore_stack",
     "label",
     "push_all",
     "pop_all",
