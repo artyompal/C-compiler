@@ -207,8 +207,6 @@ _vec4f_is_equal proc
 	push_arg	dword3
 	call	_vec4f_subtract
 	restore_stack	12
-	pop_all
-	push_all
 	lea	dword4,[ebp-16]
 	push_arg	dword4
 	lea	dword5,[ebp-16]
@@ -680,8 +678,6 @@ _rasterizer_init proc
 	push_arg	dword18
 	call	_matrix4f_make_perspective
 	restore_stack	20
-	pop_all
-	push_all
 	push_arg	dword ptr [ebp+28]
 	push_arg	dword ptr [ebp+24]
 	fild	dword ptr [ebp+16]
@@ -692,8 +688,6 @@ _rasterizer_init proc
 	push_arg	dword23
 	call	_matrix4f_make_viewport
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	push_arg	dword ptr [ebp+24]
@@ -730,8 +724,6 @@ label0001:
 	push_arg	dword32
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	push_arg	dword ptr [ebp+28]
@@ -768,8 +760,6 @@ label0003:
 	push_arg	dword41
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	fldz
@@ -786,8 +776,6 @@ label0003:
 	push_arg	dword44
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	fldz
@@ -800,8 +788,6 @@ label0003:
 	push_arg	dword45
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	fldz
@@ -818,8 +804,6 @@ label0003:
 	push_arg	dword47
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	fldz
@@ -832,8 +816,6 @@ label0003:
 	push_arg	dword49
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	fldz
@@ -850,8 +832,6 @@ label0003:
 	push_arg	dword52
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	fldz
@@ -864,8 +844,6 @@ label0003:
 	push_arg	dword53
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	fldz
@@ -878,8 +856,6 @@ label0003:
 	push_arg	dword54
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	fld1
 	push_argp
 	fldz
@@ -1662,8 +1638,6 @@ label0001:
 	push_arg	dword20
 	call	_vec4f_subtract
 	restore_stack	12
-	pop_all
-	push_all
 	push_arg	dword ptr [ebp+20]
 	lea	dword22,[ebp-24]
 	push_arg	dword22
@@ -1679,8 +1653,6 @@ label0001:
 	push_arg	dword27
 	call	_vec4f_subtract
 	restore_stack	12
-	pop_all
-	push_all
 	push_arg	dword ptr [ebp+20]
 	lea	dword29,[ebp-24]
 	push_arg	dword29
@@ -1741,8 +1713,6 @@ label0005:
 	push_arg	dword49
 	call	_vec4f_subtract
 	restore_stack	12
-	pop_all
-	push_all
 	mov	dword51,dword102
 	push_arg	dword51
 	mov	dword53,dword103
@@ -1751,15 +1721,11 @@ label0005:
 	push_arg	dword54
 	call	_vec4f_subtract
 	restore_stack	12
-	pop_all
-	push_all
 	push_arg	dword ptr [ebp+20]
 	lea	dword56,[ebp-24]
 	push_arg	dword56
 	call	_vec4f_dot
 	restore_stack	8
-	pop_all
-	push_all
 	push_arg	dword ptr [ebp+20]
 	lea	dword58,[ebp-40]
 	push_arg	dword58
@@ -1774,8 +1740,6 @@ label0005:
 	push_arg	dword61
 	call	_vec4f_mul
 	restore_stack	8
-	pop_all
-	push_all
 	lea	dword62,[ebp-40]
 	push_arg	dword62
 	mov	dword64,dword102
@@ -1786,8 +1750,6 @@ label0005:
 	push_arg	dword69
 	call	_vec4f_add
 	restore_stack	12
-	pop_all
-	push_all
 	mov	dword71,16
 	add	dword71,dword102
 	push_arg	dword71
@@ -1798,15 +1760,11 @@ label0005:
 	push_arg	dword74
 	call	_vec2f_subtract
 	restore_stack	12
-	pop_all
-	push_all
 	push_arg	dword ptr [ebp-60]
 	lea	dword76,[ebp-48]
 	push_arg	dword76
 	call	_vec2f_mul
 	restore_stack	8
-	pop_all
-	push_all
 	lea	dword77,[ebp-48]
 	push_arg	dword77
 	mov	dword79,16
@@ -1860,8 +1818,6 @@ __clip_poligon proc
 	push_arg	dword4
 	call	__clip_on_plain
 	restore_stack	16
-	pop_all
-	push_all
 	lea	dword5,dword ptr [__clip_z_near_norm]
 	push_arg	dword5
 	lea	dword6,dword ptr [__clip_z_near_base]
@@ -1871,8 +1827,6 @@ __clip_poligon proc
 	push_arg	dword30
 	call	__clip_on_plain
 	restore_stack	16
-	pop_all
-	push_all
 	lea	dword9,dword ptr [__clip_plane_left_norm]
 	push_arg	dword9
 	lea	dword10,dword ptr [__clip_plane_left_base]
@@ -1882,8 +1836,6 @@ __clip_poligon proc
 	push_arg	dword12
 	call	__clip_on_plain
 	restore_stack	16
-	pop_all
-	push_all
 	lea	dword13,dword ptr [__clip_plane_right_norm]
 	push_arg	dword13
 	lea	dword14,dword ptr [__clip_plane_right_base]
@@ -1893,8 +1845,6 @@ __clip_poligon proc
 	push_arg	dword30
 	call	__clip_on_plain
 	restore_stack	16
-	pop_all
-	push_all
 	lea	dword17,dword ptr [__clip_plane_top_norm]
 	push_arg	dword17
 	lea	dword18,dword ptr [__clip_plane_top_base]
@@ -1904,8 +1854,6 @@ __clip_poligon proc
 	push_arg	dword20
 	call	__clip_on_plain
 	restore_stack	16
-	pop_all
-	push_all
 	lea	dword21,dword ptr [__clip_plane_bottom_norm]
 	push_arg	dword21
 	lea	dword22,dword ptr [__clip_plane_bottom_base]
@@ -2064,8 +2012,6 @@ __transform_to_projection_space proc
 	push_arg	dword7
 	call	_vec4f_assign
 	restore_stack	20
-	pop_all
-	push_all
 	lea	dword8,dword ptr [__mvproj_matrix]
 	push_arg	dword8
 	lea	dword9,[ebp-16]

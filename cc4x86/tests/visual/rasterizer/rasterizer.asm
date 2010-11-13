@@ -1920,16 +1920,10 @@ label0005:
 	push	eax
 	call	_vec4f_dot
 	add	esp,8
-	fstp	qword ptr [esp-8]
-	sub	esp,8
 	push	dword ptr [ebp+20]
 	lea	eax,[ebp-40]
 	push	eax
 	call	_vec4f_dot
-	add	esp,8
-	fstp	qword ptr [esp-8]
-	fld	qword ptr [esp]
-	fld	qword ptr [esp-8]
 	add	esp,8
 	fdivp
 	fstp	dword ptr [ebp-60]

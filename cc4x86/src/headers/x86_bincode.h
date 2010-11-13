@@ -70,7 +70,7 @@ typedef enum x86_operand_type_decl {
     x86op_dword,
     x86op_qword,    // не является хардварным типом x86, эмулируется кодогенератором
     x86op_float,
-    x86op_double,   // для регистров FPU/SSE2 то же, что float
+    x86op_double,   // для регистров FPU эквивалентно float
     x86op_unused,
 } x86_operand_type;
 
