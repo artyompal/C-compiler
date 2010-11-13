@@ -13,7 +13,6 @@ typedef struct function_desc_decl function_desc;
 typedef enum x86_register_status_decl {
     register_unallocated,
     register_allocated,
-    register_swapped,
 } x86_register_status;
 
 typedef struct x86_pseudoreg_info_decl {

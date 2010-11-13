@@ -547,6 +547,8 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
 }
 
 // ¬ыкидывает регистр, если он используетс€ дл€ вычислени€ регистровой переменной.
+// FIXME: надо провер€ть, что регистр не зависит от предыдущего значени€ этой регистровой переменной!
+// Ќапример, достаточно, чтобы ранее этой инструкции регистрова€ переменна€ не использовалась в этой функции.
 static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruction *insn)
 {
     int reg, regvar, regs_cnt, i;

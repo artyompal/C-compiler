@@ -70,7 +70,7 @@ typedef enum x86_operand_type_decl {
     x86op_dword,
     x86op_qword,    // не является хардварным типом x86, эмулируется кодогенератором
     x86op_float,
-    x86op_double,   // для регистров FPU/SSE2 то же, что float; в памяти занимает 8 байт
+    x86op_double,   // для регистров FPU/SSE2 то же, что float
     x86op_unused,
 } x86_operand_type;
 
@@ -149,8 +149,12 @@ typedef enum x86_instruction_code_decl {
     x86insn_int_sub,
     x86insn_int_imul,
     x86insn_int_idiv,
+    x86insn_int_mul,
+    x86insn_int_div,
     x86insn_int_sal,
     x86insn_int_sar,
+    x86insn_int_shl,
+    x86insn_int_shr,
     x86insn_int_and,
     x86insn_int_xor,
     x86insn_int_or,
@@ -253,6 +257,7 @@ typedef struct x86_instruction_decl {
 #define IS_INT_MODIFYING_INSN(INSN)     ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
                                         || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \
                                         || (INSN) == x86insn_pop)
+#define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
 
 #define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)
 #define IS_FLOAT_BINARY_ARITHM_INSN(INSN) ((INSN) >= x86insn_fpu_add && (INSN) <= x86insn_fpu_divr)

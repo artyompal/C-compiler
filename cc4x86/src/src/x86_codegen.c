@@ -278,7 +278,6 @@ static void _generate_inc_dec(expr_arithm *arithm, x86_operand *op, data_type *t
     x86_instruction_code insn = _opcode_to_unary_int_instruction(arithm->opcode);
 
     ASSERT(OP_IS_INT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
-    // TODO: provide an optimized codepath for x86loc_address case: return value in the register if it will be reused.
 
     if (IS_INCREMENT_DECREMENT(arithm->opcode) && arithm->step != 1) {
         x86_instruction_code bin = CONVERT_INCDEC_TO_BINARY(insn);
@@ -589,7 +588,7 @@ static void _generate_call(expression *call, x86_operand *res)
     }
 
     // выдаём инструкцию CALL и сохраняем информацию о типе результата во второй операнд
-    tmp2.op_loc     = x86loc_register;  // al/ax/eax/eax:edx/st0/xmm1
+    tmp2.op_loc     = x86loc_register;  // al/ax/eax/eax:edx/st0/xmm0
     tmp2.op_type    = bincode_encode_type(call->expr_type);
     unit_push_binary_instruction(x86insn_call, &tmp, &tmp2);
 
@@ -717,7 +716,9 @@ static void _generate_return(expression *ret_value)
                 if (!option_use_sse2) {
                     // результат уже находится в st(0)
                 } else {
-                    unit_push_binary_instruction(x86insn_sse_mov, 0, &res);
+                    // результат в xmm0
+                    bincode_create_operand_from_register(&tmp, x86op_float, 0);
+                    unit_push_binary_instruction(x86insn_sse_mov, &tmp, &res);
                 }
             }
         }
