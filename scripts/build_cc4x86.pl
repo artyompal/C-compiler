@@ -22,8 +22,8 @@ system("perl kill_trailing_spaces.pl");
 
 print "building parser and lexer...\n";
 chdir("../frontend_cc/scripts") or die("chdir: $!");
-do("make_lexer.pl");
-do("make_parser.pl");
+do("make_lexer.pl") == 0 or die("make_lexer.pl is absent or misconfigured: $!");
+do("make_parser.pl") == 0 or die("make_parser.pl is absent or misconfigured: $!");
 
 chdir("../../scripts") or die("chdir: $!");
 print "making TODO list...\n";

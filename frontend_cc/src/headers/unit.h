@@ -33,10 +33,8 @@ typedef struct function_desc_decl {
     int                         func_parameters_sz;         // суммарный размер, в байтах, параметров функции
     int                         func_local_vars_sz;         // суммарный размер, в байтах, локальных переменных
 
-    register_stat               func_byte_regstat;          // регистровые статистики дл€ соответствующих наборов регистров
-    register_stat               func_word_regstat;
-    register_stat               func_dword_regstat;
-    register_stat               func_sse2_regstat;
+    register_stat               func_dword_regstat;         // регистровые статистики дл€ соответствующих наборов регистров;
+    register_stat               func_sse2_regstat;          // мы не выдел€ем 8-битные, 16-битные и FPU-регистры
 
     int                         func_start_of_regvars;      // перва€ регистрова€ переменна€ (номер псевдорегистра)
     int                         func_last_label;            // последн€€ аллоцированна€ метка в функции

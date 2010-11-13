@@ -298,6 +298,11 @@ expression *expr_create_unary(expression *expr, arithmetic_opcode opcode)
         return NULL;
     }
 
+    if (opcode == op_not && expr->expr_code == code_expr_arithmetic && expr->data.arithm.opcode == op_not) {
+        expr->data.arithm.opcode = op_notnot;
+        return expr;
+    }
+
     expr = _generate_pointer(expr, !IS_INCREMENT_DECREMENT(opcode), TRUE);
     expr = _integral_promotion(expr);
 

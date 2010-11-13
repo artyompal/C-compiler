@@ -90,6 +90,7 @@ static int _alloc_real_register(register_map *regmap, int pseudoreg)
             (reg == x86reg_ebp || reg == x86reg_esp)) {
                 continue;
         }
+
         UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 
         if (_is_real_register_free(regmap, reg)) {
@@ -139,6 +140,26 @@ static int _alloc_real_register_except_eax(register_map *regmap, int pseudoreg)
             }
 
         UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
+
+        if (_is_real_register_free(regmap, reg)) {
+            break;
+        }
+    }
+
+    regmap->real_registers_map[reg] = pseudoreg;
+    return reg;
+}
+
+static int _alloc_eax_ecx_edx_ebx(register_map *regmap, int pseudoreg)
+{
+    int reg;
+
+    ASSERT(regmap == &_dword_register_map);
+    ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+    regmap->real_registers_cnt++;
+
+    for (reg = 0; ; reg++) {
+        UNIMPLEMENTED_ASSERT(reg <= x86reg_ebx);
 
         if (_is_real_register_free(regmap, reg)) {
             break;
@@ -200,7 +221,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
     } else {
         pseudoregs_map = stat->ptr;
 
-         // FIXME: без memset всё падает, видимо, кто-то пытается читать неинициализированную память. Also, всё падает в релизе.
+         // FIXME: без memset всё падает, следовательно, кто-то читает неинициализированную память. Кроме того, всё падает в релизе.
         memset(pseudoregs_map, 0, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
     }
 
@@ -253,8 +274,6 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
 void x86_analyze_registers_usage(function_desc *function)
 {
-    _analyze_registers_usage(function, &function->func_byte_regstat, x86op_byte);
-    _analyze_registers_usage(function, &function->func_word_regstat, x86op_word);
     _analyze_registers_usage(function, &function->func_dword_regstat, x86op_dword);
 
     if (option_use_sse2) {
@@ -393,9 +412,9 @@ static void _maintain_fpu_stack(function_desc *function)
     }
 }
 
-static BOOL _handle_special_instructions(function_desc *function, x86_instruction *insn, x86_pseudoreg_info *pseudoregs_map, x86_operand_type type)
+static BOOL _handle_special_instructions(function_desc *function, x86_instruction *insn, x86_pseudoreg_info *pseudoregs_map)
 {
-    register_map *regmap = _get_register_map(type);
+    register_map *regmap = _get_register_map(x86op_dword);
     int reg, reg2, real_reg, real_reg2;
 
     // MOV EAX/EDX,reg.
@@ -405,7 +424,7 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
         real_reg    = ~insn->in_op1.data.reg;
         reg         = insn->in_op2.data.reg;
 
-        ASSERT(pseudoregs_map[reg].reg_last_read == insn || X86_IS_REGVAR(reg) && type == x86op_dword);
+        ASSERT(pseudoregs_map[reg].reg_last_read == insn || X86_IS_REGVAR(reg));
 
         if (pseudoregs_map[reg].reg_location == real_reg) {
             bincode_erase_instruction(function, insn);
@@ -418,7 +437,7 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
         } else {
             reg2                                = regmap->real_registers_map[real_reg];
             real_reg2                           = pseudoregs_map[reg].reg_location;
-            UNIMPLEMENTED_ASSERT(!X86_IS_REGVAR(reg2) || type != x86op_dword);
+            UNIMPLEMENTED_ASSERT(!X86_IS_REGVAR(reg2));
 
             insn->in_code                      = x86insn_int_xchg;
             insn->in_op2.data.reg              = ~real_reg2;
@@ -441,7 +460,7 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
         reg         = insn->in_op1.data.reg;
         real_reg    = ~insn->in_op2.data.reg;
 
-        if (!X86_IS_REGVAR(reg) || type != x86op_dword) {
+        if (!X86_IS_REGVAR(reg)) {
             ASSERT(pseudoregs_map[reg].reg_first_write == insn);
 
             _reserve_real_register(regmap, real_reg, reg);
@@ -455,11 +474,11 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
 
     // CDQ.
     // Мы должны освободить EDX.
-    else if (insn->in_code == x86insn_cdq && type == x86op_dword) {
+    else if (insn->in_code == x86insn_cdq) {
         if (!_is_real_register_free(regmap, x86reg_edx)) {
             reg         = regmap->real_registers_map[x86reg_edx];
             real_reg    = _alloc_real_register_except_eax(regmap, reg);
-            ASSERT(!X86_IS_REGVAR(reg) || type != x86op_dword);
+            ASSERT(!X86_IS_REGVAR(reg));
 
             ASSERT(pseudoregs_map[reg].reg_status == register_allocated);
             _free_real_register(regmap, pseudoregs_map[reg].reg_location);
@@ -473,13 +492,13 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
 
     // CALL с целочисленным результатом.
     // Мы должны освободить EAX.
-    else if (insn->in_code == x86insn_call && OP_IS_INT(insn->in_op2) && type == x86op_dword) {
+    else if (insn->in_code == x86insn_call && OP_IS_INT(insn->in_op2)) {
         if (!_is_real_register_free(regmap, x86reg_eax)) {
             reg         = regmap->real_registers_map[x86reg_eax];
-            ASSERT(!X86_IS_REGVAR(reg) || type != x86op_dword);
+            ASSERT(!X86_IS_REGVAR(reg));
 
             if (pseudoregs_map[reg].reg_last_read != insn) {
-                real_reg    = _alloc_real_register_except_eax(regmap, reg);
+                real_reg    = _alloc_real_register(regmap, reg);
 
                 ASSERT(pseudoregs_map[reg].reg_status == register_allocated);
                 _free_real_register(regmap, pseudoregs_map[reg].reg_location);
@@ -489,7 +508,28 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
                 // и значения регистров уже сохранены в стеке.
             }
         }
+
+        return TRUE;
     }
+
+    // SETcc с байтовым регистром. Мы должны выделить 32-битный регистр EAX/ECX/EDX/EBX,
+    // поместить в младшие биты результат и пропатчить следующую инструкцию, которая должна быть MOVZX.
+    else if (IS_SET_INSN(insn->in_code)) {
+        ASSERT(insn->in_op1.data.reg > 0 && insn->in_op1.op_type == x86op_byte);
+        ASSERT(insn->in_next->in_code == x86insn_movzx);
+        ASSERT(insn->in_next->in_op1.data.reg > 0 && insn->in_next->in_op1.op_type == x86op_dword);
+        ASSERT(insn->in_next->in_op2.data.reg > 0 && insn->in_next->in_op2.op_type == x86op_byte);
+
+        reg = insn->in_next->in_op1.data.reg;
+        real_reg = _alloc_eax_ecx_edx_ebx(regmap, reg);
+
+        insn->in_op1.data.reg = ~real_reg;
+        insn->in_next->in_op1.data.reg = ~real_reg;
+        insn->in_next->in_op2.data.reg = ~real_reg;
+
+        return TRUE;
+    }
+
 
     return FALSE;
 }
@@ -527,7 +567,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         }
 
         // Обрабатываем специальные случаи.
-        if (type == x86op_dword && _handle_special_instructions(function, insn, pseudoregs_map, type)) {
+        if (type == x86op_dword && _handle_special_instructions(function, insn, pseudoregs_map)) {
             continue;
         }
 
@@ -700,9 +740,6 @@ void x86_allocate_registers(function_desc *function)
         x86_analyze_registers_usage(function);
     }
 
-    // TODO: при выделении word регистров надо учитывать регистры, занятые byte; при выделении dword надо учитывать word
-    _allocate_registers(function, &function->func_byte_regstat, x86op_byte);
-    _allocate_registers(function, &function->func_word_regstat, x86op_word);
     _allocate_registers(function, &function->func_dword_regstat, x86op_dword);
 
     if (option_use_sse2) {
