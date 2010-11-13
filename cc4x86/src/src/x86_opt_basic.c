@@ -461,8 +461,8 @@ static void _try_optimize_add_sub(function_desc *function, x86_instruction *insn
 //
 // Ётап оптимизации, который выполн€етс€ сразу после генерации промежуточного кода.
 // Ќа этом этапе оптимизатор пытаетс€ объединить идущие подр€д инструкции в более эффективные формы,
-// восполн€€ недостатки кодогенератора дл€ x86 (проблема кодогенератора в слишком большом количестве
-// возможных комбинаций операндов в x86).
+// восполн€€ недостатки кодогенератора дл€ x86 (проблема кодогенератора -
+// в слишком большом количестве возможных комбинаций операндов в x86).
 //
 
 void x86_optimization_after_codegen(function_desc *function)
@@ -492,6 +492,13 @@ void x86_optimization_after_codegen(function_desc *function)
         case x86insn_int_sub:
             _try_optimize_add_sub(function, insn);
             break;
+
+        case x86insn_push_all:
+            if (prev && prev->in_code == x86insn_pop_all) {
+                bincode_erase_instruction(function, insn);
+                bincode_erase_instruction(function, prev);
+                continue;
+            }
         }
     }
 

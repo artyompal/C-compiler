@@ -12,8 +12,6 @@ typedef struct register_map_decl {
                                             // остальное:           ошибка
 } register_map;
 
-static register_map _byte_register_map;
-static register_map _word_register_map;
 static register_map _dword_register_map;
 static register_map _sse2_register_map;
 
@@ -21,10 +19,6 @@ static register_map _sse2_register_map;
 static register_map *_get_register_map(x86_operand_type type)
 {
     switch (type) {
-    case x86op_byte:
-        return &_byte_register_map;
-    case x86op_word:
-        return &_word_register_map;
     case x86op_dword:
         return &_dword_register_map;
     case x86op_float:
@@ -86,9 +80,8 @@ static int _alloc_real_register(register_map *regmap, int pseudoreg)
     regmap->real_registers_cnt++;
 
     for (reg = 0; ; reg++) {
-        if ((regmap == &_word_register_map || regmap == &_dword_register_map) &&
-            (reg == x86reg_ebp || reg == x86reg_esp)) {
-                continue;
+        if (regmap == &_dword_register_map && (reg == x86reg_ebp || reg == x86reg_esp)) {
+            continue;
         }
 
         UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
@@ -110,10 +103,9 @@ static int _alloc_real_register_for_regvar(register_map *regmap, int pseudoreg)
     regmap->real_registers_cnt++;
 
     for (reg = X86_MAX_REG - 1; ; reg--) {
-        if ((regmap == &_word_register_map || regmap == &_dword_register_map) &&
-            (reg == x86reg_ebp || reg == x86reg_esp)) {
-                continue;
-            }
+        if (regmap == &_dword_register_map && (reg == x86reg_ebp || reg == x86reg_esp)) {
+            continue;
+        }
 
         UNIMPLEMENTED_ASSERT(reg >= 0);
 
@@ -134,10 +126,9 @@ static int _alloc_real_register_except_eax(register_map *regmap, int pseudoreg)
     regmap->real_registers_cnt++;
 
     for (reg = x86reg_ecx; ; reg++) {
-        if ((regmap == &_word_register_map || regmap == &_dword_register_map) &&
-            (reg == x86reg_ebp || reg == x86reg_esp)) {
-                continue;
-            }
+        if (regmap == &_dword_register_map && (reg == x86reg_ebp || reg == x86reg_esp)) {
+            continue;
+        }
 
         UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 
