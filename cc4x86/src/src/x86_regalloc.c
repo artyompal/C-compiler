@@ -365,7 +365,7 @@ static void _maintain_fpu_stack(function_desc *function)
                 } else {
                     bincode_insert_unary_instruction(function, insn, x86insn_fpu_ld, &insn->in_op1);
                     fp_registers_cnt++;
-                    UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
+                    ASSERT(fp_registers_cnt < 4); // так как все операции бинарные, в стеке не может быть больше трёх регистров
 
                     bincode_insert_fp_esp_offset(function, insn, x86insn_fpu_stp, insn->in_op1.op_type, -sz);
                     bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
@@ -391,7 +391,7 @@ static void _maintain_fpu_stack(function_desc *function)
             }
         }
 
-        UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
+        ASSERT(fp_registers_cnt < 4); // так как все операции бинарные, в стеке не может быть больше трёх регистров
     }
 
     ASSERT(last_pusha_count == 0);

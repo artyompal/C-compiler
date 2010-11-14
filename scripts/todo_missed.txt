@@ -14,8 +14,6 @@ x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg <= x86reg_ebx);
 x86_regalloc.c:     FIXME: без memset всё падает, следовательно, кто-то читает неинициализированную память. Кроме того, всё падает в релизе.
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(fp_registers_cnt < 8);
 x86_regalloc.c:     TODO: для MOV EAX/EDX,reg делать бэк-треккинг и аллоцировать этот псевдорегистр в указанный регистр
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(!X86_IS_REGVAR(reg2));
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
