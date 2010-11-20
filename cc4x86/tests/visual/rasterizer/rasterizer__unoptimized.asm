@@ -210,7 +210,7 @@ _vec4f_dot proc
 	fld	dword ptr [dword14+12]
 	fmul	dword ptr [dword16+12]
 	faddp
-	return_valuep
+	set_retvalp
 	destroy_stack_frame
 	ret
 _vec4f_dot endp	
@@ -263,7 +263,7 @@ _vec4f_is_equal proc
 	fstp	st
 	seta	byte1
 	movzx	dword9,byte1
-	return_value	dword9
+	set_retval	dword9
 	destroy_stack_frame
 	ret
 _vec4f_is_equal endp	
@@ -1239,7 +1239,7 @@ __tex2d proc
 	add	dword15,[ebp-4]
 	sal	dword15,2
 	add	dword15,dword ptr [__texture_data]
-	return_value	dword ptr [dword15]
+	set_retval	dword ptr [dword15]
 	destroy_stack_frame
 	ret
 __tex2d endp	
@@ -2365,7 +2365,7 @@ __clip_poligon proc
 	cmp	dword ptr [dword26+192],1
 	setg	byte1
 	movzx	dword28,byte1
-	return_value	dword28
+	set_retval	dword28
 	destroy_stack_frame
 	ret
 __clip_poligon endp	

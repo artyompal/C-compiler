@@ -78,6 +78,7 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
     int i, return_label, regs_cnt, type;
     x86_operand op;
 
+
     return_label = caller->func_labels_count++;
     bincode_insert_comment(caller, point, "start of inline function", callee->func_sym->sym_name);
 
@@ -101,25 +102,40 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
             inserted->in_op1.data.label += labels_ofs;
         } else if (IS_JMP_INSN(inserted->in_code)) {
             inserted->in_op1.data.label += labels_ofs;
-        } else if (inserted->in_code == x86insn_return_value) {
+        } else if (inserted->in_code == x86insn_set_retval) {
             ASSERT(OP_IS_REGISTER_OR_ADDRESS(inserted->in_op1));
 
-            if (inserted->in_op1.op_loc == x86loc_register) {
-                inserted->in_op2    = inserted->in_op1;
-                inserted->in_code   = x86insn_int_mov;
+            if (OP_IS_FLOAT(inserted->in_op1)) {
+                if (inserted->in_op1.op_loc == x86loc_register) {
+                    inserted->in_code = x86insn_fpu_st;
 
-                bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                    inserted->in_op1.op_type, res_ofs);
+                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                        inserted->in_op1.op_type, res_ofs);
+                } else {
+                    inserted->in_code = x86insn_fpu_st;
+
+                    bincode_insert_unary_instruction(caller, inserted, x86insn_fpu_ld, &inserted->in_op1);
+                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                        inserted->in_op1.op_type, res_ofs);
+                }
             } else {
-                bincode_create_operand_from_pseudoreg(&op, inserted->in_op1.op_type,
-                    caller->func_pseudoregs_count[inserted->in_op1.op_type]++);
-                bincode_insert_instruction(caller, inserted, x86insn_int_mov, &op, &inserted->in_op1);
+                if (inserted->in_op1.op_loc == x86loc_register) {
+                    inserted->in_op2    = inserted->in_op1;
+                    inserted->in_code   = x86insn_int_mov;
 
-                inserted->in_op2    = op;
-                inserted->in_code   = x86insn_int_mov;
+                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                        inserted->in_op1.op_type, res_ofs);
+                } else {
+                    bincode_create_operand_from_pseudoreg(&op, inserted->in_op1.op_type,
+                        caller->func_pseudoregs_count[inserted->in_op1.op_type]++);
+                    bincode_insert_instruction(caller, inserted, x86insn_int_mov, &op, &inserted->in_op1);
 
-                bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                    inserted->in_op1.op_type, res_ofs);
+                    inserted->in_op2    = op;
+                    inserted->in_code   = x86insn_int_mov;
+
+                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                        inserted->in_op1.op_type, res_ofs);
+                }
             }
         } else {
             for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
@@ -151,7 +167,6 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
     x86_instruction *insn, *next_insn, *prev_insn;
     BOOL was = FALSE;
     int params_total_sz = 0, params_ofs = 0, locals_ofs = 0, ofs, sz, type, labels_ofs, res_ofs = 0;
-
     int regs_ofs[X86_REGISTER_TYPES_COUNT];
     x86_operand tmp;
 
@@ -189,9 +204,13 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 
         // Патчим запись параметров и удаляем остальной код вызова.
         next_insn = insn->in_next;
+        prev_insn = insn->in_prev;
         ofs = 8;
 
-        for (insn = insn->in_prev; insn->in_code != x86insn_push_all; insn = prev_insn) {
+        ASSERT(insn->in_code == x86insn_call);
+        bincode_erase_instruction(caller, insn);
+
+        for (insn = prev_insn; insn->in_code != x86insn_push_all; insn = prev_insn) {
             prev_insn = insn->in_prev;
             if (insn->in_code != x86insn_push_arg) continue;
 
@@ -200,9 +219,14 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             ASSERT(OP_IS_REGISTER_OR_ADDRESS(insn->in_op1));
 
             if (insn->in_op1.op_loc == x86loc_register) {
-                insn->in_code   = x86insn_int_mov;
-                insn->in_op2    = insn->in_op1;
-                bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_dword, ofs + params_ofs);
+                if (OP_IS_FLOAT(insn->in_op1)) {
+                    insn->in_code       = x86insn_fpu_st;
+                    insn->in_op1.op_loc = x86loc_none;
+                } else {
+                    insn->in_code       = x86insn_int_mov;
+                    insn->in_op2        = insn->in_op1;
+                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_dword, ofs + params_ofs);
+                }
             } else {
                 insn->in_code   = x86insn_int_mov;
                 insn->in_op2    = insn->in_op1;
@@ -220,13 +244,13 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
         bincode_erase_instruction(caller, insn);
         insn = next_insn;
 
-        if (next_insn->in_code == x86insn_restore_stack) {
+        if (insn->in_code == x86insn_restore_stack) {
             next_insn = insn->in_next;
             bincode_erase_instruction(caller, insn);
             insn = next_insn;
         }
 
-        ASSERT(next_insn->in_code == x86insn_pop_all);
+        ASSERT(insn->in_code == x86insn_pop_all);
         next_insn = next_insn->in_next;
         bincode_erase_instruction(caller, insn);
         insn = next_insn;
@@ -242,6 +266,26 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
         caller->func_labels_count += callee->func_labels_count;
 
         _insert_function_code(insn, callee, caller, params_ofs, locals_ofs, regs_ofs, labels_ofs, res_ofs);
+
+
+        if (res_ofs != 0) {
+            // Патчим последующее чтение результата (максимум, одну инструкцию).
+            for (; insn && insn->in_code != x86insn_call; insn = insn->in_next) {
+                if (insn->in_code != x86insn_read_retval) continue;
+
+                ASSERT(OP_IS_REGISTER(insn->in_op1));
+
+                if (OP_IS_FLOAT(insn->in_op1)) {
+                    insn->in_code = x86insn_fpu_ld;
+                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_dword, res_ofs);
+                } else {
+                    insn->in_code = x86insn_int_mov;
+                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op2, x86op_dword, res_ofs);
+                }
+
+                break;
+            }
+        }
     }
 }
 
