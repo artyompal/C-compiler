@@ -7,7 +7,7 @@ sub run {
 }
 
 
-chdir("../cc4x86/bin/debug/") or die("chdir: $!");
+chdir("../cc4x86/bin/release/") or die("chdir: $!");
 
 # generate XML
 run("cc4x86.exe --debug_xml_dump --debug_disable_codegen ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");

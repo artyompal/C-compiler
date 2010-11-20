@@ -21,7 +21,7 @@ sub run {
 sub run_test {
 	my $test_name = shift;
 
-	run("..\\..\\..\\bin\\debug\\cc4x86.exe --optimize --output_file_name current_test.asm --debug_xml_dump ..\\$test_name");
+	run("..\\..\\..\\bin\\release\\cc4x86.exe --optimize --output_file_name current_test.asm --debug_xml_dump ..\\$test_name");
 
 	my $test_asm_name = $test_name;
 	$test_asm_name =~ s/\.c/\.asm/;
