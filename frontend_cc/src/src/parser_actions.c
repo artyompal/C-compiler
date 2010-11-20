@@ -241,7 +241,7 @@ parameter *parser_create_named_parameter(decl_specifier spec, symbol *sym)
 
     if (!sym) { return NULL; }
 
-    res = allocator_alloc(allocator_per_function_pool, sizeof(parameter));
+    res = allocator_alloc(allocator_global_pool, sizeof(parameter));
     type_apply_decl_specifiers_to_type(spec, &sym->sym_type);
 
     res->param_code     = code_symbol_parameter;
@@ -260,7 +260,7 @@ parameter *parser_create_unnamed_parameter(decl_specifier spec, data_type *type)
 
     if (!type) { return NULL; }
 
-    res                 = allocator_alloc(allocator_per_function_pool, sizeof(parameter));
+    res                 = allocator_alloc(allocator_global_pool, sizeof(parameter));
 
     res->param_code     = code_type_parameter;
     res->param_next     = NULL;
@@ -277,7 +277,7 @@ parameter_list *parser_create_parameter_list(parameter *param)
 
     if (!param) { return NULL; }
 
-    res = allocator_alloc(allocator_per_function_pool, sizeof(parameter_list));
+    res = allocator_alloc(allocator_global_pool, sizeof(parameter_list));
 
     if (param->param_type->type_code == code_type_void) {
         res->param_first = res->param_last = NULL;
@@ -310,7 +310,7 @@ parameter_list *parser_push_ellipsis(parameter_list *param_list)
 
     if (!param_list) { return NULL; }
 
-    res             = allocator_alloc(allocator_per_function_pool, sizeof(parameter));
+    res             = allocator_alloc(allocator_global_pool, sizeof(parameter));
     res->param_code = code_ellipsis_parameter;
     res->param_next = NULL;
     res->param_type = NULL;
