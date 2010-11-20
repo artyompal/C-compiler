@@ -614,11 +614,11 @@ void x86_optimization_after_regvar_allocation(function_desc *function)
         for (insn_count = 0, insn = function->func_binary_code; insn; insn = insn->in_next)
             insn_count++;
 
-        // Регистровая статистика стала невалидной, поэтому мы обязаны её перестроить.
-        x86_analyze_registers_usage(function);
-
         // Пока оптимизация даёт результаты, её можно повторять.
         do {
+            // Регистровая статистика стала невалидной, поэтому мы обязаны её перестроить.
+            x86_analyze_registers_usage(function);
+
             orig_insn_count = insn_count;
 
             // Выполняем итерацию оптимизации.

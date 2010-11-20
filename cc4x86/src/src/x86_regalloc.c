@@ -343,6 +343,8 @@ static void _maintain_fpu_stack(function_desc *function)
                 bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_float, tmp);
             }
         } else if (insn->in_code == x86insn_push_arg && OP_IS_FLOAT(insn->in_op1)) {
+            insn->in_op2.op_loc = x86loc_none;
+
             if (OP_IS_REGISTER(insn->in_op1)) {
                 fp_registers_cnt--;
             }
@@ -695,7 +697,8 @@ static void _stack_handling(function_desc *function, x86_operand_type type)
 
             bincode_insert_pop_reg(function, insn, x86op_dword, ~x86reg_ebp);
         } else if (insn->in_code == x86insn_push_arg) {
-            insn->in_code  = x86insn_push;
+            insn->in_code       = x86insn_push;
+            insn->in_op2.op_loc = x86loc_none;
         } else if (insn->in_code == x86insn_restore_stack) {
             insn->in_code  = x86insn_int_add;
             insn->in_op2   = insn->in_op1;
