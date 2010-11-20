@@ -208,9 +208,9 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
     stat->count     = pseudoregs_cnt;
     pseudoregs_map  = stat->ptr;
-    
+
     memset(pseudoregs_map, 0, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
-    
+
 
     // Составляем статистику использования псевдорегистров.
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
@@ -512,6 +512,9 @@ static BOOL _handle_special_instructions(function_desc *function, x86_instructio
         insn->in_op1.data.reg = ~real_reg;
         insn->in_next->in_op1.data.reg = ~real_reg;
         insn->in_next->in_op2.data.reg = ~real_reg;
+
+        pseudoregs_map[reg].reg_status      = register_allocated;
+        pseudoregs_map[reg].reg_location    = real_reg;
 
         return TRUE;
     }
