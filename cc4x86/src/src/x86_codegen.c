@@ -7,7 +7,6 @@
 #include "x86_regalloc.h"
 
 
-static int _last_pseudoreg[X86_REGISTER_TYPES_COUNT];
 static function_desc *_curr_func = NULL;
 
 
@@ -17,11 +16,11 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res);
 int x86_codegen_alloc_pseudoreg(x86_operand_type type)
 {
     if (type == x86op_qword) {
-        int res = _last_pseudoreg[x86op_dword]++;
-        _last_pseudoreg[x86op_dword]++;
+        int res = _curr_func->func_pseudoregs_count[x86op_dword]++;
+        _curr_func->func_pseudoregs_count[x86op_dword]++;
         return res;
     } else
-        return _last_pseudoreg[x86_encode_register_type(type)]++;
+        return _curr_func->func_pseudoregs_count[x86_encode_register_type(type)]++;
 }
 
 
@@ -339,9 +338,9 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
     ASSERT(OP_IS_INT(*op2) && OP_IS_REGISTER_OR_ADDRESS(*op2));
     ASSERT(op1->op_type == op2->op_type);
 
-    // TODO: unsigned div/mod, compare, mul, shr/sar
-    // TODO: generate SHL/SHR eax,cl
-    // TODO: support long long arithmetics.
+    // TODO: беззнаковые div/mod, сравнения, mul, shr/sar
+    // TODO: генерировать SHL/SHR eax,cl для неконстантных сдвигов
+    // TODO: поддержка long long
 
     *res = *op1;
 
@@ -520,7 +519,6 @@ static void _generate_binary_arithm_expr(expression *expr, x86_operand *res)
 {
     x86_operand op1, op2;
     BOOL is_structure_op    = TYPE_IS_STRUCTURE_UNION(expr->expr_type);
-    BOOL is_fpu_op          = TYPE_IS_FLOATING(expr->expr_type) && !option_use_sse2;
     BOOL is_int_op          = TYPE_IS_INTEGRAL_OR_POINTER(expr->data.arithm.operand1->expr_type);
     BOOL fpu_invert;
 
@@ -573,7 +571,8 @@ static void _generate_call(expression *call, x86_operand *res)
         _evaluate_nested_expression(arg, &tmp);
 
         param_size = type_calculate_sizeof(arg->expr_type);
-        unit_push_unary_instruction(x86insn_push_arg, &tmp);
+        bincode_create_operand_from_int_constant(&tmp2, x86op_dword, param_size);
+        unit_push_binary_instruction(x86insn_push_arg, &tmp, &tmp2);
 
         params_total_size += param_size;
     }
@@ -588,7 +587,7 @@ static void _generate_call(expression *call, x86_operand *res)
     }
 
     // выдаём инструкцию CALL и сохраняем информацию о типе результата во второй операнд
-    tmp2.op_loc     = x86loc_register;  // al/ax/eax/eax:edx/st0/xmm0
+    tmp2.op_loc     = x86loc_none;
     tmp2.op_type    = bincode_encode_type(call->expr_type);
     unit_push_binary_instruction(x86insn_call, &tmp, &tmp2);
 
@@ -606,7 +605,8 @@ static void _generate_call(expression *call, x86_operand *res)
         res->op_loc = x86loc_none;
     } else {
         // TODO: возвращать результат типа QWORD
-        bincode_create_operand_from_register(res, tmp2.op_type, x86reg_eax);
+        bincode_create_operand_and_alloc_pseudoreg(res, tmp2.op_type);
+        unit_push_unary_instruction(x86insn_read_retval, res);
     }
 }
 
@@ -686,42 +686,12 @@ static void _generate_epilog(void)
 
 static void _generate_return(expression *ret_value)
 {
-    x86_operand res, tmp, tmp2;
+    x86_operand res;
 
     if (ret_value) {
         _evaluate_nested_expression(ret_value, &res);
         ASSERT(res.op_loc == x86loc_register || res.op_loc == x86loc_address);
-
-        if (res.op_type == x86op_byte) {
-            bincode_create_operand_from_register(&tmp, x86op_byte, x86reg_al);
-            unit_push_binary_instruction(x86insn_int_mov, &tmp, &res);
-        } else if (res.op_type == x86op_word) {
-            bincode_create_operand_from_register(&tmp, x86op_word, x86reg_ax);
-            unit_push_binary_instruction(x86insn_int_mov, &tmp, &res);
-        } else if (res.op_type == x86op_dword) {
-            bincode_create_operand_from_register(&tmp, x86op_dword, x86reg_eax);
-            unit_push_binary_instruction(x86insn_int_mov, &tmp, &res);
-        } else if (res.op_type == x86op_qword) {
-            UNIMPLEMENTED_ASSERT(res.op_loc == x86loc_register);
-            bincode_create_operand_from_register(&tmp, x86op_dword, x86reg_eax);
-            bincode_create_operand_from_register(&tmp2, x86op_dword, res.data.qword.low);
-            unit_push_binary_instruction(x86insn_int_mov, &tmp, &tmp2);
-            bincode_create_operand_from_register(&tmp, x86op_dword, x86reg_edx);
-            bincode_create_operand_from_register(&tmp2, x86op_dword, res.data.qword.high);
-            unit_push_binary_instruction(x86insn_int_mov, &tmp, &tmp2);
-        } else {
-            if (res.op_loc == x86loc_address) {
-                unit_push_unary_instruction(x86insn_fpu_ld, &res);
-            } else {
-                if (!option_use_sse2) {
-                    // результат уже находится в st(0)
-                } else {
-                    // результат в xmm0
-                    bincode_create_operand_from_register(&tmp, x86op_float, 0);
-                    unit_push_binary_instruction(x86insn_sse_mov, &tmp, &res);
-                }
-            }
-        }
+        unit_push_unary_instruction(x86insn_return_value, &res);
     }
 
     _generate_epilog();
@@ -948,20 +918,22 @@ static void _place_float_constants_into_data_section(void)
 {
     expr_iterate_through_subexpressions(_curr_func->func_body, code_expr_float_constant, EXPR_IT_APPLY_FILTER,
         _extract_float_constants, NULL);
-    x86data_enter_text_section();
 }
 
 
 // Точка входа в кодогенератор.
 
+AUX_CASSERT(sizeof(_curr_func->func_pseudoregs_count)/sizeof(int) == X86_REGISTER_TYPES_COUNT);
+
 void x86_codegen_do_function(function_desc *function)
 {
     int type;
 
-    for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++)
-        _last_pseudoreg[type] = 1;
-
     _curr_func   = function;
+
+    for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
+        _curr_func->func_pseudoregs_count[type] = 1;
+    }
 
     _place_float_constants_into_data_section();
     _generate_prolog();

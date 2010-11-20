@@ -336,7 +336,7 @@ x86_instruction_code bincode_encode_float_constant(double val)
 
 x86_instruction *bincode_create_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2)
 {
-    x86_instruction *res    = allocator_alloc(allocator_temporary_pool, sizeof(x86_instruction));
+    x86_instruction *res    = allocator_alloc(allocator_global_pool, sizeof(x86_instruction));
 
     res->in_code            = code;
 
@@ -387,68 +387,77 @@ void bincode_insert_unary_instruction(function_desc *function, x86_instruction *
     bincode_insert_instruction(function, pos, code, op, &empty_op);
 }
 
-void bincode_insert_int_reg_reg(function_desc *function, x86_instruction *next, x86_instruction_code code,
+void bincode_insert_int_reg_reg(function_desc *function, x86_instruction *pos, x86_instruction_code code,
                                 x86_operand_type type, int dest_reg, int src_reg)
 {
     x86_operand op1, op2;
 
     bincode_create_operand_from_pseudoreg(&op1, type, dest_reg);
     bincode_create_operand_from_pseudoreg(&op2, type, src_reg);
-    bincode_insert_instruction(function, next, code, &op1, &op2);
+    bincode_insert_instruction(function, pos, code, &op1, &op2);
 }
 
-void bincode_insert_int_reg_const(function_desc *function, x86_instruction *next, x86_instruction_code code,
+void bincode_insert_int_reg_const(function_desc *function, x86_instruction *pos, x86_instruction_code code,
                                   x86_operand_type type, int dest_reg, int val)
 {
     x86_operand op1, op2;
 
     bincode_create_operand_from_pseudoreg(&op1, type, dest_reg);
     bincode_create_operand_from_int_constant(&op2, type, val);
-    bincode_insert_instruction(function, next, code, &op1, &op2);
+    bincode_insert_instruction(function, pos, code, &op1, &op2);
 }
 
-void bincode_insert_int_reg_ebp_offset(function_desc *function, x86_instruction *next, x86_instruction_code code,
+void bincode_insert_int_reg_ebp_offset(function_desc *function, x86_instruction *pos, x86_instruction_code code,
                                        x86_operand_type type, int dest_reg, int offset)
 {
     x86_operand op1, op2;
 
     bincode_create_operand_from_pseudoreg(&op1, x86_encode_register_type(type), dest_reg);
     bincode_create_operand_addr_from_ebp_offset(&op2, type, offset);
-    bincode_insert_instruction(function, next, code, &op1, &op2);
+    bincode_insert_instruction(function, pos, code, &op1, &op2);
 }
 
-void bincode_insert_int_ebp_offset_reg(function_desc *function, x86_instruction *next, x86_instruction_code code,
+void bincode_insert_int_ebp_offset_reg(function_desc *function, x86_instruction *pos, x86_instruction_code code,
                                        x86_operand_type type, int offset, int dest_reg)
 {
     x86_operand op1, op2;
 
     bincode_create_operand_addr_from_ebp_offset(&op1, type, offset);
     bincode_create_operand_from_pseudoreg(&op2, x86_encode_register_type(type), dest_reg);
-    bincode_insert_instruction(function, next, code, &op1, &op2);
+    bincode_insert_instruction(function, pos, code, &op1, &op2);
 }
 
-void bincode_insert_push_reg(function_desc *function, x86_instruction *next, x86_operand_type type, int reg)
+void bincode_insert_push_reg(function_desc *function, x86_instruction *pos, x86_operand_type type, int reg)
 {
     x86_operand op;
 
     bincode_create_operand_from_pseudoreg(&op, type, reg);
-    bincode_insert_instruction(function, next, x86insn_push, &op, NULL);
+    bincode_insert_instruction(function, pos, x86insn_push, &op, NULL);
 }
 
-void bincode_insert_pop_reg(function_desc *function, x86_instruction *next, x86_operand_type type, int reg)
+void bincode_insert_pop_reg(function_desc *function, x86_instruction *pos, x86_operand_type type, int reg)
 {
     x86_operand op;
 
     bincode_create_operand_from_pseudoreg(&op, type, reg);
-    bincode_insert_instruction(function, next, x86insn_pop, &op, NULL);
+    bincode_insert_instruction(function, pos, x86insn_pop, &op, NULL);
 }
 
-void bincode_insert_fp_esp_offset(function_desc *function, x86_instruction *next, x86_instruction_code code, x86_operand_type type, int ofs)
+void bincode_insert_fp_esp_offset(function_desc *function, x86_instruction *pos, x86_instruction_code code, x86_operand_type type, int ofs)
 {
     x86_operand op;
 
     bincode_create_operand_addr_from_esp_offset(&op, type, ofs);
-    bincode_insert_instruction(function, next, code, &op, NULL);
+    bincode_insert_instruction(function, pos, code, &op, NULL);
+}
+
+void bincode_insert_comment(function_desc *function, x86_instruction *pos, const char *s1, const char *s2)
+{
+    x86_operand op1, op2;
+
+    bincode_create_operand_from_int_constant(&op1, x86op_unused, (int)s1);
+    bincode_create_operand_from_int_constant(&op2, x86op_unused, (int)s2);
+    bincode_insert_instruction(function, pos, x86insn_comment, &op1, &op2);
 }
 
 void bincode_erase_instruction(function_desc *function, x86_instruction *insn)

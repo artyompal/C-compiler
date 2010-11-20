@@ -76,7 +76,7 @@ static data_type *_create_type(data_type_code type_code)
 {
     data_type *res;
 
-    res             = allocator_alloc(allocator_persistent_pool, sizeof(data_type));
+    res             = allocator_alloc(allocator_global_pool, sizeof(data_type));
     res->type_code  = type_code;
 
     return res;
@@ -144,7 +144,7 @@ static data_type *_add_function_node(data_type **type, parameter_list *params)
     res->data.function.result_type      = *terminal_type;
 
     if (!params) {
-        params = allocator_alloc(allocator_persistent_pool, sizeof(parameter_list));
+        params = allocator_alloc(allocator_global_pool, sizeof(parameter_list));
         params->param_first = params->param_last = NULL;
     }
 
@@ -204,7 +204,7 @@ data_type *type_add_abstract_function_node(data_type *type, parameter_list *para
 
 struct_union_field *type_create_field(symbol *sym, expression *width)
 {
-    struct_union_field *res = allocator_alloc(allocator_persistent_pool, sizeof(struct_union_field));
+    struct_union_field *res = allocator_alloc(allocator_global_pool, sizeof(struct_union_field));
 
     sym                 = symbol_remove_from_table(sym, FALSE);
     sym->sym_code       = code_sym_field;
@@ -229,7 +229,7 @@ struct_union_field *type_create_field(symbol *sym, expression *width)
 
 fields_list *type_create_fields_list(struct_union_field *field)
 {
-    fields_list *res = allocator_alloc(allocator_persistent_pool, sizeof(struct_union_field));
+    fields_list *res = allocator_alloc(allocator_global_pool, sizeof(struct_union_field));
     res->fields_first = res->fields_last = field;
     return res;
 }
@@ -247,7 +247,7 @@ fields_list *type_add_fields_to_list(fields_list *fields1, fields_list *fields2)
     fields1->fields_last->field_next = fields2->fields_first;
     fields1->fields_last = fields2->fields_last;
 
-    allocator_free(allocator_persistent_pool, fields2, sizeof(fields_list));
+    allocator_free(allocator_global_pool, fields2, sizeof(fields_list));
     return fields1;
 }
 
@@ -445,7 +445,7 @@ int type_calculate_offsetof(data_type *type, symbol *field_name, data_type **fie
     ASSERT(type->type_code == code_type_union || type->type_code == code_type_structure);
 
     for (field = type->data.struct_union.list.fields_first; field; field = field->field_next) {
-        if (!strcmp(field->field_sym->sym_name, field_name->sym_name)) {
+        if (symbol_equal(field->field_sym, field_name)) {
             *field_type = field->field_sym->sym_type;
             return field->field_offset;
         }
@@ -488,7 +488,7 @@ BOOL type_are_same(data_type *type1, data_type *type2)
 
     case code_type_structure:
     case code_type_union:
-        return !strcmp(type1->data.struct_union.sym->sym_name, type2->data.struct_union.sym->sym_name);
+        return symbol_equal(type1->data.struct_union.sym, type2->data.struct_union.sym);
 
     case code_type_function:
         {
@@ -515,7 +515,7 @@ BOOL type_are_same(data_type *type1, data_type *type2)
     case code_type_enum:
     case code_type_incomplete_structure:
     case code_type_incomplete_union:
-        return !strcmp(type1->data.enum_or_incomplete.sym->sym_name, type2->data.enum_or_incomplete.sym->sym_name);
+        return symbol_equal(type1->data.enum_or_incomplete.sym, type2->data.enum_or_incomplete.sym);
 
     default:
         ASSERT(FALSE);

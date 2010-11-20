@@ -15,7 +15,7 @@ static expression *_create_expr(expression_code code, data_type *type)
 {
     expression *res;
 
-    res                     = allocator_alloc(allocator_temporary_pool, sizeof(expression));
+    res                     = allocator_alloc(allocator_per_function_pool, sizeof(expression));
     res->expr_code          = code;
     res->expr_type          = type;
     res->expr_lvalue        = (code == code_expr_symbol);
@@ -613,7 +613,7 @@ expression *expr_create_from_identifier(symbol *sym)
 
     if (sym->sym_code == code_sym_unknown) {
         aux_error("unknown identifier: '%s'", sym->sym_name);
-        symbol_free(sym, TRUE);
+        symbol_free(sym);
     }
 
     res             = _create_expr(code_expr_symbol, sym->sym_type);
@@ -794,7 +794,7 @@ expression *_real_indirect_field_access(expression *expr, symbol *sym, data_type
 
     if (member_offset == -1) {
         aux_error("member '%s' not found", sym->sym_name);
-        symbol_free(sym, TRUE);
+        symbol_free(sym);
     }
 
     if (member_offset) {
@@ -878,7 +878,7 @@ expression *expr_create_function_call(expression *address, expression_list *args
     }
 
     if (!args) {
-        args = allocator_alloc(allocator_temporary_pool, sizeof(expression_list));
+        args = allocator_alloc(allocator_per_function_pool, sizeof(expression_list));
         args->expr_first = args ->expr_last = NULL;
     }
 
@@ -887,6 +887,7 @@ expression *expr_create_function_call(expression *address, expression_list *args
     res = _create_expr(code_expr_function_call, address_type->data.function.result_type);
     res->data.function_call.address = address;
     res->data.function_call.args    = args;
+    address->expr_parent            = res;
 
 
     // проверяем типы аргументов и делаем необходимые преобразования типов
@@ -958,7 +959,7 @@ expression_list *expr_create_expression_list(expression *expr)
         return NULL;
     }
 
-    res             = allocator_alloc(allocator_temporary_pool, sizeof(expression_list));
+    res             = allocator_alloc(allocator_per_function_pool, sizeof(expression_list));
     expr            = _generate_pointer(expr, TRUE, TRUE);
 
     res->expr_first = expr;

@@ -18,7 +18,7 @@ static void _hash_reset(hash_id hash)
 {
     unsigned i;
 
-    hash->data  = allocator_alloc(allocator_persistent_pool, hash->reserved * sizeof(void *));
+    hash->data  = allocator_alloc(allocator_global_pool, hash->reserved * sizeof(void *));
     hash->size  = 0;
 
     for (i = 0; i < hash->reserved; i++) {
@@ -29,7 +29,7 @@ static void _hash_reset(hash_id hash)
 
 hash_id hash_init(hash_function hash_func, hash_equal_function equal_func)
 {
-    hash_id hash        = allocator_alloc(allocator_persistent_pool, sizeof(hash_table));
+    hash_id hash        = allocator_alloc(allocator_global_pool, sizeof(hash_table));
 
     hash->hash_func     = hash_func;
     hash->equal_func    = equal_func;
@@ -42,8 +42,8 @@ hash_id hash_init(hash_function hash_func, hash_equal_function equal_func)
 
 void hash_term(hash_id hash)
 {
-    allocator_free(allocator_persistent_pool, hash->data, hash->reserved * sizeof(void *));
-    allocator_free(allocator_persistent_pool, hash, sizeof(hash_table));
+    allocator_free(allocator_global_pool, hash->data, hash->reserved * sizeof(void *));
+    allocator_free(allocator_global_pool, hash, sizeof(hash_table));
 }
 
 

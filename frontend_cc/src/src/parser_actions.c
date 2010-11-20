@@ -57,7 +57,7 @@ decl_specifier parser_add_type_specifiers(decl_specifier orig_value, decl_specif
     decl_specifier res = orig_value;
 
 #define SET(SPEC) orig_value.spec_##SPEC
-    // arithmetics types
+    // арифметические типы
     if (added_value.spec_void) {
         if (SET(void) || SET(char) || SET(short) || SET(int) || SET(long) || SET(float) || SET(double)
             || SET(signed) || SET(unsigned) || SET(struct_union) || SET(enum) || SET(typedefed_name)) {
@@ -104,7 +104,7 @@ decl_specifier parser_add_type_specifiers(decl_specifier orig_value, decl_specif
         else { res.spec_unsigned = 1; }
     }
 
-    // compound types
+    // составные типы
     else if (added_value.spec_struct_union) {
         if (SET(void) || SET(char) || SET(short) || SET(int) || SET(long) || SET(float) || SET(double)
             || SET(signed) || SET(unsigned) || SET(struct_union) || SET(enum) || SET(typedefed_name)) {
@@ -122,7 +122,7 @@ decl_specifier parser_add_type_specifiers(decl_specifier orig_value, decl_specif
         } else { res.spec_typedefed_name = 1, res.spec_compound_type = added_value.spec_compound_type; }
     }
 
-    // qualifiers
+    // CV-квалификаторы
     else if (added_value.spec_const) {
         if (SET(const)) { goto qualifier_error; }
         else { res.spec_const = 1; }
@@ -131,7 +131,7 @@ decl_specifier parser_add_type_specifiers(decl_specifier orig_value, decl_specif
         else { res.spec_volatile = 1; }
     }
 
-    // storage specifiers
+    // квалификаторы видимости
     else if (added_value.spec_typedef) {
         if (SET(typedef) || SET(extern) || SET(static) || SET(auto) || SET(register)) { goto storage_error; }
         else { res.spec_typedef = 1; }
@@ -195,7 +195,7 @@ initializer *parser_create_simple_initializer(expression *expr)
 
     if (!expr) { return NULL; }
 
-    res                     = allocator_alloc(allocator_temporary_pool, sizeof(initializer));
+    res                     = allocator_alloc(allocator_per_function_pool, sizeof(initializer));
     res->init_code          = code_terminal_initializer;
     res->init_next          = NULL;
     res->init_data.value    = expr;
@@ -209,7 +209,7 @@ initializer *parser_create_complex_initializer(initializer *child)
 
     if (!child) { return NULL; }
 
-    res                 = allocator_alloc(allocator_temporary_pool, sizeof(initializer));
+    res                 = allocator_alloc(allocator_per_function_pool, sizeof(initializer));
     res->init_code      = code_compound_initializer;
     res->init_next      = NULL;
     res->init_data.list = child;
@@ -229,7 +229,7 @@ symbol *parser_attach_initializer(symbol *sym, initializer *value)
 {
     if (!sym) { return NULL; }
 
-    // TODO: semantic check: type correspondence, type promotion and casting.
+    // TODO: семантические проверки: проверки типов и неявные преобразования типов.
     sym->sym_init = value;
     return sym;
 }
@@ -241,7 +241,7 @@ parameter *parser_create_named_parameter(decl_specifier spec, symbol *sym)
 
     if (!sym) { return NULL; }
 
-    res = allocator_alloc(allocator_temporary_pool, sizeof(parameter));
+    res = allocator_alloc(allocator_per_function_pool, sizeof(parameter));
     type_apply_decl_specifiers_to_type(spec, &sym->sym_type);
 
     res->param_code     = code_symbol_parameter;
@@ -260,7 +260,7 @@ parameter *parser_create_unnamed_parameter(decl_specifier spec, data_type *type)
 
     if (!type) { return NULL; }
 
-    res                 = allocator_alloc(allocator_temporary_pool, sizeof(parameter));
+    res                 = allocator_alloc(allocator_per_function_pool, sizeof(parameter));
 
     res->param_code     = code_type_parameter;
     res->param_next     = NULL;
@@ -277,7 +277,7 @@ parameter_list *parser_create_parameter_list(parameter *param)
 
     if (!param) { return NULL; }
 
-    res = allocator_alloc(allocator_temporary_pool, sizeof(parameter_list));
+    res = allocator_alloc(allocator_per_function_pool, sizeof(parameter_list));
 
     if (param->param_type->type_code == code_type_void) {
         res->param_first = res->param_last = NULL;
@@ -310,7 +310,7 @@ parameter_list *parser_push_ellipsis(parameter_list *param_list)
 
     if (!param_list) { return NULL; }
 
-    res             = allocator_alloc(allocator_temporary_pool, sizeof(parameter));
+    res             = allocator_alloc(allocator_per_function_pool, sizeof(parameter));
     res->param_code = code_ellipsis_parameter;
     res->param_next = NULL;
     res->param_type = NULL;

@@ -121,7 +121,7 @@ static void _create_register_variable(symbol *sym)
 {
     x86_register_var *res;
 
-    res = allocator_alloc(allocator_temporary_pool, sizeof(x86_register_var));
+    res = allocator_alloc(allocator_per_function_pool, sizeof(x86_register_var));
 
     if (!_register_vars_list.first) {
         _register_vars_list.first = _register_vars_list.last = res;
@@ -153,7 +153,9 @@ static void _search_for_addressing_or_int2float(expression *expr, void *result)
 // Добавляет переменную в список, если нигде не берётся её адрес.
 static void _try_create_register_variable(function_desc *function, symbol *sym)
 {
-    address_lookup_result address_taken = {sym, FALSE};
+    address_lookup_result address_taken;
+
+    address_taken.sym = sym, address_taken.res = FALSE;
 
     // Проверка счётчика ссылок.
     if (sym->sym_usage_count <= 1) {
@@ -185,7 +187,7 @@ static void _usage_counter(expression *sym_expr, void *unused)
 //
 // Вычисляет для каждой переменной число её использования.
 // TODO: нужно давать больший приоритет переменным, использующимся во внутренних циклах.
-static void _analyse_variables_usage(function_desc *function)
+static void _analyze_variables_usage(function_desc *function)
 {
     symbol *var;
     parameter *param;
@@ -214,7 +216,7 @@ static void _choose_possible_register_variables(function_desc *function)
     data_type *func_type = function->func_sym->sym_type;
 
 
-    _analyse_variables_usage(function);
+    _analyze_variables_usage(function);
 
     _register_vars_list.first = _register_vars_list.last = NULL;
 

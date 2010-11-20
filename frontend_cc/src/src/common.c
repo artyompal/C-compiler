@@ -9,6 +9,7 @@ BOOL option_debug_disable_basic_opt = FALSE;
 BOOL option_enable_optimization     = FALSE;
 BOOL option_use_sse2                = FALSE;
 BOOL option_debug_xml_dump          = FALSE;
+int  option_max_inline_insn         = 100;
 
 char option_output_filename[MAX_PATH];
 

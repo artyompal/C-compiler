@@ -493,17 +493,14 @@ void x86_optimization_after_codegen(function_desc *function)
             _try_optimize_add_sub(function, insn);
             break;
 
-        case x86insn_push_all:
-            if (prev && prev->in_code == x86insn_pop_all) {
-                bincode_erase_instruction(function, insn);
-                bincode_erase_instruction(function, prev);
-                continue;
-            }
+        //case x86insn_push_all:
+        //    if (prev && prev->in_code == x86insn_pop_all) {
+        //        bincode_erase_instruction(function, insn);
+        //        bincode_erase_instruction(function, prev);
+        //        continue;
+        //    }
         }
     }
-
-    // Регистровая статистика стала невалидной, поэтому мы обязаны её перестроить.
-    x86_analyze_registers_usage(function);
 }
 
 

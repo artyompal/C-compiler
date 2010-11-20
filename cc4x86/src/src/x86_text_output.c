@@ -217,11 +217,14 @@ static const char *_x86_instructions[] = {
     "rep\tmovsd",
     "push_arg",
     "restore_stack",
+    "return_value",
+    "read_retval",
     "label",
     "push_all",
     "pop_all",
     "create_stack_frame",
     "destroy_stack_frame",
+    "comment",
 };
 AUX_CASSERT(AUX_ARRAY_LENGTH(_x86_instructions) == x86insn_count);
 
@@ -392,6 +395,11 @@ static void _print_op(FILE *output, x86_operand *op)
 }
 
 
+static void _output_push_comment(FILE *output, const char *s1, const char *s2)
+{
+    fprintf(output, "; %s%s%s\n", s1, (s2 ? " " : ""), (s2 ? s2 : ""));
+}
+
 static void _output_push_nullary_instruction(FILE *output, x86_instruction_code code)
 {
     _print_insn(output, code);
@@ -447,7 +455,9 @@ static void _output_push_ternary_instruction(FILE *output, x86_instruction_code 
 
 static void _output_push_instruction(FILE *output, x86_instruction *insn)
 {
-    if (insn->in_op1.op_loc == x86loc_none) {
+    if (insn->in_code == x86insn_comment) {
+        _output_push_comment(output, (char*)insn->in_op1.data.int_val, (char*)insn->in_op2.data.int_val);
+    } else if (insn->in_op1.op_loc == x86loc_none) {
         _output_push_nullary_instruction(output, insn->in_code);
     } else if (insn->in_op2.op_loc == x86loc_none || insn->in_code == x86insn_call) {
         _output_push_unary_instruction(output, insn->in_code, &insn->in_op1);
@@ -464,12 +474,3 @@ void text_output_push_instruction(x86_instruction *insn)
     _output_push_instruction(asm_file, insn);
 }
 
-
-#ifdef _DEBUG
-
-void debug_print_instruction(x86_instruction *insn)
-{
-    _output_push_instruction(stdout, insn);
-}
-
-#endif // _DEBUG

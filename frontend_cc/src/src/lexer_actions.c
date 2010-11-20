@@ -85,7 +85,7 @@ int token_float_literal(const char *token, int unused)
     char *endptr;
     double val = strtod(token, &endptr);
 
-    // parse postfixes lfLF and deduce the type
+    // парсим суффиксы lfLF и выводим тип
     data_type_code type = code_type_double;
 
     while (*endptr) {
@@ -172,8 +172,8 @@ int token_string_literal(const char *token, int token_len)
         _parse_character(token + i, &length, &value);
     }
 
-    count++;    // reserve space for terminating NULL
-    data    = allocator_alloc(allocator_persistent_pool, count);
+    count++;    // место для завершающего нуля
+    data    = allocator_alloc(allocator_global_pool, count);
 
     for (i = 1, j = 0; token[i] != '"'; i += length, j++) {
         _parse_character(token + i, &length, &data[j]);

@@ -12,7 +12,7 @@ typedef struct symbol_decl symbol;
 
 
 typedef enum arithmetic_opcode_decl {
-    // binary arithmetic operations
+    // бинарные арифметические операции:
     op_add,
     op_sub,
     op_mul,
@@ -24,7 +24,7 @@ typedef enum arithmetic_opcode_decl {
     op_xor,
     op_or,
 
-    // binary comparison operations
+    // операции сравнения и логические:
     op_less_then,
     op_less_equal,
     op_greater_then,
@@ -36,7 +36,7 @@ typedef enum arithmetic_opcode_decl {
     op_logical_and_in_jump,
     op_logical_or_in_jump,
 
-    // binary assignment operations
+    // операции присваивания:
     op_assign,
     op_add_assign,
     op_sub_assign,
@@ -49,7 +49,7 @@ typedef enum arithmetic_opcode_decl {
     op_xor_assign,
     op_or_assign,
 
-    // unary operations
+    // унарные арифметические операции:
     op_neg,
     op_bitnot,
     op_not,
@@ -60,7 +60,7 @@ typedef enum arithmetic_opcode_decl {
     op_dereference,
     op_get_address,
 
-    // internal unary operations
+    // унарные операции внутреннего использования:
     op_convert_int2float,
     op_convert_float2int,
     op_convert_float2double,
@@ -98,7 +98,7 @@ typedef enum expression_code_decl {
     code_expr_symbol,
     code_expr_function_call,
     code_expr_jump,
-    code_expr_jump_by_name,         // используется для разрешения меток goto
+    code_expr_jump_by_name,         // используется для разрешения goto вперёд
     code_expr_return,
     code_expr_arithmetic,
     code_expr_label,
@@ -123,17 +123,17 @@ typedef struct arithm_decl {
     arithmetic_opcode   opcode;
     expression          *operand1;
     expression          *operand2;
-    int                 step;               // for increment/decrement
+    int                 step;               // для инкремента/декремента указателей
 } expr_arithm;
 
 typedef struct expression_decl {
-    expression_code expr_code;              // see above
-    data_type *     expr_type;              // pointer to the root of types tree
-    BOOL            expr_lvalue;            // means that expression type is really a pointer to that type
-    int             expr_source_line;       // line numbers support
-    expression      *expr_next, *expr_prev; // linked list for comma expressions and function arguments
-    expression      *expr_parent;           // used for operands of arithmetic expressions to maintain tree structure
-    int             expr_complexity;        // used by code generator
+    expression_code expr_code;              // код операции, см. выше
+    data_type *     expr_type;              // указатель на корень дерева типов
+    BOOL            expr_lvalue;            // означает, что фактически выражение является указателем на означенный тип
+    int             expr_source_line;       // отслеживание номеров строк для сообщений об ошибках
+    expression      *expr_next, *expr_prev; // связный список (для comma-expression и фактических параметров функций)
+    expression      *expr_parent;           // хранит структуру дерева для арифметических операций
+    int             expr_complexity;        // используется кодогенератором
 
     union {
         // code_expr_int_constant
