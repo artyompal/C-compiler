@@ -229,7 +229,7 @@ typedef enum x86_instruction_code_decl {
     x86insn_rep_movsd,
     x86insn_push_arg,           // 1ый параметр может быть любого типа (эмулируется); 2ой параметр - размер
     x86insn_restore_stack,      // параметр - суммарный размер всех операндов
-    x86insn_return_value,       // параметр - возвращаемое значение (любого размера)
+    x86insn_set_retval,         // параметр - возвращаемое значение (любого размера)
     x86insn_read_retval,        // параметр - псевдорегистр, куда нужно сохранить результат
     x86insn_label,
     x86insn_push_all,

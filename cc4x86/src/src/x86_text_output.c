@@ -217,7 +217,7 @@ static const char *_x86_instructions[] = {
     "rep\tmovsd",
     "push_arg",
     "restore_stack",
-    "return_value",
+    "set_retval",
     "read_retval",
     "label",
     "push_all",

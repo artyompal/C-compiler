@@ -121,6 +121,11 @@ void allocator_free(allocator_pool pool, void *ptr, int size)
     char *next_top, *cur_top;
 
     size        = (size + 3) &~ 3;
+
+    if (size > p->top) {
+        return;
+    }
+
     next_top    = (char*) ptr + size;
     cur_top     = p->last_fragment->data + p->top;
 

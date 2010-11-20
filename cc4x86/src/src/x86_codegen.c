@@ -691,7 +691,7 @@ static void _generate_return(expression *ret_value)
     if (ret_value) {
         _evaluate_nested_expression(ret_value, &res);
         ASSERT(res.op_loc == x86loc_register || res.op_loc == x86loc_address);
-        unit_push_unary_instruction(x86insn_return_value, &res);
+        unit_push_unary_instruction(x86insn_set_retval, &res);
     }
 
     _generate_epilog();

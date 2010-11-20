@@ -701,7 +701,7 @@ static void _stack_handling(function_desc *function, x86_operand_type type)
             insn->in_op2   = insn->in_op1;
 
             bincode_create_operand_from_register(&insn->in_op1, x86op_dword, x86reg_esp);
-        } else if (insn->in_code == x86insn_return_value) {
+        } else if (insn->in_code == x86insn_set_retval) {
             if (insn->in_op1.op_type == x86op_byte) {
                 bincode_create_operand_from_register(&tmp, x86op_byte, x86reg_al);
                 bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
@@ -746,7 +746,7 @@ static void _remove_pseudo_instructions(function_desc *function)
 
         if (insn->in_code == x86insn_push_all || insn->in_code == x86insn_pop_all
             || insn->in_code == x86insn_create_stack_frame || insn->in_code == x86insn_destroy_stack_frame
-            || insn->in_code == x86insn_return_value || insn->in_code == x86insn_read_retval) {
+            || insn->in_code == x86insn_set_retval || insn->in_code == x86insn_read_retval) {
                 bincode_erase_instruction(function, insn);
             }
     }
