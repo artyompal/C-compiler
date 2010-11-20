@@ -67,7 +67,7 @@ static void _fixup_stack_address(x86_operand *op, int params_ofs, int locals_ofs
 // - скорректировать смещения всех параметров и локальных переменных вызываемой функции;
 // - скорректировать значения псевдо-регистров и меток;
 // - пропатчить все ret на jump в конец функции;
-// - пропатчить все return_value на запись в результат.
+// - пропатчить все set_retval на запись в результат.
 //
 
 static void _insert_function_code(x86_instruction *point, function_desc *callee, function_desc *caller,
@@ -105,14 +105,22 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
         } else if (inserted->in_code == x86insn_set_retval) {
             ASSERT(OP_IS_REGISTER_OR_ADDRESS(inserted->in_op1));
 
+            for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
+                bincode_extract_pseudoregs_from_insn(inserted, type, regs, &regs_cnt);
+
+                for (i = 0; i < regs_cnt; i++) {
+                    *regs[i].reg_addr += regs_ofs[type];
+                }
+            }
+
             if (OP_IS_FLOAT(inserted->in_op1)) {
                 if (inserted->in_op1.op_loc == x86loc_register) {
-                    inserted->in_code = x86insn_fpu_st;
+                    inserted->in_code = x86insn_fpu_stp;
 
                     bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
                         inserted->in_op1.op_type, res_ofs);
                 } else {
-                    inserted->in_code = x86insn_fpu_st;
+                    inserted->in_code = x86insn_fpu_stp;
 
                     bincode_insert_unary_instruction(caller, inserted, x86insn_fpu_ld, &inserted->in_op1);
                     bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
@@ -220,12 +228,13 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 
             if (insn->in_op1.op_loc == x86loc_register) {
                 if (OP_IS_FLOAT(insn->in_op1)) {
-                    insn->in_code       = x86insn_fpu_st;
-                    insn->in_op1.op_loc = x86loc_none;
+                    insn->in_code       = x86insn_fpu_stp;
+                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, insn->in_op1.op_type, ofs + params_ofs);
+                    insn->in_op2.op_loc = x86loc_none;
                 } else {
                     insn->in_code       = x86insn_int_mov;
                     insn->in_op2        = insn->in_op1;
-                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_dword, ofs + params_ofs);
+                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, insn->in_op1.op_type, ofs + params_ofs);
                 }
             } else {
                 insn->in_code   = x86insn_int_mov;

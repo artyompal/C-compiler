@@ -19,10 +19,6 @@ void text_output_begin_unit(void)
     }
 
     fprintf(asm_file, "\n.686\n.model flat\n");
-
-#ifdef _DEBUG
-    setvbuf(asm_file, 0, _IONBF, 0);
-#endif
 }
 
 void text_output_end_unit(void)
@@ -95,16 +91,6 @@ void text_output_declare_ptr_to_relocable(symbol *ptr_sym, symbol *rel_sym)
 void text_output_begin_text_section(void)
 {
     fprintf(asm_file, "\n.code\n");
-}
-
-void text_output_begin_function(function_desc *function)
-{
-    fprintf(asm_file, "\n_%s proc\n", function->func_sym->sym_name);
-}
-
-void text_output_end_function(function_desc *function)
-{
-    fprintf(asm_file, "_%s endp\t\n", function->func_sym->sym_name);
 }
 
 
@@ -468,9 +454,28 @@ static void _output_push_instruction(FILE *output, x86_instruction *insn)
     }
 }
 
-
-void text_output_push_instruction(x86_instruction *insn)
+static void _output_function_code(FILE *output, function_desc *func)
 {
-    _output_push_instruction(asm_file, insn);
+    x86_instruction *insn;
+
+    fprintf(output, "\n_%s proc\n", func->func_sym->sym_name);
+
+    for (insn = func->func_binary_code; insn; insn = insn->in_next) {
+        _output_push_instruction(output, insn);
+    }
+
+    fprintf(output, "_%s endp\t\n", func->func_sym->sym_name);
+    fflush(output);
+}
+
+
+void text_output_push_function_code(function_desc *func)
+{
+    _output_function_code(asm_file, func);
+}
+
+void text_output_debug_print_function_code(function_desc *func)
+{
+    _output_function_code(stdout, func);
 }
 

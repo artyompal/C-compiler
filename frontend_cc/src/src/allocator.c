@@ -13,15 +13,19 @@ typedef struct {
     fragment_desc   *last_fragment;
     int             fragment_sz;
     int             top;
+    int             total_size;
 } pool_desc;
 
+
+const int ALLOCATOR_BLOCK_SIZE = 0x100000;
 
 static pool_desc _global_allocator, _per_function_allocator;
 
 
-static __declspec(noreturn) void _out_of_memory(void)
+static __declspec(noreturn) void _out_of_memory()
 {
-    aux_fatal_error("out of memory");
+    aux_fatal_error("out of memory (allocated %d Mb)",
+        (_global_allocator.total_size+_per_function_allocator.total_size+0xfffff)>>20);
 }
 
 static void _init_pool(pool_desc *pool, int _fragment_sz)
@@ -29,7 +33,8 @@ static void _init_pool(pool_desc *pool, int _fragment_sz)
     pool->fragment_sz = _fragment_sz - sizeof(fragment_desc *);
     pool->top         = 0;
 
-    pool->first_fragment = pool->last_fragment = (fragment_desc *) _aligned_malloc(_fragment_sz, 4);
+    pool->first_fragment    = pool->last_fragment = (fragment_desc *) _aligned_malloc(_fragment_sz, 4);
+    pool->total_size        = pool->fragment_sz;
 
     if (!pool->first_fragment) {
         _out_of_memory();
@@ -63,8 +68,8 @@ static pool_desc *_select_pool(allocator_pool pool)
 
 void allocator_init(void)
 {
-    _init_pool(&_global_allocator, 0x10000);
-    _init_pool(&_per_function_allocator, 0x10000);
+    _init_pool(&_global_allocator, ALLOCATOR_BLOCK_SIZE);
+    _init_pool(&_per_function_allocator, ALLOCATOR_BLOCK_SIZE);
 }
 
 void allocator_term(void)
@@ -83,7 +88,8 @@ static void _alloc_fragment(pool_desc *pool)
         pool->top               = 0;
     }
 
-    new_frag = (fragment_desc *) _aligned_malloc(pool->fragment_sz + sizeof(fragment_desc *), 4);
+    new_frag            = (fragment_desc *) _aligned_malloc(pool->fragment_sz + sizeof(fragment_desc *), 4);
+    pool->total_size    += pool->fragment_sz;
 
     if (!new_frag) {
         _out_of_memory();
@@ -104,6 +110,7 @@ void *allocator_alloc(allocator_pool pool, int size)
     char *res;
 
     size = (size + 3) &~ 3;
+    ASSERT(size <= p->fragment_sz);
 
     if (p->top + size > p->fragment_sz) {
         _alloc_fragment(p);
@@ -161,11 +168,5 @@ static void _reset_allocator(pool_desc *pool)
 void allocator_finish_function(void)
 {
     _reset_allocator(&_per_function_allocator);
-}
-
-void allocator_reset_all(void)
-{
-    _reset_allocator(&_per_function_allocator);
-    _reset_allocator(&_global_allocator);
 }
 
