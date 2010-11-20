@@ -15,7 +15,7 @@ static expression *_create_expr(expression_code code, data_type *type)
 {
     expression *res;
 
-    res                     = allocator_alloc(allocator_per_function_pool, sizeof(expression));
+    res                     = allocator_alloc(allocator_global_pool, sizeof(expression));
     res->expr_code          = code;
     res->expr_type          = type;
     res->expr_lvalue        = (code == code_expr_symbol);
@@ -878,7 +878,7 @@ expression *expr_create_function_call(expression *address, expression_list *args
     }
 
     if (!args) {
-        args = allocator_alloc(allocator_per_function_pool, sizeof(expression_list));
+        args = allocator_alloc(allocator_global_pool, sizeof(expression_list));
         args->expr_first = args ->expr_last = NULL;
     }
 
@@ -959,7 +959,7 @@ expression_list *expr_create_expression_list(expression *expr)
         return NULL;
     }
 
-    res             = allocator_alloc(allocator_per_function_pool, sizeof(expression_list));
+    res             = allocator_alloc(allocator_global_pool, sizeof(expression_list));
     expr            = _generate_pointer(expr, TRUE, TRUE);
 
     res->expr_first = expr;
