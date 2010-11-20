@@ -31,12 +31,13 @@ int symbol_equal(symbol *key1, symbol *key2)
     return !strcmp(key1->sym_name, key2->sym_name);
 }
 
-
 // строка должна быть выделена через allocator_global_pool
 static symbol *_symbol_lookup(const char *str)
 {
-    symbol *sym     = allocator_alloc(allocator_global_pool, sizeof(symbol));
+    symbol *sym;
     symbol *found;
+
+    sym = allocator_alloc(allocator_global_pool, sizeof(symbol));
 
     memset(sym, 0, sizeof(symbol));
     sym->sym_name   = str;

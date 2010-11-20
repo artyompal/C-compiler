@@ -89,7 +89,7 @@ static void _alloc_fragment(pool_desc *pool)
         _out_of_memory();
     }
 
-    memset(pool->last_fragment->data, 0xCD, pool->fragment_sz);
+    memset(new_frag->data, 0xCD, pool->fragment_sz);
 
     pool->top                   = 0;
     pool->last_fragment->next   = new_frag;
