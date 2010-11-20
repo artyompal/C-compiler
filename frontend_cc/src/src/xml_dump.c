@@ -256,6 +256,7 @@ static void _dump_expression(FILE *file, int align, const char *name, expression
     case code_expr_function_call:
         _xml_attribute(file, "code", "function call");
         _xml_tag_end_complex_open(file);
+        VALIDATE_STANDALONE_EXPR(expr->data.function_call.address, expr);
         _dump_expression(file, align + 2, "func_address", expr->data.function_call.address);
 
         for (arg = expr->data.function_call.args->expr_first; arg; arg = arg->expr_next) {

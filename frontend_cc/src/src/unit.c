@@ -6,6 +6,7 @@
 #include "x86_optimizer.h"
 #include "x86_stack_frame.h"
 #include "x86_text_output.h"
+#include "x86_inlining.h"
 
 
 static function_desc *_first_function       = NULL;
@@ -34,6 +35,20 @@ function_desc * unit_get_current_function(void)
 {
     return _curr_func;
 }
+
+function_desc * unit_find_function(symbol *name)
+{
+    function_desc *func = NULL;
+
+    for (func = _first_function; func; func = func->func_next) {
+        if (symbol_equal(func->func_sym, name)) {
+            return func;
+        }
+    }
+
+    return NULL;
+}
+
 
 //
 // Добавление выражений.
@@ -148,7 +163,7 @@ static void _insert_label_after(int label, expression *position)
 
 int unit_create_label()
 {
-    return _curr_func->func_last_label++;
+    return _curr_func->func_labels_count++;
 }
 
 int unit_create_and_push_label(void)
@@ -636,17 +651,17 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
 {
     symbol *sym;
 
-    if (!symbols) { // error handling
+    if (!symbols) { // обработка синтаксических ошибок
         return;
     }
 
-    // fixing up variables types
+    // выводим тип переменных
     type_apply_decl_specifiers_to_vars(decl_spec, symbols);
 
     for (sym = symbols->list_first; sym; sym = sym->sym_next) {
         sym->sym_is_local = !!_curr_func;
 
-        // remove nested variables (i.e. parameters of pointer-to-function variables)
+        // удаляем параметры в указателях на функцию
         if (TYPE_IS_FUNCTION(sym->sym_type) || TYPE_IS_POINTER_TO_FUNCTION(sym->sym_type)) {
             if (TYPE_IS_FUNCTION(sym->sym_type)) {
                 sym->sym_code = code_sym_function;
@@ -655,7 +670,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
             _remove_function_params_from_symtable(sym->sym_type);
         }
 
-        // handle initializers, if any
+        // обрабатываем инициализаторы, если они есть
         if (decl_spec.spec_typedef) {
             if (sym->sym_init) {
                 aux_error("typedef's cannot have initializers");
@@ -693,7 +708,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
         }
     }
 
-    // inserting the variable into the list of variables
+    // вставляем переменные в список
     if (_curr_func) {
         if (_curr_func->func_locals.list_last) {
             _curr_func->func_locals.list_last->sym_next  = symbols->list_first;
@@ -714,7 +729,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
         return;
     }
 
-    // handling function type
+    // выводим тип функции
     sym->sym_code       = code_sym_function;
     sym->sym_is_local   = FALSE;
 
@@ -732,7 +747,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     type_apply_decl_specifiers_to_type(*spec, &sym->sym_type);
 
 
-    // handle function override: we must check type matching with previous_expr declaration
+    // если функция переопределена, тип должен соответствовать типу первого описания
     hidden = symbol_unhide(sym);
 
     if (hidden) {
@@ -744,18 +759,16 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     }
 
 
-    // making function descriptor
-    _curr_func                  = allocator_alloc(allocator_temporary_pool, sizeof(function_desc));
+    // создаём дескриптор функции
+    _curr_func                  = allocator_alloc(allocator_global_pool, sizeof(function_desc));
     memset(_curr_func, 0, sizeof(function_desc));
 
     _curr_func->func_sym        = sym;
     _curr_func->func_is_static  = spec->spec_static;
     _curr_func->func_params     = sym->sym_type->data.function.parameters_list;
 
-    _curr_func->func_body_end   = NULL;
 
-
-    // insert function into the list of functions in the current unit
+    // вставляем функцию в список функций модуля
     if (!_first_function) {
         _first_function = _last_function = _curr_func;
     } else {
@@ -827,7 +840,7 @@ void unit_handle_function_body(symbol *sym)
 
 void unit_after_global_declaration(void)
 {
-    allocator_reset_temporary();
+    allocator_finish_function();
 }
 
 
@@ -859,11 +872,34 @@ void unit_codegen(void)
 
         _curr_func->func_start_of_regvars = INT_MAX;
 
-        x86_analyze_registers_usage(_curr_func);
-
         if (!option_debug_disable_basic_opt) {
+            x86_analyze_registers_usage(_curr_func);
             x86_optimization_after_codegen(_curr_func);
         }
+
+        if (option_enable_optimization) {
+            x86_analyze_registers_usage(_curr_func);
+            x86_inlining_analyze_function(_curr_func);
+        }
+
+        allocator_finish_function();
+    }
+
+    if (option_enable_optimization) {
+        for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
+            x86_inlining_process_function(_curr_func);
+            allocator_finish_function();
+        }
+    }
+
+    x86data_enter_text_section();
+
+    for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
+        if (_curr_func->func_is_static && _curr_func->func_was_inlined) {
+            continue;
+        }
+
+        x86_analyze_registers_usage(_curr_func);
 
         if (option_enable_optimization) {
             x86_create_register_variables(_curr_func);
@@ -874,7 +910,7 @@ void unit_codegen(void)
         }
 
         _output_function_code(_curr_func);
-        allocator_reset_temporary();
+        allocator_finish_function();
     }
 }
 

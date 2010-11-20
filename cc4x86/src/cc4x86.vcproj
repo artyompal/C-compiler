@@ -47,7 +47,7 @@
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				WarnAsError="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
@@ -127,7 +127,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				WarnAsError="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\x86_inlining.c"
+				>
+			</File>
+			<File
 				RelativePath=".\src\x86_intrinsics.c"
 				>
 			</File>
@@ -236,6 +240,10 @@
 			</File>
 			<File
 				RelativePath=".\headers\x86_data.h"
+				>
+			</File>
+			<File
+				RelativePath=".\headers\x86_inlining.h"
 				>
 			</File>
 			<File

@@ -7,11 +7,11 @@
 #endif // _MSC_VER
 
 
-// All allocated addresses must be aligned at 4 bytes.
+// Все выделяемые указатели выравнены на 4 байта.
 
 typedef enum allocator_pool_decl {
-    allocator_temporary_pool,
-    allocator_persistent_pool,
+    allocator_per_function_pool,    // пул на функцию: временная информация кодогенератора
+    allocator_global_pool,          // глобальный пул: символы, типы, сгенерированный код
 } allocator_pool;
 
 
@@ -23,7 +23,7 @@ void    allocator_free              (allocator_pool pool, void *ptr, int size);
 
 char *  allocator_make_string       (allocator_pool pool, const char *str, int len);
 
-void    allocator_reset_temporary   (void);
+void    allocator_finish_function   (void);
 void    allocator_reset_all         (void);
 
 

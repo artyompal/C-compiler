@@ -1,8 +1,8 @@
-x86_codegen.c:      TODO: unsigned div/mod, compare, mul, shr/sar
-x86_codegen.c:      TODO: generate SHL/SHR eax,cl
-x86_codegen.c:      TODO: support long long arithmetics.
+x86_codegen.c:      TODO: беззнаковые div/mod, сравнения, mul, shr/sar
+x86_codegen.c:      TODO: генерировать SHL/SHR eax,cl для неконстантных сдвигов
+x86_codegen.c:      TODO: поддержка long long
 x86_codegen.c:      TODO: возвращать результат типа QWORD
-x86_codegen.c:      UNIMPLEMENTED_ASSERT(res.op_loc == x86loc_register);
+x86_inlining.c:     FIXME: размер функции после инлайнинга может увеличиться, и тогда она не должна больше инлайниться.
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD + MOVSB
 x86_opt_basic.c:    FIXME: надо проверять, что регистр не зависит от предыдущего значения этой регистровой переменной!
@@ -12,19 +12,16 @@ x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg <= x86reg_ebx);
-x86_regalloc.c:     FIXME: без memset всё падает, следовательно, кто-то читает неинициализированную память. Кроме того, всё падает в релизе.
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
 x86_regalloc.c:     TODO: для MOV EAX/EDX,reg делать бэк-треккинг и аллоцировать этот псевдорегистр в указанный регистр
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(!X86_IS_REGVAR(reg2));
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(FALSE);
 symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов
-allocator.c:        TODO: linked chain of fixed size allocator blocks.
-allocator.c:        TODO: VirtualAlloc instead of _aligned_malloc.
-allocator.c:        TODO: implement _reset_allocator()
 expressions.c:      TODO: нужно поддержать вычитание указателей
-parser_actions.c:   TODO: semantic check: type correspondence, type promotion and casting.
-symbol_table.c:     FIXME: we only allow override functions. extern declarations and typedefs are not supported yet.
-symbol_table.c:     TODO: more flexible behavior? symbols can have multiple duplications
+parser_actions.c:   TODO: семантические проверки: проверки типов и неявные преобразования типов.
+symbol_table.c:     FIXME: мы может оверрайдить только функции; extern declarations / typedefs пока не поддерживаются.
+symbol_table.c:     FIXME: символы могут переопределяться несколько раз
 types.c:            unimplemented_error("unsupported type for overriding declaration specifiers");
 types.c:            UNIMPLEMENTED_ASSERT("unsupported type specifiers");
 unit.c:             UNIMPLEMENTED_ASSERT(sym->sym_init->init_code == code_terminal_initializer);

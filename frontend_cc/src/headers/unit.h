@@ -22,10 +22,13 @@ typedef struct register_stat_decl {
 } register_stat;
 
 typedef struct function_desc_decl {
+    // синтаксическа€/семантическа€ информаци€:
     symbol *                    func_sym;                   // идентификатор функции
+
+    // информаци€ кодогенератора:
     expression *                func_body;                  // код функции в виде дерева выражений
-    expression *                func_body_end;              // код функции в виде дерева выражений
-    BOOL                        func_is_static;             // флаги
+    expression *                func_body_end;              // указатель на конец функции
+    BOOL                        func_is_static;             // видимость функции
     symbol_list                 func_locals;                // список локальных переменных функции
     parameter_list *            func_params;                // список формальных параметров функции
     x86_instruction *           func_binary_code;           // код функции в промежуточном представлении
@@ -33,11 +36,19 @@ typedef struct function_desc_decl {
     int                         func_parameters_sz;         // суммарный размер, в байтах, параметров функции
     int                         func_local_vars_sz;         // суммарный размер, в байтах, локальных переменных
 
+    // информаци€ аллокатора регистров:
     register_stat               func_dword_regstat;         // регистровые статистики дл€ соответствующих наборов регистров;
     register_stat               func_sse2_regstat;          // мы не выдел€ем 8-битные, 16-битные и FPU-регистры
-
     int                         func_start_of_regvars;      // перва€ регистрова€ переменна€ (номер псевдорегистра)
-    int                         func_last_label;            // последн€€ аллоцированна€ метка в функции
+    int                         func_labels_count;          // последн€€ аллоцированна€ метка в функции
+    int                         func_pseudoregs_count[6];   // X86_REGISTER_TYPES_COUNT
+
+    // информаци€ дл€ инлайнинга:
+    BOOL                        func_insn_count;            // количество инструкций во внутреннем представлении
+    BOOL                        func_usage_count;           // число вызовов этой функции
+    BOOL                        func_was_inlined;           // код дл€ функции можно не генерировать
+
+    // односв€зный список:
     struct function_desc_decl * func_next;
 } function_desc;
 
@@ -48,6 +59,7 @@ function_desc * unit_get_current_function           (void);
 
 // поддержка объ€влений функций и переменных
 function_desc * unit_get_functions_list             (void);
+function_desc * unit_find_function                  (symbol *name);
 symbol *        unit_create_temporary_variable      (data_type *type);
 void            unit_handle_variable_declarations   (decl_specifier decl_spec, symbol_list *symbols);
 void            unit_handle_function_prototype      (decl_specifier *spec, symbol *sym);

@@ -68,7 +68,7 @@ typedef enum x86_operand_type_decl {
     x86op_byte,
     x86op_word,
     x86op_dword,
-    x86op_qword,    // не является хардварным типом x86, эмулируется кодогенератором
+    x86op_qword,    // не является аппаратным типом на x86, эмулируется кодогенератором
     x86op_float,
     x86op_double,   // для регистров FPU эквивалентно float
     x86op_unused,
@@ -214,7 +214,7 @@ typedef enum x86_instruction_code_decl {
     // управление стеком:
     x86insn_push,
     x86insn_pop,
-    x86insn_call,              // 1ый аргумент адрес, 2ой аргумент тип результата
+    x86insn_call,               // 1ый параметр - адрес, 2ой - тип результата
     x86insn_ret,
 
     // целочисленные read-only:
@@ -227,13 +227,16 @@ typedef enum x86_instruction_code_decl {
     x86insn_cld,
     x86insn_rep_movsb,
     x86insn_rep_movsd,
-    x86insn_push_arg,          // параметр может быть любого типа (эмулируется)
-    x86insn_restore_stack,     // параметр - суммарный размер всех операндов
+    x86insn_push_arg,           // 1ый параметр может быть любого типа (эмулируется); 2ой параметр - размер
+    x86insn_restore_stack,      // параметр - суммарный размер всех операндов
+    x86insn_return_value,       // параметр - возвращаемое значение (любого размера)
+    x86insn_read_retval,        // параметр - псевдорегистр, куда нужно сохранить результат
     x86insn_label,
     x86insn_push_all,
     x86insn_pop_all,
     x86insn_create_stack_frame,
     x86insn_destroy_stack_frame,
+    x86insn_comment,
 
     x86insn_count,
 } x86_instruction_code;
@@ -313,18 +316,19 @@ void    bincode_insert_instruction                      (function_desc *function
                                                             x86_instruction_code code, x86_operand *op1, x86_operand *op2);
 void    bincode_insert_unary_instruction                (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand *op);
-void    bincode_insert_int_reg_reg                      (function_desc *function, x86_instruction *next,
+void    bincode_insert_int_reg_reg                      (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int dest_reg, int src_reg);
-void    bincode_insert_int_reg_const                    (function_desc *function, x86_instruction *next,
+void    bincode_insert_int_reg_const                    (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int dest_reg, int val);
-void    bincode_insert_int_reg_ebp_offset               (function_desc *function, x86_instruction *next,
+void    bincode_insert_int_reg_ebp_offset               (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int dest_reg, int offset);
-void    bincode_insert_int_ebp_offset_reg               (function_desc *function, x86_instruction *next,
+void    bincode_insert_int_ebp_offset_reg               (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int offset, int dest_reg);
-void    bincode_insert_push_reg                         (function_desc *function, x86_instruction *next, x86_operand_type type, int reg);
-void    bincode_insert_pop_reg                          (function_desc *function, x86_instruction *next, x86_operand_type type, int reg);
-void    bincode_insert_fp_esp_offset                    (function_desc *function, x86_instruction *next,
+void    bincode_insert_push_reg                         (function_desc *function, x86_instruction *pos, x86_operand_type type, int reg);
+void    bincode_insert_pop_reg                          (function_desc *function, x86_instruction *pos, x86_operand_type type, int reg);
+void    bincode_insert_fp_esp_offset                    (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int ofs);
+void    bincode_insert_comment                          (function_desc *function, x86_instruction *pos, const char *s1, const char *s2);
 
 void    bincode_erase_instruction                       (function_desc *function, x86_instruction *insn);
 

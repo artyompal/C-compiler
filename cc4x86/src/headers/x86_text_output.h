@@ -28,13 +28,6 @@ void    text_output_declare_ptr_to_relocable    (symbol *ptr_sym, symbol *rel_sy
 void    text_output_push_instruction            (x86_instruction *insn);
 
 
-#ifdef _DEBUG
-
-void    debug_print_instruction                 (x86_instruction *insn);
-
-#endif // _DEBUG
-
-
 #else
 #error Header x86_text_output.h duplicated.
 #endif // X86_TEXT_OUTPUT_H__INCLUDED

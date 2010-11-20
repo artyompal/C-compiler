@@ -175,7 +175,6 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
     x86_instruction *insn;
     x86_register registers[MAX_REGISTERS_PER_INSN];
     int pseudoregs_cnt, registers_count, i, reg;
-    register_map *regmap = _get_register_map(type);
 
 
     // Считаем число использованных псевдорегистров.
@@ -190,7 +189,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                 ASSERT(insn->in_code == x86insn_int_mov || insn->in_code == x86insn_lea
                     || insn->in_code == x86insn_imul_const || insn->in_code == x86insn_movzx
                     || insn->in_code == x86insn_movsx || insn->in_code == x86insn_fpu_float2int
-                    || IS_SET_INSN(insn->in_code));
+                    || insn->in_code == x86insn_read_retval || IS_SET_INSN(insn->in_code));
                 pseudoregs_cnt = insn->in_op1.data.reg + 1;
             }
         }
@@ -200,20 +199,17 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
     // Выделяем память под статистику.
     if (!stat->ptr || pseudoregs_cnt > stat->count) {
         if (stat->ptr) {
-            allocator_free(allocator_persistent_pool, stat->ptr,
+            allocator_free(allocator_per_function_pool, stat->ptr,
                 sizeof(x86_pseudoreg_info) * stat->count);
         }
 
-        pseudoregs_map = allocator_alloc(allocator_persistent_pool, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
+        pseudoregs_map = allocator_alloc(allocator_per_function_pool, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
         memset(pseudoregs_map, 0, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
 
         stat->ptr   = pseudoregs_map;
         stat->count  = pseudoregs_cnt;
     } else {
         pseudoregs_map = stat->ptr;
-
-         // FIXME: без memset всё падает, следовательно, кто-то читает неинициализированную память. Кроме того, всё падает в релизе.
-        memset(pseudoregs_map, 0, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
     }
 
 
@@ -608,7 +604,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         }
 
         // Эмулируем псевдоинструкции, для этого вставляем реальные инструкции перед ними.
-        max_save_reg = (type == x86op_byte ? x86reg_bh : x86reg_edx);
+        max_save_reg = x86reg_edx;
 
         if (insn->in_code == x86insn_push_all) {
             for (i = 0; i <= max_save_reg; i++) {
@@ -639,6 +635,7 @@ static void _stack_handling(function_desc *function, x86_operand_type type)
     x86_instruction *insn, *next_insn;
     x86_register real_regs[MAX_REGISTERS_PER_INSN];
     int i, registers_count;
+    x86_operand tmp;
 
     BOOL real_regs_usage[X86_MAX_REG] = {0, 0, 0, 0, 0, 0, 0, 0, };
     AUX_CASSERT(sizeof(real_regs_usage) / sizeof(real_regs_usage[0]) == X86_MAX_REG);
@@ -702,6 +699,38 @@ static void _stack_handling(function_desc *function, x86_operand_type type)
             insn->in_op2   = insn->in_op1;
 
             bincode_create_operand_from_register(&insn->in_op1, x86op_dword, x86reg_esp);
+        } else if (insn->in_code == x86insn_return_value) {
+            if (insn->in_op1.op_type == x86op_byte) {
+                bincode_create_operand_from_register(&tmp, x86op_byte, x86reg_al);
+                bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
+            } else if (insn->in_op1.op_type == x86op_word) {
+                bincode_create_operand_from_register(&tmp, x86op_word, x86reg_ax);
+                bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
+            } else if (insn->in_op1.op_type == x86op_dword) {
+                bincode_create_operand_from_register(&tmp, x86op_dword, x86reg_eax);
+                bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
+            } else if (insn->in_op1.op_type == x86op_qword) {
+                UNIMPLEMENTED_ASSERT(FALSE);
+            } else {
+                if (insn->in_op1.op_loc == x86loc_address) {
+                    unit_push_unary_instruction(x86insn_fpu_ld, &insn->in_op1);
+                } else {
+                    if (!option_use_sse2) {
+                        // результат уже находится в st(0)
+                    } else {
+                        // результат в xmm0
+                        bincode_create_operand_from_register(&tmp, x86op_float, 0);
+                        bincode_insert_instruction(function, insn, x86insn_sse_mov, &tmp, &insn->in_op1);
+                    }
+                }
+            }
+        } else if (insn->in_code == x86insn_read_retval) {
+            if (OP_IS_INT(insn->in_op1)) {
+                insn->in_code = x86insn_int_mov;
+                bincode_create_operand_from_register(&insn->in_op2, insn->in_op1.op_type, x86reg_eax);
+            } else {
+                // результат уже находится в st(0)
+            }
         }
     }
 }
@@ -714,7 +743,8 @@ static void _remove_pseudo_instructions(function_desc *function)
         next_insn = insn->in_next;
 
         if (insn->in_code == x86insn_push_all || insn->in_code == x86insn_pop_all
-            || insn->in_code == x86insn_create_stack_frame || insn->in_code == x86insn_destroy_stack_frame) {
+            || insn->in_code == x86insn_create_stack_frame || insn->in_code == x86insn_destroy_stack_frame
+            || insn->in_code == x86insn_return_value || insn->in_code == x86insn_read_retval) {
                 bincode_erase_instruction(function, insn);
             }
     }

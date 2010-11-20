@@ -40,6 +40,7 @@ typedef struct symbol_list_decl {
 
 void            symbol_init_table               (void);
 
+int             symbol_equal                    (symbol *key1, symbol *key2);
 symbol *        symbol_lookup                   (const char *str, int len);
 symbol *        symbol_create_variable          (symbol *sym);
 symbol *        symbol_create_label             (symbol *sym, int label);
@@ -47,7 +48,7 @@ symbol *        symbol_create_unnamed           (const char *default_name, symbo
 symbol *        symbol_create_temporary         (data_type *type);
 symbol *        symbol_unhide                   (symbol *sym);
 void            symbol_delete_hidden            (symbol *orig, symbol *hidden);
-void            symbol_free                     (symbol *sym, BOOL weak);
+void            symbol_free                     (symbol *sym);
 symbol *        symbol_remove_from_table        (symbol *sym, BOOL discard_token);
 void            symbol_transform_to_typedef     (symbol *sym);
 

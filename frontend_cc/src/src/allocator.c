@@ -3,14 +3,20 @@
 #include "common.h"
 
 
+typedef struct fragment_desc_decl {
+    struct fragment_desc_decl *next;
+    char            data[1];
+} fragment_desc;
+
 typedef struct {
-    char    *fragment;
-    int     fragment_sz;
-    int     top;
+    fragment_desc   *first_fragment;
+    fragment_desc   *last_fragment;
+    int             fragment_sz;
+    int             top;
 } pool_desc;
 
 
-static pool_desc _persistent_allocator, _temporary_allocator;
+static pool_desc _global_allocator, _per_function_allocator;
 
 
 static __declspec(noreturn) void _out_of_memory(void)
@@ -20,26 +26,35 @@ static __declspec(noreturn) void _out_of_memory(void)
 
 static void _init_pool(pool_desc *pool, int _fragment_sz)
 {
-    pool->fragment_sz = _fragment_sz;
+    pool->fragment_sz = _fragment_sz - sizeof(fragment_desc *);
     pool->top         = 0;
 
-    pool->fragment = (char*) _aligned_malloc(_fragment_sz, 4);
-    if (!pool->fragment) {
+    pool->first_fragment = pool->last_fragment = (fragment_desc *) _aligned_malloc(_fragment_sz, 4);
+
+    if (!pool->first_fragment) {
         _out_of_memory();
     }
+
+    memset(pool->last_fragment->data, 0xCD, pool->fragment_sz);
+    pool->first_fragment->next = NULL;
 }
 
 static void _term_pool(pool_desc *pool)
 {
-    _aligned_free(pool->fragment);
+    fragment_desc *current, *next;
+
+    for (current = pool->first_fragment; current; current = next) {
+        next = current->next;
+        _aligned_free(current);
+    }
 }
 
 static pool_desc *_select_pool(allocator_pool pool)
 {
-    if (pool == allocator_temporary_pool) {
-        return &_temporary_allocator;
-    } else if (pool == allocator_persistent_pool) {
-        return &_persistent_allocator;
+    if (pool == allocator_per_function_pool) {
+        return &_per_function_allocator;
+    } else if (pool == allocator_global_pool) {
+        return &_global_allocator;
     } else {
         ASSERT(FALSE);
     }
@@ -48,35 +63,45 @@ static pool_desc *_select_pool(allocator_pool pool)
 
 void allocator_init(void)
 {
-    _init_pool(&_persistent_allocator, 0x10000);
-    _init_pool(&_temporary_allocator, 0x10000);
+    _init_pool(&_global_allocator, 0x10000);
+    _init_pool(&_per_function_allocator, 0x10000);
 }
 
 void allocator_term(void)
 {
-    _term_pool(&_temporary_allocator);
-    _term_pool(&_persistent_allocator);
+    _term_pool(&_per_function_allocator);
+    _term_pool(&_global_allocator);
 }
 
 
-// TODO: linked chain of fixed size allocator blocks.
-
-static void _alloc_fragment(pool_desc *p)
+static void _alloc_fragment(pool_desc *pool)
 {
-    p->top      = 0;
-    p->fragment = (char*) _aligned_malloc(p->fragment_sz, 4);
-    // TODO: VirtualAlloc instead of _aligned_malloc.
+    fragment_desc *new_frag;
 
-    if (!p->fragment) {
+    if (pool->last_fragment->next) {
+        pool->last_fragment     = pool->last_fragment->next;
+        pool->top               = 0;
+    }
+
+    new_frag = (fragment_desc *) _aligned_malloc(pool->fragment_sz + sizeof(fragment_desc *), 4);
+
+    if (!new_frag) {
         _out_of_memory();
     }
+
+    memset(pool->last_fragment->data, 0xCD, pool->fragment_sz);
+
+    pool->top                   = 0;
+    pool->last_fragment->next   = new_frag;
+    pool->last_fragment         = new_frag;
+    new_frag->next              = NULL;
 }
 
 
 void *allocator_alloc(allocator_pool pool, int size)
 {
     pool_desc *p = _select_pool(pool);
-    void *res;
+    char *res;
 
     size = (size + 3) &~ 3;
 
@@ -84,9 +109,10 @@ void *allocator_alloc(allocator_pool pool, int size)
         _alloc_fragment(p);
     }
 
-    res = (void*)(p->fragment + p->top);
+    res = (p->last_fragment->data + p->top);
     p->top += size;
-    return res;
+
+    return (char *) res;
 }
 
 void allocator_free(allocator_pool pool, void *ptr, int size)
@@ -96,12 +122,13 @@ void allocator_free(allocator_pool pool, void *ptr, int size)
 
     size        = (size + 3) &~ 3;
     next_top    = (char*) ptr + size;
-    cur_top     = p->fragment + p->top;
+    cur_top     = p->last_fragment->data + p->top;
 
-    ASSERT(next_top <= cur_top);  // it's impossible to the top to be below pointer
+    ASSERT(next_top <= cur_top);
 
     if (next_top == cur_top) {
         p->top -= size;
+        memset(p->last_fragment->data + p->top, 0xBB, size);
     }
 }
 
@@ -114,19 +141,26 @@ char *allocator_make_string(allocator_pool pool, const char *str, int len)
 }
 
 
-static void _reset_allocator(pool_desc *unused)
+static void _reset_allocator(pool_desc *pool)
 {
-    // TODO: implement _reset_allocator()
+    fragment_desc *current;
+
+    for (current = pool->first_fragment; current; current = current->next) {
+        memset(current->data, 0xDD, pool->fragment_sz);
+    }
+
+    pool->last_fragment = pool->first_fragment;
+    pool->top           = 0;
 }
 
-void allocator_reset_temporary(void)
+void allocator_finish_function(void)
 {
-    _reset_allocator(&_temporary_allocator);
+    _reset_allocator(&_per_function_allocator);
 }
 
 void allocator_reset_all(void)
 {
-    _reset_allocator(&_temporary_allocator);
-    _reset_allocator(&_persistent_allocator);
+    _reset_allocator(&_per_function_allocator);
+    _reset_allocator(&_global_allocator);
 }
 

@@ -58,7 +58,7 @@ void x86data_enter_text_section(void)
 
 symbol *x86data_insert_float_constant(double constant)
 {
-    float_symbol *key = allocator_alloc(allocator_temporary_pool, sizeof(float_symbol));
+    float_symbol *key = allocator_alloc(allocator_global_pool, sizeof(float_symbol));
     float_symbol *found;
     symbol *sym;
 
@@ -66,7 +66,7 @@ symbol *x86data_insert_float_constant(double constant)
     found       = hash_find(float_table, key);
 
     if (found) {
-        allocator_free(allocator_temporary_pool, key, sizeof(float_symbol));
+        allocator_free(allocator_global_pool, key, sizeof(float_symbol));
         return found->sym;
     }
 
