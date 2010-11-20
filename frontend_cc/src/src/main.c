@@ -95,7 +95,7 @@ static void _compile_unit(const char *filename)
     option_output_filename[0] = '\0';
     text_output_end_unit();
 
-    allocator_reset_all();
+    allocator_term();
     fclose(source_file);
 
     printf("%s (%d errors, %d warnings)\n", (!aux_get_errors_count() ? "successful" : "failed"),

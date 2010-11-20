@@ -848,19 +848,6 @@ void unit_after_global_declaration(void)
 //  Кодогенерация.
 //
 
-static void _output_function_code(function_desc *func)
-{
-    x86_instruction *insn;
-
-    text_output_begin_function(func);
-
-    for (insn = func->func_binary_code; insn; insn = insn->in_next) {
-        text_output_push_instruction(insn);
-    }
-
-    text_output_end_function(func);
-}
-
 void unit_codegen(void)
 {
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
@@ -901,15 +888,15 @@ void unit_codegen(void)
 
         x86_analyze_registers_usage(_curr_func);
 
-        if (option_enable_optimization) {
-            x86_create_register_variables(_curr_func);
-        }
+        //if (option_enable_optimization) {
+        //    x86_create_register_variables(_curr_func);
+        //}
 
         if (!option_debug_disable_regalloc) {
             x86_allocate_registers(_curr_func);
         }
 
-        _output_function_code(_curr_func);
+        text_output_push_function_code(_curr_func);
         allocator_finish_function();
     }
 }

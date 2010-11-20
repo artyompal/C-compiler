@@ -16,15 +16,13 @@ typedef enum allocator_pool_decl {
 
 
 void    allocator_init              (void);
+void    allocator_finish_function   (void);
 void    allocator_term              (void);
 
 void *  allocator_alloc             (allocator_pool pool, int size);
 void    allocator_free              (allocator_pool pool, void *ptr, int size);
 
 char *  allocator_make_string       (allocator_pool pool, const char *str, int len);
-
-void    allocator_finish_function   (void);
-void    allocator_reset_all         (void);
 
 
 #else
