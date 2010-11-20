@@ -203,15 +203,14 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                 sizeof(x86_pseudoreg_info) * stat->count);
         }
 
-        pseudoregs_map = allocator_alloc(allocator_per_function_pool, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
-        memset(pseudoregs_map, 0, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
-
-        stat->ptr   = pseudoregs_map;
-        stat->count  = pseudoregs_cnt;
-    } else {
-        pseudoregs_map = stat->ptr;
+        stat->ptr = allocator_alloc(allocator_per_function_pool, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
     }
 
+    stat->count     = pseudoregs_cnt;
+    pseudoregs_map  = stat->ptr;
+    
+    memset(pseudoregs_map, 0, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
+    
 
     // Составляем статистику использования псевдорегистров.
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
@@ -753,8 +752,7 @@ static void _remove_pseudo_instructions(function_desc *function)
 void x86_allocate_registers(function_desc *function)
 {
     if (!option_use_sse2) {
-        // Обрабатываем x86insn_push_all/x86insn_pop_all для регистров FPU
-        // и валидируем FPU-стек.
+        // Обрабатываем FPU-инструкции, работающие со стеком, и валидируем FPU-стек.
         _maintain_fpu_stack(function);
 
         // Замена псевдоинструкций FPU может изменить регионы использования адресных регистров.
