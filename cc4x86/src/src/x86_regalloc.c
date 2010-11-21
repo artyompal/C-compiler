@@ -705,17 +705,13 @@ static void _stack_handling(function_desc *function, x86_operand_type type)
 
             bincode_create_operand_from_register(&insn->in_op1, x86op_dword, x86reg_esp);
         } else if (insn->in_code == x86insn_set_retval) {
-            if (insn->in_op1.op_type == x86op_byte) {
-                bincode_create_operand_from_register(&tmp, x86op_byte, x86reg_al);
-                bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
-            } else if (insn->in_op1.op_type == x86op_word) {
-                bincode_create_operand_from_register(&tmp, x86op_word, x86reg_ax);
-                bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
-            } else if (insn->in_op1.op_type == x86op_dword) {
-                bincode_create_operand_from_register(&tmp, x86op_dword, x86reg_eax);
-                bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
-            } else if (insn->in_op1.op_type == x86op_qword) {
-                UNIMPLEMENTED_ASSERT(FALSE);
+            UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);
+
+            if (OP_IS_INT(insn->in_op1)) {
+                if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~x86reg_eax) {
+                    bincode_create_operand_from_register(&tmp, insn->in_op1.op_type, x86reg_eax);
+                    bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
+                }
             } else {
                 if (insn->in_op1.op_loc == x86loc_address) {
                     unit_push_unary_instruction(x86insn_fpu_ld, &insn->in_op1);
@@ -731,8 +727,10 @@ static void _stack_handling(function_desc *function, x86_operand_type type)
             }
         } else if (insn->in_code == x86insn_read_retval) {
             if (OP_IS_INT(insn->in_op1)) {
-                insn->in_code = x86insn_int_mov;
-                bincode_create_operand_from_register(&insn->in_op2, insn->in_op1.op_type, x86reg_eax);
+                if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~x86reg_eax) {
+                    insn->in_code = x86insn_int_mov;
+                    bincode_create_operand_from_register(&insn->in_op2, insn->in_op1.op_type, x86reg_eax);
+                }
             } else {
                 // результат уже находится в st(0)
             }

@@ -50,6 +50,14 @@ __texture_width	dd	?
 public	__texture_width
 __texture_height	dd	?
 public	__texture_height
+___unnamed_float_0	dd	0.000100
+public	___unnamed_float_0
+___unnamed_float_1	dd	2.000000
+public	___unnamed_float_1
+___unnamed_float_2	dd	-1.000000
+public	___unnamed_float_2
+___unnamed_float_3	dd	255.000000
+public	___unnamed_float_3
 
 .code
 
@@ -233,13 +241,6 @@ _vec4f_mul proc
 	ret
 _vec4f_mul endp	
 
-.data
-
-___unnamed_float_0	dd	0.000100
-public	___unnamed_float_0
-
-.code
-
 _vec4f_is_equal proc
 	push	ebp
 	mov	ebp,esp
@@ -367,13 +368,6 @@ _matrix4f_make_perspective proc
 	pop	ebp
 	ret
 _matrix4f_make_perspective endp	
-
-.data
-
-___unnamed_float_1	dd	2.000000
-public	___unnamed_float_1
-
-.code
 
 _matrix4f_make_viewport proc
 	push	ebp
@@ -718,13 +712,6 @@ _matrix4f_transpose proc
 	pop	ebp
 	ret
 _matrix4f_transpose endp	
-
-.data
-
-___unnamed_float_2	dd	-1.000000
-public	___unnamed_float_2
-
-.code
 
 _rasterizer_init proc
 	push	ebp
@@ -1090,13 +1077,6 @@ __tex2d proc
 	pop	ebp
 	ret
 __tex2d endp	
-
-.data
-
-___unnamed_float_3	dd	255.000000
-public	___unnamed_float_3
-
-.code
 
 __rasterize_horiz_line proc
 	push	ebp
@@ -1920,10 +1900,16 @@ label0005:
 	push	eax
 	call	_vec4f_dot
 	add	esp,8
+	fstp	qword ptr [esp-8]
+	sub	esp,8
 	push	dword ptr [ebp+20]
 	lea	eax,[ebp-40]
 	push	eax
 	call	_vec4f_dot
+	add	esp,8
+	fstp	qword ptr [esp-8]
+	fld	qword ptr [esp]
+	fld	qword ptr [esp-8]
 	add	esp,8
 	fdivp
 	fstp	dword ptr [ebp-60]

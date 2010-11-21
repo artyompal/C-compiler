@@ -16,7 +16,7 @@ x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до
 x86_regalloc.c:     TODO: для MOV EAX/EDX,reg делать бэк-треккинг и аллоцировать этот псевдорегистр в указанный регистр
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(!X86_IS_REGVAR(reg2));
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(FALSE);
+x86_regalloc.c:     UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);
 symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов
 expressions.c:      TODO: нужно поддержать вычитание указателей
 parser_actions.c:   TODO: семантические проверки: проверки типов и неявные преобразования типов.
