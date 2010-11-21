@@ -3,6 +3,7 @@
 #include "unit.h"
 #include "x86_bincode.h"
 #include "x86_stack_frame.h"
+#include "x86_regalloc.h"
 
 
 //
@@ -56,7 +57,7 @@ void x86_inlining_analyze_function(function_desc *function)
 //
 static void _fixup_stack_address(x86_operand *op, int params_ofs, int locals_ofs)
 {
-    if (op->op_loc == x86loc_address && op->data.address.base == x86reg_ebp) {
+    if (op->op_loc == x86loc_address && op->data.address.base == ~x86reg_ebp) {
         op->data.address.offset += (op->data.address.offset > 0 ? params_ofs : locals_ofs);
     }
 }
@@ -243,7 +244,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
                     caller->func_pseudoregs_count[x86op_dword]++);
 
                 bincode_create_operand_addr_from_ebp_offset(&tmp, x86op_dword, ofs + params_ofs);
-                bincode_insert_instruction(caller, insn, x86insn_int_mov, &tmp, &insn->in_op1);
+                bincode_insert_instruction(caller, insn->in_next, x86insn_int_mov, &tmp, &insn->in_op1);
             }
 
             ofs += sz;
@@ -295,6 +296,11 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
                 break;
             }
         }
+    }
+
+    if (was) {
+        // Мы создали новые псевдо-регистры, поэтому мы должны перестроить регистровую статистику.
+        x86_analyze_registers_usage(caller);
     }
 }
 
