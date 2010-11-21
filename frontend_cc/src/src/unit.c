@@ -888,9 +888,9 @@ void unit_codegen(void)
 
         x86_analyze_registers_usage(_curr_func);
 
-        //if (option_enable_optimization) {
-        //    x86_create_register_variables(_curr_func);
-        //}
+        if (option_enable_optimization) {
+            x86_create_register_variables(_curr_func);
+        }
 
         if (!option_debug_disable_regalloc) {
             x86_allocate_registers(_curr_func);
