@@ -864,20 +864,20 @@ void unit_codegen(void)
             x86_optimization_after_codegen(_curr_func);
         }
 
-        if (option_enable_optimization) {
-            x86_analyze_registers_usage(_curr_func);
-            x86_inlining_analyze_function(_curr_func);
-        }
+        //if (option_enable_optimization) {
+        //    x86_analyze_registers_usage(_curr_func);
+        //    x86_inlining_analyze_function(_curr_func);
+        //}
 
         allocator_finish_function();
     }
 
-    if (option_enable_optimization) {
-        for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
-            x86_inlining_process_function(_curr_func);
-            allocator_finish_function();
-        }
-    }
+    //if (option_enable_optimization) {
+    //    for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
+    //        x86_inlining_process_function(_curr_func);
+    //        allocator_finish_function();
+    //    }
+    //}
 
     x86data_enter_text_section();
 
