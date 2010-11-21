@@ -179,20 +179,16 @@ static void _try_optimize_lea_reg_address(function_desc *function, x86_instructi
         for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
             ASSERT(usage);
 
-            if (bincode_insn_contains_register(usage, x86op_dword, reg)) {
-                if (_is_address_using_reg(&usage->in_op1, reg)) {
-                    if (!_try_combine_addresses(&usage->in_op1, &insn->in_op2, reg)) {
-                        can_eliminate = FALSE;
-                        break;
-                    }
-                }
+            if (_is_address_using_reg(&usage->in_op1, reg) && !_try_combine_addresses(&usage->in_op1, &insn->in_op2, reg)
+                || bincode_operand_contains_register(&usage->in_op1, x86op_dword, reg)) {
+                    can_eliminate = FALSE;
+                    break;
+            }
 
-                if (_is_address_using_reg(&usage->in_op2, reg)) {
-                    if (!_try_combine_addresses(&usage->in_op2, &insn->in_op2, reg)) {
-                        can_eliminate = FALSE;
-                        break;
-                    }
-                }
+            if (_is_address_using_reg(&usage->in_op2, reg) && !_try_combine_addresses(&usage->in_op2, &insn->in_op2, reg)
+                || bincode_operand_contains_register(&usage->in_op2, x86op_dword, reg)) {
+                    can_eliminate = FALSE;
+                    break;
             }
         }
 

@@ -217,7 +217,6 @@ static void _choose_possible_register_variables(function_desc *function)
 
 
     _analyze_variables_usage(function);
-
     _register_vars_list.first = _register_vars_list.last = NULL;
 
     for (var = function->func_locals.list_first; var; var = var->sym_next) {
@@ -241,6 +240,7 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function)
     int max_registers, current_regs_cnt, regs_cnt, i;
     x86_register regs_arr[MAX_REGISTERS_PER_INSN];
     x86_pseudoreg_info *reg_info = function->func_dword_regstat.ptr;
+
 
     LOG(("_estimate_num_of_used_pseudo_registers(%s)\n", function->func_sym->sym_name));
     max_registers = current_regs_cnt = 0;
