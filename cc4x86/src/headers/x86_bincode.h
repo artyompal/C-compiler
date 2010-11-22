@@ -54,12 +54,12 @@ typedef enum x86_dword_register_decl {
 typedef enum x86_operand_location_decl {
     x86loc_none,
 
-    x86loc_register,
-    x86loc_address,
-    x86loc_int_constant,
-    x86loc_symbol,
-    x86loc_symbol_offset,
-    x86loc_label,
+    x86loc_register,        // операнд - регистр
+    x86loc_address,         // операнд - адрес с абсолютным смещением
+    x86loc_int_constant,    // операнд - абсолютная константа
+    x86loc_symbol,          // операнд - адрес с относительным смещением
+    x86loc_symbol_offset,   // операнд - относительная константа
+    x86loc_label,           // операнд - метка
 } x86_operand_location;
 
 typedef enum x86_operand_type_decl {

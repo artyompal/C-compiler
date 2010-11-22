@@ -631,6 +631,7 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res)
 {
     x86_operand tmp;
     x86_instruction_code val;
+    symbol *sym;
 
     switch (expr->expr_code) {
     case code_expr_arithmetic:
@@ -643,6 +644,14 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res)
 
     case code_expr_symbol:
         _load_symbol(expr->data.sym, expr->expr_type, res);
+        break;
+
+    case code_expr_string:
+        sym = symbol_create_unnamed("string", code_sym_variable, expr->expr_type);
+        x86data_declare_initialized_string(sym, expr->data.str);
+        res->op_loc             = x86loc_symbol_offset;
+        res->data.sym.name      = sym;
+        res->data.sym.offset    = 0;
         break;
 
     case code_expr_int_constant:
