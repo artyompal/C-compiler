@@ -29,7 +29,7 @@ const char *next_option;
 
 static void _print_version(void)
 {
-    puts("CC version 0.04 - proof of concept.");
+    puts("cc4x86 version 0.03");
 }
 
 static void _print_help(const char *program_name)

@@ -139,7 +139,7 @@ typedef struct decl_specifier_decl {
 #define TYPE_IS_INTEGRAL_OR_POINTER(TYPE) \
     (TYPE_IS_INTEGRAL(TYPE) || TYPE_IS_POINTER(TYPE))
 #define TYPE_IS_ARRAY(TYPE) \
-    ((TYPE)->type_code == code_type_sized_array)
+    ((TYPE)->type_code == code_type_sized_array || (TYPE)->type_code == code_type_unsized_array)
 #define TYPE_IS_VOID(TYPE) \
     ((TYPE)->type_code == code_type_void)
 #define TYPE_IS_FUNCTION(TYPE) \

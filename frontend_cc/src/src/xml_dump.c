@@ -305,6 +305,12 @@ static void _dump_expression(FILE *file, int align, const char *name, expression
         _xml_tag_early_end_complex_open(file);
         break;
 
+    case code_expr_string:
+        _xml_attribute(file, "code", "string literal");
+        _xml_attribute(file, "name", "%s", expr->data.str);
+        _xml_tag_early_end_complex_open(file);
+        break;
+
     default: ASSERT(FALSE);
     }
 }

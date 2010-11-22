@@ -175,7 +175,12 @@ static expression *_generate_pointer(expression *expr, BOOL allow_array, BOOL al
 
     if (TYPE_IS_ARRAY(expr->expr_type)) {
         if (allow_array) {
-            res             = _get_address(expr);
+            if (expr->expr_code == code_expr_string) {
+                res         = expr;
+            } else {
+                res         = _get_address(expr);
+            }
+
             res->expr_type  = type_create_pointer_node(expr->expr_type->data.array.item_type);
         }
     } else if (TYPE_IS_FUNCTION(expr->expr_type)) {
@@ -894,7 +899,7 @@ expression *expr_create_function_call(expression *address, expression_list *args
     param   = address_type->data.function.parameters_list->param_first;
     arg     = args->expr_first;
 
-    for (i = 0; param || arg; i++, arg = arg->expr_next, param = param->param_next) {
+    for (i = 0; param || arg; i++, arg = arg->expr_next, param = param ? param->param_next : NULL) {
         if (!arg) {
             if (param->param_code == code_ellipsis_parameter) {
                 break;
@@ -907,11 +912,11 @@ expression *expr_create_function_call(expression *address, expression_list *args
             return NULL;
         }
 
-        if (param->param_code == code_ellipsis_parameter) {
+        if (!ellipsis_reached && param->param_code == code_ellipsis_parameter) {
             ellipsis_reached = TRUE;
         }
 
-        new_arg = arg;
+        new_arg = _generate_pointer(arg, TRUE, TRUE);
 
         if (ellipsis_reached) {
             if (arg->expr_type->type_code == code_type_float) {
@@ -1243,6 +1248,7 @@ static void _inner_iterate_subexpr(expression *expr, expression_code filter, int
         case code_expr_int_constant:
         case code_expr_symbol:
         case code_expr_label:
+        case code_expr_string:
             // терминальное выражение
             break;
 
