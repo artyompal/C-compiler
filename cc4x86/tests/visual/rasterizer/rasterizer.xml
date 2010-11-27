@@ -2742,7 +2742,7 @@
     <function>
       <name>rasterizer_set_mvproj</name>
       <parameters>
-        <parameter name="matrix" type="float[16]"/>
+        <parameter name="matrix" type="float *"/>
       </parameters>
       <body>
         <expression type="struct matrix4f_decl" lvalue="no" complexity="3" code="assign">

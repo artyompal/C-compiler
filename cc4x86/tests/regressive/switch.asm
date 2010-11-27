@@ -135,14 +135,14 @@ _test proc
 	mov	ebp,esp
 	sub	esp,36
 ; start of inline function test_case
-	mov	dword ptr [ebp-20],3
-	mov	eax,[ebp-20]
-	mov	[ebp-24],eax
-	cmp	dword ptr [ebp-24],1
+	mov	dword ptr [ebp-4],3
+	mov	eax,[ebp-4]
+	mov	[ebp-8],eax
+	cmp	dword ptr [ebp-8],1
 	je	label0004
-	cmp	dword ptr [ebp-24],2
+	cmp	dword ptr [ebp-8],2
 	je	label0005
-	cmp	dword ptr [ebp-24],3
+	cmp	dword ptr [ebp-8],3
 	je	label0006
 	jmp	label0007
 label0004:
@@ -170,16 +170,16 @@ label0008:
 	ret
 label0000:
 ; start of inline function test_case2
-	mov	dword ptr [ebp-32],3
-	mov	eax,[ebp-32]
-	mov	[ebp-36],eax
-	cmp	dword ptr [ebp-36],0
+	mov	dword ptr [ebp-16],3
+	mov	eax,[ebp-16]
+	mov	[ebp-20],eax
+	cmp	dword ptr [ebp-20],0
 	je	label000a
-	cmp	dword ptr [ebp-36],1
+	cmp	dword ptr [ebp-20],1
 	je	label000b
-	cmp	dword ptr [ebp-36],2
+	cmp	dword ptr [ebp-20],2
 	je	label000c
-	cmp	dword ptr [ebp-36],3
+	cmp	dword ptr [ebp-20],3
 	je	label000d
 	jmp	label000e
 label000a:
@@ -208,12 +208,12 @@ label000f:
 	ret
 label0001:
 ; start of inline function test_default
-	mov	dword ptr [ebp-44],100
-	mov	eax,[ebp-44]
-	mov	[ebp-48],eax
-	cmp	dword ptr [ebp-48],1
+	mov	dword ptr [ebp-28],100
+	mov	eax,[ebp-28]
+	mov	[ebp-32],eax
+	cmp	dword ptr [ebp-32],1
 	je	label0011
-	cmp	dword ptr [ebp-48],2
+	cmp	dword ptr [ebp-32],2
 	je	label0012
 	jmp	label0013
 label0011:

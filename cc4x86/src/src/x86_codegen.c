@@ -218,11 +218,13 @@ static void _generate_convert_float2double(x86_operand *res, x86_operand *op)
     ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
     if (OP_IS_ADDRESS(*op)) {
-        bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
+        bincode_create_operand_and_alloc_pseudoreg(res, x86op_double);
         unit_push_unary_instruction(x86insn_fpu_ld, op);
     } else {
         *res = *op;
     }
+
+    res->op_type = x86op_double;
 }
 
 static void _generate_dereference(x86_operand *res, x86_operand *op, data_type *type)

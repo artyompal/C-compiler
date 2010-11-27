@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unit>
+  <general>
+    <source_module>..\idiv.c</source_module>
+  </general>
+  <functions_list>
+    <function>
+      <name>test</name>
+      <parameters>
+      </parameters>
+      <local_variables>
+        <variable name="a" type="int"/>
+        <variable name="b" type="int"/>
+        <variable name="c" type="int"/>
+        <variable name="d" type="int"/>
+        <variable name="res" type="int"/>
+      </local_variables>
+      <body>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="3"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="4"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="d"/>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="5"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="5" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="res"/>
+          <operand_2 type="int" lvalue="no" complexity="4" code="add">
+            <operand_1 type="int" lvalue="no" complexity="3" code="mul">
+              <operand_1 type="int" lvalue="no" complexity="2" code="div">
+                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+              </operand_1>
+              <operand_2 type="int" lvalue="no" complexity="2" code="div">
+                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+              </operand_2>
+            </operand_1>
+            <operand_2 type="int" lvalue="no" complexity="3" code="mul">
+              <operand_1 type="int" lvalue="no" complexity="2" code="div">
+                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="d"/>
+              </operand_1>
+              <operand_2 type="int" lvalue="no" complexity="2" code="div">
+                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="d"/>
+              </operand_2>
+            </operand_2>
+          </operand_2>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="2" code="sub">
+            <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="res"/>
+            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="156250"/>
+          </retvalue>
+        </expression>
+      </body>
+    </function>
+  </functions_list>
+</unit>
