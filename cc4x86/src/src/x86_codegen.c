@@ -227,10 +227,14 @@ static void _generate_convert_float2double(x86_operand *res, x86_operand *op)
 
 static void _generate_dereference(x86_operand *res, x86_operand *op, data_type *type)
 {
-    ASSERT(OP_IS_ADDRESS(*op) || OP_IS_REGISTER(*op) && op->op_type == x86op_dword);
+    ASSERT(OP_IS_ADDRESS(*op) || OP_IS_REGISTER(*op) && op->op_type == x86op_dword
+        || op->op_loc == x86loc_symbol_offset);
 
     if (op->op_loc == x86loc_register) {
         bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), op->data.reg);
+    } else if (op->op_loc == x86loc_symbol_offset) {
+        res             = op;
+        res->op_loc     = x86loc_symbol;
     } else {
         bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
         unit_push_binary_instruction(x86insn_int_mov, res, op);
@@ -335,12 +339,13 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
     x86_operand tmp;
 
     ASSERT(OP_IS_INT(*op1) && OP_IS_REGISTER_OR_ADDRESS(*op1));
-    ASSERT(OP_IS_INT(*op2) && OP_IS_REGISTER_OR_ADDRESS(*op2));
+    ASSERT(OP_IS_INT(*op2));
     ASSERT(op1->op_type == op2->op_type);
 
     // TODO: беззнаковые div/mod, сравнения, mul, shr/sar
     // TODO: генерировать SHL/SHR eax,cl для неконстантных сдвигов
     // TODO: поддержка long long
+    // TODO: надо поддержать кодогенерацию для операндов типа byte/word
 
     *res = *op1;
 
@@ -649,7 +654,9 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res)
     case code_expr_string:
         sym = symbol_create_unnamed("string", code_sym_variable, expr->expr_type);
         x86data_declare_initialized_string(sym, expr->data.str);
+
         res->op_loc             = x86loc_symbol_offset;
+        res->op_type            = x86op_dword;
         res->data.sym.name      = sym;
         res->data.sym.offset    = 0;
         break;

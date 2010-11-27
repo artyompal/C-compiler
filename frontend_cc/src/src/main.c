@@ -6,7 +6,7 @@
 #include "x86_text_output.h"
 
 
-#define ENABLE_YY_LOG (0)
+#define ENABLE_YY_LOG 0
 
 
 struct option_decl {

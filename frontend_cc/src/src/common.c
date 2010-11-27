@@ -15,7 +15,7 @@ char option_output_filename[MAX_PATH];
 
 
 //
-// Current file/line handling.
+// Отслеживание текущего файла/строки для сообщений об ошибках.
 //
 
 int current_line         = 0;
@@ -49,7 +49,7 @@ const char *aux_get_current_file(void)
 
 
 //
-// Error handling.
+// Выдача сообщений об ошибках.
 //
 
 static int errors_count     = 0;
@@ -149,9 +149,12 @@ __declspec(noreturn) void aux_unimplemented_error(const char *text)
 
 void aux_replace_file_extension(char *dst, const char *path, const char *extension)
 {
-    char *dot;
+    char *slash, *dot;
 
     strcpy(dst, path);
+
+    slash = strrchr(dst, '\\');
+    if (slash) dst = slash + 1;
 
     dot = strrchr(dst, '.');
     if (dot) *dot = '\0';

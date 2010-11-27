@@ -191,7 +191,7 @@ int token_character_literal(const char *token, int token_len)
     char value;
     int length;
 
-    _parse_character(token, &length, &value);
+    _parse_character(token+1, &length, &value);
     yylval.expr = expr_create_from_integer(value, type_create_arithmetic(code_type_char));
     return lxm_constant;
 }

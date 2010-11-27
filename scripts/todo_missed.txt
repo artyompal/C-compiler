@@ -1,6 +1,7 @@
 x86_codegen.c:      TODO: беззнаковые div/mod, сравнения, mul, shr/sar
 x86_codegen.c:      TODO: генерировать SHL/SHR eax,cl для неконстантных сдвигов
 x86_codegen.c:      TODO: поддержка long long
+x86_codegen.c:      TODO: надо поддержать кодогенерацию для операндов типа byte/word
 x86_codegen.c:      TODO: возвращать результат типа QWORD
 x86_inlining.c:     FIXME: размер функции после инлайнинга может увеличиться, и тогда она не должна больше инлайниться.
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD
@@ -23,7 +24,9 @@ parser_actions.c:   TODO: семантические проверки: проверки типов и неявные преоб
 symbol_table.c:     FIXME: мы может оверрайдить только функции; extern declarations / typedefs пока не поддерживаются.
 symbol_table.c:     FIXME: символы могут переопределяться несколько раз
 types.c:            unimplemented_error("unsupported type for overriding declaration specifiers");
+types.c:            FIXME: массивы не поддерживают константность элементов, поэтому невозможно сравнивать типы с учётом константости
 types.c:            UNIMPLEMENTED_ASSERT("unsupported type specifiers");
 unit.c:             UNIMPLEMENTED_ASSERT(sym->sym_init->init_code == code_terminal_initializer);
 unit.c:             TODO: чтобы выдавать этот варнинг, нужно статическим анализом доказать достижимость этого кода.
 unit.c:             TODO: поддержка локальных переменных во вложенных блоках с правильными областями видимости.
+xml_dump.c:         TODO: заменять непечатные символы escape-кодами
