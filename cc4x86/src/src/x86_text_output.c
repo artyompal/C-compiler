@@ -251,7 +251,7 @@ static void _print_insn(FILE *output, x86_instruction_code code)
     fprintf(output, "\t%s", _x86_instructions[code]);
 }
 
-static void _print_reg(FILE *output, x86_operand_location type, int reg)
+static void _print_reg(FILE *output, x86_operand_type type, int reg)
 {
     switch (type) {
     case x86op_byte:
@@ -285,6 +285,7 @@ static void _print_reg(FILE *output, x86_operand_location type, int reg)
         break;
 
     case x86op_float:
+    case x86op_double:
         if (reg < -8) {
             fprintf(output, "sse0x%x", reg);
         } else if (reg < 0) {

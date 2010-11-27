@@ -201,7 +201,8 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             }
 
             if (callee->func_local_vars_sz) {
-                locals_ofs = x86_stack_frame_alloc_tmp_var(caller, callee->func_local_vars_sz) - 8;
+                locals_ofs = x86_stack_frame_alloc_tmp_var(caller, callee->func_local_vars_sz)
+                    + callee->func_local_vars_sz;
             }
 
             if (insn->in_op2.op_type != x86op_unused) {
