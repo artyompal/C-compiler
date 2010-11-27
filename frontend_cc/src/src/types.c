@@ -478,8 +478,9 @@ BOOL type_are_same(data_type *type1, data_type *type2)
         return TRUE;
 
     case code_type_pointer:
-        return (type1->data.ptr.is_const == type2->data.ptr.is_const &&
-            type1->data.ptr.is_volatile == type2->data.ptr.is_volatile &&
+        return (
+            //type1->data.ptr.is_const == type2->data.ptr.is_const && // FIXME: массивы не поддерживают константность элементов, поэтому невозможно сравнивать типы с учётом константости
+            //type1->data.ptr.is_volatile == type2->data.ptr.is_volatile &&
             type_are_same(type1->data.ptr.item_type, type2->data.ptr.item_type));
 
     case code_type_sized_array:

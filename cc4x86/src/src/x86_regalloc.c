@@ -3,6 +3,7 @@
 #include "x86_bincode.h"
 #include "x86_regalloc.h"
 #include "x86_stack_frame.h"
+#include "x86_text_output.h"
 
 
 typedef struct register_map_decl {

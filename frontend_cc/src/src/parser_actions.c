@@ -235,6 +235,13 @@ symbol *parser_attach_initializer(symbol *sym, initializer *value)
 }
 
 
+static void _convert_arrays_to_pointers(data_type **type)
+{
+    if (TYPE_IS_ARRAY(*type)) {
+        *type = type_create_pointer_to_type((*type)->data.array.item_type);
+    }
+}
+
 parameter *parser_create_named_parameter(decl_specifier spec, symbol *sym)
 {
     parameter *res;
@@ -243,6 +250,7 @@ parameter *parser_create_named_parameter(decl_specifier spec, symbol *sym)
 
     res = allocator_alloc(allocator_global_pool, sizeof(parameter));
     type_apply_decl_specifiers_to_type(spec, &sym->sym_type);
+    _convert_arrays_to_pointers(&sym->sym_type);
 
     res->param_code     = code_symbol_parameter;
     res->param_next     = NULL;
@@ -267,6 +275,7 @@ parameter *parser_create_unnamed_parameter(decl_specifier spec, data_type *type)
     res->param_type     = type;
 
     type_apply_decl_specifiers_to_type(spec, &res->param_type);
+    _convert_arrays_to_pointers(&res->param_type);
     return res;
 }
 

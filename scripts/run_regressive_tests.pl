@@ -41,4 +41,5 @@ run_test("while_break.c");
 run_test("for.c");
 run_test("for2.c");
 run_test("switch.c");
+run_test("string_literal.c");
 

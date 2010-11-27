@@ -36,7 +36,7 @@ exponent_part       [eE][+-]?[0-9]+
 floating_suffix     [fFlL]
 
 string_literal		\"([^"\n\\]|\\[^\n])*\"
-character_literal	'[^\n'\\]|\\[^\n]^'
+character_literal	\'([^\n'\\]|\\[^\n]^)\'
 
 bad_number          [0-9]+[_0-9a-zA-Z]*
 
