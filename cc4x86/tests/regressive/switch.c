@@ -1,6 +1,4 @@
 
-const char *test_name = "switch.c";
-
 
 int test_case()
 {
@@ -62,3 +60,4 @@ extern int test()
 
     return 0;
 }
+

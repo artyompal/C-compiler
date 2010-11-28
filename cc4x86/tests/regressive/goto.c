@@ -1,11 +1,9 @@
 
 
-const char *test_name = "goto.c";
-
 extern int test()
 {
     int a = 0;
-    
+
     goto l3;
 l1:
     goto l2;

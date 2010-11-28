@@ -1,7 +1,5 @@
 
 
-const char *test_name = "simple_test.c";
-
 extern int test()
 {
     int a = 2;

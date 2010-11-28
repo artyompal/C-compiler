@@ -1,5 +1,4 @@
 
-const char *test_name = "idiv.c";
 
 extern int test()
 {

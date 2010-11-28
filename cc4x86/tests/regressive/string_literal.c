@@ -1,8 +1,5 @@
 
 
-const char *test_name = "string_literal.c";
-
-
 static int test0(const char str[])
 {
 	return (str[0] == 'a' ? 0 : -1);
