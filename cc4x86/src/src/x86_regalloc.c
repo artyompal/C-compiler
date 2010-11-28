@@ -249,21 +249,26 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
             }
         }
 
-        // Для инструкций CDQ, XOR EDX,EDX область использования EDX - до следующего DIV/IDIV.
+        // Для инструкций CDQ, XOR EDX,EDX: если остаток от деления (EDX) не используется,
+        // ставим область использования EDX - до следующего DIV/IDIV.
         if (insn->in_code == x86insn_cdq) {
             ASSERT(OP_IS_REGISTER(insn->in_op1));
             reg = insn->in_op1.data.reg;
             ASSERT(pseudoregs_map[reg].reg_first_write == insn);
 
-            for (last = insn->in_next; last->in_code != x86insn_int_idiv; last = last->in_next) {}
-            pseudoregs_map[reg].reg_last_read = last;
+            if (pseudoregs_map[reg].reg_last_read == insn) {
+                for (last = insn->in_next; last->in_code != x86insn_int_idiv; last = last->in_next) {}
+                pseudoregs_map[reg].reg_last_read = last;
+            }
         } else if (insn->in_code == x86insn_xor_edx_edx) {
             ASSERT(OP_IS_REGISTER(insn->in_op1));
             reg = insn->in_op1.data.reg;
             ASSERT(pseudoregs_map[reg].reg_first_write == insn);
 
-            for (last = insn->in_next; last->in_code != x86insn_int_div; last = last->in_next) {}
-            pseudoregs_map[reg].reg_last_read = last;
+            if (pseudoregs_map[reg].reg_last_read == insn) {
+                for (last = insn->in_next; last->in_code != x86insn_int_div; last = last->in_next) {}
+                pseudoregs_map[reg].reg_last_read = last;
+            }
         }
     }
 }
@@ -561,8 +566,12 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         }
 
         // Для инструкций CDQ, XOR EDX,EDX освобождаем EDX.
-        if (type == x86op_dword && (insn->in_code == x86insn_cdq || insn->in_code == x86insn_xor_edx_edx)) {
-            _free_real_register(regmap, x86reg_edx);
+        if (type == x86op_dword && (insn->in_code == x86insn_int_div || insn->in_code == x86insn_int_idiv)) {
+            reg = regmap->real_registers_map[x86reg_edx];
+
+            if (pseudoregs_map[reg].reg_last_read == insn) {
+                _free_real_register(regmap, x86reg_edx);
+            }
         }
 
         // Эмулируем псевдоинструкции, для этого вставляем реальные инструкции перед ними.

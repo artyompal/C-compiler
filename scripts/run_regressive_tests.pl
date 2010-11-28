@@ -17,7 +17,7 @@ sub run {
 
 sub run_test {
 	my ($test_name, $config, $option) = @_;
-	run("..\\..\\..\\bin\\$config\\cc4x86.exe $option --output_file_name current_test.asm --debug_xml_dump ..\\$test_name");
+	run("..\\..\\..\\bin\\$config\\cc4x86.exe $option --output-file-name current_test.asm --debug-xml-dump ..\\$test_name");
 
 	my $test_asm_name = $test_name;
 	$test_asm_name =~ s/\.c/\.asm/;

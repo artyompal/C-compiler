@@ -45,5 +45,5 @@ walk("../cc4x86/tests/regressive");
 walk("../frontend_cc/src/headers");
 walk("../frontend_cc/src/src");
 
-print "kill_trailing_spaces.pl: $files files proceeded\n";
+print "kill_trailing_spaces.pl: $files files processed\n";
 

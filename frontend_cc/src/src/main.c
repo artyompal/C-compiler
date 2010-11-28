@@ -14,13 +14,13 @@ struct option_decl {
     BOOL *          flag_address;
     const char *    comment;
 } options[] = {
-    {"debug_disable_codegen",   &option_debug_disable_codegen,      "disable any code generation"},
-    {"debug_disable_regalloc",  &option_debug_disable_regalloc,     "don't replace pseudo-registers with real registers"},
-    {"debug_disable_basic_opt", &option_debug_disable_basic_opt,    "don't optimize well-known sequences after code generation"},
+    {"debug-disable-codegen",   &option_debug_disable_codegen,      "disable any code generation"},
+    {"debug-disable-regalloc",  &option_debug_disable_regalloc,     "don't replace pseudo-registers with real registers"},
+    {"debug-disable-basic-opt", &option_debug_disable_basic_opt,    "don't optimize well-known sequences after code generation"},
     {"optimize",                &option_enable_optimization,        "enables code optimization"},
-    {"use_sse2",                &option_use_sse2,                   "enables SSE2 code generation"},
-    {"debug_xml_dump",          &option_debug_xml_dump,             "dumps syntax tree as xml"},
-    {"output_file_name",        0,                                  "lets to specify the name of the output file"},
+    {"use-sse2",                &option_use_sse2,                   "enables SSE2 code generation"},
+    {"debug-xml-dump",          &option_debug_xml_dump,             "dumps syntax tree as xml"},
+    {"output-file-name",        0,                                  "lets to specify the name of the output file"},
     {NULL, NULL, NULL},
 };
 
@@ -129,7 +129,7 @@ int main(int argc, const char *argv[])
         _print_version();
     } else {
         for (i = 1; i < argc; i++) {
-            if (!strcmp(argv[i], "--output_file_name")) {
+            if (!strcmp(argv[i], "--output-file-name")) {
                 if (i < argc-1) {
                     strcpy(option_output_filename, argv[i+1]);
                     i++;
