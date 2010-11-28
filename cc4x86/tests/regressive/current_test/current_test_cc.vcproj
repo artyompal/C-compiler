@@ -182,6 +182,10 @@
 				RelativePath=".\main.c"
 				>
 			</File>
+			<File
+				RelativePath=".\test_name.c"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

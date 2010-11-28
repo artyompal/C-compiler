@@ -1,7 +1,5 @@
 
 
-const char *test_name = "for2.c";
-
 extern int test()
 {
     int i, j = 0, k;

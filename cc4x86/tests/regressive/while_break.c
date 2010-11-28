@@ -1,7 +1,5 @@
 
 
-const char *test_name = "while_break.c";
-
 extern int test()
 {
     int i, j, k;

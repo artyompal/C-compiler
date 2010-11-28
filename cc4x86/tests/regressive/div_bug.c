@@ -1,7 +1,5 @@
 
 
-const char *test_name = "div_bug.c";
-
 extern int test()
 {
     int a = 4, b = 2;
