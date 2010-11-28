@@ -37,22 +37,22 @@
           <operand_2 type="int" lvalue="no" complexity="4" code="add">
             <operand_1 type="int" lvalue="no" complexity="3" code="mul">
               <operand_1 type="int" lvalue="no" complexity="2" code="div">
-                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
-                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
               </operand_1>
               <operand_2 type="int" lvalue="no" complexity="2" code="div">
-                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
-                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
               </operand_2>
             </operand_1>
             <operand_2 type="int" lvalue="no" complexity="3" code="mul">
               <operand_1 type="int" lvalue="no" complexity="2" code="div">
-                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
-                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="d"/>
+                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="d"/>
+                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
               </operand_1>
               <operand_2 type="int" lvalue="no" complexity="2" code="div">
-                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
-                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="d"/>
+                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="d"/>
+                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
               </operand_2>
             </operand_2>
           </operand_2>
@@ -60,7 +60,7 @@
         <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0000" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="2" code="non_equal">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="res"/>
-            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="156250"/>
+            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
           </condition>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="return">

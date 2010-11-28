@@ -408,19 +408,16 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
         }
     } else if (IS_MODULO_OP(expr->data.arithm.opcode)) {
         bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);      // edx
-
-        if (is_unsigned) {
-            unit_push_binary_instruction(x86insn_int_xor, res, res);
-        } else {
-            unit_push_unary_instruction(x86insn_cdq, res);
-        }
+        unit_push_unary_instruction(is_unsigned ? x86insn_xor_edx_edx : x86insn_cdq, res);
 
         if (!OP_IS_REGISTER(*op1)) {
-            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
-            unit_push_binary_instruction(x86insn_int_mov, res, op1);
+            bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type); // eax
+            unit_push_binary_instruction(x86insn_int_mov, &tmp, op1);
+        } else {
+            tmp = *op1;
         }
 
-        unit_push_binary_instruction(is_unsigned ? x86insn_int_div : x86insn_int_idiv, op1, op2);
+        unit_push_binary_instruction(is_unsigned ? x86insn_int_div : x86insn_int_idiv, &tmp, op2);
 
         if (expr->data.arithm.opcode == op_mod_assign) {
             unit_push_binary_instruction(x86insn_int_mov, op1, res);
