@@ -59,13 +59,14 @@ if (
 	run_test2("switch.c") and
 	run_test2("div_bug.c") and
 	run_test2("idiv.c") and
+	run_test2("mul_div.c") and
 	run_test2("string_literal.c") and
 	run_test2("byte_word.c") and
 	run_test2("shl_shr.c")
 ) {
-	print ("ALL TESTS PASSED");
+	print ("ALL TESTS PASSED\n");
 } else {
-	print ("TESTS FAILED");
+	print ("TESTS FAILED\n");
 }
 
 

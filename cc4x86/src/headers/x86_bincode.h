@@ -148,9 +148,9 @@ typedef enum x86_instruction_code_decl {
     x86insn_int_add,
     x86insn_int_sub,
     x86insn_int_imul,
-    x86insn_int_idiv,
-    x86insn_int_mul,
-    x86insn_int_div,
+    x86insn_int_idiv,           // первый параметр - псевдорегистр для EAX, второй - делитель
+    x86insn_int_mul,            // первый параметр - псевдорегистр для EAX, второй - множитель
+    x86insn_int_div,            // первый параметр - псевдорегистр для EAX, второй - делитель
     x86insn_int_sal,
     x86insn_int_sar,
     x86insn_int_shl,
@@ -222,7 +222,8 @@ typedef enum x86_instruction_code_decl {
     x86insn_int_test,
 
     // псевдо-инструкции:
-    x86insn_cdq,
+    x86insn_cdq,                // параметр - псевдорегистр для EDX
+    x86insn_xor_edx_edx,        // параметр - псевдорегистр для EDX
     x86insn_fpu_cmp,
     x86insn_cld,
     x86insn_rep_movsb,
@@ -252,14 +253,14 @@ typedef struct x86_instruction_decl {
 
 
 #define IS_INT_INSN(INSN)               ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
-                                        || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_pop)
+                                            || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_pop)
 #define IS_SET_INSN(INSN)               ((INSN) >= x86insn_int_sete && (INSN) <= x86insn_int_seta)
 #define IS_FLOAT_INSN(INSN)             ((INSN) >= x86insn_fpu_ld && (INSN) <= x86insn_fpu_ln_2)
 #define IS_JMP_INSN(INSN)               ((INSN) >= x86insn_jmp && (INSN) <= x86insn_ja)
 #define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
 #define IS_INT_MODIFYING_INSN(INSN)     ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
-                                        || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \
-                                        || (INSN) == x86insn_pop)
+                                            || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \
+                                            || (INSN) == x86insn_pop)
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
 
 #define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)
@@ -272,6 +273,7 @@ typedef struct x86_instruction_decl {
 #define OP_IS_FLOAT(OP)                 ((OP).op_type >= x86op_float && (OP).op_type <= x86op_double)
 #define OP_IS_REGISTER(OP)              ((OP).op_loc == x86loc_register)
 #define OP_IS_ADDRESS(OP)               ((OP).op_loc == x86loc_address)
+#define OP_IS_ADDRESS_OR_SYMBOL(OP)     ((OP).op_loc == x86loc_address || (OP).op_loc == x86loc_symbol)
 #define OP_IS_REGISTER_OR_ADDRESS(OP)   ((OP).op_loc == x86loc_register || (OP).op_loc == x86loc_address)
 #define OP_IS_REAL_REG(OP)              (OP_IS_REGISTER(OP) && (OP).data.reg < 0)
 #define OP_IS_REAL_DWORD_REG(OP)        (OP_IS_DWORD(OP) && OP_IS_REGISTER(OP) && (OP).data.reg < 0)

@@ -75,6 +75,21 @@ static x86_instruction_code _opcode_to_binary_int_instruction(arithmetic_opcode 
     }
 }
 
+static x86_instruction_code _opcode_to_unsigned(x86_instruction_code opcode)
+{
+    switch (opcode) {
+    case x86insn_int_imul:  return x86insn_int_mul;
+    case x86insn_int_idiv:  return x86insn_int_div;
+    case x86insn_int_sar:   return x86insn_int_shr;
+    case x86insn_int_sal:   return x86insn_int_shl;
+    case x86insn_int_setle: return x86insn_int_setbe;
+    case x86insn_int_setl:  return x86insn_int_setb;
+    case x86insn_int_setge: return x86insn_int_setae;
+    case x86insn_int_setg:  return x86insn_int_seta;
+    default:                return opcode;
+    }
+}
+
 static x86_instruction_code _opcode_to_float_arithm_instruction(arithmetic_opcode opcode)
 {
     switch (opcode) {
@@ -339,15 +354,20 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
 {
     x86_instruction_code insn = _opcode_to_binary_int_instruction(expr->data.arithm.opcode);
     x86_operand tmp;
+    BOOL is_unsigned = TYPE_IS_UNSIGNED(expr->data.arithm.operand1->expr_type);
 
+
+    ASSERT(is_unsigned == TYPE_IS_UNSIGNED(expr->data.arithm.operand2->expr_type));
     ASSERT(OP_IS_INT(*op1) && OP_IS_REGISTER_OR_ADDRESS(*op1));
     ASSERT(OP_IS_INT(*op2));
     ASSERT(op1->op_type == op2->op_type);
 
-    // TODO: беззнаковые div/mod, сравнения, mul, shr/sar
-    // TODO: генерировать SHL/SHR eax,cl для неконстантных сдвигов
-    // TODO: поддержка long long
-    // TODO: надо поддержать кодогенерацию для операндов типа byte/word
+    if (is_unsigned) {
+        insn = _opcode_to_unsigned(insn);
+    }
+
+    // TODO: поддержать кодогенерацию для long long
+    // TODO: поддержать кодогенерацию для операндов типа byte/word
 
     *res = *op1;
 
@@ -365,14 +385,45 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
 
         bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
         unit_push_binary_instruction(x86insn_movzx, res, &tmp);
-    } else if (IS_DIVISION_OP(expr->data.arithm.opcode) || IS_MODULO_OP(expr->data.arithm.opcode)) {
-        bincode_create_operand_from_register(res, x86op_dword, x86reg_eax);
-        unit_push_binary_instruction(x86insn_int_mov, res, op1);
-        unit_push_nullary_instruction(x86insn_cdq);
-        unit_push_unary_instruction(x86insn_int_idiv, op2);
+    } else if (IS_MULTIPLY_OP(expr->data.arithm.opcode)) {
+        if (!OP_IS_REGISTER(*op1)) {
+            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
+            unit_push_binary_instruction(x86insn_int_mov, res, op1);
+        }
 
-        if (IS_MODULO_OP(expr->data.arithm.opcode)) {
-            bincode_create_operand_from_register(res, x86op_dword, x86reg_edx);
+        unit_push_binary_instruction(is_unsigned ? x86insn_int_mul : x86insn_int_imul, res, op2);
+    } else if (IS_DIVISION_OP(expr->data.arithm.opcode)) {
+        bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);     // edx
+        unit_push_unary_instruction(is_unsigned ? x86insn_xor_edx_edx : x86insn_cdq, &tmp);
+
+        if (!OP_IS_REGISTER(*op1)) {
+            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
+            unit_push_binary_instruction(x86insn_int_mov, res, op1);
+        }
+
+        unit_push_binary_instruction(is_unsigned ? x86insn_int_div : x86insn_int_idiv, res, op2);
+
+        if (expr->data.arithm.opcode == op_div_assign) {
+            unit_push_binary_instruction(x86insn_int_mov, op1, res);
+        }
+    } else if (IS_MODULO_OP(expr->data.arithm.opcode)) {
+        bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);      // edx
+
+        if (is_unsigned) {
+            unit_push_binary_instruction(x86insn_int_xor, res, res);
+        } else {
+            unit_push_unary_instruction(x86insn_cdq, res);
+        }
+
+        if (!OP_IS_REGISTER(*op1)) {
+            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
+            unit_push_binary_instruction(x86insn_int_mov, res, op1);
+        }
+
+        unit_push_binary_instruction(is_unsigned ? x86insn_int_div : x86insn_int_idiv, op1, op2);
+
+        if (expr->data.arithm.opcode == op_mod_assign) {
+            unit_push_binary_instruction(x86insn_int_mov, op1, res);
         }
     } else if (IS_ASSIGN_OP(expr->data.arithm.opcode)) {
         ASSERT(op1->op_loc == x86loc_address);
@@ -386,6 +437,14 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
 
             unit_push_binary_instruction(insn, res, op2);
             unit_push_binary_instruction(x86insn_int_mov, op1, res);
+        } else {
+            unit_push_binary_instruction(insn, op1, op2);
+        }
+    } else if (IS_SHIFT_OP(expr->data.arithm.opcode)) {
+        if (op2->op_loc == x86loc_address) {
+            bincode_create_operand_and_alloc_pseudoreg(&tmp, op2->op_type);
+            unit_push_binary_instruction(x86insn_int_mov, &tmp, op2);
+            unit_push_binary_instruction(insn, op1, &tmp);
         } else {
             unit_push_binary_instruction(insn, op1, op2);
         }

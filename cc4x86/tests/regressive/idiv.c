@@ -6,7 +6,14 @@ extern int test()
     int res;
 
     res = ((a/b) * (a/b)) + ((c/d) * (c/d));
-//    res = (a+b) * ((a+b) * (a+b)) * ((a+b) * (a+b)) * (a+b) * (a+b) * (d * d) * d * d * d * d * (a * b + c);
+    if (res != 156250) return 1;
 
-    return res - 156250;
+    c /= a;
+    if (c != 2) return 2;
+
+    d %= b;
+    if (d != 2) return 3;
+
+    return 0;
 }
+
