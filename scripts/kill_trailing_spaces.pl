@@ -41,6 +41,7 @@ sub walk {
 
 walk("../cc4x86/src/headers");
 walk("../cc4x86/src/src");
+walk("../cc4x86/tests/regressive");
 walk("../frontend_cc/src/headers");
 walk("../frontend_cc/src/src");
 

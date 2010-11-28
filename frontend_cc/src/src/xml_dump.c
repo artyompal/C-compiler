@@ -201,6 +201,30 @@ static const char *_dump_bool(BOOL b)
 #define VALIDATE_STANDALONE_EXPR(EXPR, PARENT)  ((EXPR)->expr_next == NULL && (EXPR)->expr_prev == NULL && (EXPR)->expr_parent == (PARENT))
 #define VALIDATE_LINKED_EXPR(EXPR, PARENT)      ((!(EXPR)->expr_next || (EXPR)->expr_next->expr_prev == (EXPR)) && (EXPR)->expr_parent == (PARENT))
 
+static const char *_escape_string(const char *str)
+{
+    const char *s;
+    int len = 0, pos = 0;
+    char *res;
+
+    for (s = str; *s; s++) {
+        len += (*s >= 0x20 || *s < 0) ? 1 : 4;
+    }
+
+    res = allocator_alloc(allocator_per_function_pool, len + 1);
+
+    for (s = str; *s; s++) {
+        if (*s >= 0x20 || *s < 0) {
+            res[pos++] = *s;
+        } else {
+            sprintf(res+pos, "\\x%02x", *s);
+            pos += 4;
+        }
+    }
+
+    return res;
+}
+
 static void _dump_expression(FILE *file, int align, const char *name, expression *expr)
 {
     char type[256];
@@ -307,7 +331,7 @@ static void _dump_expression(FILE *file, int align, const char *name, expression
 
     case code_expr_string:
         _xml_attribute(file, "code", "string literal");
-        _xml_attribute(file, "name", "%s", expr->data.str); // TODO: заменять непечатные символы escape-кодами
+        _xml_attribute(file, "name", "%s", _escape_string(expr->data.str));
         _xml_tag_early_end_complex_open(file);
         break;
 

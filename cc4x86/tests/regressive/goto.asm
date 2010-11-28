@@ -8,19 +8,21 @@ _test proc
 	push	ebp
 	mov	ebp,esp
 	sub	esp,4
-	mov	dword ptr [ebp-4],0
+	push	edi
+	mov	edi,0
 	jmp	label0002
 label0000:
 	jmp	label0001
 label0001:
-	cmp	dword ptr [ebp-4],1
-	setne	byte1
-	movzx	eax,byte1
+	cmp	edi,1
+	setne	al
+	movzx	eax,al
+	pop	edi
 	add	esp,4
 	pop	ebp
 	ret
 label0002:
-	inc	dword ptr [ebp-4]
+	inc	edi
 	jmp	label0000
 _test endp	
 

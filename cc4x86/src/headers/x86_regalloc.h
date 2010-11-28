@@ -11,15 +11,16 @@ typedef struct function_desc_decl function_desc;
 
 
 typedef enum x86_register_status_decl {
-    register_unallocated,
+    register_free,
     register_allocated,
+    register_reserved,
 } x86_register_status;
 
 typedef struct x86_pseudoreg_info_decl {
     x86_instruction *       reg_first_write;
     x86_instruction *       reg_last_read;
     x86_register_status     reg_status;
-    int                     reg_location;   // 0 - X86_TMP_REGISTERS_COUNT-1 for real register, tmp. variable id for swapped
+    int                     reg_location;   // номер реального регистра
     BOOL                    reg_changes_value;
 } x86_pseudoreg_info;
 

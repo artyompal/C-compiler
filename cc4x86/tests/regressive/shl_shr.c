@@ -19,6 +19,18 @@ extern int test()
 	if (y << 1 != 0x80000000)
 		return 4;
 
+	x = 1, y = 1;
+
+	if (x << (y + 3) != 16) {
+		return 5;
+	}
+
+	x <<= (y + 5);
+
+	if (x != 64) {
+		return 6;
+	}
+
 	return 0;
 }
 

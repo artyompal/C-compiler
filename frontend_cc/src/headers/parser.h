@@ -17,7 +17,7 @@
 typedef struct expression_decl expression;
 
 
-//  initializers: initializer is either a single value or a list of values.
+// инициализаторы: могут быть скалярным значением или списком значений
 
 typedef enum initializer_code_decl {
     code_terminal_initializer,
@@ -40,7 +40,7 @@ typedef struct initializer_decl {
 } initializer;
 
 
-//  functions parameter
+// параметр функции
 
 typedef enum parameter_code_decl {
     code_symbol_parameter,
@@ -53,8 +53,8 @@ typedef struct parameter_decl parameter;
 typedef struct parameter_decl {
     parameter_code  param_code;
     parameter *     param_next;
-    data_type *     param_type;     // only for code_symbol_parameter and code_type_parameter
-    symbol *        param_sym;      // only for code_symbol_parameter
+    data_type *     param_type;     // только для code_symbol_parameter и code_type_parameter
+    symbol *        param_sym;      // только для code_symbol_parameter
 } parameter;
 
 typedef struct parameter_list_decl {
@@ -63,7 +63,7 @@ typedef struct parameter_list_decl {
 } parameter_list;
 
 
-// YYSTYPE - fit-all parser structure
+// YYSTYPE - универсальная семантическая структура парсера
 
 typedef union YYSTYPE_decl {
     symbol *                sym;

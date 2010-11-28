@@ -197,6 +197,7 @@ static const char *_x86_instructions[] = {
 
     // псевдо-инструкции:
     "cdq",
+    "xor_edx_edx",
     "fucomip\tst,st(1)\n\tfstp\tst",
     "cld",
     "rep\tmovsb",
@@ -420,7 +421,7 @@ static void _output_push_binary_instruction(FILE *output, x86_instruction_code c
     _print_insn(output, code);
     fputc('\t', output);
 
-    if (op1->op_loc == x86loc_address && op2->op_loc == x86loc_int_constant) {
+    if (op1->op_loc == x86loc_address && (op2->op_loc == x86loc_int_constant || IS_SHIFT_INSN(code))) {
         fputs("dword ptr ", output);
     }
 

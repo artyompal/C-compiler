@@ -55,7 +55,7 @@ void yyerror(const char *txt);
 __declspec(noreturn) void aux_assertion_failed(const char *file, int line, const char *cond);
 __declspec(noreturn) void aux_unimplemented_error(const char *text);
 
-// assertions must not have side-effects
+// ассерты не могут иметь сайд-эффектов
 #ifdef _DEBUG
 #define ASSERT(COND) \
     if (!(COND)) { aux_assertion_failed(__FILE__, __LINE__, #COND); }
