@@ -250,7 +250,7 @@ static void _generate_dereference(x86_operand *res, x86_operand *op, data_type *
     if (op->op_loc == x86loc_register) {
         bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), op->data.reg);
     } else if (op->op_loc == x86loc_symbol_offset) {
-        res             = op;
+        *res            = *op;
         res->op_loc     = x86loc_symbol;
     } else {
         bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
