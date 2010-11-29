@@ -40,7 +40,7 @@
               <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="y"/>
               <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="4"/>
             </operand_1>
-            <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="4079"/>
+            <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="268435455"/>
           </condition>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="return">
@@ -56,7 +56,7 @@
           <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="1073741824"/>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0002" invert_condition="yes">
-          <condition type="int" lvalue="no" complexity="3" code="less_then">
+          <condition type="int" lvalue="no" complexity="3" code="greater_equal">
             <operand_1 type="int" lvalue="no" complexity="2" code="shl">
               <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
               <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>

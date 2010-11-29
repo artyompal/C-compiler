@@ -222,6 +222,7 @@ static const char *_escape_string(const char *str)
         }
     }
 
+    res[pos] = '\0';
     return res;
 }
 

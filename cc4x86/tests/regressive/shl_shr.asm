@@ -19,7 +19,7 @@ _test proc
 	ret
 label0000:
 	shr	dword ptr [ebp-8],4
-	cmp	dword ptr [ebp-8],4079
+	cmp	dword ptr [ebp-8],268435455
 	je	label0001
 	mov	eax,2
 	add	esp,8
@@ -30,7 +30,7 @@ label0001:
 	mov	dword ptr [ebp-8],1073741824
 	sal	dword ptr [ebp-4],1
 	cmp	dword ptr [ebp-4],0
-	jge	label0002
+	jl	label0002
 	mov	eax,3
 	add	esp,8
 	pop	ebp
