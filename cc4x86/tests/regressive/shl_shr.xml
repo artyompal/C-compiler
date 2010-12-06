@@ -74,7 +74,7 @@
               <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="y"/>
               <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="1"/>
             </operand_1>
-            <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="2147483647"/>
+            <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="-2147483648"/>
           </condition>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="return">

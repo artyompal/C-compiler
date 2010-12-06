@@ -37,7 +37,7 @@ label0001:
 	ret
 label0002:
 	shl	dword ptr [ebp-8],1
-	cmp	dword ptr [ebp-8],2147483647
+	cmp	dword ptr [ebp-8],-2147483648
 	je	label0003
 	mov	eax,4
 	add	esp,8
