@@ -41,14 +41,44 @@ int token_identifier(const char *token, int token_len)
     }
 }
 
+static __int64 str_to_signed(const char *token, const char **endptr, int radix)
+{
+    __int64 res = 0;
+
+    while (*token >= '0' && *token <= '9' || *token >= 'A' && *token <= 'F'
+        || *token >= 'a' && *token <= 'f') {
+            res = radix * res + *token - ((*token|0x20) >= 'a' ? 'a'-10 : '0');
+            token++;
+    }
+
+    *endptr = token;
+    return res;
+}
+
+static unsigned __int64 str_to_unsigned(const char *token, const char **endptr, int radix)
+{
+    unsigned __int64 res = 0;
+
+    while (*token >= '0' && *token <= '9' || *token >= 'A' && *token <= 'F'
+        || *token >= 'a' && *token <= 'f') {
+            res = radix * res + *token - ((*token|0x20) >= 'a' ? 'a'-10 : '0');
+            token++;
+    }
+
+    *endptr = token;
+    return res;
+}
+
 int token_integer_literal(const char *token, int unused)
 {
     char *endptr;
-    long val = strtol(token, &endptr, 0);
+    int radix               = (*token == '0' ? (token[1] == 'x' ? 16 : 8) : 10);
+    __int64 sres            = str_to_signed((radix == 16 ? token+2 : token), &endptr, radix);
+    unsigned __int64 ures   = str_to_unsigned((radix == 16 ? token+2 : token), &endptr, radix);
+    __int64 val;
+    data_type_code type     = code_type_int;
 
-    // parse postfixes ulUL and deduce the type
-    data_type_code type = code_type_int;
-
+    // парсим суффиксы ulUL и выводим тип
     while (*endptr) {
         if (*endptr == 'u' || *endptr == 'U')
             if (type == code_type_int)
@@ -76,6 +106,7 @@ int token_integer_literal(const char *token, int unused)
         endptr++;
     }
 
+    val = (TYPE_IS_UNSIGNED(type_create_arithmetic(type)) ? ures : sres);
     yylval.expr = expr_create_from_integer(val, type_create_arithmetic(type));
     return lxm_constant;
 }
@@ -83,11 +114,10 @@ int token_integer_literal(const char *token, int unused)
 int token_float_literal(const char *token, int unused)
 {
     char *endptr;
-    double val = strtod(token, &endptr);
-
-    // парсим суффиксы lfLF и выводим тип
+    double val          = strtod(token, &endptr);
     data_type_code type = code_type_double;
 
+    // парсим суффиксы lfLF и выводим тип
     while (*endptr) {
         if (*endptr == 'f' || *endptr == 'F')
             if (type == code_type_double)

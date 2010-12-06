@@ -126,7 +126,7 @@ void debug_print_instruction(x86_instruction *insn);
 #endif // _DEBUG
 
 
-#define IS_POT(X) ((X & (X - 1)) == 0)
+#define IS_POT(X) (((X) & ((X)-1)) == 0 && (X)>0)
 
 static int log2(int x)
 {
