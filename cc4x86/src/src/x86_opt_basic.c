@@ -5,6 +5,9 @@
 #include "x86_regalloc.h"
 
 
+// FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
+
+
 #define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base > 0 && (OP).data.address.index == 0 \
                                                 && (OP).data.address.offset == 0)
 #define ADDRESS_IS_UNSCALED_INDEX(OP)       ((OP).data.address.base == 0 && (OP).data.address.index > 0 \
@@ -489,7 +492,7 @@ void x86_optimization_after_codegen(function_desc *function)
             _try_optimize_add_sub(function, insn);
             break;
 
-        //case x86insn_push_all:
+        //case x86insn_push_all:    // FIXME: надо вернуть оптимизацию pop_all/push_all
         //    if (prev && prev->in_code == x86insn_pop_all) {
         //        bincode_erase_instruction(function, insn);
         //        bincode_erase_instruction(function, prev);

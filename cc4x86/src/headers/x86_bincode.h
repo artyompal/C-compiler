@@ -314,6 +314,7 @@ x86_instruction *       bincode_create_instruction      (x86_instruction_code co
 
 x86_operand_type        bincode_encode_type             (data_type *type);
 
+// Все следующие функции вставляют инструкцию перед заданной.
 void    bincode_insert_instruction                      (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand *op1, x86_operand *op2);
 void    bincode_insert_unary_instruction                (function_desc *function, x86_instruction *pos,

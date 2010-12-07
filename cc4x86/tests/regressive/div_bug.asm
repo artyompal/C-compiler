@@ -15,8 +15,8 @@ _test proc
 	mov	dword ptr [ebp-12],1
 	lea	eax,[ebp-12]
 	mov	[ebp-16],eax
-	cdq
 	mov	eax,edi
+	cdq
 	idiv	esi
 	mov	ecx,[ebp-16]
 	add	eax,[ecx]
