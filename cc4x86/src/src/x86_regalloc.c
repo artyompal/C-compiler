@@ -66,27 +66,6 @@ static BOOL _is_real_register_free(register_map *regmap, int real_reg)
     return (regmap->real_registers_map[real_reg] == -1);
 }
 
-static void _reserve_real_register(x86_pseudoreg_info *pseudoregs_map, int pseudoreg, int real_reg)
-{
-    ASSERT(real_reg >= 0 && real_reg < X86_MAX_REG
-        && pseudoregs_map[pseudoreg].reg_status == register_free);
-
-    pseudoregs_map[pseudoreg].reg_status    = register_reserved;
-    pseudoregs_map[pseudoreg].reg_location  = real_reg;
-}
-
-static void _commit_register_reservation(register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int pseudoreg)
-{
-    int real_reg = pseudoregs_map[pseudoreg].reg_location;
-    ASSERT(pseudoregs_map[pseudoreg].reg_status == register_reserved);
-
-    ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
-    regmap->real_registers_cnt++;
-    regmap->real_registers_map[real_reg] = pseudoreg;
-
-    pseudoregs_map[pseudoreg].reg_status = register_allocated;
-}
-
 static int _alloc_real_register(register_map *regmap, int pseudoreg)
 {
     int reg;
@@ -131,6 +110,37 @@ static int _alloc_real_register_for_regvar(register_map *regmap, int pseudoreg)
 
     regmap->real_registers_map[reg] = pseudoreg;
     return reg;
+}
+
+static void _reserve_real_register(x86_pseudoreg_info *pseudoregs_map, int pseudoreg, int real_reg)
+{
+    ASSERT(real_reg >= 0 && real_reg < X86_MAX_REG
+        && pseudoregs_map[pseudoreg].reg_status == register_free);
+
+    pseudoregs_map[pseudoreg].reg_status    = register_reserved;
+    pseudoregs_map[pseudoreg].reg_location  = real_reg;
+}
+
+static void _commit_register_reservation(function_desc *function, x86_instruction *insn,
+    register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int pseudoreg)
+{
+    int real_reg = pseudoregs_map[pseudoreg].reg_location;
+    ASSERT(pseudoregs_map[pseudoreg].reg_status == register_reserved);
+    ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+
+    if (regmap->real_registers_map[real_reg] != -1) {
+        // Регистр занят, вытесняем его в другой реальный регистр.
+        int conflicting_reg = regmap->real_registers_map[real_reg];
+        int new_reg         = _alloc_real_register_for_regvar(regmap, conflicting_reg);
+
+        bincode_insert_int_reg_reg(function, insn, x86insn_int_mov, x86op_dword, ~new_reg, ~real_reg);
+        pseudoregs_map[conflicting_reg].reg_location = new_reg;
+    }
+
+    regmap->real_registers_cnt++;
+    regmap->real_registers_map[real_reg] = pseudoreg;
+
+    pseudoregs_map[pseudoreg].reg_status = register_allocated;
 }
 
 static int _alloc_byte_register(register_map *regmap, int pseudoreg)
@@ -532,7 +542,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
                 *registers[i].reg_addr          = ~real_reg;
             } else if (pseudoregs_map[reg].reg_status == register_reserved) {
                 // под этот псевдорегистр зарезервирован реальный регистр
-                _commit_register_reservation(regmap, pseudoregs_map, reg);
+                _commit_register_reservation(function, insn, regmap, pseudoregs_map, reg);
 
                 real_reg                        = pseudoregs_map[reg].reg_location;
                 *registers[i].reg_addr          = ~real_reg;

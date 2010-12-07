@@ -1913,145 +1913,143 @@ __rasterize_horiz_line proc
 	add	dword3,[dword4]
 	lea	dword5,[ebp+8]
 	mov	dword6,2
-	mov	dword7,[dword5]
-	sal	dword7,dword6
-	add	dword3,dword7
-	lea	dword8,[ebp-4]
-	mov	[dword8],dword3
-	lea	dword9,[ebp+12]
-	mov	dword10,2
-	mov	dword11,[dword9]
-	sal	dword11,dword10
-	lea	dword12,[ebp-4]
-	add	dword11,[dword12]
-	lea	dword13,[ebp+8]
-	mov	dword14,2
-	mov	dword15,[dword13]
-	sal	dword15,dword14
-	sub	dword11,dword15
-	lea	dword16,[ebp-8]
-	mov	[dword16],dword11
+	sal	dword ptr [dword5],dword6
+	add	dword3,[dword5]
+	lea	dword7,[ebp-4]
+	mov	[dword7],dword3
+	lea	dword8,[ebp+12]
+	mov	dword9,2
+	sal	dword ptr [dword8],dword9
+	lea	dword10,[ebp-4]
+	mov	dword11,[dword10]
+	add	dword11,[dword8]
+	lea	dword12,[ebp+8]
+	mov	dword13,2
+	sal	dword ptr [dword12],dword13
+	sub	dword11,[dword12]
+	lea	dword14,[ebp-8]
+	mov	[dword14],dword11
 label0000:
 	push_all
-	lea	dword17,[ebp+24]
-	push_arg	dword ptr [dword17],4
-	lea	dword18,[ebp+20]
-	push_arg	dword ptr [dword18],4
+	lea	dword15,[ebp+24]
+	push_arg	dword ptr [dword15],4
+	lea	dword16,[ebp+20]
+	push_arg	dword ptr [dword16],4
 	call	__tex2d
 	restore_stack	8
 	pop_all
-	read_retval	dword19
-	lea	dword20,[ebp-12]
-	mov	[dword20],dword19
-	lea	dword21,[ebp-12]
-	mov	dword22,24
-	mov	dword23,[dword21]
-	sar	dword23,dword22
-	mov	dword24,255
-	and	dword23,dword24
-	lea	dword25,[ebp-40]
-	mov	[dword25],dword23
-	lea	dword26,[ebp-40]
-	cmp	dword ptr [dword26],0
+	read_retval	dword17
+	lea	dword18,[ebp-12]
+	mov	[dword18],dword17
+	lea	dword19,[ebp-12]
+	mov	dword20,24
+	sar	dword ptr [dword19],dword20
+	mov	dword21,-289
+	mov	dword22,[dword19]
+	and	dword22,dword21
+	lea	dword23,[ebp-40]
+	mov	[dword23],dword22
+	lea	dword24,[ebp-40]
+	cmp	dword ptr [dword24],0
 	je	label0003
-	lea	dword27,[ebp-40]
-	fild	dword ptr [dword27]
-	lea	dword28,dword ptr [___unnamed_float_3]
-	fld	dword ptr [dword28]
+	lea	dword25,[ebp-40]
+	fild	dword ptr [dword25]
+	lea	dword26,dword ptr [___unnamed_float_3]
+	fld	dword ptr [dword26]
 	fdivp
-	lea	dword29,[ebp-44]
-	fstp	dword ptr [dword29]
-	lea	dword30,[ebp-4]
-	mov	dword31,[dword30]
+	lea	dword27,[ebp-44]
+	fstp	dword ptr [dword27]
+	lea	dword28,[ebp-4]
+	mov	dword29,[dword28]
+	lea	dword30,[ebp-28]
+	mov	dword31,[dword29]
+	mov	[dword30],dword31
 	lea	dword32,[ebp-28]
-	mov	dword33,[dword31]
-	mov	[dword32],dword33
-	lea	dword34,[ebp-28]
-	mov	dword35,65280
-	mov	dword36,[dword34]
-	and	dword36,dword35
-	mov	dword37,8
-	sar	dword36,dword37
-	lea	dword38,[ebp-32]
-	mov	[dword38],dword36
-	lea	dword39,[ebp-28]
-	mov	dword40,255
-	mov	dword41,[dword39]
-	and	dword41,dword40
-	lea	dword42,[ebp-36]
-	mov	[dword42],dword41
-	lea	dword43,[ebp-12]
-	mov	dword44,65280
-	mov	dword45,[dword43]
-	and	dword45,dword44
-	mov	dword46,8
-	sar	dword45,dword46
-	lea	dword47,[ebp-20]
-	mov	[dword47],dword45
-	lea	dword48,[ebp-12]
-	mov	dword49,255
-	mov	dword50,[dword48]
-	and	dword50,dword49
-	lea	dword51,[ebp-24]
-	mov	[dword51],dword50
-	lea	dword52,[ebp-20]
+	mov	dword33,-73984
+	mov	dword34,[dword32]
+	and	dword34,dword33
+	mov	dword35,8
+	sar	dword34,dword35
+	lea	dword36,[ebp-32]
+	mov	[dword36],dword34
+	lea	dword37,[ebp-28]
+	mov	dword38,-289
+	mov	dword39,[dword37]
+	and	dword39,dword38
+	lea	dword40,[ebp-36]
+	mov	[dword40],dword39
+	lea	dword41,[ebp-12]
+	mov	dword42,-73984
+	mov	dword43,[dword41]
+	and	dword43,dword42
+	mov	dword44,8
+	sar	dword43,dword44
+	lea	dword45,[ebp-20]
+	mov	[dword45],dword43
+	lea	dword46,[ebp-12]
+	mov	dword47,-289
+	mov	dword48,[dword46]
+	and	dword48,dword47
+	lea	dword49,[ebp-24]
+	mov	[dword49],dword48
+	lea	dword50,[ebp-20]
+	fild	dword ptr [dword50]
+	lea	dword51,[ebp-44]
+	fmul	dword ptr [dword51]
+	lea	dword52,[ebp-32]
 	fild	dword ptr [dword52]
+	fld1
 	lea	dword53,[ebp-44]
-	fmul	dword ptr [dword53]
-	lea	dword54,[ebp-32]
-	fild	dword ptr [dword54]
-	fld1
-	lea	dword55,[ebp-44]
-	fsub	dword ptr [dword55]
+	fsub	dword ptr [dword53]
 	fmulp
 	faddp
-	float2int	dword56
-	lea	dword57,[ebp-20]
-	mov	[dword57],dword56
-	lea	dword58,[ebp-24]
+	float2int	dword54
+	lea	dword55,[ebp-20]
+	mov	[dword55],dword54
+	lea	dword56,[ebp-24]
+	fild	dword ptr [dword56]
+	lea	dword57,[ebp-44]
+	fmul	dword ptr [dword57]
+	lea	dword58,[ebp-36]
 	fild	dword ptr [dword58]
-	lea	dword59,[ebp-44]
-	fmul	dword ptr [dword59]
-	lea	dword60,[ebp-36]
-	fild	dword ptr [dword60]
 	fld1
-	lea	dword61,[ebp-44]
-	fsub	dword ptr [dword61]
+	lea	dword59,[ebp-44]
+	fsub	dword ptr [dword59]
 	fmulp
 	faddp
-	float2int	dword62
-	lea	dword63,[ebp-24]
-	mov	[dword63],dword62
-	lea	dword64,[ebp-20]
-	mov	dword65,8
-	mov	dword66,[dword64]
-	sal	dword66,dword65
-	lea	dword67,[ebp-24]
-	add	dword66,[dword67]
-	lea	dword68,[ebp-16]
-	mov	[dword68],dword66
-	lea	dword69,[ebp-4]
+	float2int	dword60
+	lea	dword61,[ebp-24]
+	mov	[dword61],dword60
+	lea	dword62,[ebp-20]
+	mov	dword63,8
+	sal	dword ptr [dword62],dword63
+	lea	dword64,[ebp-24]
+	mov	dword65,[dword62]
+	add	dword65,[dword64]
+	lea	dword66,[ebp-16]
+	mov	[dword66],dword65
+	lea	dword67,[ebp-4]
+	mov	dword68,[dword67]
+	lea	dword69,[ebp-16]
 	mov	dword70,[dword69]
-	lea	dword71,[ebp-16]
-	mov	dword72,[dword71]
-	mov	[dword70],dword72
+	mov	[dword68],dword70
 label0003:
-	lea	dword73,[ebp+20]
-	lea	dword74,[ebp+28]
+	lea	dword71,[ebp+20]
+	lea	dword72,[ebp+28]
+	fld	dword ptr [dword71]
+	fadd	dword ptr [dword72]
+	fstp	dword ptr [dword71]
+	lea	dword73,[ebp+24]
+	lea	dword74,[ebp+32]
 	fld	dword ptr [dword73]
 	fadd	dword ptr [dword74]
 	fstp	dword ptr [dword73]
-	lea	dword75,[ebp+24]
-	lea	dword76,[ebp+32]
-	fld	dword ptr [dword75]
-	fadd	dword ptr [dword76]
-	fstp	dword ptr [dword75]
 label0001:
-	lea	dword77,[ebp-4]
-	add	dword ptr [dword77],4
-	lea	dword78,[ebp-8]
-	mov	dword79,[dword77]
-	cmp	dword79,[dword78]
+	lea	dword75,[ebp-4]
+	add	dword ptr [dword75],4
+	lea	dword76,[ebp-8]
+	mov	dword77,[dword75]
+	cmp	dword77,[dword76]
 	jl	label0000
 label0002:
 	destroy_stack_frame
@@ -2477,711 +2475,706 @@ label0006:
 	add	dword104,dword105
 	mov	dword106,[dword101]
 	sub	dword106,[dword104]
-	mov	eax,dword94
-	cdq
-	idiv	dword106
-	lea	dword107,[ebp+8]
-	mov	dword108,[dword107]
-	add	eax,[dword108]
-	lea	dword109,[ebp-8]
-	mov	[dword109],eax
-	lea	dword110,[ebp+8]
-	mov	dword111,[dword110]
-	mov	dword112,4
-	add	dword111,dword112
-	lea	dword113,[ebp-16]
-	mov	dword114,[dword113]
-	sub	dword114,[dword111]
-	lea	dword115,[ebp+16]
-	mov	dword116,[dword115]
-	lea	dword117,[ebp+8]
-	mov	dword118,[dword117]
-	mov	dword119,[dword116]
-	sub	dword119,[dword118]
-	imul	dword114,dword119
-	lea	dword120,[ebp+16]
-	mov	dword121,[dword120]
-	mov	dword122,4
-	add	dword121,dword122
-	lea	dword123,[ebp+8]
-	mov	dword124,[dword123]
-	mov	dword125,4
-	add	dword124,dword125
-	mov	dword126,[dword121]
-	sub	dword126,[dword124]
-	mov	eax,dword114
-	cdq
-	idiv	dword126
-	lea	dword127,[ebp+8]
-	mov	dword128,[dword127]
-	add	eax,[dword128]
-	lea	dword129,[ebp-12]
-	mov	[dword129],eax
-	lea	dword130,[ebp+8]
-	mov	dword131,[dword130]
-	mov	dword132,4
-	add	dword131,dword132
-	lea	dword133,[ebp-16]
-	mov	dword134,[dword133]
-	sub	dword134,[dword131]
-	int2float	dword134
-	lea	dword135,[ebp+12]
-	mov	dword136,8
-	add	dword136,[dword135]
-	lea	dword137,[ebp+8]
+	cdq	dword107
+	idiv	dword94,dword106
+	lea	dword108,[ebp+8]
+	mov	dword109,[dword108]
+	add	dword94,[dword109]
+	lea	dword110,[ebp-8]
+	mov	[dword110],dword94
+	lea	dword111,[ebp+8]
+	mov	dword112,[dword111]
+	mov	dword113,4
+	add	dword112,dword113
+	lea	dword114,[ebp-16]
+	mov	dword115,[dword114]
+	sub	dword115,[dword112]
+	lea	dword116,[ebp+16]
+	mov	dword117,[dword116]
+	lea	dword118,[ebp+8]
+	mov	dword119,[dword118]
+	mov	dword120,[dword117]
+	sub	dword120,[dword119]
+	imul	dword115,dword120
+	lea	dword121,[ebp+16]
+	mov	dword122,[dword121]
+	mov	dword123,4
+	add	dword122,dword123
+	lea	dword124,[ebp+8]
+	mov	dword125,[dword124]
+	mov	dword126,4
+	add	dword125,dword126
+	mov	dword127,[dword122]
+	sub	dword127,[dword125]
+	cdq	dword128
+	idiv	dword115,dword127
+	lea	dword129,[ebp+8]
+	mov	dword130,[dword129]
+	add	dword115,[dword130]
+	lea	dword131,[ebp-12]
+	mov	[dword131],dword115
+	lea	dword132,[ebp+8]
+	mov	dword133,[dword132]
+	mov	dword134,4
+	add	dword133,dword134
+	lea	dword135,[ebp-16]
+	mov	dword136,[dword135]
+	sub	dword136,[dword133]
+	int2float	dword136
+	lea	dword137,[ebp+12]
 	mov	dword138,8
 	add	dword138,[dword137]
-	fld	dword ptr [dword136]
-	fsub	dword ptr [dword138]
+	lea	dword139,[ebp+8]
+	mov	dword140,8
+	add	dword140,[dword139]
+	fld	dword ptr [dword138]
+	fsub	dword ptr [dword140]
 	fmulp
-	lea	dword139,[ebp+12]
-	mov	dword140,[dword139]
-	mov	dword141,4
-	add	dword140,dword141
-	lea	dword142,[ebp+8]
-	mov	dword143,[dword142]
-	mov	dword144,4
-	add	dword143,dword144
-	mov	dword145,[dword140]
-	sub	dword145,[dword143]
-	int2float	dword145
+	lea	dword141,[ebp+12]
+	mov	dword142,[dword141]
+	mov	dword143,4
+	add	dword142,dword143
+	lea	dword144,[ebp+8]
+	mov	dword145,[dword144]
+	mov	dword146,4
+	add	dword145,dword146
+	mov	dword147,[dword142]
+	sub	dword147,[dword145]
+	int2float	dword147
 	fdivp
-	lea	dword146,[ebp+8]
-	mov	dword147,8
-	add	dword147,[dword146]
-	fadd	dword ptr [dword147]
-	lea	dword148,[ebp-20]
-	fstp	dword ptr [dword148]
-	lea	dword149,[ebp+8]
-	mov	dword150,[dword149]
-	mov	dword151,4
-	add	dword150,dword151
-	lea	dword152,[ebp-16]
-	mov	dword153,[dword152]
-	sub	dword153,[dword150]
-	int2float	dword153
-	lea	dword154,[ebp+16]
-	mov	dword155,8
-	add	dword155,[dword154]
-	lea	dword156,[ebp+8]
+	lea	dword148,[ebp+8]
+	mov	dword149,8
+	add	dword149,[dword148]
+	fadd	dword ptr [dword149]
+	lea	dword150,[ebp-20]
+	fstp	dword ptr [dword150]
+	lea	dword151,[ebp+8]
+	mov	dword152,[dword151]
+	mov	dword153,4
+	add	dword152,dword153
+	lea	dword154,[ebp-16]
+	mov	dword155,[dword154]
+	sub	dword155,[dword152]
+	int2float	dword155
+	lea	dword156,[ebp+16]
 	mov	dword157,8
 	add	dword157,[dword156]
-	fld	dword ptr [dword155]
-	fsub	dword ptr [dword157]
+	lea	dword158,[ebp+8]
+	mov	dword159,8
+	add	dword159,[dword158]
+	fld	dword ptr [dword157]
+	fsub	dword ptr [dword159]
 	fmulp
-	lea	dword158,[ebp+16]
-	mov	dword159,[dword158]
-	mov	dword160,4
-	add	dword159,dword160
-	lea	dword161,[ebp+8]
-	mov	dword162,[dword161]
-	mov	dword163,4
-	add	dword162,dword163
-	mov	dword164,[dword159]
-	sub	dword164,[dword162]
-	int2float	dword164
+	lea	dword160,[ebp+16]
+	mov	dword161,[dword160]
+	mov	dword162,4
+	add	dword161,dword162
+	lea	dword163,[ebp+8]
+	mov	dword164,[dword163]
+	mov	dword165,4
+	add	dword164,dword165
+	mov	dword166,[dword161]
+	sub	dword166,[dword164]
+	int2float	dword166
 	fdivp
-	lea	dword165,[ebp+8]
-	mov	dword166,8
-	add	dword166,[dword165]
-	fadd	dword ptr [dword166]
-	lea	dword167,[ebp-28]
-	fstp	dword ptr [dword167]
-	lea	dword168,[ebp+8]
-	mov	dword169,[dword168]
-	mov	dword170,4
-	add	dword169,dword170
-	lea	dword171,[ebp-16]
-	mov	dword172,[dword171]
-	sub	dword172,[dword169]
-	int2float	dword172
-	lea	dword173,[ebp+12]
-	mov	dword174,8
-	add	dword174,[dword173]
-	mov	dword175,4
-	add	dword174,dword175
-	lea	dword176,[ebp+8]
-	mov	dword177,8
-	add	dword177,[dword176]
-	mov	dword178,4
-	add	dword177,dword178
-	fld	dword ptr [dword174]
-	fsub	dword ptr [dword177]
+	lea	dword167,[ebp+8]
+	mov	dword168,8
+	add	dword168,[dword167]
+	fadd	dword ptr [dword168]
+	lea	dword169,[ebp-28]
+	fstp	dword ptr [dword169]
+	lea	dword170,[ebp+8]
+	mov	dword171,[dword170]
+	mov	dword172,4
+	add	dword171,dword172
+	lea	dword173,[ebp-16]
+	mov	dword174,[dword173]
+	sub	dword174,[dword171]
+	int2float	dword174
+	lea	dword175,[ebp+12]
+	mov	dword176,8
+	add	dword176,[dword175]
+	mov	dword177,4
+	add	dword176,dword177
+	lea	dword178,[ebp+8]
+	mov	dword179,8
+	add	dword179,[dword178]
+	mov	dword180,4
+	add	dword179,dword180
+	fld	dword ptr [dword176]
+	fsub	dword ptr [dword179]
 	fmulp
-	lea	dword179,[ebp+12]
-	mov	dword180,[dword179]
-	mov	dword181,4
-	add	dword180,dword181
-	lea	dword182,[ebp+8]
-	mov	dword183,[dword182]
-	mov	dword184,4
-	add	dword183,dword184
-	mov	dword185,[dword180]
-	sub	dword185,[dword183]
-	int2float	dword185
+	lea	dword181,[ebp+12]
+	mov	dword182,[dword181]
+	mov	dword183,4
+	add	dword182,dword183
+	lea	dword184,[ebp+8]
+	mov	dword185,[dword184]
+	mov	dword186,4
+	add	dword185,dword186
+	mov	dword187,[dword182]
+	sub	dword187,[dword185]
+	int2float	dword187
 	fdivp
-	lea	dword186,[ebp+8]
-	mov	dword187,8
-	add	dword187,[dword186]
-	mov	dword188,4
-	add	dword187,dword188
-	fadd	dword ptr [dword187]
-	lea	dword189,[ebp-24]
-	fstp	dword ptr [dword189]
-	lea	dword190,[ebp+8]
-	mov	dword191,[dword190]
-	mov	dword192,4
-	add	dword191,dword192
-	lea	dword193,[ebp-16]
-	mov	dword194,[dword193]
-	sub	dword194,[dword191]
-	int2float	dword194
-	lea	dword195,[ebp+16]
-	mov	dword196,8
-	add	dword196,[dword195]
-	mov	dword197,4
-	add	dword196,dword197
-	lea	dword198,[ebp+8]
-	mov	dword199,8
-	add	dword199,[dword198]
-	mov	dword200,4
-	add	dword199,dword200
-	fld	dword ptr [dword196]
-	fsub	dword ptr [dword199]
+	lea	dword188,[ebp+8]
+	mov	dword189,8
+	add	dword189,[dword188]
+	mov	dword190,4
+	add	dword189,dword190
+	fadd	dword ptr [dword189]
+	lea	dword191,[ebp-24]
+	fstp	dword ptr [dword191]
+	lea	dword192,[ebp+8]
+	mov	dword193,[dword192]
+	mov	dword194,4
+	add	dword193,dword194
+	lea	dword195,[ebp-16]
+	mov	dword196,[dword195]
+	sub	dword196,[dword193]
+	int2float	dword196
+	lea	dword197,[ebp+16]
+	mov	dword198,8
+	add	dword198,[dword197]
+	mov	dword199,4
+	add	dword198,dword199
+	lea	dword200,[ebp+8]
+	mov	dword201,8
+	add	dword201,[dword200]
+	mov	dword202,4
+	add	dword201,dword202
+	fld	dword ptr [dword198]
+	fsub	dword ptr [dword201]
 	fmulp
-	lea	dword201,[ebp+16]
-	mov	dword202,[dword201]
-	mov	dword203,4
-	add	dword202,dword203
-	lea	dword204,[ebp+8]
-	mov	dword205,[dword204]
-	mov	dword206,4
-	add	dword205,dword206
-	mov	dword207,[dword202]
-	sub	dword207,[dword205]
-	int2float	dword207
+	lea	dword203,[ebp+16]
+	mov	dword204,[dword203]
+	mov	dword205,4
+	add	dword204,dword205
+	lea	dword206,[ebp+8]
+	mov	dword207,[dword206]
+	mov	dword208,4
+	add	dword207,dword208
+	mov	dword209,[dword204]
+	sub	dword209,[dword207]
+	int2float	dword209
 	fdivp
-	lea	dword208,[ebp+8]
-	mov	dword209,8
-	add	dword209,[dword208]
-	mov	dword210,4
-	add	dword209,dword210
-	fadd	dword ptr [dword209]
-	lea	dword211,[ebp-32]
-	fstp	dword ptr [dword211]
-	lea	dword212,[ebp-12]
-	lea	dword213,[ebp-8]
-	mov	dword214,[dword212]
-	sub	dword214,[dword213]
-	int2float	dword214
-	lea	dword215,[ebp-28]
-	lea	dword216,[ebp-20]
-	fld	dword ptr [dword215]
-	fsub	dword ptr [dword216]
+	lea	dword210,[ebp+8]
+	mov	dword211,8
+	add	dword211,[dword210]
+	mov	dword212,4
+	add	dword211,dword212
+	fadd	dword ptr [dword211]
+	lea	dword213,[ebp-32]
+	fstp	dword ptr [dword213]
+	lea	dword214,[ebp-12]
+	lea	dword215,[ebp-8]
+	mov	dword216,[dword214]
+	sub	dword216,[dword215]
+	int2float	dword216
+	lea	dword217,[ebp-28]
+	lea	dword218,[ebp-20]
+	fld	dword ptr [dword217]
+	fsub	dword ptr [dword218]
 	fdivrp
-	lea	dword217,[ebp-36]
-	fstp	dword ptr [dword217]
-	lea	dword218,[ebp-12]
-	lea	dword219,[ebp-8]
-	mov	dword220,[dword218]
-	sub	dword220,[dword219]
-	int2float	dword220
-	lea	dword221,[ebp-32]
-	lea	dword222,[ebp-24]
-	fld	dword ptr [dword221]
-	fsub	dword ptr [dword222]
+	lea	dword219,[ebp-36]
+	fstp	dword ptr [dword219]
+	lea	dword220,[ebp-12]
+	lea	dword221,[ebp-8]
+	mov	dword222,[dword220]
+	sub	dword222,[dword221]
+	int2float	dword222
+	lea	dword223,[ebp-32]
+	lea	dword224,[ebp-24]
+	fld	dword ptr [dword223]
+	fsub	dword ptr [dword224]
 	fdivrp
-	lea	dword223,[ebp-40]
-	fstp	dword ptr [dword223]
+	lea	dword225,[ebp-40]
+	fstp	dword ptr [dword225]
 	push_all
-	lea	dword224,[ebp-40]
-	push_arg	dword ptr [dword224],4
-	lea	dword225,[ebp-36]
-	push_arg	dword ptr [dword225],4
-	lea	dword226,[ebp-32]
+	lea	dword226,[ebp-40]
 	push_arg	dword ptr [dword226],4
-	lea	dword227,[ebp-28]
+	lea	dword227,[ebp-36]
 	push_arg	dword ptr [dword227],4
-	lea	dword228,[ebp-24]
+	lea	dword228,[ebp-32]
 	push_arg	dword ptr [dword228],4
-	lea	dword229,[ebp-20]
+	lea	dword229,[ebp-28]
 	push_arg	dword ptr [dword229],4
-	lea	dword230,[ebp-16]
+	lea	dword230,[ebp-24]
 	push_arg	dword ptr [dword230],4
-	lea	dword231,[ebp-12]
+	lea	dword231,[ebp-20]
 	push_arg	dword ptr [dword231],4
-	lea	dword232,[ebp-8]
+	lea	dword232,[ebp-16]
 	push_arg	dword ptr [dword232],4
+	lea	dword233,[ebp-12]
+	push_arg	dword ptr [dword233],4
+	lea	dword234,[ebp-8]
+	push_arg	dword ptr [dword234],4
 	call	__rasterize_horiz_line__unordered
 	restore_stack	36
 	pop_all
-	lea	dword233,[ebp-16]
-	inc	dword ptr [dword233]
+	lea	dword235,[ebp-16]
+	inc	dword ptr [dword235]
 	jmp	label0006
 label0007:
-	lea	dword234,[ebp+12]
-	mov	dword235,[dword234]
-	mov	dword236,4
-	add	dword235,dword236
-	lea	dword237,[ebp+8]
-	mov	dword238,[dword237]
-	mov	dword239,4
-	add	dword238,dword239
-	mov	dword240,[dword235]
-	sub	dword240,[dword238]
-	lea	dword241,[ebp+16]
-	mov	dword242,[dword241]
-	lea	dword243,[ebp+8]
+	lea	dword236,[ebp+12]
+	mov	dword237,[dword236]
+	mov	dword238,4
+	add	dword237,dword238
+	lea	dword239,[ebp+8]
+	mov	dword240,[dword239]
+	mov	dword241,4
+	add	dword240,dword241
+	mov	dword242,[dword237]
+	sub	dword242,[dword240]
+	lea	dword243,[ebp+16]
 	mov	dword244,[dword243]
-	mov	dword245,[dword242]
-	sub	dword245,[dword244]
-	imul	dword240,dword245
-	lea	dword246,[ebp+16]
-	mov	dword247,[dword246]
-	mov	dword248,4
-	add	dword247,dword248
-	lea	dword249,[ebp+8]
-	mov	dword250,[dword249]
-	mov	dword251,4
-	add	dword250,dword251
-	mov	dword252,[dword247]
-	sub	dword252,[dword250]
-	mov	eax,dword240
-	cdq
-	idiv	dword252
-	lea	dword253,[ebp+8]
-	mov	dword254,[dword253]
-	add	eax,[dword254]
-	lea	dword255,[ebp-12]
-	mov	[dword255],eax
-	lea	dword256,[ebp+12]
+	lea	dword245,[ebp+8]
+	mov	dword246,[dword245]
+	mov	dword247,[dword244]
+	sub	dword247,[dword246]
+	imul	dword242,dword247
+	lea	dword248,[ebp+16]
+	mov	dword249,[dword248]
+	mov	dword250,4
+	add	dword249,dword250
+	lea	dword251,[ebp+8]
+	mov	dword252,[dword251]
+	mov	dword253,4
+	add	dword252,dword253
+	mov	dword254,[dword249]
+	sub	dword254,[dword252]
+	cdq	dword255
+	idiv	dword242,dword254
+	lea	dword256,[ebp+8]
 	mov	dword257,[dword256]
-	mov	dword258,4
-	add	dword257,dword258
-	lea	dword259,[ebp+8]
+	add	dword242,[dword257]
+	lea	dword258,[ebp-12]
+	mov	[dword258],dword242
+	lea	dword259,[ebp+12]
 	mov	dword260,[dword259]
 	mov	dword261,4
 	add	dword260,dword261
-	mov	dword262,[dword257]
-	sub	dword262,[dword260]
-	int2float	dword262
-	lea	dword263,[ebp+16]
-	mov	dword264,8
-	add	dword264,[dword263]
-	lea	dword265,[ebp+8]
-	mov	dword266,8
-	add	dword266,[dword265]
-	fld	dword ptr [dword264]
-	fsub	dword ptr [dword266]
+	lea	dword262,[ebp+8]
+	mov	dword263,[dword262]
+	mov	dword264,4
+	add	dword263,dword264
+	mov	dword265,[dword260]
+	sub	dword265,[dword263]
+	int2float	dword265
+	lea	dword266,[ebp+16]
+	mov	dword267,8
+	add	dword267,[dword266]
+	lea	dword268,[ebp+8]
+	mov	dword269,8
+	add	dword269,[dword268]
+	fld	dword ptr [dword267]
+	fsub	dword ptr [dword269]
 	fmulp
-	lea	dword267,[ebp+16]
-	mov	dword268,[dword267]
-	mov	dword269,4
-	add	dword268,dword269
-	lea	dword270,[ebp+8]
+	lea	dword270,[ebp+16]
 	mov	dword271,[dword270]
 	mov	dword272,4
 	add	dword271,dword272
-	mov	dword273,[dword268]
-	sub	dword273,[dword271]
-	int2float	dword273
+	lea	dword273,[ebp+8]
+	mov	dword274,[dword273]
+	mov	dword275,4
+	add	dword274,dword275
+	mov	dword276,[dword271]
+	sub	dword276,[dword274]
+	int2float	dword276
 	fdivp
-	lea	dword274,[ebp+8]
-	mov	dword275,8
-	add	dword275,[dword274]
-	fadd	dword ptr [dword275]
-	lea	dword276,[ebp-28]
-	fstp	dword ptr [dword276]
-	lea	dword277,[ebp+12]
-	mov	dword278,[dword277]
-	mov	dword279,4
-	add	dword278,dword279
-	lea	dword280,[ebp+8]
+	lea	dword277,[ebp+8]
+	mov	dword278,8
+	add	dword278,[dword277]
+	fadd	dword ptr [dword278]
+	lea	dword279,[ebp-28]
+	fstp	dword ptr [dword279]
+	lea	dword280,[ebp+12]
 	mov	dword281,[dword280]
 	mov	dword282,4
 	add	dword281,dword282
-	mov	dword283,[dword278]
-	sub	dword283,[dword281]
-	int2float	dword283
-	lea	dword284,[ebp+16]
-	mov	dword285,8
-	add	dword285,[dword284]
-	mov	dword286,4
-	add	dword285,dword286
-	lea	dword287,[ebp+8]
+	lea	dword283,[ebp+8]
+	mov	dword284,[dword283]
+	mov	dword285,4
+	add	dword284,dword285
+	mov	dword286,[dword281]
+	sub	dword286,[dword284]
+	int2float	dword286
+	lea	dword287,[ebp+16]
 	mov	dword288,8
 	add	dword288,[dword287]
 	mov	dword289,4
 	add	dword288,dword289
-	fld	dword ptr [dword285]
-	fsub	dword ptr [dword288]
-	fmulp
-	lea	dword290,[ebp+16]
-	mov	dword291,[dword290]
+	lea	dword290,[ebp+8]
+	mov	dword291,8
+	add	dword291,[dword290]
 	mov	dword292,4
 	add	dword291,dword292
-	lea	dword293,[ebp+8]
+	fld	dword ptr [dword288]
+	fsub	dword ptr [dword291]
+	fmulp
+	lea	dword293,[ebp+16]
 	mov	dword294,[dword293]
 	mov	dword295,4
 	add	dword294,dword295
-	mov	dword296,[dword291]
-	sub	dword296,[dword294]
-	int2float	dword296
+	lea	dword296,[ebp+8]
+	mov	dword297,[dword296]
+	mov	dword298,4
+	add	dword297,dword298
+	mov	dword299,[dword294]
+	sub	dword299,[dword297]
+	int2float	dword299
 	fdivp
-	lea	dword297,[ebp+8]
-	mov	dword298,8
-	add	dword298,[dword297]
-	mov	dword299,4
-	add	dword298,dword299
-	fadd	dword ptr [dword298]
-	lea	dword300,[ebp-32]
-	fstp	dword ptr [dword300]
-	lea	dword301,[ebp+12]
-	mov	dword302,8
-	add	dword302,[dword301]
-	lea	dword303,[ebp-28]
-	fld	dword ptr [dword303]
-	fsub	dword ptr [dword302]
+	lea	dword300,[ebp+8]
+	mov	dword301,8
+	add	dword301,[dword300]
+	mov	dword302,4
+	add	dword301,dword302
+	fadd	dword ptr [dword301]
+	lea	dword303,[ebp-32]
+	fstp	dword ptr [dword303]
 	lea	dword304,[ebp+12]
-	mov	dword305,[dword304]
-	lea	dword306,[ebp-12]
-	mov	dword307,[dword306]
-	sub	dword307,[dword305]
-	int2float	dword307
+	mov	dword305,8
+	add	dword305,[dword304]
+	lea	dword306,[ebp-28]
+	fld	dword ptr [dword306]
+	fsub	dword ptr [dword305]
+	lea	dword307,[ebp+12]
+	mov	dword308,[dword307]
+	lea	dword309,[ebp-12]
+	mov	dword310,[dword309]
+	sub	dword310,[dword308]
+	int2float	dword310
 	fdivp
-	lea	dword308,[ebp-36]
-	fstp	dword ptr [dword308]
-	lea	dword309,[ebp+12]
-	mov	dword310,8
-	add	dword310,[dword309]
-	mov	dword311,4
-	add	dword310,dword311
-	lea	dword312,[ebp-32]
-	fld	dword ptr [dword312]
-	fsub	dword ptr [dword310]
-	lea	dword313,[ebp+12]
-	mov	dword314,[dword313]
-	lea	dword315,[ebp-12]
-	mov	dword316,[dword315]
-	sub	dword316,[dword314]
-	int2float	dword316
+	lea	dword311,[ebp-36]
+	fstp	dword ptr [dword311]
+	lea	dword312,[ebp+12]
+	mov	dword313,8
+	add	dword313,[dword312]
+	mov	dword314,4
+	add	dword313,dword314
+	lea	dword315,[ebp-32]
+	fld	dword ptr [dword315]
+	fsub	dword ptr [dword313]
+	lea	dword316,[ebp+12]
+	mov	dword317,[dword316]
+	lea	dword318,[ebp-12]
+	mov	dword319,[dword318]
+	sub	dword319,[dword317]
+	int2float	dword319
 	fdivp
-	lea	dword317,[ebp-40]
-	fstp	dword ptr [dword317]
+	lea	dword320,[ebp-40]
+	fstp	dword ptr [dword320]
 	push_all
-	lea	dword318,[ebp-40]
-	push_arg	dword ptr [dword318],4
-	lea	dword319,[ebp-36]
-	push_arg	dword ptr [dword319],4
-	lea	dword320,[ebp+12]
-	mov	dword321,8
-	add	dword321,[dword320]
-	mov	dword322,4
-	add	dword321,dword322
+	lea	dword321,[ebp-40]
 	push_arg	dword ptr [dword321],4
+	lea	dword322,[ebp-36]
+	push_arg	dword ptr [dword322],4
 	lea	dword323,[ebp+12]
 	mov	dword324,8
 	add	dword324,[dword323]
+	mov	dword325,4
+	add	dword324,dword325
 	push_arg	dword ptr [dword324],4
-	lea	dword325,[ebp-32]
-	push_arg	dword ptr [dword325],4
-	lea	dword326,[ebp-28]
-	push_arg	dword ptr [dword326],4
-	lea	dword327,[ebp+12]
-	mov	dword328,[dword327]
-	mov	dword329,4
-	add	dword328,dword329
+	lea	dword326,[ebp+12]
+	mov	dword327,8
+	add	dword327,[dword326]
+	push_arg	dword ptr [dword327],4
+	lea	dword328,[ebp-32]
 	push_arg	dword ptr [dword328],4
+	lea	dword329,[ebp-28]
+	push_arg	dword ptr [dword329],4
 	lea	dword330,[ebp+12]
 	mov	dword331,[dword330]
+	mov	dword332,4
+	add	dword331,dword332
 	push_arg	dword ptr [dword331],4
-	lea	dword332,[ebp-12]
-	push_arg	dword ptr [dword332],4
+	lea	dword333,[ebp+12]
+	mov	dword334,[dword333]
+	push_arg	dword ptr [dword334],4
+	lea	dword335,[ebp-12]
+	push_arg	dword ptr [dword335],4
 	call	__rasterize_horiz_line__unordered
 	restore_stack	36
 	pop_all
-	lea	dword333,[ebp+12]
-	mov	dword334,[dword333]
-	mov	dword335,4
-	add	dword334,dword335
-	mov	dword336,1
-	add	dword336,[dword334]
-	lea	dword337,[ebp-16]
-	mov	[dword337],dword336
+	lea	dword336,[ebp+12]
+	mov	dword337,[dword336]
+	mov	dword338,4
+	add	dword337,dword338
+	mov	dword339,1
+	add	dword339,[dword337]
+	lea	dword340,[ebp-16]
+	mov	[dword340],dword339
 label0008:
 label0009:
-	lea	dword338,[ebp+16]
-	mov	dword339,[dword338]
-	mov	dword340,4
-	add	dword339,dword340
-	lea	dword341,[ebp-16]
-	mov	dword342,[dword339]
-	cmp	dword342,[dword341]
+	lea	dword341,[ebp+16]
+	mov	dword342,[dword341]
+	mov	dword343,4
+	add	dword342,dword343
+	lea	dword344,[ebp-16]
+	mov	dword345,[dword342]
+	cmp	dword345,[dword344]
 	jle	label000a
-	lea	dword343,[ebp+12]
-	mov	dword344,[dword343]
-	mov	dword345,4
-	add	dword344,dword345
-	lea	dword346,[ebp-16]
+	lea	dword346,[ebp+12]
 	mov	dword347,[dword346]
-	sub	dword347,[dword344]
-	lea	dword348,[ebp+16]
-	mov	dword349,[dword348]
-	lea	dword350,[ebp+12]
-	mov	dword351,[dword350]
-	mov	dword352,[dword349]
-	sub	dword352,[dword351]
-	imul	dword347,dword352
-	lea	dword353,[ebp+16]
+	mov	dword348,4
+	add	dword347,dword348
+	lea	dword349,[ebp-16]
+	mov	dword350,[dword349]
+	sub	dword350,[dword347]
+	lea	dword351,[ebp+16]
+	mov	dword352,[dword351]
+	lea	dword353,[ebp+12]
 	mov	dword354,[dword353]
-	mov	dword355,4
-	add	dword354,dword355
-	lea	dword356,[ebp+12]
+	mov	dword355,[dword352]
+	sub	dword355,[dword354]
+	imul	dword350,dword355
+	lea	dword356,[ebp+16]
 	mov	dword357,[dword356]
 	mov	dword358,4
 	add	dword357,dword358
-	mov	dword359,[dword354]
-	sub	dword359,[dword357]
-	mov	eax,dword347
-	cdq
-	idiv	dword359
-	lea	dword360,[ebp+12]
-	mov	dword361,[dword360]
-	add	eax,[dword361]
-	lea	dword362,[ebp-8]
-	mov	[dword362],eax
-	lea	dword363,[ebp+8]
-	mov	dword364,[dword363]
-	mov	dword365,4
-	add	dword364,dword365
-	lea	dword366,[ebp-16]
-	mov	dword367,[dword366]
-	sub	dword367,[dword364]
-	lea	dword368,[ebp+16]
-	mov	dword369,[dword368]
-	lea	dword370,[ebp+8]
+	lea	dword359,[ebp+12]
+	mov	dword360,[dword359]
+	mov	dword361,4
+	add	dword360,dword361
+	mov	dword362,[dword357]
+	sub	dword362,[dword360]
+	cdq	dword363
+	idiv	dword350,dword362
+	lea	dword364,[ebp+12]
+	mov	dword365,[dword364]
+	add	dword350,[dword365]
+	lea	dword366,[ebp-8]
+	mov	[dword366],dword350
+	lea	dword367,[ebp+8]
+	mov	dword368,[dword367]
+	mov	dword369,4
+	add	dword368,dword369
+	lea	dword370,[ebp-16]
 	mov	dword371,[dword370]
-	mov	dword372,[dword369]
-	sub	dword372,[dword371]
-	imul	dword367,dword372
-	lea	dword373,[ebp+16]
-	mov	dword374,[dword373]
-	mov	dword375,4
-	add	dword374,dword375
-	lea	dword376,[ebp+8]
-	mov	dword377,[dword376]
-	mov	dword378,4
-	add	dword377,dword378
-	mov	dword379,[dword374]
-	sub	dword379,[dword377]
-	mov	eax,dword367
-	cdq
-	idiv	dword379
+	sub	dword371,[dword368]
+	lea	dword372,[ebp+16]
+	mov	dword373,[dword372]
+	lea	dword374,[ebp+8]
+	mov	dword375,[dword374]
+	mov	dword376,[dword373]
+	sub	dword376,[dword375]
+	imul	dword371,dword376
+	lea	dword377,[ebp+16]
+	mov	dword378,[dword377]
+	mov	dword379,4
+	add	dword378,dword379
 	lea	dword380,[ebp+8]
 	mov	dword381,[dword380]
-	add	eax,[dword381]
-	lea	dword382,[ebp-12]
-	mov	[dword382],eax
-	lea	dword383,[ebp+12]
-	mov	dword384,[dword383]
-	mov	dword385,4
-	add	dword384,dword385
-	lea	dword386,[ebp-16]
-	mov	dword387,[dword386]
-	sub	dword387,[dword384]
-	int2float	dword387
-	lea	dword388,[ebp+16]
-	mov	dword389,8
-	add	dword389,[dword388]
-	lea	dword390,[ebp+12]
-	mov	dword391,8
-	add	dword391,[dword390]
-	fld	dword ptr [dword389]
-	fsub	dword ptr [dword391]
-	fmulp
-	lea	dword392,[ebp+16]
-	mov	dword393,[dword392]
-	mov	dword394,4
-	add	dword393,dword394
+	mov	dword382,4
+	add	dword381,dword382
+	mov	dword383,[dword378]
+	sub	dword383,[dword381]
+	cdq	dword384
+	idiv	dword371,dword383
+	lea	dword385,[ebp+8]
+	mov	dword386,[dword385]
+	add	dword371,[dword386]
+	lea	dword387,[ebp-12]
+	mov	[dword387],dword371
+	lea	dword388,[ebp+12]
+	mov	dword389,[dword388]
+	mov	dword390,4
+	add	dword389,dword390
+	lea	dword391,[ebp-16]
+	mov	dword392,[dword391]
+	sub	dword392,[dword389]
+	int2float	dword392
+	lea	dword393,[ebp+16]
+	mov	dword394,8
+	add	dword394,[dword393]
 	lea	dword395,[ebp+12]
-	mov	dword396,[dword395]
-	mov	dword397,4
-	add	dword396,dword397
-	mov	dword398,[dword393]
-	sub	dword398,[dword396]
-	int2float	dword398
-	fdivp
-	lea	dword399,[ebp+12]
-	mov	dword400,8
-	add	dword400,[dword399]
-	fadd	dword ptr [dword400]
-	lea	dword401,[ebp-20]
-	fstp	dword ptr [dword401]
-	lea	dword402,[ebp+8]
-	mov	dword403,[dword402]
-	mov	dword404,4
-	add	dword403,dword404
-	lea	dword405,[ebp-16]
-	mov	dword406,[dword405]
-	sub	dword406,[dword403]
-	int2float	dword406
-	lea	dword407,[ebp+16]
-	mov	dword408,8
-	add	dword408,[dword407]
-	lea	dword409,[ebp+8]
-	mov	dword410,8
-	add	dword410,[dword409]
-	fld	dword ptr [dword408]
-	fsub	dword ptr [dword410]
+	mov	dword396,8
+	add	dword396,[dword395]
+	fld	dword ptr [dword394]
+	fsub	dword ptr [dword396]
 	fmulp
-	lea	dword411,[ebp+16]
-	mov	dword412,[dword411]
-	mov	dword413,4
-	add	dword412,dword413
-	lea	dword414,[ebp+8]
-	mov	dword415,[dword414]
-	mov	dword416,4
-	add	dword415,dword416
-	mov	dword417,[dword412]
-	sub	dword417,[dword415]
-	int2float	dword417
+	lea	dword397,[ebp+16]
+	mov	dword398,[dword397]
+	mov	dword399,4
+	add	dword398,dword399
+	lea	dword400,[ebp+12]
+	mov	dword401,[dword400]
+	mov	dword402,4
+	add	dword401,dword402
+	mov	dword403,[dword398]
+	sub	dword403,[dword401]
+	int2float	dword403
 	fdivp
-	lea	dword418,[ebp+8]
-	mov	dword419,8
-	add	dword419,[dword418]
-	fadd	dword ptr [dword419]
-	lea	dword420,[ebp-28]
-	fstp	dword ptr [dword420]
-	lea	dword421,[ebp+12]
-	mov	dword422,[dword421]
-	mov	dword423,4
-	add	dword422,dword423
-	lea	dword424,[ebp-16]
-	mov	dword425,[dword424]
-	sub	dword425,[dword422]
-	int2float	dword425
-	lea	dword426,[ebp+16]
-	mov	dword427,8
-	add	dword427,[dword426]
+	lea	dword404,[ebp+12]
+	mov	dword405,8
+	add	dword405,[dword404]
+	fadd	dword ptr [dword405]
+	lea	dword406,[ebp-20]
+	fstp	dword ptr [dword406]
+	lea	dword407,[ebp+8]
+	mov	dword408,[dword407]
+	mov	dword409,4
+	add	dword408,dword409
+	lea	dword410,[ebp-16]
+	mov	dword411,[dword410]
+	sub	dword411,[dword408]
+	int2float	dword411
+	lea	dword412,[ebp+16]
+	mov	dword413,8
+	add	dword413,[dword412]
+	lea	dword414,[ebp+8]
+	mov	dword415,8
+	add	dword415,[dword414]
+	fld	dword ptr [dword413]
+	fsub	dword ptr [dword415]
+	fmulp
+	lea	dword416,[ebp+16]
+	mov	dword417,[dword416]
+	mov	dword418,4
+	add	dword417,dword418
+	lea	dword419,[ebp+8]
+	mov	dword420,[dword419]
+	mov	dword421,4
+	add	dword420,dword421
+	mov	dword422,[dword417]
+	sub	dword422,[dword420]
+	int2float	dword422
+	fdivp
+	lea	dword423,[ebp+8]
+	mov	dword424,8
+	add	dword424,[dword423]
+	fadd	dword ptr [dword424]
+	lea	dword425,[ebp-28]
+	fstp	dword ptr [dword425]
+	lea	dword426,[ebp+12]
+	mov	dword427,[dword426]
 	mov	dword428,4
 	add	dword427,dword428
-	lea	dword429,[ebp+12]
-	mov	dword430,8
-	add	dword430,[dword429]
-	mov	dword431,4
-	add	dword430,dword431
-	fld	dword ptr [dword427]
-	fsub	dword ptr [dword430]
+	lea	dword429,[ebp-16]
+	mov	dword430,[dword429]
+	sub	dword430,[dword427]
+	int2float	dword430
+	lea	dword431,[ebp+16]
+	mov	dword432,8
+	add	dword432,[dword431]
+	mov	dword433,4
+	add	dword432,dword433
+	lea	dword434,[ebp+12]
+	mov	dword435,8
+	add	dword435,[dword434]
+	mov	dword436,4
+	add	dword435,dword436
+	fld	dword ptr [dword432]
+	fsub	dword ptr [dword435]
 	fmulp
-	lea	dword432,[ebp+16]
-	mov	dword433,[dword432]
-	mov	dword434,4
-	add	dword433,dword434
-	lea	dword435,[ebp+12]
-	mov	dword436,[dword435]
-	mov	dword437,4
-	add	dword436,dword437
-	mov	dword438,[dword433]
-	sub	dword438,[dword436]
-	int2float	dword438
+	lea	dword437,[ebp+16]
+	mov	dword438,[dword437]
+	mov	dword439,4
+	add	dword438,dword439
+	lea	dword440,[ebp+12]
+	mov	dword441,[dword440]
+	mov	dword442,4
+	add	dword441,dword442
+	mov	dword443,[dword438]
+	sub	dword443,[dword441]
+	int2float	dword443
 	fdivp
-	lea	dword439,[ebp+12]
-	mov	dword440,8
-	add	dword440,[dword439]
-	mov	dword441,4
-	add	dword440,dword441
-	fadd	dword ptr [dword440]
-	lea	dword442,[ebp-24]
-	fstp	dword ptr [dword442]
-	lea	dword443,[ebp+8]
-	mov	dword444,[dword443]
-	mov	dword445,4
-	add	dword444,dword445
-	lea	dword446,[ebp-16]
-	mov	dword447,[dword446]
-	sub	dword447,[dword444]
-	int2float	dword447
-	lea	dword448,[ebp+16]
-	mov	dword449,8
-	add	dword449,[dword448]
+	lea	dword444,[ebp+12]
+	mov	dword445,8
+	add	dword445,[dword444]
+	mov	dword446,4
+	add	dword445,dword446
+	fadd	dword ptr [dword445]
+	lea	dword447,[ebp-24]
+	fstp	dword ptr [dword447]
+	lea	dword448,[ebp+8]
+	mov	dword449,[dword448]
 	mov	dword450,4
 	add	dword449,dword450
-	lea	dword451,[ebp+8]
-	mov	dword452,8
-	add	dword452,[dword451]
-	mov	dword453,4
-	add	dword452,dword453
-	fld	dword ptr [dword449]
-	fsub	dword ptr [dword452]
+	lea	dword451,[ebp-16]
+	mov	dword452,[dword451]
+	sub	dword452,[dword449]
+	int2float	dword452
+	lea	dword453,[ebp+16]
+	mov	dword454,8
+	add	dword454,[dword453]
+	mov	dword455,4
+	add	dword454,dword455
+	lea	dword456,[ebp+8]
+	mov	dword457,8
+	add	dword457,[dword456]
+	mov	dword458,4
+	add	dword457,dword458
+	fld	dword ptr [dword454]
+	fsub	dword ptr [dword457]
 	fmulp
-	lea	dword454,[ebp+16]
-	mov	dword455,[dword454]
-	mov	dword456,4
-	add	dword455,dword456
-	lea	dword457,[ebp+8]
-	mov	dword458,[dword457]
-	mov	dword459,4
-	add	dword458,dword459
-	mov	dword460,[dword455]
-	sub	dword460,[dword458]
-	int2float	dword460
+	lea	dword459,[ebp+16]
+	mov	dword460,[dword459]
+	mov	dword461,4
+	add	dword460,dword461
+	lea	dword462,[ebp+8]
+	mov	dword463,[dword462]
+	mov	dword464,4
+	add	dword463,dword464
+	mov	dword465,[dword460]
+	sub	dword465,[dword463]
+	int2float	dword465
 	fdivp
-	lea	dword461,[ebp+8]
-	mov	dword462,8
-	add	dword462,[dword461]
-	mov	dword463,4
-	add	dword462,dword463
-	fadd	dword ptr [dword462]
-	lea	dword464,[ebp-32]
-	fstp	dword ptr [dword464]
-	lea	dword465,[ebp-12]
-	lea	dword466,[ebp-8]
-	mov	dword467,[dword465]
-	sub	dword467,[dword466]
-	int2float	dword467
-	lea	dword468,[ebp-28]
-	lea	dword469,[ebp-20]
-	fld	dword ptr [dword468]
-	fsub	dword ptr [dword469]
+	lea	dword466,[ebp+8]
+	mov	dword467,8
+	add	dword467,[dword466]
+	mov	dword468,4
+	add	dword467,dword468
+	fadd	dword ptr [dword467]
+	lea	dword469,[ebp-32]
+	fstp	dword ptr [dword469]
+	lea	dword470,[ebp-12]
+	lea	dword471,[ebp-8]
+	mov	dword472,[dword470]
+	sub	dword472,[dword471]
+	int2float	dword472
+	lea	dword473,[ebp-28]
+	lea	dword474,[ebp-20]
+	fld	dword ptr [dword473]
+	fsub	dword ptr [dword474]
 	fdivrp
-	lea	dword470,[ebp-36]
-	fstp	dword ptr [dword470]
-	lea	dword471,[ebp-12]
-	lea	dword472,[ebp-8]
-	mov	dword473,[dword471]
-	sub	dword473,[dword472]
-	int2float	dword473
-	lea	dword474,[ebp-32]
-	lea	dword475,[ebp-24]
-	fld	dword ptr [dword474]
-	fsub	dword ptr [dword475]
-	fdivrp
-	lea	dword476,[ebp-40]
-	fstp	dword ptr [dword476]
-	push_all
-	lea	dword477,[ebp-40]
-	push_arg	dword ptr [dword477],4
-	lea	dword478,[ebp-36]
-	push_arg	dword ptr [dword478],4
+	lea	dword475,[ebp-36]
+	fstp	dword ptr [dword475]
+	lea	dword476,[ebp-12]
+	lea	dword477,[ebp-8]
+	mov	dword478,[dword476]
+	sub	dword478,[dword477]
+	int2float	dword478
 	lea	dword479,[ebp-32]
-	push_arg	dword ptr [dword479],4
-	lea	dword480,[ebp-28]
-	push_arg	dword ptr [dword480],4
-	lea	dword481,[ebp-24]
-	push_arg	dword ptr [dword481],4
-	lea	dword482,[ebp-20]
+	lea	dword480,[ebp-24]
+	fld	dword ptr [dword479]
+	fsub	dword ptr [dword480]
+	fdivrp
+	lea	dword481,[ebp-40]
+	fstp	dword ptr [dword481]
+	push_all
+	lea	dword482,[ebp-40]
 	push_arg	dword ptr [dword482],4
-	lea	dword483,[ebp-16]
+	lea	dword483,[ebp-36]
 	push_arg	dword ptr [dword483],4
-	lea	dword484,[ebp-12]
+	lea	dword484,[ebp-32]
 	push_arg	dword ptr [dword484],4
-	lea	dword485,[ebp-8]
+	lea	dword485,[ebp-28]
 	push_arg	dword ptr [dword485],4
+	lea	dword486,[ebp-24]
+	push_arg	dword ptr [dword486],4
+	lea	dword487,[ebp-20]
+	push_arg	dword ptr [dword487],4
+	lea	dword488,[ebp-16]
+	push_arg	dword ptr [dword488],4
+	lea	dword489,[ebp-12]
+	push_arg	dword ptr [dword489],4
+	lea	dword490,[ebp-8]
+	push_arg	dword ptr [dword490],4
 	call	__rasterize_horiz_line__unordered
 	restore_stack	36
 	pop_all
-	lea	dword486,[ebp-16]
-	inc	dword ptr [dword486]
+	lea	dword491,[ebp-16]
+	inc	dword ptr [dword491]
 	jmp	label0009
 label000a:
 	destroy_stack_frame
@@ -3211,262 +3204,265 @@ label0001:
 	mov	dword12,192
 	add	dword12,[dword11]
 	mov	dword13,24
-	imul	dword13,[dword12]
-	lea	dword14,[ebp+12]
-	mov	dword15,[dword14]
-	add	dword15,dword13
-	lea	dword16,[ebp-8]
-	cmp	dword15,[dword16]
+	mov	dword14,[dword12]
+	imul	dword14,dword13
+	lea	dword15,[ebp+12]
+	mov	dword16,[dword15]
+	add	dword16,dword14
+	lea	dword17,[ebp-8]
+	cmp	dword16,[dword17]
 	jle	label0002
 	push_all
-	lea	dword17,[ebp+16]
-	push_arg	dword ptr [dword17],4
-	lea	dword18,[ebp-4]
-	mov	dword19,[dword18]
-	push_arg	dword19,4
-	lea	dword20,[ebp-24]
+	lea	dword18,[ebp+16]
+	push_arg	dword ptr [dword18],4
+	lea	dword19,[ebp-4]
+	mov	dword20,[dword19]
 	push_arg	dword20,4
+	lea	dword21,[ebp-24]
+	push_arg	dword21,4
 	call	_vec4f_subtract
 	restore_stack	12
 	pop_all
 	push_all
-	lea	dword21,[ebp+20]
-	push_arg	dword ptr [dword21],4
-	lea	dword22,[ebp-24]
-	push_arg	dword22,4
+	lea	dword22,[ebp+20]
+	push_arg	dword ptr [dword22],4
+	lea	dword23,[ebp-24]
+	push_arg	dword23,4
 	call	_vec4f_dot
 	restore_stack	8
 	pop_all
 	read_retvalp
-	lea	dword23,[ebp-52]
-	fstp	dword ptr [dword23]
+	lea	dword24,[ebp-52]
+	fstp	dword ptr [dword24]
 	push_all
-	lea	dword24,[ebp+16]
-	push_arg	dword ptr [dword24],4
-	lea	dword25,[ebp-8]
-	mov	dword26,[dword25]
-	push_arg	dword26,4
-	lea	dword27,[ebp-24]
+	lea	dword25,[ebp+16]
+	push_arg	dword ptr [dword25],4
+	lea	dword26,[ebp-8]
+	mov	dword27,[dword26]
 	push_arg	dword27,4
+	lea	dword28,[ebp-24]
+	push_arg	dword28,4
 	call	_vec4f_subtract
 	restore_stack	12
 	pop_all
 	push_all
-	lea	dword28,[ebp+20]
-	push_arg	dword ptr [dword28],4
-	lea	dword29,[ebp-24]
-	push_arg	dword29,4
+	lea	dword29,[ebp+20]
+	push_arg	dword ptr [dword29],4
+	lea	dword30,[ebp-24]
+	push_arg	dword30,4
 	call	_vec4f_dot
 	restore_stack	8
 	pop_all
 	read_retvalp
-	lea	dword30,[ebp-56]
-	fstp	dword ptr [dword30]
-	lea	dword31,[ebp-52]
+	lea	dword31,[ebp-56]
+	fstp	dword ptr [dword31]
+	lea	dword32,[ebp-52]
 	fldz
-	fld	dword ptr [dword31]
+	fld	dword ptr [dword32]
 	fucomip	st,st(1)
 	fstp	st
 	jb	label0003
-	lea	dword32,[ebp+8]
-	mov	dword33,192
-	add	dword33,[dword32]
-	mov	dword34,[dword33]
-	inc	dword ptr [dword33]
-	mov	dword35,24
-	imul	dword34,dword35
-	lea	dword36,[ebp+8]
-	mov	dword37,[dword36]
-	add	dword37,dword34
-	lea	dword38,[ebp-4]
-	mov	dword39,[dword38]
+	lea	dword33,[ebp+8]
+	mov	dword34,192
+	add	dword34,[dword33]
+	mov	dword35,[dword34]
+	inc	dword ptr [dword34]
+	mov	dword36,24
+	imul	dword35,dword36
+	lea	dword37,[ebp+8]
+	mov	dword38,[dword37]
+	add	dword38,dword35
+	lea	dword39,[ebp-4]
 	mov	dword40,[dword39]
-	mov	dword41,[dword39+4]
-	mov	[dword37],dword40
-	mov	[dword37+4],dword41
-	mov	dword40,[dword39+8]
-	mov	dword41,[dword39+12]
-	mov	[dword37+8],dword40
-	mov	[dword37+12],dword41
-	mov	dword40,[dword39+16]
-	mov	dword41,[dword39+20]
-	mov	[dword37+16],dword40
-	mov	[dword37+20],dword41
+	mov	dword41,[dword40]
+	mov	dword42,[dword40+4]
+	mov	[dword38],dword41
+	mov	[dword38+4],dword42
+	mov	dword41,[dword40+8]
+	mov	dword42,[dword40+12]
+	mov	[dword38+8],dword41
+	mov	[dword38+12],dword42
+	mov	dword41,[dword40+16]
+	mov	dword42,[dword40+20]
+	mov	[dword38+16],dword41
+	mov	[dword38+20],dword42
 label0003:
-	lea	dword42,[ebp-52]
-	fldz
-	fld	dword ptr [dword42]
-	fucomip	st,st(1)
-	fstp	st
-	jbe	label0006
-	lea	dword43,[ebp-56]
+	lea	dword43,[ebp-52]
 	fldz
 	fld	dword ptr [dword43]
 	fucomip	st,st(1)
 	fstp	st
-	jb	label0005
-label0006:
+	jbe	label0006
 	lea	dword44,[ebp-56]
 	fldz
 	fld	dword ptr [dword44]
 	fucomip	st,st(1)
 	fstp	st
-	jb	label0004
-	lea	dword45,[ebp-52]
+	jb	label0005
+label0006:
+	lea	dword45,[ebp-56]
 	fldz
 	fld	dword ptr [dword45]
+	fucomip	st,st(1)
+	fstp	st
+	jb	label0004
+	lea	dword46,[ebp-52]
+	fldz
+	fld	dword ptr [dword46]
 	fucomip	st,st(1)
 	fstp	st
 	jae	label0004
 label0005:
 	push_all
-	lea	dword46,[ebp-4]
-	mov	dword47,[dword46]
-	push_arg	dword47,4
-	lea	dword48,[ebp+16]
-	push_arg	dword ptr [dword48],4
-	lea	dword49,[ebp-24]
-	push_arg	dword49,4
+	lea	dword47,[ebp-4]
+	mov	dword48,[dword47]
+	push_arg	dword48,4
+	lea	dword49,[ebp+16]
+	push_arg	dword ptr [dword49],4
+	lea	dword50,[ebp-24]
+	push_arg	dword50,4
 	call	_vec4f_subtract
 	restore_stack	12
 	pop_all
 	push_all
-	lea	dword50,[ebp-4]
-	mov	dword51,[dword50]
-	push_arg	dword51,4
-	lea	dword52,[ebp-8]
-	mov	dword53,[dword52]
-	push_arg	dword53,4
-	lea	dword54,[ebp-40]
+	lea	dword51,[ebp-4]
+	mov	dword52,[dword51]
+	push_arg	dword52,4
+	lea	dword53,[ebp-8]
+	mov	dword54,[dword53]
 	push_arg	dword54,4
+	lea	dword55,[ebp-40]
+	push_arg	dword55,4
 	call	_vec4f_subtract
 	restore_stack	12
 	pop_all
 	push_all
-	lea	dword55,[ebp+20]
-	push_arg	dword ptr [dword55],4
-	lea	dword56,[ebp-24]
-	push_arg	dword56,4
+	lea	dword56,[ebp+20]
+	push_arg	dword ptr [dword56],4
+	lea	dword57,[ebp-24]
+	push_arg	dword57,4
 	call	_vec4f_dot
 	restore_stack	8
 	pop_all
 	read_retvalp
 	push_all
-	lea	dword57,[ebp+20]
-	push_arg	dword ptr [dword57],4
-	lea	dword58,[ebp-40]
-	push_arg	dword58,4
+	lea	dword58,[ebp+20]
+	push_arg	dword ptr [dword58],4
+	lea	dword59,[ebp-40]
+	push_arg	dword59,4
 	call	_vec4f_dot
 	restore_stack	8
 	pop_all
 	read_retvalp
 	fdivp
-	lea	dword59,[ebp-60]
-	fstp	dword ptr [dword59]
-	push_all
 	lea	dword60,[ebp-60]
-	push_arg	dword ptr [dword60],4
-	lea	dword61,[ebp-40]
-	push_arg	dword61,4
+	fstp	dword ptr [dword60]
+	push_all
+	lea	dword61,[ebp-60]
+	push_arg	dword ptr [dword61],4
+	lea	dword62,[ebp-40]
+	push_arg	dword62,4
 	call	_vec4f_mul
 	restore_stack	8
 	pop_all
 	push_all
-	lea	dword62,[ebp-40]
-	push_arg	dword62,4
-	lea	dword63,[ebp-4]
-	mov	dword64,[dword63]
-	push_arg	dword64,4
-	lea	dword65,[ebp+8]
-	mov	dword66,192
-	add	dword66,[dword65]
-	mov	dword67,24
-	imul	dword67,[dword66]
-	lea	dword68,[ebp+8]
-	mov	dword69,[dword68]
-	add	dword69,dword67
-	push_arg	dword69,4
+	lea	dword63,[ebp-40]
+	push_arg	dword63,4
+	lea	dword64,[ebp-4]
+	mov	dword65,[dword64]
+	push_arg	dword65,4
+	lea	dword66,[ebp+8]
+	mov	dword67,192
+	add	dword67,[dword66]
+	mov	dword68,24
+	mov	dword69,[dword67]
+	imul	dword69,dword68
+	lea	dword70,[ebp+8]
+	mov	dword71,[dword70]
+	add	dword71,dword69
+	push_arg	dword71,4
 	call	_vec4f_add
 	restore_stack	12
 	pop_all
 	push_all
-	lea	dword70,[ebp-4]
-	mov	dword71,16
-	add	dword71,[dword70]
-	push_arg	dword71,4
-	lea	dword72,[ebp-8]
+	lea	dword72,[ebp-4]
 	mov	dword73,16
 	add	dword73,[dword72]
 	push_arg	dword73,4
-	lea	dword74,[ebp-48]
-	push_arg	dword74,4
+	lea	dword74,[ebp-8]
+	mov	dword75,16
+	add	dword75,[dword74]
+	push_arg	dword75,4
+	lea	dword76,[ebp-48]
+	push_arg	dword76,4
 	call	_vec2f_subtract
 	restore_stack	12
 	pop_all
 	push_all
-	lea	dword75,[ebp-60]
-	push_arg	dword ptr [dword75],4
-	lea	dword76,[ebp-48]
-	push_arg	dword76,4
+	lea	dword77,[ebp-60]
+	push_arg	dword ptr [dword77],4
+	lea	dword78,[ebp-48]
+	push_arg	dword78,4
 	call	_vec2f_mul
 	restore_stack	8
 	pop_all
 	push_all
-	lea	dword77,[ebp-48]
-	push_arg	dword77,4
-	lea	dword78,[ebp-4]
-	mov	dword79,16
-	add	dword79,[dword78]
+	lea	dword79,[ebp-48]
 	push_arg	dword79,4
-	lea	dword80,[ebp+8]
-	mov	dword81,192
+	lea	dword80,[ebp-4]
+	mov	dword81,16
 	add	dword81,[dword80]
-	mov	dword82,24
-	imul	dword82,[dword81]
-	lea	dword83,[ebp+8]
-	mov	dword84,[dword83]
-	add	dword84,dword82
-	mov	dword85,16
-	add	dword84,dword85
-	push_arg	dword84,4
+	push_arg	dword81,4
+	lea	dword82,[ebp+8]
+	mov	dword83,192
+	add	dword83,[dword82]
+	mov	dword84,24
+	mov	dword85,[dword83]
+	imul	dword85,dword84
+	lea	dword86,[ebp+8]
+	mov	dword87,[dword86]
+	add	dword87,dword85
+	mov	dword88,16
+	add	dword87,dword88
+	push_arg	dword87,4
 	call	_vec2f_add
 	restore_stack	12
 	pop_all
-	lea	dword86,[ebp+8]
-	mov	dword87,192
-	add	dword87,[dword86]
-	inc	dword ptr [dword87]
+	lea	dword89,[ebp+8]
+	mov	dword90,192
+	add	dword90,[dword89]
+	inc	dword ptr [dword90]
 label0004:
-	lea	dword88,[ebp-4]
-	add	dword ptr [dword88],24
-	lea	dword89,[ebp-8]
-	add	dword ptr [dword89],24
+	lea	dword91,[ebp-4]
+	add	dword ptr [dword91],24
+	lea	dword92,[ebp-8]
+	add	dword ptr [dword92],24
 	jmp	label0001
 label0002:
-	lea	dword90,[ebp+8]
-	mov	dword91,192
-	add	dword91,[dword90]
-	mov	dword92,[dword91]
-	inc	dword ptr [dword91]
-	mov	dword93,24
-	imul	dword92,dword93
-	lea	dword94,[ebp+8]
+	lea	dword93,[ebp+8]
+	mov	dword94,192
+	add	dword94,[dword93]
 	mov	dword95,[dword94]
-	add	dword95,dword92
-	lea	dword96,[ebp+8]
-	mov	dword97,[dword96]
+	inc	dword ptr [dword94]
+	mov	dword96,24
+	imul	dword95,dword96
+	lea	dword97,[ebp+8]
 	mov	dword98,[dword97]
-	mov	dword99,[dword97+4]
-	mov	[dword95],dword98
-	mov	[dword95+4],dword99
-	mov	dword98,[dword97+8]
-	mov	dword99,[dword97+12]
-	mov	[dword95+8],dword98
-	mov	[dword95+12],dword99
-	mov	dword98,[dword97+16]
-	mov	dword99,[dword97+20]
-	mov	[dword95+16],dword98
-	mov	[dword95+20],dword99
+	add	dword98,dword95
+	lea	dword99,[ebp+8]
+	mov	dword100,[dword99]
+	mov	dword101,[dword100]
+	mov	dword102,[dword100+4]
+	mov	[dword98],dword101
+	mov	[dword98+4],dword102
+	mov	dword101,[dword100+8]
+	mov	dword102,[dword100+12]
+	mov	[dword98+8],dword101
+	mov	[dword98+12],dword102
+	mov	dword101,[dword100+16]
+	mov	dword102,[dword100+20]
+	mov	[dword98+16],dword101
+	mov	[dword98+20],dword102
 	destroy_stack_frame
 	ret
 __clip_on_plain endp	
@@ -3669,37 +3665,37 @@ label0003:
 	mov	dword15,[dword14]
 	lea	dword16,[ebp-136]
 	mov	dword17,24
-	imul	dword17,[dword16]
-	add	dword15,dword17
+	mov	dword18,[dword16]
+	imul	dword18,dword17
+	add	dword15,dword18
 	push_arg	dword15,4
-	lea	dword18,[ebp-132]
-	lea	dword19,[ebp-136]
-	mov	dword20,4
-	mov	dword21,[dword19]
-	sal	dword21,dword20
-	add	dword18,dword21
-	push_arg	dword18,4
+	lea	dword19,[ebp-132]
+	lea	dword20,[ebp-136]
+	mov	dword21,4
+	sal	dword ptr [dword20],dword21
+	add	dword19,[dword20]
+	push_arg	dword19,4
 	call	__transform_to_screen_space
 	restore_stack	8
 	pop_all
 	lea	dword22,[ebp-132]
 	lea	dword23,[ebp-136]
 	mov	dword24,4
-	mov	dword25,[dword23]
-	sal	dword25,dword24
+	sal	dword ptr [dword23],dword24
+	add	dword22,[dword23]
+	mov	dword25,8
 	add	dword22,dword25
-	mov	dword26,8
-	add	dword22,dword26
-	lea	dword27,[ebp+8]
-	mov	dword28,[dword27]
-	lea	dword29,[ebp-136]
-	mov	dword30,24
-	imul	dword30,[dword29]
-	add	dword28,dword30
+	lea	dword26,[ebp+8]
+	mov	dword27,[dword26]
+	lea	dword28,[ebp-136]
+	mov	dword29,24
+	mov	dword30,[dword28]
+	imul	dword30,dword29
+	add	dword27,dword30
 	mov	dword31,16
-	add	dword28,dword31
-	mov	dword32,[dword28]
-	mov	dword33,[dword28+4]
+	add	dword27,dword31
+	mov	dword32,[dword27]
+	mov	dword33,[dword27+4]
 	mov	[dword22],dword32
 	mov	[dword22+4],dword33
 	lea	dword34,[ebp-136]
@@ -3724,26 +3720,25 @@ label0006:
 	lea	dword42,[ebp-132]
 	lea	dword43,[ebp-136]
 	mov	dword44,4
-	mov	dword45,[dword43]
-	sal	dword45,dword44
-	add	dword42,dword45
+	sal	dword ptr [dword43],dword44
+	add	dword42,[dword43]
 	push_arg	dword42,4
-	lea	dword46,[ebp-136]
-	mov	dword47,1
-	mov	dword48,[dword46]
-	sub	dword48,dword47
-	mov	dword49,4
-	sal	dword48,dword49
+	lea	dword45,[ebp-136]
+	mov	dword46,1
+	mov	dword47,[dword45]
+	sub	dword47,dword46
+	mov	dword48,4
+	sal	dword47,dword48
+	lea	dword49,[ebp-132]
+	add	dword49,dword47
+	push_arg	dword49,4
 	lea	dword50,[ebp-132]
-	add	dword50,dword48
 	push_arg	dword50,4
-	lea	dword51,[ebp-132]
-	push_arg	dword51,4
 	call	__rasterize_triangle_2i
 	restore_stack	12
 	pop_all
-	lea	dword52,[ebp-136]
-	inc	dword ptr [dword52]
+	lea	dword51,[ebp-136]
+	inc	dword ptr [dword51]
 	jmp	label0006
 label0007:
 	destroy_stack_frame

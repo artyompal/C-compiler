@@ -19,8 +19,9 @@ int x86_codegen_alloc_pseudoreg(x86_operand_type type)
         int res = _curr_func->func_pseudoregs_count[x86op_dword]++;
         _curr_func->func_pseudoregs_count[x86op_dword]++;
         return res;
-    } else
+    } else {
         return _curr_func->func_pseudoregs_count[x86_encode_register_type(type)]++;
+    }
 }
 
 
@@ -393,14 +394,13 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
 
         unit_push_binary_instruction(is_unsigned ? x86insn_int_mul : x86insn_int_imul, res, op2);
     } else if (IS_DIVISION_OP(expr->data.arithm.opcode)) {
-        bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);     // edx
-        unit_push_unary_instruction(is_unsigned ? x86insn_xor_edx_edx : x86insn_cdq, &tmp);
-
         if (!OP_IS_REGISTER(*op1)) {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
             unit_push_binary_instruction(x86insn_int_mov, res, op1);
         }
 
+        bincode_create_operand_and_alloc_pseudoreg(&tmp, res->op_type);     // edx
+        unit_push_unary_instruction(is_unsigned ? x86insn_xor_edx_edx : x86insn_cdq, &tmp);
         unit_push_binary_instruction(is_unsigned ? x86insn_int_div : x86insn_int_idiv, res, op2);
 
         if (expr->data.arithm.opcode == op_div_assign) {
@@ -437,6 +437,8 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
         } else {
             unit_push_binary_instruction(insn, op1, op2);
         }
+
+        // TODO: надо обработать модифицирующие операции в отдельной функции
     } else if (IS_SHIFT_OP(expr->data.arithm.opcode)) {
         if (op2->op_loc == x86loc_address) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op2->op_type);
