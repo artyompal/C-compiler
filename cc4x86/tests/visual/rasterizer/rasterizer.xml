@@ -2921,7 +2921,7 @@
               <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="src_color"/>
               <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="24"/>
             </operand_1>
-            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="-289"/>
+            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="255"/>
           </operand_2>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0003" invert_condition="yes">
@@ -2947,7 +2947,7 @@
           <operand_2 type="int" lvalue="no" complexity="3" code="shr">
             <operand_1 type="int" lvalue="no" complexity="2" code="and">
               <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="dst_color"/>
-              <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="-73984"/>
+              <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="65280"/>
             </operand_1>
             <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="8"/>
           </operand_2>
@@ -2956,7 +2956,7 @@
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="dst_blue"/>
           <operand_2 type="int" lvalue="no" complexity="2" code="and">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="dst_color"/>
-            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="-289"/>
+            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="255"/>
           </operand_2>
         </expression>
         <expression type="int" lvalue="no" complexity="4" code="assign">
@@ -2964,7 +2964,7 @@
           <operand_2 type="int" lvalue="no" complexity="3" code="shr">
             <operand_1 type="int" lvalue="no" complexity="2" code="and">
               <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="src_color"/>
-              <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="-73984"/>
+              <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="65280"/>
             </operand_1>
             <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="8"/>
           </operand_2>
@@ -2973,7 +2973,7 @@
           <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="blue"/>
           <operand_2 type="int" lvalue="no" complexity="2" code="and">
             <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="src_color"/>
-            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="-289"/>
+            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="255"/>
           </operand_2>
         </expression>
         <expression type="int" lvalue="no" complexity="6" code="assign">

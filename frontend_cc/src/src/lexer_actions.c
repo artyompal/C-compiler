@@ -47,7 +47,10 @@ static __int64 str_to_signed(const char *token, const char **endptr, int radix)
 
     while (*token >= '0' && *token <= '9' || *token >= 'A' && *token <= 'F'
         || *token >= 'a' && *token <= 'f') {
-            res = radix * res + *token - ((*token|0x20) >= 'a' ? 'a'-10 : '0');
+            int tok     = *token | 0x20;
+            int base    = (tok >= 'a' ? 'a'-10 : '0');
+
+            res = radix * res + tok - base;
             token++;
     }
 
@@ -61,7 +64,10 @@ static unsigned __int64 str_to_unsigned(const char *token, const char **endptr, 
 
     while (*token >= '0' && *token <= '9' || *token >= 'A' && *token <= 'F'
         || *token >= 'a' && *token <= 'f') {
-            res = radix * res + *token - ((*token|0x20) >= 'a' ? 'a'-10 : '0');
+            int tok     = *token | 0x20;
+            int base    = (tok >= 'a' ? 'a'-10 : '0');
+
+            res = radix * res + tok - base;
             token++;
     }
 
