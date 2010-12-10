@@ -1269,7 +1269,7 @@ label0000:
 	mov	[ebp-12],dword17
 	sar	dword ptr [ebp-12],24
 	mov	dword22,[ebp-12]
-	and	dword22,-289
+	and	dword22,255
 	mov	[ebp-40],dword22
 	cmp	dword ptr [ebp-40],0
 	je	label0003
@@ -1281,18 +1281,18 @@ label0000:
 	mov	dword31,[dword29]
 	mov	[ebp-28],dword31
 	mov	dword34,[ebp-28]
-	and	dword34,-73984
+	and	dword34,65280
 	sar	dword34,8
 	mov	[ebp-32],dword34
 	mov	dword39,[ebp-28]
-	and	dword39,-289
+	and	dword39,255
 	mov	[ebp-36],dword39
 	mov	dword43,[ebp-12]
-	and	dword43,-73984
+	and	dword43,65280
 	sar	dword43,8
 	mov	[ebp-20],dword43
 	mov	dword48,[ebp-12]
-	and	dword48,-289
+	and	dword48,255
 	mov	[ebp-24],dword48
 	fild	dword ptr [ebp-20]
 	fmul	dword ptr [ebp-44]

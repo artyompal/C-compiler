@@ -1944,7 +1944,7 @@ label0000:
 	lea	dword19,[ebp-12]
 	mov	dword20,24
 	sar	dword ptr [dword19],dword20
-	mov	dword21,-289
+	mov	dword21,255
 	mov	dword22,[dword19]
 	and	dword22,dword21
 	lea	dword23,[ebp-40]
@@ -1965,7 +1965,7 @@ label0000:
 	mov	dword31,[dword29]
 	mov	[dword30],dword31
 	lea	dword32,[ebp-28]
-	mov	dword33,-73984
+	mov	dword33,65280
 	mov	dword34,[dword32]
 	and	dword34,dword33
 	mov	dword35,8
@@ -1973,13 +1973,13 @@ label0000:
 	lea	dword36,[ebp-32]
 	mov	[dword36],dword34
 	lea	dword37,[ebp-28]
-	mov	dword38,-289
+	mov	dword38,255
 	mov	dword39,[dword37]
 	and	dword39,dword38
 	lea	dword40,[ebp-36]
 	mov	[dword40],dword39
 	lea	dword41,[ebp-12]
-	mov	dword42,-73984
+	mov	dword42,65280
 	mov	dword43,[dword41]
 	and	dword43,dword42
 	mov	dword44,8
@@ -1987,7 +1987,7 @@ label0000:
 	lea	dword45,[ebp-20]
 	mov	[dword45],dword43
 	lea	dword46,[ebp-12]
-	mov	dword47,-289
+	mov	dword47,255
 	mov	dword48,[dword46]
 	and	dword48,dword47
 	lea	dword49,[ebp-24]

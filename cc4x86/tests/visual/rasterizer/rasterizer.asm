@@ -1417,7 +1417,7 @@ label0004:
 	mov	edx,[ebp-64]
 	sar	edx,24
 	mov	eax,edx
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-40],eax
 	cmp	dword ptr [ebp-40],0
 	je	label0003
@@ -1427,18 +1427,18 @@ label0004:
 	fstp	dword ptr [ebp-44]
 	mov	ecx,[esi]
 	mov	eax,ecx
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-32],eax
 	mov	eax,ecx
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-36],eax
 	mov	eax,edx
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-20],eax
 	mov	eax,edx
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-24],eax
 	fild	dword ptr [ebp-20]
 	fmul	dword ptr [ebp-44]
@@ -1555,7 +1555,7 @@ label0006:
 	mov	[ebp-40],eax
 	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
 	je	label0005
@@ -1567,18 +1567,18 @@ label0006:
 	mov	ecx,[eax]
 	mov	[ebp-56],ecx
 	mov	eax,[ebp-56]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-60],eax
 	mov	eax,[ebp-56]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-64],eax
 	mov	eax,[ebp-40]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-48],eax
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-52],eax
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -1683,7 +1683,7 @@ label000c:
 	mov	[ebp-40],eax
 	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
 	je	label000b
@@ -1695,18 +1695,18 @@ label000c:
 	mov	ecx,[eax]
 	mov	[ebp-56],ecx
 	mov	eax,[ebp-56]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-60],eax
 	mov	eax,[ebp-56]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-64],eax
 	mov	eax,[ebp-40]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-48],eax
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-52],eax
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -1835,7 +1835,7 @@ label000e:
 	mov	[ebp-40],eax
 	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
 	je	label000d
@@ -1847,18 +1847,18 @@ label000e:
 	mov	ecx,[eax]
 	mov	[ebp-56],ecx
 	mov	eax,[ebp-56]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-60],eax
 	mov	eax,[ebp-56]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-64],eax
 	mov	eax,[ebp-40]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-48],eax
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-52],eax
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -1967,7 +1967,7 @@ label0014:
 	mov	[ebp-40],eax
 	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
 	je	label0013
@@ -1979,18 +1979,18 @@ label0014:
 	mov	ecx,[eax]
 	mov	[ebp-56],ecx
 	mov	eax,[ebp-56]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-60],eax
 	mov	eax,[ebp-56]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-64],eax
 	mov	eax,[ebp-40]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-48],eax
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-52],eax
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -2097,7 +2097,7 @@ label001a:
 	mov	[ebp-40],eax
 	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
 	je	label0019
@@ -2109,18 +2109,18 @@ label001a:
 	mov	ecx,[eax]
 	mov	[ebp-56],ecx
 	mov	eax,[ebp-56]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-60],eax
 	mov	eax,[ebp-56]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-64],eax
 	mov	eax,[ebp-40]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-48],eax
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-52],eax
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -2235,7 +2235,7 @@ label0020:
 	mov	[ebp-40],eax
 	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
 	je	label001f
@@ -2247,18 +2247,18 @@ label0020:
 	mov	ecx,[eax]
 	mov	[ebp-56],ecx
 	mov	eax,[ebp-56]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-60],eax
 	mov	eax,[ebp-56]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-64],eax
 	mov	eax,[ebp-40]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-48],eax
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-52],eax
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -2371,7 +2371,7 @@ label0026:
 	mov	[ebp-40],eax
 	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
 	je	label0025
@@ -2383,18 +2383,18 @@ label0026:
 	mov	ecx,[eax]
 	mov	[ebp-56],ecx
 	mov	eax,[ebp-56]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-60],eax
 	mov	eax,[ebp-56]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-64],eax
 	mov	eax,[ebp-40]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-48],eax
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-52],eax
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -2505,7 +2505,7 @@ label002c:
 	mov	[ebp-40],eax
 	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
 	je	label002b
@@ -2517,18 +2517,18 @@ label002c:
 	mov	ecx,[eax]
 	mov	[ebp-56],ecx
 	mov	eax,[ebp-56]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-60],eax
 	mov	eax,[ebp-56]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-64],eax
 	mov	eax,[ebp-40]
-	and	eax,-73984
+	and	eax,65280
 	sar	eax,8
 	mov	[ebp-48],eax
 	mov	eax,[ebp-40]
-	and	eax,-289
+	and	eax,255
 	mov	[ebp-52],eax
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]

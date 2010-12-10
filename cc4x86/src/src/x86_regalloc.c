@@ -114,6 +114,10 @@ static int _alloc_real_register_for_regvar(register_map *regmap, int pseudoreg)
 
 static void _reserve_real_register(x86_pseudoreg_info *pseudoregs_map, int pseudoreg, int real_reg)
 {
+    if (pseudoregs_map[pseudoreg].reg_status == register_reserved &&
+        pseudoregs_map[pseudoreg].reg_location == real_reg)
+            return;
+
     ASSERT(real_reg >= 0 && real_reg < X86_MAX_REG
         && pseudoregs_map[pseudoreg].reg_status == register_free);
 

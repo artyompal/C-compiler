@@ -1319,7 +1319,7 @@ label0004:
 	mov	dword102,[ebp-64]
 	sar	dword102,24
 	mov	dword22,dword102
-	and	dword22,-289
+	and	dword22,255
 	mov	[ebp-40],dword22
 	cmp	dword ptr [ebp-40],0
 	je	label0003
@@ -1329,18 +1329,18 @@ label0004:
 	fstp	dword ptr [ebp-44]
 	mov	dword103,[dword101]
 	mov	dword34,dword103
-	and	dword34,-73984
+	and	dword34,65280
 	sar	dword34,8
 	mov	[ebp-32],dword34
 	mov	dword39,dword103
-	and	dword39,-289
+	and	dword39,255
 	mov	[ebp-36],dword39
 	mov	dword43,dword102
-	and	dword43,-73984
+	and	dword43,65280
 	sar	dword43,8
 	mov	[ebp-20],dword43
 	mov	dword48,dword102
-	and	dword48,-289
+	and	dword48,255
 	mov	[ebp-24],dword48
 	fild	dword ptr [ebp-20]
 	fmul	dword ptr [ebp-44]
@@ -1442,7 +1442,7 @@ label0006:
 	mov	[ebp-40],dword42
 	sar	dword ptr [ebp-40],24
 	mov	dword47,[ebp-40]
-	and	dword47,-289
+	and	dword47,255
 	mov	[ebp-68],dword47
 	cmp	dword ptr [ebp-68],0
 	je	label0005
@@ -1454,18 +1454,18 @@ label0006:
 	mov	dword56,[dword54]
 	mov	[ebp-56],dword56
 	mov	dword59,[ebp-56]
-	and	dword59,-73984
+	and	dword59,65280
 	sar	dword59,8
 	mov	[ebp-60],dword59
 	mov	dword64,[ebp-56]
-	and	dword64,-289
+	and	dword64,255
 	mov	[ebp-64],dword64
 	mov	dword68,[ebp-40]
-	and	dword68,-73984
+	and	dword68,65280
 	sar	dword68,8
 	mov	[ebp-48],dword68
 	mov	dword73,[ebp-40]
-	and	dword73,-289
+	and	dword73,255
 	mov	[ebp-52],dword73
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -1564,7 +1564,7 @@ label000c:
 	mov	[ebp-40],dword149
 	sar	dword ptr [ebp-40],24
 	mov	dword154,[ebp-40]
-	and	dword154,-289
+	and	dword154,255
 	mov	[ebp-68],dword154
 	cmp	dword ptr [ebp-68],0
 	je	label000b
@@ -1576,18 +1576,18 @@ label000c:
 	mov	dword163,[dword161]
 	mov	[ebp-56],dword163
 	mov	dword166,[ebp-56]
-	and	dword166,-73984
+	and	dword166,65280
 	sar	dword166,8
 	mov	[ebp-60],dword166
 	mov	dword171,[ebp-56]
-	and	dword171,-289
+	and	dword171,255
 	mov	[ebp-64],dword171
 	mov	dword175,[ebp-40]
-	and	dword175,-73984
+	and	dword175,65280
 	sar	dword175,8
 	mov	[ebp-48],dword175
 	mov	dword180,[ebp-40]
-	and	dword180,-289
+	and	dword180,255
 	mov	[ebp-52],dword180
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -1701,7 +1701,7 @@ label000e:
 	mov	[ebp-40],dword94
 	sar	dword ptr [ebp-40],24
 	mov	dword99,[ebp-40]
-	and	dword99,-289
+	and	dword99,255
 	mov	[ebp-68],dword99
 	cmp	dword ptr [ebp-68],0
 	je	label000d
@@ -1713,18 +1713,18 @@ label000e:
 	mov	dword108,[dword106]
 	mov	[ebp-56],dword108
 	mov	dword111,[ebp-56]
-	and	dword111,-73984
+	and	dword111,65280
 	sar	dword111,8
 	mov	[ebp-60],dword111
 	mov	dword116,[ebp-56]
-	and	dword116,-289
+	and	dword116,255
 	mov	[ebp-64],dword116
 	mov	dword120,[ebp-40]
-	and	dword120,-73984
+	and	dword120,65280
 	sar	dword120,8
 	mov	[ebp-48],dword120
 	mov	dword125,[ebp-40]
-	and	dword125,-289
+	and	dword125,255
 	mov	[ebp-52],dword125
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -1827,7 +1827,7 @@ label0014:
 	mov	[ebp-40],dword201
 	sar	dword ptr [ebp-40],24
 	mov	dword206,[ebp-40]
-	and	dword206,-289
+	and	dword206,255
 	mov	[ebp-68],dword206
 	cmp	dword ptr [ebp-68],0
 	je	label0013
@@ -1839,18 +1839,18 @@ label0014:
 	mov	dword215,[dword213]
 	mov	[ebp-56],dword215
 	mov	dword218,[ebp-56]
-	and	dword218,-73984
+	and	dword218,65280
 	sar	dword218,8
 	mov	[ebp-60],dword218
 	mov	dword223,[ebp-56]
-	and	dword223,-289
+	and	dword223,255
 	mov	[ebp-64],dword223
 	mov	dword227,[ebp-40]
-	and	dword227,-73984
+	and	dword227,65280
 	sar	dword227,8
 	mov	[ebp-48],dword227
 	mov	dword232,[ebp-40]
-	and	dword232,-289
+	and	dword232,255
 	mov	[ebp-52],dword232
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -1951,7 +1951,7 @@ label001a:
 	mov	[ebp-40],dword308
 	sar	dword ptr [ebp-40],24
 	mov	dword313,[ebp-40]
-	and	dword313,-289
+	and	dword313,255
 	mov	[ebp-68],dword313
 	cmp	dword ptr [ebp-68],0
 	je	label0019
@@ -1963,18 +1963,18 @@ label001a:
 	mov	dword322,[dword320]
 	mov	[ebp-56],dword322
 	mov	dword325,[ebp-56]
-	and	dword325,-73984
+	and	dword325,65280
 	sar	dword325,8
 	mov	[ebp-60],dword325
 	mov	dword330,[ebp-56]
-	and	dword330,-289
+	and	dword330,255
 	mov	[ebp-64],dword330
 	mov	dword334,[ebp-40]
-	and	dword334,-73984
+	and	dword334,65280
 	sar	dword334,8
 	mov	[ebp-48],dword334
 	mov	dword339,[ebp-40]
-	and	dword339,-289
+	and	dword339,255
 	mov	[ebp-52],dword339
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -2083,7 +2083,7 @@ label0020:
 	mov	[ebp-40],dword413
 	sar	dword ptr [ebp-40],24
 	mov	dword418,[ebp-40]
-	and	dword418,-289
+	and	dword418,255
 	mov	[ebp-68],dword418
 	cmp	dword ptr [ebp-68],0
 	je	label001f
@@ -2095,18 +2095,18 @@ label0020:
 	mov	dword427,[dword425]
 	mov	[ebp-56],dword427
 	mov	dword430,[ebp-56]
-	and	dword430,-73984
+	and	dword430,65280
 	sar	dword430,8
 	mov	[ebp-60],dword430
 	mov	dword435,[ebp-56]
-	and	dword435,-289
+	and	dword435,255
 	mov	[ebp-64],dword435
 	mov	dword439,[ebp-40]
-	and	dword439,-73984
+	and	dword439,65280
 	sar	dword439,8
 	mov	[ebp-48],dword439
 	mov	dword444,[ebp-40]
-	and	dword444,-289
+	and	dword444,255
 	mov	[ebp-52],dword444
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -2213,7 +2213,7 @@ label0026:
 	mov	[ebp-40],dword518
 	sar	dword ptr [ebp-40],24
 	mov	dword523,[ebp-40]
-	and	dword523,-289
+	and	dword523,255
 	mov	[ebp-68],dword523
 	cmp	dword ptr [ebp-68],0
 	je	label0025
@@ -2225,18 +2225,18 @@ label0026:
 	mov	dword532,[dword530]
 	mov	[ebp-56],dword532
 	mov	dword535,[ebp-56]
-	and	dword535,-73984
+	and	dword535,65280
 	sar	dword535,8
 	mov	[ebp-60],dword535
 	mov	dword540,[ebp-56]
-	and	dword540,-289
+	and	dword540,255
 	mov	[ebp-64],dword540
 	mov	dword544,[ebp-40]
-	and	dword544,-73984
+	and	dword544,65280
 	sar	dword544,8
 	mov	[ebp-48],dword544
 	mov	dword549,[ebp-40]
-	and	dword549,-289
+	and	dword549,255
 	mov	[ebp-52],dword549
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -2341,7 +2341,7 @@ label002c:
 	mov	[ebp-40],dword623
 	sar	dword ptr [ebp-40],24
 	mov	dword628,[ebp-40]
-	and	dword628,-289
+	and	dword628,255
 	mov	[ebp-68],dword628
 	cmp	dword ptr [ebp-68],0
 	je	label002b
@@ -2353,18 +2353,18 @@ label002c:
 	mov	dword637,[dword635]
 	mov	[ebp-56],dword637
 	mov	dword640,[ebp-56]
-	and	dword640,-73984
+	and	dword640,65280
 	sar	dword640,8
 	mov	[ebp-60],dword640
 	mov	dword645,[ebp-56]
-	and	dword645,-289
+	and	dword645,255
 	mov	[ebp-64],dword645
 	mov	dword649,[ebp-40]
-	and	dword649,-73984
+	and	dword649,65280
 	sar	dword649,8
 	mov	[ebp-48],dword649
 	mov	dword654,[ebp-40]
-	and	dword654,-289
+	and	dword654,255
 	mov	[ebp-52],dword654
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
@@ -2566,7 +2566,7 @@ label0046:
 	mov	[ebp-244],dword1313
 	sar	dword ptr [ebp-244],24
 	mov	dword1318,[ebp-244]
-	and	dword1318,-289
+	and	dword1318,255
 	mov	[ebp-272],dword1318
 	cmp	dword ptr [ebp-272],0
 	je	label0045
@@ -2578,18 +2578,18 @@ label0046:
 	mov	dword1327,[dword1325]
 	mov	[ebp-260],dword1327
 	mov	dword1330,[ebp-260]
-	and	dword1330,-73984
+	and	dword1330,65280
 	sar	dword1330,8
 	mov	[ebp-264],dword1330
 	mov	dword1335,[ebp-260]
-	and	dword1335,-289
+	and	dword1335,255
 	mov	[ebp-268],dword1335
 	mov	dword1339,[ebp-244]
-	and	dword1339,-73984
+	and	dword1339,65280
 	sar	dword1339,8
 	mov	[ebp-252],dword1339
 	mov	dword1344,[ebp-244]
-	and	dword1344,-289
+	and	dword1344,255
 	mov	[ebp-256],dword1344
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
@@ -2696,7 +2696,7 @@ label004c:
 	mov	[ebp-244],dword1420
 	sar	dword ptr [ebp-244],24
 	mov	dword1425,[ebp-244]
-	and	dword1425,-289
+	and	dword1425,255
 	mov	[ebp-272],dword1425
 	cmp	dword ptr [ebp-272],0
 	je	label004b
@@ -2708,18 +2708,18 @@ label004c:
 	mov	dword1434,[dword1432]
 	mov	[ebp-260],dword1434
 	mov	dword1437,[ebp-260]
-	and	dword1437,-73984
+	and	dword1437,65280
 	sar	dword1437,8
 	mov	[ebp-264],dword1437
 	mov	dword1442,[ebp-260]
-	and	dword1442,-289
+	and	dword1442,255
 	mov	[ebp-268],dword1442
 	mov	dword1446,[ebp-244]
-	and	dword1446,-73984
+	and	dword1446,65280
 	sar	dword1446,8
 	mov	[ebp-252],dword1446
 	mov	dword1451,[ebp-244]
-	and	dword1451,-289
+	and	dword1451,255
 	mov	[ebp-256],dword1451
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
@@ -2823,7 +2823,7 @@ label0052:
 	mov	[ebp-244],dword1527
 	sar	dword ptr [ebp-244],24
 	mov	dword1532,[ebp-244]
-	and	dword1532,-289
+	and	dword1532,255
 	mov	[ebp-272],dword1532
 	cmp	dword ptr [ebp-272],0
 	je	label0051
@@ -2835,18 +2835,18 @@ label0052:
 	mov	dword1541,[dword1539]
 	mov	[ebp-260],dword1541
 	mov	dword1544,[ebp-260]
-	and	dword1544,-73984
+	and	dword1544,65280
 	sar	dword1544,8
 	mov	[ebp-264],dword1544
 	mov	dword1549,[ebp-260]
-	and	dword1549,-289
+	and	dword1549,255
 	mov	[ebp-268],dword1549
 	mov	dword1553,[ebp-244]
-	and	dword1553,-73984
+	and	dword1553,65280
 	sar	dword1553,8
 	mov	[ebp-252],dword1553
 	mov	dword1558,[ebp-244]
-	and	dword1558,-289
+	and	dword1558,255
 	mov	[ebp-256],dword1558
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
@@ -2959,7 +2959,7 @@ label0058:
 	mov	[ebp-244],dword1632
 	sar	dword ptr [ebp-244],24
 	mov	dword1637,[ebp-244]
-	and	dword1637,-289
+	and	dword1637,255
 	mov	[ebp-272],dword1637
 	cmp	dword ptr [ebp-272],0
 	je	label0057
@@ -2971,18 +2971,18 @@ label0058:
 	mov	dword1646,[dword1644]
 	mov	[ebp-260],dword1646
 	mov	dword1649,[ebp-260]
-	and	dword1649,-73984
+	and	dword1649,65280
 	sar	dword1649,8
 	mov	[ebp-264],dword1649
 	mov	dword1654,[ebp-260]
-	and	dword1654,-289
+	and	dword1654,255
 	mov	[ebp-268],dword1654
 	mov	dword1658,[ebp-244]
-	and	dword1658,-73984
+	and	dword1658,65280
 	sar	dword1658,8
 	mov	[ebp-252],dword1658
 	mov	dword1663,[ebp-244]
-	and	dword1663,-289
+	and	dword1663,255
 	mov	[ebp-256],dword1663
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
@@ -3093,7 +3093,7 @@ label005e:
 	mov	[ebp-244],dword1737
 	sar	dword ptr [ebp-244],24
 	mov	dword1742,[ebp-244]
-	and	dword1742,-289
+	and	dword1742,255
 	mov	[ebp-272],dword1742
 	cmp	dword ptr [ebp-272],0
 	je	label005d
@@ -3105,18 +3105,18 @@ label005e:
 	mov	dword1751,[dword1749]
 	mov	[ebp-260],dword1751
 	mov	dword1754,[ebp-260]
-	and	dword1754,-73984
+	and	dword1754,65280
 	sar	dword1754,8
 	mov	[ebp-264],dword1754
 	mov	dword1759,[ebp-260]
-	and	dword1759,-289
+	and	dword1759,255
 	mov	[ebp-268],dword1759
 	mov	dword1763,[ebp-244]
-	and	dword1763,-73984
+	and	dword1763,65280
 	sar	dword1763,8
 	mov	[ebp-252],dword1763
 	mov	dword1768,[ebp-244]
-	and	dword1768,-289
+	and	dword1768,255
 	mov	[ebp-256],dword1768
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
@@ -3224,7 +3224,7 @@ label0064:
 	mov	[ebp-244],dword1842
 	sar	dword ptr [ebp-244],24
 	mov	dword1847,[ebp-244]
-	and	dword1847,-289
+	and	dword1847,255
 	mov	[ebp-272],dword1847
 	cmp	dword ptr [ebp-272],0
 	je	label0063
@@ -3236,18 +3236,18 @@ label0064:
 	mov	dword1856,[dword1854]
 	mov	[ebp-260],dword1856
 	mov	dword1859,[ebp-260]
-	and	dword1859,-73984
+	and	dword1859,65280
 	sar	dword1859,8
 	mov	[ebp-264],dword1859
 	mov	dword1864,[ebp-260]
-	and	dword1864,-289
+	and	dword1864,255
 	mov	[ebp-268],dword1864
 	mov	dword1868,[ebp-244]
-	and	dword1868,-73984
+	and	dword1868,65280
 	sar	dword1868,8
 	mov	[ebp-252],dword1868
 	mov	dword1873,[ebp-244]
-	and	dword1873,-289
+	and	dword1873,255
 	mov	[ebp-256],dword1873
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
@@ -3539,7 +3539,7 @@ label0011:
 	mov	[ebp-116],dword543
 	sar	dword ptr [ebp-116],24
 	mov	dword548,[ebp-116]
-	and	dword548,-289
+	and	dword548,255
 	mov	[ebp-144],dword548
 	cmp	dword ptr [ebp-144],0
 	je	label0010
@@ -3551,18 +3551,18 @@ label0011:
 	mov	dword557,[dword555]
 	mov	[ebp-132],dword557
 	mov	dword560,[ebp-132]
-	and	dword560,-73984
+	and	dword560,65280
 	sar	dword560,8
 	mov	[ebp-136],dword560
 	mov	dword565,[ebp-132]
-	and	dword565,-289
+	and	dword565,255
 	mov	[ebp-140],dword565
 	mov	dword569,[ebp-116]
-	and	dword569,-73984
+	and	dword569,65280
 	sar	dword569,8
 	mov	[ebp-124],dword569
 	mov	dword574,[ebp-116]
-	and	dword574,-289
+	and	dword574,255
 	mov	[ebp-128],dword574
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
@@ -3664,7 +3664,7 @@ label0017:
 	mov	[ebp-116],dword650
 	sar	dword ptr [ebp-116],24
 	mov	dword655,[ebp-116]
-	and	dword655,-289
+	and	dword655,255
 	mov	[ebp-144],dword655
 	cmp	dword ptr [ebp-144],0
 	je	label0016
@@ -3676,18 +3676,18 @@ label0017:
 	mov	dword664,[dword662]
 	mov	[ebp-132],dword664
 	mov	dword667,[ebp-132]
-	and	dword667,-73984
+	and	dword667,65280
 	sar	dword667,8
 	mov	[ebp-136],dword667
 	mov	dword672,[ebp-132]
-	and	dword672,-289
+	and	dword672,255
 	mov	[ebp-140],dword672
 	mov	dword676,[ebp-116]
-	and	dword676,-73984
+	and	dword676,65280
 	sar	dword676,8
 	mov	[ebp-124],dword676
 	mov	dword681,[ebp-116]
-	and	dword681,-289
+	and	dword681,255
 	mov	[ebp-128],dword681
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
@@ -3916,7 +3916,7 @@ label0020:
 	mov	[ebp-116],dword784
 	sar	dword ptr [ebp-116],24
 	mov	dword789,[ebp-116]
-	and	dword789,-289
+	and	dword789,255
 	mov	[ebp-144],dword789
 	cmp	dword ptr [ebp-144],0
 	je	label001f
@@ -3928,18 +3928,18 @@ label0020:
 	mov	dword798,[dword796]
 	mov	[ebp-132],dword798
 	mov	dword801,[ebp-132]
-	and	dword801,-73984
+	and	dword801,65280
 	sar	dword801,8
 	mov	[ebp-136],dword801
 	mov	dword806,[ebp-132]
-	and	dword806,-289
+	and	dword806,255
 	mov	[ebp-140],dword806
 	mov	dword810,[ebp-116]
-	and	dword810,-73984
+	and	dword810,65280
 	sar	dword810,8
 	mov	[ebp-124],dword810
 	mov	dword815,[ebp-116]
-	and	dword815,-289
+	and	dword815,255
 	mov	[ebp-128],dword815
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
@@ -4041,7 +4041,7 @@ label0026:
 	mov	[ebp-116],dword891
 	sar	dword ptr [ebp-116],24
 	mov	dword896,[ebp-116]
-	and	dword896,-289
+	and	dword896,255
 	mov	[ebp-144],dword896
 	cmp	dword ptr [ebp-144],0
 	je	label0025
@@ -4053,18 +4053,18 @@ label0026:
 	mov	dword905,[dword903]
 	mov	[ebp-132],dword905
 	mov	dword908,[ebp-132]
-	and	dword908,-73984
+	and	dword908,65280
 	sar	dword908,8
 	mov	[ebp-136],dword908
 	mov	dword913,[ebp-132]
-	and	dword913,-289
+	and	dword913,255
 	mov	[ebp-140],dword913
 	mov	dword917,[ebp-116]
-	and	dword917,-73984
+	and	dword917,65280
 	sar	dword917,8
 	mov	[ebp-124],dword917
 	mov	dword922,[ebp-116]
-	and	dword922,-289
+	and	dword922,255
 	mov	[ebp-128],dword922
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
@@ -4351,7 +4351,7 @@ label002f:
 	mov	[ebp-116],dword1025
 	sar	dword ptr [ebp-116],24
 	mov	dword1030,[ebp-116]
-	and	dword1030,-289
+	and	dword1030,255
 	mov	[ebp-144],dword1030
 	cmp	dword ptr [ebp-144],0
 	je	label002e
@@ -4363,18 +4363,18 @@ label002f:
 	mov	dword1039,[dword1037]
 	mov	[ebp-132],dword1039
 	mov	dword1042,[ebp-132]
-	and	dword1042,-73984
+	and	dword1042,65280
 	sar	dword1042,8
 	mov	[ebp-136],dword1042
 	mov	dword1047,[ebp-132]
-	and	dword1047,-289
+	and	dword1047,255
 	mov	[ebp-140],dword1047
 	mov	dword1051,[ebp-116]
-	and	dword1051,-73984
+	and	dword1051,65280
 	sar	dword1051,8
 	mov	[ebp-124],dword1051
 	mov	dword1056,[ebp-116]
-	and	dword1056,-289
+	and	dword1056,255
 	mov	[ebp-128],dword1056
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
@@ -4476,7 +4476,7 @@ label0035:
 	mov	[ebp-116],dword1132
 	sar	dword ptr [ebp-116],24
 	mov	dword1137,[ebp-116]
-	and	dword1137,-289
+	and	dword1137,255
 	mov	[ebp-144],dword1137
 	cmp	dword ptr [ebp-144],0
 	je	label0034
@@ -4488,18 +4488,18 @@ label0035:
 	mov	dword1146,[dword1144]
 	mov	[ebp-132],dword1146
 	mov	dword1149,[ebp-132]
-	and	dword1149,-73984
+	and	dword1149,65280
 	sar	dword1149,8
 	mov	[ebp-136],dword1149
 	mov	dword1154,[ebp-132]
-	and	dword1154,-289
+	and	dword1154,255
 	mov	[ebp-140],dword1154
 	mov	dword1158,[ebp-116]
-	and	dword1158,-73984
+	and	dword1158,65280
 	sar	dword1158,8
 	mov	[ebp-124],dword1158
 	mov	dword1163,[ebp-116]
-	and	dword1163,-289
+	and	dword1163,255
 	mov	[ebp-128],dword1163
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
@@ -11157,7 +11157,7 @@ label004e:
 	mov	[ebp-392],dword1365
 	sar	dword ptr [ebp-392],24
 	mov	dword1370,[ebp-392]
-	and	dword1370,-289
+	and	dword1370,255
 	mov	[ebp-420],dword1370
 	cmp	dword ptr [ebp-420],0
 	je	label004d
@@ -11169,18 +11169,18 @@ label004e:
 	mov	dword1379,[dword1377]
 	mov	[ebp-408],dword1379
 	mov	dword1382,[ebp-408]
-	and	dword1382,-73984
+	and	dword1382,65280
 	sar	dword1382,8
 	mov	[ebp-412],dword1382
 	mov	dword1387,[ebp-408]
-	and	dword1387,-289
+	and	dword1387,255
 	mov	[ebp-416],dword1387
 	mov	dword1391,[ebp-392]
-	and	dword1391,-73984
+	and	dword1391,65280
 	sar	dword1391,8
 	mov	[ebp-400],dword1391
 	mov	dword1396,[ebp-392]
-	and	dword1396,-289
+	and	dword1396,255
 	mov	[ebp-404],dword1396
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
@@ -11287,7 +11287,7 @@ label0054:
 	mov	[ebp-392],dword1472
 	sar	dword ptr [ebp-392],24
 	mov	dword1477,[ebp-392]
-	and	dword1477,-289
+	and	dword1477,255
 	mov	[ebp-420],dword1477
 	cmp	dword ptr [ebp-420],0
 	je	label0053
@@ -11299,18 +11299,18 @@ label0054:
 	mov	dword1486,[dword1484]
 	mov	[ebp-408],dword1486
 	mov	dword1489,[ebp-408]
-	and	dword1489,-73984
+	and	dword1489,65280
 	sar	dword1489,8
 	mov	[ebp-412],dword1489
 	mov	dword1494,[ebp-408]
-	and	dword1494,-289
+	and	dword1494,255
 	mov	[ebp-416],dword1494
 	mov	dword1498,[ebp-392]
-	and	dword1498,-73984
+	and	dword1498,65280
 	sar	dword1498,8
 	mov	[ebp-400],dword1498
 	mov	dword1503,[ebp-392]
-	and	dword1503,-289
+	and	dword1503,255
 	mov	[ebp-404],dword1503
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
@@ -11414,7 +11414,7 @@ label005a:
 	mov	[ebp-392],dword1579
 	sar	dword ptr [ebp-392],24
 	mov	dword1584,[ebp-392]
-	and	dword1584,-289
+	and	dword1584,255
 	mov	[ebp-420],dword1584
 	cmp	dword ptr [ebp-420],0
 	je	label0059
@@ -11426,18 +11426,18 @@ label005a:
 	mov	dword1593,[dword1591]
 	mov	[ebp-408],dword1593
 	mov	dword1596,[ebp-408]
-	and	dword1596,-73984
+	and	dword1596,65280
 	sar	dword1596,8
 	mov	[ebp-412],dword1596
 	mov	dword1601,[ebp-408]
-	and	dword1601,-289
+	and	dword1601,255
 	mov	[ebp-416],dword1601
 	mov	dword1605,[ebp-392]
-	and	dword1605,-73984
+	and	dword1605,65280
 	sar	dword1605,8
 	mov	[ebp-400],dword1605
 	mov	dword1610,[ebp-392]
-	and	dword1610,-289
+	and	dword1610,255
 	mov	[ebp-404],dword1610
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
@@ -11550,7 +11550,7 @@ label0060:
 	mov	[ebp-392],dword1684
 	sar	dword ptr [ebp-392],24
 	mov	dword1689,[ebp-392]
-	and	dword1689,-289
+	and	dword1689,255
 	mov	[ebp-420],dword1689
 	cmp	dword ptr [ebp-420],0
 	je	label005f
@@ -11562,18 +11562,18 @@ label0060:
 	mov	dword1698,[dword1696]
 	mov	[ebp-408],dword1698
 	mov	dword1701,[ebp-408]
-	and	dword1701,-73984
+	and	dword1701,65280
 	sar	dword1701,8
 	mov	[ebp-412],dword1701
 	mov	dword1706,[ebp-408]
-	and	dword1706,-289
+	and	dword1706,255
 	mov	[ebp-416],dword1706
 	mov	dword1710,[ebp-392]
-	and	dword1710,-73984
+	and	dword1710,65280
 	sar	dword1710,8
 	mov	[ebp-400],dword1710
 	mov	dword1715,[ebp-392]
-	and	dword1715,-289
+	and	dword1715,255
 	mov	[ebp-404],dword1715
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
@@ -11684,7 +11684,7 @@ label0066:
 	mov	[ebp-392],dword1789
 	sar	dword ptr [ebp-392],24
 	mov	dword1794,[ebp-392]
-	and	dword1794,-289
+	and	dword1794,255
 	mov	[ebp-420],dword1794
 	cmp	dword ptr [ebp-420],0
 	je	label0065
@@ -11696,18 +11696,18 @@ label0066:
 	mov	dword1803,[dword1801]
 	mov	[ebp-408],dword1803
 	mov	dword1806,[ebp-408]
-	and	dword1806,-73984
+	and	dword1806,65280
 	sar	dword1806,8
 	mov	[ebp-412],dword1806
 	mov	dword1811,[ebp-408]
-	and	dword1811,-289
+	and	dword1811,255
 	mov	[ebp-416],dword1811
 	mov	dword1815,[ebp-392]
-	and	dword1815,-73984
+	and	dword1815,65280
 	sar	dword1815,8
 	mov	[ebp-400],dword1815
 	mov	dword1820,[ebp-392]
-	and	dword1820,-289
+	and	dword1820,255
 	mov	[ebp-404],dword1820
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
@@ -11815,7 +11815,7 @@ label006c:
 	mov	[ebp-392],dword1894
 	sar	dword ptr [ebp-392],24
 	mov	dword1899,[ebp-392]
-	and	dword1899,-289
+	and	dword1899,255
 	mov	[ebp-420],dword1899
 	cmp	dword ptr [ebp-420],0
 	je	label006b
@@ -11827,18 +11827,18 @@ label006c:
 	mov	dword1908,[dword1906]
 	mov	[ebp-408],dword1908
 	mov	dword1911,[ebp-408]
-	and	dword1911,-73984
+	and	dword1911,65280
 	sar	dword1911,8
 	mov	[ebp-412],dword1911
 	mov	dword1916,[ebp-408]
-	and	dword1916,-289
+	and	dword1916,255
 	mov	[ebp-416],dword1916
 	mov	dword1920,[ebp-392]
-	and	dword1920,-73984
+	and	dword1920,65280
 	sar	dword1920,8
 	mov	[ebp-400],dword1920
 	mov	dword1925,[ebp-392]
-	and	dword1925,-289
+	and	dword1925,255
 	mov	[ebp-404],dword1925
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
@@ -12129,7 +12129,7 @@ label0019:
 	mov	[ebp-264],dword595
 	sar	dword ptr [ebp-264],24
 	mov	dword600,[ebp-264]
-	and	dword600,-289
+	and	dword600,255
 	mov	[ebp-292],dword600
 	cmp	dword ptr [ebp-292],0
 	je	label0018
@@ -12141,18 +12141,18 @@ label0019:
 	mov	dword609,[dword607]
 	mov	[ebp-280],dword609
 	mov	dword612,[ebp-280]
-	and	dword612,-73984
+	and	dword612,65280
 	sar	dword612,8
 	mov	[ebp-284],dword612
 	mov	dword617,[ebp-280]
-	and	dword617,-289
+	and	dword617,255
 	mov	[ebp-288],dword617
 	mov	dword621,[ebp-264]
-	and	dword621,-73984
+	and	dword621,65280
 	sar	dword621,8
 	mov	[ebp-272],dword621
 	mov	dword626,[ebp-264]
-	and	dword626,-289
+	and	dword626,255
 	mov	[ebp-276],dword626
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
@@ -12254,7 +12254,7 @@ label001f:
 	mov	[ebp-264],dword702
 	sar	dword ptr [ebp-264],24
 	mov	dword707,[ebp-264]
-	and	dword707,-289
+	and	dword707,255
 	mov	[ebp-292],dword707
 	cmp	dword ptr [ebp-292],0
 	je	label001e
@@ -12266,18 +12266,18 @@ label001f:
 	mov	dword716,[dword714]
 	mov	[ebp-280],dword716
 	mov	dword719,[ebp-280]
-	and	dword719,-73984
+	and	dword719,65280
 	sar	dword719,8
 	mov	[ebp-284],dword719
 	mov	dword724,[ebp-280]
-	and	dword724,-289
+	and	dword724,255
 	mov	[ebp-288],dword724
 	mov	dword728,[ebp-264]
-	and	dword728,-73984
+	and	dword728,65280
 	sar	dword728,8
 	mov	[ebp-272],dword728
 	mov	dword733,[ebp-264]
-	and	dword733,-289
+	and	dword733,255
 	mov	[ebp-276],dword733
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
@@ -12506,7 +12506,7 @@ label0028:
 	mov	[ebp-264],dword836
 	sar	dword ptr [ebp-264],24
 	mov	dword841,[ebp-264]
-	and	dword841,-289
+	and	dword841,255
 	mov	[ebp-292],dword841
 	cmp	dword ptr [ebp-292],0
 	je	label0027
@@ -12518,18 +12518,18 @@ label0028:
 	mov	dword850,[dword848]
 	mov	[ebp-280],dword850
 	mov	dword853,[ebp-280]
-	and	dword853,-73984
+	and	dword853,65280
 	sar	dword853,8
 	mov	[ebp-284],dword853
 	mov	dword858,[ebp-280]
-	and	dword858,-289
+	and	dword858,255
 	mov	[ebp-288],dword858
 	mov	dword862,[ebp-264]
-	and	dword862,-73984
+	and	dword862,65280
 	sar	dword862,8
 	mov	[ebp-272],dword862
 	mov	dword867,[ebp-264]
-	and	dword867,-289
+	and	dword867,255
 	mov	[ebp-276],dword867
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
@@ -12631,7 +12631,7 @@ label002e:
 	mov	[ebp-264],dword943
 	sar	dword ptr [ebp-264],24
 	mov	dword948,[ebp-264]
-	and	dword948,-289
+	and	dword948,255
 	mov	[ebp-292],dword948
 	cmp	dword ptr [ebp-292],0
 	je	label002d
@@ -12643,18 +12643,18 @@ label002e:
 	mov	dword957,[dword955]
 	mov	[ebp-280],dword957
 	mov	dword960,[ebp-280]
-	and	dword960,-73984
+	and	dword960,65280
 	sar	dword960,8
 	mov	[ebp-284],dword960
 	mov	dword965,[ebp-280]
-	and	dword965,-289
+	and	dword965,255
 	mov	[ebp-288],dword965
 	mov	dword969,[ebp-264]
-	and	dword969,-73984
+	and	dword969,65280
 	sar	dword969,8
 	mov	[ebp-272],dword969
 	mov	dword974,[ebp-264]
-	and	dword974,-289
+	and	dword974,255
 	mov	[ebp-276],dword974
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
@@ -12941,7 +12941,7 @@ label0037:
 	mov	[ebp-264],dword1077
 	sar	dword ptr [ebp-264],24
 	mov	dword1082,[ebp-264]
-	and	dword1082,-289
+	and	dword1082,255
 	mov	[ebp-292],dword1082
 	cmp	dword ptr [ebp-292],0
 	je	label0036
@@ -12953,18 +12953,18 @@ label0037:
 	mov	dword1091,[dword1089]
 	mov	[ebp-280],dword1091
 	mov	dword1094,[ebp-280]
-	and	dword1094,-73984
+	and	dword1094,65280
 	sar	dword1094,8
 	mov	[ebp-284],dword1094
 	mov	dword1099,[ebp-280]
-	and	dword1099,-289
+	and	dword1099,255
 	mov	[ebp-288],dword1099
 	mov	dword1103,[ebp-264]
-	and	dword1103,-73984
+	and	dword1103,65280
 	sar	dword1103,8
 	mov	[ebp-272],dword1103
 	mov	dword1108,[ebp-264]
-	and	dword1108,-289
+	and	dword1108,255
 	mov	[ebp-276],dword1108
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
@@ -13066,7 +13066,7 @@ label003d:
 	mov	[ebp-264],dword1184
 	sar	dword ptr [ebp-264],24
 	mov	dword1189,[ebp-264]
-	and	dword1189,-289
+	and	dword1189,255
 	mov	[ebp-292],dword1189
 	cmp	dword ptr [ebp-292],0
 	je	label003c
@@ -13078,18 +13078,18 @@ label003d:
 	mov	dword1198,[dword1196]
 	mov	[ebp-280],dword1198
 	mov	dword1201,[ebp-280]
-	and	dword1201,-73984
+	and	dword1201,65280
 	sar	dword1201,8
 	mov	[ebp-284],dword1201
 	mov	dword1206,[ebp-280]
-	and	dword1206,-289
+	and	dword1206,255
 	mov	[ebp-288],dword1206
 	mov	dword1210,[ebp-264]
-	and	dword1210,-73984
+	and	dword1210,65280
 	sar	dword1210,8
 	mov	[ebp-272],dword1210
 	mov	dword1215,[ebp-264]
-	and	dword1215,-289
+	and	dword1215,255
 	mov	[ebp-276],dword1215
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
@@ -16893,7 +16893,7 @@ label004e:
 	mov	[ebp-592],dword1403
 	sar	dword ptr [ebp-592],24
 	mov	dword1408,[ebp-592]
-	and	dword1408,-289
+	and	dword1408,255
 	mov	[ebp-620],dword1408
 	cmp	dword ptr [ebp-620],0
 	je	label004d
@@ -16905,18 +16905,18 @@ label004e:
 	mov	dword1417,[dword1415]
 	mov	[ebp-608],dword1417
 	mov	dword1420,[ebp-608]
-	and	dword1420,-73984
+	and	dword1420,65280
 	sar	dword1420,8
 	mov	[ebp-612],dword1420
 	mov	dword1425,[ebp-608]
-	and	dword1425,-289
+	and	dword1425,255
 	mov	[ebp-616],dword1425
 	mov	dword1429,[ebp-592]
-	and	dword1429,-73984
+	and	dword1429,65280
 	sar	dword1429,8
 	mov	[ebp-600],dword1429
 	mov	dword1434,[ebp-592]
-	and	dword1434,-289
+	and	dword1434,255
 	mov	[ebp-604],dword1434
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
@@ -17023,7 +17023,7 @@ label0054:
 	mov	[ebp-592],dword1510
 	sar	dword ptr [ebp-592],24
 	mov	dword1515,[ebp-592]
-	and	dword1515,-289
+	and	dword1515,255
 	mov	[ebp-620],dword1515
 	cmp	dword ptr [ebp-620],0
 	je	label0053
@@ -17035,18 +17035,18 @@ label0054:
 	mov	dword1524,[dword1522]
 	mov	[ebp-608],dword1524
 	mov	dword1527,[ebp-608]
-	and	dword1527,-73984
+	and	dword1527,65280
 	sar	dword1527,8
 	mov	[ebp-612],dword1527
 	mov	dword1532,[ebp-608]
-	and	dword1532,-289
+	and	dword1532,255
 	mov	[ebp-616],dword1532
 	mov	dword1536,[ebp-592]
-	and	dword1536,-73984
+	and	dword1536,65280
 	sar	dword1536,8
 	mov	[ebp-600],dword1536
 	mov	dword1541,[ebp-592]
-	and	dword1541,-289
+	and	dword1541,255
 	mov	[ebp-604],dword1541
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
@@ -17150,7 +17150,7 @@ label005a:
 	mov	[ebp-592],dword1617
 	sar	dword ptr [ebp-592],24
 	mov	dword1622,[ebp-592]
-	and	dword1622,-289
+	and	dword1622,255
 	mov	[ebp-620],dword1622
 	cmp	dword ptr [ebp-620],0
 	je	label0059
@@ -17162,18 +17162,18 @@ label005a:
 	mov	dword1631,[dword1629]
 	mov	[ebp-608],dword1631
 	mov	dword1634,[ebp-608]
-	and	dword1634,-73984
+	and	dword1634,65280
 	sar	dword1634,8
 	mov	[ebp-612],dword1634
 	mov	dword1639,[ebp-608]
-	and	dword1639,-289
+	and	dword1639,255
 	mov	[ebp-616],dword1639
 	mov	dword1643,[ebp-592]
-	and	dword1643,-73984
+	and	dword1643,65280
 	sar	dword1643,8
 	mov	[ebp-600],dword1643
 	mov	dword1648,[ebp-592]
-	and	dword1648,-289
+	and	dword1648,255
 	mov	[ebp-604],dword1648
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
@@ -17286,7 +17286,7 @@ label0060:
 	mov	[ebp-592],dword1722
 	sar	dword ptr [ebp-592],24
 	mov	dword1727,[ebp-592]
-	and	dword1727,-289
+	and	dword1727,255
 	mov	[ebp-620],dword1727
 	cmp	dword ptr [ebp-620],0
 	je	label005f
@@ -17298,18 +17298,18 @@ label0060:
 	mov	dword1736,[dword1734]
 	mov	[ebp-608],dword1736
 	mov	dword1739,[ebp-608]
-	and	dword1739,-73984
+	and	dword1739,65280
 	sar	dword1739,8
 	mov	[ebp-612],dword1739
 	mov	dword1744,[ebp-608]
-	and	dword1744,-289
+	and	dword1744,255
 	mov	[ebp-616],dword1744
 	mov	dword1748,[ebp-592]
-	and	dword1748,-73984
+	and	dword1748,65280
 	sar	dword1748,8
 	mov	[ebp-600],dword1748
 	mov	dword1753,[ebp-592]
-	and	dword1753,-289
+	and	dword1753,255
 	mov	[ebp-604],dword1753
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
@@ -17420,7 +17420,7 @@ label0066:
 	mov	[ebp-592],dword1827
 	sar	dword ptr [ebp-592],24
 	mov	dword1832,[ebp-592]
-	and	dword1832,-289
+	and	dword1832,255
 	mov	[ebp-620],dword1832
 	cmp	dword ptr [ebp-620],0
 	je	label0065
@@ -17432,18 +17432,18 @@ label0066:
 	mov	dword1841,[dword1839]
 	mov	[ebp-608],dword1841
 	mov	dword1844,[ebp-608]
-	and	dword1844,-73984
+	and	dword1844,65280
 	sar	dword1844,8
 	mov	[ebp-612],dword1844
 	mov	dword1849,[ebp-608]
-	and	dword1849,-289
+	and	dword1849,255
 	mov	[ebp-616],dword1849
 	mov	dword1853,[ebp-592]
-	and	dword1853,-73984
+	and	dword1853,65280
 	sar	dword1853,8
 	mov	[ebp-600],dword1853
 	mov	dword1858,[ebp-592]
-	and	dword1858,-289
+	and	dword1858,255
 	mov	[ebp-604],dword1858
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
@@ -17551,7 +17551,7 @@ label006c:
 	mov	[ebp-592],dword1932
 	sar	dword ptr [ebp-592],24
 	mov	dword1937,[ebp-592]
-	and	dword1937,-289
+	and	dword1937,255
 	mov	[ebp-620],dword1937
 	cmp	dword ptr [ebp-620],0
 	je	label006b
@@ -17563,18 +17563,18 @@ label006c:
 	mov	dword1946,[dword1944]
 	mov	[ebp-608],dword1946
 	mov	dword1949,[ebp-608]
-	and	dword1949,-73984
+	and	dword1949,65280
 	sar	dword1949,8
 	mov	[ebp-612],dword1949
 	mov	dword1954,[ebp-608]
-	and	dword1954,-289
+	and	dword1954,255
 	mov	[ebp-616],dword1954
 	mov	dword1958,[ebp-592]
-	and	dword1958,-73984
+	and	dword1958,65280
 	sar	dword1958,8
 	mov	[ebp-600],dword1958
 	mov	dword1963,[ebp-592]
-	and	dword1963,-289
+	and	dword1963,255
 	mov	[ebp-604],dword1963
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
@@ -17865,7 +17865,7 @@ label0019:
 	mov	[ebp-464],dword633
 	sar	dword ptr [ebp-464],24
 	mov	dword638,[ebp-464]
-	and	dword638,-289
+	and	dword638,255
 	mov	[ebp-492],dword638
 	cmp	dword ptr [ebp-492],0
 	je	label0018
@@ -17877,18 +17877,18 @@ label0019:
 	mov	dword647,[dword645]
 	mov	[ebp-480],dword647
 	mov	dword650,[ebp-480]
-	and	dword650,-73984
+	and	dword650,65280
 	sar	dword650,8
 	mov	[ebp-484],dword650
 	mov	dword655,[ebp-480]
-	and	dword655,-289
+	and	dword655,255
 	mov	[ebp-488],dword655
 	mov	dword659,[ebp-464]
-	and	dword659,-73984
+	and	dword659,65280
 	sar	dword659,8
 	mov	[ebp-472],dword659
 	mov	dword664,[ebp-464]
-	and	dword664,-289
+	and	dword664,255
 	mov	[ebp-476],dword664
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
@@ -17990,7 +17990,7 @@ label001f:
 	mov	[ebp-464],dword740
 	sar	dword ptr [ebp-464],24
 	mov	dword745,[ebp-464]
-	and	dword745,-289
+	and	dword745,255
 	mov	[ebp-492],dword745
 	cmp	dword ptr [ebp-492],0
 	je	label001e
@@ -18002,18 +18002,18 @@ label001f:
 	mov	dword754,[dword752]
 	mov	[ebp-480],dword754
 	mov	dword757,[ebp-480]
-	and	dword757,-73984
+	and	dword757,65280
 	sar	dword757,8
 	mov	[ebp-484],dword757
 	mov	dword762,[ebp-480]
-	and	dword762,-289
+	and	dword762,255
 	mov	[ebp-488],dword762
 	mov	dword766,[ebp-464]
-	and	dword766,-73984
+	and	dword766,65280
 	sar	dword766,8
 	mov	[ebp-472],dword766
 	mov	dword771,[ebp-464]
-	and	dword771,-289
+	and	dword771,255
 	mov	[ebp-476],dword771
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
@@ -18242,7 +18242,7 @@ label0028:
 	mov	[ebp-464],dword874
 	sar	dword ptr [ebp-464],24
 	mov	dword879,[ebp-464]
-	and	dword879,-289
+	and	dword879,255
 	mov	[ebp-492],dword879
 	cmp	dword ptr [ebp-492],0
 	je	label0027
@@ -18254,18 +18254,18 @@ label0028:
 	mov	dword888,[dword886]
 	mov	[ebp-480],dword888
 	mov	dword891,[ebp-480]
-	and	dword891,-73984
+	and	dword891,65280
 	sar	dword891,8
 	mov	[ebp-484],dword891
 	mov	dword896,[ebp-480]
-	and	dword896,-289
+	and	dword896,255
 	mov	[ebp-488],dword896
 	mov	dword900,[ebp-464]
-	and	dword900,-73984
+	and	dword900,65280
 	sar	dword900,8
 	mov	[ebp-472],dword900
 	mov	dword905,[ebp-464]
-	and	dword905,-289
+	and	dword905,255
 	mov	[ebp-476],dword905
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
@@ -18367,7 +18367,7 @@ label002e:
 	mov	[ebp-464],dword981
 	sar	dword ptr [ebp-464],24
 	mov	dword986,[ebp-464]
-	and	dword986,-289
+	and	dword986,255
 	mov	[ebp-492],dword986
 	cmp	dword ptr [ebp-492],0
 	je	label002d
@@ -18379,18 +18379,18 @@ label002e:
 	mov	dword995,[dword993]
 	mov	[ebp-480],dword995
 	mov	dword998,[ebp-480]
-	and	dword998,-73984
+	and	dword998,65280
 	sar	dword998,8
 	mov	[ebp-484],dword998
 	mov	dword1003,[ebp-480]
-	and	dword1003,-289
+	and	dword1003,255
 	mov	[ebp-488],dword1003
 	mov	dword1007,[ebp-464]
-	and	dword1007,-73984
+	and	dword1007,65280
 	sar	dword1007,8
 	mov	[ebp-472],dword1007
 	mov	dword1012,[ebp-464]
-	and	dword1012,-289
+	and	dword1012,255
 	mov	[ebp-476],dword1012
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
@@ -18677,7 +18677,7 @@ label0037:
 	mov	[ebp-464],dword1115
 	sar	dword ptr [ebp-464],24
 	mov	dword1120,[ebp-464]
-	and	dword1120,-289
+	and	dword1120,255
 	mov	[ebp-492],dword1120
 	cmp	dword ptr [ebp-492],0
 	je	label0036
@@ -18689,18 +18689,18 @@ label0037:
 	mov	dword1129,[dword1127]
 	mov	[ebp-480],dword1129
 	mov	dword1132,[ebp-480]
-	and	dword1132,-73984
+	and	dword1132,65280
 	sar	dword1132,8
 	mov	[ebp-484],dword1132
 	mov	dword1137,[ebp-480]
-	and	dword1137,-289
+	and	dword1137,255
 	mov	[ebp-488],dword1137
 	mov	dword1141,[ebp-464]
-	and	dword1141,-73984
+	and	dword1141,65280
 	sar	dword1141,8
 	mov	[ebp-472],dword1141
 	mov	dword1146,[ebp-464]
-	and	dword1146,-289
+	and	dword1146,255
 	mov	[ebp-476],dword1146
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
@@ -18802,7 +18802,7 @@ label003d:
 	mov	[ebp-464],dword1222
 	sar	dword ptr [ebp-464],24
 	mov	dword1227,[ebp-464]
-	and	dword1227,-289
+	and	dword1227,255
 	mov	[ebp-492],dword1227
 	cmp	dword ptr [ebp-492],0
 	je	label003c
@@ -18814,18 +18814,18 @@ label003d:
 	mov	dword1236,[dword1234]
 	mov	[ebp-480],dword1236
 	mov	dword1239,[ebp-480]
-	and	dword1239,-73984
+	and	dword1239,65280
 	sar	dword1239,8
 	mov	[ebp-484],dword1239
 	mov	dword1244,[ebp-480]
-	and	dword1244,-289
+	and	dword1244,255
 	mov	[ebp-488],dword1244
 	mov	dword1248,[ebp-464]
-	and	dword1248,-73984
+	and	dword1248,65280
 	sar	dword1248,8
 	mov	[ebp-472],dword1248
 	mov	dword1253,[ebp-464]
-	and	dword1253,-289
+	and	dword1253,255
 	mov	[ebp-476],dword1253
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
