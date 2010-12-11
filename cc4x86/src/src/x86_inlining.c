@@ -7,33 +7,6 @@
 
 
 //
-// Коллбэк для поиска использований имени функции.
-static void _call_by_name_search(expression *sym_expr, void *unused)
-{
-    function_desc *func;
-
-    if (!TYPE_IS_FUNCTION(sym_expr->expr_type)) {
-        return;
-    }
-
-    func = unit_find_function(sym_expr->data.sym);
-    if (!func) {
-        return;
-    }
-
-    if (sym_expr->expr_parent->expr_code == code_expr_arithmetic &&
-        sym_expr->expr_parent->data.arithm.opcode == op_get_address) {
-            func->func_usage_count = -1;
-    } else if (sym_expr->expr_parent->expr_code == code_expr_function_call) {
-        if (func->func_usage_count != -1) {
-            func->func_usage_count++;
-        }
-    } else {
-        ASSERT(FALSE);
-    }
-}
-
-//
 // Собирает статистику использования этой и других функций:
 // - вычисляет длину этой функции в инструкциях;
 // - инкрементирует счётчики использования всех функций, вызываемых из данной.
@@ -41,14 +14,30 @@ static void _call_by_name_search(expression *sym_expr, void *unused)
 void x86_inlining_analyze_function(function_desc *function)
 {
     x86_instruction *insn;
+    function_desc *callee;
 
     function->func_insn_count = 0;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         function->func_insn_count++;
-    }
 
-    expr_iterate_through_subexpressions(function->func_body, code_expr_symbol, EXPR_IT_APPLY_FILTER, _call_by_name_search, 0);
+        if (insn->in_code == x86insn_call && insn->in_op1.op_loc == x86loc_symbol) {
+            callee = unit_find_function(insn->in_op1.data.sym.name);
+            if (callee && callee->func_usage_count != -1) {
+                callee->func_usage_count++;
+            }
+        } else if (insn->in_op1.op_loc == x86loc_symbol || insn->in_op1.op_loc == x86loc_symbol_offset) {
+            callee = unit_find_function(insn->in_op1.data.sym.name);
+            if (callee) {
+                callee->func_usage_count = -1;
+            }
+        } else if (insn->in_op2.op_loc == x86loc_symbol || insn->in_op2.op_loc == x86loc_symbol_offset) {
+            callee = unit_find_function(insn->in_op2.data.sym.name);
+            if (callee) {
+                callee->func_usage_count = -1;
+            }
+        }
+    }
 }
 
 

@@ -46,7 +46,6 @@ typedef struct function_desc_decl {
     // информация для инлайнинга:
     BOOL                        func_insn_count;            // количество инструкций во внутреннем представлении
     BOOL                        func_usage_count;           // число вызовов этой функции
-    BOOL                        func_was_inlined;           // код для функции можно не генерировать
 
     // односвязный список:
     struct function_desc_decl * func_next;
