@@ -254,16 +254,8 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function)
             }
         }
 
-        if (insn->in_code == x86insn_cdq) {
-            current_regs_cnt += 2;
-        }
-
         if (max_registers < current_regs_cnt) {
             max_registers = current_regs_cnt;
-        }
-
-        if (insn->in_code == x86insn_int_idiv) {
-            current_regs_cnt -= 2;
         }
 
         for (i = 0; i < regs_cnt; i++) {

@@ -9,21 +9,14 @@ _test proc
 	mov	ebp,esp
 	sub	esp,20
 	push	edi
-	push	esi
-	mov	edi,4
-	mov	esi,2
+	mov	edi,2
 	mov	dword ptr [ebp-12],1
-	lea	eax,[ebp-12]
-	mov	[ebp-16],eax
-	mov	eax,edi
+	mov	eax,4
 	cdq
-	idiv	esi
-	mov	ecx,[ebp-16]
-	add	eax,[ecx]
-	mov	[ebp-20],eax
-	mov	eax,[ebp-20]
-	sub	eax,3
-	pop	esi
+	idiv	edi
+	add	eax,[ebp-12]
+	lea	ecx,[eax-3]
+	mov	eax,ecx
 	pop	edi
 	add	esp,20
 	pop	ebp
