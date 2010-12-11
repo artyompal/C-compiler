@@ -54,8 +54,8 @@ label0000:
 	pop	ebp
 	ret
 label0001:
-	xor	edx,edx
 	mov	eax,[ebp-16]
+	xor	edx,edx
 	div	dword ptr [ebp-8]
 	mov	[ebp-16],edx
 	cmp	dword ptr [ebp-16],2
@@ -83,6 +83,7 @@ label0003:
 	mov	[ebp-16],eax
 	mov	eax,[ebp-16]
 	mul	dword ptr [ebp-8]
+	mov	[ebp-16],eax
 	cmp	dword ptr [ebp-16],6
 	je	label0004
 	mov	eax,5

@@ -58,7 +58,9 @@ label0003:
 label0004:
 	mov	ecx,5
 	add	ecx,[ebp-8]
-	sal	dword ptr [ebp-4],cl
+	mov	eax,[ebp-4]
+	sal	eax,cl
+	mov	[ebp-4],eax
 	cmp	dword ptr [ebp-4],64
 	je	label0005
 	mov	eax,6

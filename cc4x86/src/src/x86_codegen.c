@@ -351,14 +351,13 @@ static void _generate_common_unary_arithm_expr(expression *expr, x86_operand *re
 // Кодогенерация для бинарных выражений.
 //
 
-static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_operand *op1, x86_operand *op2)
+static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *arithm, x86_operand *res, x86_operand *op1, x86_operand *op2)
 {
-    x86_instruction_code insn = _opcode_to_binary_int_instruction(expr->data.arithm.opcode);
+    x86_instruction_code insn = _opcode_to_binary_int_instruction(opcode);
     x86_operand tmp;
-    BOOL is_unsigned = TYPE_IS_UNSIGNED(expr->data.arithm.operand1->expr_type);
+    BOOL is_unsigned = TYPE_IS_UNSIGNED(arithm->operand1->expr_type);
 
-
-    ASSERT(is_unsigned == TYPE_IS_UNSIGNED(expr->data.arithm.operand2->expr_type));
+    ASSERT(is_unsigned == TYPE_IS_UNSIGNED(arithm->operand2->expr_type));
     ASSERT(OP_IS_INT(*op1) && OP_IS_REGISTER_OR_ADDRESS(*op1));
     ASSERT(OP_IS_INT(*op2));
     ASSERT(op1->op_type == op2->op_type);
@@ -372,7 +371,7 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
 
     *res = *op1;
 
-    if (IS_COMPARE_OP(expr->data.arithm.opcode)) {
+    if (IS_COMPARE_OP(opcode)) {
         if (op1->op_loc == x86loc_address && op2->op_loc == x86loc_address) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, op1);
@@ -386,14 +385,14 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
 
         bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
         unit_push_binary_instruction(x86insn_movzx, res, &tmp);
-    } else if (IS_MULTIPLY_OP(expr->data.arithm.opcode)) {
+    } else if (IS_MULTIPLY_OP(opcode)) {
         if (!OP_IS_REGISTER(*op1)) {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
             unit_push_binary_instruction(x86insn_int_mov, res, op1);
         }
 
         unit_push_binary_instruction(is_unsigned ? x86insn_int_mul : x86insn_int_imul, res, op2);
-    } else if (IS_DIVISION_OP(expr->data.arithm.opcode)) {
+    } else if (IS_DIVISION_OP(opcode)) {
         if (!OP_IS_REGISTER(*op1)) {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
             unit_push_binary_instruction(x86insn_int_mov, res, op1);
@@ -402,11 +401,7 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
         bincode_create_operand_and_alloc_pseudoreg(&tmp, res->op_type);     // edx
         unit_push_unary_instruction(is_unsigned ? x86insn_xor_edx_edx : x86insn_cdq, &tmp);
         unit_push_binary_instruction(is_unsigned ? x86insn_int_div : x86insn_int_idiv, res, op2);
-
-        if (expr->data.arithm.opcode == op_div_assign) {
-            unit_push_binary_instruction(x86insn_int_mov, op1, res);
-        }
-    } else if (IS_MODULO_OP(expr->data.arithm.opcode)) {
+    } else if (IS_MODULO_OP(opcode)) {
         bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);      // edx
         unit_push_unary_instruction(is_unsigned ? x86insn_xor_edx_edx : x86insn_cdq, res);
 
@@ -418,28 +413,7 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
         }
 
         unit_push_binary_instruction(is_unsigned ? x86insn_int_div : x86insn_int_idiv, &tmp, op2);
-
-        if (expr->data.arithm.opcode == op_mod_assign) {
-            unit_push_binary_instruction(x86insn_int_mov, op1, res);
-        }
-    } else if (IS_ASSIGN_OP(expr->data.arithm.opcode)) {
-        ASSERT(op1->op_loc == x86loc_address);
-
-        if (op2->op_loc == x86loc_address) {
-            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
-
-            if (insn != x86insn_int_mov) {
-                unit_push_binary_instruction(x86insn_int_mov, res, op1);
-            }
-
-            unit_push_binary_instruction(insn, res, op2);
-            unit_push_binary_instruction(x86insn_int_mov, op1, res);
-        } else {
-            unit_push_binary_instruction(insn, op1, op2);
-        }
-
-        // TODO: надо обработать модифицирующие операции в отдельной функции
-    } else if (IS_SHIFT_OP(expr->data.arithm.opcode)) {
+    } else if (IS_SHIFT_OP(opcode)) {
         if (op2->op_loc == x86loc_address) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op2->op_type);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, op2);
@@ -458,6 +432,50 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
         }
     } else {
         unit_push_binary_instruction(insn, op1, op2);
+    }
+}
+
+static arithmetic_opcode _convert_assign_opcode_to_simple(arithmetic_opcode opcode)
+{
+    ASSERT(IS_ASSIGN_OP(opcode));
+    return (opcode - op_add_assign);
+}
+
+static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_operand *op1, x86_operand *op2)
+{
+    arithmetic_opcode opcode = expr->data.arithm.opcode;
+    x86_operand tmp;
+
+    ASSERT(expr->expr_code == code_expr_arithmetic);
+
+    if (opcode == op_assign) {
+        ASSERT(op1->op_loc == x86loc_address);
+
+        if (op2->op_loc == x86loc_address) {
+            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
+            unit_push_binary_instruction(x86insn_int_mov, res, op2);
+            unit_push_binary_instruction(x86insn_int_mov, op1, res);
+        } else {
+            unit_push_binary_instruction(x86insn_int_mov, op1, op2);
+            res = op1;
+        }
+    } else if (IS_ASSIGN_OP(opcode)) {
+        opcode = _convert_assign_opcode_to_simple(opcode);
+
+        if (op1->op_loc == x86loc_address) {
+            bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);
+            unit_push_binary_instruction(x86insn_int_mov, &tmp, op1);
+
+            _generate_int_simple_expr(opcode, &expr->data.arithm, res, &tmp, op2);
+            ASSERT(OP_IS_REGISTER(*res));
+            unit_push_binary_instruction(x86insn_int_mov, op1, res);
+        } else {
+            _generate_int_simple_expr(opcode, &expr->data.arithm, res, op1, op2);
+            ASSERT(OP_IS_REGISTER(*res));
+            unit_push_binary_instruction(x86insn_int_mov, op1, res);
+        }
+    } else {
+        _generate_int_simple_expr(opcode, &expr->data.arithm, res, op1, op2);
     }
 }
 

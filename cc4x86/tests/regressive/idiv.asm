@@ -54,8 +54,8 @@ label0000:
 	pop	ebp
 	ret
 label0001:
-	cdq
 	mov	eax,[ebp-16]
+	cdq
 	idiv	dword ptr [ebp-8]
 	mov	[ebp-16],edx
 	cmp	dword ptr [ebp-16],2

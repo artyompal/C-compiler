@@ -17,10 +17,10 @@
 
 #if defined(_MSC_VER)
 
-// TODO: remove it when all C constructions will be supported in parser code.
+// TODO: включить это варнинг, когда все конструкции C будут поддерживаться в парсере
 #pragma warning(disable:4702)   // unreachable code
 
-// periodically check with this warning enabled
+// Надо периодически компилировать проект с этим включённым варнингом.
 #pragma warning(disable:4100)   // 'parameters_total_size' : unreferenced formal parameter
 
 #pragma warning(disable:4244)   // conversion from 'int' to 'BOOL', possible loss of data
