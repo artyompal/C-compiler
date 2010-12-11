@@ -624,6 +624,112 @@ _rasterizer_set_texture proc
 	ret
 _rasterizer_set_texture endp	
 
+__rasterize_horiz_line proc
+	create_stack_frame
+	mov	dword108,[ebp+8]
+	mov	dword103,dword ptr [__pitch]
+	imul	dword103,[ebp+16]
+	add	dword103,dword ptr [__videomem]
+	mov	dword7,dword108
+	sal	dword7,2
+	add	dword103,dword7
+	mov	dword106,[ebp+12]
+	sal	dword106,2
+	add	dword106,dword103
+	mov	dword15,dword108
+	sal	dword15,2
+	sub	dword106,dword15
+label0000:
+	mov	dword81,[ebp+24]
+	mov	[ebp-48],dword81
+	mov	dword80,[ebp+20]
+	mov	[ebp-52],dword80
+; start of inline function _tex2d
+	mov	dword85,dword ptr [__texture_width]
+	dec	dword85
+	int2float	dword85
+	fmul	dword ptr [ebp-52]
+	float2int	dword87
+	mov	[ebp-56],dword87
+	mov	dword91,dword ptr [__texture_height]
+	dec	dword91
+	int2float	dword91
+	fmul	dword ptr [ebp-48]
+	float2int	dword93
+	mov	[ebp-60],dword93
+	mov	dword97,[ebp-60]
+	imul	dword97,dword ptr [__texture_width]
+	add	dword97,[ebp-56]
+	sal	dword97,2
+	add	dword97,dword ptr [__texture_data]
+	mov	dword101,[dword97]
+	mov	[ebp-64],dword101
+label0004:
+; end of inline function _tex2d
+	mov	dword104,[ebp-64]
+	mov	dword23,dword104
+	sar	dword23,24
+	and	dword23,255
+	mov	[ebp-40],dword23
+	cmp	dword ptr [ebp-40],0
+	je	label0003
+	fild	dword ptr [ebp-40]
+	fld	dword ptr [___unnamed_float_3]
+	fdivp
+	fstp	dword ptr [ebp-44]
+	mov	dword105,[dword103]
+	mov	dword36,dword105
+	and	dword36,65280
+	sar	dword36,8
+	mov	[ebp-32],dword36
+	mov	dword41,dword105
+	and	dword41,255
+	mov	[ebp-36],dword41
+	mov	dword45,dword104
+	and	dword45,65280
+	sar	dword45,8
+	mov	[ebp-20],dword45
+	mov	dword50,dword104
+	and	dword50,255
+	mov	[ebp-24],dword50
+	fild	dword ptr [ebp-20]
+	fmul	dword ptr [ebp-44]
+	fild	dword ptr [ebp-32]
+	fld1
+	fsub	dword ptr [ebp-44]
+	fmulp
+	faddp
+	float2int	dword56
+	mov	[ebp-20],dword56
+	fild	dword ptr [ebp-24]
+	fmul	dword ptr [ebp-44]
+	fild	dword ptr [ebp-36]
+	fld1
+	fsub	dword ptr [ebp-44]
+	fmulp
+	faddp
+	float2int	dword62
+	mov	[ebp-24],dword62
+	mov	dword107,[ebp-20]
+	sal	dword107,8
+	add	dword107,[ebp-24]
+	mov	[dword103],dword107
+label0003:
+	fld	dword ptr [ebp+20]
+	fadd	dword ptr [ebp+28]
+	fstp	dword ptr [ebp+20]
+	fld	dword ptr [ebp+24]
+	fadd	dword ptr [ebp+32]
+	fstp	dword ptr [ebp+24]
+label0001:
+	add	dword103,4
+	cmp	dword103,dword106
+	jl	label0000
+label0002:
+	destroy_stack_frame
+	ret
+__rasterize_horiz_line endp	
+
 __clip_on_plain proc
 	create_stack_frame
 	mov	dword351,[ebp+8]
@@ -1077,136 +1183,139 @@ label0002:
 	ret
 __clip_on_plain endp	
 
+__transform_to_projection_space proc
+	create_stack_frame
+	mov	dword102,[ebp+12]
+	fld1
+	fstp	dword ptr [ebp-20]
+	mov	dword13,[dword102+8]
+	mov	[ebp-24],dword13
+	mov	dword12,[dword102+4]
+	mov	[ebp-28],dword12
+	mov	dword11,[dword102]
+	mov	[ebp-32],dword11
+	lea	dword7,[ebp-16]
+	mov	[ebp-36],dword7
+; start of inline function vec4f_assign
+	mov	dword16,[ebp-36]
+	fld	dword ptr [ebp-32]
+	fstp	dword ptr [dword16]
+	mov	dword19,[ebp-36]
+	fld	dword ptr [ebp-28]
+	fstp	dword ptr [dword19+4]
+	mov	dword22,[ebp-36]
+	fld	dword ptr [ebp-24]
+	fstp	dword ptr [dword22+8]
+	mov	dword25,[ebp-36]
+	fld	dword ptr [ebp-20]
+	fstp	dword ptr [dword25+12]
+label0000:
+; end of inline function vec4f_assign
+	mov	[ebp-40],(offset __mvproj_matrix)
+	lea	dword9,[ebp-16]
+	mov	[ebp-44],dword9
+	mov	dword27,[ebp+8]
+	mov	[ebp-48],dword27
+; start of inline function matrix4f_transform
+	mov	dword30,[ebp-44]
+	mov	dword32,[ebp-40]
+	fld	dword ptr [dword30+4]
+	fmul	dword ptr [dword32+16]
+	mov	dword34,[ebp-44]
+	mov	dword36,[ebp-40]
+	fld	dword ptr [dword34]
+	fmul	dword ptr [dword36]
+	faddp
+	mov	dword38,[ebp-44]
+	mov	dword40,[ebp-40]
+	fld	dword ptr [dword38+8]
+	fmul	dword ptr [dword40+32]
+	faddp
+	mov	dword42,[ebp-44]
+	mov	dword44,[ebp-40]
+	fld	dword ptr [dword42+12]
+	fmul	dword ptr [dword44+48]
+	faddp
+	mov	dword46,[ebp-48]
+	fstp	dword ptr [dword46]
+	mov	dword48,[ebp-40]
+	mov	dword50,[ebp-44]
+	fld	dword ptr [dword50]
+	fmul	dword ptr [dword48+4]
+	mov	dword52,[ebp-44]
+	mov	dword54,[ebp-40]
+	fld	dword ptr [dword52+4]
+	fmul	dword ptr [dword54+20]
+	faddp
+	mov	dword56,[ebp-44]
+	mov	dword58,[ebp-40]
+	fld	dword ptr [dword56+8]
+	fmul	dword ptr [dword58+36]
+	faddp
+	mov	dword60,[ebp-44]
+	mov	dword62,[ebp-40]
+	fld	dword ptr [dword60+12]
+	fmul	dword ptr [dword62+52]
+	faddp
+	mov	dword64,[ebp-48]
+	fstp	dword ptr [dword64+4]
+	mov	dword66,[ebp-40]
+	mov	dword68,[ebp-44]
+	fld	dword ptr [dword68]
+	fmul	dword ptr [dword66+8]
+	mov	dword70,[ebp-44]
+	mov	dword72,[ebp-40]
+	fld	dword ptr [dword70+4]
+	fmul	dword ptr [dword72+24]
+	faddp
+	mov	dword74,[ebp-44]
+	mov	dword76,[ebp-40]
+	fld	dword ptr [dword74+8]
+	fmul	dword ptr [dword76+40]
+	faddp
+	mov	dword78,[ebp-44]
+	mov	dword80,[ebp-40]
+	fld	dword ptr [dword78+12]
+	fmul	dword ptr [dword80+56]
+	faddp
+	mov	dword82,[ebp-48]
+	fstp	dword ptr [dword82+8]
+	mov	dword84,[ebp-40]
+	mov	dword86,[ebp-44]
+	fld	dword ptr [dword86]
+	fmul	dword ptr [dword84+12]
+	mov	dword88,[ebp-44]
+	mov	dword90,[ebp-40]
+	fld	dword ptr [dword88+4]
+	fmul	dword ptr [dword90+28]
+	faddp
+	mov	dword92,[ebp-44]
+	mov	dword94,[ebp-40]
+	fld	dword ptr [dword92+8]
+	fmul	dword ptr [dword94+44]
+	faddp
+	mov	dword96,[ebp-44]
+	mov	dword98,[ebp-40]
+	fld	dword ptr [dword96+12]
+	fmul	dword ptr [dword98+60]
+	faddp
+	mov	dword100,[ebp-48]
+	fstp	dword ptr [dword100+12]
+label0001:
+; end of inline function matrix4f_transform
+	destroy_stack_frame
+	ret
+__transform_to_projection_space endp	
+
 _rasterizer_triangle3f proc
 	create_stack_frame
-	mov	dword2180,[ebp+8]
-	mov	[ebp-892],dword2180
+	push_all
+	push_arg	dword ptr [ebp+8],4
 	lea	dword2,[ebp-196]
-	mov	[ebp-896],dword2
-; start of inline function _transform_to_projection_space
-	fld1
-	fstp	dword ptr [ebp-916]
-	mov	dword2183,[ebp-892]
-	mov	dword2194,[dword2183+8]
-	mov	[ebp-920],dword2194
-	mov	dword2185,[ebp-892]
-	mov	dword2193,[dword2185+4]
-	mov	[ebp-924],dword2193
-	mov	dword2187,[ebp-892]
-	mov	dword2192,[dword2187]
-	mov	[ebp-928],dword2192
-	lea	dword2188,[ebp-912]
-	mov	[ebp-932],dword2188
-; start of inline function vec4f_assign
-	mov	dword2197,[ebp-932]
-	fld	dword ptr [ebp-928]
-	fstp	dword ptr [dword2197]
-	mov	dword2200,[ebp-932]
-	fld	dword ptr [ebp-924]
-	fstp	dword ptr [dword2200+4]
-	mov	dword2203,[ebp-932]
-	fld	dword ptr [ebp-920]
-	fstp	dword ptr [dword2203+8]
-	mov	dword2206,[ebp-932]
-	fld	dword ptr [ebp-916]
-	fstp	dword ptr [dword2206+12]
-label0076:
-; end of inline function vec4f_assign
-	lea	dword2189,dword ptr [__mvproj_matrix]
-	mov	[ebp-936],dword2189
-	lea	dword2190,[ebp-912]
-	mov	[ebp-940],dword2190
-	mov	dword2208,[ebp-896]
-	mov	[ebp-944],dword2208
-; start of inline function matrix4f_transform
-	mov	dword2211,[ebp-940]
-	mov	dword2213,[ebp-936]
-	fld	dword ptr [dword2211+4]
-	fmul	dword ptr [dword2213+16]
-	mov	dword2215,[ebp-940]
-	mov	dword2217,[ebp-936]
-	fld	dword ptr [dword2215]
-	fmul	dword ptr [dword2217]
-	faddp
-	mov	dword2219,[ebp-940]
-	mov	dword2221,[ebp-936]
-	fld	dword ptr [dword2219+8]
-	fmul	dword ptr [dword2221+32]
-	faddp
-	mov	dword2223,[ebp-940]
-	mov	dword2225,[ebp-936]
-	fld	dword ptr [dword2223+12]
-	fmul	dword ptr [dword2225+48]
-	faddp
-	mov	dword2227,[ebp-944]
-	fstp	dword ptr [dword2227]
-	mov	dword2229,[ebp-936]
-	mov	dword2231,[ebp-940]
-	fld	dword ptr [dword2231]
-	fmul	dword ptr [dword2229+4]
-	mov	dword2233,[ebp-940]
-	mov	dword2235,[ebp-936]
-	fld	dword ptr [dword2233+4]
-	fmul	dword ptr [dword2235+20]
-	faddp
-	mov	dword2237,[ebp-940]
-	mov	dword2239,[ebp-936]
-	fld	dword ptr [dword2237+8]
-	fmul	dword ptr [dword2239+36]
-	faddp
-	mov	dword2241,[ebp-940]
-	mov	dword2243,[ebp-936]
-	fld	dword ptr [dword2241+12]
-	fmul	dword ptr [dword2243+52]
-	faddp
-	mov	dword2245,[ebp-944]
-	fstp	dword ptr [dword2245+4]
-	mov	dword2247,[ebp-936]
-	mov	dword2249,[ebp-940]
-	fld	dword ptr [dword2249]
-	fmul	dword ptr [dword2247+8]
-	mov	dword2251,[ebp-940]
-	mov	dword2253,[ebp-936]
-	fld	dword ptr [dword2251+4]
-	fmul	dword ptr [dword2253+24]
-	faddp
-	mov	dword2255,[ebp-940]
-	mov	dword2257,[ebp-936]
-	fld	dword ptr [dword2255+8]
-	fmul	dword ptr [dword2257+40]
-	faddp
-	mov	dword2259,[ebp-940]
-	mov	dword2261,[ebp-936]
-	fld	dword ptr [dword2259+12]
-	fmul	dword ptr [dword2261+56]
-	faddp
-	mov	dword2263,[ebp-944]
-	fstp	dword ptr [dword2263+8]
-	mov	dword2265,[ebp-936]
-	mov	dword2267,[ebp-940]
-	fld	dword ptr [dword2267]
-	fmul	dword ptr [dword2265+12]
-	mov	dword2269,[ebp-940]
-	mov	dword2271,[ebp-936]
-	fld	dword ptr [dword2269+4]
-	fmul	dword ptr [dword2271+28]
-	faddp
-	mov	dword2273,[ebp-940]
-	mov	dword2275,[ebp-936]
-	fld	dword ptr [dword2273+8]
-	fmul	dword ptr [dword2275+44]
-	faddp
-	mov	dword2277,[ebp-940]
-	mov	dword2279,[ebp-936]
-	fld	dword ptr [dword2277+12]
-	fmul	dword ptr [dword2279+60]
-	faddp
-	mov	dword2281,[ebp-944]
-	fstp	dword ptr [dword2281+12]
-label0077:
-; end of inline function matrix4f_transform
-label0078:
-; end of inline function _transform_to_projection_space
+	push_arg	dword2,4
+	call	__transform_to_projection_space
+	restore_stack	8
+	pop_all
 	lea	dword3,[ebp-196]
 	add	dword3,16
 	mov	dword6,[ebp+20]
@@ -1214,135 +1323,14 @@ label0078:
 	mov	dword8,[dword6+4]
 	mov	[dword3],dword7
 	mov	[dword3+4],dword8
-	mov	dword2282,[ebp+12]
-	mov	[ebp-892],dword2282
+	push_all
+	push_arg	dword ptr [ebp+12],4
 	lea	dword10,[ebp-196]
 	add	dword10,24
-	mov	[ebp-896],dword10
-; start of inline function _transform_to_projection_space
-	fld1
-	fstp	dword ptr [ebp-916]
-	mov	dword2285,[ebp-892]
-	mov	dword2296,[dword2285+8]
-	mov	[ebp-920],dword2296
-	mov	dword2287,[ebp-892]
-	mov	dword2295,[dword2287+4]
-	mov	[ebp-924],dword2295
-	mov	dword2289,[ebp-892]
-	mov	dword2294,[dword2289]
-	mov	[ebp-928],dword2294
-	lea	dword2290,[ebp-912]
-	mov	[ebp-932],dword2290
-; start of inline function vec4f_assign
-	mov	dword2299,[ebp-932]
-	fld	dword ptr [ebp-928]
-	fstp	dword ptr [dword2299]
-	mov	dword2302,[ebp-932]
-	fld	dword ptr [ebp-924]
-	fstp	dword ptr [dword2302+4]
-	mov	dword2305,[ebp-932]
-	fld	dword ptr [ebp-920]
-	fstp	dword ptr [dword2305+8]
-	mov	dword2308,[ebp-932]
-	fld	dword ptr [ebp-916]
-	fstp	dword ptr [dword2308+12]
-label0079:
-; end of inline function vec4f_assign
-	lea	dword2291,dword ptr [__mvproj_matrix]
-	mov	[ebp-936],dword2291
-	lea	dword2292,[ebp-912]
-	mov	[ebp-940],dword2292
-	mov	dword2310,[ebp-896]
-	mov	[ebp-944],dword2310
-; start of inline function matrix4f_transform
-	mov	dword2313,[ebp-940]
-	mov	dword2315,[ebp-936]
-	fld	dword ptr [dword2313+4]
-	fmul	dword ptr [dword2315+16]
-	mov	dword2317,[ebp-940]
-	mov	dword2319,[ebp-936]
-	fld	dword ptr [dword2317]
-	fmul	dword ptr [dword2319]
-	faddp
-	mov	dword2321,[ebp-940]
-	mov	dword2323,[ebp-936]
-	fld	dword ptr [dword2321+8]
-	fmul	dword ptr [dword2323+32]
-	faddp
-	mov	dword2325,[ebp-940]
-	mov	dword2327,[ebp-936]
-	fld	dword ptr [dword2325+12]
-	fmul	dword ptr [dword2327+48]
-	faddp
-	mov	dword2329,[ebp-944]
-	fstp	dword ptr [dword2329]
-	mov	dword2331,[ebp-936]
-	mov	dword2333,[ebp-940]
-	fld	dword ptr [dword2333]
-	fmul	dword ptr [dword2331+4]
-	mov	dword2335,[ebp-940]
-	mov	dword2337,[ebp-936]
-	fld	dword ptr [dword2335+4]
-	fmul	dword ptr [dword2337+20]
-	faddp
-	mov	dword2339,[ebp-940]
-	mov	dword2341,[ebp-936]
-	fld	dword ptr [dword2339+8]
-	fmul	dword ptr [dword2341+36]
-	faddp
-	mov	dword2343,[ebp-940]
-	mov	dword2345,[ebp-936]
-	fld	dword ptr [dword2343+12]
-	fmul	dword ptr [dword2345+52]
-	faddp
-	mov	dword2347,[ebp-944]
-	fstp	dword ptr [dword2347+4]
-	mov	dword2349,[ebp-936]
-	mov	dword2351,[ebp-940]
-	fld	dword ptr [dword2351]
-	fmul	dword ptr [dword2349+8]
-	mov	dword2353,[ebp-940]
-	mov	dword2355,[ebp-936]
-	fld	dword ptr [dword2353+4]
-	fmul	dword ptr [dword2355+24]
-	faddp
-	mov	dword2357,[ebp-940]
-	mov	dword2359,[ebp-936]
-	fld	dword ptr [dword2357+8]
-	fmul	dword ptr [dword2359+40]
-	faddp
-	mov	dword2361,[ebp-940]
-	mov	dword2363,[ebp-936]
-	fld	dword ptr [dword2361+12]
-	fmul	dword ptr [dword2363+56]
-	faddp
-	mov	dword2365,[ebp-944]
-	fstp	dword ptr [dword2365+8]
-	mov	dword2367,[ebp-936]
-	mov	dword2369,[ebp-940]
-	fld	dword ptr [dword2369]
-	fmul	dword ptr [dword2367+12]
-	mov	dword2371,[ebp-940]
-	mov	dword2373,[ebp-936]
-	fld	dword ptr [dword2371+4]
-	fmul	dword ptr [dword2373+28]
-	faddp
-	mov	dword2375,[ebp-940]
-	mov	dword2377,[ebp-936]
-	fld	dword ptr [dword2375+8]
-	fmul	dword ptr [dword2377+44]
-	faddp
-	mov	dword2379,[ebp-940]
-	mov	dword2381,[ebp-936]
-	fld	dword ptr [dword2379+12]
-	fmul	dword ptr [dword2381+60]
-	faddp
-	mov	dword2383,[ebp-944]
-	fstp	dword ptr [dword2383+12]
-label007a:
-; end of inline function matrix4f_transform
-label007b:
-; end of inline function _transform_to_projection_space
+	push_arg	dword10,4
+	call	__transform_to_projection_space
+	restore_stack	8
+	pop_all
 	lea	dword12,[ebp-196]
 	add	dword12,24
 	add	dword12,16
@@ -1351,135 +1339,14 @@ label007b:
 	mov	dword18,[dword16+4]
 	mov	[dword12],dword17
 	mov	[dword12+4],dword18
-	mov	dword2384,[ebp+16]
-	mov	[ebp-892],dword2384
+	push_all
+	push_arg	dword ptr [ebp+16],4
 	lea	dword20,[ebp-196]
 	add	dword20,48
-	mov	[ebp-896],dword20
-; start of inline function _transform_to_projection_space
-	fld1
-	fstp	dword ptr [ebp-916]
-	mov	dword2387,[ebp-892]
-	mov	dword2398,[dword2387+8]
-	mov	[ebp-920],dword2398
-	mov	dword2389,[ebp-892]
-	mov	dword2397,[dword2389+4]
-	mov	[ebp-924],dword2397
-	mov	dword2391,[ebp-892]
-	mov	dword2396,[dword2391]
-	mov	[ebp-928],dword2396
-	lea	dword2392,[ebp-912]
-	mov	[ebp-932],dword2392
-; start of inline function vec4f_assign
-	mov	dword2401,[ebp-932]
-	fld	dword ptr [ebp-928]
-	fstp	dword ptr [dword2401]
-	mov	dword2404,[ebp-932]
-	fld	dword ptr [ebp-924]
-	fstp	dword ptr [dword2404+4]
-	mov	dword2407,[ebp-932]
-	fld	dword ptr [ebp-920]
-	fstp	dword ptr [dword2407+8]
-	mov	dword2410,[ebp-932]
-	fld	dword ptr [ebp-916]
-	fstp	dword ptr [dword2410+12]
-label007c:
-; end of inline function vec4f_assign
-	lea	dword2393,dword ptr [__mvproj_matrix]
-	mov	[ebp-936],dword2393
-	lea	dword2394,[ebp-912]
-	mov	[ebp-940],dword2394
-	mov	dword2412,[ebp-896]
-	mov	[ebp-944],dword2412
-; start of inline function matrix4f_transform
-	mov	dword2415,[ebp-940]
-	mov	dword2417,[ebp-936]
-	fld	dword ptr [dword2415+4]
-	fmul	dword ptr [dword2417+16]
-	mov	dword2419,[ebp-940]
-	mov	dword2421,[ebp-936]
-	fld	dword ptr [dword2419]
-	fmul	dword ptr [dword2421]
-	faddp
-	mov	dword2423,[ebp-940]
-	mov	dword2425,[ebp-936]
-	fld	dword ptr [dword2423+8]
-	fmul	dword ptr [dword2425+32]
-	faddp
-	mov	dword2427,[ebp-940]
-	mov	dword2429,[ebp-936]
-	fld	dword ptr [dword2427+12]
-	fmul	dword ptr [dword2429+48]
-	faddp
-	mov	dword2431,[ebp-944]
-	fstp	dword ptr [dword2431]
-	mov	dword2433,[ebp-936]
-	mov	dword2435,[ebp-940]
-	fld	dword ptr [dword2435]
-	fmul	dword ptr [dword2433+4]
-	mov	dword2437,[ebp-940]
-	mov	dword2439,[ebp-936]
-	fld	dword ptr [dword2437+4]
-	fmul	dword ptr [dword2439+20]
-	faddp
-	mov	dword2441,[ebp-940]
-	mov	dword2443,[ebp-936]
-	fld	dword ptr [dword2441+8]
-	fmul	dword ptr [dword2443+36]
-	faddp
-	mov	dword2445,[ebp-940]
-	mov	dword2447,[ebp-936]
-	fld	dword ptr [dword2445+12]
-	fmul	dword ptr [dword2447+52]
-	faddp
-	mov	dword2449,[ebp-944]
-	fstp	dword ptr [dword2449+4]
-	mov	dword2451,[ebp-936]
-	mov	dword2453,[ebp-940]
-	fld	dword ptr [dword2453]
-	fmul	dword ptr [dword2451+8]
-	mov	dword2455,[ebp-940]
-	mov	dword2457,[ebp-936]
-	fld	dword ptr [dword2455+4]
-	fmul	dword ptr [dword2457+24]
-	faddp
-	mov	dword2459,[ebp-940]
-	mov	dword2461,[ebp-936]
-	fld	dword ptr [dword2459+8]
-	fmul	dword ptr [dword2461+40]
-	faddp
-	mov	dword2463,[ebp-940]
-	mov	dword2465,[ebp-936]
-	fld	dword ptr [dword2463+12]
-	fmul	dword ptr [dword2465+56]
-	faddp
-	mov	dword2467,[ebp-944]
-	fstp	dword ptr [dword2467+8]
-	mov	dword2469,[ebp-936]
-	mov	dword2471,[ebp-940]
-	fld	dword ptr [dword2471]
-	fmul	dword ptr [dword2469+12]
-	mov	dword2473,[ebp-940]
-	mov	dword2475,[ebp-936]
-	fld	dword ptr [dword2473+4]
-	fmul	dword ptr [dword2475+28]
-	faddp
-	mov	dword2477,[ebp-940]
-	mov	dword2479,[ebp-936]
-	fld	dword ptr [dword2477+8]
-	fmul	dword ptr [dword2479+44]
-	faddp
-	mov	dword2481,[ebp-940]
-	mov	dword2483,[ebp-936]
-	fld	dword ptr [dword2481+12]
-	fmul	dword ptr [dword2483+60]
-	faddp
-	mov	dword2485,[ebp-944]
-	fstp	dword ptr [dword2485+12]
-label007d:
-; end of inline function matrix4f_transform
-label007e:
-; end of inline function _transform_to_projection_space
+	push_arg	dword20,4
+	call	__transform_to_projection_space
+	restore_stack	8
+	pop_all
 	lea	dword22,[ebp-196]
 	add	dword22,48
 	add	dword22,16
@@ -1508,86 +1375,86 @@ label007e:
 	lea	dword37,[ebp-196]
 	mov	[ebp-200],dword37
 ; start of inline function _rasterize_polygon_4f
-	mov	dword2042,[ebp-200]
-	mov	[ebp-648],dword2042
+	mov	dword740,[ebp-200]
+	mov	[ebp-464],dword740
 ; start of inline function _clip_poligon
 	push_all
-	lea	dword2044,dword ptr [__clip_z_far_norm]
-	push_arg	dword2044,4
-	lea	dword2045,dword ptr [__clip_z_far_base]
-	push_arg	dword2045,4
-	push_arg	dword ptr [ebp-648],4
-	lea	dword2047,[ebp-844]
-	push_arg	dword2047,4
+	lea	dword742,dword ptr [__clip_z_far_norm]
+	push_arg	dword742,4
+	lea	dword743,dword ptr [__clip_z_far_base]
+	push_arg	dword743,4
+	push_arg	dword ptr [ebp-464],4
+	lea	dword745,[ebp-660]
+	push_arg	dword745,4
 	call	__clip_on_plain
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword2048,dword ptr [__clip_z_near_norm]
-	push_arg	dword2048,4
-	lea	dword2049,dword ptr [__clip_z_near_base]
-	push_arg	dword2049,4
-	lea	dword2050,[ebp-844]
-	push_arg	dword2050,4
-	push_arg	dword ptr [ebp-648],4
+	lea	dword746,dword ptr [__clip_z_near_norm]
+	push_arg	dword746,4
+	lea	dword747,dword ptr [__clip_z_near_base]
+	push_arg	dword747,4
+	lea	dword748,[ebp-660]
+	push_arg	dword748,4
+	push_arg	dword ptr [ebp-464],4
 	call	__clip_on_plain
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword2052,dword ptr [__clip_plane_left_norm]
-	push_arg	dword2052,4
-	lea	dword2053,dword ptr [__clip_plane_left_base]
-	push_arg	dword2053,4
-	push_arg	dword ptr [ebp-648],4
-	lea	dword2055,[ebp-844]
-	push_arg	dword2055,4
+	lea	dword750,dword ptr [__clip_plane_left_norm]
+	push_arg	dword750,4
+	lea	dword751,dword ptr [__clip_plane_left_base]
+	push_arg	dword751,4
+	push_arg	dword ptr [ebp-464],4
+	lea	dword753,[ebp-660]
+	push_arg	dword753,4
 	call	__clip_on_plain
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword2056,dword ptr [__clip_plane_right_norm]
-	push_arg	dword2056,4
-	lea	dword2057,dword ptr [__clip_plane_right_base]
-	push_arg	dword2057,4
-	lea	dword2058,[ebp-844]
-	push_arg	dword2058,4
-	push_arg	dword ptr [ebp-648],4
+	lea	dword754,dword ptr [__clip_plane_right_norm]
+	push_arg	dword754,4
+	lea	dword755,dword ptr [__clip_plane_right_base]
+	push_arg	dword755,4
+	lea	dword756,[ebp-660]
+	push_arg	dword756,4
+	push_arg	dword ptr [ebp-464],4
 	call	__clip_on_plain
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword2060,dword ptr [__clip_plane_top_norm]
-	push_arg	dword2060,4
-	lea	dword2061,dword ptr [__clip_plane_top_base]
-	push_arg	dword2061,4
-	push_arg	dword ptr [ebp-648],4
-	lea	dword2063,[ebp-844]
-	push_arg	dword2063,4
+	lea	dword758,dword ptr [__clip_plane_top_norm]
+	push_arg	dword758,4
+	lea	dword759,dword ptr [__clip_plane_top_base]
+	push_arg	dword759,4
+	push_arg	dword ptr [ebp-464],4
+	lea	dword761,[ebp-660]
+	push_arg	dword761,4
 	call	__clip_on_plain
 	restore_stack	16
 	pop_all
 	push_all
-	lea	dword2064,dword ptr [__clip_plane_bottom_norm]
-	push_arg	dword2064,4
-	lea	dword2065,dword ptr [__clip_plane_bottom_base]
-	push_arg	dword2065,4
-	lea	dword2066,[ebp-844]
-	push_arg	dword2066,4
-	push_arg	dword ptr [ebp-648],4
+	lea	dword762,dword ptr [__clip_plane_bottom_norm]
+	push_arg	dword762,4
+	lea	dword763,dword ptr [__clip_plane_bottom_base]
+	push_arg	dword763,4
+	lea	dword764,[ebp-660]
+	push_arg	dword764,4
+	push_arg	dword ptr [ebp-464],4
 	call	__clip_on_plain
 	restore_stack	16
 	pop_all
-	mov	dword2069,[ebp-648]
-	cmp	dword ptr [dword2069+192],1
-	setg	byte32
-	movzx	dword2071,byte32
-	mov	[ebp-848],dword2071
-label0070:
+	mov	dword767,[ebp-464]
+	cmp	dword ptr [dword767+192],1
+	setg	byte8
+	movzx	dword769,byte8
+	mov	[ebp-664],dword769
+label0028:
 ; end of inline function _clip_poligon
-	mov	dword40,[ebp-848]
+	mov	dword40,[ebp-664]
 	cmp	dword40,0
 	jne	label0000
-	jmp	label0075
+	jmp	label002d
 label0000:
 	mov	dword42,[ebp-200]
 	cmp	dword ptr [dword42+192],8
@@ -1605,141 +1472,141 @@ label0003:
 	mov	dword56,[ebp-336]
 	imul	dword56,24
 	add	dword53,dword56
-	mov	[ebp-852],dword53
+	mov	[ebp-668],dword53
 	lea	dword57,[ebp-332]
 	mov	dword60,[ebp-336]
 	sal	dword60,4
 	add	dword57,dword60
-	mov	[ebp-856],dword57
+	mov	[ebp-672],dword57
 ; start of inline function _transform_to_screen_space
-	lea	dword2073,dword ptr [__viewport_matrix]
-	mov	[ebp-880],dword2073
-	mov	dword2106,[ebp-852]
-	mov	[ebp-884],dword2106
-	lea	dword2075,[ebp-872]
-	mov	[ebp-888],dword2075
+	lea	dword771,dword ptr [__viewport_matrix]
+	mov	[ebp-696],dword771
+	mov	dword804,[ebp-668]
+	mov	[ebp-700],dword804
+	lea	dword773,[ebp-688]
+	mov	[ebp-704],dword773
 ; start of inline function matrix4f_transform
-	mov	dword2109,[ebp-884]
-	mov	dword2111,[ebp-880]
-	fld	dword ptr [dword2109+4]
-	fmul	dword ptr [dword2111+16]
-	mov	dword2113,[ebp-884]
-	mov	dword2115,[ebp-880]
-	fld	dword ptr [dword2113]
-	fmul	dword ptr [dword2115]
+	mov	dword807,[ebp-700]
+	mov	dword809,[ebp-696]
+	fld	dword ptr [dword807+4]
+	fmul	dword ptr [dword809+16]
+	mov	dword811,[ebp-700]
+	mov	dword813,[ebp-696]
+	fld	dword ptr [dword811]
+	fmul	dword ptr [dword813]
 	faddp
-	mov	dword2117,[ebp-884]
-	mov	dword2119,[ebp-880]
-	fld	dword ptr [dword2117+8]
-	fmul	dword ptr [dword2119+32]
+	mov	dword815,[ebp-700]
+	mov	dword817,[ebp-696]
+	fld	dword ptr [dword815+8]
+	fmul	dword ptr [dword817+32]
 	faddp
-	mov	dword2121,[ebp-884]
-	mov	dword2123,[ebp-880]
-	fld	dword ptr [dword2121+12]
-	fmul	dword ptr [dword2123+48]
+	mov	dword819,[ebp-700]
+	mov	dword821,[ebp-696]
+	fld	dword ptr [dword819+12]
+	fmul	dword ptr [dword821+48]
 	faddp
-	mov	dword2125,[ebp-888]
-	fstp	dword ptr [dword2125]
-	mov	dword2127,[ebp-880]
-	mov	dword2129,[ebp-884]
-	fld	dword ptr [dword2129]
-	fmul	dword ptr [dword2127+4]
-	mov	dword2131,[ebp-884]
-	mov	dword2133,[ebp-880]
-	fld	dword ptr [dword2131+4]
-	fmul	dword ptr [dword2133+20]
+	mov	dword823,[ebp-704]
+	fstp	dword ptr [dword823]
+	mov	dword825,[ebp-696]
+	mov	dword827,[ebp-700]
+	fld	dword ptr [dword827]
+	fmul	dword ptr [dword825+4]
+	mov	dword829,[ebp-700]
+	mov	dword831,[ebp-696]
+	fld	dword ptr [dword829+4]
+	fmul	dword ptr [dword831+20]
 	faddp
-	mov	dword2135,[ebp-884]
-	mov	dword2137,[ebp-880]
-	fld	dword ptr [dword2135+8]
-	fmul	dword ptr [dword2137+36]
+	mov	dword833,[ebp-700]
+	mov	dword835,[ebp-696]
+	fld	dword ptr [dword833+8]
+	fmul	dword ptr [dword835+36]
 	faddp
-	mov	dword2139,[ebp-884]
-	mov	dword2141,[ebp-880]
-	fld	dword ptr [dword2139+12]
-	fmul	dword ptr [dword2141+52]
+	mov	dword837,[ebp-700]
+	mov	dword839,[ebp-696]
+	fld	dword ptr [dword837+12]
+	fmul	dword ptr [dword839+52]
 	faddp
-	mov	dword2143,[ebp-888]
-	fstp	dword ptr [dword2143+4]
-	mov	dword2145,[ebp-880]
-	mov	dword2147,[ebp-884]
-	fld	dword ptr [dword2147]
-	fmul	dword ptr [dword2145+8]
-	mov	dword2149,[ebp-884]
-	mov	dword2151,[ebp-880]
-	fld	dword ptr [dword2149+4]
-	fmul	dword ptr [dword2151+24]
+	mov	dword841,[ebp-704]
+	fstp	dword ptr [dword841+4]
+	mov	dword843,[ebp-696]
+	mov	dword845,[ebp-700]
+	fld	dword ptr [dword845]
+	fmul	dword ptr [dword843+8]
+	mov	dword847,[ebp-700]
+	mov	dword849,[ebp-696]
+	fld	dword ptr [dword847+4]
+	fmul	dword ptr [dword849+24]
 	faddp
-	mov	dword2153,[ebp-884]
-	mov	dword2155,[ebp-880]
-	fld	dword ptr [dword2153+8]
-	fmul	dword ptr [dword2155+40]
+	mov	dword851,[ebp-700]
+	mov	dword853,[ebp-696]
+	fld	dword ptr [dword851+8]
+	fmul	dword ptr [dword853+40]
 	faddp
-	mov	dword2157,[ebp-884]
-	mov	dword2159,[ebp-880]
-	fld	dword ptr [dword2157+12]
-	fmul	dword ptr [dword2159+56]
+	mov	dword855,[ebp-700]
+	mov	dword857,[ebp-696]
+	fld	dword ptr [dword855+12]
+	fmul	dword ptr [dword857+56]
 	faddp
-	mov	dword2161,[ebp-888]
-	fstp	dword ptr [dword2161+8]
-	mov	dword2163,[ebp-880]
-	mov	dword2165,[ebp-884]
-	fld	dword ptr [dword2165]
-	fmul	dword ptr [dword2163+12]
-	mov	dword2167,[ebp-884]
-	mov	dword2169,[ebp-880]
-	fld	dword ptr [dword2167+4]
-	fmul	dword ptr [dword2169+28]
+	mov	dword859,[ebp-704]
+	fstp	dword ptr [dword859+8]
+	mov	dword861,[ebp-696]
+	mov	dword863,[ebp-700]
+	fld	dword ptr [dword863]
+	fmul	dword ptr [dword861+12]
+	mov	dword865,[ebp-700]
+	mov	dword867,[ebp-696]
+	fld	dword ptr [dword865+4]
+	fmul	dword ptr [dword867+28]
 	faddp
-	mov	dword2171,[ebp-884]
-	mov	dword2173,[ebp-880]
-	fld	dword ptr [dword2171+8]
-	fmul	dword ptr [dword2173+44]
+	mov	dword869,[ebp-700]
+	mov	dword871,[ebp-696]
+	fld	dword ptr [dword869+8]
+	fmul	dword ptr [dword871+44]
 	faddp
-	mov	dword2175,[ebp-884]
-	mov	dword2177,[ebp-880]
-	fld	dword ptr [dword2175+12]
-	fmul	dword ptr [dword2177+60]
+	mov	dword873,[ebp-700]
+	mov	dword875,[ebp-696]
+	fld	dword ptr [dword873+12]
+	fmul	dword ptr [dword875+60]
 	faddp
-	mov	dword2179,[ebp-888]
-	fstp	dword ptr [dword2179+12]
-label0073:
+	mov	dword877,[ebp-704]
+	fstp	dword ptr [dword877+12]
+label002b:
 ; end of inline function matrix4f_transform
-	lea	dword2076,[ebp-872]
-	add	dword2076,12
+	lea	dword774,[ebp-688]
+	add	dword774,12
 	fld1
-	fdiv	dword ptr [dword2076]
-	fstp	dword ptr [ebp-876]
-	fld	dword ptr [ebp-872]
-	fmul	dword ptr [ebp-876]
-	float2int	dword2081
-	mov	dword2083,[ebp-856]
-	mov	[dword2083],dword2081
-	lea	dword2084,[ebp-872]
-	add	dword2084,4
-	fld	dword ptr [dword2084]
-	fmul	dword ptr [ebp-876]
-	float2int	dword2087
-	mov	dword2089,[ebp-856]
-	mov	[dword2089+4],dword2087
-	mov	dword2091,[ebp-856]
-	cmp	dword ptr [dword2091],0
-	jl	label0072
-	mov	dword2094,[ebp-856]
-	mov	dword2096,[dword2094]
-	cmp	dword2096,dword ptr [__width]
-	jge	label0072
-	mov	dword2098,[ebp-856]
-	cmp	dword ptr [dword2098+4],0
-	jl	label0072
-	mov	dword2101,[ebp-856]
-	mov	dword2103,[dword2101+4]
-	cmp	dword2103,dword ptr [__height]
-	jl	label0071
-label0072:
+	fdiv	dword ptr [dword774]
+	fstp	dword ptr [ebp-692]
+	fld	dword ptr [ebp-688]
+	fmul	dword ptr [ebp-692]
+	float2int	dword779
+	mov	dword781,[ebp-672]
+	mov	[dword781],dword779
+	lea	dword782,[ebp-688]
+	add	dword782,4
+	fld	dword ptr [dword782]
+	fmul	dword ptr [ebp-692]
+	float2int	dword785
+	mov	dword787,[ebp-672]
+	mov	[dword787+4],dword785
+	mov	dword789,[ebp-672]
+	cmp	dword ptr [dword789],0
+	jl	label002a
+	mov	dword792,[ebp-672]
+	mov	dword794,[dword792]
+	cmp	dword794,dword ptr [__width]
+	jge	label002a
+	mov	dword796,[ebp-672]
+	cmp	dword ptr [dword796+4],0
+	jl	label002a
+	mov	dword799,[ebp-672]
+	mov	dword801,[dword799+4]
+	cmp	dword801,dword ptr [__height]
+	jl	label0029
+label002a:
 	mov	dword ptr ds:[0],0
-label0071:
-label0074:
+label0029:
+label002c:
 ; end of inline function _transform_to_screen_space
 	lea	dword61,[ebp-332]
 	mov	dword64,[ebp-336]
@@ -1839,840 +1706,162 @@ label000a:
 	cmp	dword157,dword ptr [__height]
 	jge	label000c
 	fldz
-	fstp	dword ptr [ebp-520]
+	fstp	dword ptr [ebp-428]
 	fldz
-	fstp	dword ptr [ebp-524]
+	fstp	dword ptr [ebp-432]
 	mov	dword159,8
 	add	dword159,[ebp-340]
-	mov	[ebp-528],dword159
+	mov	[ebp-436],dword159
 	mov	dword161,8
 	add	dword161,[ebp-344]
-	mov	[ebp-532],dword161
+	mov	[ebp-440],dword161
 	mov	dword163,8
 	add	dword163,[ebp-348]
-	mov	[ebp-536],dword163
+	mov	[ebp-444],dword163
 	mov	dword165,[ebp-348]
 	add	dword165,4
-	mov	dword1323,[dword165]
-	mov	[ebp-540],dword1323
+	mov	dword669,[dword165]
+	mov	[ebp-448],dword669
 	mov	dword168,[ebp-340]
-	mov	dword1322,[dword168]
-	mov	[ebp-544],dword1322
+	mov	dword668,[dword168]
+	mov	[ebp-452],dword668
 	mov	dword170,[ebp-344]
-	mov	dword1321,[dword170]
-	mov	[ebp-548],dword1321
+	mov	dword667,[dword170]
+	mov	[ebp-456],dword667
 	mov	dword172,[ebp-348]
-	mov	dword1320,[dword172]
-	mov	[ebp-552],dword1320
+	mov	dword666,[dword172]
+	mov	[ebp-460],dword666
 ; start of inline function _rasterize_triangle_1i
-	mov	dword1327,[ebp-552]
-	cmp	dword1327,[ebp-548]
-	jge	label0040
-	mov	dword1330,[ebp-544]
-	cmp	dword1330,[ebp-548]
-	jle	label0041
-	mov	dword1400,[ebp-520]
-	mov	[ebp-556],dword1400
-	mov	dword1399,[ebp-524]
-	mov	[ebp-560],dword1399
-	mov	dword1334,[ebp-536]
-	mov	dword1398,[dword1334+4]
-	mov	[ebp-564],dword1398
-	mov	dword1336,[ebp-536]
-	mov	dword1397,[dword1336]
-	mov	[ebp-568],dword1397
-	mov	dword1396,[ebp-540]
-	mov	[ebp-572],dword1396
-	mov	dword1395,[ebp-544]
-	mov	[ebp-576],dword1395
-	mov	dword1394,[ebp-552]
-	mov	[ebp-580],dword1394
-; start of inline function _rasterize_horiz_line
-	mov	dword1404,dword ptr [__pitch]
-	imul	dword1404,[ebp-572]
-	add	dword1404,dword ptr [__videomem]
-	mov	dword1408,[ebp-580]
-	sal	dword1408,2
-	add	dword1404,dword1408
-	mov	[ebp-584],dword1404
-	mov	dword1412,[ebp-576]
-	sal	dword1412,2
-	add	dword1412,[ebp-584]
-	mov	dword1416,[ebp-580]
-	sal	dword1416,2
-	sub	dword1412,dword1416
-	mov	[ebp-588],dword1412
-label004a:
-	mov	dword1482,[ebp-564]
-	mov	[ebp-628],dword1482
-	mov	dword1481,[ebp-568]
-	mov	[ebp-632],dword1481
-; start of inline function _tex2d
-	mov	dword1486,dword ptr [__texture_width]
-	dec	dword1486
-	int2float	dword1486
-	fmul	dword ptr [ebp-632]
-	float2int	dword1488
-	mov	[ebp-636],dword1488
-	mov	dword1492,dword ptr [__texture_height]
-	dec	dword1492
-	int2float	dword1492
-	fmul	dword ptr [ebp-628]
-	float2int	dword1494
-	mov	[ebp-640],dword1494
-	mov	dword1498,[ebp-640]
-	imul	dword1498,dword ptr [__texture_width]
-	add	dword1498,[ebp-636]
-	sal	dword1498,2
-	add	dword1498,dword ptr [__texture_data]
-	mov	dword1502,[dword1498]
-	mov	[ebp-644],dword1502
-label004e:
-; end of inline function _tex2d
-	mov	dword1420,[ebp-644]
-	mov	[ebp-592],dword1420
-	mov	dword1424,[ebp-592]
-	sar	dword1424,24
-	and	dword1424,255
-	mov	[ebp-620],dword1424
-	cmp	dword ptr [ebp-620],0
-	je	label004d
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	dword1432,[ebp-584]
-	mov	dword1434,[dword1432]
-	mov	[ebp-608],dword1434
-	mov	dword1437,[ebp-608]
-	and	dword1437,65280
-	sar	dword1437,8
-	mov	[ebp-612],dword1437
-	mov	dword1442,[ebp-608]
-	and	dword1442,255
-	mov	[ebp-616],dword1442
-	mov	dword1446,[ebp-592]
-	and	dword1446,65280
-	sar	dword1446,8
-	mov	[ebp-600],dword1446
-	mov	dword1451,[ebp-592]
-	and	dword1451,255
-	mov	[ebp-604],dword1451
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1457
-	mov	[ebp-600],dword1457
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1463
-	mov	[ebp-604],dword1463
-	mov	dword1467,[ebp-600]
-	sal	dword1467,8
-	add	dword1467,[ebp-604]
-	mov	[ebp-596],dword1467
-	mov	dword1471,[ebp-584]
-	mov	dword1473,[ebp-596]
-	mov	[dword1471],dword1473
-label004d:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label004b:
-	add	dword ptr [ebp-584],4
-	mov	dword1480,[ebp-584]
-	cmp	dword1480,[ebp-588]
-	jl	label004a
-label004c:
-label004f:
-; end of inline function _rasterize_horiz_line
-	jmp	label0042
-label0041:
-	mov	dword1342,[ebp-544]
-	cmp	dword1342,[ebp-552]
-	jge	label0043
-	mov	dword1509,[ebp-520]
-	mov	[ebp-556],dword1509
-	mov	dword1508,[ebp-524]
-	mov	[ebp-560],dword1508
-	mov	dword1346,[ebp-528]
-	mov	dword1507,[dword1346+4]
-	mov	[ebp-564],dword1507
-	mov	dword1348,[ebp-528]
-	mov	dword1506,[dword1348]
-	mov	[ebp-568],dword1506
-	mov	dword1505,[ebp-540]
-	mov	[ebp-572],dword1505
-	mov	dword1504,[ebp-548]
-	mov	[ebp-576],dword1504
-	mov	dword1503,[ebp-544]
-	mov	[ebp-580],dword1503
-; start of inline function _rasterize_horiz_line
-	mov	dword1513,dword ptr [__pitch]
-	imul	dword1513,[ebp-572]
-	add	dword1513,dword ptr [__videomem]
-	mov	dword1517,[ebp-580]
-	sal	dword1517,2
-	add	dword1513,dword1517
-	mov	[ebp-584],dword1513
-	mov	dword1521,[ebp-576]
-	sal	dword1521,2
-	add	dword1521,[ebp-584]
-	mov	dword1525,[ebp-580]
-	sal	dword1525,2
-	sub	dword1521,dword1525
-	mov	[ebp-588],dword1521
-label0050:
-	mov	dword1591,[ebp-564]
-	mov	[ebp-628],dword1591
-	mov	dword1590,[ebp-568]
-	mov	[ebp-632],dword1590
-; start of inline function _tex2d
-	mov	dword1595,dword ptr [__texture_width]
-	dec	dword1595
-	int2float	dword1595
-	fmul	dword ptr [ebp-632]
-	float2int	dword1597
-	mov	[ebp-636],dword1597
-	mov	dword1601,dword ptr [__texture_height]
-	dec	dword1601
-	int2float	dword1601
-	fmul	dword ptr [ebp-628]
-	float2int	dword1603
-	mov	[ebp-640],dword1603
-	mov	dword1607,[ebp-640]
-	imul	dword1607,dword ptr [__texture_width]
-	add	dword1607,[ebp-636]
-	sal	dword1607,2
-	add	dword1607,dword ptr [__texture_data]
-	mov	dword1611,[dword1607]
-	mov	[ebp-644],dword1611
-label0054:
-; end of inline function _tex2d
-	mov	dword1529,[ebp-644]
-	mov	[ebp-592],dword1529
-	mov	dword1533,[ebp-592]
-	sar	dword1533,24
-	and	dword1533,255
-	mov	[ebp-620],dword1533
-	cmp	dword ptr [ebp-620],0
-	je	label0053
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	dword1541,[ebp-584]
-	mov	dword1543,[dword1541]
-	mov	[ebp-608],dword1543
-	mov	dword1546,[ebp-608]
-	and	dword1546,65280
-	sar	dword1546,8
-	mov	[ebp-612],dword1546
-	mov	dword1551,[ebp-608]
-	and	dword1551,255
-	mov	[ebp-616],dword1551
-	mov	dword1555,[ebp-592]
-	and	dword1555,65280
-	sar	dword1555,8
-	mov	[ebp-600],dword1555
-	mov	dword1560,[ebp-592]
-	and	dword1560,255
-	mov	[ebp-604],dword1560
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1566
-	mov	[ebp-600],dword1566
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1572
-	mov	[ebp-604],dword1572
-	mov	dword1576,[ebp-600]
-	sal	dword1576,8
-	add	dword1576,[ebp-604]
-	mov	[ebp-596],dword1576
-	mov	dword1580,[ebp-584]
-	mov	dword1582,[ebp-596]
-	mov	[dword1580],dword1582
-label0053:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label0051:
-	add	dword ptr [ebp-584],4
-	mov	dword1589,[ebp-584]
-	cmp	dword1589,[ebp-588]
-	jl	label0050
-label0052:
-label0055:
-; end of inline function _rasterize_horiz_line
-	jmp	label0044
-label0043:
-	mov	dword1618,[ebp-520]
-	mov	[ebp-556],dword1618
-	mov	dword1617,[ebp-524]
-	mov	[ebp-560],dword1617
-	mov	dword1355,[ebp-536]
-	mov	dword1616,[dword1355+4]
-	mov	[ebp-564],dword1616
-	mov	dword1357,[ebp-536]
-	mov	dword1615,[dword1357]
-	mov	[ebp-568],dword1615
-	mov	dword1614,[ebp-540]
-	mov	[ebp-572],dword1614
-	mov	dword1613,[ebp-548]
-	mov	[ebp-576],dword1613
-	mov	dword1612,[ebp-552]
-	mov	[ebp-580],dword1612
-; start of inline function _rasterize_horiz_line
-	mov	dword1622,dword ptr [__pitch]
-	imul	dword1622,[ebp-572]
-	add	dword1622,dword ptr [__videomem]
-	mov	dword1626,[ebp-580]
-	sal	dword1626,2
-	add	dword1622,dword1626
-	mov	[ebp-584],dword1622
-	mov	dword1630,[ebp-576]
-	sal	dword1630,2
-	add	dword1630,[ebp-584]
-	mov	dword1634,[ebp-580]
-	sal	dword1634,2
-	sub	dword1630,dword1634
-	mov	[ebp-588],dword1630
-label0056:
-	mov	dword1700,[ebp-564]
-	mov	[ebp-628],dword1700
-	mov	dword1699,[ebp-568]
-	mov	[ebp-632],dword1699
-; start of inline function _tex2d
-	mov	dword1704,dword ptr [__texture_width]
-	dec	dword1704
-	int2float	dword1704
-	fmul	dword ptr [ebp-632]
-	float2int	dword1706
-	mov	[ebp-636],dword1706
-	mov	dword1710,dword ptr [__texture_height]
-	dec	dword1710
-	int2float	dword1710
-	fmul	dword ptr [ebp-628]
-	float2int	dword1712
-	mov	[ebp-640],dword1712
-	mov	dword1716,[ebp-640]
-	imul	dword1716,dword ptr [__texture_width]
-	add	dword1716,[ebp-636]
-	sal	dword1716,2
-	add	dword1716,dword ptr [__texture_data]
-	mov	dword1720,[dword1716]
-	mov	[ebp-644],dword1720
-label005a:
-; end of inline function _tex2d
-	mov	dword1638,[ebp-644]
-	mov	[ebp-592],dword1638
-	mov	dword1642,[ebp-592]
-	sar	dword1642,24
-	and	dword1642,255
-	mov	[ebp-620],dword1642
-	cmp	dword ptr [ebp-620],0
-	je	label0059
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	dword1650,[ebp-584]
-	mov	dword1652,[dword1650]
-	mov	[ebp-608],dword1652
-	mov	dword1655,[ebp-608]
-	and	dword1655,65280
-	sar	dword1655,8
-	mov	[ebp-612],dword1655
-	mov	dword1660,[ebp-608]
-	and	dword1660,255
-	mov	[ebp-616],dword1660
-	mov	dword1664,[ebp-592]
-	and	dword1664,65280
-	sar	dword1664,8
-	mov	[ebp-600],dword1664
-	mov	dword1669,[ebp-592]
-	and	dword1669,255
-	mov	[ebp-604],dword1669
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1675
-	mov	[ebp-600],dword1675
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1681
-	mov	[ebp-604],dword1681
-	mov	dword1685,[ebp-600]
-	sal	dword1685,8
-	add	dword1685,[ebp-604]
-	mov	[ebp-596],dword1685
-	mov	dword1689,[ebp-584]
-	mov	dword1691,[ebp-596]
-	mov	[dword1689],dword1691
-label0059:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label0057:
-	add	dword ptr [ebp-584],4
-	mov	dword1698,[ebp-584]
-	cmp	dword1698,[ebp-588]
-	jl	label0056
-label0058:
-label005b:
-; end of inline function _rasterize_horiz_line
-label0044:
-label0042:
-	jmp	label0045
-label0040:
-	mov	dword1363,[ebp-544]
-	cmp	dword1363,[ebp-548]
-	jge	label0046
-	fld	dword ptr [ebp-520]
+	mov	dword673,[ebp-460]
+	cmp	dword673,[ebp-456]
+	jge	label001c
+	mov	dword676,[ebp-452]
+	cmp	dword676,[ebp-456]
+	jle	label001d
+	push_all
+	push_arg	dword ptr [ebp-428],4
+	push_arg	dword ptr [ebp-432],4
+	mov	dword680,[ebp-444]
+	push_arg	dword ptr [dword680+4],4
+	mov	dword682,[ebp-444]
+	push_arg	dword ptr [dword682],4
+	push_arg	dword ptr [ebp-448],4
+	push_arg	dword ptr [ebp-452],4
+	push_arg	dword ptr [ebp-460],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+	jmp	label001e
+label001d:
+	mov	dword688,[ebp-452]
+	cmp	dword688,[ebp-460]
+	jge	label001f
+	push_all
+	push_arg	dword ptr [ebp-428],4
+	push_arg	dword ptr [ebp-432],4
+	mov	dword692,[ebp-436]
+	push_arg	dword ptr [dword692+4],4
+	mov	dword694,[ebp-436]
+	push_arg	dword ptr [dword694],4
+	push_arg	dword ptr [ebp-448],4
+	push_arg	dword ptr [ebp-456],4
+	push_arg	dword ptr [ebp-452],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+	jmp	label0020
+label001f:
+	push_all
+	push_arg	dword ptr [ebp-428],4
+	push_arg	dword ptr [ebp-432],4
+	mov	dword701,[ebp-444]
+	push_arg	dword ptr [dword701+4],4
+	mov	dword703,[ebp-444]
+	push_arg	dword ptr [dword703],4
+	push_arg	dword ptr [ebp-448],4
+	push_arg	dword ptr [ebp-456],4
+	push_arg	dword ptr [ebp-460],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+label0020:
+label001e:
+	jmp	label0021
+label001c:
+	mov	dword709,[ebp-452]
+	cmp	dword709,[ebp-456]
+	jge	label0022
+	push_all
+	fld	dword ptr [ebp-428]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-556]
-	fld	dword ptr [ebp-524]
+	push_arg	sse61,4
+	fld	dword ptr [ebp-432]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-560]
-	mov	dword1367,[ebp-528]
-	mov	dword1725,[dword1367+4]
-	mov	[ebp-564],dword1725
-	mov	dword1369,[ebp-528]
-	mov	dword1724,[dword1369]
-	mov	[ebp-568],dword1724
-	mov	dword1723,[ebp-540]
-	mov	[ebp-572],dword1723
-	mov	dword1722,[ebp-552]
-	mov	[ebp-576],dword1722
-	mov	dword1721,[ebp-544]
-	mov	[ebp-580],dword1721
-; start of inline function _rasterize_horiz_line
-	mov	dword1729,dword ptr [__pitch]
-	imul	dword1729,[ebp-572]
-	add	dword1729,dword ptr [__videomem]
-	mov	dword1733,[ebp-580]
-	sal	dword1733,2
-	add	dword1729,dword1733
-	mov	[ebp-584],dword1729
-	mov	dword1737,[ebp-576]
-	sal	dword1737,2
-	add	dword1737,[ebp-584]
-	mov	dword1741,[ebp-580]
-	sal	dword1741,2
-	sub	dword1737,dword1741
-	mov	[ebp-588],dword1737
-label005c:
-	mov	dword1807,[ebp-564]
-	mov	[ebp-628],dword1807
-	mov	dword1806,[ebp-568]
-	mov	[ebp-632],dword1806
-; start of inline function _tex2d
-	mov	dword1811,dword ptr [__texture_width]
-	dec	dword1811
-	int2float	dword1811
-	fmul	dword ptr [ebp-632]
-	float2int	dword1813
-	mov	[ebp-636],dword1813
-	mov	dword1817,dword ptr [__texture_height]
-	dec	dword1817
-	int2float	dword1817
-	fmul	dword ptr [ebp-628]
-	float2int	dword1819
-	mov	[ebp-640],dword1819
-	mov	dword1823,[ebp-640]
-	imul	dword1823,dword ptr [__texture_width]
-	add	dword1823,[ebp-636]
-	sal	dword1823,2
-	add	dword1823,dword ptr [__texture_data]
-	mov	dword1827,[dword1823]
-	mov	[ebp-644],dword1827
-label0060:
-; end of inline function _tex2d
-	mov	dword1745,[ebp-644]
-	mov	[ebp-592],dword1745
-	mov	dword1749,[ebp-592]
-	sar	dword1749,24
-	and	dword1749,255
-	mov	[ebp-620],dword1749
-	cmp	dword ptr [ebp-620],0
-	je	label005f
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	dword1757,[ebp-584]
-	mov	dword1759,[dword1757]
-	mov	[ebp-608],dword1759
-	mov	dword1762,[ebp-608]
-	and	dword1762,65280
-	sar	dword1762,8
-	mov	[ebp-612],dword1762
-	mov	dword1767,[ebp-608]
-	and	dword1767,255
-	mov	[ebp-616],dword1767
-	mov	dword1771,[ebp-592]
-	and	dword1771,65280
-	sar	dword1771,8
-	mov	[ebp-600],dword1771
-	mov	dword1776,[ebp-592]
-	and	dword1776,255
-	mov	[ebp-604],dword1776
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1782
-	mov	[ebp-600],dword1782
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1788
-	mov	[ebp-604],dword1788
-	mov	dword1792,[ebp-600]
-	sal	dword1792,8
-	add	dword1792,[ebp-604]
-	mov	[ebp-596],dword1792
-	mov	dword1796,[ebp-584]
-	mov	dword1798,[ebp-596]
-	mov	[dword1796],dword1798
-label005f:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label005d:
-	add	dword ptr [ebp-584],4
-	mov	dword1805,[ebp-584]
-	cmp	dword1805,[ebp-588]
-	jl	label005c
-label005e:
-label0061:
-; end of inline function _rasterize_horiz_line
-	jmp	label0047
-label0046:
-	mov	dword1375,[ebp-544]
-	cmp	dword1375,[ebp-552]
-	jle	label0048
-	fld	dword ptr [ebp-520]
+	push_arg	sse62,4
+	mov	dword713,[ebp-436]
+	push_arg	dword ptr [dword713+4],4
+	mov	dword715,[ebp-436]
+	push_arg	dword ptr [dword715],4
+	push_arg	dword ptr [ebp-448],4
+	push_arg	dword ptr [ebp-460],4
+	push_arg	dword ptr [ebp-452],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+	jmp	label0023
+label0022:
+	mov	dword721,[ebp-452]
+	cmp	dword721,[ebp-460]
+	jle	label0024
+	push_all
+	fld	dword ptr [ebp-428]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-556]
-	fld	dword ptr [ebp-524]
+	push_arg	sse63,4
+	fld	dword ptr [ebp-432]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-560]
-	mov	dword1379,[ebp-532]
-	mov	dword1832,[dword1379+4]
-	mov	[ebp-564],dword1832
-	mov	dword1381,[ebp-532]
-	mov	dword1831,[dword1381]
-	mov	[ebp-568],dword1831
-	mov	dword1830,[ebp-540]
-	mov	[ebp-572],dword1830
-	mov	dword1829,[ebp-544]
-	mov	[ebp-576],dword1829
-	mov	dword1828,[ebp-548]
-	mov	[ebp-580],dword1828
-; start of inline function _rasterize_horiz_line
-	mov	dword1836,dword ptr [__pitch]
-	imul	dword1836,[ebp-572]
-	add	dword1836,dword ptr [__videomem]
-	mov	dword1840,[ebp-580]
-	sal	dword1840,2
-	add	dword1836,dword1840
-	mov	[ebp-584],dword1836
-	mov	dword1844,[ebp-576]
-	sal	dword1844,2
-	add	dword1844,[ebp-584]
-	mov	dword1848,[ebp-580]
-	sal	dword1848,2
-	sub	dword1844,dword1848
-	mov	[ebp-588],dword1844
-label0062:
-	mov	dword1914,[ebp-564]
-	mov	[ebp-628],dword1914
-	mov	dword1913,[ebp-568]
-	mov	[ebp-632],dword1913
-; start of inline function _tex2d
-	mov	dword1918,dword ptr [__texture_width]
-	dec	dword1918
-	int2float	dword1918
-	fmul	dword ptr [ebp-632]
-	float2int	dword1920
-	mov	[ebp-636],dword1920
-	mov	dword1924,dword ptr [__texture_height]
-	dec	dword1924
-	int2float	dword1924
-	fmul	dword ptr [ebp-628]
-	float2int	dword1926
-	mov	[ebp-640],dword1926
-	mov	dword1930,[ebp-640]
-	imul	dword1930,dword ptr [__texture_width]
-	add	dword1930,[ebp-636]
-	sal	dword1930,2
-	add	dword1930,dword ptr [__texture_data]
-	mov	dword1934,[dword1930]
-	mov	[ebp-644],dword1934
-label0066:
-; end of inline function _tex2d
-	mov	dword1852,[ebp-644]
-	mov	[ebp-592],dword1852
-	mov	dword1856,[ebp-592]
-	sar	dword1856,24
-	and	dword1856,255
-	mov	[ebp-620],dword1856
-	cmp	dword ptr [ebp-620],0
-	je	label0065
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	dword1864,[ebp-584]
-	mov	dword1866,[dword1864]
-	mov	[ebp-608],dword1866
-	mov	dword1869,[ebp-608]
-	and	dword1869,65280
-	sar	dword1869,8
-	mov	[ebp-612],dword1869
-	mov	dword1874,[ebp-608]
-	and	dword1874,255
-	mov	[ebp-616],dword1874
-	mov	dword1878,[ebp-592]
-	and	dword1878,65280
-	sar	dword1878,8
-	mov	[ebp-600],dword1878
-	mov	dword1883,[ebp-592]
-	and	dword1883,255
-	mov	[ebp-604],dword1883
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1889
-	mov	[ebp-600],dword1889
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1895
-	mov	[ebp-604],dword1895
-	mov	dword1899,[ebp-600]
-	sal	dword1899,8
-	add	dword1899,[ebp-604]
-	mov	[ebp-596],dword1899
-	mov	dword1903,[ebp-584]
-	mov	dword1905,[ebp-596]
-	mov	[dword1903],dword1905
-label0065:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label0063:
-	add	dword ptr [ebp-584],4
-	mov	dword1912,[ebp-584]
-	cmp	dword1912,[ebp-588]
-	jl	label0062
-label0064:
-label0067:
-; end of inline function _rasterize_horiz_line
-	jmp	label0049
-label0048:
-	fld	dword ptr [ebp-520]
+	push_arg	sse64,4
+	mov	dword725,[ebp-440]
+	push_arg	dword ptr [dword725+4],4
+	mov	dword727,[ebp-440]
+	push_arg	dword ptr [dword727],4
+	push_arg	dword ptr [ebp-448],4
+	push_arg	dword ptr [ebp-452],4
+	push_arg	dword ptr [ebp-456],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+	jmp	label0025
+label0024:
+	push_all
+	fld	dword ptr [ebp-428]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-556]
-	fld	dword ptr [ebp-524]
+	push_arg	sse65,4
+	fld	dword ptr [ebp-432]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-560]
-	mov	dword1388,[ebp-532]
-	mov	dword1939,[dword1388+4]
-	mov	[ebp-564],dword1939
-	mov	dword1390,[ebp-532]
-	mov	dword1938,[dword1390]
-	mov	[ebp-568],dword1938
-	mov	dword1937,[ebp-540]
-	mov	[ebp-572],dword1937
-	mov	dword1936,[ebp-552]
-	mov	[ebp-576],dword1936
-	mov	dword1935,[ebp-548]
-	mov	[ebp-580],dword1935
-; start of inline function _rasterize_horiz_line
-	mov	dword1943,dword ptr [__pitch]
-	imul	dword1943,[ebp-572]
-	add	dword1943,dword ptr [__videomem]
-	mov	dword1947,[ebp-580]
-	sal	dword1947,2
-	add	dword1943,dword1947
-	mov	[ebp-584],dword1943
-	mov	dword1951,[ebp-576]
-	sal	dword1951,2
-	add	dword1951,[ebp-584]
-	mov	dword1955,[ebp-580]
-	sal	dword1955,2
-	sub	dword1951,dword1955
-	mov	[ebp-588],dword1951
-label0068:
-	mov	dword2021,[ebp-564]
-	mov	[ebp-628],dword2021
-	mov	dword2020,[ebp-568]
-	mov	[ebp-632],dword2020
-; start of inline function _tex2d
-	mov	dword2025,dword ptr [__texture_width]
-	dec	dword2025
-	int2float	dword2025
-	fmul	dword ptr [ebp-632]
-	float2int	dword2027
-	mov	[ebp-636],dword2027
-	mov	dword2031,dword ptr [__texture_height]
-	dec	dword2031
-	int2float	dword2031
-	fmul	dword ptr [ebp-628]
-	float2int	dword2033
-	mov	[ebp-640],dword2033
-	mov	dword2037,[ebp-640]
-	imul	dword2037,dword ptr [__texture_width]
-	add	dword2037,[ebp-636]
-	sal	dword2037,2
-	add	dword2037,dword ptr [__texture_data]
-	mov	dword2041,[dword2037]
-	mov	[ebp-644],dword2041
-label006c:
-; end of inline function _tex2d
-	mov	dword1959,[ebp-644]
-	mov	[ebp-592],dword1959
-	mov	dword1963,[ebp-592]
-	sar	dword1963,24
-	and	dword1963,255
-	mov	[ebp-620],dword1963
-	cmp	dword ptr [ebp-620],0
-	je	label006b
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	dword1971,[ebp-584]
-	mov	dword1973,[dword1971]
-	mov	[ebp-608],dword1973
-	mov	dword1976,[ebp-608]
-	and	dword1976,65280
-	sar	dword1976,8
-	mov	[ebp-612],dword1976
-	mov	dword1981,[ebp-608]
-	and	dword1981,255
-	mov	[ebp-616],dword1981
-	mov	dword1985,[ebp-592]
-	and	dword1985,65280
-	sar	dword1985,8
-	mov	[ebp-600],dword1985
-	mov	dword1990,[ebp-592]
-	and	dword1990,255
-	mov	[ebp-604],dword1990
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword1996
-	mov	[ebp-600],dword1996
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	float2int	dword2002
-	mov	[ebp-604],dword2002
-	mov	dword2006,[ebp-600]
-	sal	dword2006,8
-	add	dword2006,[ebp-604]
-	mov	[ebp-596],dword2006
-	mov	dword2010,[ebp-584]
-	mov	dword2012,[ebp-596]
-	mov	[dword2010],dword2012
-label006b:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label0069:
-	add	dword ptr [ebp-584],4
-	mov	dword2019,[ebp-584]
-	cmp	dword2019,[ebp-588]
-	jl	label0068
-label006a:
-label006d:
-; end of inline function _rasterize_horiz_line
-label0049:
-label0047:
-label0045:
-label006e:
+	push_arg	sse66,4
+	mov	dword734,[ebp-440]
+	push_arg	dword ptr [dword734+4],4
+	mov	dword736,[ebp-440]
+	push_arg	dword ptr [dword736],4
+	push_arg	dword ptr [ebp-448],4
+	push_arg	dword ptr [ebp-460],4
+	push_arg	dword ptr [ebp-456],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+label0025:
+label0023:
+label0021:
+label0026:
 ; end of inline function _rasterize_triangle_1i
 label000c:
-	jmp	label006f
+	jmp	label0027
 label000b:
 	mov	dword174,[ebp-348]
 	add	dword174,4
@@ -2857,260 +2046,32 @@ label000e:
 	mov	dword597,[ebp-424]
 	cmp	dword597,[ebp-420]
 	jg	label0013
-	mov	dword618,[ebp-392]
-	mov	[ebp-428],dword618
-	mov	dword617,[ebp-396]
-	mov	[ebp-432],dword617
-	mov	dword616,[ebp-408]
-	mov	[ebp-436],dword616
-	mov	dword615,[ebp-412]
-	mov	[ebp-440],dword615
-	mov	dword614,[ebp-416]
-	mov	[ebp-444],dword614
-	mov	dword613,[ebp-420]
-	mov	[ebp-448],dword613
-	mov	dword612,[ebp-424]
-	mov	[ebp-452],dword612
-; start of inline function _rasterize_horiz_line
-	mov	dword622,dword ptr [__pitch]
-	imul	dword622,[ebp-444]
-	add	dword622,dword ptr [__videomem]
-	mov	dword626,[ebp-452]
-	sal	dword626,2
-	add	dword622,dword626
-	mov	[ebp-456],dword622
-	mov	dword630,[ebp-448]
-	sal	dword630,2
-	add	dword630,[ebp-456]
-	mov	dword634,[ebp-452]
-	sal	dword634,2
-	sub	dword630,dword634
-	mov	[ebp-460],dword630
-label0015:
-	mov	dword700,[ebp-436]
-	mov	[ebp-500],dword700
-	mov	dword699,[ebp-440]
-	mov	[ebp-504],dword699
-; start of inline function _tex2d
-	mov	dword704,dword ptr [__texture_width]
-	dec	dword704
-	int2float	dword704
-	fmul	dword ptr [ebp-504]
-	float2int	dword706
-	mov	[ebp-508],dword706
-	mov	dword710,dword ptr [__texture_height]
-	dec	dword710
-	int2float	dword710
-	fmul	dword ptr [ebp-500]
-	float2int	dword712
-	mov	[ebp-512],dword712
-	mov	dword716,[ebp-512]
-	imul	dword716,dword ptr [__texture_width]
-	add	dword716,[ebp-508]
-	sal	dword716,2
-	add	dword716,dword ptr [__texture_data]
-	mov	dword720,[dword716]
-	mov	[ebp-516],dword720
-label0019:
-; end of inline function _tex2d
-	mov	dword638,[ebp-516]
-	mov	[ebp-464],dword638
-	mov	dword642,[ebp-464]
-	sar	dword642,24
-	and	dword642,255
-	mov	[ebp-492],dword642
-	cmp	dword ptr [ebp-492],0
-	je	label0018
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	dword650,[ebp-456]
-	mov	dword652,[dword650]
-	mov	[ebp-480],dword652
-	mov	dword655,[ebp-480]
-	and	dword655,65280
-	sar	dword655,8
-	mov	[ebp-484],dword655
-	mov	dword660,[ebp-480]
-	and	dword660,255
-	mov	[ebp-488],dword660
-	mov	dword664,[ebp-464]
-	and	dword664,65280
-	sar	dword664,8
-	mov	[ebp-472],dword664
-	mov	dword669,[ebp-464]
-	and	dword669,255
-	mov	[ebp-476],dword669
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword675
-	mov	[ebp-472],dword675
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword681
-	mov	[ebp-476],dword681
-	mov	dword685,[ebp-472]
-	sal	dword685,8
-	add	dword685,[ebp-476]
-	mov	[ebp-468],dword685
-	mov	dword689,[ebp-456]
-	mov	dword691,[ebp-468]
-	mov	[dword689],dword691
-label0018:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label0016:
-	add	dword ptr [ebp-456],4
-	mov	dword698,[ebp-456]
-	cmp	dword698,[ebp-460]
-	jl	label0015
-label0017:
-label001a:
-; end of inline function _rasterize_horiz_line
+	push_all
+	push_arg	dword ptr [ebp-392],4
+	push_arg	dword ptr [ebp-396],4
+	push_arg	dword ptr [ebp-408],4
+	push_arg	dword ptr [ebp-412],4
+	push_arg	dword ptr [ebp-416],4
+	push_arg	dword ptr [ebp-420],4
+	push_arg	dword ptr [ebp-424],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
 	jmp	label0014
 label0013:
-	mov	dword727,[ebp-392]
-	mov	[ebp-428],dword727
-	mov	dword726,[ebp-396]
-	mov	[ebp-432],dword726
-	mov	dword725,[ebp-400]
-	mov	[ebp-436],dword725
-	mov	dword724,[ebp-404]
-	mov	[ebp-440],dword724
-	mov	dword723,[ebp-416]
-	mov	[ebp-444],dword723
-	mov	dword722,[ebp-424]
-	mov	[ebp-448],dword722
-	mov	dword721,[ebp-420]
-	mov	[ebp-452],dword721
-; start of inline function _rasterize_horiz_line
-	mov	dword731,dword ptr [__pitch]
-	imul	dword731,[ebp-444]
-	add	dword731,dword ptr [__videomem]
-	mov	dword735,[ebp-452]
-	sal	dword735,2
-	add	dword731,dword735
-	mov	[ebp-456],dword731
-	mov	dword739,[ebp-448]
-	sal	dword739,2
-	add	dword739,[ebp-456]
-	mov	dword743,[ebp-452]
-	sal	dword743,2
-	sub	dword739,dword743
-	mov	[ebp-460],dword739
-label001b:
-	mov	dword809,[ebp-436]
-	mov	[ebp-500],dword809
-	mov	dword808,[ebp-440]
-	mov	[ebp-504],dword808
-; start of inline function _tex2d
-	mov	dword813,dword ptr [__texture_width]
-	dec	dword813
-	int2float	dword813
-	fmul	dword ptr [ebp-504]
-	float2int	dword815
-	mov	[ebp-508],dword815
-	mov	dword819,dword ptr [__texture_height]
-	dec	dword819
-	int2float	dword819
-	fmul	dword ptr [ebp-500]
-	float2int	dword821
-	mov	[ebp-512],dword821
-	mov	dword825,[ebp-512]
-	imul	dword825,dword ptr [__texture_width]
-	add	dword825,[ebp-508]
-	sal	dword825,2
-	add	dword825,dword ptr [__texture_data]
-	mov	dword829,[dword825]
-	mov	[ebp-516],dword829
-label001f:
-; end of inline function _tex2d
-	mov	dword747,[ebp-516]
-	mov	[ebp-464],dword747
-	mov	dword751,[ebp-464]
-	sar	dword751,24
-	and	dword751,255
-	mov	[ebp-492],dword751
-	cmp	dword ptr [ebp-492],0
-	je	label001e
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	dword759,[ebp-456]
-	mov	dword761,[dword759]
-	mov	[ebp-480],dword761
-	mov	dword764,[ebp-480]
-	and	dword764,65280
-	sar	dword764,8
-	mov	[ebp-484],dword764
-	mov	dword769,[ebp-480]
-	and	dword769,255
-	mov	[ebp-488],dword769
-	mov	dword773,[ebp-464]
-	and	dword773,65280
-	sar	dword773,8
-	mov	[ebp-472],dword773
-	mov	dword778,[ebp-464]
-	and	dword778,255
-	mov	[ebp-476],dword778
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword784
-	mov	[ebp-472],dword784
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword790
-	mov	[ebp-476],dword790
-	mov	dword794,[ebp-472]
-	sal	dword794,8
-	add	dword794,[ebp-476]
-	mov	[ebp-468],dword794
-	mov	dword798,[ebp-456]
-	mov	dword800,[ebp-468]
-	mov	[dword798],dword800
-label001e:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label001c:
-	add	dword ptr [ebp-456],4
-	mov	dword807,[ebp-456]
-	cmp	dword807,[ebp-460]
-	jl	label001b
-label001d:
-label0020:
-; end of inline function _rasterize_horiz_line
+	push_all
+	push_arg	dword ptr [ebp-392],4
+	push_arg	dword ptr [ebp-396],4
+	push_arg	dword ptr [ebp-400],4
+	push_arg	dword ptr [ebp-404],4
+	push_arg	dword ptr [ebp-416],4
+	push_arg	dword ptr [ebp-424],4
+	push_arg	dword ptr [ebp-420],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
 label0014:
-label0021:
+label0015:
 ; end of inline function _rasterize_horiz_line__unordered
 	inc	dword ptr [ebp-364]
 	jmp	label000e
@@ -3209,289 +2170,61 @@ label000f:
 	int2float	dword412
 	fdivp
 	fstp	dword ptr [ebp-388]
-	mov	dword838,[ebp-388]
-	mov	[ebp-392],dword838
-	mov	dword837,[ebp-384]
-	mov	[ebp-396],dword837
+	mov	dword620,[ebp-388]
+	mov	[ebp-392],dword620
+	mov	dword619,[ebp-384]
+	mov	[ebp-396],dword619
 	mov	dword417,8
 	add	dword417,[ebp-344]
 	add	dword417,4
-	mov	dword836,[dword417]
-	mov	[ebp-400],dword836
+	mov	dword618,[dword417]
+	mov	[ebp-400],dword618
 	mov	dword420,[ebp-344]
-	mov	dword835,[dword420+8]
-	mov	[ebp-404],dword835
-	mov	dword834,[ebp-380]
-	mov	[ebp-408],dword834
-	mov	dword833,[ebp-376]
-	mov	[ebp-412],dword833
+	mov	dword617,[dword420+8]
+	mov	[ebp-404],dword617
+	mov	dword616,[ebp-380]
+	mov	[ebp-408],dword616
+	mov	dword615,[ebp-376]
+	mov	[ebp-412],dword615
 	mov	dword424,[ebp-344]
 	add	dword424,4
-	mov	dword832,[dword424]
-	mov	[ebp-416],dword832
+	mov	dword614,[dword424]
+	mov	[ebp-416],dword614
 	mov	dword427,[ebp-344]
-	mov	dword831,[dword427]
-	mov	[ebp-420],dword831
-	mov	dword830,[ebp-360]
-	mov	[ebp-424],dword830
+	mov	dword613,[dword427]
+	mov	[ebp-420],dword613
+	mov	dword612,[ebp-360]
+	mov	[ebp-424],dword612
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword842,[ebp-424]
-	cmp	dword842,[ebp-420]
-	jg	label0022
-	mov	dword863,[ebp-392]
-	mov	[ebp-428],dword863
-	mov	dword862,[ebp-396]
-	mov	[ebp-432],dword862
-	mov	dword861,[ebp-408]
-	mov	[ebp-436],dword861
-	mov	dword860,[ebp-412]
-	mov	[ebp-440],dword860
-	mov	dword859,[ebp-416]
-	mov	[ebp-444],dword859
-	mov	dword858,[ebp-420]
-	mov	[ebp-448],dword858
-	mov	dword857,[ebp-424]
-	mov	[ebp-452],dword857
-; start of inline function _rasterize_horiz_line
-	mov	dword867,dword ptr [__pitch]
-	imul	dword867,[ebp-444]
-	add	dword867,dword ptr [__videomem]
-	mov	dword871,[ebp-452]
-	sal	dword871,2
-	add	dword867,dword871
-	mov	[ebp-456],dword867
-	mov	dword875,[ebp-448]
-	sal	dword875,2
-	add	dword875,[ebp-456]
-	mov	dword879,[ebp-452]
-	sal	dword879,2
-	sub	dword875,dword879
-	mov	[ebp-460],dword875
-label0024:
-	mov	dword945,[ebp-436]
-	mov	[ebp-500],dword945
-	mov	dword944,[ebp-440]
-	mov	[ebp-504],dword944
-; start of inline function _tex2d
-	mov	dword949,dword ptr [__texture_width]
-	dec	dword949
-	int2float	dword949
-	fmul	dword ptr [ebp-504]
-	float2int	dword951
-	mov	[ebp-508],dword951
-	mov	dword955,dword ptr [__texture_height]
-	dec	dword955
-	int2float	dword955
-	fmul	dword ptr [ebp-500]
-	float2int	dword957
-	mov	[ebp-512],dword957
-	mov	dword961,[ebp-512]
-	imul	dword961,dword ptr [__texture_width]
-	add	dword961,[ebp-508]
-	sal	dword961,2
-	add	dword961,dword ptr [__texture_data]
-	mov	dword965,[dword961]
-	mov	[ebp-516],dword965
-label0028:
-; end of inline function _tex2d
-	mov	dword883,[ebp-516]
-	mov	[ebp-464],dword883
-	mov	dword887,[ebp-464]
-	sar	dword887,24
-	and	dword887,255
-	mov	[ebp-492],dword887
-	cmp	dword ptr [ebp-492],0
-	je	label0027
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	dword895,[ebp-456]
-	mov	dword897,[dword895]
-	mov	[ebp-480],dword897
-	mov	dword900,[ebp-480]
-	and	dword900,65280
-	sar	dword900,8
-	mov	[ebp-484],dword900
-	mov	dword905,[ebp-480]
-	and	dword905,255
-	mov	[ebp-488],dword905
-	mov	dword909,[ebp-464]
-	and	dword909,65280
-	sar	dword909,8
-	mov	[ebp-472],dword909
-	mov	dword914,[ebp-464]
-	and	dword914,255
-	mov	[ebp-476],dword914
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword920
-	mov	[ebp-472],dword920
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword926
-	mov	[ebp-476],dword926
-	mov	dword930,[ebp-472]
-	sal	dword930,8
-	add	dword930,[ebp-476]
-	mov	[ebp-468],dword930
-	mov	dword934,[ebp-456]
-	mov	dword936,[ebp-468]
-	mov	[dword934],dword936
-label0027:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label0025:
-	add	dword ptr [ebp-456],4
-	mov	dword943,[ebp-456]
-	cmp	dword943,[ebp-460]
-	jl	label0024
-label0026:
-label0029:
-; end of inline function _rasterize_horiz_line
-	jmp	label0023
-label0022:
-	mov	dword972,[ebp-392]
-	mov	[ebp-428],dword972
-	mov	dword971,[ebp-396]
-	mov	[ebp-432],dword971
-	mov	dword970,[ebp-400]
-	mov	[ebp-436],dword970
-	mov	dword969,[ebp-404]
-	mov	[ebp-440],dword969
-	mov	dword968,[ebp-416]
-	mov	[ebp-444],dword968
-	mov	dword967,[ebp-424]
-	mov	[ebp-448],dword967
-	mov	dword966,[ebp-420]
-	mov	[ebp-452],dword966
-; start of inline function _rasterize_horiz_line
-	mov	dword976,dword ptr [__pitch]
-	imul	dword976,[ebp-444]
-	add	dword976,dword ptr [__videomem]
-	mov	dword980,[ebp-452]
-	sal	dword980,2
-	add	dword976,dword980
-	mov	[ebp-456],dword976
-	mov	dword984,[ebp-448]
-	sal	dword984,2
-	add	dword984,[ebp-456]
-	mov	dword988,[ebp-452]
-	sal	dword988,2
-	sub	dword984,dword988
-	mov	[ebp-460],dword984
-label002a:
-	mov	dword1054,[ebp-436]
-	mov	[ebp-500],dword1054
-	mov	dword1053,[ebp-440]
-	mov	[ebp-504],dword1053
-; start of inline function _tex2d
-	mov	dword1058,dword ptr [__texture_width]
-	dec	dword1058
-	int2float	dword1058
-	fmul	dword ptr [ebp-504]
-	float2int	dword1060
-	mov	[ebp-508],dword1060
-	mov	dword1064,dword ptr [__texture_height]
-	dec	dword1064
-	int2float	dword1064
-	fmul	dword ptr [ebp-500]
-	float2int	dword1066
-	mov	[ebp-512],dword1066
-	mov	dword1070,[ebp-512]
-	imul	dword1070,dword ptr [__texture_width]
-	add	dword1070,[ebp-508]
-	sal	dword1070,2
-	add	dword1070,dword ptr [__texture_data]
-	mov	dword1074,[dword1070]
-	mov	[ebp-516],dword1074
-label002e:
-; end of inline function _tex2d
-	mov	dword992,[ebp-516]
-	mov	[ebp-464],dword992
-	mov	dword996,[ebp-464]
-	sar	dword996,24
-	and	dword996,255
-	mov	[ebp-492],dword996
-	cmp	dword ptr [ebp-492],0
-	je	label002d
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	dword1004,[ebp-456]
-	mov	dword1006,[dword1004]
-	mov	[ebp-480],dword1006
-	mov	dword1009,[ebp-480]
-	and	dword1009,65280
-	sar	dword1009,8
-	mov	[ebp-484],dword1009
-	mov	dword1014,[ebp-480]
-	and	dword1014,255
-	mov	[ebp-488],dword1014
-	mov	dword1018,[ebp-464]
-	and	dword1018,65280
-	sar	dword1018,8
-	mov	[ebp-472],dword1018
-	mov	dword1023,[ebp-464]
-	and	dword1023,255
-	mov	[ebp-476],dword1023
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword1029
-	mov	[ebp-472],dword1029
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword1035
-	mov	[ebp-476],dword1035
-	mov	dword1039,[ebp-472]
-	sal	dword1039,8
-	add	dword1039,[ebp-476]
-	mov	[ebp-468],dword1039
-	mov	dword1043,[ebp-456]
-	mov	dword1045,[ebp-468]
-	mov	[dword1043],dword1045
-label002d:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label002b:
-	add	dword ptr [ebp-456],4
-	mov	dword1052,[ebp-456]
-	cmp	dword1052,[ebp-460]
-	jl	label002a
-label002c:
-label002f:
-; end of inline function _rasterize_horiz_line
-label0023:
-label0030:
+	mov	dword624,[ebp-424]
+	cmp	dword624,[ebp-420]
+	jg	label0016
+	push_all
+	push_arg	dword ptr [ebp-392],4
+	push_arg	dword ptr [ebp-396],4
+	push_arg	dword ptr [ebp-408],4
+	push_arg	dword ptr [ebp-412],4
+	push_arg	dword ptr [ebp-416],4
+	push_arg	dword ptr [ebp-420],4
+	push_arg	dword ptr [ebp-424],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+	jmp	label0017
+label0016:
+	push_all
+	push_arg	dword ptr [ebp-392],4
+	push_arg	dword ptr [ebp-396],4
+	push_arg	dword ptr [ebp-400],4
+	push_arg	dword ptr [ebp-404],4
+	push_arg	dword ptr [ebp-416],4
+	push_arg	dword ptr [ebp-424],4
+	push_arg	dword ptr [ebp-420],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+label0017:
+label0018:
 ; end of inline function _rasterize_horiz_line__unordered
 	mov	dword430,[ebp-344]
 	add	dword430,4
@@ -3655,292 +2388,64 @@ label0011:
 	fsub	dword ptr [ebp-372]
 	fdivrp
 	fstp	dword ptr [ebp-388]
-	mov	dword1083,[ebp-388]
-	mov	[ebp-392],dword1083
-	mov	dword1082,[ebp-384]
-	mov	[ebp-396],dword1082
-	mov	dword1081,[ebp-380]
-	mov	[ebp-400],dword1081
-	mov	dword1080,[ebp-376]
-	mov	[ebp-404],dword1080
-	mov	dword1079,[ebp-372]
-	mov	[ebp-408],dword1079
-	mov	dword1078,[ebp-368]
-	mov	[ebp-412],dword1078
-	mov	dword1077,[ebp-364]
-	mov	[ebp-416],dword1077
-	mov	dword1076,[ebp-360]
-	mov	[ebp-420],dword1076
-	mov	dword1075,[ebp-356]
-	mov	[ebp-424],dword1075
+	mov	dword647,[ebp-388]
+	mov	[ebp-392],dword647
+	mov	dword646,[ebp-384]
+	mov	[ebp-396],dword646
+	mov	dword645,[ebp-380]
+	mov	[ebp-400],dword645
+	mov	dword644,[ebp-376]
+	mov	[ebp-404],dword644
+	mov	dword643,[ebp-372]
+	mov	[ebp-408],dword643
+	mov	dword642,[ebp-368]
+	mov	[ebp-412],dword642
+	mov	dword641,[ebp-364]
+	mov	[ebp-416],dword641
+	mov	dword640,[ebp-360]
+	mov	[ebp-420],dword640
+	mov	dword639,[ebp-356]
+	mov	[ebp-424],dword639
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword1087,[ebp-424]
-	cmp	dword1087,[ebp-420]
-	jg	label0031
-	mov	dword1108,[ebp-392]
-	mov	[ebp-428],dword1108
-	mov	dword1107,[ebp-396]
-	mov	[ebp-432],dword1107
-	mov	dword1106,[ebp-408]
-	mov	[ebp-436],dword1106
-	mov	dword1105,[ebp-412]
-	mov	[ebp-440],dword1105
-	mov	dword1104,[ebp-416]
-	mov	[ebp-444],dword1104
-	mov	dword1103,[ebp-420]
-	mov	[ebp-448],dword1103
-	mov	dword1102,[ebp-424]
-	mov	[ebp-452],dword1102
-; start of inline function _rasterize_horiz_line
-	mov	dword1112,dword ptr [__pitch]
-	imul	dword1112,[ebp-444]
-	add	dword1112,dword ptr [__videomem]
-	mov	dword1116,[ebp-452]
-	sal	dword1116,2
-	add	dword1112,dword1116
-	mov	[ebp-456],dword1112
-	mov	dword1120,[ebp-448]
-	sal	dword1120,2
-	add	dword1120,[ebp-456]
-	mov	dword1124,[ebp-452]
-	sal	dword1124,2
-	sub	dword1120,dword1124
-	mov	[ebp-460],dword1120
-label0033:
-	mov	dword1190,[ebp-436]
-	mov	[ebp-500],dword1190
-	mov	dword1189,[ebp-440]
-	mov	[ebp-504],dword1189
-; start of inline function _tex2d
-	mov	dword1194,dword ptr [__texture_width]
-	dec	dword1194
-	int2float	dword1194
-	fmul	dword ptr [ebp-504]
-	float2int	dword1196
-	mov	[ebp-508],dword1196
-	mov	dword1200,dword ptr [__texture_height]
-	dec	dword1200
-	int2float	dword1200
-	fmul	dword ptr [ebp-500]
-	float2int	dword1202
-	mov	[ebp-512],dword1202
-	mov	dword1206,[ebp-512]
-	imul	dword1206,dword ptr [__texture_width]
-	add	dword1206,[ebp-508]
-	sal	dword1206,2
-	add	dword1206,dword ptr [__texture_data]
-	mov	dword1210,[dword1206]
-	mov	[ebp-516],dword1210
-label0037:
-; end of inline function _tex2d
-	mov	dword1128,[ebp-516]
-	mov	[ebp-464],dword1128
-	mov	dword1132,[ebp-464]
-	sar	dword1132,24
-	and	dword1132,255
-	mov	[ebp-492],dword1132
-	cmp	dword ptr [ebp-492],0
-	je	label0036
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	dword1140,[ebp-456]
-	mov	dword1142,[dword1140]
-	mov	[ebp-480],dword1142
-	mov	dword1145,[ebp-480]
-	and	dword1145,65280
-	sar	dword1145,8
-	mov	[ebp-484],dword1145
-	mov	dword1150,[ebp-480]
-	and	dword1150,255
-	mov	[ebp-488],dword1150
-	mov	dword1154,[ebp-464]
-	and	dword1154,65280
-	sar	dword1154,8
-	mov	[ebp-472],dword1154
-	mov	dword1159,[ebp-464]
-	and	dword1159,255
-	mov	[ebp-476],dword1159
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword1165
-	mov	[ebp-472],dword1165
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword1171
-	mov	[ebp-476],dword1171
-	mov	dword1175,[ebp-472]
-	sal	dword1175,8
-	add	dword1175,[ebp-476]
-	mov	[ebp-468],dword1175
-	mov	dword1179,[ebp-456]
-	mov	dword1181,[ebp-468]
-	mov	[dword1179],dword1181
-label0036:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label0034:
-	add	dword ptr [ebp-456],4
-	mov	dword1188,[ebp-456]
-	cmp	dword1188,[ebp-460]
-	jl	label0033
-label0035:
-label0038:
-; end of inline function _rasterize_horiz_line
-	jmp	label0032
-label0031:
-	mov	dword1217,[ebp-392]
-	mov	[ebp-428],dword1217
-	mov	dword1216,[ebp-396]
-	mov	[ebp-432],dword1216
-	mov	dword1215,[ebp-400]
-	mov	[ebp-436],dword1215
-	mov	dword1214,[ebp-404]
-	mov	[ebp-440],dword1214
-	mov	dword1213,[ebp-416]
-	mov	[ebp-444],dword1213
-	mov	dword1212,[ebp-424]
-	mov	[ebp-448],dword1212
-	mov	dword1211,[ebp-420]
-	mov	[ebp-452],dword1211
-; start of inline function _rasterize_horiz_line
-	mov	dword1221,dword ptr [__pitch]
-	imul	dword1221,[ebp-444]
-	add	dword1221,dword ptr [__videomem]
-	mov	dword1225,[ebp-452]
-	sal	dword1225,2
-	add	dword1221,dword1225
-	mov	[ebp-456],dword1221
-	mov	dword1229,[ebp-448]
-	sal	dword1229,2
-	add	dword1229,[ebp-456]
-	mov	dword1233,[ebp-452]
-	sal	dword1233,2
-	sub	dword1229,dword1233
-	mov	[ebp-460],dword1229
-label0039:
-	mov	dword1299,[ebp-436]
-	mov	[ebp-500],dword1299
-	mov	dword1298,[ebp-440]
-	mov	[ebp-504],dword1298
-; start of inline function _tex2d
-	mov	dword1303,dword ptr [__texture_width]
-	dec	dword1303
-	int2float	dword1303
-	fmul	dword ptr [ebp-504]
-	float2int	dword1305
-	mov	[ebp-508],dword1305
-	mov	dword1309,dword ptr [__texture_height]
-	dec	dword1309
-	int2float	dword1309
-	fmul	dword ptr [ebp-500]
-	float2int	dword1311
-	mov	[ebp-512],dword1311
-	mov	dword1315,[ebp-512]
-	imul	dword1315,dword ptr [__texture_width]
-	add	dword1315,[ebp-508]
-	sal	dword1315,2
-	add	dword1315,dword ptr [__texture_data]
-	mov	dword1319,[dword1315]
-	mov	[ebp-516],dword1319
-label003d:
-; end of inline function _tex2d
-	mov	dword1237,[ebp-516]
-	mov	[ebp-464],dword1237
-	mov	dword1241,[ebp-464]
-	sar	dword1241,24
-	and	dword1241,255
-	mov	[ebp-492],dword1241
-	cmp	dword ptr [ebp-492],0
-	je	label003c
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	dword1249,[ebp-456]
-	mov	dword1251,[dword1249]
-	mov	[ebp-480],dword1251
-	mov	dword1254,[ebp-480]
-	and	dword1254,65280
-	sar	dword1254,8
-	mov	[ebp-484],dword1254
-	mov	dword1259,[ebp-480]
-	and	dword1259,255
-	mov	[ebp-488],dword1259
-	mov	dword1263,[ebp-464]
-	and	dword1263,65280
-	sar	dword1263,8
-	mov	[ebp-472],dword1263
-	mov	dword1268,[ebp-464]
-	and	dword1268,255
-	mov	[ebp-476],dword1268
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword1274
-	mov	[ebp-472],dword1274
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	float2int	dword1280
-	mov	[ebp-476],dword1280
-	mov	dword1284,[ebp-472]
-	sal	dword1284,8
-	add	dword1284,[ebp-476]
-	mov	[ebp-468],dword1284
-	mov	dword1288,[ebp-456]
-	mov	dword1290,[ebp-468]
-	mov	[dword1288],dword1290
-label003c:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label003a:
-	add	dword ptr [ebp-456],4
-	mov	dword1297,[ebp-456]
-	cmp	dword1297,[ebp-460]
-	jl	label0039
-label003b:
-label003e:
-; end of inline function _rasterize_horiz_line
-label0032:
-label003f:
+	mov	dword651,[ebp-424]
+	cmp	dword651,[ebp-420]
+	jg	label0019
+	push_all
+	push_arg	dword ptr [ebp-392],4
+	push_arg	dword ptr [ebp-396],4
+	push_arg	dword ptr [ebp-408],4
+	push_arg	dword ptr [ebp-412],4
+	push_arg	dword ptr [ebp-416],4
+	push_arg	dword ptr [ebp-420],4
+	push_arg	dword ptr [ebp-424],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+	jmp	label001a
+label0019:
+	push_all
+	push_arg	dword ptr [ebp-392],4
+	push_arg	dword ptr [ebp-396],4
+	push_arg	dword ptr [ebp-400],4
+	push_arg	dword ptr [ebp-404],4
+	push_arg	dword ptr [ebp-416],4
+	push_arg	dword ptr [ebp-424],4
+	push_arg	dword ptr [ebp-420],4
+	call	__rasterize_horiz_line
+	restore_stack	28
+	pop_all
+label001a:
+label001b:
 ; end of inline function _rasterize_horiz_line__unordered
 	inc	dword ptr [ebp-364]
 	jmp	label0011
 label0012:
-label006f:
+label0027:
 ; end of inline function _rasterize_triangle_2i
 	inc	dword ptr [ebp-336]
 	jmp	label0006
 label0007:
-label0075:
+label002d:
 ; end of inline function _rasterize_polygon_4f
 	destroy_stack_frame
 	ret
