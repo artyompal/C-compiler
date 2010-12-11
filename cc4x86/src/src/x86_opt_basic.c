@@ -550,8 +550,6 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
 }
 
 // ¬ыкидывает регистр, если он используетс€ дл€ вычислени€ регистровой переменной.
-// FIXME: надо провер€ть, что регистр не зависит от предыдущего значени€ этой регистровой переменной!
-// Ќапример, достаточно, чтобы ранее этой инструкции регистрова€ переменна€ не использовалась в этой функции.
 static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruction *insn)
 {
     int reg, regvar, regs_cnt, i;
@@ -568,6 +566,18 @@ static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruc
         return FALSE;
     }
 
+    // ѕровер€ем, что ранее этой инструкции регистрова€ переменна€ не использовалась в этой функции.
+    for (insn2 = function->func_binary_code; insn2 != insn; insn2 = insn2->in_next) {
+        bincode_extract_pseudoregs_from_insn(insn2, x86op_dword, regs_arr, &regs_cnt);
+
+        for (i = 0; i < regs_cnt; i++) {
+            if (*regs_arr[i].reg_addr == regvar) {
+                return FALSE;
+            }
+        }
+    }
+
+    // «амен€ем все вхождени€ регистра на регистровую переменную.
     for (insn2 = function->func_dword_regstat.ptr[reg].reg_first_write; insn2 != insn; insn2 = insn2->in_next) {
         bincode_extract_pseudoregs_from_insn(insn2, x86op_dword, regs_arr, &regs_cnt);
 
