@@ -849,8 +849,17 @@ void unit_after_global_declaration(void)
 //  Кодогенерация.
 //
 
+static void _reset_function_calling_stat()
+{
+    for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
+        _curr_func->func_usage_count = 0;
+    }
+}
+
 void unit_codegen(void)
 {
+    _reset_function_calling_stat();
+
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
         ASSERT(_curr_func->func_body);
         _curr_func->func_binary_code = _curr_func->func_binary_code_end = NULL;
@@ -865,6 +874,7 @@ void unit_codegen(void)
             x86_optimization_after_codegen(_curr_func);
         }
 
+        // строим статистику вызовов функций
         if (option_enable_optimization && !option_no_inline) {
             x86_analyze_registers_usage(_curr_func);
             x86_inlining_analyze_function(_curr_func);
@@ -873,6 +883,7 @@ void unit_codegen(void)
         allocator_finish_function();
     }
 
+    // инлайним все подходящие функции
     if (option_enable_optimization && !option_no_inline) {
         for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
             x86_inlining_process_function(_curr_func);
@@ -880,10 +891,18 @@ void unit_codegen(void)
         }
     }
 
-    x86data_enter_text_section();
+    // обновляем статистику вызовов функций
+    _reset_function_calling_stat();
 
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
-        if (_curr_func->func_is_static && _curr_func->func_was_inlined) {
+        x86_inlining_analyze_function(_curr_func);
+    }
+
+    x86data_enter_text_section();
+
+    // делаем оптимизацию каждой функции и выводим ассемблерный код
+    for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
+        if (_curr_func->func_is_static && _curr_func->func_usage_count == 0) {
             continue;
         }
 
