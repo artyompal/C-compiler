@@ -139,11 +139,11 @@ static void _commit_register_reservation(function_desc *function, x86_instructio
 
         bincode_insert_int_reg_reg(function, insn, x86insn_int_mov, x86op_dword, ~new_reg, ~real_reg);
         pseudoregs_map[conflicting_reg].reg_location = new_reg;
+    } else {
+        regmap->real_registers_cnt++;
     }
 
-    regmap->real_registers_cnt++;
     regmap->real_registers_map[real_reg] = pseudoreg;
-
     pseudoregs_map[pseudoreg].reg_status = register_allocated;
 }
 
@@ -608,10 +608,19 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
     }
 
     // В регистрах могут остаться только глобальные регистровые переменные.
+    registers_count = 0;
+
     for (i = 0; i < X86_MAX_REG; i++) {
         reg = regmap->real_registers_map[i];
-        ASSERT(reg == -1 || X86_IS_REGVAR(reg) && type == x86op_dword);
+
+        if (X86_IS_REGVAR(reg) && type == x86op_dword) {
+            registers_count++;
+        } else {
+            ASSERT(reg == -1);
+        }
     }
+
+    ASSERT(regmap->real_registers_cnt == registers_count);
 }
 
 static void _handle_pseudo_instructions(function_desc *function)
