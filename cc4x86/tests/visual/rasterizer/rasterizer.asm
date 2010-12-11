@@ -631,6 +631,127 @@ _rasterizer_set_texture proc
 	ret
 _rasterizer_set_texture endp	
 
+__rasterize_horiz_line proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,68
+	push	edi
+	push	esi
+	push	ebx
+	mov	edi,[ebp+8]
+	mov	esi,dword ptr [__pitch]
+	imul	esi,[ebp+16]
+	add	esi,dword ptr [__videomem]
+	mov	eax,edi
+	sal	eax,2
+	add	esi,eax
+	mov	ebx,[ebp+12]
+	sal	ebx,2
+	add	ebx,esi
+	mov	eax,edi
+	sal	eax,2
+	sub	ebx,eax
+label0000:
+	mov	eax,[ebp+24]
+	mov	[ebp-48],eax
+	mov	eax,[ebp+20]
+	mov	[ebp-52],eax
+; start of inline function _tex2d
+	mov	eax,dword ptr [__texture_width]
+	dec	eax
+	mov	[ebp-68],eax
+	fild	dword ptr [ebp-68]
+	fmul	dword ptr [ebp-52]
+	fistp	dword ptr [ebp-68]
+	mov	eax,[ebp-68]
+	mov	[ebp-56],eax
+	mov	eax,dword ptr [__texture_height]
+	dec	eax
+	mov	[ebp-68],eax
+	fild	dword ptr [ebp-68]
+	fmul	dword ptr [ebp-48]
+	fistp	dword ptr [ebp-68]
+	mov	eax,[ebp-68]
+	mov	[ebp-60],eax
+	mov	eax,[ebp-60]
+	imul	eax,dword ptr [__texture_width]
+	add	eax,[ebp-56]
+	sal	eax,2
+	add	eax,dword ptr [__texture_data]
+	mov	ecx,[eax]
+	mov	[ebp-64],ecx
+label0004:
+; end of inline function _tex2d
+	mov	edx,[ebp-64]
+	mov	eax,edx
+	sar	eax,24
+	and	eax,255
+	mov	[ebp-40],eax
+	cmp	dword ptr [ebp-40],0
+	je	label0003
+	fild	dword ptr [ebp-40]
+	fld	dword ptr [___unnamed_float_3]
+	fdivp
+	fstp	dword ptr [ebp-44]
+	mov	ecx,[esi]
+	mov	eax,ecx
+	and	eax,65280
+	sar	eax,8
+	mov	[ebp-32],eax
+	mov	eax,ecx
+	and	eax,255
+	mov	[ebp-36],eax
+	mov	eax,edx
+	and	eax,65280
+	sar	eax,8
+	mov	[ebp-20],eax
+	mov	eax,edx
+	and	eax,255
+	mov	[ebp-24],eax
+	fild	dword ptr [ebp-20]
+	fmul	dword ptr [ebp-44]
+	fild	dword ptr [ebp-32]
+	fld1
+	fsub	dword ptr [ebp-44]
+	fmulp
+	faddp
+	fistp	dword ptr [ebp-68]
+	mov	eax,[ebp-68]
+	mov	[ebp-20],eax
+	fild	dword ptr [ebp-24]
+	fmul	dword ptr [ebp-44]
+	fild	dword ptr [ebp-36]
+	fld1
+	fsub	dword ptr [ebp-44]
+	fmulp
+	faddp
+	fistp	dword ptr [ebp-68]
+	mov	eax,[ebp-68]
+	mov	[ebp-24],eax
+	mov	eax,[ebp-20]
+	sal	eax,8
+	add	eax,[ebp-24]
+	mov	[esi],eax
+label0003:
+	fld	dword ptr [ebp+20]
+	fadd	dword ptr [ebp+28]
+	fstp	dword ptr [ebp+20]
+	fld	dword ptr [ebp+24]
+	fadd	dword ptr [ebp+32]
+	fstp	dword ptr [ebp+24]
+label0001:
+	add	esi,4
+	cmp	esi,ebx
+	jl	label0000
+label0002:
+	pop	ebx
+	pop	esi
+	pop	edi
+	add	esp,68
+	pop	ebp
+	ret
+__rasterize_horiz_line endp	
+
 __clip_on_plain proc
 	push	ebp
 	mov	ebp,esp
@@ -1093,140 +1214,146 @@ label0002:
 	ret
 __clip_on_plain endp	
 
-_rasterizer_triangle3f proc
+__transform_to_projection_space proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,948
+	sub	esp,48
 	push	edi
-	push	ebx
-	mov	eax,[ebp+8]
-	mov	[ebp-892],eax
-	lea	eax,[ebp-196]
-	mov	[ebp-896],eax
-; start of inline function _transform_to_projection_space
+	mov	edi,[ebp+12]
 	fld1
-	fstp	dword ptr [ebp-916]
-	mov	eax,[ebp-892]
-	mov	ecx,[eax+8]
-	mov	[ebp-920],ecx
-	mov	eax,[ebp-892]
-	mov	ecx,[eax+4]
-	mov	[ebp-924],ecx
-	mov	eax,[ebp-892]
-	mov	ecx,[eax]
-	mov	[ebp-928],ecx
-	lea	eax,[ebp-912]
-	mov	[ebp-932],eax
+	fstp	dword ptr [ebp-20]
+	mov	eax,[edi+8]
+	mov	[ebp-24],eax
+	mov	eax,[edi+4]
+	mov	[ebp-28],eax
+	mov	eax,[edi]
+	mov	[ebp-32],eax
+	lea	eax,[ebp-16]
+	mov	[ebp-36],eax
 ; start of inline function vec4f_assign
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-928]
+	mov	eax,[ebp-36]
+	fld	dword ptr [ebp-32]
 	fstp	dword ptr [eax]
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-924]
+	mov	eax,[ebp-36]
+	fld	dword ptr [ebp-28]
 	fstp	dword ptr [eax+4]
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-920]
+	mov	eax,[ebp-36]
+	fld	dword ptr [ebp-24]
 	fstp	dword ptr [eax+8]
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-916]
+	mov	eax,[ebp-36]
+	fld	dword ptr [ebp-20]
 	fstp	dword ptr [eax+12]
-label0076:
+label0000:
 ; end of inline function vec4f_assign
-	lea	eax,dword ptr [__mvproj_matrix]
-	mov	[ebp-936],eax
-	lea	eax,[ebp-912]
-	mov	[ebp-940],eax
-	mov	eax,[ebp-896]
-	mov	[ebp-944],eax
+	mov	[ebp-40],(offset __mvproj_matrix)
+	lea	eax,[ebp-16]
+	mov	[ebp-44],eax
+	mov	eax,[ebp+8]
+	mov	[ebp-48],eax
 ; start of inline function matrix4f_transform
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+4]
 	fmul	dword ptr [ecx+16]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax]
 	fmul	dword ptr [ecx]
 	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+8]
 	fmul	dword ptr [ecx+32]
 	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+12]
 	fmul	dword ptr [ecx+48]
 	faddp
-	mov	eax,[ebp-944]
+	mov	eax,[ebp-48]
 	fstp	dword ptr [eax]
-	mov	eax,[ebp-936]
-	mov	ecx,[ebp-940]
+	mov	eax,[ebp-40]
+	mov	ecx,[ebp-44]
 	fld	dword ptr [ecx]
 	fmul	dword ptr [eax+4]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+4]
 	fmul	dword ptr [ecx+20]
 	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+8]
 	fmul	dword ptr [ecx+36]
 	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+12]
 	fmul	dword ptr [ecx+52]
 	faddp
-	mov	eax,[ebp-944]
+	mov	eax,[ebp-48]
 	fstp	dword ptr [eax+4]
-	mov	eax,[ebp-936]
-	mov	ecx,[ebp-940]
+	mov	eax,[ebp-40]
+	mov	ecx,[ebp-44]
 	fld	dword ptr [ecx]
 	fmul	dword ptr [eax+8]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+4]
 	fmul	dword ptr [ecx+24]
 	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+8]
 	fmul	dword ptr [ecx+40]
 	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+12]
 	fmul	dword ptr [ecx+56]
 	faddp
-	mov	eax,[ebp-944]
+	mov	eax,[ebp-48]
 	fstp	dword ptr [eax+8]
-	mov	eax,[ebp-936]
-	mov	ecx,[ebp-940]
+	mov	eax,[ebp-40]
+	mov	ecx,[ebp-44]
 	fld	dword ptr [ecx]
 	fmul	dword ptr [eax+12]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+4]
 	fmul	dword ptr [ecx+28]
 	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+8]
 	fmul	dword ptr [ecx+44]
 	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
+	mov	eax,[ebp-44]
+	mov	ecx,[ebp-40]
 	fld	dword ptr [eax+12]
 	fmul	dword ptr [ecx+60]
 	faddp
-	mov	eax,[ebp-944]
+	mov	eax,[ebp-48]
 	fstp	dword ptr [eax+12]
-label0077:
+label0001:
 ; end of inline function matrix4f_transform
-label0078:
-; end of inline function _transform_to_projection_space
+	pop	edi
+	add	esp,48
+	pop	ebp
+	ret
+__transform_to_projection_space endp	
+
+_rasterizer_triangle3f proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,708
+	push	edi
+	push	ebx
+	push	dword ptr [ebp+8]
+	lea	eax,[ebp-196]
+	push	eax
+	call	__transform_to_projection_space
+	add	esp,8
 	lea	eax,[ebp-196]
 	add	eax,16
 	mov	ecx,[ebp+20]
@@ -1234,135 +1361,12 @@ label0078:
 	mov	ebx,[ecx+4]
 	mov	[eax],edx
 	mov	[eax+4],ebx
-	mov	eax,[ebp+12]
-	mov	[ebp-892],eax
+	push	dword ptr [ebp+12]
 	lea	eax,[ebp-196]
 	add	eax,24
-	mov	[ebp-896],eax
-; start of inline function _transform_to_projection_space
-	fld1
-	fstp	dword ptr [ebp-916]
-	mov	eax,[ebp-892]
-	mov	ecx,[eax+8]
-	mov	[ebp-920],ecx
-	mov	eax,[ebp-892]
-	mov	ecx,[eax+4]
-	mov	[ebp-924],ecx
-	mov	eax,[ebp-892]
-	mov	ecx,[eax]
-	mov	[ebp-928],ecx
-	lea	eax,[ebp-912]
-	mov	[ebp-932],eax
-; start of inline function vec4f_assign
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-928]
-	fstp	dword ptr [eax]
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-924]
-	fstp	dword ptr [eax+4]
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-920]
-	fstp	dword ptr [eax+8]
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-916]
-	fstp	dword ptr [eax+12]
-label0079:
-; end of inline function vec4f_assign
-	lea	eax,dword ptr [__mvproj_matrix]
-	mov	[ebp-936],eax
-	lea	eax,[ebp-912]
-	mov	[ebp-940],eax
-	mov	eax,[ebp-896]
-	mov	[ebp-944],eax
-; start of inline function matrix4f_transform
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+4]
-	fmul	dword ptr [ecx+16]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax]
-	fmul	dword ptr [ecx]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+8]
-	fmul	dword ptr [ecx+32]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+12]
-	fmul	dword ptr [ecx+48]
-	faddp
-	mov	eax,[ebp-944]
-	fstp	dword ptr [eax]
-	mov	eax,[ebp-936]
-	mov	ecx,[ebp-940]
-	fld	dword ptr [ecx]
-	fmul	dword ptr [eax+4]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+4]
-	fmul	dword ptr [ecx+20]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+8]
-	fmul	dword ptr [ecx+36]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+12]
-	fmul	dword ptr [ecx+52]
-	faddp
-	mov	eax,[ebp-944]
-	fstp	dword ptr [eax+4]
-	mov	eax,[ebp-936]
-	mov	ecx,[ebp-940]
-	fld	dword ptr [ecx]
-	fmul	dword ptr [eax+8]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+4]
-	fmul	dword ptr [ecx+24]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+8]
-	fmul	dword ptr [ecx+40]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+12]
-	fmul	dword ptr [ecx+56]
-	faddp
-	mov	eax,[ebp-944]
-	fstp	dword ptr [eax+8]
-	mov	eax,[ebp-936]
-	mov	ecx,[ebp-940]
-	fld	dword ptr [ecx]
-	fmul	dword ptr [eax+12]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+4]
-	fmul	dword ptr [ecx+28]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+8]
-	fmul	dword ptr [ecx+44]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+12]
-	fmul	dword ptr [ecx+60]
-	faddp
-	mov	eax,[ebp-944]
-	fstp	dword ptr [eax+12]
-label007a:
-; end of inline function matrix4f_transform
-label007b:
-; end of inline function _transform_to_projection_space
+	push	eax
+	call	__transform_to_projection_space
+	add	esp,8
 	lea	eax,[ebp-196]
 	add	eax,24
 	add	eax,16
@@ -1371,135 +1375,12 @@ label007b:
 	mov	ebx,[ecx+4]
 	mov	[eax],edx
 	mov	[eax+4],ebx
-	mov	eax,[ebp+16]
-	mov	[ebp-892],eax
+	push	dword ptr [ebp+16]
 	lea	eax,[ebp-196]
 	add	eax,48
-	mov	[ebp-896],eax
-; start of inline function _transform_to_projection_space
-	fld1
-	fstp	dword ptr [ebp-916]
-	mov	eax,[ebp-892]
-	mov	ecx,[eax+8]
-	mov	[ebp-920],ecx
-	mov	eax,[ebp-892]
-	mov	ecx,[eax+4]
-	mov	[ebp-924],ecx
-	mov	eax,[ebp-892]
-	mov	ecx,[eax]
-	mov	[ebp-928],ecx
-	lea	eax,[ebp-912]
-	mov	[ebp-932],eax
-; start of inline function vec4f_assign
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-928]
-	fstp	dword ptr [eax]
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-924]
-	fstp	dword ptr [eax+4]
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-920]
-	fstp	dword ptr [eax+8]
-	mov	eax,[ebp-932]
-	fld	dword ptr [ebp-916]
-	fstp	dword ptr [eax+12]
-label007c:
-; end of inline function vec4f_assign
-	lea	eax,dword ptr [__mvproj_matrix]
-	mov	[ebp-936],eax
-	lea	eax,[ebp-912]
-	mov	[ebp-940],eax
-	mov	eax,[ebp-896]
-	mov	[ebp-944],eax
-; start of inline function matrix4f_transform
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+4]
-	fmul	dword ptr [ecx+16]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax]
-	fmul	dword ptr [ecx]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+8]
-	fmul	dword ptr [ecx+32]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+12]
-	fmul	dword ptr [ecx+48]
-	faddp
-	mov	eax,[ebp-944]
-	fstp	dword ptr [eax]
-	mov	eax,[ebp-936]
-	mov	ecx,[ebp-940]
-	fld	dword ptr [ecx]
-	fmul	dword ptr [eax+4]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+4]
-	fmul	dword ptr [ecx+20]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+8]
-	fmul	dword ptr [ecx+36]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+12]
-	fmul	dword ptr [ecx+52]
-	faddp
-	mov	eax,[ebp-944]
-	fstp	dword ptr [eax+4]
-	mov	eax,[ebp-936]
-	mov	ecx,[ebp-940]
-	fld	dword ptr [ecx]
-	fmul	dword ptr [eax+8]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+4]
-	fmul	dword ptr [ecx+24]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+8]
-	fmul	dword ptr [ecx+40]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+12]
-	fmul	dword ptr [ecx+56]
-	faddp
-	mov	eax,[ebp-944]
-	fstp	dword ptr [eax+8]
-	mov	eax,[ebp-936]
-	mov	ecx,[ebp-940]
-	fld	dword ptr [ecx]
-	fmul	dword ptr [eax+12]
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+4]
-	fmul	dword ptr [ecx+28]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+8]
-	fmul	dword ptr [ecx+44]
-	faddp
-	mov	eax,[ebp-940]
-	mov	ecx,[ebp-936]
-	fld	dword ptr [eax+12]
-	fmul	dword ptr [ecx+60]
-	faddp
-	mov	eax,[ebp-944]
-	fstp	dword ptr [eax+12]
-label007d:
-; end of inline function matrix4f_transform
-label007e:
-; end of inline function _transform_to_projection_space
+	push	eax
+	call	__transform_to_projection_space
+	add	esp,8
 	lea	eax,[ebp-196]
 	add	eax,48
 	add	eax,16
@@ -1529,14 +1410,14 @@ label007e:
 	mov	[ebp-200],eax
 ; start of inline function _rasterize_polygon_4f
 	mov	eax,[ebp-200]
-	mov	[ebp-648],eax
+	mov	[ebp-464],eax
 ; start of inline function _clip_poligon
 	lea	eax,dword ptr [__clip_z_far_norm]
 	push	eax
 	lea	eax,dword ptr [__clip_z_far_base]
 	push	eax
-	push	dword ptr [ebp-648]
-	lea	eax,[ebp-844]
+	push	dword ptr [ebp-464]
+	lea	eax,[ebp-660]
 	push	eax
 	call	__clip_on_plain
 	add	esp,16
@@ -1544,17 +1425,17 @@ label007e:
 	push	eax
 	lea	eax,dword ptr [__clip_z_near_base]
 	push	eax
-	lea	eax,[ebp-844]
+	lea	eax,[ebp-660]
 	push	eax
-	push	dword ptr [ebp-648]
+	push	dword ptr [ebp-464]
 	call	__clip_on_plain
 	add	esp,16
 	lea	eax,dword ptr [__clip_plane_left_norm]
 	push	eax
 	lea	eax,dword ptr [__clip_plane_left_base]
 	push	eax
-	push	dword ptr [ebp-648]
-	lea	eax,[ebp-844]
+	push	dword ptr [ebp-464]
+	lea	eax,[ebp-660]
 	push	eax
 	call	__clip_on_plain
 	add	esp,16
@@ -1562,17 +1443,17 @@ label007e:
 	push	eax
 	lea	eax,dword ptr [__clip_plane_right_base]
 	push	eax
-	lea	eax,[ebp-844]
+	lea	eax,[ebp-660]
 	push	eax
-	push	dword ptr [ebp-648]
+	push	dword ptr [ebp-464]
 	call	__clip_on_plain
 	add	esp,16
 	lea	eax,dword ptr [__clip_plane_top_norm]
 	push	eax
 	lea	eax,dword ptr [__clip_plane_top_base]
 	push	eax
-	push	dword ptr [ebp-648]
-	lea	eax,[ebp-844]
+	push	dword ptr [ebp-464]
+	lea	eax,[ebp-660]
 	push	eax
 	call	__clip_on_plain
 	add	esp,16
@@ -1580,22 +1461,22 @@ label007e:
 	push	eax
 	lea	eax,dword ptr [__clip_plane_bottom_base]
 	push	eax
-	lea	eax,[ebp-844]
+	lea	eax,[ebp-660]
 	push	eax
-	push	dword ptr [ebp-648]
+	push	dword ptr [ebp-464]
 	call	__clip_on_plain
 	add	esp,16
-	mov	eax,[ebp-648]
+	mov	eax,[ebp-464]
 	cmp	dword ptr [eax+192],1
 	setg	al
 	movzx	eax,al
-	mov	[ebp-848],eax
-label0070:
+	mov	[ebp-664],eax
+label0028:
 ; end of inline function _clip_poligon
-	mov	eax,[ebp-848]
+	mov	eax,[ebp-664]
 	cmp	eax,0
 	jne	label0000
-	jmp	label0075
+	jmp	label002d
 label0000:
 	mov	eax,[ebp-200]
 	cmp	dword ptr [eax+192],8
@@ -1613,143 +1494,143 @@ label0003:
 	mov	ecx,[ebp-336]
 	imul	ecx,24
 	add	eax,ecx
-	mov	[ebp-852],eax
+	mov	[ebp-668],eax
 	lea	eax,[ebp-332]
 	mov	ecx,[ebp-336]
 	sal	ecx,4
 	add	eax,ecx
-	mov	[ebp-856],eax
+	mov	[ebp-672],eax
 ; start of inline function _transform_to_screen_space
 	lea	eax,dword ptr [__viewport_matrix]
-	mov	[ebp-880],eax
-	mov	eax,[ebp-852]
-	mov	[ebp-884],eax
-	lea	eax,[ebp-872]
-	mov	[ebp-888],eax
+	mov	[ebp-696],eax
+	mov	eax,[ebp-668]
+	mov	[ebp-700],eax
+	lea	eax,[ebp-688]
+	mov	[ebp-704],eax
 ; start of inline function matrix4f_transform
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+4]
 	fmul	dword ptr [ecx+16]
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax]
 	fmul	dword ptr [ecx]
 	faddp
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+8]
 	fmul	dword ptr [ecx+32]
 	faddp
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+12]
 	fmul	dword ptr [ecx+48]
 	faddp
-	mov	eax,[ebp-888]
+	mov	eax,[ebp-704]
 	fstp	dword ptr [eax]
-	mov	eax,[ebp-880]
-	mov	ecx,[ebp-884]
+	mov	eax,[ebp-696]
+	mov	ecx,[ebp-700]
 	fld	dword ptr [ecx]
 	fmul	dword ptr [eax+4]
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+4]
 	fmul	dword ptr [ecx+20]
 	faddp
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+8]
 	fmul	dword ptr [ecx+36]
 	faddp
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+12]
 	fmul	dword ptr [ecx+52]
 	faddp
-	mov	eax,[ebp-888]
+	mov	eax,[ebp-704]
 	fstp	dword ptr [eax+4]
-	mov	eax,[ebp-880]
-	mov	ecx,[ebp-884]
+	mov	eax,[ebp-696]
+	mov	ecx,[ebp-700]
 	fld	dword ptr [ecx]
 	fmul	dword ptr [eax+8]
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+4]
 	fmul	dword ptr [ecx+24]
 	faddp
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+8]
 	fmul	dword ptr [ecx+40]
 	faddp
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+12]
 	fmul	dword ptr [ecx+56]
 	faddp
-	mov	eax,[ebp-888]
+	mov	eax,[ebp-704]
 	fstp	dword ptr [eax+8]
-	mov	eax,[ebp-880]
-	mov	ecx,[ebp-884]
+	mov	eax,[ebp-696]
+	mov	ecx,[ebp-700]
 	fld	dword ptr [ecx]
 	fmul	dword ptr [eax+12]
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+4]
 	fmul	dword ptr [ecx+28]
 	faddp
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+8]
 	fmul	dword ptr [ecx+44]
 	faddp
-	mov	eax,[ebp-884]
-	mov	ecx,[ebp-880]
+	mov	eax,[ebp-700]
+	mov	ecx,[ebp-696]
 	fld	dword ptr [eax+12]
 	fmul	dword ptr [ecx+60]
 	faddp
-	mov	eax,[ebp-888]
+	mov	eax,[ebp-704]
 	fstp	dword ptr [eax+12]
-label0073:
+label002b:
 ; end of inline function matrix4f_transform
-	lea	eax,[ebp-872]
+	lea	eax,[ebp-688]
 	add	eax,12
 	fld1
 	fdiv	dword ptr [eax]
-	fstp	dword ptr [ebp-876]
-	fld	dword ptr [ebp-872]
-	fmul	dword ptr [ebp-876]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	ecx,[ebp-856]
+	fstp	dword ptr [ebp-692]
+	fld	dword ptr [ebp-688]
+	fmul	dword ptr [ebp-692]
+	fistp	dword ptr [ebp-708]
+	mov	eax,[ebp-708]
+	mov	ecx,[ebp-672]
 	mov	[ecx],eax
-	lea	eax,[ebp-872]
+	lea	eax,[ebp-688]
 	add	eax,4
 	fld	dword ptr [eax]
-	fmul	dword ptr [ebp-876]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	ecx,[ebp-856]
+	fmul	dword ptr [ebp-692]
+	fistp	dword ptr [ebp-708]
+	mov	eax,[ebp-708]
+	mov	ecx,[ebp-672]
 	mov	[ecx+4],eax
-	mov	eax,[ebp-856]
+	mov	eax,[ebp-672]
 	cmp	dword ptr [eax],0
-	jl	label0072
-	mov	eax,[ebp-856]
+	jl	label002a
+	mov	eax,[ebp-672]
 	mov	ecx,[eax]
 	cmp	ecx,dword ptr [__width]
-	jge	label0072
-	mov	eax,[ebp-856]
+	jge	label002a
+	mov	eax,[ebp-672]
 	cmp	dword ptr [eax+4],0
-	jl	label0072
-	mov	eax,[ebp-856]
+	jl	label002a
+	mov	eax,[ebp-672]
 	mov	ecx,[eax+4]
 	cmp	ecx,dword ptr [__height]
-	jl	label0071
-label0072:
+	jl	label0029
+label002a:
 	mov	dword ptr ds:[0],0
-label0071:
-label0074:
+label0029:
+label002c:
 ; end of inline function _transform_to_screen_space
 	lea	eax,[ebp-332]
 	mov	ecx,[ebp-336]
@@ -1849,876 +1730,156 @@ label000a:
 	cmp	ecx,dword ptr [__height]
 	jge	label000c
 	fldz
-	fstp	dword ptr [ebp-520]
+	fstp	dword ptr [ebp-428]
 	fldz
-	fstp	dword ptr [ebp-524]
+	fstp	dword ptr [ebp-432]
 	mov	eax,8
 	add	eax,[ebp-340]
-	mov	[ebp-528],eax
+	mov	[ebp-436],eax
 	mov	eax,8
 	add	eax,[ebp-344]
-	mov	[ebp-532],eax
+	mov	[ebp-440],eax
 	mov	eax,8
 	add	eax,[ebp-348]
-	mov	[ebp-536],eax
+	mov	[ebp-444],eax
 	mov	eax,[ebp-348]
 	add	eax,4
 	mov	ecx,[eax]
-	mov	[ebp-540],ecx
+	mov	[ebp-448],ecx
 	mov	eax,[ebp-340]
 	mov	ecx,[eax]
-	mov	[ebp-544],ecx
+	mov	[ebp-452],ecx
 	mov	eax,[ebp-344]
 	mov	ecx,[eax]
-	mov	[ebp-548],ecx
+	mov	[ebp-456],ecx
 	mov	eax,[ebp-348]
 	mov	ecx,[eax]
-	mov	[ebp-552],ecx
+	mov	[ebp-460],ecx
 ; start of inline function _rasterize_triangle_1i
-	mov	eax,[ebp-552]
-	cmp	eax,[ebp-548]
-	jge	label0040
-	mov	eax,[ebp-544]
-	cmp	eax,[ebp-548]
-	jle	label0041
-	mov	eax,[ebp-520]
-	mov	[ebp-556],eax
-	mov	eax,[ebp-524]
-	mov	[ebp-560],eax
-	mov	eax,[ebp-536]
-	mov	ecx,[eax+4]
-	mov	[ebp-564],ecx
-	mov	eax,[ebp-536]
-	mov	ecx,[eax]
-	mov	[ebp-568],ecx
-	mov	eax,[ebp-540]
-	mov	[ebp-572],eax
-	mov	eax,[ebp-544]
-	mov	[ebp-576],eax
-	mov	eax,[ebp-552]
-	mov	[ebp-580],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-572]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-584],eax
-	mov	eax,[ebp-576]
-	sal	eax,2
-	add	eax,[ebp-584]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-588],eax
-label004a:
-	mov	eax,[ebp-564]
-	mov	[ebp-628],eax
-	mov	eax,[ebp-568]
-	mov	[ebp-632],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-632]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-636],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-628]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-640],eax
-	mov	eax,[ebp-640]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-636]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-644],ecx
-label004e:
-; end of inline function _tex2d
-	mov	eax,[ebp-644]
-	mov	[ebp-592],eax
-	mov	eax,[ebp-592]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-620],eax
-	cmp	dword ptr [ebp-620],0
-	je	label004d
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	eax,[ebp-584]
-	mov	ecx,[eax]
-	mov	[ebp-608],ecx
-	mov	eax,[ebp-608]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-612],eax
-	mov	eax,[ebp-608]
-	and	eax,255
-	mov	[ebp-616],eax
-	mov	eax,[ebp-592]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-600],eax
-	mov	eax,[ebp-592]
-	and	eax,255
-	mov	[ebp-604],eax
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-600],eax
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-604],eax
-	mov	eax,[ebp-600]
-	sal	eax,8
-	add	eax,[ebp-604]
-	mov	[ebp-596],eax
-	mov	eax,[ebp-584]
-	mov	ecx,[ebp-596]
-	mov	[eax],ecx
-label004d:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label004b:
-	add	dword ptr [ebp-584],4
-	mov	eax,[ebp-584]
-	cmp	eax,[ebp-588]
-	jl	label004a
-label004c:
-label004f:
-; end of inline function _rasterize_horiz_line
-	jmp	label0042
-label0041:
-	mov	eax,[ebp-544]
-	cmp	eax,[ebp-552]
-	jge	label0043
-	mov	eax,[ebp-520]
-	mov	[ebp-556],eax
-	mov	eax,[ebp-524]
-	mov	[ebp-560],eax
-	mov	eax,[ebp-528]
-	mov	ecx,[eax+4]
-	mov	[ebp-564],ecx
-	mov	eax,[ebp-528]
-	mov	ecx,[eax]
-	mov	[ebp-568],ecx
-	mov	eax,[ebp-540]
-	mov	[ebp-572],eax
-	mov	eax,[ebp-548]
-	mov	[ebp-576],eax
-	mov	eax,[ebp-544]
-	mov	[ebp-580],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-572]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-584],eax
-	mov	eax,[ebp-576]
-	sal	eax,2
-	add	eax,[ebp-584]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-588],eax
-label0050:
-	mov	eax,[ebp-564]
-	mov	[ebp-628],eax
-	mov	eax,[ebp-568]
-	mov	[ebp-632],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-632]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-636],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-628]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-640],eax
-	mov	eax,[ebp-640]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-636]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-644],ecx
-label0054:
-; end of inline function _tex2d
-	mov	eax,[ebp-644]
-	mov	[ebp-592],eax
-	mov	eax,[ebp-592]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-620],eax
-	cmp	dword ptr [ebp-620],0
-	je	label0053
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	eax,[ebp-584]
-	mov	ecx,[eax]
-	mov	[ebp-608],ecx
-	mov	eax,[ebp-608]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-612],eax
-	mov	eax,[ebp-608]
-	and	eax,255
-	mov	[ebp-616],eax
-	mov	eax,[ebp-592]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-600],eax
-	mov	eax,[ebp-592]
-	and	eax,255
-	mov	[ebp-604],eax
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-600],eax
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-604],eax
-	mov	eax,[ebp-600]
-	sal	eax,8
-	add	eax,[ebp-604]
-	mov	[ebp-596],eax
-	mov	eax,[ebp-584]
-	mov	ecx,[ebp-596]
-	mov	[eax],ecx
-label0053:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label0051:
-	add	dword ptr [ebp-584],4
-	mov	eax,[ebp-584]
-	cmp	eax,[ebp-588]
-	jl	label0050
-label0052:
-label0055:
-; end of inline function _rasterize_horiz_line
-	jmp	label0044
-label0043:
-	mov	eax,[ebp-520]
-	mov	[ebp-556],eax
-	mov	eax,[ebp-524]
-	mov	[ebp-560],eax
-	mov	eax,[ebp-536]
-	mov	ecx,[eax+4]
-	mov	[ebp-564],ecx
-	mov	eax,[ebp-536]
-	mov	ecx,[eax]
-	mov	[ebp-568],ecx
-	mov	eax,[ebp-540]
-	mov	[ebp-572],eax
-	mov	eax,[ebp-548]
-	mov	[ebp-576],eax
-	mov	eax,[ebp-552]
-	mov	[ebp-580],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-572]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-584],eax
-	mov	eax,[ebp-576]
-	sal	eax,2
-	add	eax,[ebp-584]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-588],eax
-label0056:
-	mov	eax,[ebp-564]
-	mov	[ebp-628],eax
-	mov	eax,[ebp-568]
-	mov	[ebp-632],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-632]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-636],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-628]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-640],eax
-	mov	eax,[ebp-640]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-636]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-644],ecx
-label005a:
-; end of inline function _tex2d
-	mov	eax,[ebp-644]
-	mov	[ebp-592],eax
-	mov	eax,[ebp-592]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-620],eax
-	cmp	dword ptr [ebp-620],0
-	je	label0059
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	eax,[ebp-584]
-	mov	ecx,[eax]
-	mov	[ebp-608],ecx
-	mov	eax,[ebp-608]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-612],eax
-	mov	eax,[ebp-608]
-	and	eax,255
-	mov	[ebp-616],eax
-	mov	eax,[ebp-592]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-600],eax
-	mov	eax,[ebp-592]
-	and	eax,255
-	mov	[ebp-604],eax
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-600],eax
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-604],eax
-	mov	eax,[ebp-600]
-	sal	eax,8
-	add	eax,[ebp-604]
-	mov	[ebp-596],eax
-	mov	eax,[ebp-584]
-	mov	ecx,[ebp-596]
-	mov	[eax],ecx
-label0059:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label0057:
-	add	dword ptr [ebp-584],4
-	mov	eax,[ebp-584]
-	cmp	eax,[ebp-588]
-	jl	label0056
-label0058:
-label005b:
-; end of inline function _rasterize_horiz_line
-label0044:
-label0042:
-	jmp	label0045
-label0040:
-	mov	eax,[ebp-544]
-	cmp	eax,[ebp-548]
-	jge	label0046
-	fld	dword ptr [ebp-520]
+	mov	eax,[ebp-460]
+	cmp	eax,[ebp-456]
+	jge	label001c
+	mov	eax,[ebp-452]
+	cmp	eax,[ebp-456]
+	jle	label001d
+	push	dword ptr [ebp-428]
+	push	dword ptr [ebp-432]
+	mov	eax,[ebp-444]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp-444]
+	push	dword ptr [eax]
+	push	dword ptr [ebp-448]
+	push	dword ptr [ebp-452]
+	push	dword ptr [ebp-460]
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label001e
+label001d:
+	mov	eax,[ebp-452]
+	cmp	eax,[ebp-460]
+	jge	label001f
+	push	dword ptr [ebp-428]
+	push	dword ptr [ebp-432]
+	mov	eax,[ebp-436]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp-436]
+	push	dword ptr [eax]
+	push	dword ptr [ebp-448]
+	push	dword ptr [ebp-456]
+	push	dword ptr [ebp-452]
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label0020
+label001f:
+	push	dword ptr [ebp-428]
+	push	dword ptr [ebp-432]
+	mov	eax,[ebp-444]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp-444]
+	push	dword ptr [eax]
+	push	dword ptr [ebp-448]
+	push	dword ptr [ebp-456]
+	push	dword ptr [ebp-460]
+	call	__rasterize_horiz_line
+	add	esp,28
+label0020:
+label001e:
+	jmp	label0021
+label001c:
+	mov	eax,[ebp-452]
+	cmp	eax,[ebp-456]
+	jge	label0022
+	fld	dword ptr [ebp-428]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-556]
-	fld	dword ptr [ebp-524]
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	fld	dword ptr [ebp-432]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-560]
-	mov	eax,[ebp-528]
-	mov	ecx,[eax+4]
-	mov	[ebp-564],ecx
-	mov	eax,[ebp-528]
-	mov	ecx,[eax]
-	mov	[ebp-568],ecx
-	mov	eax,[ebp-540]
-	mov	[ebp-572],eax
-	mov	eax,[ebp-552]
-	mov	[ebp-576],eax
-	mov	eax,[ebp-544]
-	mov	[ebp-580],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-572]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-584],eax
-	mov	eax,[ebp-576]
-	sal	eax,2
-	add	eax,[ebp-584]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-588],eax
-label005c:
-	mov	eax,[ebp-564]
-	mov	[ebp-628],eax
-	mov	eax,[ebp-568]
-	mov	[ebp-632],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-632]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-636],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-628]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-640],eax
-	mov	eax,[ebp-640]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-636]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-644],ecx
-label0060:
-; end of inline function _tex2d
-	mov	eax,[ebp-644]
-	mov	[ebp-592],eax
-	mov	eax,[ebp-592]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-620],eax
-	cmp	dword ptr [ebp-620],0
-	je	label005f
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	eax,[ebp-584]
-	mov	ecx,[eax]
-	mov	[ebp-608],ecx
-	mov	eax,[ebp-608]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-612],eax
-	mov	eax,[ebp-608]
-	and	eax,255
-	mov	[ebp-616],eax
-	mov	eax,[ebp-592]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-600],eax
-	mov	eax,[ebp-592]
-	and	eax,255
-	mov	[ebp-604],eax
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-600],eax
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-604],eax
-	mov	eax,[ebp-600]
-	sal	eax,8
-	add	eax,[ebp-604]
-	mov	[ebp-596],eax
-	mov	eax,[ebp-584]
-	mov	ecx,[ebp-596]
-	mov	[eax],ecx
-label005f:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label005d:
-	add	dword ptr [ebp-584],4
-	mov	eax,[ebp-584]
-	cmp	eax,[ebp-588]
-	jl	label005c
-label005e:
-label0061:
-; end of inline function _rasterize_horiz_line
-	jmp	label0047
-label0046:
-	mov	eax,[ebp-544]
-	cmp	eax,[ebp-552]
-	jle	label0048
-	fld	dword ptr [ebp-520]
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	mov	eax,[ebp-436]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp-436]
+	push	dword ptr [eax]
+	push	dword ptr [ebp-448]
+	push	dword ptr [ebp-460]
+	push	dword ptr [ebp-452]
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label0023
+label0022:
+	mov	eax,[ebp-452]
+	cmp	eax,[ebp-460]
+	jle	label0024
+	fld	dword ptr [ebp-428]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-556]
-	fld	dword ptr [ebp-524]
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	fld	dword ptr [ebp-432]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-560]
-	mov	eax,[ebp-532]
-	mov	ecx,[eax+4]
-	mov	[ebp-564],ecx
-	mov	eax,[ebp-532]
-	mov	ecx,[eax]
-	mov	[ebp-568],ecx
-	mov	eax,[ebp-540]
-	mov	[ebp-572],eax
-	mov	eax,[ebp-544]
-	mov	[ebp-576],eax
-	mov	eax,[ebp-548]
-	mov	[ebp-580],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-572]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-584],eax
-	mov	eax,[ebp-576]
-	sal	eax,2
-	add	eax,[ebp-584]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-588],eax
-label0062:
-	mov	eax,[ebp-564]
-	mov	[ebp-628],eax
-	mov	eax,[ebp-568]
-	mov	[ebp-632],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-632]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-636],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-628]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-640],eax
-	mov	eax,[ebp-640]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-636]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-644],ecx
-label0066:
-; end of inline function _tex2d
-	mov	eax,[ebp-644]
-	mov	[ebp-592],eax
-	mov	eax,[ebp-592]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-620],eax
-	cmp	dword ptr [ebp-620],0
-	je	label0065
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	eax,[ebp-584]
-	mov	ecx,[eax]
-	mov	[ebp-608],ecx
-	mov	eax,[ebp-608]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-612],eax
-	mov	eax,[ebp-608]
-	and	eax,255
-	mov	[ebp-616],eax
-	mov	eax,[ebp-592]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-600],eax
-	mov	eax,[ebp-592]
-	and	eax,255
-	mov	[ebp-604],eax
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-600],eax
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-604],eax
-	mov	eax,[ebp-600]
-	sal	eax,8
-	add	eax,[ebp-604]
-	mov	[ebp-596],eax
-	mov	eax,[ebp-584]
-	mov	ecx,[ebp-596]
-	mov	[eax],ecx
-label0065:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label0063:
-	add	dword ptr [ebp-584],4
-	mov	eax,[ebp-584]
-	cmp	eax,[ebp-588]
-	jl	label0062
-label0064:
-label0067:
-; end of inline function _rasterize_horiz_line
-	jmp	label0049
-label0048:
-	fld	dword ptr [ebp-520]
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	mov	eax,[ebp-440]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp-440]
+	push	dword ptr [eax]
+	push	dword ptr [ebp-448]
+	push	dword ptr [ebp-452]
+	push	dword ptr [ebp-456]
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label0025
+label0024:
+	fld	dword ptr [ebp-428]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-556]
-	fld	dword ptr [ebp-524]
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	fld	dword ptr [ebp-432]
 	fldz
 	fsubrp
-	fstp	dword ptr [ebp-560]
-	mov	eax,[ebp-532]
-	mov	ecx,[eax+4]
-	mov	[ebp-564],ecx
-	mov	eax,[ebp-532]
-	mov	ecx,[eax]
-	mov	[ebp-568],ecx
-	mov	eax,[ebp-540]
-	mov	[ebp-572],eax
-	mov	eax,[ebp-552]
-	mov	[ebp-576],eax
-	mov	eax,[ebp-548]
-	mov	[ebp-580],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-572]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-584],eax
-	mov	eax,[ebp-576]
-	sal	eax,2
-	add	eax,[ebp-584]
-	mov	ecx,[ebp-580]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-588],eax
-label0068:
-	mov	eax,[ebp-564]
-	mov	[ebp-628],eax
-	mov	eax,[ebp-568]
-	mov	[ebp-632],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-632]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-636],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-628]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-640],eax
-	mov	eax,[ebp-640]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-636]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-644],ecx
-label006c:
-; end of inline function _tex2d
-	mov	eax,[ebp-644]
-	mov	[ebp-592],eax
-	mov	eax,[ebp-592]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-620],eax
-	cmp	dword ptr [ebp-620],0
-	je	label006b
-	fild	dword ptr [ebp-620]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-624]
-	mov	eax,[ebp-584]
-	mov	ecx,[eax]
-	mov	[ebp-608],ecx
-	mov	eax,[ebp-608]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-612],eax
-	mov	eax,[ebp-608]
-	and	eax,255
-	mov	[ebp-616],eax
-	mov	eax,[ebp-592]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-600],eax
-	mov	eax,[ebp-592]
-	and	eax,255
-	mov	[ebp-604],eax
-	fild	dword ptr [ebp-600]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-612]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-600],eax
-	fild	dword ptr [ebp-604]
-	fmul	dword ptr [ebp-624]
-	fild	dword ptr [ebp-616]
-	fld1
-	fsub	dword ptr [ebp-624]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-604],eax
-	mov	eax,[ebp-600]
-	sal	eax,8
-	add	eax,[ebp-604]
-	mov	[ebp-596],eax
-	mov	eax,[ebp-584]
-	mov	ecx,[ebp-596]
-	mov	[eax],ecx
-label006b:
-	fld	dword ptr [ebp-568]
-	fadd	dword ptr [ebp-560]
-	fstp	dword ptr [ebp-568]
-	fld	dword ptr [ebp-564]
-	fadd	dword ptr [ebp-556]
-	fstp	dword ptr [ebp-564]
-label0069:
-	add	dword ptr [ebp-584],4
-	mov	eax,[ebp-584]
-	cmp	eax,[ebp-588]
-	jl	label0068
-label006a:
-label006d:
-; end of inline function _rasterize_horiz_line
-label0049:
-label0047:
-label0045:
-label006e:
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	mov	eax,[ebp-440]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp-440]
+	push	dword ptr [eax]
+	push	dword ptr [ebp-448]
+	push	dword ptr [ebp-460]
+	push	dword ptr [ebp-456]
+	call	__rasterize_horiz_line
+	add	esp,28
+label0025:
+label0023:
+label0021:
+label0026:
 ; end of inline function _rasterize_triangle_1i
 label000c:
-	jmp	label006f
+	jmp	label0027
 label000b:
 	mov	eax,[ebp-348]
 	add	eax,4
@@ -2777,8 +1938,8 @@ label000e:
 	add	eax,4
 	mov	ecx,[ebp-364]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	mov	eax,[ebp-344]
 	mov	ecx,[ebp-348]
 	fld	dword ptr [eax+8]
@@ -2790,8 +1951,8 @@ label000e:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,[ebp-348]
 	fadd	dword ptr [eax+8]
@@ -2800,8 +1961,8 @@ label000e:
 	add	eax,4
 	mov	ecx,[ebp-364]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	mov	eax,[ebp-340]
 	mov	ecx,[ebp-348]
 	fld	dword ptr [eax+8]
@@ -2813,8 +1974,8 @@ label000e:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,[ebp-348]
 	fadd	dword ptr [eax+8]
@@ -2823,8 +1984,8 @@ label000e:
 	add	eax,4
 	mov	ecx,[ebp-364]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	mov	eax,8
 	add	eax,[ebp-344]
 	add	eax,4
@@ -2840,8 +2001,8 @@ label000e:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,8
 	add	eax,[ebp-348]
@@ -2852,8 +2013,8 @@ label000e:
 	add	eax,4
 	mov	ecx,[ebp-364]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	mov	eax,8
 	add	eax,[ebp-340]
 	add	eax,4
@@ -2869,8 +2030,8 @@ label000e:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,8
 	add	eax,[ebp-348]
@@ -2879,16 +2040,16 @@ label000e:
 	fstp	dword ptr [ebp-380]
 	mov	eax,[ebp-360]
 	sub	eax,[ebp-356]
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],eax
+	fild	dword ptr [ebp-708]
 	fld	dword ptr [ebp-376]
 	fsub	dword ptr [ebp-368]
 	fdivrp
 	fstp	dword ptr [ebp-384]
 	mov	eax,[ebp-360]
 	sub	eax,[ebp-356]
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],eax
+	fild	dword ptr [ebp-708]
 	fld	dword ptr [ebp-380]
 	fsub	dword ptr [ebp-372]
 	fdivrp
@@ -2915,272 +2076,28 @@ label000e:
 	mov	eax,[ebp-424]
 	cmp	eax,[ebp-420]
 	jg	label0013
-	mov	eax,[ebp-392]
-	mov	[ebp-428],eax
-	mov	eax,[ebp-396]
-	mov	[ebp-432],eax
-	mov	eax,[ebp-408]
-	mov	[ebp-436],eax
-	mov	eax,[ebp-412]
-	mov	[ebp-440],eax
-	mov	eax,[ebp-416]
-	mov	[ebp-444],eax
-	mov	eax,[ebp-420]
-	mov	[ebp-448],eax
-	mov	eax,[ebp-424]
-	mov	[ebp-452],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-444]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-456],eax
-	mov	eax,[ebp-448]
-	sal	eax,2
-	add	eax,[ebp-456]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-460],eax
-label0015:
-	mov	eax,[ebp-436]
-	mov	[ebp-500],eax
-	mov	eax,[ebp-440]
-	mov	[ebp-504],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-504]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-508],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-500]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-512],eax
-	mov	eax,[ebp-512]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-508]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-516],ecx
-label0019:
-; end of inline function _tex2d
-	mov	eax,[ebp-516]
-	mov	[ebp-464],eax
-	mov	eax,[ebp-464]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-492],eax
-	cmp	dword ptr [ebp-492],0
-	je	label0018
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	eax,[ebp-456]
-	mov	ecx,[eax]
-	mov	[ebp-480],ecx
-	mov	eax,[ebp-480]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-484],eax
-	mov	eax,[ebp-480]
-	and	eax,255
-	mov	[ebp-488],eax
-	mov	eax,[ebp-464]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-472],eax
-	mov	eax,[ebp-464]
-	and	eax,255
-	mov	[ebp-476],eax
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-472],eax
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-476],eax
-	mov	eax,[ebp-472]
-	sal	eax,8
-	add	eax,[ebp-476]
-	mov	[ebp-468],eax
-	mov	eax,[ebp-456]
-	mov	ecx,[ebp-468]
-	mov	[eax],ecx
-label0018:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label0016:
-	add	dword ptr [ebp-456],4
-	mov	eax,[ebp-456]
-	cmp	eax,[ebp-460]
-	jl	label0015
-label0017:
-label001a:
-; end of inline function _rasterize_horiz_line
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-408]
+	push	dword ptr [ebp-412]
+	push	dword ptr [ebp-416]
+	push	dword ptr [ebp-420]
+	push	dword ptr [ebp-424]
+	call	__rasterize_horiz_line
+	add	esp,28
 	jmp	label0014
 label0013:
-	mov	eax,[ebp-392]
-	mov	[ebp-428],eax
-	mov	eax,[ebp-396]
-	mov	[ebp-432],eax
-	mov	eax,[ebp-400]
-	mov	[ebp-436],eax
-	mov	eax,[ebp-404]
-	mov	[ebp-440],eax
-	mov	eax,[ebp-416]
-	mov	[ebp-444],eax
-	mov	eax,[ebp-424]
-	mov	[ebp-448],eax
-	mov	eax,[ebp-420]
-	mov	[ebp-452],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-444]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-456],eax
-	mov	eax,[ebp-448]
-	sal	eax,2
-	add	eax,[ebp-456]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-460],eax
-label001b:
-	mov	eax,[ebp-436]
-	mov	[ebp-500],eax
-	mov	eax,[ebp-440]
-	mov	[ebp-504],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-504]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-508],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-500]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-512],eax
-	mov	eax,[ebp-512]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-508]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-516],ecx
-label001f:
-; end of inline function _tex2d
-	mov	eax,[ebp-516]
-	mov	[ebp-464],eax
-	mov	eax,[ebp-464]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-492],eax
-	cmp	dword ptr [ebp-492],0
-	je	label001e
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	eax,[ebp-456]
-	mov	ecx,[eax]
-	mov	[ebp-480],ecx
-	mov	eax,[ebp-480]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-484],eax
-	mov	eax,[ebp-480]
-	and	eax,255
-	mov	[ebp-488],eax
-	mov	eax,[ebp-464]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-472],eax
-	mov	eax,[ebp-464]
-	and	eax,255
-	mov	[ebp-476],eax
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-472],eax
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-476],eax
-	mov	eax,[ebp-472]
-	sal	eax,8
-	add	eax,[ebp-476]
-	mov	[ebp-468],eax
-	mov	eax,[ebp-456]
-	mov	ecx,[ebp-468]
-	mov	[eax],ecx
-label001e:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label001c:
-	add	dword ptr [ebp-456],4
-	mov	eax,[ebp-456]
-	cmp	eax,[ebp-460]
-	jl	label001b
-label001d:
-label0020:
-; end of inline function _rasterize_horiz_line
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-400]
+	push	dword ptr [ebp-404]
+	push	dword ptr [ebp-416]
+	push	dword ptr [ebp-424]
+	push	dword ptr [ebp-420]
+	call	__rasterize_horiz_line
+	add	esp,28
 label0014:
-label0021:
+label0015:
 ; end of inline function _rasterize_horiz_line__unordered
 	inc	dword ptr [ebp-364]
 	jmp	label000e
@@ -3214,8 +2131,8 @@ label000f:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	mov	eax,[ebp-340]
 	mov	ecx,[ebp-348]
 	fld	dword ptr [eax+8]
@@ -3227,8 +2144,8 @@ label000f:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,[ebp-348]
 	fadd	dword ptr [eax+8]
@@ -3239,8 +2156,8 @@ label000f:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	mov	eax,8
 	add	eax,[ebp-340]
 	add	eax,4
@@ -3256,8 +2173,8 @@ label000f:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,8
 	add	eax,[ebp-348]
@@ -3270,8 +2187,8 @@ label000f:
 	mov	eax,[ebp-344]
 	mov	ecx,[ebp-360]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	fdivp
 	fstp	dword ptr [ebp-384]
 	mov	eax,8
@@ -3282,8 +2199,8 @@ label000f:
 	mov	eax,[ebp-344]
 	mov	ecx,[ebp-360]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	fdivp
 	fstp	dword ptr [ebp-388]
 	mov	eax,[ebp-388]
@@ -3314,273 +2231,29 @@ label000f:
 ; start of inline function _rasterize_horiz_line__unordered
 	mov	eax,[ebp-424]
 	cmp	eax,[ebp-420]
-	jg	label0022
-	mov	eax,[ebp-392]
-	mov	[ebp-428],eax
-	mov	eax,[ebp-396]
-	mov	[ebp-432],eax
-	mov	eax,[ebp-408]
-	mov	[ebp-436],eax
-	mov	eax,[ebp-412]
-	mov	[ebp-440],eax
-	mov	eax,[ebp-416]
-	mov	[ebp-444],eax
-	mov	eax,[ebp-420]
-	mov	[ebp-448],eax
-	mov	eax,[ebp-424]
-	mov	[ebp-452],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-444]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-456],eax
-	mov	eax,[ebp-448]
-	sal	eax,2
-	add	eax,[ebp-456]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-460],eax
-label0024:
-	mov	eax,[ebp-436]
-	mov	[ebp-500],eax
-	mov	eax,[ebp-440]
-	mov	[ebp-504],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-504]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-508],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-500]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-512],eax
-	mov	eax,[ebp-512]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-508]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-516],ecx
-label0028:
-; end of inline function _tex2d
-	mov	eax,[ebp-516]
-	mov	[ebp-464],eax
-	mov	eax,[ebp-464]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-492],eax
-	cmp	dword ptr [ebp-492],0
-	je	label0027
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	eax,[ebp-456]
-	mov	ecx,[eax]
-	mov	[ebp-480],ecx
-	mov	eax,[ebp-480]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-484],eax
-	mov	eax,[ebp-480]
-	and	eax,255
-	mov	[ebp-488],eax
-	mov	eax,[ebp-464]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-472],eax
-	mov	eax,[ebp-464]
-	and	eax,255
-	mov	[ebp-476],eax
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-472],eax
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-476],eax
-	mov	eax,[ebp-472]
-	sal	eax,8
-	add	eax,[ebp-476]
-	mov	[ebp-468],eax
-	mov	eax,[ebp-456]
-	mov	ecx,[ebp-468]
-	mov	[eax],ecx
-label0027:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label0025:
-	add	dword ptr [ebp-456],4
-	mov	eax,[ebp-456]
-	cmp	eax,[ebp-460]
-	jl	label0024
-label0026:
-label0029:
-; end of inline function _rasterize_horiz_line
-	jmp	label0023
-label0022:
-	mov	eax,[ebp-392]
-	mov	[ebp-428],eax
-	mov	eax,[ebp-396]
-	mov	[ebp-432],eax
-	mov	eax,[ebp-400]
-	mov	[ebp-436],eax
-	mov	eax,[ebp-404]
-	mov	[ebp-440],eax
-	mov	eax,[ebp-416]
-	mov	[ebp-444],eax
-	mov	eax,[ebp-424]
-	mov	[ebp-448],eax
-	mov	eax,[ebp-420]
-	mov	[ebp-452],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-444]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-456],eax
-	mov	eax,[ebp-448]
-	sal	eax,2
-	add	eax,[ebp-456]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-460],eax
-label002a:
-	mov	eax,[ebp-436]
-	mov	[ebp-500],eax
-	mov	eax,[ebp-440]
-	mov	[ebp-504],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-504]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-508],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-500]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-512],eax
-	mov	eax,[ebp-512]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-508]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-516],ecx
-label002e:
-; end of inline function _tex2d
-	mov	eax,[ebp-516]
-	mov	[ebp-464],eax
-	mov	eax,[ebp-464]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-492],eax
-	cmp	dword ptr [ebp-492],0
-	je	label002d
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	eax,[ebp-456]
-	mov	ecx,[eax]
-	mov	[ebp-480],ecx
-	mov	eax,[ebp-480]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-484],eax
-	mov	eax,[ebp-480]
-	and	eax,255
-	mov	[ebp-488],eax
-	mov	eax,[ebp-464]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-472],eax
-	mov	eax,[ebp-464]
-	and	eax,255
-	mov	[ebp-476],eax
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-472],eax
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-476],eax
-	mov	eax,[ebp-472]
-	sal	eax,8
-	add	eax,[ebp-476]
-	mov	[ebp-468],eax
-	mov	eax,[ebp-456]
-	mov	ecx,[ebp-468]
-	mov	[eax],ecx
-label002d:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label002b:
-	add	dword ptr [ebp-456],4
-	mov	eax,[ebp-456]
-	cmp	eax,[ebp-460]
-	jl	label002a
-label002c:
-label002f:
-; end of inline function _rasterize_horiz_line
-label0023:
-label0030:
+	jg	label0016
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-408]
+	push	dword ptr [ebp-412]
+	push	dword ptr [ebp-416]
+	push	dword ptr [ebp-420]
+	push	dword ptr [ebp-424]
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label0017
+label0016:
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-400]
+	push	dword ptr [ebp-404]
+	push	dword ptr [ebp-416]
+	push	dword ptr [ebp-424]
+	push	dword ptr [ebp-420]
+	call	__rasterize_horiz_line
+	add	esp,28
+label0017:
+label0018:
 ; end of inline function _rasterize_horiz_line__unordered
 	mov	eax,[ebp-344]
 	add	eax,4
@@ -3640,8 +2313,8 @@ label0011:
 	add	eax,4
 	mov	ecx,[ebp-364]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	mov	eax,[ebp-340]
 	mov	ecx,[ebp-344]
 	fld	dword ptr [eax+8]
@@ -3653,8 +2326,8 @@ label0011:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,[ebp-344]
 	fadd	dword ptr [eax+8]
@@ -3663,8 +2336,8 @@ label0011:
 	add	eax,4
 	mov	ecx,[ebp-364]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	mov	eax,[ebp-340]
 	mov	ecx,[ebp-348]
 	fld	dword ptr [eax+8]
@@ -3676,8 +2349,8 @@ label0011:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,[ebp-348]
 	fadd	dword ptr [eax+8]
@@ -3686,8 +2359,8 @@ label0011:
 	add	eax,4
 	mov	ecx,[ebp-364]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	mov	eax,8
 	add	eax,[ebp-340]
 	add	eax,4
@@ -3703,8 +2376,8 @@ label0011:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,8
 	add	eax,[ebp-344]
@@ -3715,8 +2388,8 @@ label0011:
 	add	eax,4
 	mov	ecx,[ebp-364]
 	sub	ecx,[eax]
-	mov	[ebp-948],ecx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],ecx
+	fild	dword ptr [ebp-708]
 	mov	eax,8
 	add	eax,[ebp-340]
 	add	eax,4
@@ -3732,8 +2405,8 @@ label0011:
 	add	ecx,4
 	mov	edx,[eax]
 	sub	edx,[ecx]
-	mov	[ebp-948],edx
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],edx
+	fild	dword ptr [ebp-708]
 	fdivp
 	mov	eax,8
 	add	eax,[ebp-348]
@@ -3742,16 +2415,16 @@ label0011:
 	fstp	dword ptr [ebp-380]
 	mov	eax,[ebp-360]
 	sub	eax,[ebp-356]
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],eax
+	fild	dword ptr [ebp-708]
 	fld	dword ptr [ebp-376]
 	fsub	dword ptr [ebp-368]
 	fdivrp
 	fstp	dword ptr [ebp-384]
 	mov	eax,[ebp-360]
 	sub	eax,[ebp-356]
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
+	mov	[ebp-708],eax
+	fild	dword ptr [ebp-708]
 	fld	dword ptr [ebp-380]
 	fsub	dword ptr [ebp-372]
 	fdivrp
@@ -3777,287 +2450,43 @@ label0011:
 ; start of inline function _rasterize_horiz_line__unordered
 	mov	eax,[ebp-424]
 	cmp	eax,[ebp-420]
-	jg	label0031
-	mov	eax,[ebp-392]
-	mov	[ebp-428],eax
-	mov	eax,[ebp-396]
-	mov	[ebp-432],eax
-	mov	eax,[ebp-408]
-	mov	[ebp-436],eax
-	mov	eax,[ebp-412]
-	mov	[ebp-440],eax
-	mov	eax,[ebp-416]
-	mov	[ebp-444],eax
-	mov	eax,[ebp-420]
-	mov	[ebp-448],eax
-	mov	eax,[ebp-424]
-	mov	[ebp-452],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-444]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-456],eax
-	mov	eax,[ebp-448]
-	sal	eax,2
-	add	eax,[ebp-456]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-460],eax
-label0033:
-	mov	eax,[ebp-436]
-	mov	[ebp-500],eax
-	mov	eax,[ebp-440]
-	mov	[ebp-504],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-504]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-508],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-500]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-512],eax
-	mov	eax,[ebp-512]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-508]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-516],ecx
-label0037:
-; end of inline function _tex2d
-	mov	eax,[ebp-516]
-	mov	[ebp-464],eax
-	mov	eax,[ebp-464]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-492],eax
-	cmp	dword ptr [ebp-492],0
-	je	label0036
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	eax,[ebp-456]
-	mov	ecx,[eax]
-	mov	[ebp-480],ecx
-	mov	eax,[ebp-480]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-484],eax
-	mov	eax,[ebp-480]
-	and	eax,255
-	mov	[ebp-488],eax
-	mov	eax,[ebp-464]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-472],eax
-	mov	eax,[ebp-464]
-	and	eax,255
-	mov	[ebp-476],eax
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-472],eax
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-476],eax
-	mov	eax,[ebp-472]
-	sal	eax,8
-	add	eax,[ebp-476]
-	mov	[ebp-468],eax
-	mov	eax,[ebp-456]
-	mov	ecx,[ebp-468]
-	mov	[eax],ecx
-label0036:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label0034:
-	add	dword ptr [ebp-456],4
-	mov	eax,[ebp-456]
-	cmp	eax,[ebp-460]
-	jl	label0033
-label0035:
-label0038:
-; end of inline function _rasterize_horiz_line
-	jmp	label0032
-label0031:
-	mov	eax,[ebp-392]
-	mov	[ebp-428],eax
-	mov	eax,[ebp-396]
-	mov	[ebp-432],eax
-	mov	eax,[ebp-400]
-	mov	[ebp-436],eax
-	mov	eax,[ebp-404]
-	mov	[ebp-440],eax
-	mov	eax,[ebp-416]
-	mov	[ebp-444],eax
-	mov	eax,[ebp-424]
-	mov	[ebp-448],eax
-	mov	eax,[ebp-420]
-	mov	[ebp-452],eax
-; start of inline function _rasterize_horiz_line
-	mov	eax,dword ptr [__pitch]
-	imul	eax,[ebp-444]
-	add	eax,dword ptr [__videomem]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	add	eax,ecx
-	mov	[ebp-456],eax
-	mov	eax,[ebp-448]
-	sal	eax,2
-	add	eax,[ebp-456]
-	mov	ecx,[ebp-452]
-	sal	ecx,2
-	sub	eax,ecx
-	mov	[ebp-460],eax
-label0039:
-	mov	eax,[ebp-436]
-	mov	[ebp-500],eax
-	mov	eax,[ebp-440]
-	mov	[ebp-504],eax
-; start of inline function _tex2d
-	mov	eax,dword ptr [__texture_width]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-504]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-508],eax
-	mov	eax,dword ptr [__texture_height]
-	dec	eax
-	mov	[ebp-948],eax
-	fild	dword ptr [ebp-948]
-	fmul	dword ptr [ebp-500]
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-512],eax
-	mov	eax,[ebp-512]
-	imul	eax,dword ptr [__texture_width]
-	add	eax,[ebp-508]
-	sal	eax,2
-	add	eax,dword ptr [__texture_data]
-	mov	ecx,[eax]
-	mov	[ebp-516],ecx
-label003d:
-; end of inline function _tex2d
-	mov	eax,[ebp-516]
-	mov	[ebp-464],eax
-	mov	eax,[ebp-464]
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-492],eax
-	cmp	dword ptr [ebp-492],0
-	je	label003c
-	fild	dword ptr [ebp-492]
-	fld	dword ptr [___unnamed_float_3]
-	fdivp
-	fstp	dword ptr [ebp-496]
-	mov	eax,[ebp-456]
-	mov	ecx,[eax]
-	mov	[ebp-480],ecx
-	mov	eax,[ebp-480]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-484],eax
-	mov	eax,[ebp-480]
-	and	eax,255
-	mov	[ebp-488],eax
-	mov	eax,[ebp-464]
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-472],eax
-	mov	eax,[ebp-464]
-	and	eax,255
-	mov	[ebp-476],eax
-	fild	dword ptr [ebp-472]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-484]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-472],eax
-	fild	dword ptr [ebp-476]
-	fmul	dword ptr [ebp-496]
-	fild	dword ptr [ebp-488]
-	fld1
-	fsub	dword ptr [ebp-496]
-	fmulp
-	faddp
-	fistp	dword ptr [ebp-948]
-	mov	eax,[ebp-948]
-	mov	[ebp-476],eax
-	mov	eax,[ebp-472]
-	sal	eax,8
-	add	eax,[ebp-476]
-	mov	[ebp-468],eax
-	mov	eax,[ebp-456]
-	mov	ecx,[ebp-468]
-	mov	[eax],ecx
-label003c:
-	fld	dword ptr [ebp-440]
-	fadd	dword ptr [ebp-432]
-	fstp	dword ptr [ebp-440]
-	fld	dword ptr [ebp-436]
-	fadd	dword ptr [ebp-428]
-	fstp	dword ptr [ebp-436]
-label003a:
-	add	dword ptr [ebp-456],4
-	mov	eax,[ebp-456]
-	cmp	eax,[ebp-460]
-	jl	label0039
-label003b:
-label003e:
-; end of inline function _rasterize_horiz_line
-label0032:
-label003f:
+	jg	label0019
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-408]
+	push	dword ptr [ebp-412]
+	push	dword ptr [ebp-416]
+	push	dword ptr [ebp-420]
+	push	dword ptr [ebp-424]
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label001a
+label0019:
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-400]
+	push	dword ptr [ebp-404]
+	push	dword ptr [ebp-416]
+	push	dword ptr [ebp-424]
+	push	dword ptr [ebp-420]
+	call	__rasterize_horiz_line
+	add	esp,28
+label001a:
+label001b:
 ; end of inline function _rasterize_horiz_line__unordered
 	inc	dword ptr [ebp-364]
 	jmp	label0011
 label0012:
-label006f:
+label0027:
 ; end of inline function _rasterize_triangle_2i
 	inc	dword ptr [ebp-336]
 	jmp	label0006
 label0007:
-label0075:
+label002d:
 ; end of inline function _rasterize_polygon_4f
 	pop	ebx
 	pop	edi
-	add	esp,948
+	add	esp,708
 	pop	ebp
 	ret
 _rasterizer_triangle3f endp	
