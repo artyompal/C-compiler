@@ -1278,70 +1278,72 @@ __tex2d endp
 
 __rasterize_horiz_line proc
 	create_stack_frame
-	mov	dword106,[ebp+8]
-	mov	dword101,dword ptr [__pitch]
-	imul	dword101,[ebp+16]
-	add	dword101,dword ptr [__videomem]
+	mov	dword108,[ebp+8]
+	mov	dword103,dword ptr [__pitch]
+	imul	dword103,[ebp+16]
+	add	dword103,dword ptr [__videomem]
+	mov	dword7,dword108
+	sal	dword7,2
+	add	dword103,dword7
+	mov	dword106,[ebp+12]
 	sal	dword106,2
-	add	dword101,dword106
-	sal	dword ptr [ebp+12],2
-	mov	dword104,dword101
-	add	dword104,[ebp+12]
-	sal	dword106,2
-	sub	dword104,dword106
+	add	dword106,dword103
+	mov	dword15,dword108
+	sal	dword15,2
+	sub	dword106,dword15
 label0000:
-	mov	dword79,[ebp+24]
-	mov	[ebp-48],dword79
-	mov	dword78,[ebp+20]
-	mov	[ebp-52],dword78
+	mov	dword81,[ebp+24]
+	mov	[ebp-48],dword81
+	mov	dword80,[ebp+20]
+	mov	[ebp-52],dword80
 ; start of inline function _tex2d
-	mov	dword83,dword ptr [__texture_width]
-	dec	dword83
-	int2float	dword83
+	mov	dword85,dword ptr [__texture_width]
+	dec	dword85
+	int2float	dword85
 	fmul	dword ptr [ebp-52]
-	float2int	dword85
-	mov	[ebp-56],dword85
-	mov	dword89,dword ptr [__texture_height]
-	dec	dword89
-	int2float	dword89
+	float2int	dword87
+	mov	[ebp-56],dword87
+	mov	dword91,dword ptr [__texture_height]
+	dec	dword91
+	int2float	dword91
 	fmul	dword ptr [ebp-48]
-	float2int	dword91
-	mov	[ebp-60],dword91
-	mov	dword95,[ebp-60]
-	imul	dword95,dword ptr [__texture_width]
-	add	dword95,[ebp-56]
-	sal	dword95,2
-	add	dword95,dword ptr [__texture_data]
-	mov	dword99,[dword95]
-	mov	[ebp-64],dword99
+	float2int	dword93
+	mov	[ebp-60],dword93
+	mov	dword97,[ebp-60]
+	imul	dword97,dword ptr [__texture_width]
+	add	dword97,[ebp-56]
+	sal	dword97,2
+	add	dword97,dword ptr [__texture_data]
+	mov	dword101,[dword97]
+	mov	[ebp-64],dword101
 label0004:
 ; end of inline function _tex2d
-	mov	dword102,[ebp-64]
-	sar	dword102,24
-	mov	dword22,dword102
-	and	dword22,255
-	mov	[ebp-40],dword22
+	mov	dword104,[ebp-64]
+	mov	dword23,dword104
+	sar	dword23,24
+	and	dword23,255
+	mov	[ebp-40],dword23
 	cmp	dword ptr [ebp-40],0
 	je	label0003
 	fild	dword ptr [ebp-40]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-44]
-	mov	dword103,[dword101]
-	mov	dword34,dword103
-	and	dword34,65280
-	sar	dword34,8
-	mov	[ebp-32],dword34
-	mov	dword39,dword103
-	and	dword39,255
-	mov	[ebp-36],dword39
-	mov	dword43,dword102
-	and	dword43,65280
-	sar	dword43,8
-	mov	[ebp-20],dword43
-	mov	dword48,dword102
-	and	dword48,255
-	mov	[ebp-24],dword48
+	mov	dword105,[dword103]
+	mov	dword36,dword105
+	and	dword36,65280
+	sar	dword36,8
+	mov	[ebp-32],dword36
+	mov	dword41,dword105
+	and	dword41,255
+	mov	[ebp-36],dword41
+	mov	dword45,dword104
+	and	dword45,65280
+	sar	dword45,8
+	mov	[ebp-20],dword45
+	mov	dword50,dword104
+	and	dword50,255
+	mov	[ebp-24],dword50
 	fild	dword ptr [ebp-20]
 	fmul	dword ptr [ebp-44]
 	fild	dword ptr [ebp-32]
@@ -1349,8 +1351,8 @@ label0004:
 	fsub	dword ptr [ebp-44]
 	fmulp
 	faddp
-	float2int	dword54
-	mov	[ebp-20],dword54
+	float2int	dword56
+	mov	[ebp-20],dword56
 	fild	dword ptr [ebp-24]
 	fmul	dword ptr [ebp-44]
 	fild	dword ptr [ebp-36]
@@ -1358,12 +1360,12 @@ label0004:
 	fsub	dword ptr [ebp-44]
 	fmulp
 	faddp
-	float2int	dword60
-	mov	[ebp-24],dword60
-	sal	dword ptr [ebp-20],8
-	mov	dword105,[ebp-20]
-	add	dword105,[ebp-24]
-	mov	[dword101],dword105
+	float2int	dword62
+	mov	[ebp-24],dword62
+	mov	dword107,[ebp-20]
+	sal	dword107,8
+	add	dword107,[ebp-24]
+	mov	[dword103],dword107
 label0003:
 	fld	dword ptr [ebp+20]
 	fadd	dword ptr [ebp+28]
@@ -1372,8 +1374,8 @@ label0003:
 	fadd	dword ptr [ebp+32]
 	fstp	dword ptr [ebp+24]
 label0001:
-	add	dword101,4
-	cmp	dword101,dword104
+	add	dword103,4
+	cmp	dword103,dword106
 	jl	label0000
 label0002:
 	destroy_stack_frame
@@ -1382,10 +1384,10 @@ __rasterize_horiz_line endp
 
 __rasterize_horiz_line__unordered proc
 	create_stack_frame
-	mov	dword235,[ebp+16]
-	mov	dword234,[ebp+12]
-	mov	dword233,[ebp+8]
-	cmp	dword233,dword234
+	mov	dword239,[ebp+16]
+	mov	dword238,[ebp+12]
+	mov	dword237,[ebp+8]
+	cmp	dword237,dword238
 	jg	label0000
 	mov	dword24,[ebp+40]
 	mov	[ebp-4],dword24
@@ -1395,78 +1397,80 @@ __rasterize_horiz_line__unordered proc
 	mov	[ebp-12],dword22
 	mov	dword21,[ebp+20]
 	mov	[ebp-16],dword21
-	mov	[ebp-20],dword235
-	mov	[ebp-24],dword234
-	mov	[ebp-28],dword233
+	mov	[ebp-20],dword239
+	mov	[ebp-24],dword238
+	mov	[ebp-28],dword237
 ; start of inline function _rasterize_horiz_line
 	mov	dword28,dword ptr [__pitch]
 	imul	dword28,[ebp-20]
 	add	dword28,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	dword28,[ebp-28]
+	mov	dword32,[ebp-28]
+	sal	dword32,2
+	add	dword28,dword32
 	mov	[ebp-32],dword28
-	sal	dword ptr [ebp-24],2
-	mov	dword36,[ebp-32]
-	add	dword36,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	dword36,[ebp-28]
+	mov	dword36,[ebp-24]
+	sal	dword36,2
+	add	dword36,[ebp-32]
+	mov	dword40,[ebp-28]
+	sal	dword40,2
+	sub	dword36,dword40
 	mov	[ebp-36],dword36
 label0002:
-	mov	dword104,[ebp-12]
-	mov	[ebp-76],dword104
-	mov	dword103,[ebp-16]
-	mov	[ebp-80],dword103
+	mov	dword106,[ebp-12]
+	mov	[ebp-76],dword106
+	mov	dword105,[ebp-16]
+	mov	[ebp-80],dword105
 ; start of inline function _tex2d
-	mov	dword108,dword ptr [__texture_width]
-	dec	dword108
-	int2float	dword108
+	mov	dword110,dword ptr [__texture_width]
+	dec	dword110
+	int2float	dword110
 	fmul	dword ptr [ebp-80]
-	float2int	dword110
-	mov	[ebp-84],dword110
-	mov	dword114,dword ptr [__texture_height]
-	dec	dword114
-	int2float	dword114
+	float2int	dword112
+	mov	[ebp-84],dword112
+	mov	dword116,dword ptr [__texture_height]
+	dec	dword116
+	int2float	dword116
 	fmul	dword ptr [ebp-76]
-	float2int	dword116
-	mov	[ebp-88],dword116
-	mov	dword120,[ebp-88]
-	imul	dword120,dword ptr [__texture_width]
-	add	dword120,[ebp-84]
-	sal	dword120,2
-	add	dword120,dword ptr [__texture_data]
-	mov	dword124,[dword120]
-	mov	[ebp-92],dword124
+	float2int	dword118
+	mov	[ebp-88],dword118
+	mov	dword122,[ebp-88]
+	imul	dword122,dword ptr [__texture_width]
+	add	dword122,[ebp-84]
+	sal	dword122,2
+	add	dword122,dword ptr [__texture_data]
+	mov	dword126,[dword122]
+	mov	[ebp-92],dword126
 label0006:
 ; end of inline function _tex2d
-	mov	dword42,[ebp-92]
-	mov	[ebp-40],dword42
-	sar	dword ptr [ebp-40],24
-	mov	dword47,[ebp-40]
-	and	dword47,255
-	mov	[ebp-68],dword47
+	mov	dword44,[ebp-92]
+	mov	[ebp-40],dword44
+	mov	dword48,[ebp-40]
+	sar	dword48,24
+	and	dword48,255
+	mov	[ebp-68],dword48
 	cmp	dword ptr [ebp-68],0
 	je	label0005
 	fild	dword ptr [ebp-68]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-72]
-	mov	dword54,[ebp-32]
-	mov	dword56,[dword54]
-	mov	[ebp-56],dword56
-	mov	dword59,[ebp-56]
-	and	dword59,65280
-	sar	dword59,8
-	mov	[ebp-60],dword59
-	mov	dword64,[ebp-56]
-	and	dword64,255
-	mov	[ebp-64],dword64
-	mov	dword68,[ebp-40]
-	and	dword68,65280
-	sar	dword68,8
-	mov	[ebp-48],dword68
-	mov	dword73,[ebp-40]
-	and	dword73,255
-	mov	[ebp-52],dword73
+	mov	dword56,[ebp-32]
+	mov	dword58,[dword56]
+	mov	[ebp-56],dword58
+	mov	dword61,[ebp-56]
+	and	dword61,65280
+	sar	dword61,8
+	mov	[ebp-60],dword61
+	mov	dword66,[ebp-56]
+	and	dword66,255
+	mov	[ebp-64],dword66
+	mov	dword70,[ebp-40]
+	and	dword70,65280
+	sar	dword70,8
+	mov	[ebp-48],dword70
+	mov	dword75,[ebp-40]
+	and	dword75,255
+	mov	[ebp-52],dword75
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-60]
@@ -1474,8 +1478,8 @@ label0006:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword79
-	mov	[ebp-48],dword79
+	float2int	dword81
+	mov	[ebp-48],dword81
 	fild	dword ptr [ebp-52]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-64]
@@ -1483,15 +1487,15 @@ label0006:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword85
-	mov	[ebp-52],dword85
-	sal	dword ptr [ebp-48],8
-	mov	dword90,[ebp-48]
-	add	dword90,[ebp-52]
-	mov	[ebp-44],dword90
-	mov	dword93,[ebp-32]
-	mov	dword95,[ebp-44]
-	mov	[dword93],dword95
+	float2int	dword87
+	mov	[ebp-52],dword87
+	mov	dword91,[ebp-48]
+	sal	dword91,8
+	add	dword91,[ebp-52]
+	mov	[ebp-44],dword91
+	mov	dword95,[ebp-32]
+	mov	dword97,[ebp-44]
+	mov	[dword95],dword97
 label0005:
 	fld	dword ptr [ebp-16]
 	fadd	dword ptr [ebp-8]
@@ -1501,94 +1505,96 @@ label0005:
 	fstp	dword ptr [ebp-12]
 label0003:
 	add	dword ptr [ebp-32],4
-	mov	dword102,[ebp-32]
-	cmp	dword102,[ebp-36]
+	mov	dword104,[ebp-32]
+	cmp	dword104,[ebp-36]
 	jl	label0002
 label0004:
 label0007:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0001
 label0000:
-	mov	dword131,[ebp+40]
-	mov	[ebp-4],dword131
-	mov	dword130,[ebp+36]
-	mov	[ebp-8],dword130
-	mov	dword129,[ebp+32]
-	mov	[ebp-12],dword129
-	mov	dword128,[ebp+28]
-	mov	[ebp-16],dword128
-	mov	[ebp-20],dword235
-	mov	[ebp-24],dword233
-	mov	[ebp-28],dword234
+	mov	dword133,[ebp+40]
+	mov	[ebp-4],dword133
+	mov	dword132,[ebp+36]
+	mov	[ebp-8],dword132
+	mov	dword131,[ebp+32]
+	mov	[ebp-12],dword131
+	mov	dword130,[ebp+28]
+	mov	[ebp-16],dword130
+	mov	[ebp-20],dword239
+	mov	[ebp-24],dword237
+	mov	[ebp-28],dword238
 ; start of inline function _rasterize_horiz_line
-	mov	dword135,dword ptr [__pitch]
-	imul	dword135,[ebp-20]
-	add	dword135,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	dword135,[ebp-28]
-	mov	[ebp-32],dword135
-	sal	dword ptr [ebp-24],2
-	mov	dword143,[ebp-32]
-	add	dword143,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	dword143,[ebp-28]
-	mov	[ebp-36],dword143
+	mov	dword137,dword ptr [__pitch]
+	imul	dword137,[ebp-20]
+	add	dword137,dword ptr [__videomem]
+	mov	dword141,[ebp-28]
+	sal	dword141,2
+	add	dword137,dword141
+	mov	[ebp-32],dword137
+	mov	dword145,[ebp-24]
+	sal	dword145,2
+	add	dword145,[ebp-32]
+	mov	dword149,[ebp-28]
+	sal	dword149,2
+	sub	dword145,dword149
+	mov	[ebp-36],dword145
 label0008:
-	mov	dword211,[ebp-12]
-	mov	[ebp-76],dword211
-	mov	dword210,[ebp-16]
-	mov	[ebp-80],dword210
+	mov	dword215,[ebp-12]
+	mov	[ebp-76],dword215
+	mov	dword214,[ebp-16]
+	mov	[ebp-80],dword214
 ; start of inline function _tex2d
-	mov	dword215,dword ptr [__texture_width]
-	dec	dword215
-	int2float	dword215
+	mov	dword219,dword ptr [__texture_width]
+	dec	dword219
+	int2float	dword219
 	fmul	dword ptr [ebp-80]
-	float2int	dword217
-	mov	[ebp-84],dword217
-	mov	dword221,dword ptr [__texture_height]
-	dec	dword221
-	int2float	dword221
+	float2int	dword221
+	mov	[ebp-84],dword221
+	mov	dword225,dword ptr [__texture_height]
+	dec	dword225
+	int2float	dword225
 	fmul	dword ptr [ebp-76]
-	float2int	dword223
-	mov	[ebp-88],dword223
-	mov	dword227,[ebp-88]
-	imul	dword227,dword ptr [__texture_width]
-	add	dword227,[ebp-84]
-	sal	dword227,2
-	add	dword227,dword ptr [__texture_data]
-	mov	dword231,[dword227]
-	mov	[ebp-92],dword231
+	float2int	dword227
+	mov	[ebp-88],dword227
+	mov	dword231,[ebp-88]
+	imul	dword231,dword ptr [__texture_width]
+	add	dword231,[ebp-84]
+	sal	dword231,2
+	add	dword231,dword ptr [__texture_data]
+	mov	dword235,[dword231]
+	mov	[ebp-92],dword235
 label000c:
 ; end of inline function _tex2d
-	mov	dword149,[ebp-92]
-	mov	[ebp-40],dword149
-	sar	dword ptr [ebp-40],24
-	mov	dword154,[ebp-40]
-	and	dword154,255
-	mov	[ebp-68],dword154
+	mov	dword153,[ebp-92]
+	mov	[ebp-40],dword153
+	mov	dword157,[ebp-40]
+	sar	dword157,24
+	and	dword157,255
+	mov	[ebp-68],dword157
 	cmp	dword ptr [ebp-68],0
 	je	label000b
 	fild	dword ptr [ebp-68]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-72]
-	mov	dword161,[ebp-32]
-	mov	dword163,[dword161]
-	mov	[ebp-56],dword163
-	mov	dword166,[ebp-56]
-	and	dword166,65280
-	sar	dword166,8
-	mov	[ebp-60],dword166
-	mov	dword171,[ebp-56]
-	and	dword171,255
-	mov	[ebp-64],dword171
-	mov	dword175,[ebp-40]
-	and	dword175,65280
-	sar	dword175,8
-	mov	[ebp-48],dword175
-	mov	dword180,[ebp-40]
-	and	dword180,255
-	mov	[ebp-52],dword180
+	mov	dword165,[ebp-32]
+	mov	dword167,[dword165]
+	mov	[ebp-56],dword167
+	mov	dword170,[ebp-56]
+	and	dword170,65280
+	sar	dword170,8
+	mov	[ebp-60],dword170
+	mov	dword175,[ebp-56]
+	and	dword175,255
+	mov	[ebp-64],dword175
+	mov	dword179,[ebp-40]
+	and	dword179,65280
+	sar	dword179,8
+	mov	[ebp-48],dword179
+	mov	dword184,[ebp-40]
+	and	dword184,255
+	mov	[ebp-52],dword184
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-60]
@@ -1596,8 +1602,8 @@ label000c:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword186
-	mov	[ebp-48],dword186
+	float2int	dword190
+	mov	[ebp-48],dword190
 	fild	dword ptr [ebp-52]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-64]
@@ -1605,15 +1611,15 @@ label000c:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword192
-	mov	[ebp-52],dword192
-	sal	dword ptr [ebp-48],8
-	mov	dword197,[ebp-48]
-	add	dword197,[ebp-52]
-	mov	[ebp-44],dword197
-	mov	dword200,[ebp-32]
-	mov	dword202,[ebp-44]
-	mov	[dword200],dword202
+	float2int	dword196
+	mov	[ebp-52],dword196
+	mov	dword200,[ebp-48]
+	sal	dword200,8
+	add	dword200,[ebp-52]
+	mov	[ebp-44],dword200
+	mov	dword204,[ebp-32]
+	mov	dword206,[ebp-44]
+	mov	[dword204],dword206
 label000b:
 	fld	dword ptr [ebp-16]
 	fadd	dword ptr [ebp-8]
@@ -1623,8 +1629,8 @@ label000b:
 	fstp	dword ptr [ebp-12]
 label0009:
 	add	dword ptr [ebp-32],4
-	mov	dword209,[ebp-32]
-	cmp	dword209,[ebp-36]
+	mov	dword213,[ebp-32]
+	cmp	dword213,[ebp-36]
 	jl	label0008
 label000a:
 label000d:
@@ -1636,13 +1642,13 @@ __rasterize_horiz_line__unordered endp
 
 __rasterize_triangle_1i proc
 	create_stack_frame
-	mov	dword710,[ebp+20]
-	mov	dword709,[ebp+12]
-	mov	dword708,[ebp+8]
-	mov	dword707,[ebp+16]
-	cmp	dword708,dword709
+	mov	dword722,[ebp+20]
+	mov	dword721,[ebp+12]
+	mov	dword720,[ebp+8]
+	mov	dword719,[ebp+16]
+	cmp	dword720,dword721
 	jge	label0000
-	cmp	dword707,dword709
+	cmp	dword719,dword721
 	jle	label0001
 	mov	dword76,[ebp+40]
 	mov	[ebp-4],dword76
@@ -1654,78 +1660,80 @@ __rasterize_triangle_1i proc
 	mov	dword12,[ebp+24]
 	mov	dword73,[dword12]
 	mov	[ebp-16],dword73
-	mov	[ebp-20],dword710
-	mov	[ebp-24],dword707
-	mov	[ebp-28],dword708
+	mov	[ebp-20],dword722
+	mov	[ebp-24],dword719
+	mov	[ebp-28],dword720
 ; start of inline function _rasterize_horiz_line
 	mov	dword80,dword ptr [__pitch]
 	imul	dword80,[ebp-20]
 	add	dword80,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	dword80,[ebp-28]
+	mov	dword84,[ebp-28]
+	sal	dword84,2
+	add	dword80,dword84
 	mov	[ebp-32],dword80
-	sal	dword ptr [ebp-24],2
-	mov	dword88,[ebp-32]
-	add	dword88,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	dword88,[ebp-28]
+	mov	dword88,[ebp-24]
+	sal	dword88,2
+	add	dword88,[ebp-32]
+	mov	dword92,[ebp-28]
+	sal	dword92,2
+	sub	dword88,dword92
 	mov	[ebp-36],dword88
 label000a:
-	mov	dword156,[ebp-12]
-	mov	[ebp-76],dword156
-	mov	dword155,[ebp-16]
-	mov	[ebp-80],dword155
+	mov	dword158,[ebp-12]
+	mov	[ebp-76],dword158
+	mov	dword157,[ebp-16]
+	mov	[ebp-80],dword157
 ; start of inline function _tex2d
-	mov	dword160,dword ptr [__texture_width]
-	dec	dword160
-	int2float	dword160
+	mov	dword162,dword ptr [__texture_width]
+	dec	dword162
+	int2float	dword162
 	fmul	dword ptr [ebp-80]
-	float2int	dword162
-	mov	[ebp-84],dword162
-	mov	dword166,dword ptr [__texture_height]
-	dec	dword166
-	int2float	dword166
+	float2int	dword164
+	mov	[ebp-84],dword164
+	mov	dword168,dword ptr [__texture_height]
+	dec	dword168
+	int2float	dword168
 	fmul	dword ptr [ebp-76]
-	float2int	dword168
-	mov	[ebp-88],dword168
-	mov	dword172,[ebp-88]
-	imul	dword172,dword ptr [__texture_width]
-	add	dword172,[ebp-84]
-	sal	dword172,2
-	add	dword172,dword ptr [__texture_data]
-	mov	dword176,[dword172]
-	mov	[ebp-92],dword176
+	float2int	dword170
+	mov	[ebp-88],dword170
+	mov	dword174,[ebp-88]
+	imul	dword174,dword ptr [__texture_width]
+	add	dword174,[ebp-84]
+	sal	dword174,2
+	add	dword174,dword ptr [__texture_data]
+	mov	dword178,[dword174]
+	mov	[ebp-92],dword178
 label000e:
 ; end of inline function _tex2d
-	mov	dword94,[ebp-92]
-	mov	[ebp-40],dword94
-	sar	dword ptr [ebp-40],24
-	mov	dword99,[ebp-40]
-	and	dword99,255
-	mov	[ebp-68],dword99
+	mov	dword96,[ebp-92]
+	mov	[ebp-40],dword96
+	mov	dword100,[ebp-40]
+	sar	dword100,24
+	and	dword100,255
+	mov	[ebp-68],dword100
 	cmp	dword ptr [ebp-68],0
 	je	label000d
 	fild	dword ptr [ebp-68]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-72]
-	mov	dword106,[ebp-32]
-	mov	dword108,[dword106]
-	mov	[ebp-56],dword108
-	mov	dword111,[ebp-56]
-	and	dword111,65280
-	sar	dword111,8
-	mov	[ebp-60],dword111
-	mov	dword116,[ebp-56]
-	and	dword116,255
-	mov	[ebp-64],dword116
-	mov	dword120,[ebp-40]
-	and	dword120,65280
-	sar	dword120,8
-	mov	[ebp-48],dword120
-	mov	dword125,[ebp-40]
-	and	dword125,255
-	mov	[ebp-52],dword125
+	mov	dword108,[ebp-32]
+	mov	dword110,[dword108]
+	mov	[ebp-56],dword110
+	mov	dword113,[ebp-56]
+	and	dword113,65280
+	sar	dword113,8
+	mov	[ebp-60],dword113
+	mov	dword118,[ebp-56]
+	and	dword118,255
+	mov	[ebp-64],dword118
+	mov	dword122,[ebp-40]
+	and	dword122,65280
+	sar	dword122,8
+	mov	[ebp-48],dword122
+	mov	dword127,[ebp-40]
+	and	dword127,255
+	mov	[ebp-52],dword127
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-60]
@@ -1733,8 +1741,8 @@ label000e:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword131
-	mov	[ebp-48],dword131
+	float2int	dword133
+	mov	[ebp-48],dword133
 	fild	dword ptr [ebp-52]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-64]
@@ -1742,15 +1750,15 @@ label000e:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword137
-	mov	[ebp-52],dword137
-	sal	dword ptr [ebp-48],8
-	mov	dword142,[ebp-48]
-	add	dword142,[ebp-52]
-	mov	[ebp-44],dword142
-	mov	dword145,[ebp-32]
-	mov	dword147,[ebp-44]
-	mov	[dword145],dword147
+	float2int	dword139
+	mov	[ebp-52],dword139
+	mov	dword143,[ebp-48]
+	sal	dword143,8
+	add	dword143,[ebp-52]
+	mov	[ebp-44],dword143
+	mov	dword147,[ebp-32]
+	mov	dword149,[ebp-44]
+	mov	[dword147],dword149
 label000d:
 	fld	dword ptr [ebp-16]
 	fadd	dword ptr [ebp-8]
@@ -1760,98 +1768,100 @@ label000d:
 	fstp	dword ptr [ebp-12]
 label000b:
 	add	dword ptr [ebp-32],4
-	mov	dword154,[ebp-32]
-	cmp	dword154,[ebp-36]
+	mov	dword156,[ebp-32]
+	cmp	dword156,[ebp-36]
 	jl	label000a
 label000c:
 label000f:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0002
 label0001:
-	cmp	dword707,dword708
+	cmp	dword719,dword720
 	jge	label0003
-	mov	dword183,[ebp+40]
-	mov	[ebp-4],dword183
-	mov	dword182,[ebp+36]
-	mov	[ebp-8],dword182
+	mov	dword185,[ebp+40]
+	mov	[ebp-4],dword185
+	mov	dword184,[ebp+36]
+	mov	[ebp-8],dword184
 	mov	dword22,[ebp+32]
-	mov	dword181,[dword22+4]
-	mov	[ebp-12],dword181
+	mov	dword183,[dword22+4]
+	mov	[ebp-12],dword183
 	mov	dword24,[ebp+32]
-	mov	dword180,[dword24]
-	mov	[ebp-16],dword180
-	mov	[ebp-20],dword710
-	mov	[ebp-24],dword709
-	mov	[ebp-28],dword707
+	mov	dword182,[dword24]
+	mov	[ebp-16],dword182
+	mov	[ebp-20],dword722
+	mov	[ebp-24],dword721
+	mov	[ebp-28],dword719
 ; start of inline function _rasterize_horiz_line
-	mov	dword187,dword ptr [__pitch]
-	imul	dword187,[ebp-20]
-	add	dword187,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	dword187,[ebp-28]
-	mov	[ebp-32],dword187
-	sal	dword ptr [ebp-24],2
-	mov	dword195,[ebp-32]
-	add	dword195,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	dword195,[ebp-28]
-	mov	[ebp-36],dword195
+	mov	dword189,dword ptr [__pitch]
+	imul	dword189,[ebp-20]
+	add	dword189,dword ptr [__videomem]
+	mov	dword193,[ebp-28]
+	sal	dword193,2
+	add	dword189,dword193
+	mov	[ebp-32],dword189
+	mov	dword197,[ebp-24]
+	sal	dword197,2
+	add	dword197,[ebp-32]
+	mov	dword201,[ebp-28]
+	sal	dword201,2
+	sub	dword197,dword201
+	mov	[ebp-36],dword197
 label0010:
-	mov	dword263,[ebp-12]
-	mov	[ebp-76],dword263
-	mov	dword262,[ebp-16]
-	mov	[ebp-80],dword262
+	mov	dword267,[ebp-12]
+	mov	[ebp-76],dword267
+	mov	dword266,[ebp-16]
+	mov	[ebp-80],dword266
 ; start of inline function _tex2d
-	mov	dword267,dword ptr [__texture_width]
-	dec	dword267
-	int2float	dword267
+	mov	dword271,dword ptr [__texture_width]
+	dec	dword271
+	int2float	dword271
 	fmul	dword ptr [ebp-80]
-	float2int	dword269
-	mov	[ebp-84],dword269
-	mov	dword273,dword ptr [__texture_height]
-	dec	dword273
-	int2float	dword273
+	float2int	dword273
+	mov	[ebp-84],dword273
+	mov	dword277,dword ptr [__texture_height]
+	dec	dword277
+	int2float	dword277
 	fmul	dword ptr [ebp-76]
-	float2int	dword275
-	mov	[ebp-88],dword275
-	mov	dword279,[ebp-88]
-	imul	dword279,dword ptr [__texture_width]
-	add	dword279,[ebp-84]
-	sal	dword279,2
-	add	dword279,dword ptr [__texture_data]
-	mov	dword283,[dword279]
-	mov	[ebp-92],dword283
+	float2int	dword279
+	mov	[ebp-88],dword279
+	mov	dword283,[ebp-88]
+	imul	dword283,dword ptr [__texture_width]
+	add	dword283,[ebp-84]
+	sal	dword283,2
+	add	dword283,dword ptr [__texture_data]
+	mov	dword287,[dword283]
+	mov	[ebp-92],dword287
 label0014:
 ; end of inline function _tex2d
-	mov	dword201,[ebp-92]
-	mov	[ebp-40],dword201
-	sar	dword ptr [ebp-40],24
-	mov	dword206,[ebp-40]
-	and	dword206,255
-	mov	[ebp-68],dword206
+	mov	dword205,[ebp-92]
+	mov	[ebp-40],dword205
+	mov	dword209,[ebp-40]
+	sar	dword209,24
+	and	dword209,255
+	mov	[ebp-68],dword209
 	cmp	dword ptr [ebp-68],0
 	je	label0013
 	fild	dword ptr [ebp-68]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-72]
-	mov	dword213,[ebp-32]
-	mov	dword215,[dword213]
-	mov	[ebp-56],dword215
-	mov	dword218,[ebp-56]
-	and	dword218,65280
-	sar	dword218,8
-	mov	[ebp-60],dword218
-	mov	dword223,[ebp-56]
-	and	dword223,255
-	mov	[ebp-64],dword223
-	mov	dword227,[ebp-40]
-	and	dword227,65280
-	sar	dword227,8
-	mov	[ebp-48],dword227
-	mov	dword232,[ebp-40]
-	and	dword232,255
-	mov	[ebp-52],dword232
+	mov	dword217,[ebp-32]
+	mov	dword219,[dword217]
+	mov	[ebp-56],dword219
+	mov	dword222,[ebp-56]
+	and	dword222,65280
+	sar	dword222,8
+	mov	[ebp-60],dword222
+	mov	dword227,[ebp-56]
+	and	dword227,255
+	mov	[ebp-64],dword227
+	mov	dword231,[ebp-40]
+	and	dword231,65280
+	sar	dword231,8
+	mov	[ebp-48],dword231
+	mov	dword236,[ebp-40]
+	and	dword236,255
+	mov	[ebp-52],dword236
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-60]
@@ -1859,8 +1869,8 @@ label0014:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword238
-	mov	[ebp-48],dword238
+	float2int	dword242
+	mov	[ebp-48],dword242
 	fild	dword ptr [ebp-52]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-64]
@@ -1868,15 +1878,15 @@ label0014:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword244
-	mov	[ebp-52],dword244
-	sal	dword ptr [ebp-48],8
-	mov	dword249,[ebp-48]
-	add	dword249,[ebp-52]
-	mov	[ebp-44],dword249
-	mov	dword252,[ebp-32]
-	mov	dword254,[ebp-44]
-	mov	[dword252],dword254
+	float2int	dword248
+	mov	[ebp-52],dword248
+	mov	dword252,[ebp-48]
+	sal	dword252,8
+	add	dword252,[ebp-52]
+	mov	[ebp-44],dword252
+	mov	dword256,[ebp-32]
+	mov	dword258,[ebp-44]
+	mov	[dword256],dword258
 label0013:
 	fld	dword ptr [ebp-16]
 	fadd	dword ptr [ebp-8]
@@ -1886,96 +1896,98 @@ label0013:
 	fstp	dword ptr [ebp-12]
 label0011:
 	add	dword ptr [ebp-32],4
-	mov	dword261,[ebp-32]
-	cmp	dword261,[ebp-36]
+	mov	dword265,[ebp-32]
+	cmp	dword265,[ebp-36]
 	jl	label0010
 label0012:
 label0015:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0004
 label0003:
-	mov	dword290,[ebp+40]
-	mov	[ebp-4],dword290
-	mov	dword289,[ebp+36]
-	mov	[ebp-8],dword289
+	mov	dword294,[ebp+40]
+	mov	[ebp-4],dword294
+	mov	dword293,[ebp+36]
+	mov	[ebp-8],dword293
 	mov	dword31,[ebp+24]
-	mov	dword288,[dword31+4]
-	mov	[ebp-12],dword288
+	mov	dword292,[dword31+4]
+	mov	[ebp-12],dword292
 	mov	dword33,[ebp+24]
-	mov	dword287,[dword33]
-	mov	[ebp-16],dword287
-	mov	[ebp-20],dword710
-	mov	[ebp-24],dword709
-	mov	[ebp-28],dword708
+	mov	dword291,[dword33]
+	mov	[ebp-16],dword291
+	mov	[ebp-20],dword722
+	mov	[ebp-24],dword721
+	mov	[ebp-28],dword720
 ; start of inline function _rasterize_horiz_line
-	mov	dword294,dword ptr [__pitch]
-	imul	dword294,[ebp-20]
-	add	dword294,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	dword294,[ebp-28]
-	mov	[ebp-32],dword294
-	sal	dword ptr [ebp-24],2
-	mov	dword302,[ebp-32]
-	add	dword302,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	dword302,[ebp-28]
-	mov	[ebp-36],dword302
+	mov	dword298,dword ptr [__pitch]
+	imul	dword298,[ebp-20]
+	add	dword298,dword ptr [__videomem]
+	mov	dword302,[ebp-28]
+	sal	dword302,2
+	add	dword298,dword302
+	mov	[ebp-32],dword298
+	mov	dword306,[ebp-24]
+	sal	dword306,2
+	add	dword306,[ebp-32]
+	mov	dword310,[ebp-28]
+	sal	dword310,2
+	sub	dword306,dword310
+	mov	[ebp-36],dword306
 label0016:
-	mov	dword370,[ebp-12]
-	mov	[ebp-76],dword370
-	mov	dword369,[ebp-16]
-	mov	[ebp-80],dword369
+	mov	dword376,[ebp-12]
+	mov	[ebp-76],dword376
+	mov	dword375,[ebp-16]
+	mov	[ebp-80],dword375
 ; start of inline function _tex2d
-	mov	dword374,dword ptr [__texture_width]
-	dec	dword374
-	int2float	dword374
-	fmul	dword ptr [ebp-80]
-	float2int	dword376
-	mov	[ebp-84],dword376
-	mov	dword380,dword ptr [__texture_height]
+	mov	dword380,dword ptr [__texture_width]
 	dec	dword380
 	int2float	dword380
-	fmul	dword ptr [ebp-76]
+	fmul	dword ptr [ebp-80]
 	float2int	dword382
-	mov	[ebp-88],dword382
-	mov	dword386,[ebp-88]
-	imul	dword386,dword ptr [__texture_width]
-	add	dword386,[ebp-84]
-	sal	dword386,2
-	add	dword386,dword ptr [__texture_data]
-	mov	dword390,[dword386]
-	mov	[ebp-92],dword390
+	mov	[ebp-84],dword382
+	mov	dword386,dword ptr [__texture_height]
+	dec	dword386
+	int2float	dword386
+	fmul	dword ptr [ebp-76]
+	float2int	dword388
+	mov	[ebp-88],dword388
+	mov	dword392,[ebp-88]
+	imul	dword392,dword ptr [__texture_width]
+	add	dword392,[ebp-84]
+	sal	dword392,2
+	add	dword392,dword ptr [__texture_data]
+	mov	dword396,[dword392]
+	mov	[ebp-92],dword396
 label001a:
 ; end of inline function _tex2d
-	mov	dword308,[ebp-92]
-	mov	[ebp-40],dword308
-	sar	dword ptr [ebp-40],24
-	mov	dword313,[ebp-40]
-	and	dword313,255
-	mov	[ebp-68],dword313
+	mov	dword314,[ebp-92]
+	mov	[ebp-40],dword314
+	mov	dword318,[ebp-40]
+	sar	dword318,24
+	and	dword318,255
+	mov	[ebp-68],dword318
 	cmp	dword ptr [ebp-68],0
 	je	label0019
 	fild	dword ptr [ebp-68]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-72]
-	mov	dword320,[ebp-32]
-	mov	dword322,[dword320]
-	mov	[ebp-56],dword322
-	mov	dword325,[ebp-56]
-	and	dword325,65280
-	sar	dword325,8
-	mov	[ebp-60],dword325
-	mov	dword330,[ebp-56]
-	and	dword330,255
-	mov	[ebp-64],dword330
-	mov	dword334,[ebp-40]
-	and	dword334,65280
-	sar	dword334,8
-	mov	[ebp-48],dword334
-	mov	dword339,[ebp-40]
-	and	dword339,255
-	mov	[ebp-52],dword339
+	mov	dword326,[ebp-32]
+	mov	dword328,[dword326]
+	mov	[ebp-56],dword328
+	mov	dword331,[ebp-56]
+	and	dword331,65280
+	sar	dword331,8
+	mov	[ebp-60],dword331
+	mov	dword336,[ebp-56]
+	and	dword336,255
+	mov	[ebp-64],dword336
+	mov	dword340,[ebp-40]
+	and	dword340,65280
+	sar	dword340,8
+	mov	[ebp-48],dword340
+	mov	dword345,[ebp-40]
+	and	dword345,255
+	mov	[ebp-52],dword345
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-60]
@@ -1983,8 +1995,8 @@ label001a:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword345
-	mov	[ebp-48],dword345
+	float2int	dword351
+	mov	[ebp-48],dword351
 	fild	dword ptr [ebp-52]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-64]
@@ -1992,15 +2004,15 @@ label001a:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword351
-	mov	[ebp-52],dword351
-	sal	dword ptr [ebp-48],8
-	mov	dword356,[ebp-48]
-	add	dword356,[ebp-52]
-	mov	[ebp-44],dword356
-	mov	dword359,[ebp-32]
-	mov	dword361,[ebp-44]
-	mov	[dword359],dword361
+	float2int	dword357
+	mov	[ebp-52],dword357
+	mov	dword361,[ebp-48]
+	sal	dword361,8
+	add	dword361,[ebp-52]
+	mov	[ebp-44],dword361
+	mov	dword365,[ebp-32]
+	mov	dword367,[ebp-44]
+	mov	[dword365],dword367
 label0019:
 	fld	dword ptr [ebp-16]
 	fadd	dword ptr [ebp-8]
@@ -2010,8 +2022,8 @@ label0019:
 	fstp	dword ptr [ebp-12]
 label0017:
 	add	dword ptr [ebp-32],4
-	mov	dword368,[ebp-32]
-	cmp	dword368,[ebp-36]
+	mov	dword374,[ebp-32]
+	cmp	dword374,[ebp-36]
 	jl	label0016
 label0018:
 label001b:
@@ -2020,7 +2032,7 @@ label0004:
 label0002:
 	jmp	label0005
 label0000:
-	cmp	dword707,dword709
+	cmp	dword719,dword721
 	jge	label0006
 	fld	dword ptr [ebp+40]
 	fldz
@@ -2031,83 +2043,85 @@ label0000:
 	fsubrp
 	fstp	dword ptr [ebp-8]
 	mov	dword43,[ebp+32]
-	mov	dword395,[dword43+4]
-	mov	[ebp-12],dword395
+	mov	dword401,[dword43+4]
+	mov	[ebp-12],dword401
 	mov	dword45,[ebp+32]
-	mov	dword394,[dword45]
-	mov	[ebp-16],dword394
-	mov	[ebp-20],dword710
-	mov	[ebp-24],dword708
-	mov	[ebp-28],dword707
+	mov	dword400,[dword45]
+	mov	[ebp-16],dword400
+	mov	[ebp-20],dword722
+	mov	[ebp-24],dword720
+	mov	[ebp-28],dword719
 ; start of inline function _rasterize_horiz_line
-	mov	dword399,dword ptr [__pitch]
-	imul	dword399,[ebp-20]
-	add	dword399,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	dword399,[ebp-28]
-	mov	[ebp-32],dword399
-	sal	dword ptr [ebp-24],2
-	mov	dword407,[ebp-32]
-	add	dword407,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	dword407,[ebp-28]
-	mov	[ebp-36],dword407
+	mov	dword405,dword ptr [__pitch]
+	imul	dword405,[ebp-20]
+	add	dword405,dword ptr [__videomem]
+	mov	dword409,[ebp-28]
+	sal	dword409,2
+	add	dword405,dword409
+	mov	[ebp-32],dword405
+	mov	dword413,[ebp-24]
+	sal	dword413,2
+	add	dword413,[ebp-32]
+	mov	dword417,[ebp-28]
+	sal	dword417,2
+	sub	dword413,dword417
+	mov	[ebp-36],dword413
 label001c:
-	mov	dword475,[ebp-12]
-	mov	[ebp-76],dword475
-	mov	dword474,[ebp-16]
-	mov	[ebp-80],dword474
+	mov	dword483,[ebp-12]
+	mov	[ebp-76],dword483
+	mov	dword482,[ebp-16]
+	mov	[ebp-80],dword482
 ; start of inline function _tex2d
-	mov	dword479,dword ptr [__texture_width]
-	dec	dword479
-	int2float	dword479
+	mov	dword487,dword ptr [__texture_width]
+	dec	dword487
+	int2float	dword487
 	fmul	dword ptr [ebp-80]
-	float2int	dword481
-	mov	[ebp-84],dword481
-	mov	dword485,dword ptr [__texture_height]
-	dec	dword485
-	int2float	dword485
+	float2int	dword489
+	mov	[ebp-84],dword489
+	mov	dword493,dword ptr [__texture_height]
+	dec	dword493
+	int2float	dword493
 	fmul	dword ptr [ebp-76]
-	float2int	dword487
-	mov	[ebp-88],dword487
-	mov	dword491,[ebp-88]
-	imul	dword491,dword ptr [__texture_width]
-	add	dword491,[ebp-84]
-	sal	dword491,2
-	add	dword491,dword ptr [__texture_data]
-	mov	dword495,[dword491]
-	mov	[ebp-92],dword495
+	float2int	dword495
+	mov	[ebp-88],dword495
+	mov	dword499,[ebp-88]
+	imul	dword499,dword ptr [__texture_width]
+	add	dword499,[ebp-84]
+	sal	dword499,2
+	add	dword499,dword ptr [__texture_data]
+	mov	dword503,[dword499]
+	mov	[ebp-92],dword503
 label0020:
 ; end of inline function _tex2d
-	mov	dword413,[ebp-92]
-	mov	[ebp-40],dword413
-	sar	dword ptr [ebp-40],24
-	mov	dword418,[ebp-40]
-	and	dword418,255
-	mov	[ebp-68],dword418
+	mov	dword421,[ebp-92]
+	mov	[ebp-40],dword421
+	mov	dword425,[ebp-40]
+	sar	dword425,24
+	and	dword425,255
+	mov	[ebp-68],dword425
 	cmp	dword ptr [ebp-68],0
 	je	label001f
 	fild	dword ptr [ebp-68]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-72]
-	mov	dword425,[ebp-32]
-	mov	dword427,[dword425]
-	mov	[ebp-56],dword427
-	mov	dword430,[ebp-56]
-	and	dword430,65280
-	sar	dword430,8
-	mov	[ebp-60],dword430
-	mov	dword435,[ebp-56]
-	and	dword435,255
-	mov	[ebp-64],dword435
-	mov	dword439,[ebp-40]
-	and	dword439,65280
-	sar	dword439,8
-	mov	[ebp-48],dword439
-	mov	dword444,[ebp-40]
-	and	dword444,255
-	mov	[ebp-52],dword444
+	mov	dword433,[ebp-32]
+	mov	dword435,[dword433]
+	mov	[ebp-56],dword435
+	mov	dword438,[ebp-56]
+	and	dword438,65280
+	sar	dword438,8
+	mov	[ebp-60],dword438
+	mov	dword443,[ebp-56]
+	and	dword443,255
+	mov	[ebp-64],dword443
+	mov	dword447,[ebp-40]
+	and	dword447,65280
+	sar	dword447,8
+	mov	[ebp-48],dword447
+	mov	dword452,[ebp-40]
+	and	dword452,255
+	mov	[ebp-52],dword452
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-60]
@@ -2115,8 +2129,8 @@ label0020:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword450
-	mov	[ebp-48],dword450
+	float2int	dword458
+	mov	[ebp-48],dword458
 	fild	dword ptr [ebp-52]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-64]
@@ -2124,15 +2138,15 @@ label0020:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword456
-	mov	[ebp-52],dword456
-	sal	dword ptr [ebp-48],8
-	mov	dword461,[ebp-48]
-	add	dword461,[ebp-52]
-	mov	[ebp-44],dword461
-	mov	dword464,[ebp-32]
-	mov	dword466,[ebp-44]
-	mov	[dword464],dword466
+	float2int	dword464
+	mov	[ebp-52],dword464
+	mov	dword468,[ebp-48]
+	sal	dword468,8
+	add	dword468,[ebp-52]
+	mov	[ebp-44],dword468
+	mov	dword472,[ebp-32]
+	mov	dword474,[ebp-44]
+	mov	[dword472],dword474
 label001f:
 	fld	dword ptr [ebp-16]
 	fadd	dword ptr [ebp-8]
@@ -2142,15 +2156,15 @@ label001f:
 	fstp	dword ptr [ebp-12]
 label001d:
 	add	dword ptr [ebp-32],4
-	mov	dword473,[ebp-32]
-	cmp	dword473,[ebp-36]
+	mov	dword481,[ebp-32]
+	cmp	dword481,[ebp-36]
 	jl	label001c
 label001e:
 label0021:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0007
 label0006:
-	cmp	dword707,dword708
+	cmp	dword719,dword720
 	jle	label0008
 	fld	dword ptr [ebp+40]
 	fldz
@@ -2161,83 +2175,85 @@ label0006:
 	fsubrp
 	fstp	dword ptr [ebp-8]
 	mov	dword55,[ebp+28]
-	mov	dword500,[dword55+4]
-	mov	[ebp-12],dword500
+	mov	dword508,[dword55+4]
+	mov	[ebp-12],dword508
 	mov	dword57,[ebp+28]
-	mov	dword499,[dword57]
-	mov	[ebp-16],dword499
-	mov	[ebp-20],dword710
-	mov	[ebp-24],dword707
-	mov	[ebp-28],dword709
+	mov	dword507,[dword57]
+	mov	[ebp-16],dword507
+	mov	[ebp-20],dword722
+	mov	[ebp-24],dword719
+	mov	[ebp-28],dword721
 ; start of inline function _rasterize_horiz_line
-	mov	dword504,dword ptr [__pitch]
-	imul	dword504,[ebp-20]
-	add	dword504,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	dword504,[ebp-28]
-	mov	[ebp-32],dword504
-	sal	dword ptr [ebp-24],2
-	mov	dword512,[ebp-32]
-	add	dword512,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	dword512,[ebp-28]
-	mov	[ebp-36],dword512
+	mov	dword512,dword ptr [__pitch]
+	imul	dword512,[ebp-20]
+	add	dword512,dword ptr [__videomem]
+	mov	dword516,[ebp-28]
+	sal	dword516,2
+	add	dword512,dword516
+	mov	[ebp-32],dword512
+	mov	dword520,[ebp-24]
+	sal	dword520,2
+	add	dword520,[ebp-32]
+	mov	dword524,[ebp-28]
+	sal	dword524,2
+	sub	dword520,dword524
+	mov	[ebp-36],dword520
 label0022:
-	mov	dword580,[ebp-12]
-	mov	[ebp-76],dword580
-	mov	dword579,[ebp-16]
-	mov	[ebp-80],dword579
+	mov	dword590,[ebp-12]
+	mov	[ebp-76],dword590
+	mov	dword589,[ebp-16]
+	mov	[ebp-80],dword589
 ; start of inline function _tex2d
-	mov	dword584,dword ptr [__texture_width]
-	dec	dword584
-	int2float	dword584
+	mov	dword594,dword ptr [__texture_width]
+	dec	dword594
+	int2float	dword594
 	fmul	dword ptr [ebp-80]
-	float2int	dword586
-	mov	[ebp-84],dword586
-	mov	dword590,dword ptr [__texture_height]
-	dec	dword590
-	int2float	dword590
+	float2int	dword596
+	mov	[ebp-84],dword596
+	mov	dword600,dword ptr [__texture_height]
+	dec	dword600
+	int2float	dword600
 	fmul	dword ptr [ebp-76]
-	float2int	dword592
-	mov	[ebp-88],dword592
-	mov	dword596,[ebp-88]
-	imul	dword596,dword ptr [__texture_width]
-	add	dword596,[ebp-84]
-	sal	dword596,2
-	add	dword596,dword ptr [__texture_data]
-	mov	dword600,[dword596]
-	mov	[ebp-92],dword600
+	float2int	dword602
+	mov	[ebp-88],dword602
+	mov	dword606,[ebp-88]
+	imul	dword606,dword ptr [__texture_width]
+	add	dword606,[ebp-84]
+	sal	dword606,2
+	add	dword606,dword ptr [__texture_data]
+	mov	dword610,[dword606]
+	mov	[ebp-92],dword610
 label0026:
 ; end of inline function _tex2d
-	mov	dword518,[ebp-92]
-	mov	[ebp-40],dword518
-	sar	dword ptr [ebp-40],24
-	mov	dword523,[ebp-40]
-	and	dword523,255
-	mov	[ebp-68],dword523
+	mov	dword528,[ebp-92]
+	mov	[ebp-40],dword528
+	mov	dword532,[ebp-40]
+	sar	dword532,24
+	and	dword532,255
+	mov	[ebp-68],dword532
 	cmp	dword ptr [ebp-68],0
 	je	label0025
 	fild	dword ptr [ebp-68]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-72]
-	mov	dword530,[ebp-32]
-	mov	dword532,[dword530]
-	mov	[ebp-56],dword532
-	mov	dword535,[ebp-56]
-	and	dword535,65280
-	sar	dword535,8
-	mov	[ebp-60],dword535
-	mov	dword540,[ebp-56]
-	and	dword540,255
-	mov	[ebp-64],dword540
-	mov	dword544,[ebp-40]
-	and	dword544,65280
-	sar	dword544,8
-	mov	[ebp-48],dword544
-	mov	dword549,[ebp-40]
-	and	dword549,255
-	mov	[ebp-52],dword549
+	mov	dword540,[ebp-32]
+	mov	dword542,[dword540]
+	mov	[ebp-56],dword542
+	mov	dword545,[ebp-56]
+	and	dword545,65280
+	sar	dword545,8
+	mov	[ebp-60],dword545
+	mov	dword550,[ebp-56]
+	and	dword550,255
+	mov	[ebp-64],dword550
+	mov	dword554,[ebp-40]
+	and	dword554,65280
+	sar	dword554,8
+	mov	[ebp-48],dword554
+	mov	dword559,[ebp-40]
+	and	dword559,255
+	mov	[ebp-52],dword559
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-60]
@@ -2245,8 +2261,8 @@ label0026:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword555
-	mov	[ebp-48],dword555
+	float2int	dword565
+	mov	[ebp-48],dword565
 	fild	dword ptr [ebp-52]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-64]
@@ -2254,15 +2270,15 @@ label0026:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword561
-	mov	[ebp-52],dword561
-	sal	dword ptr [ebp-48],8
-	mov	dword566,[ebp-48]
-	add	dword566,[ebp-52]
-	mov	[ebp-44],dword566
-	mov	dword569,[ebp-32]
-	mov	dword571,[ebp-44]
-	mov	[dword569],dword571
+	float2int	dword571
+	mov	[ebp-52],dword571
+	mov	dword575,[ebp-48]
+	sal	dword575,8
+	add	dword575,[ebp-52]
+	mov	[ebp-44],dword575
+	mov	dword579,[ebp-32]
+	mov	dword581,[ebp-44]
+	mov	[dword579],dword581
 label0025:
 	fld	dword ptr [ebp-16]
 	fadd	dword ptr [ebp-8]
@@ -2272,8 +2288,8 @@ label0025:
 	fstp	dword ptr [ebp-12]
 label0023:
 	add	dword ptr [ebp-32],4
-	mov	dword578,[ebp-32]
-	cmp	dword578,[ebp-36]
+	mov	dword588,[ebp-32]
+	cmp	dword588,[ebp-36]
 	jl	label0022
 label0024:
 label0027:
@@ -2289,83 +2305,85 @@ label0008:
 	fsubrp
 	fstp	dword ptr [ebp-8]
 	mov	dword64,[ebp+28]
-	mov	dword605,[dword64+4]
-	mov	[ebp-12],dword605
+	mov	dword615,[dword64+4]
+	mov	[ebp-12],dword615
 	mov	dword66,[ebp+28]
-	mov	dword604,[dword66]
-	mov	[ebp-16],dword604
-	mov	[ebp-20],dword710
-	mov	[ebp-24],dword708
-	mov	[ebp-28],dword709
+	mov	dword614,[dword66]
+	mov	[ebp-16],dword614
+	mov	[ebp-20],dword722
+	mov	[ebp-24],dword720
+	mov	[ebp-28],dword721
 ; start of inline function _rasterize_horiz_line
-	mov	dword609,dword ptr [__pitch]
-	imul	dword609,[ebp-20]
-	add	dword609,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	dword609,[ebp-28]
-	mov	[ebp-32],dword609
-	sal	dword ptr [ebp-24],2
-	mov	dword617,[ebp-32]
-	add	dword617,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	dword617,[ebp-28]
-	mov	[ebp-36],dword617
+	mov	dword619,dword ptr [__pitch]
+	imul	dword619,[ebp-20]
+	add	dword619,dword ptr [__videomem]
+	mov	dword623,[ebp-28]
+	sal	dword623,2
+	add	dword619,dword623
+	mov	[ebp-32],dword619
+	mov	dword627,[ebp-24]
+	sal	dword627,2
+	add	dword627,[ebp-32]
+	mov	dword631,[ebp-28]
+	sal	dword631,2
+	sub	dword627,dword631
+	mov	[ebp-36],dword627
 label0028:
-	mov	dword685,[ebp-12]
-	mov	[ebp-76],dword685
-	mov	dword684,[ebp-16]
-	mov	[ebp-80],dword684
+	mov	dword697,[ebp-12]
+	mov	[ebp-76],dword697
+	mov	dword696,[ebp-16]
+	mov	[ebp-80],dword696
 ; start of inline function _tex2d
-	mov	dword689,dword ptr [__texture_width]
-	dec	dword689
-	int2float	dword689
+	mov	dword701,dword ptr [__texture_width]
+	dec	dword701
+	int2float	dword701
 	fmul	dword ptr [ebp-80]
-	float2int	dword691
-	mov	[ebp-84],dword691
-	mov	dword695,dword ptr [__texture_height]
-	dec	dword695
-	int2float	dword695
+	float2int	dword703
+	mov	[ebp-84],dword703
+	mov	dword707,dword ptr [__texture_height]
+	dec	dword707
+	int2float	dword707
 	fmul	dword ptr [ebp-76]
-	float2int	dword697
-	mov	[ebp-88],dword697
-	mov	dword701,[ebp-88]
-	imul	dword701,dword ptr [__texture_width]
-	add	dword701,[ebp-84]
-	sal	dword701,2
-	add	dword701,dword ptr [__texture_data]
-	mov	dword705,[dword701]
-	mov	[ebp-92],dword705
+	float2int	dword709
+	mov	[ebp-88],dword709
+	mov	dword713,[ebp-88]
+	imul	dword713,dword ptr [__texture_width]
+	add	dword713,[ebp-84]
+	sal	dword713,2
+	add	dword713,dword ptr [__texture_data]
+	mov	dword717,[dword713]
+	mov	[ebp-92],dword717
 label002c:
 ; end of inline function _tex2d
-	mov	dword623,[ebp-92]
-	mov	[ebp-40],dword623
-	sar	dword ptr [ebp-40],24
-	mov	dword628,[ebp-40]
-	and	dword628,255
-	mov	[ebp-68],dword628
+	mov	dword635,[ebp-92]
+	mov	[ebp-40],dword635
+	mov	dword639,[ebp-40]
+	sar	dword639,24
+	and	dword639,255
+	mov	[ebp-68],dword639
 	cmp	dword ptr [ebp-68],0
 	je	label002b
 	fild	dword ptr [ebp-68]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-72]
-	mov	dword635,[ebp-32]
-	mov	dword637,[dword635]
-	mov	[ebp-56],dword637
-	mov	dword640,[ebp-56]
-	and	dword640,65280
-	sar	dword640,8
-	mov	[ebp-60],dword640
-	mov	dword645,[ebp-56]
-	and	dword645,255
-	mov	[ebp-64],dword645
-	mov	dword649,[ebp-40]
-	and	dword649,65280
-	sar	dword649,8
-	mov	[ebp-48],dword649
-	mov	dword654,[ebp-40]
-	and	dword654,255
-	mov	[ebp-52],dword654
+	mov	dword647,[ebp-32]
+	mov	dword649,[dword647]
+	mov	[ebp-56],dword649
+	mov	dword652,[ebp-56]
+	and	dword652,65280
+	sar	dword652,8
+	mov	[ebp-60],dword652
+	mov	dword657,[ebp-56]
+	and	dword657,255
+	mov	[ebp-64],dword657
+	mov	dword661,[ebp-40]
+	and	dword661,65280
+	sar	dword661,8
+	mov	[ebp-48],dword661
+	mov	dword666,[ebp-40]
+	and	dword666,255
+	mov	[ebp-52],dword666
 	fild	dword ptr [ebp-48]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-60]
@@ -2373,8 +2391,8 @@ label002c:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword660
-	mov	[ebp-48],dword660
+	float2int	dword672
+	mov	[ebp-48],dword672
 	fild	dword ptr [ebp-52]
 	fmul	dword ptr [ebp-72]
 	fild	dword ptr [ebp-64]
@@ -2382,15 +2400,15 @@ label002c:
 	fsub	dword ptr [ebp-72]
 	fmulp
 	faddp
-	float2int	dword666
-	mov	[ebp-52],dword666
-	sal	dword ptr [ebp-48],8
-	mov	dword671,[ebp-48]
-	add	dword671,[ebp-52]
-	mov	[ebp-44],dword671
-	mov	dword674,[ebp-32]
-	mov	dword676,[ebp-44]
-	mov	[dword674],dword676
+	float2int	dword678
+	mov	[ebp-52],dword678
+	mov	dword682,[ebp-48]
+	sal	dword682,8
+	add	dword682,[ebp-52]
+	mov	[ebp-44],dword682
+	mov	dword686,[ebp-32]
+	mov	dword688,[ebp-44]
+	mov	[dword686],dword688
 label002b:
 	fld	dword ptr [ebp-16]
 	fadd	dword ptr [ebp-8]
@@ -2400,8 +2418,8 @@ label002b:
 	fstp	dword ptr [ebp-12]
 label0029:
 	add	dword ptr [ebp-32],4
-	mov	dword683,[ebp-32]
-	cmp	dword683,[ebp-36]
+	mov	dword695,[ebp-32]
+	cmp	dword695,[ebp-36]
 	jl	label0028
 label002a:
 label002d:
@@ -2488,109 +2506,111 @@ label0002:
 	mov	[ebp-188],dword70
 	mov	dword72,[ebp+8]
 	add	dword72,4
-	mov	dword1218,[dword72]
-	mov	[ebp-192],dword1218
+	mov	dword1230,[dword72]
+	mov	[ebp-192],dword1230
 	mov	dword75,[ebp+16]
-	mov	dword1217,[dword75]
-	mov	[ebp-196],dword1217
+	mov	dword1229,[dword75]
+	mov	[ebp-196],dword1229
 	mov	dword77,[ebp+12]
-	mov	dword1216,[dword77]
-	mov	[ebp-200],dword1216
+	mov	dword1228,[dword77]
+	mov	[ebp-200],dword1228
 	mov	dword79,[ebp+8]
-	mov	dword1215,[dword79]
-	mov	[ebp-204],dword1215
+	mov	dword1227,[dword79]
+	mov	[ebp-204],dword1227
 ; start of inline function _rasterize_triangle_1i
-	mov	dword1222,[ebp-204]
-	cmp	dword1222,[ebp-200]
+	mov	dword1234,[ebp-204]
+	cmp	dword1234,[ebp-200]
 	jge	label0038
-	mov	dword1225,[ebp-196]
-	cmp	dword1225,[ebp-200]
+	mov	dword1237,[ebp-196]
+	cmp	dword1237,[ebp-200]
 	jle	label0039
-	mov	dword1295,[ebp-172]
-	mov	[ebp-208],dword1295
-	mov	dword1294,[ebp-176]
-	mov	[ebp-212],dword1294
-	mov	dword1229,[ebp-188]
-	mov	dword1293,[dword1229+4]
-	mov	[ebp-216],dword1293
-	mov	dword1231,[ebp-188]
-	mov	dword1292,[dword1231]
-	mov	[ebp-220],dword1292
-	mov	dword1291,[ebp-192]
-	mov	[ebp-224],dword1291
-	mov	dword1290,[ebp-196]
-	mov	[ebp-228],dword1290
-	mov	dword1289,[ebp-204]
-	mov	[ebp-232],dword1289
+	mov	dword1307,[ebp-172]
+	mov	[ebp-208],dword1307
+	mov	dword1306,[ebp-176]
+	mov	[ebp-212],dword1306
+	mov	dword1241,[ebp-188]
+	mov	dword1305,[dword1241+4]
+	mov	[ebp-216],dword1305
+	mov	dword1243,[ebp-188]
+	mov	dword1304,[dword1243]
+	mov	[ebp-220],dword1304
+	mov	dword1303,[ebp-192]
+	mov	[ebp-224],dword1303
+	mov	dword1302,[ebp-196]
+	mov	[ebp-228],dword1302
+	mov	dword1301,[ebp-204]
+	mov	[ebp-232],dword1301
 ; start of inline function _rasterize_horiz_line
-	mov	dword1299,dword ptr [__pitch]
-	imul	dword1299,[ebp-224]
-	add	dword1299,dword ptr [__videomem]
-	sal	dword ptr [ebp-232],2
-	add	dword1299,[ebp-232]
-	mov	[ebp-236],dword1299
-	sal	dword ptr [ebp-228],2
-	mov	dword1307,[ebp-236]
-	add	dword1307,[ebp-228]
-	sal	dword ptr [ebp-232],2
-	sub	dword1307,[ebp-232]
-	mov	[ebp-240],dword1307
+	mov	dword1311,dword ptr [__pitch]
+	imul	dword1311,[ebp-224]
+	add	dword1311,dword ptr [__videomem]
+	mov	dword1315,[ebp-232]
+	sal	dword1315,2
+	add	dword1311,dword1315
+	mov	[ebp-236],dword1311
+	mov	dword1319,[ebp-228]
+	sal	dword1319,2
+	add	dword1319,[ebp-236]
+	mov	dword1323,[ebp-232]
+	sal	dword1323,2
+	sub	dword1319,dword1323
+	mov	[ebp-240],dword1319
 label0042:
-	mov	dword1375,[ebp-216]
-	mov	[ebp-280],dword1375
-	mov	dword1374,[ebp-220]
-	mov	[ebp-284],dword1374
+	mov	dword1389,[ebp-216]
+	mov	[ebp-280],dword1389
+	mov	dword1388,[ebp-220]
+	mov	[ebp-284],dword1388
 ; start of inline function _tex2d
-	mov	dword1379,dword ptr [__texture_width]
-	dec	dword1379
-	int2float	dword1379
+	mov	dword1393,dword ptr [__texture_width]
+	dec	dword1393
+	int2float	dword1393
 	fmul	dword ptr [ebp-284]
-	float2int	dword1381
-	mov	[ebp-288],dword1381
-	mov	dword1385,dword ptr [__texture_height]
-	dec	dword1385
-	int2float	dword1385
+	float2int	dword1395
+	mov	[ebp-288],dword1395
+	mov	dword1399,dword ptr [__texture_height]
+	dec	dword1399
+	int2float	dword1399
 	fmul	dword ptr [ebp-280]
-	float2int	dword1387
-	mov	[ebp-292],dword1387
-	mov	dword1391,[ebp-292]
-	imul	dword1391,dword ptr [__texture_width]
-	add	dword1391,[ebp-288]
-	sal	dword1391,2
-	add	dword1391,dword ptr [__texture_data]
-	mov	dword1395,[dword1391]
-	mov	[ebp-296],dword1395
+	float2int	dword1401
+	mov	[ebp-292],dword1401
+	mov	dword1405,[ebp-292]
+	imul	dword1405,dword ptr [__texture_width]
+	add	dword1405,[ebp-288]
+	sal	dword1405,2
+	add	dword1405,dword ptr [__texture_data]
+	mov	dword1409,[dword1405]
+	mov	[ebp-296],dword1409
 label0046:
 ; end of inline function _tex2d
-	mov	dword1313,[ebp-296]
-	mov	[ebp-244],dword1313
-	sar	dword ptr [ebp-244],24
-	mov	dword1318,[ebp-244]
-	and	dword1318,255
-	mov	[ebp-272],dword1318
+	mov	dword1327,[ebp-296]
+	mov	[ebp-244],dword1327
+	mov	dword1331,[ebp-244]
+	sar	dword1331,24
+	and	dword1331,255
+	mov	[ebp-272],dword1331
 	cmp	dword ptr [ebp-272],0
 	je	label0045
 	fild	dword ptr [ebp-272]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-276]
-	mov	dword1325,[ebp-236]
-	mov	dword1327,[dword1325]
-	mov	[ebp-260],dword1327
-	mov	dword1330,[ebp-260]
-	and	dword1330,65280
-	sar	dword1330,8
-	mov	[ebp-264],dword1330
-	mov	dword1335,[ebp-260]
-	and	dword1335,255
-	mov	[ebp-268],dword1335
-	mov	dword1339,[ebp-244]
-	and	dword1339,65280
-	sar	dword1339,8
-	mov	[ebp-252],dword1339
-	mov	dword1344,[ebp-244]
-	and	dword1344,255
-	mov	[ebp-256],dword1344
+	mov	dword1339,[ebp-236]
+	mov	dword1341,[dword1339]
+	mov	[ebp-260],dword1341
+	mov	dword1344,[ebp-260]
+	and	dword1344,65280
+	sar	dword1344,8
+	mov	[ebp-264],dword1344
+	mov	dword1349,[ebp-260]
+	and	dword1349,255
+	mov	[ebp-268],dword1349
+	mov	dword1353,[ebp-244]
+	and	dword1353,65280
+	sar	dword1353,8
+	mov	[ebp-252],dword1353
+	mov	dword1358,[ebp-244]
+	and	dword1358,255
+	mov	[ebp-256],dword1358
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-264]
@@ -2598,8 +2618,8 @@ label0046:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1350
-	mov	[ebp-252],dword1350
+	float2int	dword1364
+	mov	[ebp-252],dword1364
 	fild	dword ptr [ebp-256]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-268]
@@ -2607,15 +2627,15 @@ label0046:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1356
-	mov	[ebp-256],dword1356
-	sal	dword ptr [ebp-252],8
-	mov	dword1361,[ebp-252]
-	add	dword1361,[ebp-256]
-	mov	[ebp-248],dword1361
-	mov	dword1364,[ebp-236]
-	mov	dword1366,[ebp-248]
-	mov	[dword1364],dword1366
+	float2int	dword1370
+	mov	[ebp-256],dword1370
+	mov	dword1374,[ebp-252]
+	sal	dword1374,8
+	add	dword1374,[ebp-256]
+	mov	[ebp-248],dword1374
+	mov	dword1378,[ebp-236]
+	mov	dword1380,[ebp-248]
+	mov	[dword1378],dword1380
 label0045:
 	fld	dword ptr [ebp-220]
 	fadd	dword ptr [ebp-212]
@@ -2625,102 +2645,104 @@ label0045:
 	fstp	dword ptr [ebp-216]
 label0043:
 	add	dword ptr [ebp-236],4
-	mov	dword1373,[ebp-236]
-	cmp	dword1373,[ebp-240]
+	mov	dword1387,[ebp-236]
+	cmp	dword1387,[ebp-240]
 	jl	label0042
 label0044:
 label0047:
 ; end of inline function _rasterize_horiz_line
 	jmp	label003a
 label0039:
-	mov	dword1237,[ebp-196]
-	cmp	dword1237,[ebp-204]
+	mov	dword1249,[ebp-196]
+	cmp	dword1249,[ebp-204]
 	jge	label003b
-	mov	dword1402,[ebp-172]
-	mov	[ebp-208],dword1402
-	mov	dword1401,[ebp-176]
-	mov	[ebp-212],dword1401
-	mov	dword1241,[ebp-180]
-	mov	dword1400,[dword1241+4]
-	mov	[ebp-216],dword1400
-	mov	dword1243,[ebp-180]
-	mov	dword1399,[dword1243]
-	mov	[ebp-220],dword1399
-	mov	dword1398,[ebp-192]
-	mov	[ebp-224],dword1398
-	mov	dword1397,[ebp-200]
-	mov	[ebp-228],dword1397
-	mov	dword1396,[ebp-196]
-	mov	[ebp-232],dword1396
+	mov	dword1416,[ebp-172]
+	mov	[ebp-208],dword1416
+	mov	dword1415,[ebp-176]
+	mov	[ebp-212],dword1415
+	mov	dword1253,[ebp-180]
+	mov	dword1414,[dword1253+4]
+	mov	[ebp-216],dword1414
+	mov	dword1255,[ebp-180]
+	mov	dword1413,[dword1255]
+	mov	[ebp-220],dword1413
+	mov	dword1412,[ebp-192]
+	mov	[ebp-224],dword1412
+	mov	dword1411,[ebp-200]
+	mov	[ebp-228],dword1411
+	mov	dword1410,[ebp-196]
+	mov	[ebp-232],dword1410
 ; start of inline function _rasterize_horiz_line
-	mov	dword1406,dword ptr [__pitch]
-	imul	dword1406,[ebp-224]
-	add	dword1406,dword ptr [__videomem]
-	sal	dword ptr [ebp-232],2
-	add	dword1406,[ebp-232]
-	mov	[ebp-236],dword1406
-	sal	dword ptr [ebp-228],2
-	mov	dword1414,[ebp-236]
-	add	dword1414,[ebp-228]
-	sal	dword ptr [ebp-232],2
-	sub	dword1414,[ebp-232]
-	mov	[ebp-240],dword1414
+	mov	dword1420,dword ptr [__pitch]
+	imul	dword1420,[ebp-224]
+	add	dword1420,dword ptr [__videomem]
+	mov	dword1424,[ebp-232]
+	sal	dword1424,2
+	add	dword1420,dword1424
+	mov	[ebp-236],dword1420
+	mov	dword1428,[ebp-228]
+	sal	dword1428,2
+	add	dword1428,[ebp-236]
+	mov	dword1432,[ebp-232]
+	sal	dword1432,2
+	sub	dword1428,dword1432
+	mov	[ebp-240],dword1428
 label0048:
-	mov	dword1482,[ebp-216]
-	mov	[ebp-280],dword1482
-	mov	dword1481,[ebp-220]
-	mov	[ebp-284],dword1481
+	mov	dword1498,[ebp-216]
+	mov	[ebp-280],dword1498
+	mov	dword1497,[ebp-220]
+	mov	[ebp-284],dword1497
 ; start of inline function _tex2d
-	mov	dword1486,dword ptr [__texture_width]
-	dec	dword1486
-	int2float	dword1486
+	mov	dword1502,dword ptr [__texture_width]
+	dec	dword1502
+	int2float	dword1502
 	fmul	dword ptr [ebp-284]
-	float2int	dword1488
-	mov	[ebp-288],dword1488
-	mov	dword1492,dword ptr [__texture_height]
-	dec	dword1492
-	int2float	dword1492
+	float2int	dword1504
+	mov	[ebp-288],dword1504
+	mov	dword1508,dword ptr [__texture_height]
+	dec	dword1508
+	int2float	dword1508
 	fmul	dword ptr [ebp-280]
-	float2int	dword1494
-	mov	[ebp-292],dword1494
-	mov	dword1498,[ebp-292]
-	imul	dword1498,dword ptr [__texture_width]
-	add	dword1498,[ebp-288]
-	sal	dword1498,2
-	add	dword1498,dword ptr [__texture_data]
-	mov	dword1502,[dword1498]
-	mov	[ebp-296],dword1502
+	float2int	dword1510
+	mov	[ebp-292],dword1510
+	mov	dword1514,[ebp-292]
+	imul	dword1514,dword ptr [__texture_width]
+	add	dword1514,[ebp-288]
+	sal	dword1514,2
+	add	dword1514,dword ptr [__texture_data]
+	mov	dword1518,[dword1514]
+	mov	[ebp-296],dword1518
 label004c:
 ; end of inline function _tex2d
-	mov	dword1420,[ebp-296]
-	mov	[ebp-244],dword1420
-	sar	dword ptr [ebp-244],24
-	mov	dword1425,[ebp-244]
-	and	dword1425,255
-	mov	[ebp-272],dword1425
+	mov	dword1436,[ebp-296]
+	mov	[ebp-244],dword1436
+	mov	dword1440,[ebp-244]
+	sar	dword1440,24
+	and	dword1440,255
+	mov	[ebp-272],dword1440
 	cmp	dword ptr [ebp-272],0
 	je	label004b
 	fild	dword ptr [ebp-272]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-276]
-	mov	dword1432,[ebp-236]
-	mov	dword1434,[dword1432]
-	mov	[ebp-260],dword1434
-	mov	dword1437,[ebp-260]
-	and	dword1437,65280
-	sar	dword1437,8
-	mov	[ebp-264],dword1437
-	mov	dword1442,[ebp-260]
-	and	dword1442,255
-	mov	[ebp-268],dword1442
-	mov	dword1446,[ebp-244]
-	and	dword1446,65280
-	sar	dword1446,8
-	mov	[ebp-252],dword1446
-	mov	dword1451,[ebp-244]
-	and	dword1451,255
-	mov	[ebp-256],dword1451
+	mov	dword1448,[ebp-236]
+	mov	dword1450,[dword1448]
+	mov	[ebp-260],dword1450
+	mov	dword1453,[ebp-260]
+	and	dword1453,65280
+	sar	dword1453,8
+	mov	[ebp-264],dword1453
+	mov	dword1458,[ebp-260]
+	and	dword1458,255
+	mov	[ebp-268],dword1458
+	mov	dword1462,[ebp-244]
+	and	dword1462,65280
+	sar	dword1462,8
+	mov	[ebp-252],dword1462
+	mov	dword1467,[ebp-244]
+	and	dword1467,255
+	mov	[ebp-256],dword1467
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-264]
@@ -2728,8 +2750,8 @@ label004c:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1457
-	mov	[ebp-252],dword1457
+	float2int	dword1473
+	mov	[ebp-252],dword1473
 	fild	dword ptr [ebp-256]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-268]
@@ -2737,15 +2759,15 @@ label004c:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1463
-	mov	[ebp-256],dword1463
-	sal	dword ptr [ebp-252],8
-	mov	dword1468,[ebp-252]
-	add	dword1468,[ebp-256]
-	mov	[ebp-248],dword1468
-	mov	dword1471,[ebp-236]
-	mov	dword1473,[ebp-248]
-	mov	[dword1471],dword1473
+	float2int	dword1479
+	mov	[ebp-256],dword1479
+	mov	dword1483,[ebp-252]
+	sal	dword1483,8
+	add	dword1483,[ebp-256]
+	mov	[ebp-248],dword1483
+	mov	dword1487,[ebp-236]
+	mov	dword1489,[ebp-248]
+	mov	[dword1487],dword1489
 label004b:
 	fld	dword ptr [ebp-220]
 	fadd	dword ptr [ebp-212]
@@ -2755,99 +2777,101 @@ label004b:
 	fstp	dword ptr [ebp-216]
 label0049:
 	add	dword ptr [ebp-236],4
-	mov	dword1480,[ebp-236]
-	cmp	dword1480,[ebp-240]
+	mov	dword1496,[ebp-236]
+	cmp	dword1496,[ebp-240]
 	jl	label0048
 label004a:
 label004d:
 ; end of inline function _rasterize_horiz_line
 	jmp	label003c
 label003b:
-	mov	dword1509,[ebp-172]
-	mov	[ebp-208],dword1509
-	mov	dword1508,[ebp-176]
-	mov	[ebp-212],dword1508
-	mov	dword1250,[ebp-188]
-	mov	dword1507,[dword1250+4]
-	mov	[ebp-216],dword1507
-	mov	dword1252,[ebp-188]
-	mov	dword1506,[dword1252]
-	mov	[ebp-220],dword1506
-	mov	dword1505,[ebp-192]
-	mov	[ebp-224],dword1505
-	mov	dword1504,[ebp-200]
-	mov	[ebp-228],dword1504
-	mov	dword1503,[ebp-204]
-	mov	[ebp-232],dword1503
+	mov	dword1525,[ebp-172]
+	mov	[ebp-208],dword1525
+	mov	dword1524,[ebp-176]
+	mov	[ebp-212],dword1524
+	mov	dword1262,[ebp-188]
+	mov	dword1523,[dword1262+4]
+	mov	[ebp-216],dword1523
+	mov	dword1264,[ebp-188]
+	mov	dword1522,[dword1264]
+	mov	[ebp-220],dword1522
+	mov	dword1521,[ebp-192]
+	mov	[ebp-224],dword1521
+	mov	dword1520,[ebp-200]
+	mov	[ebp-228],dword1520
+	mov	dword1519,[ebp-204]
+	mov	[ebp-232],dword1519
 ; start of inline function _rasterize_horiz_line
-	mov	dword1513,dword ptr [__pitch]
-	imul	dword1513,[ebp-224]
-	add	dword1513,dword ptr [__videomem]
-	sal	dword ptr [ebp-232],2
-	add	dword1513,[ebp-232]
-	mov	[ebp-236],dword1513
-	sal	dword ptr [ebp-228],2
-	mov	dword1521,[ebp-236]
-	add	dword1521,[ebp-228]
-	sal	dword ptr [ebp-232],2
-	sub	dword1521,[ebp-232]
-	mov	[ebp-240],dword1521
+	mov	dword1529,dword ptr [__pitch]
+	imul	dword1529,[ebp-224]
+	add	dword1529,dword ptr [__videomem]
+	mov	dword1533,[ebp-232]
+	sal	dword1533,2
+	add	dword1529,dword1533
+	mov	[ebp-236],dword1529
+	mov	dword1537,[ebp-228]
+	sal	dword1537,2
+	add	dword1537,[ebp-236]
+	mov	dword1541,[ebp-232]
+	sal	dword1541,2
+	sub	dword1537,dword1541
+	mov	[ebp-240],dword1537
 label004e:
-	mov	dword1589,[ebp-216]
-	mov	[ebp-280],dword1589
-	mov	dword1588,[ebp-220]
-	mov	[ebp-284],dword1588
+	mov	dword1607,[ebp-216]
+	mov	[ebp-280],dword1607
+	mov	dword1606,[ebp-220]
+	mov	[ebp-284],dword1606
 ; start of inline function _tex2d
-	mov	dword1593,dword ptr [__texture_width]
-	dec	dword1593
-	int2float	dword1593
+	mov	dword1611,dword ptr [__texture_width]
+	dec	dword1611
+	int2float	dword1611
 	fmul	dword ptr [ebp-284]
-	float2int	dword1595
-	mov	[ebp-288],dword1595
-	mov	dword1599,dword ptr [__texture_height]
-	dec	dword1599
-	int2float	dword1599
+	float2int	dword1613
+	mov	[ebp-288],dword1613
+	mov	dword1617,dword ptr [__texture_height]
+	dec	dword1617
+	int2float	dword1617
 	fmul	dword ptr [ebp-280]
-	float2int	dword1601
-	mov	[ebp-292],dword1601
-	mov	dword1605,[ebp-292]
-	imul	dword1605,dword ptr [__texture_width]
-	add	dword1605,[ebp-288]
-	sal	dword1605,2
-	add	dword1605,dword ptr [__texture_data]
-	mov	dword1609,[dword1605]
-	mov	[ebp-296],dword1609
+	float2int	dword1619
+	mov	[ebp-292],dword1619
+	mov	dword1623,[ebp-292]
+	imul	dword1623,dword ptr [__texture_width]
+	add	dword1623,[ebp-288]
+	sal	dword1623,2
+	add	dword1623,dword ptr [__texture_data]
+	mov	dword1627,[dword1623]
+	mov	[ebp-296],dword1627
 label0052:
 ; end of inline function _tex2d
-	mov	dword1527,[ebp-296]
-	mov	[ebp-244],dword1527
-	sar	dword ptr [ebp-244],24
-	mov	dword1532,[ebp-244]
-	and	dword1532,255
-	mov	[ebp-272],dword1532
+	mov	dword1545,[ebp-296]
+	mov	[ebp-244],dword1545
+	mov	dword1549,[ebp-244]
+	sar	dword1549,24
+	and	dword1549,255
+	mov	[ebp-272],dword1549
 	cmp	dword ptr [ebp-272],0
 	je	label0051
 	fild	dword ptr [ebp-272]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-276]
-	mov	dword1539,[ebp-236]
-	mov	dword1541,[dword1539]
-	mov	[ebp-260],dword1541
-	mov	dword1544,[ebp-260]
-	and	dword1544,65280
-	sar	dword1544,8
-	mov	[ebp-264],dword1544
-	mov	dword1549,[ebp-260]
-	and	dword1549,255
-	mov	[ebp-268],dword1549
-	mov	dword1553,[ebp-244]
-	and	dword1553,65280
-	sar	dword1553,8
-	mov	[ebp-252],dword1553
-	mov	dword1558,[ebp-244]
-	and	dword1558,255
-	mov	[ebp-256],dword1558
+	mov	dword1557,[ebp-236]
+	mov	dword1559,[dword1557]
+	mov	[ebp-260],dword1559
+	mov	dword1562,[ebp-260]
+	and	dword1562,65280
+	sar	dword1562,8
+	mov	[ebp-264],dword1562
+	mov	dword1567,[ebp-260]
+	and	dword1567,255
+	mov	[ebp-268],dword1567
+	mov	dword1571,[ebp-244]
+	and	dword1571,65280
+	sar	dword1571,8
+	mov	[ebp-252],dword1571
+	mov	dword1576,[ebp-244]
+	and	dword1576,255
+	mov	[ebp-256],dword1576
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-264]
@@ -2855,8 +2879,8 @@ label0052:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1564
-	mov	[ebp-252],dword1564
+	float2int	dword1582
+	mov	[ebp-252],dword1582
 	fild	dword ptr [ebp-256]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-268]
@@ -2864,15 +2888,15 @@ label0052:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1570
-	mov	[ebp-256],dword1570
-	sal	dword ptr [ebp-252],8
-	mov	dword1575,[ebp-252]
-	add	dword1575,[ebp-256]
-	mov	[ebp-248],dword1575
-	mov	dword1578,[ebp-236]
-	mov	dword1580,[ebp-248]
-	mov	[dword1578],dword1580
+	float2int	dword1588
+	mov	[ebp-256],dword1588
+	mov	dword1592,[ebp-252]
+	sal	dword1592,8
+	add	dword1592,[ebp-256]
+	mov	[ebp-248],dword1592
+	mov	dword1596,[ebp-236]
+	mov	dword1598,[ebp-248]
+	mov	[dword1596],dword1598
 label0051:
 	fld	dword ptr [ebp-220]
 	fadd	dword ptr [ebp-212]
@@ -2882,8 +2906,8 @@ label0051:
 	fstp	dword ptr [ebp-216]
 label004f:
 	add	dword ptr [ebp-236],4
-	mov	dword1587,[ebp-236]
-	cmp	dword1587,[ebp-240]
+	mov	dword1605,[ebp-236]
+	cmp	dword1605,[ebp-240]
 	jl	label004e
 label0050:
 label0053:
@@ -2892,8 +2916,8 @@ label003c:
 label003a:
 	jmp	label003d
 label0038:
-	mov	dword1258,[ebp-196]
-	cmp	dword1258,[ebp-200]
+	mov	dword1270,[ebp-196]
+	cmp	dword1270,[ebp-200]
 	jge	label003e
 	fld	dword ptr [ebp-172]
 	fldz
@@ -2903,87 +2927,89 @@ label0038:
 	fldz
 	fsubrp
 	fstp	dword ptr [ebp-212]
-	mov	dword1262,[ebp-180]
-	mov	dword1614,[dword1262+4]
-	mov	[ebp-216],dword1614
-	mov	dword1264,[ebp-180]
-	mov	dword1613,[dword1264]
-	mov	[ebp-220],dword1613
-	mov	dword1612,[ebp-192]
-	mov	[ebp-224],dword1612
-	mov	dword1611,[ebp-204]
-	mov	[ebp-228],dword1611
-	mov	dword1610,[ebp-196]
-	mov	[ebp-232],dword1610
+	mov	dword1274,[ebp-180]
+	mov	dword1632,[dword1274+4]
+	mov	[ebp-216],dword1632
+	mov	dword1276,[ebp-180]
+	mov	dword1631,[dword1276]
+	mov	[ebp-220],dword1631
+	mov	dword1630,[ebp-192]
+	mov	[ebp-224],dword1630
+	mov	dword1629,[ebp-204]
+	mov	[ebp-228],dword1629
+	mov	dword1628,[ebp-196]
+	mov	[ebp-232],dword1628
 ; start of inline function _rasterize_horiz_line
-	mov	dword1618,dword ptr [__pitch]
-	imul	dword1618,[ebp-224]
-	add	dword1618,dword ptr [__videomem]
-	sal	dword ptr [ebp-232],2
-	add	dword1618,[ebp-232]
-	mov	[ebp-236],dword1618
-	sal	dword ptr [ebp-228],2
-	mov	dword1626,[ebp-236]
-	add	dword1626,[ebp-228]
-	sal	dword ptr [ebp-232],2
-	sub	dword1626,[ebp-232]
-	mov	[ebp-240],dword1626
+	mov	dword1636,dword ptr [__pitch]
+	imul	dword1636,[ebp-224]
+	add	dword1636,dword ptr [__videomem]
+	mov	dword1640,[ebp-232]
+	sal	dword1640,2
+	add	dword1636,dword1640
+	mov	[ebp-236],dword1636
+	mov	dword1644,[ebp-228]
+	sal	dword1644,2
+	add	dword1644,[ebp-236]
+	mov	dword1648,[ebp-232]
+	sal	dword1648,2
+	sub	dword1644,dword1648
+	mov	[ebp-240],dword1644
 label0054:
-	mov	dword1694,[ebp-216]
-	mov	[ebp-280],dword1694
-	mov	dword1693,[ebp-220]
-	mov	[ebp-284],dword1693
+	mov	dword1714,[ebp-216]
+	mov	[ebp-280],dword1714
+	mov	dword1713,[ebp-220]
+	mov	[ebp-284],dword1713
 ; start of inline function _tex2d
-	mov	dword1698,dword ptr [__texture_width]
-	dec	dword1698
-	int2float	dword1698
+	mov	dword1718,dword ptr [__texture_width]
+	dec	dword1718
+	int2float	dword1718
 	fmul	dword ptr [ebp-284]
-	float2int	dword1700
-	mov	[ebp-288],dword1700
-	mov	dword1704,dword ptr [__texture_height]
-	dec	dword1704
-	int2float	dword1704
+	float2int	dword1720
+	mov	[ebp-288],dword1720
+	mov	dword1724,dword ptr [__texture_height]
+	dec	dword1724
+	int2float	dword1724
 	fmul	dword ptr [ebp-280]
-	float2int	dword1706
-	mov	[ebp-292],dword1706
-	mov	dword1710,[ebp-292]
-	imul	dword1710,dword ptr [__texture_width]
-	add	dword1710,[ebp-288]
-	sal	dword1710,2
-	add	dword1710,dword ptr [__texture_data]
-	mov	dword1714,[dword1710]
-	mov	[ebp-296],dword1714
+	float2int	dword1726
+	mov	[ebp-292],dword1726
+	mov	dword1730,[ebp-292]
+	imul	dword1730,dword ptr [__texture_width]
+	add	dword1730,[ebp-288]
+	sal	dword1730,2
+	add	dword1730,dword ptr [__texture_data]
+	mov	dword1734,[dword1730]
+	mov	[ebp-296],dword1734
 label0058:
 ; end of inline function _tex2d
-	mov	dword1632,[ebp-296]
-	mov	[ebp-244],dword1632
-	sar	dword ptr [ebp-244],24
-	mov	dword1637,[ebp-244]
-	and	dword1637,255
-	mov	[ebp-272],dword1637
+	mov	dword1652,[ebp-296]
+	mov	[ebp-244],dword1652
+	mov	dword1656,[ebp-244]
+	sar	dword1656,24
+	and	dword1656,255
+	mov	[ebp-272],dword1656
 	cmp	dword ptr [ebp-272],0
 	je	label0057
 	fild	dword ptr [ebp-272]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-276]
-	mov	dword1644,[ebp-236]
-	mov	dword1646,[dword1644]
-	mov	[ebp-260],dword1646
-	mov	dword1649,[ebp-260]
-	and	dword1649,65280
-	sar	dword1649,8
-	mov	[ebp-264],dword1649
-	mov	dword1654,[ebp-260]
-	and	dword1654,255
-	mov	[ebp-268],dword1654
-	mov	dword1658,[ebp-244]
-	and	dword1658,65280
-	sar	dword1658,8
-	mov	[ebp-252],dword1658
-	mov	dword1663,[ebp-244]
-	and	dword1663,255
-	mov	[ebp-256],dword1663
+	mov	dword1664,[ebp-236]
+	mov	dword1666,[dword1664]
+	mov	[ebp-260],dword1666
+	mov	dword1669,[ebp-260]
+	and	dword1669,65280
+	sar	dword1669,8
+	mov	[ebp-264],dword1669
+	mov	dword1674,[ebp-260]
+	and	dword1674,255
+	mov	[ebp-268],dword1674
+	mov	dword1678,[ebp-244]
+	and	dword1678,65280
+	sar	dword1678,8
+	mov	[ebp-252],dword1678
+	mov	dword1683,[ebp-244]
+	and	dword1683,255
+	mov	[ebp-256],dword1683
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-264]
@@ -2991,8 +3017,8 @@ label0058:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1669
-	mov	[ebp-252],dword1669
+	float2int	dword1689
+	mov	[ebp-252],dword1689
 	fild	dword ptr [ebp-256]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-268]
@@ -3000,15 +3026,15 @@ label0058:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1675
-	mov	[ebp-256],dword1675
-	sal	dword ptr [ebp-252],8
-	mov	dword1680,[ebp-252]
-	add	dword1680,[ebp-256]
-	mov	[ebp-248],dword1680
-	mov	dword1683,[ebp-236]
-	mov	dword1685,[ebp-248]
-	mov	[dword1683],dword1685
+	float2int	dword1695
+	mov	[ebp-256],dword1695
+	mov	dword1699,[ebp-252]
+	sal	dword1699,8
+	add	dword1699,[ebp-256]
+	mov	[ebp-248],dword1699
+	mov	dword1703,[ebp-236]
+	mov	dword1705,[ebp-248]
+	mov	[dword1703],dword1705
 label0057:
 	fld	dword ptr [ebp-220]
 	fadd	dword ptr [ebp-212]
@@ -3018,16 +3044,16 @@ label0057:
 	fstp	dword ptr [ebp-216]
 label0055:
 	add	dword ptr [ebp-236],4
-	mov	dword1692,[ebp-236]
-	cmp	dword1692,[ebp-240]
+	mov	dword1712,[ebp-236]
+	cmp	dword1712,[ebp-240]
 	jl	label0054
 label0056:
 label0059:
 ; end of inline function _rasterize_horiz_line
 	jmp	label003f
 label003e:
-	mov	dword1270,[ebp-196]
-	cmp	dword1270,[ebp-204]
+	mov	dword1282,[ebp-196]
+	cmp	dword1282,[ebp-204]
 	jle	label0040
 	fld	dword ptr [ebp-172]
 	fldz
@@ -3037,87 +3063,89 @@ label003e:
 	fldz
 	fsubrp
 	fstp	dword ptr [ebp-212]
-	mov	dword1274,[ebp-184]
-	mov	dword1719,[dword1274+4]
-	mov	[ebp-216],dword1719
-	mov	dword1276,[ebp-184]
-	mov	dword1718,[dword1276]
-	mov	[ebp-220],dword1718
-	mov	dword1717,[ebp-192]
-	mov	[ebp-224],dword1717
-	mov	dword1716,[ebp-196]
-	mov	[ebp-228],dword1716
-	mov	dword1715,[ebp-200]
-	mov	[ebp-232],dword1715
+	mov	dword1286,[ebp-184]
+	mov	dword1739,[dword1286+4]
+	mov	[ebp-216],dword1739
+	mov	dword1288,[ebp-184]
+	mov	dword1738,[dword1288]
+	mov	[ebp-220],dword1738
+	mov	dword1737,[ebp-192]
+	mov	[ebp-224],dword1737
+	mov	dword1736,[ebp-196]
+	mov	[ebp-228],dword1736
+	mov	dword1735,[ebp-200]
+	mov	[ebp-232],dword1735
 ; start of inline function _rasterize_horiz_line
-	mov	dword1723,dword ptr [__pitch]
-	imul	dword1723,[ebp-224]
-	add	dword1723,dword ptr [__videomem]
-	sal	dword ptr [ebp-232],2
-	add	dword1723,[ebp-232]
-	mov	[ebp-236],dword1723
-	sal	dword ptr [ebp-228],2
-	mov	dword1731,[ebp-236]
-	add	dword1731,[ebp-228]
-	sal	dword ptr [ebp-232],2
-	sub	dword1731,[ebp-232]
-	mov	[ebp-240],dword1731
+	mov	dword1743,dword ptr [__pitch]
+	imul	dword1743,[ebp-224]
+	add	dword1743,dword ptr [__videomem]
+	mov	dword1747,[ebp-232]
+	sal	dword1747,2
+	add	dword1743,dword1747
+	mov	[ebp-236],dword1743
+	mov	dword1751,[ebp-228]
+	sal	dword1751,2
+	add	dword1751,[ebp-236]
+	mov	dword1755,[ebp-232]
+	sal	dword1755,2
+	sub	dword1751,dword1755
+	mov	[ebp-240],dword1751
 label005a:
-	mov	dword1799,[ebp-216]
-	mov	[ebp-280],dword1799
-	mov	dword1798,[ebp-220]
-	mov	[ebp-284],dword1798
+	mov	dword1821,[ebp-216]
+	mov	[ebp-280],dword1821
+	mov	dword1820,[ebp-220]
+	mov	[ebp-284],dword1820
 ; start of inline function _tex2d
-	mov	dword1803,dword ptr [__texture_width]
-	dec	dword1803
-	int2float	dword1803
+	mov	dword1825,dword ptr [__texture_width]
+	dec	dword1825
+	int2float	dword1825
 	fmul	dword ptr [ebp-284]
-	float2int	dword1805
-	mov	[ebp-288],dword1805
-	mov	dword1809,dword ptr [__texture_height]
-	dec	dword1809
-	int2float	dword1809
+	float2int	dword1827
+	mov	[ebp-288],dword1827
+	mov	dword1831,dword ptr [__texture_height]
+	dec	dword1831
+	int2float	dword1831
 	fmul	dword ptr [ebp-280]
-	float2int	dword1811
-	mov	[ebp-292],dword1811
-	mov	dword1815,[ebp-292]
-	imul	dword1815,dword ptr [__texture_width]
-	add	dword1815,[ebp-288]
-	sal	dword1815,2
-	add	dword1815,dword ptr [__texture_data]
-	mov	dword1819,[dword1815]
-	mov	[ebp-296],dword1819
+	float2int	dword1833
+	mov	[ebp-292],dword1833
+	mov	dword1837,[ebp-292]
+	imul	dword1837,dword ptr [__texture_width]
+	add	dword1837,[ebp-288]
+	sal	dword1837,2
+	add	dword1837,dword ptr [__texture_data]
+	mov	dword1841,[dword1837]
+	mov	[ebp-296],dword1841
 label005e:
 ; end of inline function _tex2d
-	mov	dword1737,[ebp-296]
-	mov	[ebp-244],dword1737
-	sar	dword ptr [ebp-244],24
-	mov	dword1742,[ebp-244]
-	and	dword1742,255
-	mov	[ebp-272],dword1742
+	mov	dword1759,[ebp-296]
+	mov	[ebp-244],dword1759
+	mov	dword1763,[ebp-244]
+	sar	dword1763,24
+	and	dword1763,255
+	mov	[ebp-272],dword1763
 	cmp	dword ptr [ebp-272],0
 	je	label005d
 	fild	dword ptr [ebp-272]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-276]
-	mov	dword1749,[ebp-236]
-	mov	dword1751,[dword1749]
-	mov	[ebp-260],dword1751
-	mov	dword1754,[ebp-260]
-	and	dword1754,65280
-	sar	dword1754,8
-	mov	[ebp-264],dword1754
-	mov	dword1759,[ebp-260]
-	and	dword1759,255
-	mov	[ebp-268],dword1759
-	mov	dword1763,[ebp-244]
-	and	dword1763,65280
-	sar	dword1763,8
-	mov	[ebp-252],dword1763
-	mov	dword1768,[ebp-244]
-	and	dword1768,255
-	mov	[ebp-256],dword1768
+	mov	dword1771,[ebp-236]
+	mov	dword1773,[dword1771]
+	mov	[ebp-260],dword1773
+	mov	dword1776,[ebp-260]
+	and	dword1776,65280
+	sar	dword1776,8
+	mov	[ebp-264],dword1776
+	mov	dword1781,[ebp-260]
+	and	dword1781,255
+	mov	[ebp-268],dword1781
+	mov	dword1785,[ebp-244]
+	and	dword1785,65280
+	sar	dword1785,8
+	mov	[ebp-252],dword1785
+	mov	dword1790,[ebp-244]
+	and	dword1790,255
+	mov	[ebp-256],dword1790
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-264]
@@ -3125,8 +3153,8 @@ label005e:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1774
-	mov	[ebp-252],dword1774
+	float2int	dword1796
+	mov	[ebp-252],dword1796
 	fild	dword ptr [ebp-256]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-268]
@@ -3134,15 +3162,15 @@ label005e:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1780
-	mov	[ebp-256],dword1780
-	sal	dword ptr [ebp-252],8
-	mov	dword1785,[ebp-252]
-	add	dword1785,[ebp-256]
-	mov	[ebp-248],dword1785
-	mov	dword1788,[ebp-236]
-	mov	dword1790,[ebp-248]
-	mov	[dword1788],dword1790
+	float2int	dword1802
+	mov	[ebp-256],dword1802
+	mov	dword1806,[ebp-252]
+	sal	dword1806,8
+	add	dword1806,[ebp-256]
+	mov	[ebp-248],dword1806
+	mov	dword1810,[ebp-236]
+	mov	dword1812,[ebp-248]
+	mov	[dword1810],dword1812
 label005d:
 	fld	dword ptr [ebp-220]
 	fadd	dword ptr [ebp-212]
@@ -3152,8 +3180,8 @@ label005d:
 	fstp	dword ptr [ebp-216]
 label005b:
 	add	dword ptr [ebp-236],4
-	mov	dword1797,[ebp-236]
-	cmp	dword1797,[ebp-240]
+	mov	dword1819,[ebp-236]
+	cmp	dword1819,[ebp-240]
 	jl	label005a
 label005c:
 label005f:
@@ -3168,87 +3196,89 @@ label0040:
 	fldz
 	fsubrp
 	fstp	dword ptr [ebp-212]
-	mov	dword1283,[ebp-184]
-	mov	dword1824,[dword1283+4]
-	mov	[ebp-216],dword1824
-	mov	dword1285,[ebp-184]
-	mov	dword1823,[dword1285]
-	mov	[ebp-220],dword1823
-	mov	dword1822,[ebp-192]
-	mov	[ebp-224],dword1822
-	mov	dword1821,[ebp-204]
-	mov	[ebp-228],dword1821
-	mov	dword1820,[ebp-200]
-	mov	[ebp-232],dword1820
+	mov	dword1295,[ebp-184]
+	mov	dword1846,[dword1295+4]
+	mov	[ebp-216],dword1846
+	mov	dword1297,[ebp-184]
+	mov	dword1845,[dword1297]
+	mov	[ebp-220],dword1845
+	mov	dword1844,[ebp-192]
+	mov	[ebp-224],dword1844
+	mov	dword1843,[ebp-204]
+	mov	[ebp-228],dword1843
+	mov	dword1842,[ebp-200]
+	mov	[ebp-232],dword1842
 ; start of inline function _rasterize_horiz_line
-	mov	dword1828,dword ptr [__pitch]
-	imul	dword1828,[ebp-224]
-	add	dword1828,dword ptr [__videomem]
-	sal	dword ptr [ebp-232],2
-	add	dword1828,[ebp-232]
-	mov	[ebp-236],dword1828
-	sal	dword ptr [ebp-228],2
-	mov	dword1836,[ebp-236]
-	add	dword1836,[ebp-228]
-	sal	dword ptr [ebp-232],2
-	sub	dword1836,[ebp-232]
-	mov	[ebp-240],dword1836
+	mov	dword1850,dword ptr [__pitch]
+	imul	dword1850,[ebp-224]
+	add	dword1850,dword ptr [__videomem]
+	mov	dword1854,[ebp-232]
+	sal	dword1854,2
+	add	dword1850,dword1854
+	mov	[ebp-236],dword1850
+	mov	dword1858,[ebp-228]
+	sal	dword1858,2
+	add	dword1858,[ebp-236]
+	mov	dword1862,[ebp-232]
+	sal	dword1862,2
+	sub	dword1858,dword1862
+	mov	[ebp-240],dword1858
 label0060:
-	mov	dword1904,[ebp-216]
-	mov	[ebp-280],dword1904
-	mov	dword1903,[ebp-220]
-	mov	[ebp-284],dword1903
+	mov	dword1928,[ebp-216]
+	mov	[ebp-280],dword1928
+	mov	dword1927,[ebp-220]
+	mov	[ebp-284],dword1927
 ; start of inline function _tex2d
-	mov	dword1908,dword ptr [__texture_width]
-	dec	dword1908
-	int2float	dword1908
+	mov	dword1932,dword ptr [__texture_width]
+	dec	dword1932
+	int2float	dword1932
 	fmul	dword ptr [ebp-284]
-	float2int	dword1910
-	mov	[ebp-288],dword1910
-	mov	dword1914,dword ptr [__texture_height]
-	dec	dword1914
-	int2float	dword1914
+	float2int	dword1934
+	mov	[ebp-288],dword1934
+	mov	dword1938,dword ptr [__texture_height]
+	dec	dword1938
+	int2float	dword1938
 	fmul	dword ptr [ebp-280]
-	float2int	dword1916
-	mov	[ebp-292],dword1916
-	mov	dword1920,[ebp-292]
-	imul	dword1920,dword ptr [__texture_width]
-	add	dword1920,[ebp-288]
-	sal	dword1920,2
-	add	dword1920,dword ptr [__texture_data]
-	mov	dword1924,[dword1920]
-	mov	[ebp-296],dword1924
+	float2int	dword1940
+	mov	[ebp-292],dword1940
+	mov	dword1944,[ebp-292]
+	imul	dword1944,dword ptr [__texture_width]
+	add	dword1944,[ebp-288]
+	sal	dword1944,2
+	add	dword1944,dword ptr [__texture_data]
+	mov	dword1948,[dword1944]
+	mov	[ebp-296],dword1948
 label0064:
 ; end of inline function _tex2d
-	mov	dword1842,[ebp-296]
-	mov	[ebp-244],dword1842
-	sar	dword ptr [ebp-244],24
-	mov	dword1847,[ebp-244]
-	and	dword1847,255
-	mov	[ebp-272],dword1847
+	mov	dword1866,[ebp-296]
+	mov	[ebp-244],dword1866
+	mov	dword1870,[ebp-244]
+	sar	dword1870,24
+	and	dword1870,255
+	mov	[ebp-272],dword1870
 	cmp	dword ptr [ebp-272],0
 	je	label0063
 	fild	dword ptr [ebp-272]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-276]
-	mov	dword1854,[ebp-236]
-	mov	dword1856,[dword1854]
-	mov	[ebp-260],dword1856
-	mov	dword1859,[ebp-260]
-	and	dword1859,65280
-	sar	dword1859,8
-	mov	[ebp-264],dword1859
-	mov	dword1864,[ebp-260]
-	and	dword1864,255
-	mov	[ebp-268],dword1864
-	mov	dword1868,[ebp-244]
-	and	dword1868,65280
-	sar	dword1868,8
-	mov	[ebp-252],dword1868
-	mov	dword1873,[ebp-244]
-	and	dword1873,255
-	mov	[ebp-256],dword1873
+	mov	dword1878,[ebp-236]
+	mov	dword1880,[dword1878]
+	mov	[ebp-260],dword1880
+	mov	dword1883,[ebp-260]
+	and	dword1883,65280
+	sar	dword1883,8
+	mov	[ebp-264],dword1883
+	mov	dword1888,[ebp-260]
+	and	dword1888,255
+	mov	[ebp-268],dword1888
+	mov	dword1892,[ebp-244]
+	and	dword1892,65280
+	sar	dword1892,8
+	mov	[ebp-252],dword1892
+	mov	dword1897,[ebp-244]
+	and	dword1897,255
+	mov	[ebp-256],dword1897
 	fild	dword ptr [ebp-252]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-264]
@@ -3256,8 +3286,8 @@ label0064:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1879
-	mov	[ebp-252],dword1879
+	float2int	dword1903
+	mov	[ebp-252],dword1903
 	fild	dword ptr [ebp-256]
 	fmul	dword ptr [ebp-276]
 	fild	dword ptr [ebp-268]
@@ -3265,15 +3295,15 @@ label0064:
 	fsub	dword ptr [ebp-276]
 	fmulp
 	faddp
-	float2int	dword1885
-	mov	[ebp-256],dword1885
-	sal	dword ptr [ebp-252],8
-	mov	dword1890,[ebp-252]
-	add	dword1890,[ebp-256]
-	mov	[ebp-248],dword1890
-	mov	dword1893,[ebp-236]
-	mov	dword1895,[ebp-248]
-	mov	[dword1893],dword1895
+	float2int	dword1909
+	mov	[ebp-256],dword1909
+	mov	dword1913,[ebp-252]
+	sal	dword1913,8
+	add	dword1913,[ebp-256]
+	mov	[ebp-248],dword1913
+	mov	dword1917,[ebp-236]
+	mov	dword1919,[ebp-248]
+	mov	[dword1917],dword1919
 label0063:
 	fld	dword ptr [ebp-220]
 	fadd	dword ptr [ebp-212]
@@ -3283,8 +3313,8 @@ label0063:
 	fstp	dword ptr [ebp-216]
 label0061:
 	add	dword ptr [ebp-236],4
-	mov	dword1902,[ebp-236]
-	cmp	dword1902,[ebp-240]
+	mov	dword1926,[ebp-236]
+	cmp	dword1926,[ebp-240]
 	jl	label0060
 label0062:
 label0065:
@@ -3499,71 +3529,73 @@ label0006:
 	mov	dword529,dword ptr [__pitch]
 	imul	dword529,[ebp-96]
 	add	dword529,dword ptr [__videomem]
-	sal	dword ptr [ebp-104],2
-	add	dword529,[ebp-104]
+	mov	dword533,[ebp-104]
+	sal	dword533,2
+	add	dword529,dword533
 	mov	[ebp-108],dword529
-	sal	dword ptr [ebp-100],2
-	mov	dword537,[ebp-108]
-	add	dword537,[ebp-100]
-	sal	dword ptr [ebp-104],2
-	sub	dword537,[ebp-104]
+	mov	dword537,[ebp-100]
+	sal	dword537,2
+	add	dword537,[ebp-108]
+	mov	dword541,[ebp-104]
+	sal	dword541,2
+	sub	dword537,dword541
 	mov	[ebp-112],dword537
 label000d:
-	mov	dword605,[ebp-88]
-	mov	[ebp-152],dword605
-	mov	dword604,[ebp-92]
-	mov	[ebp-156],dword604
+	mov	dword607,[ebp-88]
+	mov	[ebp-152],dword607
+	mov	dword606,[ebp-92]
+	mov	[ebp-156],dword606
 ; start of inline function _tex2d
-	mov	dword609,dword ptr [__texture_width]
-	dec	dword609
-	int2float	dword609
+	mov	dword611,dword ptr [__texture_width]
+	dec	dword611
+	int2float	dword611
 	fmul	dword ptr [ebp-156]
-	float2int	dword611
-	mov	[ebp-160],dword611
-	mov	dword615,dword ptr [__texture_height]
-	dec	dword615
-	int2float	dword615
+	float2int	dword613
+	mov	[ebp-160],dword613
+	mov	dword617,dword ptr [__texture_height]
+	dec	dword617
+	int2float	dword617
 	fmul	dword ptr [ebp-152]
-	float2int	dword617
-	mov	[ebp-164],dword617
-	mov	dword621,[ebp-164]
-	imul	dword621,dword ptr [__texture_width]
-	add	dword621,[ebp-160]
-	sal	dword621,2
-	add	dword621,dword ptr [__texture_data]
-	mov	dword625,[dword621]
-	mov	[ebp-168],dword625
+	float2int	dword619
+	mov	[ebp-164],dword619
+	mov	dword623,[ebp-164]
+	imul	dword623,dword ptr [__texture_width]
+	add	dword623,[ebp-160]
+	sal	dword623,2
+	add	dword623,dword ptr [__texture_data]
+	mov	dword627,[dword623]
+	mov	[ebp-168],dword627
 label0011:
 ; end of inline function _tex2d
-	mov	dword543,[ebp-168]
-	mov	[ebp-116],dword543
-	sar	dword ptr [ebp-116],24
-	mov	dword548,[ebp-116]
-	and	dword548,255
-	mov	[ebp-144],dword548
+	mov	dword545,[ebp-168]
+	mov	[ebp-116],dword545
+	mov	dword549,[ebp-116]
+	sar	dword549,24
+	and	dword549,255
+	mov	[ebp-144],dword549
 	cmp	dword ptr [ebp-144],0
 	je	label0010
 	fild	dword ptr [ebp-144]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-148]
-	mov	dword555,[ebp-108]
-	mov	dword557,[dword555]
-	mov	[ebp-132],dword557
-	mov	dword560,[ebp-132]
-	and	dword560,65280
-	sar	dword560,8
-	mov	[ebp-136],dword560
-	mov	dword565,[ebp-132]
-	and	dword565,255
-	mov	[ebp-140],dword565
-	mov	dword569,[ebp-116]
-	and	dword569,65280
-	sar	dword569,8
-	mov	[ebp-124],dword569
-	mov	dword574,[ebp-116]
-	and	dword574,255
-	mov	[ebp-128],dword574
+	mov	dword557,[ebp-108]
+	mov	dword559,[dword557]
+	mov	[ebp-132],dword559
+	mov	dword562,[ebp-132]
+	and	dword562,65280
+	sar	dword562,8
+	mov	[ebp-136],dword562
+	mov	dword567,[ebp-132]
+	and	dword567,255
+	mov	[ebp-140],dword567
+	mov	dword571,[ebp-116]
+	and	dword571,65280
+	sar	dword571,8
+	mov	[ebp-124],dword571
+	mov	dword576,[ebp-116]
+	and	dword576,255
+	mov	[ebp-128],dword576
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-136]
@@ -3571,8 +3603,8 @@ label0011:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword580
-	mov	[ebp-124],dword580
+	float2int	dword582
+	mov	[ebp-124],dword582
 	fild	dword ptr [ebp-128]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-140]
@@ -3580,15 +3612,15 @@ label0011:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword586
-	mov	[ebp-128],dword586
-	sal	dword ptr [ebp-124],8
-	mov	dword591,[ebp-124]
-	add	dword591,[ebp-128]
-	mov	[ebp-120],dword591
-	mov	dword594,[ebp-108]
-	mov	dword596,[ebp-120]
-	mov	[dword594],dword596
+	float2int	dword588
+	mov	[ebp-128],dword588
+	mov	dword592,[ebp-124]
+	sal	dword592,8
+	add	dword592,[ebp-128]
+	mov	[ebp-120],dword592
+	mov	dword596,[ebp-108]
+	mov	dword598,[ebp-120]
+	mov	[dword596],dword598
 label0010:
 	fld	dword ptr [ebp-92]
 	fadd	dword ptr [ebp-84]
@@ -3598,97 +3630,99 @@ label0010:
 	fstp	dword ptr [ebp-88]
 label000e:
 	add	dword ptr [ebp-108],4
-	mov	dword603,[ebp-108]
-	cmp	dword603,[ebp-112]
+	mov	dword605,[ebp-108]
+	cmp	dword605,[ebp-112]
 	jl	label000d
 label000f:
 label0012:
 ; end of inline function _rasterize_horiz_line
 	jmp	label000c
 label000b:
-	mov	dword632,[ebp-44]
-	mov	[ebp-80],dword632
-	mov	dword631,[ebp-48]
-	mov	[ebp-84],dword631
-	mov	dword630,[ebp-52]
-	mov	[ebp-88],dword630
-	mov	dword629,[ebp-56]
-	mov	[ebp-92],dword629
-	mov	dword628,[ebp-68]
-	mov	[ebp-96],dword628
-	mov	dword627,[ebp-76]
-	mov	[ebp-100],dword627
-	mov	dword626,[ebp-72]
-	mov	[ebp-104],dword626
+	mov	dword634,[ebp-44]
+	mov	[ebp-80],dword634
+	mov	dword633,[ebp-48]
+	mov	[ebp-84],dword633
+	mov	dword632,[ebp-52]
+	mov	[ebp-88],dword632
+	mov	dword631,[ebp-56]
+	mov	[ebp-92],dword631
+	mov	dword630,[ebp-68]
+	mov	[ebp-96],dword630
+	mov	dword629,[ebp-76]
+	mov	[ebp-100],dword629
+	mov	dword628,[ebp-72]
+	mov	[ebp-104],dword628
 ; start of inline function _rasterize_horiz_line
-	mov	dword636,dword ptr [__pitch]
-	imul	dword636,[ebp-96]
-	add	dword636,dword ptr [__videomem]
-	sal	dword ptr [ebp-104],2
-	add	dword636,[ebp-104]
-	mov	[ebp-108],dword636
-	sal	dword ptr [ebp-100],2
-	mov	dword644,[ebp-108]
-	add	dword644,[ebp-100]
-	sal	dword ptr [ebp-104],2
-	sub	dword644,[ebp-104]
-	mov	[ebp-112],dword644
+	mov	dword638,dword ptr [__pitch]
+	imul	dword638,[ebp-96]
+	add	dword638,dword ptr [__videomem]
+	mov	dword642,[ebp-104]
+	sal	dword642,2
+	add	dword638,dword642
+	mov	[ebp-108],dword638
+	mov	dword646,[ebp-100]
+	sal	dword646,2
+	add	dword646,[ebp-108]
+	mov	dword650,[ebp-104]
+	sal	dword650,2
+	sub	dword646,dword650
+	mov	[ebp-112],dword646
 label0013:
-	mov	dword712,[ebp-88]
-	mov	[ebp-152],dword712
-	mov	dword711,[ebp-92]
-	mov	[ebp-156],dword711
+	mov	dword716,[ebp-88]
+	mov	[ebp-152],dword716
+	mov	dword715,[ebp-92]
+	mov	[ebp-156],dword715
 ; start of inline function _tex2d
-	mov	dword716,dword ptr [__texture_width]
-	dec	dword716
-	int2float	dword716
+	mov	dword720,dword ptr [__texture_width]
+	dec	dword720
+	int2float	dword720
 	fmul	dword ptr [ebp-156]
-	float2int	dword718
-	mov	[ebp-160],dword718
-	mov	dword722,dword ptr [__texture_height]
-	dec	dword722
-	int2float	dword722
+	float2int	dword722
+	mov	[ebp-160],dword722
+	mov	dword726,dword ptr [__texture_height]
+	dec	dword726
+	int2float	dword726
 	fmul	dword ptr [ebp-152]
-	float2int	dword724
-	mov	[ebp-164],dword724
-	mov	dword728,[ebp-164]
-	imul	dword728,dword ptr [__texture_width]
-	add	dword728,[ebp-160]
-	sal	dword728,2
-	add	dword728,dword ptr [__texture_data]
-	mov	dword732,[dword728]
-	mov	[ebp-168],dword732
+	float2int	dword728
+	mov	[ebp-164],dword728
+	mov	dword732,[ebp-164]
+	imul	dword732,dword ptr [__texture_width]
+	add	dword732,[ebp-160]
+	sal	dword732,2
+	add	dword732,dword ptr [__texture_data]
+	mov	dword736,[dword732]
+	mov	[ebp-168],dword736
 label0017:
 ; end of inline function _tex2d
-	mov	dword650,[ebp-168]
-	mov	[ebp-116],dword650
-	sar	dword ptr [ebp-116],24
-	mov	dword655,[ebp-116]
-	and	dword655,255
-	mov	[ebp-144],dword655
+	mov	dword654,[ebp-168]
+	mov	[ebp-116],dword654
+	mov	dword658,[ebp-116]
+	sar	dword658,24
+	and	dword658,255
+	mov	[ebp-144],dword658
 	cmp	dword ptr [ebp-144],0
 	je	label0016
 	fild	dword ptr [ebp-144]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-148]
-	mov	dword662,[ebp-108]
-	mov	dword664,[dword662]
-	mov	[ebp-132],dword664
-	mov	dword667,[ebp-132]
-	and	dword667,65280
-	sar	dword667,8
-	mov	[ebp-136],dword667
-	mov	dword672,[ebp-132]
-	and	dword672,255
-	mov	[ebp-140],dword672
-	mov	dword676,[ebp-116]
-	and	dword676,65280
-	sar	dword676,8
-	mov	[ebp-124],dword676
-	mov	dword681,[ebp-116]
-	and	dword681,255
-	mov	[ebp-128],dword681
+	mov	dword666,[ebp-108]
+	mov	dword668,[dword666]
+	mov	[ebp-132],dword668
+	mov	dword671,[ebp-132]
+	and	dword671,65280
+	sar	dword671,8
+	mov	[ebp-136],dword671
+	mov	dword676,[ebp-132]
+	and	dword676,255
+	mov	[ebp-140],dword676
+	mov	dword680,[ebp-116]
+	and	dword680,65280
+	sar	dword680,8
+	mov	[ebp-124],dword680
+	mov	dword685,[ebp-116]
+	and	dword685,255
+	mov	[ebp-128],dword685
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-136]
@@ -3696,8 +3730,8 @@ label0017:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword687
-	mov	[ebp-124],dword687
+	float2int	dword691
+	mov	[ebp-124],dword691
 	fild	dword ptr [ebp-128]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-140]
@@ -3705,15 +3739,15 @@ label0017:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword693
-	mov	[ebp-128],dword693
-	sal	dword ptr [ebp-124],8
-	mov	dword698,[ebp-124]
-	add	dword698,[ebp-128]
-	mov	[ebp-120],dword698
-	mov	dword701,[ebp-108]
-	mov	dword703,[ebp-120]
-	mov	[dword701],dword703
+	float2int	dword697
+	mov	[ebp-128],dword697
+	mov	dword701,[ebp-124]
+	sal	dword701,8
+	add	dword701,[ebp-128]
+	mov	[ebp-120],dword701
+	mov	dword705,[ebp-108]
+	mov	dword707,[ebp-120]
+	mov	[dword705],dword707
 label0016:
 	fld	dword ptr [ebp-92]
 	fadd	dword ptr [ebp-84]
@@ -3723,8 +3757,8 @@ label0016:
 	fstp	dword ptr [ebp-88]
 label0014:
 	add	dword ptr [ebp-108],4
-	mov	dword710,[ebp-108]
-	cmp	dword710,[ebp-112]
+	mov	dword714,[ebp-108]
+	cmp	dword714,[ebp-112]
 	jl	label0013
 label0015:
 label0018:
@@ -3829,118 +3863,120 @@ label0007:
 	int2float	dword319
 	fdivp
 	fstp	dword ptr [ebp-40]
-	mov	dword741,[ebp-40]
-	mov	[ebp-44],dword741
-	mov	dword740,[ebp-36]
-	mov	[ebp-48],dword740
+	mov	dword745,[ebp-40]
+	mov	[ebp-44],dword745
+	mov	dword744,[ebp-36]
+	mov	[ebp-48],dword744
 	mov	dword324,8
 	add	dword324,[ebp+12]
 	add	dword324,4
-	mov	dword739,[dword324]
-	mov	[ebp-52],dword739
+	mov	dword743,[dword324]
+	mov	[ebp-52],dword743
 	mov	dword327,[ebp+12]
-	mov	dword738,[dword327+8]
-	mov	[ebp-56],dword738
-	mov	dword737,[ebp-32]
-	mov	[ebp-60],dword737
-	mov	dword736,[ebp-28]
-	mov	[ebp-64],dword736
+	mov	dword742,[dword327+8]
+	mov	[ebp-56],dword742
+	mov	dword741,[ebp-32]
+	mov	[ebp-60],dword741
+	mov	dword740,[ebp-28]
+	mov	[ebp-64],dword740
 	mov	dword331,[ebp+12]
 	add	dword331,4
-	mov	dword735,[dword331]
-	mov	[ebp-68],dword735
+	mov	dword739,[dword331]
+	mov	[ebp-68],dword739
 	mov	dword334,[ebp+12]
-	mov	dword734,[dword334]
-	mov	[ebp-72],dword734
-	mov	dword733,[ebp-12]
-	mov	[ebp-76],dword733
+	mov	dword738,[dword334]
+	mov	[ebp-72],dword738
+	mov	dword737,[ebp-12]
+	mov	[ebp-76],dword737
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword745,[ebp-76]
-	cmp	dword745,[ebp-72]
+	mov	dword749,[ebp-76]
+	cmp	dword749,[ebp-72]
 	jg	label001a
-	mov	dword766,[ebp-44]
-	mov	[ebp-80],dword766
-	mov	dword765,[ebp-48]
-	mov	[ebp-84],dword765
-	mov	dword764,[ebp-60]
-	mov	[ebp-88],dword764
-	mov	dword763,[ebp-64]
-	mov	[ebp-92],dword763
-	mov	dword762,[ebp-68]
-	mov	[ebp-96],dword762
-	mov	dword761,[ebp-72]
-	mov	[ebp-100],dword761
-	mov	dword760,[ebp-76]
-	mov	[ebp-104],dword760
+	mov	dword770,[ebp-44]
+	mov	[ebp-80],dword770
+	mov	dword769,[ebp-48]
+	mov	[ebp-84],dword769
+	mov	dword768,[ebp-60]
+	mov	[ebp-88],dword768
+	mov	dword767,[ebp-64]
+	mov	[ebp-92],dword767
+	mov	dword766,[ebp-68]
+	mov	[ebp-96],dword766
+	mov	dword765,[ebp-72]
+	mov	[ebp-100],dword765
+	mov	dword764,[ebp-76]
+	mov	[ebp-104],dword764
 ; start of inline function _rasterize_horiz_line
-	mov	dword770,dword ptr [__pitch]
-	imul	dword770,[ebp-96]
-	add	dword770,dword ptr [__videomem]
-	sal	dword ptr [ebp-104],2
-	add	dword770,[ebp-104]
-	mov	[ebp-108],dword770
-	sal	dword ptr [ebp-100],2
-	mov	dword778,[ebp-108]
-	add	dword778,[ebp-100]
-	sal	dword ptr [ebp-104],2
-	sub	dword778,[ebp-104]
-	mov	[ebp-112],dword778
+	mov	dword774,dword ptr [__pitch]
+	imul	dword774,[ebp-96]
+	add	dword774,dword ptr [__videomem]
+	mov	dword778,[ebp-104]
+	sal	dword778,2
+	add	dword774,dword778
+	mov	[ebp-108],dword774
+	mov	dword782,[ebp-100]
+	sal	dword782,2
+	add	dword782,[ebp-108]
+	mov	dword786,[ebp-104]
+	sal	dword786,2
+	sub	dword782,dword786
+	mov	[ebp-112],dword782
 label001c:
-	mov	dword846,[ebp-88]
-	mov	[ebp-152],dword846
-	mov	dword845,[ebp-92]
-	mov	[ebp-156],dword845
+	mov	dword852,[ebp-88]
+	mov	[ebp-152],dword852
+	mov	dword851,[ebp-92]
+	mov	[ebp-156],dword851
 ; start of inline function _tex2d
-	mov	dword850,dword ptr [__texture_width]
-	dec	dword850
-	int2float	dword850
-	fmul	dword ptr [ebp-156]
-	float2int	dword852
-	mov	[ebp-160],dword852
-	mov	dword856,dword ptr [__texture_height]
+	mov	dword856,dword ptr [__texture_width]
 	dec	dword856
 	int2float	dword856
-	fmul	dword ptr [ebp-152]
+	fmul	dword ptr [ebp-156]
 	float2int	dword858
-	mov	[ebp-164],dword858
-	mov	dword862,[ebp-164]
-	imul	dword862,dword ptr [__texture_width]
-	add	dword862,[ebp-160]
-	sal	dword862,2
-	add	dword862,dword ptr [__texture_data]
-	mov	dword866,[dword862]
-	mov	[ebp-168],dword866
+	mov	[ebp-160],dword858
+	mov	dword862,dword ptr [__texture_height]
+	dec	dword862
+	int2float	dword862
+	fmul	dword ptr [ebp-152]
+	float2int	dword864
+	mov	[ebp-164],dword864
+	mov	dword868,[ebp-164]
+	imul	dword868,dword ptr [__texture_width]
+	add	dword868,[ebp-160]
+	sal	dword868,2
+	add	dword868,dword ptr [__texture_data]
+	mov	dword872,[dword868]
+	mov	[ebp-168],dword872
 label0020:
 ; end of inline function _tex2d
-	mov	dword784,[ebp-168]
-	mov	[ebp-116],dword784
-	sar	dword ptr [ebp-116],24
-	mov	dword789,[ebp-116]
-	and	dword789,255
-	mov	[ebp-144],dword789
+	mov	dword790,[ebp-168]
+	mov	[ebp-116],dword790
+	mov	dword794,[ebp-116]
+	sar	dword794,24
+	and	dword794,255
+	mov	[ebp-144],dword794
 	cmp	dword ptr [ebp-144],0
 	je	label001f
 	fild	dword ptr [ebp-144]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-148]
-	mov	dword796,[ebp-108]
-	mov	dword798,[dword796]
-	mov	[ebp-132],dword798
-	mov	dword801,[ebp-132]
-	and	dword801,65280
-	sar	dword801,8
-	mov	[ebp-136],dword801
-	mov	dword806,[ebp-132]
-	and	dword806,255
-	mov	[ebp-140],dword806
-	mov	dword810,[ebp-116]
-	and	dword810,65280
-	sar	dword810,8
-	mov	[ebp-124],dword810
-	mov	dword815,[ebp-116]
-	and	dword815,255
-	mov	[ebp-128],dword815
+	mov	dword802,[ebp-108]
+	mov	dword804,[dword802]
+	mov	[ebp-132],dword804
+	mov	dword807,[ebp-132]
+	and	dword807,65280
+	sar	dword807,8
+	mov	[ebp-136],dword807
+	mov	dword812,[ebp-132]
+	and	dword812,255
+	mov	[ebp-140],dword812
+	mov	dword816,[ebp-116]
+	and	dword816,65280
+	sar	dword816,8
+	mov	[ebp-124],dword816
+	mov	dword821,[ebp-116]
+	and	dword821,255
+	mov	[ebp-128],dword821
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-136]
@@ -3948,8 +3984,8 @@ label0020:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword821
-	mov	[ebp-124],dword821
+	float2int	dword827
+	mov	[ebp-124],dword827
 	fild	dword ptr [ebp-128]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-140]
@@ -3957,15 +3993,15 @@ label0020:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword827
-	mov	[ebp-128],dword827
-	sal	dword ptr [ebp-124],8
-	mov	dword832,[ebp-124]
-	add	dword832,[ebp-128]
-	mov	[ebp-120],dword832
-	mov	dword835,[ebp-108]
-	mov	dword837,[ebp-120]
-	mov	[dword835],dword837
+	float2int	dword833
+	mov	[ebp-128],dword833
+	mov	dword837,[ebp-124]
+	sal	dword837,8
+	add	dword837,[ebp-128]
+	mov	[ebp-120],dword837
+	mov	dword841,[ebp-108]
+	mov	dword843,[ebp-120]
+	mov	[dword841],dword843
 label001f:
 	fld	dword ptr [ebp-92]
 	fadd	dword ptr [ebp-84]
@@ -3975,97 +4011,99 @@ label001f:
 	fstp	dword ptr [ebp-88]
 label001d:
 	add	dword ptr [ebp-108],4
-	mov	dword844,[ebp-108]
-	cmp	dword844,[ebp-112]
+	mov	dword850,[ebp-108]
+	cmp	dword850,[ebp-112]
 	jl	label001c
 label001e:
 label0021:
 ; end of inline function _rasterize_horiz_line
 	jmp	label001b
 label001a:
-	mov	dword873,[ebp-44]
-	mov	[ebp-80],dword873
-	mov	dword872,[ebp-48]
-	mov	[ebp-84],dword872
-	mov	dword871,[ebp-52]
-	mov	[ebp-88],dword871
-	mov	dword870,[ebp-56]
-	mov	[ebp-92],dword870
-	mov	dword869,[ebp-68]
-	mov	[ebp-96],dword869
-	mov	dword868,[ebp-76]
-	mov	[ebp-100],dword868
-	mov	dword867,[ebp-72]
-	mov	[ebp-104],dword867
+	mov	dword879,[ebp-44]
+	mov	[ebp-80],dword879
+	mov	dword878,[ebp-48]
+	mov	[ebp-84],dword878
+	mov	dword877,[ebp-52]
+	mov	[ebp-88],dword877
+	mov	dword876,[ebp-56]
+	mov	[ebp-92],dword876
+	mov	dword875,[ebp-68]
+	mov	[ebp-96],dword875
+	mov	dword874,[ebp-76]
+	mov	[ebp-100],dword874
+	mov	dword873,[ebp-72]
+	mov	[ebp-104],dword873
 ; start of inline function _rasterize_horiz_line
-	mov	dword877,dword ptr [__pitch]
-	imul	dword877,[ebp-96]
-	add	dword877,dword ptr [__videomem]
-	sal	dword ptr [ebp-104],2
-	add	dword877,[ebp-104]
-	mov	[ebp-108],dword877
-	sal	dword ptr [ebp-100],2
-	mov	dword885,[ebp-108]
-	add	dword885,[ebp-100]
-	sal	dword ptr [ebp-104],2
-	sub	dword885,[ebp-104]
-	mov	[ebp-112],dword885
+	mov	dword883,dword ptr [__pitch]
+	imul	dword883,[ebp-96]
+	add	dword883,dword ptr [__videomem]
+	mov	dword887,[ebp-104]
+	sal	dword887,2
+	add	dword883,dword887
+	mov	[ebp-108],dword883
+	mov	dword891,[ebp-100]
+	sal	dword891,2
+	add	dword891,[ebp-108]
+	mov	dword895,[ebp-104]
+	sal	dword895,2
+	sub	dword891,dword895
+	mov	[ebp-112],dword891
 label0022:
-	mov	dword953,[ebp-88]
-	mov	[ebp-152],dword953
-	mov	dword952,[ebp-92]
-	mov	[ebp-156],dword952
+	mov	dword961,[ebp-88]
+	mov	[ebp-152],dword961
+	mov	dword960,[ebp-92]
+	mov	[ebp-156],dword960
 ; start of inline function _tex2d
-	mov	dword957,dword ptr [__texture_width]
-	dec	dword957
-	int2float	dword957
+	mov	dword965,dword ptr [__texture_width]
+	dec	dword965
+	int2float	dword965
 	fmul	dword ptr [ebp-156]
-	float2int	dword959
-	mov	[ebp-160],dword959
-	mov	dword963,dword ptr [__texture_height]
-	dec	dword963
-	int2float	dword963
+	float2int	dword967
+	mov	[ebp-160],dword967
+	mov	dword971,dword ptr [__texture_height]
+	dec	dword971
+	int2float	dword971
 	fmul	dword ptr [ebp-152]
-	float2int	dword965
-	mov	[ebp-164],dword965
-	mov	dword969,[ebp-164]
-	imul	dword969,dword ptr [__texture_width]
-	add	dword969,[ebp-160]
-	sal	dword969,2
-	add	dword969,dword ptr [__texture_data]
-	mov	dword973,[dword969]
-	mov	[ebp-168],dword973
+	float2int	dword973
+	mov	[ebp-164],dword973
+	mov	dword977,[ebp-164]
+	imul	dword977,dword ptr [__texture_width]
+	add	dword977,[ebp-160]
+	sal	dword977,2
+	add	dword977,dword ptr [__texture_data]
+	mov	dword981,[dword977]
+	mov	[ebp-168],dword981
 label0026:
 ; end of inline function _tex2d
-	mov	dword891,[ebp-168]
-	mov	[ebp-116],dword891
-	sar	dword ptr [ebp-116],24
-	mov	dword896,[ebp-116]
-	and	dword896,255
-	mov	[ebp-144],dword896
+	mov	dword899,[ebp-168]
+	mov	[ebp-116],dword899
+	mov	dword903,[ebp-116]
+	sar	dword903,24
+	and	dword903,255
+	mov	[ebp-144],dword903
 	cmp	dword ptr [ebp-144],0
 	je	label0025
 	fild	dword ptr [ebp-144]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-148]
-	mov	dword903,[ebp-108]
-	mov	dword905,[dword903]
-	mov	[ebp-132],dword905
-	mov	dword908,[ebp-132]
-	and	dword908,65280
-	sar	dword908,8
-	mov	[ebp-136],dword908
-	mov	dword913,[ebp-132]
-	and	dword913,255
-	mov	[ebp-140],dword913
-	mov	dword917,[ebp-116]
-	and	dword917,65280
-	sar	dword917,8
-	mov	[ebp-124],dword917
-	mov	dword922,[ebp-116]
-	and	dword922,255
-	mov	[ebp-128],dword922
+	mov	dword911,[ebp-108]
+	mov	dword913,[dword911]
+	mov	[ebp-132],dword913
+	mov	dword916,[ebp-132]
+	and	dword916,65280
+	sar	dword916,8
+	mov	[ebp-136],dword916
+	mov	dword921,[ebp-132]
+	and	dword921,255
+	mov	[ebp-140],dword921
+	mov	dword925,[ebp-116]
+	and	dword925,65280
+	sar	dword925,8
+	mov	[ebp-124],dword925
+	mov	dword930,[ebp-116]
+	and	dword930,255
+	mov	[ebp-128],dword930
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-136]
@@ -4073,8 +4111,8 @@ label0026:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword928
-	mov	[ebp-124],dword928
+	float2int	dword936
+	mov	[ebp-124],dword936
 	fild	dword ptr [ebp-128]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-140]
@@ -4082,15 +4120,15 @@ label0026:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword934
-	mov	[ebp-128],dword934
-	sal	dword ptr [ebp-124],8
-	mov	dword939,[ebp-124]
-	add	dword939,[ebp-128]
-	mov	[ebp-120],dword939
-	mov	dword942,[ebp-108]
-	mov	dword944,[ebp-120]
-	mov	[dword942],dword944
+	float2int	dword942
+	mov	[ebp-128],dword942
+	mov	dword946,[ebp-124]
+	sal	dword946,8
+	add	dword946,[ebp-128]
+	mov	[ebp-120],dword946
+	mov	dword950,[ebp-108]
+	mov	dword952,[ebp-120]
+	mov	[dword950],dword952
 label0025:
 	fld	dword ptr [ebp-92]
 	fadd	dword ptr [ebp-84]
@@ -4100,8 +4138,8 @@ label0025:
 	fstp	dword ptr [ebp-88]
 label0023:
 	add	dword ptr [ebp-108],4
-	mov	dword951,[ebp-108]
-	cmp	dword951,[ebp-112]
+	mov	dword959,[ebp-108]
+	cmp	dword959,[ebp-112]
 	jl	label0022
 label0024:
 label0027:
@@ -4271,111 +4309,113 @@ label0009:
 	fsub	dword ptr [ebp-24]
 	fdivrp
 	fstp	dword ptr [ebp-40]
-	mov	dword982,[ebp-40]
-	mov	[ebp-44],dword982
-	mov	dword981,[ebp-36]
-	mov	[ebp-48],dword981
-	mov	dword980,[ebp-32]
-	mov	[ebp-52],dword980
-	mov	dword979,[ebp-28]
-	mov	[ebp-56],dword979
-	mov	dword978,[ebp-24]
-	mov	[ebp-60],dword978
-	mov	dword977,[ebp-20]
-	mov	[ebp-64],dword977
-	mov	dword976,[ebp-16]
-	mov	[ebp-68],dword976
-	mov	dword975,[ebp-12]
-	mov	[ebp-72],dword975
-	mov	dword974,[ebp-8]
-	mov	[ebp-76],dword974
+	mov	dword990,[ebp-40]
+	mov	[ebp-44],dword990
+	mov	dword989,[ebp-36]
+	mov	[ebp-48],dword989
+	mov	dword988,[ebp-32]
+	mov	[ebp-52],dword988
+	mov	dword987,[ebp-28]
+	mov	[ebp-56],dword987
+	mov	dword986,[ebp-24]
+	mov	[ebp-60],dword986
+	mov	dword985,[ebp-20]
+	mov	[ebp-64],dword985
+	mov	dword984,[ebp-16]
+	mov	[ebp-68],dword984
+	mov	dword983,[ebp-12]
+	mov	[ebp-72],dword983
+	mov	dword982,[ebp-8]
+	mov	[ebp-76],dword982
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword986,[ebp-76]
-	cmp	dword986,[ebp-72]
+	mov	dword994,[ebp-76]
+	cmp	dword994,[ebp-72]
 	jg	label0029
-	mov	dword1007,[ebp-44]
-	mov	[ebp-80],dword1007
-	mov	dword1006,[ebp-48]
-	mov	[ebp-84],dword1006
-	mov	dword1005,[ebp-60]
-	mov	[ebp-88],dword1005
-	mov	dword1004,[ebp-64]
-	mov	[ebp-92],dword1004
-	mov	dword1003,[ebp-68]
-	mov	[ebp-96],dword1003
-	mov	dword1002,[ebp-72]
-	mov	[ebp-100],dword1002
-	mov	dword1001,[ebp-76]
-	mov	[ebp-104],dword1001
+	mov	dword1015,[ebp-44]
+	mov	[ebp-80],dword1015
+	mov	dword1014,[ebp-48]
+	mov	[ebp-84],dword1014
+	mov	dword1013,[ebp-60]
+	mov	[ebp-88],dword1013
+	mov	dword1012,[ebp-64]
+	mov	[ebp-92],dword1012
+	mov	dword1011,[ebp-68]
+	mov	[ebp-96],dword1011
+	mov	dword1010,[ebp-72]
+	mov	[ebp-100],dword1010
+	mov	dword1009,[ebp-76]
+	mov	[ebp-104],dword1009
 ; start of inline function _rasterize_horiz_line
-	mov	dword1011,dword ptr [__pitch]
-	imul	dword1011,[ebp-96]
-	add	dword1011,dword ptr [__videomem]
-	sal	dword ptr [ebp-104],2
-	add	dword1011,[ebp-104]
-	mov	[ebp-108],dword1011
-	sal	dword ptr [ebp-100],2
-	mov	dword1019,[ebp-108]
-	add	dword1019,[ebp-100]
-	sal	dword ptr [ebp-104],2
-	sub	dword1019,[ebp-104]
-	mov	[ebp-112],dword1019
+	mov	dword1019,dword ptr [__pitch]
+	imul	dword1019,[ebp-96]
+	add	dword1019,dword ptr [__videomem]
+	mov	dword1023,[ebp-104]
+	sal	dword1023,2
+	add	dword1019,dword1023
+	mov	[ebp-108],dword1019
+	mov	dword1027,[ebp-100]
+	sal	dword1027,2
+	add	dword1027,[ebp-108]
+	mov	dword1031,[ebp-104]
+	sal	dword1031,2
+	sub	dword1027,dword1031
+	mov	[ebp-112],dword1027
 label002b:
-	mov	dword1087,[ebp-88]
-	mov	[ebp-152],dword1087
-	mov	dword1086,[ebp-92]
-	mov	[ebp-156],dword1086
+	mov	dword1097,[ebp-88]
+	mov	[ebp-152],dword1097
+	mov	dword1096,[ebp-92]
+	mov	[ebp-156],dword1096
 ; start of inline function _tex2d
-	mov	dword1091,dword ptr [__texture_width]
-	dec	dword1091
-	int2float	dword1091
+	mov	dword1101,dword ptr [__texture_width]
+	dec	dword1101
+	int2float	dword1101
 	fmul	dword ptr [ebp-156]
-	float2int	dword1093
-	mov	[ebp-160],dword1093
-	mov	dword1097,dword ptr [__texture_height]
-	dec	dword1097
-	int2float	dword1097
+	float2int	dword1103
+	mov	[ebp-160],dword1103
+	mov	dword1107,dword ptr [__texture_height]
+	dec	dword1107
+	int2float	dword1107
 	fmul	dword ptr [ebp-152]
-	float2int	dword1099
-	mov	[ebp-164],dword1099
-	mov	dword1103,[ebp-164]
-	imul	dword1103,dword ptr [__texture_width]
-	add	dword1103,[ebp-160]
-	sal	dword1103,2
-	add	dword1103,dword ptr [__texture_data]
-	mov	dword1107,[dword1103]
-	mov	[ebp-168],dword1107
+	float2int	dword1109
+	mov	[ebp-164],dword1109
+	mov	dword1113,[ebp-164]
+	imul	dword1113,dword ptr [__texture_width]
+	add	dword1113,[ebp-160]
+	sal	dword1113,2
+	add	dword1113,dword ptr [__texture_data]
+	mov	dword1117,[dword1113]
+	mov	[ebp-168],dword1117
 label002f:
 ; end of inline function _tex2d
-	mov	dword1025,[ebp-168]
-	mov	[ebp-116],dword1025
-	sar	dword ptr [ebp-116],24
-	mov	dword1030,[ebp-116]
-	and	dword1030,255
-	mov	[ebp-144],dword1030
+	mov	dword1035,[ebp-168]
+	mov	[ebp-116],dword1035
+	mov	dword1039,[ebp-116]
+	sar	dword1039,24
+	and	dword1039,255
+	mov	[ebp-144],dword1039
 	cmp	dword ptr [ebp-144],0
 	je	label002e
 	fild	dword ptr [ebp-144]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-148]
-	mov	dword1037,[ebp-108]
-	mov	dword1039,[dword1037]
-	mov	[ebp-132],dword1039
-	mov	dword1042,[ebp-132]
-	and	dword1042,65280
-	sar	dword1042,8
-	mov	[ebp-136],dword1042
-	mov	dword1047,[ebp-132]
-	and	dword1047,255
-	mov	[ebp-140],dword1047
-	mov	dword1051,[ebp-116]
-	and	dword1051,65280
-	sar	dword1051,8
-	mov	[ebp-124],dword1051
-	mov	dword1056,[ebp-116]
-	and	dword1056,255
-	mov	[ebp-128],dword1056
+	mov	dword1047,[ebp-108]
+	mov	dword1049,[dword1047]
+	mov	[ebp-132],dword1049
+	mov	dword1052,[ebp-132]
+	and	dword1052,65280
+	sar	dword1052,8
+	mov	[ebp-136],dword1052
+	mov	dword1057,[ebp-132]
+	and	dword1057,255
+	mov	[ebp-140],dword1057
+	mov	dword1061,[ebp-116]
+	and	dword1061,65280
+	sar	dword1061,8
+	mov	[ebp-124],dword1061
+	mov	dword1066,[ebp-116]
+	and	dword1066,255
+	mov	[ebp-128],dword1066
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-136]
@@ -4383,8 +4423,8 @@ label002f:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword1062
-	mov	[ebp-124],dword1062
+	float2int	dword1072
+	mov	[ebp-124],dword1072
 	fild	dword ptr [ebp-128]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-140]
@@ -4392,15 +4432,15 @@ label002f:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword1068
-	mov	[ebp-128],dword1068
-	sal	dword ptr [ebp-124],8
-	mov	dword1073,[ebp-124]
-	add	dword1073,[ebp-128]
-	mov	[ebp-120],dword1073
-	mov	dword1076,[ebp-108]
-	mov	dword1078,[ebp-120]
-	mov	[dword1076],dword1078
+	float2int	dword1078
+	mov	[ebp-128],dword1078
+	mov	dword1082,[ebp-124]
+	sal	dword1082,8
+	add	dword1082,[ebp-128]
+	mov	[ebp-120],dword1082
+	mov	dword1086,[ebp-108]
+	mov	dword1088,[ebp-120]
+	mov	[dword1086],dword1088
 label002e:
 	fld	dword ptr [ebp-92]
 	fadd	dword ptr [ebp-84]
@@ -4410,97 +4450,99 @@ label002e:
 	fstp	dword ptr [ebp-88]
 label002c:
 	add	dword ptr [ebp-108],4
-	mov	dword1085,[ebp-108]
-	cmp	dword1085,[ebp-112]
+	mov	dword1095,[ebp-108]
+	cmp	dword1095,[ebp-112]
 	jl	label002b
 label002d:
 label0030:
 ; end of inline function _rasterize_horiz_line
 	jmp	label002a
 label0029:
-	mov	dword1114,[ebp-44]
-	mov	[ebp-80],dword1114
-	mov	dword1113,[ebp-48]
-	mov	[ebp-84],dword1113
-	mov	dword1112,[ebp-52]
-	mov	[ebp-88],dword1112
-	mov	dword1111,[ebp-56]
-	mov	[ebp-92],dword1111
-	mov	dword1110,[ebp-68]
-	mov	[ebp-96],dword1110
-	mov	dword1109,[ebp-76]
-	mov	[ebp-100],dword1109
-	mov	dword1108,[ebp-72]
-	mov	[ebp-104],dword1108
+	mov	dword1124,[ebp-44]
+	mov	[ebp-80],dword1124
+	mov	dword1123,[ebp-48]
+	mov	[ebp-84],dword1123
+	mov	dword1122,[ebp-52]
+	mov	[ebp-88],dword1122
+	mov	dword1121,[ebp-56]
+	mov	[ebp-92],dword1121
+	mov	dword1120,[ebp-68]
+	mov	[ebp-96],dword1120
+	mov	dword1119,[ebp-76]
+	mov	[ebp-100],dword1119
+	mov	dword1118,[ebp-72]
+	mov	[ebp-104],dword1118
 ; start of inline function _rasterize_horiz_line
-	mov	dword1118,dword ptr [__pitch]
-	imul	dword1118,[ebp-96]
-	add	dword1118,dword ptr [__videomem]
-	sal	dword ptr [ebp-104],2
-	add	dword1118,[ebp-104]
-	mov	[ebp-108],dword1118
-	sal	dword ptr [ebp-100],2
-	mov	dword1126,[ebp-108]
-	add	dword1126,[ebp-100]
-	sal	dword ptr [ebp-104],2
-	sub	dword1126,[ebp-104]
-	mov	[ebp-112],dword1126
+	mov	dword1128,dword ptr [__pitch]
+	imul	dword1128,[ebp-96]
+	add	dword1128,dword ptr [__videomem]
+	mov	dword1132,[ebp-104]
+	sal	dword1132,2
+	add	dword1128,dword1132
+	mov	[ebp-108],dword1128
+	mov	dword1136,[ebp-100]
+	sal	dword1136,2
+	add	dword1136,[ebp-108]
+	mov	dword1140,[ebp-104]
+	sal	dword1140,2
+	sub	dword1136,dword1140
+	mov	[ebp-112],dword1136
 label0031:
-	mov	dword1194,[ebp-88]
-	mov	[ebp-152],dword1194
-	mov	dword1193,[ebp-92]
-	mov	[ebp-156],dword1193
+	mov	dword1206,[ebp-88]
+	mov	[ebp-152],dword1206
+	mov	dword1205,[ebp-92]
+	mov	[ebp-156],dword1205
 ; start of inline function _tex2d
-	mov	dword1198,dword ptr [__texture_width]
-	dec	dword1198
-	int2float	dword1198
+	mov	dword1210,dword ptr [__texture_width]
+	dec	dword1210
+	int2float	dword1210
 	fmul	dword ptr [ebp-156]
-	float2int	dword1200
-	mov	[ebp-160],dword1200
-	mov	dword1204,dword ptr [__texture_height]
-	dec	dword1204
-	int2float	dword1204
+	float2int	dword1212
+	mov	[ebp-160],dword1212
+	mov	dword1216,dword ptr [__texture_height]
+	dec	dword1216
+	int2float	dword1216
 	fmul	dword ptr [ebp-152]
-	float2int	dword1206
-	mov	[ebp-164],dword1206
-	mov	dword1210,[ebp-164]
-	imul	dword1210,dword ptr [__texture_width]
-	add	dword1210,[ebp-160]
-	sal	dword1210,2
-	add	dword1210,dword ptr [__texture_data]
-	mov	dword1214,[dword1210]
-	mov	[ebp-168],dword1214
+	float2int	dword1218
+	mov	[ebp-164],dword1218
+	mov	dword1222,[ebp-164]
+	imul	dword1222,dword ptr [__texture_width]
+	add	dword1222,[ebp-160]
+	sal	dword1222,2
+	add	dword1222,dword ptr [__texture_data]
+	mov	dword1226,[dword1222]
+	mov	[ebp-168],dword1226
 label0035:
 ; end of inline function _tex2d
-	mov	dword1132,[ebp-168]
-	mov	[ebp-116],dword1132
-	sar	dword ptr [ebp-116],24
-	mov	dword1137,[ebp-116]
-	and	dword1137,255
-	mov	[ebp-144],dword1137
+	mov	dword1144,[ebp-168]
+	mov	[ebp-116],dword1144
+	mov	dword1148,[ebp-116]
+	sar	dword1148,24
+	and	dword1148,255
+	mov	[ebp-144],dword1148
 	cmp	dword ptr [ebp-144],0
 	je	label0034
 	fild	dword ptr [ebp-144]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-148]
-	mov	dword1144,[ebp-108]
-	mov	dword1146,[dword1144]
-	mov	[ebp-132],dword1146
-	mov	dword1149,[ebp-132]
-	and	dword1149,65280
-	sar	dword1149,8
-	mov	[ebp-136],dword1149
-	mov	dword1154,[ebp-132]
-	and	dword1154,255
-	mov	[ebp-140],dword1154
-	mov	dword1158,[ebp-116]
-	and	dword1158,65280
-	sar	dword1158,8
-	mov	[ebp-124],dword1158
-	mov	dword1163,[ebp-116]
-	and	dword1163,255
-	mov	[ebp-128],dword1163
+	mov	dword1156,[ebp-108]
+	mov	dword1158,[dword1156]
+	mov	[ebp-132],dword1158
+	mov	dword1161,[ebp-132]
+	and	dword1161,65280
+	sar	dword1161,8
+	mov	[ebp-136],dword1161
+	mov	dword1166,[ebp-132]
+	and	dword1166,255
+	mov	[ebp-140],dword1166
+	mov	dword1170,[ebp-116]
+	and	dword1170,65280
+	sar	dword1170,8
+	mov	[ebp-124],dword1170
+	mov	dword1175,[ebp-116]
+	and	dword1175,255
+	mov	[ebp-128],dword1175
 	fild	dword ptr [ebp-124]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-136]
@@ -4508,8 +4550,8 @@ label0035:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword1169
-	mov	[ebp-124],dword1169
+	float2int	dword1181
+	mov	[ebp-124],dword1181
 	fild	dword ptr [ebp-128]
 	fmul	dword ptr [ebp-148]
 	fild	dword ptr [ebp-140]
@@ -4517,15 +4559,15 @@ label0035:
 	fsub	dword ptr [ebp-148]
 	fmulp
 	faddp
-	float2int	dword1175
-	mov	[ebp-128],dword1175
-	sal	dword ptr [ebp-124],8
-	mov	dword1180,[ebp-124]
-	add	dword1180,[ebp-128]
-	mov	[ebp-120],dword1180
-	mov	dword1183,[ebp-108]
-	mov	dword1185,[ebp-120]
-	mov	[dword1183],dword1185
+	float2int	dword1187
+	mov	[ebp-128],dword1187
+	mov	dword1191,[ebp-124]
+	sal	dword1191,8
+	add	dword1191,[ebp-128]
+	mov	[ebp-120],dword1191
+	mov	dword1195,[ebp-108]
+	mov	dword1197,[ebp-120]
+	mov	[dword1195],dword1197
 label0034:
 	fld	dword ptr [ebp-92]
 	fadd	dword ptr [ebp-84]
@@ -4535,8 +4577,8 @@ label0034:
 	fstp	dword ptr [ebp-88]
 label0032:
 	add	dword ptr [ebp-108],4
-	mov	dword1192,[ebp-108]
-	cmp	dword1192,[ebp-112]
+	mov	dword1204,[ebp-108]
+	cmp	dword1204,[ebp-112]
 	jl	label0031
 label0033:
 label0036:
@@ -7964,152 +8006,152 @@ __transform_to_screen_space endp
 
 __rasterize_polygon_4f proc
 	create_stack_frame
-	mov	dword1977,[ebp+8]
-	mov	[ebp-448],dword1977
+	mov	dword2004,[ebp+8]
+	mov	[ebp-448],dword2004
 ; start of inline function _clip_poligon
-	lea	dword1979,dword ptr [__clip_z_far_norm]
-	mov	[ebp-648],dword1979
-	lea	dword1980,dword ptr [__clip_z_far_base]
-	mov	[ebp-652],dword1980
-	mov	dword2007,[ebp-448]
-	mov	[ebp-656],dword2007
-	lea	dword1982,[ebp-644]
-	mov	[ebp-660],dword1982
+	lea	dword2006,dword ptr [__clip_z_far_norm]
+	mov	[ebp-648],dword2006
+	lea	dword2007,dword ptr [__clip_z_far_base]
+	mov	[ebp-652],dword2007
+	mov	dword2034,[ebp-448]
+	mov	[ebp-656],dword2034
+	lea	dword2009,[ebp-644]
+	mov	[ebp-660],dword2009
 ; start of inline function _clip_on_plain
-	mov	dword2010,[ebp-660]
-	mov	dword ptr [dword2010+192],0
-	mov	dword2013,[ebp-656]
-	mov	[ebp-664],dword2013
-	mov	dword2016,[ebp-656]
-	add	dword2016,24
-	mov	[ebp-668],dword2016
+	mov	dword2037,[ebp-660]
+	mov	dword ptr [dword2037+192],0
+	mov	dword2040,[ebp-656]
+	mov	[ebp-664],dword2040
+	mov	dword2043,[ebp-656]
+	add	dword2043,24
+	mov	[ebp-668],dword2043
 label0070:
 label0071:
-	mov	dword2020,[ebp-656]
-	mov	dword2022,[dword2020+192]
-	imul	dword2022,24
-	mov	dword2024,[ebp-656]
-	add	dword2024,dword2022
-	cmp	dword2024,[ebp-668]
+	mov	dword2047,[ebp-656]
+	mov	dword2049,[dword2047+192]
+	imul	dword2049,24
+	mov	dword2051,[ebp-656]
+	add	dword2051,dword2049
+	cmp	dword2051,[ebp-668]
 	jle	label0072
-	mov	dword2170,[ebp-652]
-	mov	[ebp-768],dword2170
-	mov	dword2028,[ebp-664]
-	mov	[ebp-772],dword2028
-	lea	dword2029,[ebp-684]
-	mov	[ebp-776],dword2029
+	mov	dword2197,[ebp-652]
+	mov	[ebp-768],dword2197
+	mov	dword2055,[ebp-664]
+	mov	[ebp-772],dword2055
+	lea	dword2056,[ebp-684]
+	mov	[ebp-776],dword2056
 ; start of inline function vec4f_subtract
-	mov	dword2173,[ebp-772]
-	mov	dword2175,[ebp-768]
-	fld	dword ptr [dword2173]
-	fsub	dword ptr [dword2175]
-	mov	dword2177,[ebp-776]
-	fstp	dword ptr [dword2177]
-	mov	dword2179,[ebp-772]
-	mov	dword2181,[ebp-768]
-	fld	dword ptr [dword2179+4]
-	fsub	dword ptr [dword2181+4]
-	mov	dword2183,[ebp-776]
-	fstp	dword ptr [dword2183+4]
-	mov	dword2185,[ebp-772]
-	mov	dword2187,[ebp-768]
-	fld	dword ptr [dword2185+8]
-	fsub	dword ptr [dword2187+8]
-	mov	dword2189,[ebp-776]
-	fstp	dword ptr [dword2189+8]
-	mov	dword2191,[ebp-772]
-	mov	dword2193,[ebp-768]
-	fld	dword ptr [dword2191+12]
-	fsub	dword ptr [dword2193+12]
-	mov	dword2195,[ebp-776]
-	fstp	dword ptr [dword2195+12]
+	mov	dword2200,[ebp-772]
+	mov	dword2202,[ebp-768]
+	fld	dword ptr [dword2200]
+	fsub	dword ptr [dword2202]
+	mov	dword2204,[ebp-776]
+	fstp	dword ptr [dword2204]
+	mov	dword2206,[ebp-772]
+	mov	dword2208,[ebp-768]
+	fld	dword ptr [dword2206+4]
+	fsub	dword ptr [dword2208+4]
+	mov	dword2210,[ebp-776]
+	fstp	dword ptr [dword2210+4]
+	mov	dword2212,[ebp-772]
+	mov	dword2214,[ebp-768]
+	fld	dword ptr [dword2212+8]
+	fsub	dword ptr [dword2214+8]
+	mov	dword2216,[ebp-776]
+	fstp	dword ptr [dword2216+8]
+	mov	dword2218,[ebp-772]
+	mov	dword2220,[ebp-768]
+	fld	dword ptr [dword2218+12]
+	fsub	dword ptr [dword2220+12]
+	mov	dword2222,[ebp-776]
+	fstp	dword ptr [dword2222+12]
 label007b:
 ; end of inline function vec4f_subtract
-	mov	dword2273,[ebp-648]
-	mov	[ebp-780],dword2273
-	lea	dword2031,[ebp-684]
-	mov	[ebp-784],dword2031
+	mov	dword2300,[ebp-648]
+	mov	[ebp-780],dword2300
+	lea	dword2058,[ebp-684]
+	mov	[ebp-784],dword2058
 ; start of inline function vec4f_dot
-	mov	dword2276,[ebp-784]
-	mov	dword2278,[ebp-780]
-	fld	dword ptr [dword2276+4]
-	fmul	dword ptr [dword2278+4]
-	mov	dword2280,[ebp-784]
-	mov	dword2282,[ebp-780]
-	fld	dword ptr [dword2280]
-	fmul	dword ptr [dword2282]
+	mov	dword2303,[ebp-784]
+	mov	dword2305,[ebp-780]
+	fld	dword ptr [dword2303+4]
+	fmul	dword ptr [dword2305+4]
+	mov	dword2307,[ebp-784]
+	mov	dword2309,[ebp-780]
+	fld	dword ptr [dword2307]
+	fmul	dword ptr [dword2309]
 	faddp
-	mov	dword2284,[ebp-784]
-	mov	dword2286,[ebp-780]
-	fld	dword ptr [dword2284+8]
-	fmul	dword ptr [dword2286+8]
+	mov	dword2311,[ebp-784]
+	mov	dword2313,[ebp-780]
+	fld	dword ptr [dword2311+8]
+	fmul	dword ptr [dword2313+8]
 	faddp
-	mov	dword2288,[ebp-784]
-	mov	dword2290,[ebp-780]
-	fld	dword ptr [dword2288+12]
-	fmul	dword ptr [dword2290+12]
+	mov	dword2315,[ebp-784]
+	mov	dword2317,[ebp-780]
+	fld	dword ptr [dword2315+12]
+	fmul	dword ptr [dword2317+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label007f:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
 	fstp	dword ptr [ebp-712]
-	mov	dword2196,[ebp-652]
-	mov	[ebp-768],dword2196
-	mov	dword2035,[ebp-668]
-	mov	[ebp-772],dword2035
-	lea	dword2036,[ebp-684]
-	mov	[ebp-776],dword2036
+	mov	dword2223,[ebp-652]
+	mov	[ebp-768],dword2223
+	mov	dword2062,[ebp-668]
+	mov	[ebp-772],dword2062
+	lea	dword2063,[ebp-684]
+	mov	[ebp-776],dword2063
 ; start of inline function vec4f_subtract
-	mov	dword2199,[ebp-772]
-	mov	dword2201,[ebp-768]
-	fld	dword ptr [dword2199]
-	fsub	dword ptr [dword2201]
-	mov	dword2203,[ebp-776]
-	fstp	dword ptr [dword2203]
-	mov	dword2205,[ebp-772]
-	mov	dword2207,[ebp-768]
-	fld	dword ptr [dword2205+4]
-	fsub	dword ptr [dword2207+4]
-	mov	dword2209,[ebp-776]
-	fstp	dword ptr [dword2209+4]
-	mov	dword2211,[ebp-772]
-	mov	dword2213,[ebp-768]
-	fld	dword ptr [dword2211+8]
-	fsub	dword ptr [dword2213+8]
-	mov	dword2215,[ebp-776]
-	fstp	dword ptr [dword2215+8]
-	mov	dword2217,[ebp-772]
-	mov	dword2219,[ebp-768]
-	fld	dword ptr [dword2217+12]
-	fsub	dword ptr [dword2219+12]
-	mov	dword2221,[ebp-776]
-	fstp	dword ptr [dword2221+12]
+	mov	dword2226,[ebp-772]
+	mov	dword2228,[ebp-768]
+	fld	dword ptr [dword2226]
+	fsub	dword ptr [dword2228]
+	mov	dword2230,[ebp-776]
+	fstp	dword ptr [dword2230]
+	mov	dword2232,[ebp-772]
+	mov	dword2234,[ebp-768]
+	fld	dword ptr [dword2232+4]
+	fsub	dword ptr [dword2234+4]
+	mov	dword2236,[ebp-776]
+	fstp	dword ptr [dword2236+4]
+	mov	dword2238,[ebp-772]
+	mov	dword2240,[ebp-768]
+	fld	dword ptr [dword2238+8]
+	fsub	dword ptr [dword2240+8]
+	mov	dword2242,[ebp-776]
+	fstp	dword ptr [dword2242+8]
+	mov	dword2244,[ebp-772]
+	mov	dword2246,[ebp-768]
+	fld	dword ptr [dword2244+12]
+	fsub	dword ptr [dword2246+12]
+	mov	dword2248,[ebp-776]
+	fstp	dword ptr [dword2248+12]
 label007c:
 ; end of inline function vec4f_subtract
-	mov	dword2291,[ebp-648]
-	mov	[ebp-780],dword2291
-	lea	dword2038,[ebp-684]
-	mov	[ebp-784],dword2038
+	mov	dword2318,[ebp-648]
+	mov	[ebp-780],dword2318
+	lea	dword2065,[ebp-684]
+	mov	[ebp-784],dword2065
 ; start of inline function vec4f_dot
-	mov	dword2294,[ebp-784]
-	mov	dword2296,[ebp-780]
-	fld	dword ptr [dword2294+4]
-	fmul	dword ptr [dword2296+4]
-	mov	dword2298,[ebp-784]
-	mov	dword2300,[ebp-780]
-	fld	dword ptr [dword2298]
-	fmul	dword ptr [dword2300]
+	mov	dword2321,[ebp-784]
+	mov	dword2323,[ebp-780]
+	fld	dword ptr [dword2321+4]
+	fmul	dword ptr [dword2323+4]
+	mov	dword2325,[ebp-784]
+	mov	dword2327,[ebp-780]
+	fld	dword ptr [dword2325]
+	fmul	dword ptr [dword2327]
 	faddp
-	mov	dword2302,[ebp-784]
-	mov	dword2304,[ebp-780]
-	fld	dword ptr [dword2302+8]
-	fmul	dword ptr [dword2304+8]
+	mov	dword2329,[ebp-784]
+	mov	dword2331,[ebp-780]
+	fld	dword ptr [dword2329+8]
+	fmul	dword ptr [dword2331+8]
 	faddp
-	mov	dword2306,[ebp-784]
-	mov	dword2308,[ebp-780]
-	fld	dword ptr [dword2306+12]
-	fmul	dword ptr [dword2308+12]
+	mov	dword2333,[ebp-784]
+	mov	dword2335,[ebp-780]
+	fld	dword ptr [dword2333+12]
+	fmul	dword ptr [dword2335+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label0080:
@@ -8121,25 +8163,25 @@ label0080:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label0073
-	mov	dword2042,[ebp-660]
-	mov	dword2043,[dword2042+192]
-	inc	dword ptr [dword2042+192]
-	imul	dword2043,24
-	mov	dword2046,[ebp-660]
-	add	dword2046,dword2043
-	mov	dword2048,[ebp-664]
-	mov	dword2049,[dword2048]
-	mov	dword2050,[dword2048+4]
-	mov	[dword2046],dword2049
-	mov	[dword2046+4],dword2050
-	mov	dword2049,[dword2048+8]
-	mov	dword2050,[dword2048+12]
-	mov	[dword2046+8],dword2049
-	mov	[dword2046+12],dword2050
-	mov	dword2049,[dword2048+16]
-	mov	dword2050,[dword2048+20]
-	mov	[dword2046+16],dword2049
-	mov	[dword2046+20],dword2050
+	mov	dword2069,[ebp-660]
+	mov	dword2070,[dword2069+192]
+	inc	dword ptr [dword2069+192]
+	imul	dword2070,24
+	mov	dword2073,[ebp-660]
+	add	dword2073,dword2070
+	mov	dword2075,[ebp-664]
+	mov	dword2076,[dword2075]
+	mov	dword2077,[dword2075+4]
+	mov	[dword2073],dword2076
+	mov	[dword2073+4],dword2077
+	mov	dword2076,[dword2075+8]
+	mov	dword2077,[dword2075+12]
+	mov	[dword2073+8],dword2076
+	mov	[dword2073+12],dword2077
+	mov	dword2076,[dword2075+16]
+	mov	dword2077,[dword2075+20]
+	mov	[dword2073+16],dword2076
+	mov	[dword2073+20],dword2077
 label0073:
 	fldz
 	fld	dword ptr [ebp-712]
@@ -8163,123 +8205,123 @@ label0076:
 	fstp	st
 	jae	label0074
 label0075:
-	mov	dword2056,[ebp-664]
-	mov	[ebp-768],dword2056
-	mov	dword2222,[ebp-652]
-	mov	[ebp-772],dword2222
-	lea	dword2058,[ebp-684]
-	mov	[ebp-776],dword2058
+	mov	dword2083,[ebp-664]
+	mov	[ebp-768],dword2083
+	mov	dword2249,[ebp-652]
+	mov	[ebp-772],dword2249
+	lea	dword2085,[ebp-684]
+	mov	[ebp-776],dword2085
 ; start of inline function vec4f_subtract
-	mov	dword2225,[ebp-772]
-	mov	dword2227,[ebp-768]
-	fld	dword ptr [dword2225]
-	fsub	dword ptr [dword2227]
-	mov	dword2229,[ebp-776]
-	fstp	dword ptr [dword2229]
-	mov	dword2231,[ebp-772]
-	mov	dword2233,[ebp-768]
-	fld	dword ptr [dword2231+4]
-	fsub	dword ptr [dword2233+4]
-	mov	dword2235,[ebp-776]
-	fstp	dword ptr [dword2235+4]
-	mov	dword2237,[ebp-772]
-	mov	dword2239,[ebp-768]
-	fld	dword ptr [dword2237+8]
-	fsub	dword ptr [dword2239+8]
-	mov	dword2241,[ebp-776]
-	fstp	dword ptr [dword2241+8]
-	mov	dword2243,[ebp-772]
-	mov	dword2245,[ebp-768]
-	fld	dword ptr [dword2243+12]
-	fsub	dword ptr [dword2245+12]
-	mov	dword2247,[ebp-776]
-	fstp	dword ptr [dword2247+12]
+	mov	dword2252,[ebp-772]
+	mov	dword2254,[ebp-768]
+	fld	dword ptr [dword2252]
+	fsub	dword ptr [dword2254]
+	mov	dword2256,[ebp-776]
+	fstp	dword ptr [dword2256]
+	mov	dword2258,[ebp-772]
+	mov	dword2260,[ebp-768]
+	fld	dword ptr [dword2258+4]
+	fsub	dword ptr [dword2260+4]
+	mov	dword2262,[ebp-776]
+	fstp	dword ptr [dword2262+4]
+	mov	dword2264,[ebp-772]
+	mov	dword2266,[ebp-768]
+	fld	dword ptr [dword2264+8]
+	fsub	dword ptr [dword2266+8]
+	mov	dword2268,[ebp-776]
+	fstp	dword ptr [dword2268+8]
+	mov	dword2270,[ebp-772]
+	mov	dword2272,[ebp-768]
+	fld	dword ptr [dword2270+12]
+	fsub	dword ptr [dword2272+12]
+	mov	dword2274,[ebp-776]
+	fstp	dword ptr [dword2274+12]
 label007d:
 ; end of inline function vec4f_subtract
-	mov	dword2060,[ebp-664]
-	mov	[ebp-768],dword2060
-	mov	dword2062,[ebp-668]
-	mov	[ebp-772],dword2062
-	lea	dword2063,[ebp-700]
-	mov	[ebp-776],dword2063
+	mov	dword2087,[ebp-664]
+	mov	[ebp-768],dword2087
+	mov	dword2089,[ebp-668]
+	mov	[ebp-772],dword2089
+	lea	dword2090,[ebp-700]
+	mov	[ebp-776],dword2090
 ; start of inline function vec4f_subtract
-	mov	dword2250,[ebp-772]
-	mov	dword2252,[ebp-768]
-	fld	dword ptr [dword2250]
-	fsub	dword ptr [dword2252]
-	mov	dword2254,[ebp-776]
-	fstp	dword ptr [dword2254]
-	mov	dword2256,[ebp-772]
-	mov	dword2258,[ebp-768]
-	fld	dword ptr [dword2256+4]
-	fsub	dword ptr [dword2258+4]
-	mov	dword2260,[ebp-776]
-	fstp	dword ptr [dword2260+4]
-	mov	dword2262,[ebp-772]
-	mov	dword2264,[ebp-768]
-	fld	dword ptr [dword2262+8]
-	fsub	dword ptr [dword2264+8]
-	mov	dword2266,[ebp-776]
-	fstp	dword ptr [dword2266+8]
-	mov	dword2268,[ebp-772]
-	mov	dword2270,[ebp-768]
-	fld	dword ptr [dword2268+12]
-	fsub	dword ptr [dword2270+12]
-	mov	dword2272,[ebp-776]
-	fstp	dword ptr [dword2272+12]
+	mov	dword2277,[ebp-772]
+	mov	dword2279,[ebp-768]
+	fld	dword ptr [dword2277]
+	fsub	dword ptr [dword2279]
+	mov	dword2281,[ebp-776]
+	fstp	dword ptr [dword2281]
+	mov	dword2283,[ebp-772]
+	mov	dword2285,[ebp-768]
+	fld	dword ptr [dword2283+4]
+	fsub	dword ptr [dword2285+4]
+	mov	dword2287,[ebp-776]
+	fstp	dword ptr [dword2287+4]
+	mov	dword2289,[ebp-772]
+	mov	dword2291,[ebp-768]
+	fld	dword ptr [dword2289+8]
+	fsub	dword ptr [dword2291+8]
+	mov	dword2293,[ebp-776]
+	fstp	dword ptr [dword2293+8]
+	mov	dword2295,[ebp-772]
+	mov	dword2297,[ebp-768]
+	fld	dword ptr [dword2295+12]
+	fsub	dword ptr [dword2297+12]
+	mov	dword2299,[ebp-776]
+	fstp	dword ptr [dword2299+12]
 label007e:
 ; end of inline function vec4f_subtract
-	mov	dword2309,[ebp-648]
-	mov	[ebp-780],dword2309
-	lea	dword2065,[ebp-684]
-	mov	[ebp-784],dword2065
+	mov	dword2336,[ebp-648]
+	mov	[ebp-780],dword2336
+	lea	dword2092,[ebp-684]
+	mov	[ebp-784],dword2092
 ; start of inline function vec4f_dot
-	mov	dword2312,[ebp-784]
-	mov	dword2314,[ebp-780]
-	fld	dword ptr [dword2312+4]
-	fmul	dword ptr [dword2314+4]
-	mov	dword2316,[ebp-784]
-	mov	dword2318,[ebp-780]
-	fld	dword ptr [dword2316]
-	fmul	dword ptr [dword2318]
+	mov	dword2339,[ebp-784]
+	mov	dword2341,[ebp-780]
+	fld	dword ptr [dword2339+4]
+	fmul	dword ptr [dword2341+4]
+	mov	dword2343,[ebp-784]
+	mov	dword2345,[ebp-780]
+	fld	dword ptr [dword2343]
+	fmul	dword ptr [dword2345]
 	faddp
-	mov	dword2320,[ebp-784]
-	mov	dword2322,[ebp-780]
-	fld	dword ptr [dword2320+8]
-	fmul	dword ptr [dword2322+8]
+	mov	dword2347,[ebp-784]
+	mov	dword2349,[ebp-780]
+	fld	dword ptr [dword2347+8]
+	fmul	dword ptr [dword2349+8]
 	faddp
-	mov	dword2324,[ebp-784]
-	mov	dword2326,[ebp-780]
-	fld	dword ptr [dword2324+12]
-	fmul	dword ptr [dword2326+12]
+	mov	dword2351,[ebp-784]
+	mov	dword2353,[ebp-780]
+	fld	dword ptr [dword2351+12]
+	fmul	dword ptr [dword2353+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label0081:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
-	mov	dword2327,[ebp-648]
-	mov	[ebp-780],dword2327
-	lea	dword2067,[ebp-700]
-	mov	[ebp-784],dword2067
+	mov	dword2354,[ebp-648]
+	mov	[ebp-780],dword2354
+	lea	dword2094,[ebp-700]
+	mov	[ebp-784],dword2094
 ; start of inline function vec4f_dot
-	mov	dword2330,[ebp-784]
-	mov	dword2332,[ebp-780]
-	fld	dword ptr [dword2330+4]
-	fmul	dword ptr [dword2332+4]
-	mov	dword2334,[ebp-784]
-	mov	dword2336,[ebp-780]
-	fld	dword ptr [dword2334]
-	fmul	dword ptr [dword2336]
+	mov	dword2357,[ebp-784]
+	mov	dword2359,[ebp-780]
+	fld	dword ptr [dword2357+4]
+	fmul	dword ptr [dword2359+4]
+	mov	dword2361,[ebp-784]
+	mov	dword2363,[ebp-780]
+	fld	dword ptr [dword2361]
+	fmul	dword ptr [dword2363]
 	faddp
-	mov	dword2338,[ebp-784]
-	mov	dword2340,[ebp-780]
-	fld	dword ptr [dword2338+8]
-	fmul	dword ptr [dword2340+8]
+	mov	dword2365,[ebp-784]
+	mov	dword2367,[ebp-780]
+	fld	dword ptr [dword2365+8]
+	fmul	dword ptr [dword2367+8]
 	faddp
-	mov	dword2342,[ebp-784]
-	mov	dword2344,[ebp-780]
-	fld	dword ptr [dword2342+12]
-	fmul	dword ptr [dword2344+12]
+	mov	dword2369,[ebp-784]
+	mov	dword2371,[ebp-780]
+	fld	dword ptr [dword2369+12]
+	fmul	dword ptr [dword2371+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label0082:
@@ -8287,302 +8329,302 @@ label0082:
 	fld	dword ptr [ebp-788]
 	fdivp
 	fstp	dword ptr [ebp-720]
-	mov	dword2345,[ebp-720]
-	mov	[ebp-792],dword2345
-	lea	dword2070,[ebp-700]
-	mov	[ebp-796],dword2070
+	mov	dword2372,[ebp-720]
+	mov	[ebp-792],dword2372
+	lea	dword2097,[ebp-700]
+	mov	[ebp-796],dword2097
 ; start of inline function vec4f_mul
-	mov	dword2348,[ebp-796]
-	fld	dword ptr [dword2348]
+	mov	dword2375,[ebp-796]
+	fld	dword ptr [dword2375]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword2348]
-	mov	dword2351,[ebp-796]
-	fld	dword ptr [dword2351+4]
+	fstp	dword ptr [dword2375]
+	mov	dword2378,[ebp-796]
+	fld	dword ptr [dword2378+4]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword2351+4]
-	mov	dword2354,[ebp-796]
-	fld	dword ptr [dword2354+8]
+	fstp	dword ptr [dword2378+4]
+	mov	dword2381,[ebp-796]
+	fld	dword ptr [dword2381+8]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword2354+8]
-	mov	dword2357,[ebp-796]
-	fld	dword ptr [dword2357+12]
+	fstp	dword ptr [dword2381+8]
+	mov	dword2384,[ebp-796]
+	fld	dword ptr [dword2384+12]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword2357+12]
+	fstp	dword ptr [dword2384+12]
 label0083:
 ; end of inline function vec4f_mul
-	lea	dword2071,[ebp-700]
-	mov	[ebp-756],dword2071
-	mov	dword2073,[ebp-664]
-	mov	[ebp-760],dword2073
-	mov	dword2075,[ebp-660]
-	mov	dword2077,[dword2075+192]
-	imul	dword2077,24
-	mov	dword2079,[ebp-660]
-	add	dword2079,dword2077
-	mov	[ebp-764],dword2079
+	lea	dword2098,[ebp-700]
+	mov	[ebp-756],dword2098
+	mov	dword2100,[ebp-664]
+	mov	[ebp-760],dword2100
+	mov	dword2102,[ebp-660]
+	mov	dword2104,[dword2102+192]
+	imul	dword2104,24
+	mov	dword2106,[ebp-660]
+	add	dword2106,dword2104
+	mov	[ebp-764],dword2106
 ; start of inline function vec4f_add
-	mov	dword2147,[ebp-760]
-	mov	dword2149,[ebp-756]
-	fld	dword ptr [dword2147]
-	fadd	dword ptr [dword2149]
-	mov	dword2151,[ebp-764]
-	fstp	dword ptr [dword2151]
-	mov	dword2153,[ebp-760]
-	mov	dword2155,[ebp-756]
-	fld	dword ptr [dword2153+4]
-	fadd	dword ptr [dword2155+4]
-	mov	dword2157,[ebp-764]
-	fstp	dword ptr [dword2157+4]
-	mov	dword2159,[ebp-760]
-	mov	dword2161,[ebp-756]
-	fld	dword ptr [dword2159+8]
-	fadd	dword ptr [dword2161+8]
-	mov	dword2163,[ebp-764]
-	fstp	dword ptr [dword2163+8]
-	mov	dword2165,[ebp-760]
-	mov	dword2167,[ebp-756]
-	fld	dword ptr [dword2165+12]
-	fadd	dword ptr [dword2167+12]
-	mov	dword2169,[ebp-764]
-	fstp	dword ptr [dword2169+12]
+	mov	dword2174,[ebp-760]
+	mov	dword2176,[ebp-756]
+	fld	dword ptr [dword2174]
+	fadd	dword ptr [dword2176]
+	mov	dword2178,[ebp-764]
+	fstp	dword ptr [dword2178]
+	mov	dword2180,[ebp-760]
+	mov	dword2182,[ebp-756]
+	fld	dword ptr [dword2180+4]
+	fadd	dword ptr [dword2182+4]
+	mov	dword2184,[ebp-764]
+	fstp	dword ptr [dword2184+4]
+	mov	dword2186,[ebp-760]
+	mov	dword2188,[ebp-756]
+	fld	dword ptr [dword2186+8]
+	fadd	dword ptr [dword2188+8]
+	mov	dword2190,[ebp-764]
+	fstp	dword ptr [dword2190+8]
+	mov	dword2192,[ebp-760]
+	mov	dword2194,[ebp-756]
+	fld	dword ptr [dword2192+12]
+	fadd	dword ptr [dword2194+12]
+	mov	dword2196,[ebp-764]
+	fstp	dword ptr [dword2196+12]
 label007a:
 ; end of inline function vec4f_add
-	mov	dword2081,16
-	add	dword2081,[ebp-664]
-	mov	[ebp-736],dword2081
-	mov	dword2083,16
-	add	dword2083,[ebp-668]
-	mov	[ebp-740],dword2083
-	lea	dword2084,[ebp-708]
-	mov	[ebp-744],dword2084
+	mov	dword2108,16
+	add	dword2108,[ebp-664]
+	mov	[ebp-736],dword2108
+	mov	dword2110,16
+	add	dword2110,[ebp-668]
+	mov	[ebp-740],dword2110
+	lea	dword2111,[ebp-708]
+	mov	[ebp-744],dword2111
 ; start of inline function vec2f_subtract
-	mov	dword2126,[ebp-740]
-	mov	dword2128,[ebp-736]
-	fld	dword ptr [dword2126]
-	fsub	dword ptr [dword2128]
-	mov	dword2130,[ebp-744]
-	fstp	dword ptr [dword2130]
-	mov	dword2132,[ebp-740]
-	mov	dword2134,[ebp-736]
-	fld	dword ptr [dword2132+4]
-	fsub	dword ptr [dword2134+4]
-	mov	dword2136,[ebp-744]
-	fstp	dword ptr [dword2136+4]
+	mov	dword2153,[ebp-740]
+	mov	dword2155,[ebp-736]
+	fld	dword ptr [dword2153]
+	fsub	dword ptr [dword2155]
+	mov	dword2157,[ebp-744]
+	fstp	dword ptr [dword2157]
+	mov	dword2159,[ebp-740]
+	mov	dword2161,[ebp-736]
+	fld	dword ptr [dword2159+4]
+	fsub	dword ptr [dword2161+4]
+	mov	dword2163,[ebp-744]
+	fstp	dword ptr [dword2163+4]
 label0078:
 ; end of inline function vec2f_subtract
-	mov	dword2137,[ebp-720]
-	mov	[ebp-748],dword2137
-	lea	dword2086,[ebp-708]
-	mov	[ebp-752],dword2086
+	mov	dword2164,[ebp-720]
+	mov	[ebp-748],dword2164
+	lea	dword2113,[ebp-708]
+	mov	[ebp-752],dword2113
 ; start of inline function vec2f_mul
-	mov	dword2140,[ebp-752]
-	fld	dword ptr [dword2140]
+	mov	dword2167,[ebp-752]
+	fld	dword ptr [dword2167]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword2140]
-	mov	dword2143,[ebp-752]
-	fld	dword ptr [dword2143+4]
+	fstp	dword ptr [dword2167]
+	mov	dword2170,[ebp-752]
+	fld	dword ptr [dword2170+4]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword2143+4]
+	fstp	dword ptr [dword2170+4]
 label0079:
 ; end of inline function vec2f_mul
-	lea	dword2087,[ebp-708]
-	mov	[ebp-724],dword2087
-	mov	dword2089,16
-	add	dword2089,[ebp-664]
-	mov	[ebp-728],dword2089
-	mov	dword2091,[ebp-660]
-	mov	dword2093,[dword2091+192]
-	imul	dword2093,24
-	mov	dword2095,[ebp-660]
-	add	dword2095,dword2093
-	add	dword2095,16
-	mov	[ebp-732],dword2095
+	lea	dword2114,[ebp-708]
+	mov	[ebp-724],dword2114
+	mov	dword2116,16
+	add	dword2116,[ebp-664]
+	mov	[ebp-728],dword2116
+	mov	dword2118,[ebp-660]
+	mov	dword2120,[dword2118+192]
+	imul	dword2120,24
+	mov	dword2122,[ebp-660]
+	add	dword2122,dword2120
+	add	dword2122,16
+	mov	[ebp-732],dword2122
 ; start of inline function vec2f_add
-	mov	dword2113,[ebp-728]
-	mov	dword2115,[ebp-724]
-	fld	dword ptr [dword2113]
-	fadd	dword ptr [dword2115]
-	mov	dword2117,[ebp-732]
-	fstp	dword ptr [dword2117]
-	mov	dword2119,[ebp-728]
-	mov	dword2121,[ebp-724]
-	fld	dword ptr [dword2119+4]
-	fadd	dword ptr [dword2121+4]
-	mov	dword2123,[ebp-732]
-	fstp	dword ptr [dword2123+4]
+	mov	dword2140,[ebp-728]
+	mov	dword2142,[ebp-724]
+	fld	dword ptr [dword2140]
+	fadd	dword ptr [dword2142]
+	mov	dword2144,[ebp-732]
+	fstp	dword ptr [dword2144]
+	mov	dword2146,[ebp-728]
+	mov	dword2148,[ebp-724]
+	fld	dword ptr [dword2146+4]
+	fadd	dword ptr [dword2148+4]
+	mov	dword2150,[ebp-732]
+	fstp	dword ptr [dword2150+4]
 label0077:
 ; end of inline function vec2f_add
-	mov	dword2098,[ebp-660]
-	inc	dword ptr [dword2098+192]
+	mov	dword2125,[ebp-660]
+	inc	dword ptr [dword2125+192]
 label0074:
 	add	dword ptr [ebp-664],24
 	add	dword ptr [ebp-668],24
 	jmp	label0071
 label0072:
-	mov	dword2102,[ebp-660]
-	mov	dword2103,[dword2102+192]
-	inc	dword ptr [dword2102+192]
-	imul	dword2103,24
-	mov	dword2106,[ebp-660]
-	add	dword2106,dword2103
-	mov	dword2108,[ebp-660]
-	mov	dword2109,[dword2108]
-	mov	dword2110,[dword2108+4]
-	mov	[dword2106],dword2109
-	mov	[dword2106+4],dword2110
-	mov	dword2109,[dword2108+8]
-	mov	dword2110,[dword2108+12]
-	mov	[dword2106+8],dword2109
-	mov	[dword2106+12],dword2110
-	mov	dword2109,[dword2108+16]
-	mov	dword2110,[dword2108+20]
-	mov	[dword2106+16],dword2109
-	mov	[dword2106+20],dword2110
+	mov	dword2129,[ebp-660]
+	mov	dword2130,[dword2129+192]
+	inc	dword ptr [dword2129+192]
+	imul	dword2130,24
+	mov	dword2133,[ebp-660]
+	add	dword2133,dword2130
+	mov	dword2135,[ebp-660]
+	mov	dword2136,[dword2135]
+	mov	dword2137,[dword2135+4]
+	mov	[dword2133],dword2136
+	mov	[dword2133+4],dword2137
+	mov	dword2136,[dword2135+8]
+	mov	dword2137,[dword2135+12]
+	mov	[dword2133+8],dword2136
+	mov	[dword2133+12],dword2137
+	mov	dword2136,[dword2135+16]
+	mov	dword2137,[dword2135+20]
+	mov	[dword2133+16],dword2136
+	mov	[dword2133+20],dword2137
 label0084:
 ; end of inline function _clip_on_plain
-	lea	dword1983,dword ptr [__clip_z_near_norm]
-	mov	[ebp-648],dword1983
-	lea	dword1984,dword ptr [__clip_z_near_base]
-	mov	[ebp-652],dword1984
-	lea	dword1985,[ebp-644]
-	mov	[ebp-656],dword1985
-	mov	dword2359,[ebp-448]
-	mov	[ebp-660],dword2359
+	lea	dword2010,dword ptr [__clip_z_near_norm]
+	mov	[ebp-648],dword2010
+	lea	dword2011,dword ptr [__clip_z_near_base]
+	mov	[ebp-652],dword2011
+	lea	dword2012,[ebp-644]
+	mov	[ebp-656],dword2012
+	mov	dword2386,[ebp-448]
+	mov	[ebp-660],dword2386
 ; start of inline function _clip_on_plain
-	mov	dword2362,[ebp-660]
-	mov	dword ptr [dword2362+192],0
-	mov	dword2365,[ebp-656]
-	mov	[ebp-664],dword2365
-	mov	dword2368,[ebp-656]
-	add	dword2368,24
-	mov	[ebp-668],dword2368
+	mov	dword2389,[ebp-660]
+	mov	dword ptr [dword2389+192],0
+	mov	dword2392,[ebp-656]
+	mov	[ebp-664],dword2392
+	mov	dword2395,[ebp-656]
+	add	dword2395,24
+	mov	[ebp-668],dword2395
 label0085:
 label0086:
-	mov	dword2372,[ebp-656]
-	mov	dword2374,[dword2372+192]
-	imul	dword2374,24
-	mov	dword2376,[ebp-656]
-	add	dword2376,dword2374
-	cmp	dword2376,[ebp-668]
+	mov	dword2399,[ebp-656]
+	mov	dword2401,[dword2399+192]
+	imul	dword2401,24
+	mov	dword2403,[ebp-656]
+	add	dword2403,dword2401
+	cmp	dword2403,[ebp-668]
 	jle	label0087
-	mov	dword2522,[ebp-652]
-	mov	[ebp-768],dword2522
-	mov	dword2380,[ebp-664]
-	mov	[ebp-772],dword2380
-	lea	dword2381,[ebp-684]
-	mov	[ebp-776],dword2381
+	mov	dword2549,[ebp-652]
+	mov	[ebp-768],dword2549
+	mov	dword2407,[ebp-664]
+	mov	[ebp-772],dword2407
+	lea	dword2408,[ebp-684]
+	mov	[ebp-776],dword2408
 ; start of inline function vec4f_subtract
-	mov	dword2525,[ebp-772]
-	mov	dword2527,[ebp-768]
-	fld	dword ptr [dword2525]
-	fsub	dword ptr [dword2527]
-	mov	dword2529,[ebp-776]
-	fstp	dword ptr [dword2529]
-	mov	dword2531,[ebp-772]
-	mov	dword2533,[ebp-768]
-	fld	dword ptr [dword2531+4]
-	fsub	dword ptr [dword2533+4]
-	mov	dword2535,[ebp-776]
-	fstp	dword ptr [dword2535+4]
-	mov	dword2537,[ebp-772]
-	mov	dword2539,[ebp-768]
-	fld	dword ptr [dword2537+8]
-	fsub	dword ptr [dword2539+8]
-	mov	dword2541,[ebp-776]
-	fstp	dword ptr [dword2541+8]
-	mov	dword2543,[ebp-772]
-	mov	dword2545,[ebp-768]
-	fld	dword ptr [dword2543+12]
-	fsub	dword ptr [dword2545+12]
-	mov	dword2547,[ebp-776]
-	fstp	dword ptr [dword2547+12]
+	mov	dword2552,[ebp-772]
+	mov	dword2554,[ebp-768]
+	fld	dword ptr [dword2552]
+	fsub	dword ptr [dword2554]
+	mov	dword2556,[ebp-776]
+	fstp	dword ptr [dword2556]
+	mov	dword2558,[ebp-772]
+	mov	dword2560,[ebp-768]
+	fld	dword ptr [dword2558+4]
+	fsub	dword ptr [dword2560+4]
+	mov	dword2562,[ebp-776]
+	fstp	dword ptr [dword2562+4]
+	mov	dword2564,[ebp-772]
+	mov	dword2566,[ebp-768]
+	fld	dword ptr [dword2564+8]
+	fsub	dword ptr [dword2566+8]
+	mov	dword2568,[ebp-776]
+	fstp	dword ptr [dword2568+8]
+	mov	dword2570,[ebp-772]
+	mov	dword2572,[ebp-768]
+	fld	dword ptr [dword2570+12]
+	fsub	dword ptr [dword2572+12]
+	mov	dword2574,[ebp-776]
+	fstp	dword ptr [dword2574+12]
 label0090:
 ; end of inline function vec4f_subtract
-	mov	dword2625,[ebp-648]
-	mov	[ebp-780],dword2625
-	lea	dword2383,[ebp-684]
-	mov	[ebp-784],dword2383
+	mov	dword2652,[ebp-648]
+	mov	[ebp-780],dword2652
+	lea	dword2410,[ebp-684]
+	mov	[ebp-784],dword2410
 ; start of inline function vec4f_dot
-	mov	dword2628,[ebp-784]
-	mov	dword2630,[ebp-780]
-	fld	dword ptr [dword2628+4]
-	fmul	dword ptr [dword2630+4]
-	mov	dword2632,[ebp-784]
-	mov	dword2634,[ebp-780]
-	fld	dword ptr [dword2632]
-	fmul	dword ptr [dword2634]
+	mov	dword2655,[ebp-784]
+	mov	dword2657,[ebp-780]
+	fld	dword ptr [dword2655+4]
+	fmul	dword ptr [dword2657+4]
+	mov	dword2659,[ebp-784]
+	mov	dword2661,[ebp-780]
+	fld	dword ptr [dword2659]
+	fmul	dword ptr [dword2661]
 	faddp
-	mov	dword2636,[ebp-784]
-	mov	dword2638,[ebp-780]
-	fld	dword ptr [dword2636+8]
-	fmul	dword ptr [dword2638+8]
+	mov	dword2663,[ebp-784]
+	mov	dword2665,[ebp-780]
+	fld	dword ptr [dword2663+8]
+	fmul	dword ptr [dword2665+8]
 	faddp
-	mov	dword2640,[ebp-784]
-	mov	dword2642,[ebp-780]
-	fld	dword ptr [dword2640+12]
-	fmul	dword ptr [dword2642+12]
+	mov	dword2667,[ebp-784]
+	mov	dword2669,[ebp-780]
+	fld	dword ptr [dword2667+12]
+	fmul	dword ptr [dword2669+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label0094:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
 	fstp	dword ptr [ebp-712]
-	mov	dword2548,[ebp-652]
-	mov	[ebp-768],dword2548
-	mov	dword2387,[ebp-668]
-	mov	[ebp-772],dword2387
-	lea	dword2388,[ebp-684]
-	mov	[ebp-776],dword2388
+	mov	dword2575,[ebp-652]
+	mov	[ebp-768],dword2575
+	mov	dword2414,[ebp-668]
+	mov	[ebp-772],dword2414
+	lea	dword2415,[ebp-684]
+	mov	[ebp-776],dword2415
 ; start of inline function vec4f_subtract
-	mov	dword2551,[ebp-772]
-	mov	dword2553,[ebp-768]
-	fld	dword ptr [dword2551]
-	fsub	dword ptr [dword2553]
-	mov	dword2555,[ebp-776]
-	fstp	dword ptr [dword2555]
-	mov	dword2557,[ebp-772]
-	mov	dword2559,[ebp-768]
-	fld	dword ptr [dword2557+4]
-	fsub	dword ptr [dword2559+4]
-	mov	dword2561,[ebp-776]
-	fstp	dword ptr [dword2561+4]
-	mov	dword2563,[ebp-772]
-	mov	dword2565,[ebp-768]
-	fld	dword ptr [dword2563+8]
-	fsub	dword ptr [dword2565+8]
-	mov	dword2567,[ebp-776]
-	fstp	dword ptr [dword2567+8]
-	mov	dword2569,[ebp-772]
-	mov	dword2571,[ebp-768]
-	fld	dword ptr [dword2569+12]
-	fsub	dword ptr [dword2571+12]
-	mov	dword2573,[ebp-776]
-	fstp	dword ptr [dword2573+12]
+	mov	dword2578,[ebp-772]
+	mov	dword2580,[ebp-768]
+	fld	dword ptr [dword2578]
+	fsub	dword ptr [dword2580]
+	mov	dword2582,[ebp-776]
+	fstp	dword ptr [dword2582]
+	mov	dword2584,[ebp-772]
+	mov	dword2586,[ebp-768]
+	fld	dword ptr [dword2584+4]
+	fsub	dword ptr [dword2586+4]
+	mov	dword2588,[ebp-776]
+	fstp	dword ptr [dword2588+4]
+	mov	dword2590,[ebp-772]
+	mov	dword2592,[ebp-768]
+	fld	dword ptr [dword2590+8]
+	fsub	dword ptr [dword2592+8]
+	mov	dword2594,[ebp-776]
+	fstp	dword ptr [dword2594+8]
+	mov	dword2596,[ebp-772]
+	mov	dword2598,[ebp-768]
+	fld	dword ptr [dword2596+12]
+	fsub	dword ptr [dword2598+12]
+	mov	dword2600,[ebp-776]
+	fstp	dword ptr [dword2600+12]
 label0091:
 ; end of inline function vec4f_subtract
-	mov	dword2643,[ebp-648]
-	mov	[ebp-780],dword2643
-	lea	dword2390,[ebp-684]
-	mov	[ebp-784],dword2390
+	mov	dword2670,[ebp-648]
+	mov	[ebp-780],dword2670
+	lea	dword2417,[ebp-684]
+	mov	[ebp-784],dword2417
 ; start of inline function vec4f_dot
-	mov	dword2646,[ebp-784]
-	mov	dword2648,[ebp-780]
-	fld	dword ptr [dword2646+4]
-	fmul	dword ptr [dword2648+4]
-	mov	dword2650,[ebp-784]
-	mov	dword2652,[ebp-780]
-	fld	dword ptr [dword2650]
-	fmul	dword ptr [dword2652]
+	mov	dword2673,[ebp-784]
+	mov	dword2675,[ebp-780]
+	fld	dword ptr [dword2673+4]
+	fmul	dword ptr [dword2675+4]
+	mov	dword2677,[ebp-784]
+	mov	dword2679,[ebp-780]
+	fld	dword ptr [dword2677]
+	fmul	dword ptr [dword2679]
 	faddp
-	mov	dword2654,[ebp-784]
-	mov	dword2656,[ebp-780]
-	fld	dword ptr [dword2654+8]
-	fmul	dword ptr [dword2656+8]
+	mov	dword2681,[ebp-784]
+	mov	dword2683,[ebp-780]
+	fld	dword ptr [dword2681+8]
+	fmul	dword ptr [dword2683+8]
 	faddp
-	mov	dword2658,[ebp-784]
-	mov	dword2660,[ebp-780]
-	fld	dword ptr [dword2658+12]
-	fmul	dword ptr [dword2660+12]
+	mov	dword2685,[ebp-784]
+	mov	dword2687,[ebp-780]
+	fld	dword ptr [dword2685+12]
+	fmul	dword ptr [dword2687+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label0095:
@@ -8594,25 +8636,25 @@ label0095:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label0088
-	mov	dword2394,[ebp-660]
-	mov	dword2395,[dword2394+192]
-	inc	dword ptr [dword2394+192]
-	imul	dword2395,24
-	mov	dword2398,[ebp-660]
-	add	dword2398,dword2395
-	mov	dword2400,[ebp-664]
-	mov	dword2401,[dword2400]
-	mov	dword2402,[dword2400+4]
-	mov	[dword2398],dword2401
-	mov	[dword2398+4],dword2402
-	mov	dword2401,[dword2400+8]
-	mov	dword2402,[dword2400+12]
-	mov	[dword2398+8],dword2401
-	mov	[dword2398+12],dword2402
-	mov	dword2401,[dword2400+16]
-	mov	dword2402,[dword2400+20]
-	mov	[dword2398+16],dword2401
-	mov	[dword2398+20],dword2402
+	mov	dword2421,[ebp-660]
+	mov	dword2422,[dword2421+192]
+	inc	dword ptr [dword2421+192]
+	imul	dword2422,24
+	mov	dword2425,[ebp-660]
+	add	dword2425,dword2422
+	mov	dword2427,[ebp-664]
+	mov	dword2428,[dword2427]
+	mov	dword2429,[dword2427+4]
+	mov	[dword2425],dword2428
+	mov	[dword2425+4],dword2429
+	mov	dword2428,[dword2427+8]
+	mov	dword2429,[dword2427+12]
+	mov	[dword2425+8],dword2428
+	mov	[dword2425+12],dword2429
+	mov	dword2428,[dword2427+16]
+	mov	dword2429,[dword2427+20]
+	mov	[dword2425+16],dword2428
+	mov	[dword2425+20],dword2429
 label0088:
 	fldz
 	fld	dword ptr [ebp-712]
@@ -8636,123 +8678,123 @@ label008b:
 	fstp	st
 	jae	label0089
 label008a:
-	mov	dword2408,[ebp-664]
-	mov	[ebp-768],dword2408
-	mov	dword2574,[ebp-652]
-	mov	[ebp-772],dword2574
-	lea	dword2410,[ebp-684]
-	mov	[ebp-776],dword2410
+	mov	dword2435,[ebp-664]
+	mov	[ebp-768],dword2435
+	mov	dword2601,[ebp-652]
+	mov	[ebp-772],dword2601
+	lea	dword2437,[ebp-684]
+	mov	[ebp-776],dword2437
 ; start of inline function vec4f_subtract
-	mov	dword2577,[ebp-772]
-	mov	dword2579,[ebp-768]
-	fld	dword ptr [dword2577]
-	fsub	dword ptr [dword2579]
-	mov	dword2581,[ebp-776]
-	fstp	dword ptr [dword2581]
-	mov	dword2583,[ebp-772]
-	mov	dword2585,[ebp-768]
-	fld	dword ptr [dword2583+4]
-	fsub	dword ptr [dword2585+4]
-	mov	dword2587,[ebp-776]
-	fstp	dword ptr [dword2587+4]
-	mov	dword2589,[ebp-772]
-	mov	dword2591,[ebp-768]
-	fld	dword ptr [dword2589+8]
-	fsub	dword ptr [dword2591+8]
-	mov	dword2593,[ebp-776]
-	fstp	dword ptr [dword2593+8]
-	mov	dword2595,[ebp-772]
-	mov	dword2597,[ebp-768]
-	fld	dword ptr [dword2595+12]
-	fsub	dword ptr [dword2597+12]
-	mov	dword2599,[ebp-776]
-	fstp	dword ptr [dword2599+12]
+	mov	dword2604,[ebp-772]
+	mov	dword2606,[ebp-768]
+	fld	dword ptr [dword2604]
+	fsub	dword ptr [dword2606]
+	mov	dword2608,[ebp-776]
+	fstp	dword ptr [dword2608]
+	mov	dword2610,[ebp-772]
+	mov	dword2612,[ebp-768]
+	fld	dword ptr [dword2610+4]
+	fsub	dword ptr [dword2612+4]
+	mov	dword2614,[ebp-776]
+	fstp	dword ptr [dword2614+4]
+	mov	dword2616,[ebp-772]
+	mov	dword2618,[ebp-768]
+	fld	dword ptr [dword2616+8]
+	fsub	dword ptr [dword2618+8]
+	mov	dword2620,[ebp-776]
+	fstp	dword ptr [dword2620+8]
+	mov	dword2622,[ebp-772]
+	mov	dword2624,[ebp-768]
+	fld	dword ptr [dword2622+12]
+	fsub	dword ptr [dword2624+12]
+	mov	dword2626,[ebp-776]
+	fstp	dword ptr [dword2626+12]
 label0092:
 ; end of inline function vec4f_subtract
-	mov	dword2412,[ebp-664]
-	mov	[ebp-768],dword2412
-	mov	dword2414,[ebp-668]
-	mov	[ebp-772],dword2414
-	lea	dword2415,[ebp-700]
-	mov	[ebp-776],dword2415
+	mov	dword2439,[ebp-664]
+	mov	[ebp-768],dword2439
+	mov	dword2441,[ebp-668]
+	mov	[ebp-772],dword2441
+	lea	dword2442,[ebp-700]
+	mov	[ebp-776],dword2442
 ; start of inline function vec4f_subtract
-	mov	dword2602,[ebp-772]
-	mov	dword2604,[ebp-768]
-	fld	dword ptr [dword2602]
-	fsub	dword ptr [dword2604]
-	mov	dword2606,[ebp-776]
-	fstp	dword ptr [dword2606]
-	mov	dword2608,[ebp-772]
-	mov	dword2610,[ebp-768]
-	fld	dword ptr [dword2608+4]
-	fsub	dword ptr [dword2610+4]
-	mov	dword2612,[ebp-776]
-	fstp	dword ptr [dword2612+4]
-	mov	dword2614,[ebp-772]
-	mov	dword2616,[ebp-768]
-	fld	dword ptr [dword2614+8]
-	fsub	dword ptr [dword2616+8]
-	mov	dword2618,[ebp-776]
-	fstp	dword ptr [dword2618+8]
-	mov	dword2620,[ebp-772]
-	mov	dword2622,[ebp-768]
-	fld	dword ptr [dword2620+12]
-	fsub	dword ptr [dword2622+12]
-	mov	dword2624,[ebp-776]
-	fstp	dword ptr [dword2624+12]
+	mov	dword2629,[ebp-772]
+	mov	dword2631,[ebp-768]
+	fld	dword ptr [dword2629]
+	fsub	dword ptr [dword2631]
+	mov	dword2633,[ebp-776]
+	fstp	dword ptr [dword2633]
+	mov	dword2635,[ebp-772]
+	mov	dword2637,[ebp-768]
+	fld	dword ptr [dword2635+4]
+	fsub	dword ptr [dword2637+4]
+	mov	dword2639,[ebp-776]
+	fstp	dword ptr [dword2639+4]
+	mov	dword2641,[ebp-772]
+	mov	dword2643,[ebp-768]
+	fld	dword ptr [dword2641+8]
+	fsub	dword ptr [dword2643+8]
+	mov	dword2645,[ebp-776]
+	fstp	dword ptr [dword2645+8]
+	mov	dword2647,[ebp-772]
+	mov	dword2649,[ebp-768]
+	fld	dword ptr [dword2647+12]
+	fsub	dword ptr [dword2649+12]
+	mov	dword2651,[ebp-776]
+	fstp	dword ptr [dword2651+12]
 label0093:
 ; end of inline function vec4f_subtract
-	mov	dword2661,[ebp-648]
-	mov	[ebp-780],dword2661
-	lea	dword2417,[ebp-684]
-	mov	[ebp-784],dword2417
+	mov	dword2688,[ebp-648]
+	mov	[ebp-780],dword2688
+	lea	dword2444,[ebp-684]
+	mov	[ebp-784],dword2444
 ; start of inline function vec4f_dot
-	mov	dword2664,[ebp-784]
-	mov	dword2666,[ebp-780]
-	fld	dword ptr [dword2664+4]
-	fmul	dword ptr [dword2666+4]
-	mov	dword2668,[ebp-784]
-	mov	dword2670,[ebp-780]
-	fld	dword ptr [dword2668]
-	fmul	dword ptr [dword2670]
+	mov	dword2691,[ebp-784]
+	mov	dword2693,[ebp-780]
+	fld	dword ptr [dword2691+4]
+	fmul	dword ptr [dword2693+4]
+	mov	dword2695,[ebp-784]
+	mov	dword2697,[ebp-780]
+	fld	dword ptr [dword2695]
+	fmul	dword ptr [dword2697]
 	faddp
-	mov	dword2672,[ebp-784]
-	mov	dword2674,[ebp-780]
-	fld	dword ptr [dword2672+8]
-	fmul	dword ptr [dword2674+8]
+	mov	dword2699,[ebp-784]
+	mov	dword2701,[ebp-780]
+	fld	dword ptr [dword2699+8]
+	fmul	dword ptr [dword2701+8]
 	faddp
-	mov	dword2676,[ebp-784]
-	mov	dword2678,[ebp-780]
-	fld	dword ptr [dword2676+12]
-	fmul	dword ptr [dword2678+12]
+	mov	dword2703,[ebp-784]
+	mov	dword2705,[ebp-780]
+	fld	dword ptr [dword2703+12]
+	fmul	dword ptr [dword2705+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label0096:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
-	mov	dword2679,[ebp-648]
-	mov	[ebp-780],dword2679
-	lea	dword2419,[ebp-700]
-	mov	[ebp-784],dword2419
+	mov	dword2706,[ebp-648]
+	mov	[ebp-780],dword2706
+	lea	dword2446,[ebp-700]
+	mov	[ebp-784],dword2446
 ; start of inline function vec4f_dot
-	mov	dword2682,[ebp-784]
-	mov	dword2684,[ebp-780]
-	fld	dword ptr [dword2682+4]
-	fmul	dword ptr [dword2684+4]
-	mov	dword2686,[ebp-784]
-	mov	dword2688,[ebp-780]
-	fld	dword ptr [dword2686]
-	fmul	dword ptr [dword2688]
+	mov	dword2709,[ebp-784]
+	mov	dword2711,[ebp-780]
+	fld	dword ptr [dword2709+4]
+	fmul	dword ptr [dword2711+4]
+	mov	dword2713,[ebp-784]
+	mov	dword2715,[ebp-780]
+	fld	dword ptr [dword2713]
+	fmul	dword ptr [dword2715]
 	faddp
-	mov	dword2690,[ebp-784]
-	mov	dword2692,[ebp-780]
-	fld	dword ptr [dword2690+8]
-	fmul	dword ptr [dword2692+8]
+	mov	dword2717,[ebp-784]
+	mov	dword2719,[ebp-780]
+	fld	dword ptr [dword2717+8]
+	fmul	dword ptr [dword2719+8]
 	faddp
-	mov	dword2694,[ebp-784]
-	mov	dword2696,[ebp-780]
-	fld	dword ptr [dword2694+12]
-	fmul	dword ptr [dword2696+12]
+	mov	dword2721,[ebp-784]
+	mov	dword2723,[ebp-780]
+	fld	dword ptr [dword2721+12]
+	fmul	dword ptr [dword2723+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label0097:
@@ -8760,302 +8802,302 @@ label0097:
 	fld	dword ptr [ebp-788]
 	fdivp
 	fstp	dword ptr [ebp-720]
-	mov	dword2697,[ebp-720]
-	mov	[ebp-792],dword2697
-	lea	dword2422,[ebp-700]
-	mov	[ebp-796],dword2422
+	mov	dword2724,[ebp-720]
+	mov	[ebp-792],dword2724
+	lea	dword2449,[ebp-700]
+	mov	[ebp-796],dword2449
 ; start of inline function vec4f_mul
-	mov	dword2700,[ebp-796]
-	fld	dword ptr [dword2700]
+	mov	dword2727,[ebp-796]
+	fld	dword ptr [dword2727]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword2700]
-	mov	dword2703,[ebp-796]
-	fld	dword ptr [dword2703+4]
+	fstp	dword ptr [dword2727]
+	mov	dword2730,[ebp-796]
+	fld	dword ptr [dword2730+4]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword2703+4]
-	mov	dword2706,[ebp-796]
-	fld	dword ptr [dword2706+8]
+	fstp	dword ptr [dword2730+4]
+	mov	dword2733,[ebp-796]
+	fld	dword ptr [dword2733+8]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword2706+8]
-	mov	dword2709,[ebp-796]
-	fld	dword ptr [dword2709+12]
+	fstp	dword ptr [dword2733+8]
+	mov	dword2736,[ebp-796]
+	fld	dword ptr [dword2736+12]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword2709+12]
+	fstp	dword ptr [dword2736+12]
 label0098:
 ; end of inline function vec4f_mul
-	lea	dword2423,[ebp-700]
-	mov	[ebp-756],dword2423
-	mov	dword2425,[ebp-664]
-	mov	[ebp-760],dword2425
-	mov	dword2427,[ebp-660]
-	mov	dword2429,[dword2427+192]
-	imul	dword2429,24
-	mov	dword2431,[ebp-660]
-	add	dword2431,dword2429
-	mov	[ebp-764],dword2431
+	lea	dword2450,[ebp-700]
+	mov	[ebp-756],dword2450
+	mov	dword2452,[ebp-664]
+	mov	[ebp-760],dword2452
+	mov	dword2454,[ebp-660]
+	mov	dword2456,[dword2454+192]
+	imul	dword2456,24
+	mov	dword2458,[ebp-660]
+	add	dword2458,dword2456
+	mov	[ebp-764],dword2458
 ; start of inline function vec4f_add
-	mov	dword2499,[ebp-760]
-	mov	dword2501,[ebp-756]
-	fld	dword ptr [dword2499]
-	fadd	dword ptr [dword2501]
-	mov	dword2503,[ebp-764]
-	fstp	dword ptr [dword2503]
-	mov	dword2505,[ebp-760]
-	mov	dword2507,[ebp-756]
-	fld	dword ptr [dword2505+4]
-	fadd	dword ptr [dword2507+4]
-	mov	dword2509,[ebp-764]
-	fstp	dword ptr [dword2509+4]
-	mov	dword2511,[ebp-760]
-	mov	dword2513,[ebp-756]
-	fld	dword ptr [dword2511+8]
-	fadd	dword ptr [dword2513+8]
-	mov	dword2515,[ebp-764]
-	fstp	dword ptr [dword2515+8]
-	mov	dword2517,[ebp-760]
-	mov	dword2519,[ebp-756]
-	fld	dword ptr [dword2517+12]
-	fadd	dword ptr [dword2519+12]
-	mov	dword2521,[ebp-764]
-	fstp	dword ptr [dword2521+12]
+	mov	dword2526,[ebp-760]
+	mov	dword2528,[ebp-756]
+	fld	dword ptr [dword2526]
+	fadd	dword ptr [dword2528]
+	mov	dword2530,[ebp-764]
+	fstp	dword ptr [dword2530]
+	mov	dword2532,[ebp-760]
+	mov	dword2534,[ebp-756]
+	fld	dword ptr [dword2532+4]
+	fadd	dword ptr [dword2534+4]
+	mov	dword2536,[ebp-764]
+	fstp	dword ptr [dword2536+4]
+	mov	dword2538,[ebp-760]
+	mov	dword2540,[ebp-756]
+	fld	dword ptr [dword2538+8]
+	fadd	dword ptr [dword2540+8]
+	mov	dword2542,[ebp-764]
+	fstp	dword ptr [dword2542+8]
+	mov	dword2544,[ebp-760]
+	mov	dword2546,[ebp-756]
+	fld	dword ptr [dword2544+12]
+	fadd	dword ptr [dword2546+12]
+	mov	dword2548,[ebp-764]
+	fstp	dword ptr [dword2548+12]
 label008f:
 ; end of inline function vec4f_add
-	mov	dword2433,16
-	add	dword2433,[ebp-664]
-	mov	[ebp-736],dword2433
-	mov	dword2435,16
-	add	dword2435,[ebp-668]
-	mov	[ebp-740],dword2435
-	lea	dword2436,[ebp-708]
-	mov	[ebp-744],dword2436
+	mov	dword2460,16
+	add	dword2460,[ebp-664]
+	mov	[ebp-736],dword2460
+	mov	dword2462,16
+	add	dword2462,[ebp-668]
+	mov	[ebp-740],dword2462
+	lea	dword2463,[ebp-708]
+	mov	[ebp-744],dword2463
 ; start of inline function vec2f_subtract
-	mov	dword2478,[ebp-740]
-	mov	dword2480,[ebp-736]
-	fld	dword ptr [dword2478]
-	fsub	dword ptr [dword2480]
-	mov	dword2482,[ebp-744]
-	fstp	dword ptr [dword2482]
-	mov	dword2484,[ebp-740]
-	mov	dword2486,[ebp-736]
-	fld	dword ptr [dword2484+4]
-	fsub	dword ptr [dword2486+4]
-	mov	dword2488,[ebp-744]
-	fstp	dword ptr [dword2488+4]
+	mov	dword2505,[ebp-740]
+	mov	dword2507,[ebp-736]
+	fld	dword ptr [dword2505]
+	fsub	dword ptr [dword2507]
+	mov	dword2509,[ebp-744]
+	fstp	dword ptr [dword2509]
+	mov	dword2511,[ebp-740]
+	mov	dword2513,[ebp-736]
+	fld	dword ptr [dword2511+4]
+	fsub	dword ptr [dword2513+4]
+	mov	dword2515,[ebp-744]
+	fstp	dword ptr [dword2515+4]
 label008d:
 ; end of inline function vec2f_subtract
-	mov	dword2489,[ebp-720]
-	mov	[ebp-748],dword2489
-	lea	dword2438,[ebp-708]
-	mov	[ebp-752],dword2438
+	mov	dword2516,[ebp-720]
+	mov	[ebp-748],dword2516
+	lea	dword2465,[ebp-708]
+	mov	[ebp-752],dword2465
 ; start of inline function vec2f_mul
-	mov	dword2492,[ebp-752]
-	fld	dword ptr [dword2492]
+	mov	dword2519,[ebp-752]
+	fld	dword ptr [dword2519]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword2492]
-	mov	dword2495,[ebp-752]
-	fld	dword ptr [dword2495+4]
+	fstp	dword ptr [dword2519]
+	mov	dword2522,[ebp-752]
+	fld	dword ptr [dword2522+4]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword2495+4]
+	fstp	dword ptr [dword2522+4]
 label008e:
 ; end of inline function vec2f_mul
-	lea	dword2439,[ebp-708]
-	mov	[ebp-724],dword2439
-	mov	dword2441,16
-	add	dword2441,[ebp-664]
-	mov	[ebp-728],dword2441
-	mov	dword2443,[ebp-660]
-	mov	dword2445,[dword2443+192]
-	imul	dword2445,24
-	mov	dword2447,[ebp-660]
-	add	dword2447,dword2445
-	add	dword2447,16
-	mov	[ebp-732],dword2447
+	lea	dword2466,[ebp-708]
+	mov	[ebp-724],dword2466
+	mov	dword2468,16
+	add	dword2468,[ebp-664]
+	mov	[ebp-728],dword2468
+	mov	dword2470,[ebp-660]
+	mov	dword2472,[dword2470+192]
+	imul	dword2472,24
+	mov	dword2474,[ebp-660]
+	add	dword2474,dword2472
+	add	dword2474,16
+	mov	[ebp-732],dword2474
 ; start of inline function vec2f_add
-	mov	dword2465,[ebp-728]
-	mov	dword2467,[ebp-724]
-	fld	dword ptr [dword2465]
-	fadd	dword ptr [dword2467]
-	mov	dword2469,[ebp-732]
-	fstp	dword ptr [dword2469]
-	mov	dword2471,[ebp-728]
-	mov	dword2473,[ebp-724]
-	fld	dword ptr [dword2471+4]
-	fadd	dword ptr [dword2473+4]
-	mov	dword2475,[ebp-732]
-	fstp	dword ptr [dword2475+4]
+	mov	dword2492,[ebp-728]
+	mov	dword2494,[ebp-724]
+	fld	dword ptr [dword2492]
+	fadd	dword ptr [dword2494]
+	mov	dword2496,[ebp-732]
+	fstp	dword ptr [dword2496]
+	mov	dword2498,[ebp-728]
+	mov	dword2500,[ebp-724]
+	fld	dword ptr [dword2498+4]
+	fadd	dword ptr [dword2500+4]
+	mov	dword2502,[ebp-732]
+	fstp	dword ptr [dword2502+4]
 label008c:
 ; end of inline function vec2f_add
-	mov	dword2450,[ebp-660]
-	inc	dword ptr [dword2450+192]
+	mov	dword2477,[ebp-660]
+	inc	dword ptr [dword2477+192]
 label0089:
 	add	dword ptr [ebp-664],24
 	add	dword ptr [ebp-668],24
 	jmp	label0086
 label0087:
-	mov	dword2454,[ebp-660]
-	mov	dword2455,[dword2454+192]
-	inc	dword ptr [dword2454+192]
-	imul	dword2455,24
-	mov	dword2458,[ebp-660]
-	add	dword2458,dword2455
-	mov	dword2460,[ebp-660]
-	mov	dword2461,[dword2460]
-	mov	dword2462,[dword2460+4]
-	mov	[dword2458],dword2461
-	mov	[dword2458+4],dword2462
-	mov	dword2461,[dword2460+8]
-	mov	dword2462,[dword2460+12]
-	mov	[dword2458+8],dword2461
-	mov	[dword2458+12],dword2462
-	mov	dword2461,[dword2460+16]
-	mov	dword2462,[dword2460+20]
-	mov	[dword2458+16],dword2461
-	mov	[dword2458+20],dword2462
+	mov	dword2481,[ebp-660]
+	mov	dword2482,[dword2481+192]
+	inc	dword ptr [dword2481+192]
+	imul	dword2482,24
+	mov	dword2485,[ebp-660]
+	add	dword2485,dword2482
+	mov	dword2487,[ebp-660]
+	mov	dword2488,[dword2487]
+	mov	dword2489,[dword2487+4]
+	mov	[dword2485],dword2488
+	mov	[dword2485+4],dword2489
+	mov	dword2488,[dword2487+8]
+	mov	dword2489,[dword2487+12]
+	mov	[dword2485+8],dword2488
+	mov	[dword2485+12],dword2489
+	mov	dword2488,[dword2487+16]
+	mov	dword2489,[dword2487+20]
+	mov	[dword2485+16],dword2488
+	mov	[dword2485+20],dword2489
 label0099:
 ; end of inline function _clip_on_plain
-	lea	dword1987,dword ptr [__clip_plane_left_norm]
-	mov	[ebp-648],dword1987
-	lea	dword1988,dword ptr [__clip_plane_left_base]
-	mov	[ebp-652],dword1988
-	mov	dword2711,[ebp-448]
-	mov	[ebp-656],dword2711
-	lea	dword1990,[ebp-644]
-	mov	[ebp-660],dword1990
+	lea	dword2014,dword ptr [__clip_plane_left_norm]
+	mov	[ebp-648],dword2014
+	lea	dword2015,dword ptr [__clip_plane_left_base]
+	mov	[ebp-652],dword2015
+	mov	dword2738,[ebp-448]
+	mov	[ebp-656],dword2738
+	lea	dword2017,[ebp-644]
+	mov	[ebp-660],dword2017
 ; start of inline function _clip_on_plain
-	mov	dword2714,[ebp-660]
-	mov	dword ptr [dword2714+192],0
-	mov	dword2717,[ebp-656]
-	mov	[ebp-664],dword2717
-	mov	dword2720,[ebp-656]
-	add	dword2720,24
-	mov	[ebp-668],dword2720
+	mov	dword2741,[ebp-660]
+	mov	dword ptr [dword2741+192],0
+	mov	dword2744,[ebp-656]
+	mov	[ebp-664],dword2744
+	mov	dword2747,[ebp-656]
+	add	dword2747,24
+	mov	[ebp-668],dword2747
 label009a:
 label009b:
-	mov	dword2724,[ebp-656]
-	mov	dword2726,[dword2724+192]
-	imul	dword2726,24
-	mov	dword2728,[ebp-656]
-	add	dword2728,dword2726
-	cmp	dword2728,[ebp-668]
+	mov	dword2751,[ebp-656]
+	mov	dword2753,[dword2751+192]
+	imul	dword2753,24
+	mov	dword2755,[ebp-656]
+	add	dword2755,dword2753
+	cmp	dword2755,[ebp-668]
 	jle	label009c
-	mov	dword2874,[ebp-652]
-	mov	[ebp-768],dword2874
-	mov	dword2732,[ebp-664]
-	mov	[ebp-772],dword2732
-	lea	dword2733,[ebp-684]
-	mov	[ebp-776],dword2733
+	mov	dword2901,[ebp-652]
+	mov	[ebp-768],dword2901
+	mov	dword2759,[ebp-664]
+	mov	[ebp-772],dword2759
+	lea	dword2760,[ebp-684]
+	mov	[ebp-776],dword2760
 ; start of inline function vec4f_subtract
-	mov	dword2877,[ebp-772]
-	mov	dword2879,[ebp-768]
-	fld	dword ptr [dword2877]
-	fsub	dword ptr [dword2879]
-	mov	dword2881,[ebp-776]
-	fstp	dword ptr [dword2881]
-	mov	dword2883,[ebp-772]
-	mov	dword2885,[ebp-768]
-	fld	dword ptr [dword2883+4]
-	fsub	dword ptr [dword2885+4]
-	mov	dword2887,[ebp-776]
-	fstp	dword ptr [dword2887+4]
-	mov	dword2889,[ebp-772]
-	mov	dword2891,[ebp-768]
-	fld	dword ptr [dword2889+8]
-	fsub	dword ptr [dword2891+8]
-	mov	dword2893,[ebp-776]
-	fstp	dword ptr [dword2893+8]
-	mov	dword2895,[ebp-772]
-	mov	dword2897,[ebp-768]
-	fld	dword ptr [dword2895+12]
-	fsub	dword ptr [dword2897+12]
-	mov	dword2899,[ebp-776]
-	fstp	dword ptr [dword2899+12]
+	mov	dword2904,[ebp-772]
+	mov	dword2906,[ebp-768]
+	fld	dword ptr [dword2904]
+	fsub	dword ptr [dword2906]
+	mov	dword2908,[ebp-776]
+	fstp	dword ptr [dword2908]
+	mov	dword2910,[ebp-772]
+	mov	dword2912,[ebp-768]
+	fld	dword ptr [dword2910+4]
+	fsub	dword ptr [dword2912+4]
+	mov	dword2914,[ebp-776]
+	fstp	dword ptr [dword2914+4]
+	mov	dword2916,[ebp-772]
+	mov	dword2918,[ebp-768]
+	fld	dword ptr [dword2916+8]
+	fsub	dword ptr [dword2918+8]
+	mov	dword2920,[ebp-776]
+	fstp	dword ptr [dword2920+8]
+	mov	dword2922,[ebp-772]
+	mov	dword2924,[ebp-768]
+	fld	dword ptr [dword2922+12]
+	fsub	dword ptr [dword2924+12]
+	mov	dword2926,[ebp-776]
+	fstp	dword ptr [dword2926+12]
 label00a5:
 ; end of inline function vec4f_subtract
-	mov	dword2977,[ebp-648]
-	mov	[ebp-780],dword2977
-	lea	dword2735,[ebp-684]
-	mov	[ebp-784],dword2735
+	mov	dword3004,[ebp-648]
+	mov	[ebp-780],dword3004
+	lea	dword2762,[ebp-684]
+	mov	[ebp-784],dword2762
 ; start of inline function vec4f_dot
-	mov	dword2980,[ebp-784]
-	mov	dword2982,[ebp-780]
-	fld	dword ptr [dword2980+4]
-	fmul	dword ptr [dword2982+4]
-	mov	dword2984,[ebp-784]
-	mov	dword2986,[ebp-780]
-	fld	dword ptr [dword2984]
-	fmul	dword ptr [dword2986]
+	mov	dword3007,[ebp-784]
+	mov	dword3009,[ebp-780]
+	fld	dword ptr [dword3007+4]
+	fmul	dword ptr [dword3009+4]
+	mov	dword3011,[ebp-784]
+	mov	dword3013,[ebp-780]
+	fld	dword ptr [dword3011]
+	fmul	dword ptr [dword3013]
 	faddp
-	mov	dword2988,[ebp-784]
-	mov	dword2990,[ebp-780]
-	fld	dword ptr [dword2988+8]
-	fmul	dword ptr [dword2990+8]
+	mov	dword3015,[ebp-784]
+	mov	dword3017,[ebp-780]
+	fld	dword ptr [dword3015+8]
+	fmul	dword ptr [dword3017+8]
 	faddp
-	mov	dword2992,[ebp-784]
-	mov	dword2994,[ebp-780]
-	fld	dword ptr [dword2992+12]
-	fmul	dword ptr [dword2994+12]
+	mov	dword3019,[ebp-784]
+	mov	dword3021,[ebp-780]
+	fld	dword ptr [dword3019+12]
+	fmul	dword ptr [dword3021+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00a9:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
 	fstp	dword ptr [ebp-712]
-	mov	dword2900,[ebp-652]
-	mov	[ebp-768],dword2900
-	mov	dword2739,[ebp-668]
-	mov	[ebp-772],dword2739
-	lea	dword2740,[ebp-684]
-	mov	[ebp-776],dword2740
+	mov	dword2927,[ebp-652]
+	mov	[ebp-768],dword2927
+	mov	dword2766,[ebp-668]
+	mov	[ebp-772],dword2766
+	lea	dword2767,[ebp-684]
+	mov	[ebp-776],dword2767
 ; start of inline function vec4f_subtract
-	mov	dword2903,[ebp-772]
-	mov	dword2905,[ebp-768]
-	fld	dword ptr [dword2903]
-	fsub	dword ptr [dword2905]
-	mov	dword2907,[ebp-776]
-	fstp	dword ptr [dword2907]
-	mov	dword2909,[ebp-772]
-	mov	dword2911,[ebp-768]
-	fld	dword ptr [dword2909+4]
-	fsub	dword ptr [dword2911+4]
-	mov	dword2913,[ebp-776]
-	fstp	dword ptr [dword2913+4]
-	mov	dword2915,[ebp-772]
-	mov	dword2917,[ebp-768]
-	fld	dword ptr [dword2915+8]
-	fsub	dword ptr [dword2917+8]
-	mov	dword2919,[ebp-776]
-	fstp	dword ptr [dword2919+8]
-	mov	dword2921,[ebp-772]
-	mov	dword2923,[ebp-768]
-	fld	dword ptr [dword2921+12]
-	fsub	dword ptr [dword2923+12]
-	mov	dword2925,[ebp-776]
-	fstp	dword ptr [dword2925+12]
+	mov	dword2930,[ebp-772]
+	mov	dword2932,[ebp-768]
+	fld	dword ptr [dword2930]
+	fsub	dword ptr [dword2932]
+	mov	dword2934,[ebp-776]
+	fstp	dword ptr [dword2934]
+	mov	dword2936,[ebp-772]
+	mov	dword2938,[ebp-768]
+	fld	dword ptr [dword2936+4]
+	fsub	dword ptr [dword2938+4]
+	mov	dword2940,[ebp-776]
+	fstp	dword ptr [dword2940+4]
+	mov	dword2942,[ebp-772]
+	mov	dword2944,[ebp-768]
+	fld	dword ptr [dword2942+8]
+	fsub	dword ptr [dword2944+8]
+	mov	dword2946,[ebp-776]
+	fstp	dword ptr [dword2946+8]
+	mov	dword2948,[ebp-772]
+	mov	dword2950,[ebp-768]
+	fld	dword ptr [dword2948+12]
+	fsub	dword ptr [dword2950+12]
+	mov	dword2952,[ebp-776]
+	fstp	dword ptr [dword2952+12]
 label00a6:
 ; end of inline function vec4f_subtract
-	mov	dword2995,[ebp-648]
-	mov	[ebp-780],dword2995
-	lea	dword2742,[ebp-684]
-	mov	[ebp-784],dword2742
+	mov	dword3022,[ebp-648]
+	mov	[ebp-780],dword3022
+	lea	dword2769,[ebp-684]
+	mov	[ebp-784],dword2769
 ; start of inline function vec4f_dot
-	mov	dword2998,[ebp-784]
-	mov	dword3000,[ebp-780]
-	fld	dword ptr [dword2998+4]
-	fmul	dword ptr [dword3000+4]
-	mov	dword3002,[ebp-784]
-	mov	dword3004,[ebp-780]
-	fld	dword ptr [dword3002]
-	fmul	dword ptr [dword3004]
+	mov	dword3025,[ebp-784]
+	mov	dword3027,[ebp-780]
+	fld	dword ptr [dword3025+4]
+	fmul	dword ptr [dword3027+4]
+	mov	dword3029,[ebp-784]
+	mov	dword3031,[ebp-780]
+	fld	dword ptr [dword3029]
+	fmul	dword ptr [dword3031]
 	faddp
-	mov	dword3006,[ebp-784]
-	mov	dword3008,[ebp-780]
-	fld	dword ptr [dword3006+8]
-	fmul	dword ptr [dword3008+8]
+	mov	dword3033,[ebp-784]
+	mov	dword3035,[ebp-780]
+	fld	dword ptr [dword3033+8]
+	fmul	dword ptr [dword3035+8]
 	faddp
-	mov	dword3010,[ebp-784]
-	mov	dword3012,[ebp-780]
-	fld	dword ptr [dword3010+12]
-	fmul	dword ptr [dword3012+12]
+	mov	dword3037,[ebp-784]
+	mov	dword3039,[ebp-780]
+	fld	dword ptr [dword3037+12]
+	fmul	dword ptr [dword3039+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00aa:
@@ -9067,25 +9109,25 @@ label00aa:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label009d
-	mov	dword2746,[ebp-660]
-	mov	dword2747,[dword2746+192]
-	inc	dword ptr [dword2746+192]
-	imul	dword2747,24
-	mov	dword2750,[ebp-660]
-	add	dword2750,dword2747
-	mov	dword2752,[ebp-664]
-	mov	dword2753,[dword2752]
-	mov	dword2754,[dword2752+4]
-	mov	[dword2750],dword2753
-	mov	[dword2750+4],dword2754
-	mov	dword2753,[dword2752+8]
-	mov	dword2754,[dword2752+12]
-	mov	[dword2750+8],dword2753
-	mov	[dword2750+12],dword2754
-	mov	dword2753,[dword2752+16]
-	mov	dword2754,[dword2752+20]
-	mov	[dword2750+16],dword2753
-	mov	[dword2750+20],dword2754
+	mov	dword2773,[ebp-660]
+	mov	dword2774,[dword2773+192]
+	inc	dword ptr [dword2773+192]
+	imul	dword2774,24
+	mov	dword2777,[ebp-660]
+	add	dword2777,dword2774
+	mov	dword2779,[ebp-664]
+	mov	dword2780,[dword2779]
+	mov	dword2781,[dword2779+4]
+	mov	[dword2777],dword2780
+	mov	[dword2777+4],dword2781
+	mov	dword2780,[dword2779+8]
+	mov	dword2781,[dword2779+12]
+	mov	[dword2777+8],dword2780
+	mov	[dword2777+12],dword2781
+	mov	dword2780,[dword2779+16]
+	mov	dword2781,[dword2779+20]
+	mov	[dword2777+16],dword2780
+	mov	[dword2777+20],dword2781
 label009d:
 	fldz
 	fld	dword ptr [ebp-712]
@@ -9109,123 +9151,123 @@ label00a0:
 	fstp	st
 	jae	label009e
 label009f:
-	mov	dword2760,[ebp-664]
-	mov	[ebp-768],dword2760
-	mov	dword2926,[ebp-652]
-	mov	[ebp-772],dword2926
-	lea	dword2762,[ebp-684]
-	mov	[ebp-776],dword2762
+	mov	dword2787,[ebp-664]
+	mov	[ebp-768],dword2787
+	mov	dword2953,[ebp-652]
+	mov	[ebp-772],dword2953
+	lea	dword2789,[ebp-684]
+	mov	[ebp-776],dword2789
 ; start of inline function vec4f_subtract
-	mov	dword2929,[ebp-772]
-	mov	dword2931,[ebp-768]
-	fld	dword ptr [dword2929]
-	fsub	dword ptr [dword2931]
-	mov	dword2933,[ebp-776]
-	fstp	dword ptr [dword2933]
-	mov	dword2935,[ebp-772]
-	mov	dword2937,[ebp-768]
-	fld	dword ptr [dword2935+4]
-	fsub	dword ptr [dword2937+4]
-	mov	dword2939,[ebp-776]
-	fstp	dword ptr [dword2939+4]
-	mov	dword2941,[ebp-772]
-	mov	dword2943,[ebp-768]
-	fld	dword ptr [dword2941+8]
-	fsub	dword ptr [dword2943+8]
-	mov	dword2945,[ebp-776]
-	fstp	dword ptr [dword2945+8]
-	mov	dword2947,[ebp-772]
-	mov	dword2949,[ebp-768]
-	fld	dword ptr [dword2947+12]
-	fsub	dword ptr [dword2949+12]
-	mov	dword2951,[ebp-776]
-	fstp	dword ptr [dword2951+12]
+	mov	dword2956,[ebp-772]
+	mov	dword2958,[ebp-768]
+	fld	dword ptr [dword2956]
+	fsub	dword ptr [dword2958]
+	mov	dword2960,[ebp-776]
+	fstp	dword ptr [dword2960]
+	mov	dword2962,[ebp-772]
+	mov	dword2964,[ebp-768]
+	fld	dword ptr [dword2962+4]
+	fsub	dword ptr [dword2964+4]
+	mov	dword2966,[ebp-776]
+	fstp	dword ptr [dword2966+4]
+	mov	dword2968,[ebp-772]
+	mov	dword2970,[ebp-768]
+	fld	dword ptr [dword2968+8]
+	fsub	dword ptr [dword2970+8]
+	mov	dword2972,[ebp-776]
+	fstp	dword ptr [dword2972+8]
+	mov	dword2974,[ebp-772]
+	mov	dword2976,[ebp-768]
+	fld	dword ptr [dword2974+12]
+	fsub	dword ptr [dword2976+12]
+	mov	dword2978,[ebp-776]
+	fstp	dword ptr [dword2978+12]
 label00a7:
 ; end of inline function vec4f_subtract
-	mov	dword2764,[ebp-664]
-	mov	[ebp-768],dword2764
-	mov	dword2766,[ebp-668]
-	mov	[ebp-772],dword2766
-	lea	dword2767,[ebp-700]
-	mov	[ebp-776],dword2767
+	mov	dword2791,[ebp-664]
+	mov	[ebp-768],dword2791
+	mov	dword2793,[ebp-668]
+	mov	[ebp-772],dword2793
+	lea	dword2794,[ebp-700]
+	mov	[ebp-776],dword2794
 ; start of inline function vec4f_subtract
-	mov	dword2954,[ebp-772]
-	mov	dword2956,[ebp-768]
-	fld	dword ptr [dword2954]
-	fsub	dword ptr [dword2956]
-	mov	dword2958,[ebp-776]
-	fstp	dword ptr [dword2958]
-	mov	dword2960,[ebp-772]
-	mov	dword2962,[ebp-768]
-	fld	dword ptr [dword2960+4]
-	fsub	dword ptr [dword2962+4]
-	mov	dword2964,[ebp-776]
-	fstp	dword ptr [dword2964+4]
-	mov	dword2966,[ebp-772]
-	mov	dword2968,[ebp-768]
-	fld	dword ptr [dword2966+8]
-	fsub	dword ptr [dword2968+8]
-	mov	dword2970,[ebp-776]
-	fstp	dword ptr [dword2970+8]
-	mov	dword2972,[ebp-772]
-	mov	dword2974,[ebp-768]
-	fld	dword ptr [dword2972+12]
-	fsub	dword ptr [dword2974+12]
-	mov	dword2976,[ebp-776]
-	fstp	dword ptr [dword2976+12]
+	mov	dword2981,[ebp-772]
+	mov	dword2983,[ebp-768]
+	fld	dword ptr [dword2981]
+	fsub	dword ptr [dword2983]
+	mov	dword2985,[ebp-776]
+	fstp	dword ptr [dword2985]
+	mov	dword2987,[ebp-772]
+	mov	dword2989,[ebp-768]
+	fld	dword ptr [dword2987+4]
+	fsub	dword ptr [dword2989+4]
+	mov	dword2991,[ebp-776]
+	fstp	dword ptr [dword2991+4]
+	mov	dword2993,[ebp-772]
+	mov	dword2995,[ebp-768]
+	fld	dword ptr [dword2993+8]
+	fsub	dword ptr [dword2995+8]
+	mov	dword2997,[ebp-776]
+	fstp	dword ptr [dword2997+8]
+	mov	dword2999,[ebp-772]
+	mov	dword3001,[ebp-768]
+	fld	dword ptr [dword2999+12]
+	fsub	dword ptr [dword3001+12]
+	mov	dword3003,[ebp-776]
+	fstp	dword ptr [dword3003+12]
 label00a8:
 ; end of inline function vec4f_subtract
-	mov	dword3013,[ebp-648]
-	mov	[ebp-780],dword3013
-	lea	dword2769,[ebp-684]
-	mov	[ebp-784],dword2769
+	mov	dword3040,[ebp-648]
+	mov	[ebp-780],dword3040
+	lea	dword2796,[ebp-684]
+	mov	[ebp-784],dword2796
 ; start of inline function vec4f_dot
-	mov	dword3016,[ebp-784]
-	mov	dword3018,[ebp-780]
-	fld	dword ptr [dword3016+4]
-	fmul	dword ptr [dword3018+4]
-	mov	dword3020,[ebp-784]
-	mov	dword3022,[ebp-780]
-	fld	dword ptr [dword3020]
-	fmul	dword ptr [dword3022]
+	mov	dword3043,[ebp-784]
+	mov	dword3045,[ebp-780]
+	fld	dword ptr [dword3043+4]
+	fmul	dword ptr [dword3045+4]
+	mov	dword3047,[ebp-784]
+	mov	dword3049,[ebp-780]
+	fld	dword ptr [dword3047]
+	fmul	dword ptr [dword3049]
 	faddp
-	mov	dword3024,[ebp-784]
-	mov	dword3026,[ebp-780]
-	fld	dword ptr [dword3024+8]
-	fmul	dword ptr [dword3026+8]
+	mov	dword3051,[ebp-784]
+	mov	dword3053,[ebp-780]
+	fld	dword ptr [dword3051+8]
+	fmul	dword ptr [dword3053+8]
 	faddp
-	mov	dword3028,[ebp-784]
-	mov	dword3030,[ebp-780]
-	fld	dword ptr [dword3028+12]
-	fmul	dword ptr [dword3030+12]
+	mov	dword3055,[ebp-784]
+	mov	dword3057,[ebp-780]
+	fld	dword ptr [dword3055+12]
+	fmul	dword ptr [dword3057+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00ab:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
-	mov	dword3031,[ebp-648]
-	mov	[ebp-780],dword3031
-	lea	dword2771,[ebp-700]
-	mov	[ebp-784],dword2771
+	mov	dword3058,[ebp-648]
+	mov	[ebp-780],dword3058
+	lea	dword2798,[ebp-700]
+	mov	[ebp-784],dword2798
 ; start of inline function vec4f_dot
-	mov	dword3034,[ebp-784]
-	mov	dword3036,[ebp-780]
-	fld	dword ptr [dword3034+4]
-	fmul	dword ptr [dword3036+4]
-	mov	dword3038,[ebp-784]
-	mov	dword3040,[ebp-780]
-	fld	dword ptr [dword3038]
-	fmul	dword ptr [dword3040]
+	mov	dword3061,[ebp-784]
+	mov	dword3063,[ebp-780]
+	fld	dword ptr [dword3061+4]
+	fmul	dword ptr [dword3063+4]
+	mov	dword3065,[ebp-784]
+	mov	dword3067,[ebp-780]
+	fld	dword ptr [dword3065]
+	fmul	dword ptr [dword3067]
 	faddp
-	mov	dword3042,[ebp-784]
-	mov	dword3044,[ebp-780]
-	fld	dword ptr [dword3042+8]
-	fmul	dword ptr [dword3044+8]
+	mov	dword3069,[ebp-784]
+	mov	dword3071,[ebp-780]
+	fld	dword ptr [dword3069+8]
+	fmul	dword ptr [dword3071+8]
 	faddp
-	mov	dword3046,[ebp-784]
-	mov	dword3048,[ebp-780]
-	fld	dword ptr [dword3046+12]
-	fmul	dword ptr [dword3048+12]
+	mov	dword3073,[ebp-784]
+	mov	dword3075,[ebp-780]
+	fld	dword ptr [dword3073+12]
+	fmul	dword ptr [dword3075+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00ac:
@@ -9233,302 +9275,302 @@ label00ac:
 	fld	dword ptr [ebp-788]
 	fdivp
 	fstp	dword ptr [ebp-720]
-	mov	dword3049,[ebp-720]
-	mov	[ebp-792],dword3049
-	lea	dword2774,[ebp-700]
-	mov	[ebp-796],dword2774
+	mov	dword3076,[ebp-720]
+	mov	[ebp-792],dword3076
+	lea	dword2801,[ebp-700]
+	mov	[ebp-796],dword2801
 ; start of inline function vec4f_mul
-	mov	dword3052,[ebp-796]
-	fld	dword ptr [dword3052]
+	mov	dword3079,[ebp-796]
+	fld	dword ptr [dword3079]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3052]
-	mov	dword3055,[ebp-796]
-	fld	dword ptr [dword3055+4]
+	fstp	dword ptr [dword3079]
+	mov	dword3082,[ebp-796]
+	fld	dword ptr [dword3082+4]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3055+4]
-	mov	dword3058,[ebp-796]
-	fld	dword ptr [dword3058+8]
+	fstp	dword ptr [dword3082+4]
+	mov	dword3085,[ebp-796]
+	fld	dword ptr [dword3085+8]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3058+8]
-	mov	dword3061,[ebp-796]
-	fld	dword ptr [dword3061+12]
+	fstp	dword ptr [dword3085+8]
+	mov	dword3088,[ebp-796]
+	fld	dword ptr [dword3088+12]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3061+12]
+	fstp	dword ptr [dword3088+12]
 label00ad:
 ; end of inline function vec4f_mul
-	lea	dword2775,[ebp-700]
-	mov	[ebp-756],dword2775
-	mov	dword2777,[ebp-664]
-	mov	[ebp-760],dword2777
-	mov	dword2779,[ebp-660]
-	mov	dword2781,[dword2779+192]
-	imul	dword2781,24
-	mov	dword2783,[ebp-660]
-	add	dword2783,dword2781
-	mov	[ebp-764],dword2783
+	lea	dword2802,[ebp-700]
+	mov	[ebp-756],dword2802
+	mov	dword2804,[ebp-664]
+	mov	[ebp-760],dword2804
+	mov	dword2806,[ebp-660]
+	mov	dword2808,[dword2806+192]
+	imul	dword2808,24
+	mov	dword2810,[ebp-660]
+	add	dword2810,dword2808
+	mov	[ebp-764],dword2810
 ; start of inline function vec4f_add
-	mov	dword2851,[ebp-760]
-	mov	dword2853,[ebp-756]
-	fld	dword ptr [dword2851]
-	fadd	dword ptr [dword2853]
-	mov	dword2855,[ebp-764]
-	fstp	dword ptr [dword2855]
-	mov	dword2857,[ebp-760]
-	mov	dword2859,[ebp-756]
-	fld	dword ptr [dword2857+4]
-	fadd	dword ptr [dword2859+4]
-	mov	dword2861,[ebp-764]
-	fstp	dword ptr [dword2861+4]
-	mov	dword2863,[ebp-760]
-	mov	dword2865,[ebp-756]
-	fld	dword ptr [dword2863+8]
-	fadd	dword ptr [dword2865+8]
-	mov	dword2867,[ebp-764]
-	fstp	dword ptr [dword2867+8]
-	mov	dword2869,[ebp-760]
-	mov	dword2871,[ebp-756]
-	fld	dword ptr [dword2869+12]
-	fadd	dword ptr [dword2871+12]
-	mov	dword2873,[ebp-764]
-	fstp	dword ptr [dword2873+12]
+	mov	dword2878,[ebp-760]
+	mov	dword2880,[ebp-756]
+	fld	dword ptr [dword2878]
+	fadd	dword ptr [dword2880]
+	mov	dword2882,[ebp-764]
+	fstp	dword ptr [dword2882]
+	mov	dword2884,[ebp-760]
+	mov	dword2886,[ebp-756]
+	fld	dword ptr [dword2884+4]
+	fadd	dword ptr [dword2886+4]
+	mov	dword2888,[ebp-764]
+	fstp	dword ptr [dword2888+4]
+	mov	dword2890,[ebp-760]
+	mov	dword2892,[ebp-756]
+	fld	dword ptr [dword2890+8]
+	fadd	dword ptr [dword2892+8]
+	mov	dword2894,[ebp-764]
+	fstp	dword ptr [dword2894+8]
+	mov	dword2896,[ebp-760]
+	mov	dword2898,[ebp-756]
+	fld	dword ptr [dword2896+12]
+	fadd	dword ptr [dword2898+12]
+	mov	dword2900,[ebp-764]
+	fstp	dword ptr [dword2900+12]
 label00a4:
 ; end of inline function vec4f_add
-	mov	dword2785,16
-	add	dword2785,[ebp-664]
-	mov	[ebp-736],dword2785
-	mov	dword2787,16
-	add	dword2787,[ebp-668]
-	mov	[ebp-740],dword2787
-	lea	dword2788,[ebp-708]
-	mov	[ebp-744],dword2788
+	mov	dword2812,16
+	add	dword2812,[ebp-664]
+	mov	[ebp-736],dword2812
+	mov	dword2814,16
+	add	dword2814,[ebp-668]
+	mov	[ebp-740],dword2814
+	lea	dword2815,[ebp-708]
+	mov	[ebp-744],dword2815
 ; start of inline function vec2f_subtract
-	mov	dword2830,[ebp-740]
-	mov	dword2832,[ebp-736]
-	fld	dword ptr [dword2830]
-	fsub	dword ptr [dword2832]
-	mov	dword2834,[ebp-744]
-	fstp	dword ptr [dword2834]
-	mov	dword2836,[ebp-740]
-	mov	dword2838,[ebp-736]
-	fld	dword ptr [dword2836+4]
-	fsub	dword ptr [dword2838+4]
-	mov	dword2840,[ebp-744]
-	fstp	dword ptr [dword2840+4]
+	mov	dword2857,[ebp-740]
+	mov	dword2859,[ebp-736]
+	fld	dword ptr [dword2857]
+	fsub	dword ptr [dword2859]
+	mov	dword2861,[ebp-744]
+	fstp	dword ptr [dword2861]
+	mov	dword2863,[ebp-740]
+	mov	dword2865,[ebp-736]
+	fld	dword ptr [dword2863+4]
+	fsub	dword ptr [dword2865+4]
+	mov	dword2867,[ebp-744]
+	fstp	dword ptr [dword2867+4]
 label00a2:
 ; end of inline function vec2f_subtract
-	mov	dword2841,[ebp-720]
-	mov	[ebp-748],dword2841
-	lea	dword2790,[ebp-708]
-	mov	[ebp-752],dword2790
+	mov	dword2868,[ebp-720]
+	mov	[ebp-748],dword2868
+	lea	dword2817,[ebp-708]
+	mov	[ebp-752],dword2817
 ; start of inline function vec2f_mul
-	mov	dword2844,[ebp-752]
-	fld	dword ptr [dword2844]
+	mov	dword2871,[ebp-752]
+	fld	dword ptr [dword2871]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword2844]
-	mov	dword2847,[ebp-752]
-	fld	dword ptr [dword2847+4]
+	fstp	dword ptr [dword2871]
+	mov	dword2874,[ebp-752]
+	fld	dword ptr [dword2874+4]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword2847+4]
+	fstp	dword ptr [dword2874+4]
 label00a3:
 ; end of inline function vec2f_mul
-	lea	dword2791,[ebp-708]
-	mov	[ebp-724],dword2791
-	mov	dword2793,16
-	add	dword2793,[ebp-664]
-	mov	[ebp-728],dword2793
-	mov	dword2795,[ebp-660]
-	mov	dword2797,[dword2795+192]
-	imul	dword2797,24
-	mov	dword2799,[ebp-660]
-	add	dword2799,dword2797
-	add	dword2799,16
-	mov	[ebp-732],dword2799
+	lea	dword2818,[ebp-708]
+	mov	[ebp-724],dword2818
+	mov	dword2820,16
+	add	dword2820,[ebp-664]
+	mov	[ebp-728],dword2820
+	mov	dword2822,[ebp-660]
+	mov	dword2824,[dword2822+192]
+	imul	dword2824,24
+	mov	dword2826,[ebp-660]
+	add	dword2826,dword2824
+	add	dword2826,16
+	mov	[ebp-732],dword2826
 ; start of inline function vec2f_add
-	mov	dword2817,[ebp-728]
-	mov	dword2819,[ebp-724]
-	fld	dword ptr [dword2817]
-	fadd	dword ptr [dword2819]
-	mov	dword2821,[ebp-732]
-	fstp	dword ptr [dword2821]
-	mov	dword2823,[ebp-728]
-	mov	dword2825,[ebp-724]
-	fld	dword ptr [dword2823+4]
-	fadd	dword ptr [dword2825+4]
-	mov	dword2827,[ebp-732]
-	fstp	dword ptr [dword2827+4]
+	mov	dword2844,[ebp-728]
+	mov	dword2846,[ebp-724]
+	fld	dword ptr [dword2844]
+	fadd	dword ptr [dword2846]
+	mov	dword2848,[ebp-732]
+	fstp	dword ptr [dword2848]
+	mov	dword2850,[ebp-728]
+	mov	dword2852,[ebp-724]
+	fld	dword ptr [dword2850+4]
+	fadd	dword ptr [dword2852+4]
+	mov	dword2854,[ebp-732]
+	fstp	dword ptr [dword2854+4]
 label00a1:
 ; end of inline function vec2f_add
-	mov	dword2802,[ebp-660]
-	inc	dword ptr [dword2802+192]
+	mov	dword2829,[ebp-660]
+	inc	dword ptr [dword2829+192]
 label009e:
 	add	dword ptr [ebp-664],24
 	add	dword ptr [ebp-668],24
 	jmp	label009b
 label009c:
-	mov	dword2806,[ebp-660]
-	mov	dword2807,[dword2806+192]
-	inc	dword ptr [dword2806+192]
-	imul	dword2807,24
-	mov	dword2810,[ebp-660]
-	add	dword2810,dword2807
-	mov	dword2812,[ebp-660]
-	mov	dword2813,[dword2812]
-	mov	dword2814,[dword2812+4]
-	mov	[dword2810],dword2813
-	mov	[dword2810+4],dword2814
-	mov	dword2813,[dword2812+8]
-	mov	dword2814,[dword2812+12]
-	mov	[dword2810+8],dword2813
-	mov	[dword2810+12],dword2814
-	mov	dword2813,[dword2812+16]
-	mov	dword2814,[dword2812+20]
-	mov	[dword2810+16],dword2813
-	mov	[dword2810+20],dword2814
+	mov	dword2833,[ebp-660]
+	mov	dword2834,[dword2833+192]
+	inc	dword ptr [dword2833+192]
+	imul	dword2834,24
+	mov	dword2837,[ebp-660]
+	add	dword2837,dword2834
+	mov	dword2839,[ebp-660]
+	mov	dword2840,[dword2839]
+	mov	dword2841,[dword2839+4]
+	mov	[dword2837],dword2840
+	mov	[dword2837+4],dword2841
+	mov	dword2840,[dword2839+8]
+	mov	dword2841,[dword2839+12]
+	mov	[dword2837+8],dword2840
+	mov	[dword2837+12],dword2841
+	mov	dword2840,[dword2839+16]
+	mov	dword2841,[dword2839+20]
+	mov	[dword2837+16],dword2840
+	mov	[dword2837+20],dword2841
 label00ae:
 ; end of inline function _clip_on_plain
-	lea	dword1991,dword ptr [__clip_plane_right_norm]
-	mov	[ebp-648],dword1991
-	lea	dword1992,dword ptr [__clip_plane_right_base]
-	mov	[ebp-652],dword1992
-	lea	dword1993,[ebp-644]
-	mov	[ebp-656],dword1993
-	mov	dword3063,[ebp-448]
-	mov	[ebp-660],dword3063
+	lea	dword2018,dword ptr [__clip_plane_right_norm]
+	mov	[ebp-648],dword2018
+	lea	dword2019,dword ptr [__clip_plane_right_base]
+	mov	[ebp-652],dword2019
+	lea	dword2020,[ebp-644]
+	mov	[ebp-656],dword2020
+	mov	dword3090,[ebp-448]
+	mov	[ebp-660],dword3090
 ; start of inline function _clip_on_plain
-	mov	dword3066,[ebp-660]
-	mov	dword ptr [dword3066+192],0
-	mov	dword3069,[ebp-656]
-	mov	[ebp-664],dword3069
-	mov	dword3072,[ebp-656]
-	add	dword3072,24
-	mov	[ebp-668],dword3072
+	mov	dword3093,[ebp-660]
+	mov	dword ptr [dword3093+192],0
+	mov	dword3096,[ebp-656]
+	mov	[ebp-664],dword3096
+	mov	dword3099,[ebp-656]
+	add	dword3099,24
+	mov	[ebp-668],dword3099
 label00af:
 label00b0:
-	mov	dword3076,[ebp-656]
-	mov	dword3078,[dword3076+192]
-	imul	dword3078,24
-	mov	dword3080,[ebp-656]
-	add	dword3080,dword3078
-	cmp	dword3080,[ebp-668]
+	mov	dword3103,[ebp-656]
+	mov	dword3105,[dword3103+192]
+	imul	dword3105,24
+	mov	dword3107,[ebp-656]
+	add	dword3107,dword3105
+	cmp	dword3107,[ebp-668]
 	jle	label00b1
-	mov	dword3226,[ebp-652]
-	mov	[ebp-768],dword3226
-	mov	dword3084,[ebp-664]
-	mov	[ebp-772],dword3084
-	lea	dword3085,[ebp-684]
-	mov	[ebp-776],dword3085
+	mov	dword3253,[ebp-652]
+	mov	[ebp-768],dword3253
+	mov	dword3111,[ebp-664]
+	mov	[ebp-772],dword3111
+	lea	dword3112,[ebp-684]
+	mov	[ebp-776],dword3112
 ; start of inline function vec4f_subtract
-	mov	dword3229,[ebp-772]
-	mov	dword3231,[ebp-768]
-	fld	dword ptr [dword3229]
-	fsub	dword ptr [dword3231]
-	mov	dword3233,[ebp-776]
-	fstp	dword ptr [dword3233]
-	mov	dword3235,[ebp-772]
-	mov	dword3237,[ebp-768]
-	fld	dword ptr [dword3235+4]
-	fsub	dword ptr [dword3237+4]
-	mov	dword3239,[ebp-776]
-	fstp	dword ptr [dword3239+4]
-	mov	dword3241,[ebp-772]
-	mov	dword3243,[ebp-768]
-	fld	dword ptr [dword3241+8]
-	fsub	dword ptr [dword3243+8]
-	mov	dword3245,[ebp-776]
-	fstp	dword ptr [dword3245+8]
-	mov	dword3247,[ebp-772]
-	mov	dword3249,[ebp-768]
-	fld	dword ptr [dword3247+12]
-	fsub	dword ptr [dword3249+12]
-	mov	dword3251,[ebp-776]
-	fstp	dword ptr [dword3251+12]
+	mov	dword3256,[ebp-772]
+	mov	dword3258,[ebp-768]
+	fld	dword ptr [dword3256]
+	fsub	dword ptr [dword3258]
+	mov	dword3260,[ebp-776]
+	fstp	dword ptr [dword3260]
+	mov	dword3262,[ebp-772]
+	mov	dword3264,[ebp-768]
+	fld	dword ptr [dword3262+4]
+	fsub	dword ptr [dword3264+4]
+	mov	dword3266,[ebp-776]
+	fstp	dword ptr [dword3266+4]
+	mov	dword3268,[ebp-772]
+	mov	dword3270,[ebp-768]
+	fld	dword ptr [dword3268+8]
+	fsub	dword ptr [dword3270+8]
+	mov	dword3272,[ebp-776]
+	fstp	dword ptr [dword3272+8]
+	mov	dword3274,[ebp-772]
+	mov	dword3276,[ebp-768]
+	fld	dword ptr [dword3274+12]
+	fsub	dword ptr [dword3276+12]
+	mov	dword3278,[ebp-776]
+	fstp	dword ptr [dword3278+12]
 label00ba:
 ; end of inline function vec4f_subtract
-	mov	dword3329,[ebp-648]
-	mov	[ebp-780],dword3329
-	lea	dword3087,[ebp-684]
-	mov	[ebp-784],dword3087
+	mov	dword3356,[ebp-648]
+	mov	[ebp-780],dword3356
+	lea	dword3114,[ebp-684]
+	mov	[ebp-784],dword3114
 ; start of inline function vec4f_dot
-	mov	dword3332,[ebp-784]
-	mov	dword3334,[ebp-780]
-	fld	dword ptr [dword3332+4]
-	fmul	dword ptr [dword3334+4]
-	mov	dword3336,[ebp-784]
-	mov	dword3338,[ebp-780]
-	fld	dword ptr [dword3336]
-	fmul	dword ptr [dword3338]
+	mov	dword3359,[ebp-784]
+	mov	dword3361,[ebp-780]
+	fld	dword ptr [dword3359+4]
+	fmul	dword ptr [dword3361+4]
+	mov	dword3363,[ebp-784]
+	mov	dword3365,[ebp-780]
+	fld	dword ptr [dword3363]
+	fmul	dword ptr [dword3365]
 	faddp
-	mov	dword3340,[ebp-784]
-	mov	dword3342,[ebp-780]
-	fld	dword ptr [dword3340+8]
-	fmul	dword ptr [dword3342+8]
+	mov	dword3367,[ebp-784]
+	mov	dword3369,[ebp-780]
+	fld	dword ptr [dword3367+8]
+	fmul	dword ptr [dword3369+8]
 	faddp
-	mov	dword3344,[ebp-784]
-	mov	dword3346,[ebp-780]
-	fld	dword ptr [dword3344+12]
-	fmul	dword ptr [dword3346+12]
+	mov	dword3371,[ebp-784]
+	mov	dword3373,[ebp-780]
+	fld	dword ptr [dword3371+12]
+	fmul	dword ptr [dword3373+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00be:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
 	fstp	dword ptr [ebp-712]
-	mov	dword3252,[ebp-652]
-	mov	[ebp-768],dword3252
-	mov	dword3091,[ebp-668]
-	mov	[ebp-772],dword3091
-	lea	dword3092,[ebp-684]
-	mov	[ebp-776],dword3092
+	mov	dword3279,[ebp-652]
+	mov	[ebp-768],dword3279
+	mov	dword3118,[ebp-668]
+	mov	[ebp-772],dword3118
+	lea	dword3119,[ebp-684]
+	mov	[ebp-776],dword3119
 ; start of inline function vec4f_subtract
-	mov	dword3255,[ebp-772]
-	mov	dword3257,[ebp-768]
-	fld	dword ptr [dword3255]
-	fsub	dword ptr [dword3257]
-	mov	dword3259,[ebp-776]
-	fstp	dword ptr [dword3259]
-	mov	dword3261,[ebp-772]
-	mov	dword3263,[ebp-768]
-	fld	dword ptr [dword3261+4]
-	fsub	dword ptr [dword3263+4]
-	mov	dword3265,[ebp-776]
-	fstp	dword ptr [dword3265+4]
-	mov	dword3267,[ebp-772]
-	mov	dword3269,[ebp-768]
-	fld	dword ptr [dword3267+8]
-	fsub	dword ptr [dword3269+8]
-	mov	dword3271,[ebp-776]
-	fstp	dword ptr [dword3271+8]
-	mov	dword3273,[ebp-772]
-	mov	dword3275,[ebp-768]
-	fld	dword ptr [dword3273+12]
-	fsub	dword ptr [dword3275+12]
-	mov	dword3277,[ebp-776]
-	fstp	dword ptr [dword3277+12]
+	mov	dword3282,[ebp-772]
+	mov	dword3284,[ebp-768]
+	fld	dword ptr [dword3282]
+	fsub	dword ptr [dword3284]
+	mov	dword3286,[ebp-776]
+	fstp	dword ptr [dword3286]
+	mov	dword3288,[ebp-772]
+	mov	dword3290,[ebp-768]
+	fld	dword ptr [dword3288+4]
+	fsub	dword ptr [dword3290+4]
+	mov	dword3292,[ebp-776]
+	fstp	dword ptr [dword3292+4]
+	mov	dword3294,[ebp-772]
+	mov	dword3296,[ebp-768]
+	fld	dword ptr [dword3294+8]
+	fsub	dword ptr [dword3296+8]
+	mov	dword3298,[ebp-776]
+	fstp	dword ptr [dword3298+8]
+	mov	dword3300,[ebp-772]
+	mov	dword3302,[ebp-768]
+	fld	dword ptr [dword3300+12]
+	fsub	dword ptr [dword3302+12]
+	mov	dword3304,[ebp-776]
+	fstp	dword ptr [dword3304+12]
 label00bb:
 ; end of inline function vec4f_subtract
-	mov	dword3347,[ebp-648]
-	mov	[ebp-780],dword3347
-	lea	dword3094,[ebp-684]
-	mov	[ebp-784],dword3094
+	mov	dword3374,[ebp-648]
+	mov	[ebp-780],dword3374
+	lea	dword3121,[ebp-684]
+	mov	[ebp-784],dword3121
 ; start of inline function vec4f_dot
-	mov	dword3350,[ebp-784]
-	mov	dword3352,[ebp-780]
-	fld	dword ptr [dword3350+4]
-	fmul	dword ptr [dword3352+4]
-	mov	dword3354,[ebp-784]
-	mov	dword3356,[ebp-780]
-	fld	dword ptr [dword3354]
-	fmul	dword ptr [dword3356]
+	mov	dword3377,[ebp-784]
+	mov	dword3379,[ebp-780]
+	fld	dword ptr [dword3377+4]
+	fmul	dword ptr [dword3379+4]
+	mov	dword3381,[ebp-784]
+	mov	dword3383,[ebp-780]
+	fld	dword ptr [dword3381]
+	fmul	dword ptr [dword3383]
 	faddp
-	mov	dword3358,[ebp-784]
-	mov	dword3360,[ebp-780]
-	fld	dword ptr [dword3358+8]
-	fmul	dword ptr [dword3360+8]
+	mov	dword3385,[ebp-784]
+	mov	dword3387,[ebp-780]
+	fld	dword ptr [dword3385+8]
+	fmul	dword ptr [dword3387+8]
 	faddp
-	mov	dword3362,[ebp-784]
-	mov	dword3364,[ebp-780]
-	fld	dword ptr [dword3362+12]
-	fmul	dword ptr [dword3364+12]
+	mov	dword3389,[ebp-784]
+	mov	dword3391,[ebp-780]
+	fld	dword ptr [dword3389+12]
+	fmul	dword ptr [dword3391+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00bf:
@@ -9540,25 +9582,25 @@ label00bf:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label00b2
-	mov	dword3098,[ebp-660]
-	mov	dword3099,[dword3098+192]
-	inc	dword ptr [dword3098+192]
-	imul	dword3099,24
-	mov	dword3102,[ebp-660]
-	add	dword3102,dword3099
-	mov	dword3104,[ebp-664]
-	mov	dword3105,[dword3104]
-	mov	dword3106,[dword3104+4]
-	mov	[dword3102],dword3105
-	mov	[dword3102+4],dword3106
-	mov	dword3105,[dword3104+8]
-	mov	dword3106,[dword3104+12]
-	mov	[dword3102+8],dword3105
-	mov	[dword3102+12],dword3106
-	mov	dword3105,[dword3104+16]
-	mov	dword3106,[dword3104+20]
-	mov	[dword3102+16],dword3105
-	mov	[dword3102+20],dword3106
+	mov	dword3125,[ebp-660]
+	mov	dword3126,[dword3125+192]
+	inc	dword ptr [dword3125+192]
+	imul	dword3126,24
+	mov	dword3129,[ebp-660]
+	add	dword3129,dword3126
+	mov	dword3131,[ebp-664]
+	mov	dword3132,[dword3131]
+	mov	dword3133,[dword3131+4]
+	mov	[dword3129],dword3132
+	mov	[dword3129+4],dword3133
+	mov	dword3132,[dword3131+8]
+	mov	dword3133,[dword3131+12]
+	mov	[dword3129+8],dword3132
+	mov	[dword3129+12],dword3133
+	mov	dword3132,[dword3131+16]
+	mov	dword3133,[dword3131+20]
+	mov	[dword3129+16],dword3132
+	mov	[dword3129+20],dword3133
 label00b2:
 	fldz
 	fld	dword ptr [ebp-712]
@@ -9582,123 +9624,123 @@ label00b5:
 	fstp	st
 	jae	label00b3
 label00b4:
-	mov	dword3112,[ebp-664]
-	mov	[ebp-768],dword3112
-	mov	dword3278,[ebp-652]
-	mov	[ebp-772],dword3278
-	lea	dword3114,[ebp-684]
-	mov	[ebp-776],dword3114
+	mov	dword3139,[ebp-664]
+	mov	[ebp-768],dword3139
+	mov	dword3305,[ebp-652]
+	mov	[ebp-772],dword3305
+	lea	dword3141,[ebp-684]
+	mov	[ebp-776],dword3141
 ; start of inline function vec4f_subtract
-	mov	dword3281,[ebp-772]
-	mov	dword3283,[ebp-768]
-	fld	dword ptr [dword3281]
-	fsub	dword ptr [dword3283]
-	mov	dword3285,[ebp-776]
-	fstp	dword ptr [dword3285]
-	mov	dword3287,[ebp-772]
-	mov	dword3289,[ebp-768]
-	fld	dword ptr [dword3287+4]
-	fsub	dword ptr [dword3289+4]
-	mov	dword3291,[ebp-776]
-	fstp	dword ptr [dword3291+4]
-	mov	dword3293,[ebp-772]
-	mov	dword3295,[ebp-768]
-	fld	dword ptr [dword3293+8]
-	fsub	dword ptr [dword3295+8]
-	mov	dword3297,[ebp-776]
-	fstp	dword ptr [dword3297+8]
-	mov	dword3299,[ebp-772]
-	mov	dword3301,[ebp-768]
-	fld	dword ptr [dword3299+12]
-	fsub	dword ptr [dword3301+12]
-	mov	dword3303,[ebp-776]
-	fstp	dword ptr [dword3303+12]
+	mov	dword3308,[ebp-772]
+	mov	dword3310,[ebp-768]
+	fld	dword ptr [dword3308]
+	fsub	dword ptr [dword3310]
+	mov	dword3312,[ebp-776]
+	fstp	dword ptr [dword3312]
+	mov	dword3314,[ebp-772]
+	mov	dword3316,[ebp-768]
+	fld	dword ptr [dword3314+4]
+	fsub	dword ptr [dword3316+4]
+	mov	dword3318,[ebp-776]
+	fstp	dword ptr [dword3318+4]
+	mov	dword3320,[ebp-772]
+	mov	dword3322,[ebp-768]
+	fld	dword ptr [dword3320+8]
+	fsub	dword ptr [dword3322+8]
+	mov	dword3324,[ebp-776]
+	fstp	dword ptr [dword3324+8]
+	mov	dword3326,[ebp-772]
+	mov	dword3328,[ebp-768]
+	fld	dword ptr [dword3326+12]
+	fsub	dword ptr [dword3328+12]
+	mov	dword3330,[ebp-776]
+	fstp	dword ptr [dword3330+12]
 label00bc:
 ; end of inline function vec4f_subtract
-	mov	dword3116,[ebp-664]
-	mov	[ebp-768],dword3116
-	mov	dword3118,[ebp-668]
-	mov	[ebp-772],dword3118
-	lea	dword3119,[ebp-700]
-	mov	[ebp-776],dword3119
+	mov	dword3143,[ebp-664]
+	mov	[ebp-768],dword3143
+	mov	dword3145,[ebp-668]
+	mov	[ebp-772],dword3145
+	lea	dword3146,[ebp-700]
+	mov	[ebp-776],dword3146
 ; start of inline function vec4f_subtract
-	mov	dword3306,[ebp-772]
-	mov	dword3308,[ebp-768]
-	fld	dword ptr [dword3306]
-	fsub	dword ptr [dword3308]
-	mov	dword3310,[ebp-776]
-	fstp	dword ptr [dword3310]
-	mov	dword3312,[ebp-772]
-	mov	dword3314,[ebp-768]
-	fld	dword ptr [dword3312+4]
-	fsub	dword ptr [dword3314+4]
-	mov	dword3316,[ebp-776]
-	fstp	dword ptr [dword3316+4]
-	mov	dword3318,[ebp-772]
-	mov	dword3320,[ebp-768]
-	fld	dword ptr [dword3318+8]
-	fsub	dword ptr [dword3320+8]
-	mov	dword3322,[ebp-776]
-	fstp	dword ptr [dword3322+8]
-	mov	dword3324,[ebp-772]
-	mov	dword3326,[ebp-768]
-	fld	dword ptr [dword3324+12]
-	fsub	dword ptr [dword3326+12]
-	mov	dword3328,[ebp-776]
-	fstp	dword ptr [dword3328+12]
+	mov	dword3333,[ebp-772]
+	mov	dword3335,[ebp-768]
+	fld	dword ptr [dword3333]
+	fsub	dword ptr [dword3335]
+	mov	dword3337,[ebp-776]
+	fstp	dword ptr [dword3337]
+	mov	dword3339,[ebp-772]
+	mov	dword3341,[ebp-768]
+	fld	dword ptr [dword3339+4]
+	fsub	dword ptr [dword3341+4]
+	mov	dword3343,[ebp-776]
+	fstp	dword ptr [dword3343+4]
+	mov	dword3345,[ebp-772]
+	mov	dword3347,[ebp-768]
+	fld	dword ptr [dword3345+8]
+	fsub	dword ptr [dword3347+8]
+	mov	dword3349,[ebp-776]
+	fstp	dword ptr [dword3349+8]
+	mov	dword3351,[ebp-772]
+	mov	dword3353,[ebp-768]
+	fld	dword ptr [dword3351+12]
+	fsub	dword ptr [dword3353+12]
+	mov	dword3355,[ebp-776]
+	fstp	dword ptr [dword3355+12]
 label00bd:
 ; end of inline function vec4f_subtract
-	mov	dword3365,[ebp-648]
-	mov	[ebp-780],dword3365
-	lea	dword3121,[ebp-684]
-	mov	[ebp-784],dword3121
+	mov	dword3392,[ebp-648]
+	mov	[ebp-780],dword3392
+	lea	dword3148,[ebp-684]
+	mov	[ebp-784],dword3148
 ; start of inline function vec4f_dot
-	mov	dword3368,[ebp-784]
-	mov	dword3370,[ebp-780]
-	fld	dword ptr [dword3368+4]
-	fmul	dword ptr [dword3370+4]
-	mov	dword3372,[ebp-784]
-	mov	dword3374,[ebp-780]
-	fld	dword ptr [dword3372]
-	fmul	dword ptr [dword3374]
+	mov	dword3395,[ebp-784]
+	mov	dword3397,[ebp-780]
+	fld	dword ptr [dword3395+4]
+	fmul	dword ptr [dword3397+4]
+	mov	dword3399,[ebp-784]
+	mov	dword3401,[ebp-780]
+	fld	dword ptr [dword3399]
+	fmul	dword ptr [dword3401]
 	faddp
-	mov	dword3376,[ebp-784]
-	mov	dword3378,[ebp-780]
-	fld	dword ptr [dword3376+8]
-	fmul	dword ptr [dword3378+8]
+	mov	dword3403,[ebp-784]
+	mov	dword3405,[ebp-780]
+	fld	dword ptr [dword3403+8]
+	fmul	dword ptr [dword3405+8]
 	faddp
-	mov	dword3380,[ebp-784]
-	mov	dword3382,[ebp-780]
-	fld	dword ptr [dword3380+12]
-	fmul	dword ptr [dword3382+12]
+	mov	dword3407,[ebp-784]
+	mov	dword3409,[ebp-780]
+	fld	dword ptr [dword3407+12]
+	fmul	dword ptr [dword3409+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00c0:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
-	mov	dword3383,[ebp-648]
-	mov	[ebp-780],dword3383
-	lea	dword3123,[ebp-700]
-	mov	[ebp-784],dword3123
+	mov	dword3410,[ebp-648]
+	mov	[ebp-780],dword3410
+	lea	dword3150,[ebp-700]
+	mov	[ebp-784],dword3150
 ; start of inline function vec4f_dot
-	mov	dword3386,[ebp-784]
-	mov	dword3388,[ebp-780]
-	fld	dword ptr [dword3386+4]
-	fmul	dword ptr [dword3388+4]
-	mov	dword3390,[ebp-784]
-	mov	dword3392,[ebp-780]
-	fld	dword ptr [dword3390]
-	fmul	dword ptr [dword3392]
+	mov	dword3413,[ebp-784]
+	mov	dword3415,[ebp-780]
+	fld	dword ptr [dword3413+4]
+	fmul	dword ptr [dword3415+4]
+	mov	dword3417,[ebp-784]
+	mov	dword3419,[ebp-780]
+	fld	dword ptr [dword3417]
+	fmul	dword ptr [dword3419]
 	faddp
-	mov	dword3394,[ebp-784]
-	mov	dword3396,[ebp-780]
-	fld	dword ptr [dword3394+8]
-	fmul	dword ptr [dword3396+8]
+	mov	dword3421,[ebp-784]
+	mov	dword3423,[ebp-780]
+	fld	dword ptr [dword3421+8]
+	fmul	dword ptr [dword3423+8]
 	faddp
-	mov	dword3398,[ebp-784]
-	mov	dword3400,[ebp-780]
-	fld	dword ptr [dword3398+12]
-	fmul	dword ptr [dword3400+12]
+	mov	dword3425,[ebp-784]
+	mov	dword3427,[ebp-780]
+	fld	dword ptr [dword3425+12]
+	fmul	dword ptr [dword3427+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00c1:
@@ -9706,302 +9748,302 @@ label00c1:
 	fld	dword ptr [ebp-788]
 	fdivp
 	fstp	dword ptr [ebp-720]
-	mov	dword3401,[ebp-720]
-	mov	[ebp-792],dword3401
-	lea	dword3126,[ebp-700]
-	mov	[ebp-796],dword3126
+	mov	dword3428,[ebp-720]
+	mov	[ebp-792],dword3428
+	lea	dword3153,[ebp-700]
+	mov	[ebp-796],dword3153
 ; start of inline function vec4f_mul
-	mov	dword3404,[ebp-796]
-	fld	dword ptr [dword3404]
+	mov	dword3431,[ebp-796]
+	fld	dword ptr [dword3431]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3404]
-	mov	dword3407,[ebp-796]
-	fld	dword ptr [dword3407+4]
+	fstp	dword ptr [dword3431]
+	mov	dword3434,[ebp-796]
+	fld	dword ptr [dword3434+4]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3407+4]
-	mov	dword3410,[ebp-796]
-	fld	dword ptr [dword3410+8]
+	fstp	dword ptr [dword3434+4]
+	mov	dword3437,[ebp-796]
+	fld	dword ptr [dword3437+8]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3410+8]
-	mov	dword3413,[ebp-796]
-	fld	dword ptr [dword3413+12]
+	fstp	dword ptr [dword3437+8]
+	mov	dword3440,[ebp-796]
+	fld	dword ptr [dword3440+12]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3413+12]
+	fstp	dword ptr [dword3440+12]
 label00c2:
 ; end of inline function vec4f_mul
-	lea	dword3127,[ebp-700]
-	mov	[ebp-756],dword3127
-	mov	dword3129,[ebp-664]
-	mov	[ebp-760],dword3129
-	mov	dword3131,[ebp-660]
-	mov	dword3133,[dword3131+192]
-	imul	dword3133,24
-	mov	dword3135,[ebp-660]
-	add	dword3135,dword3133
-	mov	[ebp-764],dword3135
+	lea	dword3154,[ebp-700]
+	mov	[ebp-756],dword3154
+	mov	dword3156,[ebp-664]
+	mov	[ebp-760],dword3156
+	mov	dword3158,[ebp-660]
+	mov	dword3160,[dword3158+192]
+	imul	dword3160,24
+	mov	dword3162,[ebp-660]
+	add	dword3162,dword3160
+	mov	[ebp-764],dword3162
 ; start of inline function vec4f_add
-	mov	dword3203,[ebp-760]
-	mov	dword3205,[ebp-756]
-	fld	dword ptr [dword3203]
-	fadd	dword ptr [dword3205]
-	mov	dword3207,[ebp-764]
-	fstp	dword ptr [dword3207]
-	mov	dword3209,[ebp-760]
-	mov	dword3211,[ebp-756]
-	fld	dword ptr [dword3209+4]
-	fadd	dword ptr [dword3211+4]
-	mov	dword3213,[ebp-764]
-	fstp	dword ptr [dword3213+4]
-	mov	dword3215,[ebp-760]
-	mov	dword3217,[ebp-756]
-	fld	dword ptr [dword3215+8]
-	fadd	dword ptr [dword3217+8]
-	mov	dword3219,[ebp-764]
-	fstp	dword ptr [dword3219+8]
-	mov	dword3221,[ebp-760]
-	mov	dword3223,[ebp-756]
-	fld	dword ptr [dword3221+12]
-	fadd	dword ptr [dword3223+12]
-	mov	dword3225,[ebp-764]
-	fstp	dword ptr [dword3225+12]
+	mov	dword3230,[ebp-760]
+	mov	dword3232,[ebp-756]
+	fld	dword ptr [dword3230]
+	fadd	dword ptr [dword3232]
+	mov	dword3234,[ebp-764]
+	fstp	dword ptr [dword3234]
+	mov	dword3236,[ebp-760]
+	mov	dword3238,[ebp-756]
+	fld	dword ptr [dword3236+4]
+	fadd	dword ptr [dword3238+4]
+	mov	dword3240,[ebp-764]
+	fstp	dword ptr [dword3240+4]
+	mov	dword3242,[ebp-760]
+	mov	dword3244,[ebp-756]
+	fld	dword ptr [dword3242+8]
+	fadd	dword ptr [dword3244+8]
+	mov	dword3246,[ebp-764]
+	fstp	dword ptr [dword3246+8]
+	mov	dword3248,[ebp-760]
+	mov	dword3250,[ebp-756]
+	fld	dword ptr [dword3248+12]
+	fadd	dword ptr [dword3250+12]
+	mov	dword3252,[ebp-764]
+	fstp	dword ptr [dword3252+12]
 label00b9:
 ; end of inline function vec4f_add
-	mov	dword3137,16
-	add	dword3137,[ebp-664]
-	mov	[ebp-736],dword3137
-	mov	dword3139,16
-	add	dword3139,[ebp-668]
-	mov	[ebp-740],dword3139
-	lea	dword3140,[ebp-708]
-	mov	[ebp-744],dword3140
+	mov	dword3164,16
+	add	dword3164,[ebp-664]
+	mov	[ebp-736],dword3164
+	mov	dword3166,16
+	add	dword3166,[ebp-668]
+	mov	[ebp-740],dword3166
+	lea	dword3167,[ebp-708]
+	mov	[ebp-744],dword3167
 ; start of inline function vec2f_subtract
-	mov	dword3182,[ebp-740]
-	mov	dword3184,[ebp-736]
-	fld	dword ptr [dword3182]
-	fsub	dword ptr [dword3184]
-	mov	dword3186,[ebp-744]
-	fstp	dword ptr [dword3186]
-	mov	dword3188,[ebp-740]
-	mov	dword3190,[ebp-736]
-	fld	dword ptr [dword3188+4]
-	fsub	dword ptr [dword3190+4]
-	mov	dword3192,[ebp-744]
-	fstp	dword ptr [dword3192+4]
+	mov	dword3209,[ebp-740]
+	mov	dword3211,[ebp-736]
+	fld	dword ptr [dword3209]
+	fsub	dword ptr [dword3211]
+	mov	dword3213,[ebp-744]
+	fstp	dword ptr [dword3213]
+	mov	dword3215,[ebp-740]
+	mov	dword3217,[ebp-736]
+	fld	dword ptr [dword3215+4]
+	fsub	dword ptr [dword3217+4]
+	mov	dword3219,[ebp-744]
+	fstp	dword ptr [dword3219+4]
 label00b7:
 ; end of inline function vec2f_subtract
-	mov	dword3193,[ebp-720]
-	mov	[ebp-748],dword3193
-	lea	dword3142,[ebp-708]
-	mov	[ebp-752],dword3142
+	mov	dword3220,[ebp-720]
+	mov	[ebp-748],dword3220
+	lea	dword3169,[ebp-708]
+	mov	[ebp-752],dword3169
 ; start of inline function vec2f_mul
-	mov	dword3196,[ebp-752]
-	fld	dword ptr [dword3196]
+	mov	dword3223,[ebp-752]
+	fld	dword ptr [dword3223]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword3196]
-	mov	dword3199,[ebp-752]
-	fld	dword ptr [dword3199+4]
+	fstp	dword ptr [dword3223]
+	mov	dword3226,[ebp-752]
+	fld	dword ptr [dword3226+4]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword3199+4]
+	fstp	dword ptr [dword3226+4]
 label00b8:
 ; end of inline function vec2f_mul
-	lea	dword3143,[ebp-708]
-	mov	[ebp-724],dword3143
-	mov	dword3145,16
-	add	dword3145,[ebp-664]
-	mov	[ebp-728],dword3145
-	mov	dword3147,[ebp-660]
-	mov	dword3149,[dword3147+192]
-	imul	dword3149,24
-	mov	dword3151,[ebp-660]
-	add	dword3151,dword3149
-	add	dword3151,16
-	mov	[ebp-732],dword3151
+	lea	dword3170,[ebp-708]
+	mov	[ebp-724],dword3170
+	mov	dword3172,16
+	add	dword3172,[ebp-664]
+	mov	[ebp-728],dword3172
+	mov	dword3174,[ebp-660]
+	mov	dword3176,[dword3174+192]
+	imul	dword3176,24
+	mov	dword3178,[ebp-660]
+	add	dword3178,dword3176
+	add	dword3178,16
+	mov	[ebp-732],dword3178
 ; start of inline function vec2f_add
-	mov	dword3169,[ebp-728]
-	mov	dword3171,[ebp-724]
-	fld	dword ptr [dword3169]
-	fadd	dword ptr [dword3171]
-	mov	dword3173,[ebp-732]
-	fstp	dword ptr [dword3173]
-	mov	dword3175,[ebp-728]
-	mov	dword3177,[ebp-724]
-	fld	dword ptr [dword3175+4]
-	fadd	dword ptr [dword3177+4]
-	mov	dword3179,[ebp-732]
-	fstp	dword ptr [dword3179+4]
+	mov	dword3196,[ebp-728]
+	mov	dword3198,[ebp-724]
+	fld	dword ptr [dword3196]
+	fadd	dword ptr [dword3198]
+	mov	dword3200,[ebp-732]
+	fstp	dword ptr [dword3200]
+	mov	dword3202,[ebp-728]
+	mov	dword3204,[ebp-724]
+	fld	dword ptr [dword3202+4]
+	fadd	dword ptr [dword3204+4]
+	mov	dword3206,[ebp-732]
+	fstp	dword ptr [dword3206+4]
 label00b6:
 ; end of inline function vec2f_add
-	mov	dword3154,[ebp-660]
-	inc	dword ptr [dword3154+192]
+	mov	dword3181,[ebp-660]
+	inc	dword ptr [dword3181+192]
 label00b3:
 	add	dword ptr [ebp-664],24
 	add	dword ptr [ebp-668],24
 	jmp	label00b0
 label00b1:
-	mov	dword3158,[ebp-660]
-	mov	dword3159,[dword3158+192]
-	inc	dword ptr [dword3158+192]
-	imul	dword3159,24
-	mov	dword3162,[ebp-660]
-	add	dword3162,dword3159
-	mov	dword3164,[ebp-660]
-	mov	dword3165,[dword3164]
-	mov	dword3166,[dword3164+4]
-	mov	[dword3162],dword3165
-	mov	[dword3162+4],dword3166
-	mov	dword3165,[dword3164+8]
-	mov	dword3166,[dword3164+12]
-	mov	[dword3162+8],dword3165
-	mov	[dword3162+12],dword3166
-	mov	dword3165,[dword3164+16]
-	mov	dword3166,[dword3164+20]
-	mov	[dword3162+16],dword3165
-	mov	[dword3162+20],dword3166
+	mov	dword3185,[ebp-660]
+	mov	dword3186,[dword3185+192]
+	inc	dword ptr [dword3185+192]
+	imul	dword3186,24
+	mov	dword3189,[ebp-660]
+	add	dword3189,dword3186
+	mov	dword3191,[ebp-660]
+	mov	dword3192,[dword3191]
+	mov	dword3193,[dword3191+4]
+	mov	[dword3189],dword3192
+	mov	[dword3189+4],dword3193
+	mov	dword3192,[dword3191+8]
+	mov	dword3193,[dword3191+12]
+	mov	[dword3189+8],dword3192
+	mov	[dword3189+12],dword3193
+	mov	dword3192,[dword3191+16]
+	mov	dword3193,[dword3191+20]
+	mov	[dword3189+16],dword3192
+	mov	[dword3189+20],dword3193
 label00c3:
 ; end of inline function _clip_on_plain
-	lea	dword1995,dword ptr [__clip_plane_top_norm]
-	mov	[ebp-648],dword1995
-	lea	dword1996,dword ptr [__clip_plane_top_base]
-	mov	[ebp-652],dword1996
-	mov	dword3415,[ebp-448]
-	mov	[ebp-656],dword3415
-	lea	dword1998,[ebp-644]
-	mov	[ebp-660],dword1998
+	lea	dword2022,dword ptr [__clip_plane_top_norm]
+	mov	[ebp-648],dword2022
+	lea	dword2023,dword ptr [__clip_plane_top_base]
+	mov	[ebp-652],dword2023
+	mov	dword3442,[ebp-448]
+	mov	[ebp-656],dword3442
+	lea	dword2025,[ebp-644]
+	mov	[ebp-660],dword2025
 ; start of inline function _clip_on_plain
-	mov	dword3418,[ebp-660]
-	mov	dword ptr [dword3418+192],0
-	mov	dword3421,[ebp-656]
-	mov	[ebp-664],dword3421
-	mov	dword3424,[ebp-656]
-	add	dword3424,24
-	mov	[ebp-668],dword3424
+	mov	dword3445,[ebp-660]
+	mov	dword ptr [dword3445+192],0
+	mov	dword3448,[ebp-656]
+	mov	[ebp-664],dword3448
+	mov	dword3451,[ebp-656]
+	add	dword3451,24
+	mov	[ebp-668],dword3451
 label00c4:
 label00c5:
-	mov	dword3428,[ebp-656]
-	mov	dword3430,[dword3428+192]
-	imul	dword3430,24
-	mov	dword3432,[ebp-656]
-	add	dword3432,dword3430
-	cmp	dword3432,[ebp-668]
+	mov	dword3455,[ebp-656]
+	mov	dword3457,[dword3455+192]
+	imul	dword3457,24
+	mov	dword3459,[ebp-656]
+	add	dword3459,dword3457
+	cmp	dword3459,[ebp-668]
 	jle	label00c6
-	mov	dword3578,[ebp-652]
-	mov	[ebp-768],dword3578
-	mov	dword3436,[ebp-664]
-	mov	[ebp-772],dword3436
-	lea	dword3437,[ebp-684]
-	mov	[ebp-776],dword3437
+	mov	dword3605,[ebp-652]
+	mov	[ebp-768],dword3605
+	mov	dword3463,[ebp-664]
+	mov	[ebp-772],dword3463
+	lea	dword3464,[ebp-684]
+	mov	[ebp-776],dword3464
 ; start of inline function vec4f_subtract
-	mov	dword3581,[ebp-772]
-	mov	dword3583,[ebp-768]
-	fld	dword ptr [dword3581]
-	fsub	dword ptr [dword3583]
-	mov	dword3585,[ebp-776]
-	fstp	dword ptr [dword3585]
-	mov	dword3587,[ebp-772]
-	mov	dword3589,[ebp-768]
-	fld	dword ptr [dword3587+4]
-	fsub	dword ptr [dword3589+4]
-	mov	dword3591,[ebp-776]
-	fstp	dword ptr [dword3591+4]
-	mov	dword3593,[ebp-772]
-	mov	dword3595,[ebp-768]
-	fld	dword ptr [dword3593+8]
-	fsub	dword ptr [dword3595+8]
-	mov	dword3597,[ebp-776]
-	fstp	dword ptr [dword3597+8]
-	mov	dword3599,[ebp-772]
-	mov	dword3601,[ebp-768]
-	fld	dword ptr [dword3599+12]
-	fsub	dword ptr [dword3601+12]
-	mov	dword3603,[ebp-776]
-	fstp	dword ptr [dword3603+12]
+	mov	dword3608,[ebp-772]
+	mov	dword3610,[ebp-768]
+	fld	dword ptr [dword3608]
+	fsub	dword ptr [dword3610]
+	mov	dword3612,[ebp-776]
+	fstp	dword ptr [dword3612]
+	mov	dword3614,[ebp-772]
+	mov	dword3616,[ebp-768]
+	fld	dword ptr [dword3614+4]
+	fsub	dword ptr [dword3616+4]
+	mov	dword3618,[ebp-776]
+	fstp	dword ptr [dword3618+4]
+	mov	dword3620,[ebp-772]
+	mov	dword3622,[ebp-768]
+	fld	dword ptr [dword3620+8]
+	fsub	dword ptr [dword3622+8]
+	mov	dword3624,[ebp-776]
+	fstp	dword ptr [dword3624+8]
+	mov	dword3626,[ebp-772]
+	mov	dword3628,[ebp-768]
+	fld	dword ptr [dword3626+12]
+	fsub	dword ptr [dword3628+12]
+	mov	dword3630,[ebp-776]
+	fstp	dword ptr [dword3630+12]
 label00cf:
 ; end of inline function vec4f_subtract
-	mov	dword3681,[ebp-648]
-	mov	[ebp-780],dword3681
-	lea	dword3439,[ebp-684]
-	mov	[ebp-784],dword3439
+	mov	dword3708,[ebp-648]
+	mov	[ebp-780],dword3708
+	lea	dword3466,[ebp-684]
+	mov	[ebp-784],dword3466
 ; start of inline function vec4f_dot
-	mov	dword3684,[ebp-784]
-	mov	dword3686,[ebp-780]
-	fld	dword ptr [dword3684+4]
-	fmul	dword ptr [dword3686+4]
-	mov	dword3688,[ebp-784]
-	mov	dword3690,[ebp-780]
-	fld	dword ptr [dword3688]
-	fmul	dword ptr [dword3690]
+	mov	dword3711,[ebp-784]
+	mov	dword3713,[ebp-780]
+	fld	dword ptr [dword3711+4]
+	fmul	dword ptr [dword3713+4]
+	mov	dword3715,[ebp-784]
+	mov	dword3717,[ebp-780]
+	fld	dword ptr [dword3715]
+	fmul	dword ptr [dword3717]
 	faddp
-	mov	dword3692,[ebp-784]
-	mov	dword3694,[ebp-780]
-	fld	dword ptr [dword3692+8]
-	fmul	dword ptr [dword3694+8]
+	mov	dword3719,[ebp-784]
+	mov	dword3721,[ebp-780]
+	fld	dword ptr [dword3719+8]
+	fmul	dword ptr [dword3721+8]
 	faddp
-	mov	dword3696,[ebp-784]
-	mov	dword3698,[ebp-780]
-	fld	dword ptr [dword3696+12]
-	fmul	dword ptr [dword3698+12]
+	mov	dword3723,[ebp-784]
+	mov	dword3725,[ebp-780]
+	fld	dword ptr [dword3723+12]
+	fmul	dword ptr [dword3725+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00d3:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
 	fstp	dword ptr [ebp-712]
-	mov	dword3604,[ebp-652]
-	mov	[ebp-768],dword3604
-	mov	dword3443,[ebp-668]
-	mov	[ebp-772],dword3443
-	lea	dword3444,[ebp-684]
-	mov	[ebp-776],dword3444
+	mov	dword3631,[ebp-652]
+	mov	[ebp-768],dword3631
+	mov	dword3470,[ebp-668]
+	mov	[ebp-772],dword3470
+	lea	dword3471,[ebp-684]
+	mov	[ebp-776],dword3471
 ; start of inline function vec4f_subtract
-	mov	dword3607,[ebp-772]
-	mov	dword3609,[ebp-768]
-	fld	dword ptr [dword3607]
-	fsub	dword ptr [dword3609]
-	mov	dword3611,[ebp-776]
-	fstp	dword ptr [dword3611]
-	mov	dword3613,[ebp-772]
-	mov	dword3615,[ebp-768]
-	fld	dword ptr [dword3613+4]
-	fsub	dword ptr [dword3615+4]
-	mov	dword3617,[ebp-776]
-	fstp	dword ptr [dword3617+4]
-	mov	dword3619,[ebp-772]
-	mov	dword3621,[ebp-768]
-	fld	dword ptr [dword3619+8]
-	fsub	dword ptr [dword3621+8]
-	mov	dword3623,[ebp-776]
-	fstp	dword ptr [dword3623+8]
-	mov	dword3625,[ebp-772]
-	mov	dword3627,[ebp-768]
-	fld	dword ptr [dword3625+12]
-	fsub	dword ptr [dword3627+12]
-	mov	dword3629,[ebp-776]
-	fstp	dword ptr [dword3629+12]
+	mov	dword3634,[ebp-772]
+	mov	dword3636,[ebp-768]
+	fld	dword ptr [dword3634]
+	fsub	dword ptr [dword3636]
+	mov	dword3638,[ebp-776]
+	fstp	dword ptr [dword3638]
+	mov	dword3640,[ebp-772]
+	mov	dword3642,[ebp-768]
+	fld	dword ptr [dword3640+4]
+	fsub	dword ptr [dword3642+4]
+	mov	dword3644,[ebp-776]
+	fstp	dword ptr [dword3644+4]
+	mov	dword3646,[ebp-772]
+	mov	dword3648,[ebp-768]
+	fld	dword ptr [dword3646+8]
+	fsub	dword ptr [dword3648+8]
+	mov	dword3650,[ebp-776]
+	fstp	dword ptr [dword3650+8]
+	mov	dword3652,[ebp-772]
+	mov	dword3654,[ebp-768]
+	fld	dword ptr [dword3652+12]
+	fsub	dword ptr [dword3654+12]
+	mov	dword3656,[ebp-776]
+	fstp	dword ptr [dword3656+12]
 label00d0:
 ; end of inline function vec4f_subtract
-	mov	dword3699,[ebp-648]
-	mov	[ebp-780],dword3699
-	lea	dword3446,[ebp-684]
-	mov	[ebp-784],dword3446
+	mov	dword3726,[ebp-648]
+	mov	[ebp-780],dword3726
+	lea	dword3473,[ebp-684]
+	mov	[ebp-784],dword3473
 ; start of inline function vec4f_dot
-	mov	dword3702,[ebp-784]
-	mov	dword3704,[ebp-780]
-	fld	dword ptr [dword3702+4]
-	fmul	dword ptr [dword3704+4]
-	mov	dword3706,[ebp-784]
-	mov	dword3708,[ebp-780]
-	fld	dword ptr [dword3706]
-	fmul	dword ptr [dword3708]
+	mov	dword3729,[ebp-784]
+	mov	dword3731,[ebp-780]
+	fld	dword ptr [dword3729+4]
+	fmul	dword ptr [dword3731+4]
+	mov	dword3733,[ebp-784]
+	mov	dword3735,[ebp-780]
+	fld	dword ptr [dword3733]
+	fmul	dword ptr [dword3735]
 	faddp
-	mov	dword3710,[ebp-784]
-	mov	dword3712,[ebp-780]
-	fld	dword ptr [dword3710+8]
-	fmul	dword ptr [dword3712+8]
+	mov	dword3737,[ebp-784]
+	mov	dword3739,[ebp-780]
+	fld	dword ptr [dword3737+8]
+	fmul	dword ptr [dword3739+8]
 	faddp
-	mov	dword3714,[ebp-784]
-	mov	dword3716,[ebp-780]
-	fld	dword ptr [dword3714+12]
-	fmul	dword ptr [dword3716+12]
+	mov	dword3741,[ebp-784]
+	mov	dword3743,[ebp-780]
+	fld	dword ptr [dword3741+12]
+	fmul	dword ptr [dword3743+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00d4:
@@ -10013,25 +10055,25 @@ label00d4:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label00c7
-	mov	dword3450,[ebp-660]
-	mov	dword3451,[dword3450+192]
-	inc	dword ptr [dword3450+192]
-	imul	dword3451,24
-	mov	dword3454,[ebp-660]
-	add	dword3454,dword3451
-	mov	dword3456,[ebp-664]
-	mov	dword3457,[dword3456]
-	mov	dword3458,[dword3456+4]
-	mov	[dword3454],dword3457
-	mov	[dword3454+4],dword3458
-	mov	dword3457,[dword3456+8]
-	mov	dword3458,[dword3456+12]
-	mov	[dword3454+8],dword3457
-	mov	[dword3454+12],dword3458
-	mov	dword3457,[dword3456+16]
-	mov	dword3458,[dword3456+20]
-	mov	[dword3454+16],dword3457
-	mov	[dword3454+20],dword3458
+	mov	dword3477,[ebp-660]
+	mov	dword3478,[dword3477+192]
+	inc	dword ptr [dword3477+192]
+	imul	dword3478,24
+	mov	dword3481,[ebp-660]
+	add	dword3481,dword3478
+	mov	dword3483,[ebp-664]
+	mov	dword3484,[dword3483]
+	mov	dword3485,[dword3483+4]
+	mov	[dword3481],dword3484
+	mov	[dword3481+4],dword3485
+	mov	dword3484,[dword3483+8]
+	mov	dword3485,[dword3483+12]
+	mov	[dword3481+8],dword3484
+	mov	[dword3481+12],dword3485
+	mov	dword3484,[dword3483+16]
+	mov	dword3485,[dword3483+20]
+	mov	[dword3481+16],dword3484
+	mov	[dword3481+20],dword3485
 label00c7:
 	fldz
 	fld	dword ptr [ebp-712]
@@ -10055,123 +10097,123 @@ label00ca:
 	fstp	st
 	jae	label00c8
 label00c9:
-	mov	dword3464,[ebp-664]
-	mov	[ebp-768],dword3464
-	mov	dword3630,[ebp-652]
-	mov	[ebp-772],dword3630
-	lea	dword3466,[ebp-684]
-	mov	[ebp-776],dword3466
+	mov	dword3491,[ebp-664]
+	mov	[ebp-768],dword3491
+	mov	dword3657,[ebp-652]
+	mov	[ebp-772],dword3657
+	lea	dword3493,[ebp-684]
+	mov	[ebp-776],dword3493
 ; start of inline function vec4f_subtract
-	mov	dword3633,[ebp-772]
-	mov	dword3635,[ebp-768]
-	fld	dword ptr [dword3633]
-	fsub	dword ptr [dword3635]
-	mov	dword3637,[ebp-776]
-	fstp	dword ptr [dword3637]
-	mov	dword3639,[ebp-772]
-	mov	dword3641,[ebp-768]
-	fld	dword ptr [dword3639+4]
-	fsub	dword ptr [dword3641+4]
-	mov	dword3643,[ebp-776]
-	fstp	dword ptr [dword3643+4]
-	mov	dword3645,[ebp-772]
-	mov	dword3647,[ebp-768]
-	fld	dword ptr [dword3645+8]
-	fsub	dword ptr [dword3647+8]
-	mov	dword3649,[ebp-776]
-	fstp	dword ptr [dword3649+8]
-	mov	dword3651,[ebp-772]
-	mov	dword3653,[ebp-768]
-	fld	dword ptr [dword3651+12]
-	fsub	dword ptr [dword3653+12]
-	mov	dword3655,[ebp-776]
-	fstp	dword ptr [dword3655+12]
+	mov	dword3660,[ebp-772]
+	mov	dword3662,[ebp-768]
+	fld	dword ptr [dword3660]
+	fsub	dword ptr [dword3662]
+	mov	dword3664,[ebp-776]
+	fstp	dword ptr [dword3664]
+	mov	dword3666,[ebp-772]
+	mov	dword3668,[ebp-768]
+	fld	dword ptr [dword3666+4]
+	fsub	dword ptr [dword3668+4]
+	mov	dword3670,[ebp-776]
+	fstp	dword ptr [dword3670+4]
+	mov	dword3672,[ebp-772]
+	mov	dword3674,[ebp-768]
+	fld	dword ptr [dword3672+8]
+	fsub	dword ptr [dword3674+8]
+	mov	dword3676,[ebp-776]
+	fstp	dword ptr [dword3676+8]
+	mov	dword3678,[ebp-772]
+	mov	dword3680,[ebp-768]
+	fld	dword ptr [dword3678+12]
+	fsub	dword ptr [dword3680+12]
+	mov	dword3682,[ebp-776]
+	fstp	dword ptr [dword3682+12]
 label00d1:
 ; end of inline function vec4f_subtract
-	mov	dword3468,[ebp-664]
-	mov	[ebp-768],dword3468
-	mov	dword3470,[ebp-668]
-	mov	[ebp-772],dword3470
-	lea	dword3471,[ebp-700]
-	mov	[ebp-776],dword3471
+	mov	dword3495,[ebp-664]
+	mov	[ebp-768],dword3495
+	mov	dword3497,[ebp-668]
+	mov	[ebp-772],dword3497
+	lea	dword3498,[ebp-700]
+	mov	[ebp-776],dword3498
 ; start of inline function vec4f_subtract
-	mov	dword3658,[ebp-772]
-	mov	dword3660,[ebp-768]
-	fld	dword ptr [dword3658]
-	fsub	dword ptr [dword3660]
-	mov	dword3662,[ebp-776]
-	fstp	dword ptr [dword3662]
-	mov	dword3664,[ebp-772]
-	mov	dword3666,[ebp-768]
-	fld	dword ptr [dword3664+4]
-	fsub	dword ptr [dword3666+4]
-	mov	dword3668,[ebp-776]
-	fstp	dword ptr [dword3668+4]
-	mov	dword3670,[ebp-772]
-	mov	dword3672,[ebp-768]
-	fld	dword ptr [dword3670+8]
-	fsub	dword ptr [dword3672+8]
-	mov	dword3674,[ebp-776]
-	fstp	dword ptr [dword3674+8]
-	mov	dword3676,[ebp-772]
-	mov	dword3678,[ebp-768]
-	fld	dword ptr [dword3676+12]
-	fsub	dword ptr [dword3678+12]
-	mov	dword3680,[ebp-776]
-	fstp	dword ptr [dword3680+12]
+	mov	dword3685,[ebp-772]
+	mov	dword3687,[ebp-768]
+	fld	dword ptr [dword3685]
+	fsub	dword ptr [dword3687]
+	mov	dword3689,[ebp-776]
+	fstp	dword ptr [dword3689]
+	mov	dword3691,[ebp-772]
+	mov	dword3693,[ebp-768]
+	fld	dword ptr [dword3691+4]
+	fsub	dword ptr [dword3693+4]
+	mov	dword3695,[ebp-776]
+	fstp	dword ptr [dword3695+4]
+	mov	dword3697,[ebp-772]
+	mov	dword3699,[ebp-768]
+	fld	dword ptr [dword3697+8]
+	fsub	dword ptr [dword3699+8]
+	mov	dword3701,[ebp-776]
+	fstp	dword ptr [dword3701+8]
+	mov	dword3703,[ebp-772]
+	mov	dword3705,[ebp-768]
+	fld	dword ptr [dword3703+12]
+	fsub	dword ptr [dword3705+12]
+	mov	dword3707,[ebp-776]
+	fstp	dword ptr [dword3707+12]
 label00d2:
 ; end of inline function vec4f_subtract
-	mov	dword3717,[ebp-648]
-	mov	[ebp-780],dword3717
-	lea	dword3473,[ebp-684]
-	mov	[ebp-784],dword3473
+	mov	dword3744,[ebp-648]
+	mov	[ebp-780],dword3744
+	lea	dword3500,[ebp-684]
+	mov	[ebp-784],dword3500
 ; start of inline function vec4f_dot
-	mov	dword3720,[ebp-784]
-	mov	dword3722,[ebp-780]
-	fld	dword ptr [dword3720+4]
-	fmul	dword ptr [dword3722+4]
-	mov	dword3724,[ebp-784]
-	mov	dword3726,[ebp-780]
-	fld	dword ptr [dword3724]
-	fmul	dword ptr [dword3726]
+	mov	dword3747,[ebp-784]
+	mov	dword3749,[ebp-780]
+	fld	dword ptr [dword3747+4]
+	fmul	dword ptr [dword3749+4]
+	mov	dword3751,[ebp-784]
+	mov	dword3753,[ebp-780]
+	fld	dword ptr [dword3751]
+	fmul	dword ptr [dword3753]
 	faddp
-	mov	dword3728,[ebp-784]
-	mov	dword3730,[ebp-780]
-	fld	dword ptr [dword3728+8]
-	fmul	dword ptr [dword3730+8]
+	mov	dword3755,[ebp-784]
+	mov	dword3757,[ebp-780]
+	fld	dword ptr [dword3755+8]
+	fmul	dword ptr [dword3757+8]
 	faddp
-	mov	dword3732,[ebp-784]
-	mov	dword3734,[ebp-780]
-	fld	dword ptr [dword3732+12]
-	fmul	dword ptr [dword3734+12]
+	mov	dword3759,[ebp-784]
+	mov	dword3761,[ebp-780]
+	fld	dword ptr [dword3759+12]
+	fmul	dword ptr [dword3761+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00d5:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
-	mov	dword3735,[ebp-648]
-	mov	[ebp-780],dword3735
-	lea	dword3475,[ebp-700]
-	mov	[ebp-784],dword3475
+	mov	dword3762,[ebp-648]
+	mov	[ebp-780],dword3762
+	lea	dword3502,[ebp-700]
+	mov	[ebp-784],dword3502
 ; start of inline function vec4f_dot
-	mov	dword3738,[ebp-784]
-	mov	dword3740,[ebp-780]
-	fld	dword ptr [dword3738+4]
-	fmul	dword ptr [dword3740+4]
-	mov	dword3742,[ebp-784]
-	mov	dword3744,[ebp-780]
-	fld	dword ptr [dword3742]
-	fmul	dword ptr [dword3744]
+	mov	dword3765,[ebp-784]
+	mov	dword3767,[ebp-780]
+	fld	dword ptr [dword3765+4]
+	fmul	dword ptr [dword3767+4]
+	mov	dword3769,[ebp-784]
+	mov	dword3771,[ebp-780]
+	fld	dword ptr [dword3769]
+	fmul	dword ptr [dword3771]
 	faddp
-	mov	dword3746,[ebp-784]
-	mov	dword3748,[ebp-780]
-	fld	dword ptr [dword3746+8]
-	fmul	dword ptr [dword3748+8]
+	mov	dword3773,[ebp-784]
+	mov	dword3775,[ebp-780]
+	fld	dword ptr [dword3773+8]
+	fmul	dword ptr [dword3775+8]
 	faddp
-	mov	dword3750,[ebp-784]
-	mov	dword3752,[ebp-780]
-	fld	dword ptr [dword3750+12]
-	fmul	dword ptr [dword3752+12]
+	mov	dword3777,[ebp-784]
+	mov	dword3779,[ebp-780]
+	fld	dword ptr [dword3777+12]
+	fmul	dword ptr [dword3779+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00d6:
@@ -10179,302 +10221,302 @@ label00d6:
 	fld	dword ptr [ebp-788]
 	fdivp
 	fstp	dword ptr [ebp-720]
-	mov	dword3753,[ebp-720]
-	mov	[ebp-792],dword3753
-	lea	dword3478,[ebp-700]
-	mov	[ebp-796],dword3478
+	mov	dword3780,[ebp-720]
+	mov	[ebp-792],dword3780
+	lea	dword3505,[ebp-700]
+	mov	[ebp-796],dword3505
 ; start of inline function vec4f_mul
-	mov	dword3756,[ebp-796]
-	fld	dword ptr [dword3756]
+	mov	dword3783,[ebp-796]
+	fld	dword ptr [dword3783]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3756]
-	mov	dword3759,[ebp-796]
-	fld	dword ptr [dword3759+4]
+	fstp	dword ptr [dword3783]
+	mov	dword3786,[ebp-796]
+	fld	dword ptr [dword3786+4]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3759+4]
-	mov	dword3762,[ebp-796]
-	fld	dword ptr [dword3762+8]
+	fstp	dword ptr [dword3786+4]
+	mov	dword3789,[ebp-796]
+	fld	dword ptr [dword3789+8]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3762+8]
-	mov	dword3765,[ebp-796]
-	fld	dword ptr [dword3765+12]
+	fstp	dword ptr [dword3789+8]
+	mov	dword3792,[ebp-796]
+	fld	dword ptr [dword3792+12]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword3765+12]
+	fstp	dword ptr [dword3792+12]
 label00d7:
 ; end of inline function vec4f_mul
-	lea	dword3479,[ebp-700]
-	mov	[ebp-756],dword3479
-	mov	dword3481,[ebp-664]
-	mov	[ebp-760],dword3481
-	mov	dword3483,[ebp-660]
-	mov	dword3485,[dword3483+192]
-	imul	dword3485,24
-	mov	dword3487,[ebp-660]
-	add	dword3487,dword3485
-	mov	[ebp-764],dword3487
+	lea	dword3506,[ebp-700]
+	mov	[ebp-756],dword3506
+	mov	dword3508,[ebp-664]
+	mov	[ebp-760],dword3508
+	mov	dword3510,[ebp-660]
+	mov	dword3512,[dword3510+192]
+	imul	dword3512,24
+	mov	dword3514,[ebp-660]
+	add	dword3514,dword3512
+	mov	[ebp-764],dword3514
 ; start of inline function vec4f_add
-	mov	dword3555,[ebp-760]
-	mov	dword3557,[ebp-756]
-	fld	dword ptr [dword3555]
-	fadd	dword ptr [dword3557]
-	mov	dword3559,[ebp-764]
-	fstp	dword ptr [dword3559]
-	mov	dword3561,[ebp-760]
-	mov	dword3563,[ebp-756]
-	fld	dword ptr [dword3561+4]
-	fadd	dword ptr [dword3563+4]
-	mov	dword3565,[ebp-764]
-	fstp	dword ptr [dword3565+4]
-	mov	dword3567,[ebp-760]
-	mov	dword3569,[ebp-756]
-	fld	dword ptr [dword3567+8]
-	fadd	dword ptr [dword3569+8]
-	mov	dword3571,[ebp-764]
-	fstp	dword ptr [dword3571+8]
-	mov	dword3573,[ebp-760]
-	mov	dword3575,[ebp-756]
-	fld	dword ptr [dword3573+12]
-	fadd	dword ptr [dword3575+12]
-	mov	dword3577,[ebp-764]
-	fstp	dword ptr [dword3577+12]
+	mov	dword3582,[ebp-760]
+	mov	dword3584,[ebp-756]
+	fld	dword ptr [dword3582]
+	fadd	dword ptr [dword3584]
+	mov	dword3586,[ebp-764]
+	fstp	dword ptr [dword3586]
+	mov	dword3588,[ebp-760]
+	mov	dword3590,[ebp-756]
+	fld	dword ptr [dword3588+4]
+	fadd	dword ptr [dword3590+4]
+	mov	dword3592,[ebp-764]
+	fstp	dword ptr [dword3592+4]
+	mov	dword3594,[ebp-760]
+	mov	dword3596,[ebp-756]
+	fld	dword ptr [dword3594+8]
+	fadd	dword ptr [dword3596+8]
+	mov	dword3598,[ebp-764]
+	fstp	dword ptr [dword3598+8]
+	mov	dword3600,[ebp-760]
+	mov	dword3602,[ebp-756]
+	fld	dword ptr [dword3600+12]
+	fadd	dword ptr [dword3602+12]
+	mov	dword3604,[ebp-764]
+	fstp	dword ptr [dword3604+12]
 label00ce:
 ; end of inline function vec4f_add
-	mov	dword3489,16
-	add	dword3489,[ebp-664]
-	mov	[ebp-736],dword3489
-	mov	dword3491,16
-	add	dword3491,[ebp-668]
-	mov	[ebp-740],dword3491
-	lea	dword3492,[ebp-708]
-	mov	[ebp-744],dword3492
+	mov	dword3516,16
+	add	dword3516,[ebp-664]
+	mov	[ebp-736],dword3516
+	mov	dword3518,16
+	add	dword3518,[ebp-668]
+	mov	[ebp-740],dword3518
+	lea	dword3519,[ebp-708]
+	mov	[ebp-744],dword3519
 ; start of inline function vec2f_subtract
-	mov	dword3534,[ebp-740]
-	mov	dword3536,[ebp-736]
-	fld	dword ptr [dword3534]
-	fsub	dword ptr [dword3536]
-	mov	dword3538,[ebp-744]
-	fstp	dword ptr [dword3538]
-	mov	dword3540,[ebp-740]
-	mov	dword3542,[ebp-736]
-	fld	dword ptr [dword3540+4]
-	fsub	dword ptr [dword3542+4]
-	mov	dword3544,[ebp-744]
-	fstp	dword ptr [dword3544+4]
+	mov	dword3561,[ebp-740]
+	mov	dword3563,[ebp-736]
+	fld	dword ptr [dword3561]
+	fsub	dword ptr [dword3563]
+	mov	dword3565,[ebp-744]
+	fstp	dword ptr [dword3565]
+	mov	dword3567,[ebp-740]
+	mov	dword3569,[ebp-736]
+	fld	dword ptr [dword3567+4]
+	fsub	dword ptr [dword3569+4]
+	mov	dword3571,[ebp-744]
+	fstp	dword ptr [dword3571+4]
 label00cc:
 ; end of inline function vec2f_subtract
-	mov	dword3545,[ebp-720]
-	mov	[ebp-748],dword3545
-	lea	dword3494,[ebp-708]
-	mov	[ebp-752],dword3494
+	mov	dword3572,[ebp-720]
+	mov	[ebp-748],dword3572
+	lea	dword3521,[ebp-708]
+	mov	[ebp-752],dword3521
 ; start of inline function vec2f_mul
-	mov	dword3548,[ebp-752]
-	fld	dword ptr [dword3548]
+	mov	dword3575,[ebp-752]
+	fld	dword ptr [dword3575]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword3548]
-	mov	dword3551,[ebp-752]
-	fld	dword ptr [dword3551+4]
+	fstp	dword ptr [dword3575]
+	mov	dword3578,[ebp-752]
+	fld	dword ptr [dword3578+4]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword3551+4]
+	fstp	dword ptr [dword3578+4]
 label00cd:
 ; end of inline function vec2f_mul
-	lea	dword3495,[ebp-708]
-	mov	[ebp-724],dword3495
-	mov	dword3497,16
-	add	dword3497,[ebp-664]
-	mov	[ebp-728],dword3497
-	mov	dword3499,[ebp-660]
-	mov	dword3501,[dword3499+192]
-	imul	dword3501,24
-	mov	dword3503,[ebp-660]
-	add	dword3503,dword3501
-	add	dword3503,16
-	mov	[ebp-732],dword3503
+	lea	dword3522,[ebp-708]
+	mov	[ebp-724],dword3522
+	mov	dword3524,16
+	add	dword3524,[ebp-664]
+	mov	[ebp-728],dword3524
+	mov	dword3526,[ebp-660]
+	mov	dword3528,[dword3526+192]
+	imul	dword3528,24
+	mov	dword3530,[ebp-660]
+	add	dword3530,dword3528
+	add	dword3530,16
+	mov	[ebp-732],dword3530
 ; start of inline function vec2f_add
-	mov	dword3521,[ebp-728]
-	mov	dword3523,[ebp-724]
-	fld	dword ptr [dword3521]
-	fadd	dword ptr [dword3523]
-	mov	dword3525,[ebp-732]
-	fstp	dword ptr [dword3525]
-	mov	dword3527,[ebp-728]
-	mov	dword3529,[ebp-724]
-	fld	dword ptr [dword3527+4]
-	fadd	dword ptr [dword3529+4]
-	mov	dword3531,[ebp-732]
-	fstp	dword ptr [dword3531+4]
+	mov	dword3548,[ebp-728]
+	mov	dword3550,[ebp-724]
+	fld	dword ptr [dword3548]
+	fadd	dword ptr [dword3550]
+	mov	dword3552,[ebp-732]
+	fstp	dword ptr [dword3552]
+	mov	dword3554,[ebp-728]
+	mov	dword3556,[ebp-724]
+	fld	dword ptr [dword3554+4]
+	fadd	dword ptr [dword3556+4]
+	mov	dword3558,[ebp-732]
+	fstp	dword ptr [dword3558+4]
 label00cb:
 ; end of inline function vec2f_add
-	mov	dword3506,[ebp-660]
-	inc	dword ptr [dword3506+192]
+	mov	dword3533,[ebp-660]
+	inc	dword ptr [dword3533+192]
 label00c8:
 	add	dword ptr [ebp-664],24
 	add	dword ptr [ebp-668],24
 	jmp	label00c5
 label00c6:
-	mov	dword3510,[ebp-660]
-	mov	dword3511,[dword3510+192]
-	inc	dword ptr [dword3510+192]
-	imul	dword3511,24
-	mov	dword3514,[ebp-660]
-	add	dword3514,dword3511
-	mov	dword3516,[ebp-660]
-	mov	dword3517,[dword3516]
-	mov	dword3518,[dword3516+4]
-	mov	[dword3514],dword3517
-	mov	[dword3514+4],dword3518
-	mov	dword3517,[dword3516+8]
-	mov	dword3518,[dword3516+12]
-	mov	[dword3514+8],dword3517
-	mov	[dword3514+12],dword3518
-	mov	dword3517,[dword3516+16]
-	mov	dword3518,[dword3516+20]
-	mov	[dword3514+16],dword3517
-	mov	[dword3514+20],dword3518
+	mov	dword3537,[ebp-660]
+	mov	dword3538,[dword3537+192]
+	inc	dword ptr [dword3537+192]
+	imul	dword3538,24
+	mov	dword3541,[ebp-660]
+	add	dword3541,dword3538
+	mov	dword3543,[ebp-660]
+	mov	dword3544,[dword3543]
+	mov	dword3545,[dword3543+4]
+	mov	[dword3541],dword3544
+	mov	[dword3541+4],dword3545
+	mov	dword3544,[dword3543+8]
+	mov	dword3545,[dword3543+12]
+	mov	[dword3541+8],dword3544
+	mov	[dword3541+12],dword3545
+	mov	dword3544,[dword3543+16]
+	mov	dword3545,[dword3543+20]
+	mov	[dword3541+16],dword3544
+	mov	[dword3541+20],dword3545
 label00d8:
 ; end of inline function _clip_on_plain
-	lea	dword1999,dword ptr [__clip_plane_bottom_norm]
-	mov	[ebp-648],dword1999
-	lea	dword2000,dword ptr [__clip_plane_bottom_base]
-	mov	[ebp-652],dword2000
-	lea	dword2001,[ebp-644]
-	mov	[ebp-656],dword2001
-	mov	dword3767,[ebp-448]
-	mov	[ebp-660],dword3767
+	lea	dword2026,dword ptr [__clip_plane_bottom_norm]
+	mov	[ebp-648],dword2026
+	lea	dword2027,dword ptr [__clip_plane_bottom_base]
+	mov	[ebp-652],dword2027
+	lea	dword2028,[ebp-644]
+	mov	[ebp-656],dword2028
+	mov	dword3794,[ebp-448]
+	mov	[ebp-660],dword3794
 ; start of inline function _clip_on_plain
-	mov	dword3770,[ebp-660]
-	mov	dword ptr [dword3770+192],0
-	mov	dword3773,[ebp-656]
-	mov	[ebp-664],dword3773
-	mov	dword3776,[ebp-656]
-	add	dword3776,24
-	mov	[ebp-668],dword3776
+	mov	dword3797,[ebp-660]
+	mov	dword ptr [dword3797+192],0
+	mov	dword3800,[ebp-656]
+	mov	[ebp-664],dword3800
+	mov	dword3803,[ebp-656]
+	add	dword3803,24
+	mov	[ebp-668],dword3803
 label00d9:
 label00da:
-	mov	dword3780,[ebp-656]
-	mov	dword3782,[dword3780+192]
-	imul	dword3782,24
-	mov	dword3784,[ebp-656]
-	add	dword3784,dword3782
-	cmp	dword3784,[ebp-668]
+	mov	dword3807,[ebp-656]
+	mov	dword3809,[dword3807+192]
+	imul	dword3809,24
+	mov	dword3811,[ebp-656]
+	add	dword3811,dword3809
+	cmp	dword3811,[ebp-668]
 	jle	label00db
-	mov	dword3930,[ebp-652]
-	mov	[ebp-768],dword3930
-	mov	dword3788,[ebp-664]
-	mov	[ebp-772],dword3788
-	lea	dword3789,[ebp-684]
-	mov	[ebp-776],dword3789
+	mov	dword3957,[ebp-652]
+	mov	[ebp-768],dword3957
+	mov	dword3815,[ebp-664]
+	mov	[ebp-772],dword3815
+	lea	dword3816,[ebp-684]
+	mov	[ebp-776],dword3816
 ; start of inline function vec4f_subtract
-	mov	dword3933,[ebp-772]
-	mov	dword3935,[ebp-768]
-	fld	dword ptr [dword3933]
-	fsub	dword ptr [dword3935]
-	mov	dword3937,[ebp-776]
-	fstp	dword ptr [dword3937]
-	mov	dword3939,[ebp-772]
-	mov	dword3941,[ebp-768]
-	fld	dword ptr [dword3939+4]
-	fsub	dword ptr [dword3941+4]
-	mov	dword3943,[ebp-776]
-	fstp	dword ptr [dword3943+4]
-	mov	dword3945,[ebp-772]
-	mov	dword3947,[ebp-768]
-	fld	dword ptr [dword3945+8]
-	fsub	dword ptr [dword3947+8]
-	mov	dword3949,[ebp-776]
-	fstp	dword ptr [dword3949+8]
-	mov	dword3951,[ebp-772]
-	mov	dword3953,[ebp-768]
-	fld	dword ptr [dword3951+12]
-	fsub	dword ptr [dword3953+12]
-	mov	dword3955,[ebp-776]
-	fstp	dword ptr [dword3955+12]
+	mov	dword3960,[ebp-772]
+	mov	dword3962,[ebp-768]
+	fld	dword ptr [dword3960]
+	fsub	dword ptr [dword3962]
+	mov	dword3964,[ebp-776]
+	fstp	dword ptr [dword3964]
+	mov	dword3966,[ebp-772]
+	mov	dword3968,[ebp-768]
+	fld	dword ptr [dword3966+4]
+	fsub	dword ptr [dword3968+4]
+	mov	dword3970,[ebp-776]
+	fstp	dword ptr [dword3970+4]
+	mov	dword3972,[ebp-772]
+	mov	dword3974,[ebp-768]
+	fld	dword ptr [dword3972+8]
+	fsub	dword ptr [dword3974+8]
+	mov	dword3976,[ebp-776]
+	fstp	dword ptr [dword3976+8]
+	mov	dword3978,[ebp-772]
+	mov	dword3980,[ebp-768]
+	fld	dword ptr [dword3978+12]
+	fsub	dword ptr [dword3980+12]
+	mov	dword3982,[ebp-776]
+	fstp	dword ptr [dword3982+12]
 label00e4:
 ; end of inline function vec4f_subtract
-	mov	dword4033,[ebp-648]
-	mov	[ebp-780],dword4033
-	lea	dword3791,[ebp-684]
-	mov	[ebp-784],dword3791
+	mov	dword4060,[ebp-648]
+	mov	[ebp-780],dword4060
+	lea	dword3818,[ebp-684]
+	mov	[ebp-784],dword3818
 ; start of inline function vec4f_dot
-	mov	dword4036,[ebp-784]
-	mov	dword4038,[ebp-780]
-	fld	dword ptr [dword4036+4]
-	fmul	dword ptr [dword4038+4]
-	mov	dword4040,[ebp-784]
-	mov	dword4042,[ebp-780]
-	fld	dword ptr [dword4040]
-	fmul	dword ptr [dword4042]
+	mov	dword4063,[ebp-784]
+	mov	dword4065,[ebp-780]
+	fld	dword ptr [dword4063+4]
+	fmul	dword ptr [dword4065+4]
+	mov	dword4067,[ebp-784]
+	mov	dword4069,[ebp-780]
+	fld	dword ptr [dword4067]
+	fmul	dword ptr [dword4069]
 	faddp
-	mov	dword4044,[ebp-784]
-	mov	dword4046,[ebp-780]
-	fld	dword ptr [dword4044+8]
-	fmul	dword ptr [dword4046+8]
+	mov	dword4071,[ebp-784]
+	mov	dword4073,[ebp-780]
+	fld	dword ptr [dword4071+8]
+	fmul	dword ptr [dword4073+8]
 	faddp
-	mov	dword4048,[ebp-784]
-	mov	dword4050,[ebp-780]
-	fld	dword ptr [dword4048+12]
-	fmul	dword ptr [dword4050+12]
+	mov	dword4075,[ebp-784]
+	mov	dword4077,[ebp-780]
+	fld	dword ptr [dword4075+12]
+	fmul	dword ptr [dword4077+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00e8:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
 	fstp	dword ptr [ebp-712]
-	mov	dword3956,[ebp-652]
-	mov	[ebp-768],dword3956
-	mov	dword3795,[ebp-668]
-	mov	[ebp-772],dword3795
-	lea	dword3796,[ebp-684]
-	mov	[ebp-776],dword3796
+	mov	dword3983,[ebp-652]
+	mov	[ebp-768],dword3983
+	mov	dword3822,[ebp-668]
+	mov	[ebp-772],dword3822
+	lea	dword3823,[ebp-684]
+	mov	[ebp-776],dword3823
 ; start of inline function vec4f_subtract
-	mov	dword3959,[ebp-772]
-	mov	dword3961,[ebp-768]
-	fld	dword ptr [dword3959]
-	fsub	dword ptr [dword3961]
-	mov	dword3963,[ebp-776]
-	fstp	dword ptr [dword3963]
-	mov	dword3965,[ebp-772]
-	mov	dword3967,[ebp-768]
-	fld	dword ptr [dword3965+4]
-	fsub	dword ptr [dword3967+4]
-	mov	dword3969,[ebp-776]
-	fstp	dword ptr [dword3969+4]
-	mov	dword3971,[ebp-772]
-	mov	dword3973,[ebp-768]
-	fld	dword ptr [dword3971+8]
-	fsub	dword ptr [dword3973+8]
-	mov	dword3975,[ebp-776]
-	fstp	dword ptr [dword3975+8]
-	mov	dword3977,[ebp-772]
-	mov	dword3979,[ebp-768]
-	fld	dword ptr [dword3977+12]
-	fsub	dword ptr [dword3979+12]
-	mov	dword3981,[ebp-776]
-	fstp	dword ptr [dword3981+12]
+	mov	dword3986,[ebp-772]
+	mov	dword3988,[ebp-768]
+	fld	dword ptr [dword3986]
+	fsub	dword ptr [dword3988]
+	mov	dword3990,[ebp-776]
+	fstp	dword ptr [dword3990]
+	mov	dword3992,[ebp-772]
+	mov	dword3994,[ebp-768]
+	fld	dword ptr [dword3992+4]
+	fsub	dword ptr [dword3994+4]
+	mov	dword3996,[ebp-776]
+	fstp	dword ptr [dword3996+4]
+	mov	dword3998,[ebp-772]
+	mov	dword4000,[ebp-768]
+	fld	dword ptr [dword3998+8]
+	fsub	dword ptr [dword4000+8]
+	mov	dword4002,[ebp-776]
+	fstp	dword ptr [dword4002+8]
+	mov	dword4004,[ebp-772]
+	mov	dword4006,[ebp-768]
+	fld	dword ptr [dword4004+12]
+	fsub	dword ptr [dword4006+12]
+	mov	dword4008,[ebp-776]
+	fstp	dword ptr [dword4008+12]
 label00e5:
 ; end of inline function vec4f_subtract
-	mov	dword4051,[ebp-648]
-	mov	[ebp-780],dword4051
-	lea	dword3798,[ebp-684]
-	mov	[ebp-784],dword3798
+	mov	dword4078,[ebp-648]
+	mov	[ebp-780],dword4078
+	lea	dword3825,[ebp-684]
+	mov	[ebp-784],dword3825
 ; start of inline function vec4f_dot
-	mov	dword4054,[ebp-784]
-	mov	dword4056,[ebp-780]
-	fld	dword ptr [dword4054+4]
-	fmul	dword ptr [dword4056+4]
-	mov	dword4058,[ebp-784]
-	mov	dword4060,[ebp-780]
-	fld	dword ptr [dword4058]
-	fmul	dword ptr [dword4060]
+	mov	dword4081,[ebp-784]
+	mov	dword4083,[ebp-780]
+	fld	dword ptr [dword4081+4]
+	fmul	dword ptr [dword4083+4]
+	mov	dword4085,[ebp-784]
+	mov	dword4087,[ebp-780]
+	fld	dword ptr [dword4085]
+	fmul	dword ptr [dword4087]
 	faddp
-	mov	dword4062,[ebp-784]
-	mov	dword4064,[ebp-780]
-	fld	dword ptr [dword4062+8]
-	fmul	dword ptr [dword4064+8]
+	mov	dword4089,[ebp-784]
+	mov	dword4091,[ebp-780]
+	fld	dword ptr [dword4089+8]
+	fmul	dword ptr [dword4091+8]
 	faddp
-	mov	dword4066,[ebp-784]
-	mov	dword4068,[ebp-780]
-	fld	dword ptr [dword4066+12]
-	fmul	dword ptr [dword4068+12]
+	mov	dword4093,[ebp-784]
+	mov	dword4095,[ebp-780]
+	fld	dword ptr [dword4093+12]
+	fmul	dword ptr [dword4095+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00e9:
@@ -10486,25 +10528,25 @@ label00e9:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label00dc
-	mov	dword3802,[ebp-660]
-	mov	dword3803,[dword3802+192]
-	inc	dword ptr [dword3802+192]
-	imul	dword3803,24
-	mov	dword3806,[ebp-660]
-	add	dword3806,dword3803
-	mov	dword3808,[ebp-664]
-	mov	dword3809,[dword3808]
-	mov	dword3810,[dword3808+4]
-	mov	[dword3806],dword3809
-	mov	[dword3806+4],dword3810
-	mov	dword3809,[dword3808+8]
-	mov	dword3810,[dword3808+12]
-	mov	[dword3806+8],dword3809
-	mov	[dword3806+12],dword3810
-	mov	dword3809,[dword3808+16]
-	mov	dword3810,[dword3808+20]
-	mov	[dword3806+16],dword3809
-	mov	[dword3806+20],dword3810
+	mov	dword3829,[ebp-660]
+	mov	dword3830,[dword3829+192]
+	inc	dword ptr [dword3829+192]
+	imul	dword3830,24
+	mov	dword3833,[ebp-660]
+	add	dword3833,dword3830
+	mov	dword3835,[ebp-664]
+	mov	dword3836,[dword3835]
+	mov	dword3837,[dword3835+4]
+	mov	[dword3833],dword3836
+	mov	[dword3833+4],dword3837
+	mov	dword3836,[dword3835+8]
+	mov	dword3837,[dword3835+12]
+	mov	[dword3833+8],dword3836
+	mov	[dword3833+12],dword3837
+	mov	dword3836,[dword3835+16]
+	mov	dword3837,[dword3835+20]
+	mov	[dword3833+16],dword3836
+	mov	[dword3833+20],dword3837
 label00dc:
 	fldz
 	fld	dword ptr [ebp-712]
@@ -10528,123 +10570,123 @@ label00df:
 	fstp	st
 	jae	label00dd
 label00de:
-	mov	dword3816,[ebp-664]
-	mov	[ebp-768],dword3816
-	mov	dword3982,[ebp-652]
-	mov	[ebp-772],dword3982
-	lea	dword3818,[ebp-684]
-	mov	[ebp-776],dword3818
+	mov	dword3843,[ebp-664]
+	mov	[ebp-768],dword3843
+	mov	dword4009,[ebp-652]
+	mov	[ebp-772],dword4009
+	lea	dword3845,[ebp-684]
+	mov	[ebp-776],dword3845
 ; start of inline function vec4f_subtract
-	mov	dword3985,[ebp-772]
-	mov	dword3987,[ebp-768]
-	fld	dword ptr [dword3985]
-	fsub	dword ptr [dword3987]
-	mov	dword3989,[ebp-776]
-	fstp	dword ptr [dword3989]
-	mov	dword3991,[ebp-772]
-	mov	dword3993,[ebp-768]
-	fld	dword ptr [dword3991+4]
-	fsub	dword ptr [dword3993+4]
-	mov	dword3995,[ebp-776]
-	fstp	dword ptr [dword3995+4]
-	mov	dword3997,[ebp-772]
-	mov	dword3999,[ebp-768]
-	fld	dword ptr [dword3997+8]
-	fsub	dword ptr [dword3999+8]
-	mov	dword4001,[ebp-776]
-	fstp	dword ptr [dword4001+8]
-	mov	dword4003,[ebp-772]
-	mov	dword4005,[ebp-768]
-	fld	dword ptr [dword4003+12]
-	fsub	dword ptr [dword4005+12]
-	mov	dword4007,[ebp-776]
-	fstp	dword ptr [dword4007+12]
+	mov	dword4012,[ebp-772]
+	mov	dword4014,[ebp-768]
+	fld	dword ptr [dword4012]
+	fsub	dword ptr [dword4014]
+	mov	dword4016,[ebp-776]
+	fstp	dword ptr [dword4016]
+	mov	dword4018,[ebp-772]
+	mov	dword4020,[ebp-768]
+	fld	dword ptr [dword4018+4]
+	fsub	dword ptr [dword4020+4]
+	mov	dword4022,[ebp-776]
+	fstp	dword ptr [dword4022+4]
+	mov	dword4024,[ebp-772]
+	mov	dword4026,[ebp-768]
+	fld	dword ptr [dword4024+8]
+	fsub	dword ptr [dword4026+8]
+	mov	dword4028,[ebp-776]
+	fstp	dword ptr [dword4028+8]
+	mov	dword4030,[ebp-772]
+	mov	dword4032,[ebp-768]
+	fld	dword ptr [dword4030+12]
+	fsub	dword ptr [dword4032+12]
+	mov	dword4034,[ebp-776]
+	fstp	dword ptr [dword4034+12]
 label00e6:
 ; end of inline function vec4f_subtract
-	mov	dword3820,[ebp-664]
-	mov	[ebp-768],dword3820
-	mov	dword3822,[ebp-668]
-	mov	[ebp-772],dword3822
-	lea	dword3823,[ebp-700]
-	mov	[ebp-776],dword3823
+	mov	dword3847,[ebp-664]
+	mov	[ebp-768],dword3847
+	mov	dword3849,[ebp-668]
+	mov	[ebp-772],dword3849
+	lea	dword3850,[ebp-700]
+	mov	[ebp-776],dword3850
 ; start of inline function vec4f_subtract
-	mov	dword4010,[ebp-772]
-	mov	dword4012,[ebp-768]
-	fld	dword ptr [dword4010]
-	fsub	dword ptr [dword4012]
-	mov	dword4014,[ebp-776]
-	fstp	dword ptr [dword4014]
-	mov	dword4016,[ebp-772]
-	mov	dword4018,[ebp-768]
-	fld	dword ptr [dword4016+4]
-	fsub	dword ptr [dword4018+4]
-	mov	dword4020,[ebp-776]
-	fstp	dword ptr [dword4020+4]
-	mov	dword4022,[ebp-772]
-	mov	dword4024,[ebp-768]
-	fld	dword ptr [dword4022+8]
-	fsub	dword ptr [dword4024+8]
-	mov	dword4026,[ebp-776]
-	fstp	dword ptr [dword4026+8]
-	mov	dword4028,[ebp-772]
-	mov	dword4030,[ebp-768]
-	fld	dword ptr [dword4028+12]
-	fsub	dword ptr [dword4030+12]
-	mov	dword4032,[ebp-776]
-	fstp	dword ptr [dword4032+12]
+	mov	dword4037,[ebp-772]
+	mov	dword4039,[ebp-768]
+	fld	dword ptr [dword4037]
+	fsub	dword ptr [dword4039]
+	mov	dword4041,[ebp-776]
+	fstp	dword ptr [dword4041]
+	mov	dword4043,[ebp-772]
+	mov	dword4045,[ebp-768]
+	fld	dword ptr [dword4043+4]
+	fsub	dword ptr [dword4045+4]
+	mov	dword4047,[ebp-776]
+	fstp	dword ptr [dword4047+4]
+	mov	dword4049,[ebp-772]
+	mov	dword4051,[ebp-768]
+	fld	dword ptr [dword4049+8]
+	fsub	dword ptr [dword4051+8]
+	mov	dword4053,[ebp-776]
+	fstp	dword ptr [dword4053+8]
+	mov	dword4055,[ebp-772]
+	mov	dword4057,[ebp-768]
+	fld	dword ptr [dword4055+12]
+	fsub	dword ptr [dword4057+12]
+	mov	dword4059,[ebp-776]
+	fstp	dword ptr [dword4059+12]
 label00e7:
 ; end of inline function vec4f_subtract
-	mov	dword4069,[ebp-648]
-	mov	[ebp-780],dword4069
-	lea	dword3825,[ebp-684]
-	mov	[ebp-784],dword3825
+	mov	dword4096,[ebp-648]
+	mov	[ebp-780],dword4096
+	lea	dword3852,[ebp-684]
+	mov	[ebp-784],dword3852
 ; start of inline function vec4f_dot
-	mov	dword4072,[ebp-784]
-	mov	dword4074,[ebp-780]
-	fld	dword ptr [dword4072+4]
-	fmul	dword ptr [dword4074+4]
-	mov	dword4076,[ebp-784]
-	mov	dword4078,[ebp-780]
-	fld	dword ptr [dword4076]
-	fmul	dword ptr [dword4078]
+	mov	dword4099,[ebp-784]
+	mov	dword4101,[ebp-780]
+	fld	dword ptr [dword4099+4]
+	fmul	dword ptr [dword4101+4]
+	mov	dword4103,[ebp-784]
+	mov	dword4105,[ebp-780]
+	fld	dword ptr [dword4103]
+	fmul	dword ptr [dword4105]
 	faddp
-	mov	dword4080,[ebp-784]
-	mov	dword4082,[ebp-780]
-	fld	dword ptr [dword4080+8]
-	fmul	dword ptr [dword4082+8]
+	mov	dword4107,[ebp-784]
+	mov	dword4109,[ebp-780]
+	fld	dword ptr [dword4107+8]
+	fmul	dword ptr [dword4109+8]
 	faddp
-	mov	dword4084,[ebp-784]
-	mov	dword4086,[ebp-780]
-	fld	dword ptr [dword4084+12]
-	fmul	dword ptr [dword4086+12]
+	mov	dword4111,[ebp-784]
+	mov	dword4113,[ebp-780]
+	fld	dword ptr [dword4111+12]
+	fmul	dword ptr [dword4113+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00ea:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-788]
-	mov	dword4087,[ebp-648]
-	mov	[ebp-780],dword4087
-	lea	dword3827,[ebp-700]
-	mov	[ebp-784],dword3827
+	mov	dword4114,[ebp-648]
+	mov	[ebp-780],dword4114
+	lea	dword3854,[ebp-700]
+	mov	[ebp-784],dword3854
 ; start of inline function vec4f_dot
-	mov	dword4090,[ebp-784]
-	mov	dword4092,[ebp-780]
-	fld	dword ptr [dword4090+4]
-	fmul	dword ptr [dword4092+4]
-	mov	dword4094,[ebp-784]
-	mov	dword4096,[ebp-780]
-	fld	dword ptr [dword4094]
-	fmul	dword ptr [dword4096]
+	mov	dword4117,[ebp-784]
+	mov	dword4119,[ebp-780]
+	fld	dword ptr [dword4117+4]
+	fmul	dword ptr [dword4119+4]
+	mov	dword4121,[ebp-784]
+	mov	dword4123,[ebp-780]
+	fld	dword ptr [dword4121]
+	fmul	dword ptr [dword4123]
 	faddp
-	mov	dword4098,[ebp-784]
-	mov	dword4100,[ebp-780]
-	fld	dword ptr [dword4098+8]
-	fmul	dword ptr [dword4100+8]
+	mov	dword4125,[ebp-784]
+	mov	dword4127,[ebp-780]
+	fld	dword ptr [dword4125+8]
+	fmul	dword ptr [dword4127+8]
 	faddp
-	mov	dword4102,[ebp-784]
-	mov	dword4104,[ebp-780]
-	fld	dword ptr [dword4102+12]
-	fmul	dword ptr [dword4104+12]
+	mov	dword4129,[ebp-784]
+	mov	dword4131,[ebp-780]
+	fld	dword ptr [dword4129+12]
+	fmul	dword ptr [dword4131+12]
 	faddp
 	fstp	dword ptr [ebp-788]
 label00eb:
@@ -10652,164 +10694,164 @@ label00eb:
 	fld	dword ptr [ebp-788]
 	fdivp
 	fstp	dword ptr [ebp-720]
-	mov	dword4105,[ebp-720]
-	mov	[ebp-792],dword4105
-	lea	dword3830,[ebp-700]
-	mov	[ebp-796],dword3830
+	mov	dword4132,[ebp-720]
+	mov	[ebp-792],dword4132
+	lea	dword3857,[ebp-700]
+	mov	[ebp-796],dword3857
 ; start of inline function vec4f_mul
-	mov	dword4108,[ebp-796]
-	fld	dword ptr [dword4108]
+	mov	dword4135,[ebp-796]
+	fld	dword ptr [dword4135]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword4108]
-	mov	dword4111,[ebp-796]
-	fld	dword ptr [dword4111+4]
+	fstp	dword ptr [dword4135]
+	mov	dword4138,[ebp-796]
+	fld	dword ptr [dword4138+4]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword4111+4]
-	mov	dword4114,[ebp-796]
-	fld	dword ptr [dword4114+8]
+	fstp	dword ptr [dword4138+4]
+	mov	dword4141,[ebp-796]
+	fld	dword ptr [dword4141+8]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword4114+8]
-	mov	dword4117,[ebp-796]
-	fld	dword ptr [dword4117+12]
+	fstp	dword ptr [dword4141+8]
+	mov	dword4144,[ebp-796]
+	fld	dword ptr [dword4144+12]
 	fmul	dword ptr [ebp-792]
-	fstp	dword ptr [dword4117+12]
+	fstp	dword ptr [dword4144+12]
 label00ec:
 ; end of inline function vec4f_mul
-	lea	dword3831,[ebp-700]
-	mov	[ebp-756],dword3831
-	mov	dword3833,[ebp-664]
-	mov	[ebp-760],dword3833
-	mov	dword3835,[ebp-660]
-	mov	dword3837,[dword3835+192]
-	imul	dword3837,24
-	mov	dword3839,[ebp-660]
-	add	dword3839,dword3837
-	mov	[ebp-764],dword3839
+	lea	dword3858,[ebp-700]
+	mov	[ebp-756],dword3858
+	mov	dword3860,[ebp-664]
+	mov	[ebp-760],dword3860
+	mov	dword3862,[ebp-660]
+	mov	dword3864,[dword3862+192]
+	imul	dword3864,24
+	mov	dword3866,[ebp-660]
+	add	dword3866,dword3864
+	mov	[ebp-764],dword3866
 ; start of inline function vec4f_add
-	mov	dword3907,[ebp-760]
-	mov	dword3909,[ebp-756]
-	fld	dword ptr [dword3907]
-	fadd	dword ptr [dword3909]
-	mov	dword3911,[ebp-764]
-	fstp	dword ptr [dword3911]
-	mov	dword3913,[ebp-760]
-	mov	dword3915,[ebp-756]
-	fld	dword ptr [dword3913+4]
-	fadd	dword ptr [dword3915+4]
-	mov	dword3917,[ebp-764]
-	fstp	dword ptr [dword3917+4]
-	mov	dword3919,[ebp-760]
-	mov	dword3921,[ebp-756]
-	fld	dword ptr [dword3919+8]
-	fadd	dword ptr [dword3921+8]
-	mov	dword3923,[ebp-764]
-	fstp	dword ptr [dword3923+8]
-	mov	dword3925,[ebp-760]
-	mov	dword3927,[ebp-756]
-	fld	dword ptr [dword3925+12]
-	fadd	dword ptr [dword3927+12]
-	mov	dword3929,[ebp-764]
-	fstp	dword ptr [dword3929+12]
+	mov	dword3934,[ebp-760]
+	mov	dword3936,[ebp-756]
+	fld	dword ptr [dword3934]
+	fadd	dword ptr [dword3936]
+	mov	dword3938,[ebp-764]
+	fstp	dword ptr [dword3938]
+	mov	dword3940,[ebp-760]
+	mov	dword3942,[ebp-756]
+	fld	dword ptr [dword3940+4]
+	fadd	dword ptr [dword3942+4]
+	mov	dword3944,[ebp-764]
+	fstp	dword ptr [dword3944+4]
+	mov	dword3946,[ebp-760]
+	mov	dword3948,[ebp-756]
+	fld	dword ptr [dword3946+8]
+	fadd	dword ptr [dword3948+8]
+	mov	dword3950,[ebp-764]
+	fstp	dword ptr [dword3950+8]
+	mov	dword3952,[ebp-760]
+	mov	dword3954,[ebp-756]
+	fld	dword ptr [dword3952+12]
+	fadd	dword ptr [dword3954+12]
+	mov	dword3956,[ebp-764]
+	fstp	dword ptr [dword3956+12]
 label00e3:
 ; end of inline function vec4f_add
-	mov	dword3841,16
-	add	dword3841,[ebp-664]
-	mov	[ebp-736],dword3841
-	mov	dword3843,16
-	add	dword3843,[ebp-668]
-	mov	[ebp-740],dword3843
-	lea	dword3844,[ebp-708]
-	mov	[ebp-744],dword3844
+	mov	dword3868,16
+	add	dword3868,[ebp-664]
+	mov	[ebp-736],dword3868
+	mov	dword3870,16
+	add	dword3870,[ebp-668]
+	mov	[ebp-740],dword3870
+	lea	dword3871,[ebp-708]
+	mov	[ebp-744],dword3871
 ; start of inline function vec2f_subtract
-	mov	dword3886,[ebp-740]
-	mov	dword3888,[ebp-736]
-	fld	dword ptr [dword3886]
-	fsub	dword ptr [dword3888]
-	mov	dword3890,[ebp-744]
-	fstp	dword ptr [dword3890]
-	mov	dword3892,[ebp-740]
-	mov	dword3894,[ebp-736]
-	fld	dword ptr [dword3892+4]
-	fsub	dword ptr [dword3894+4]
-	mov	dword3896,[ebp-744]
-	fstp	dword ptr [dword3896+4]
+	mov	dword3913,[ebp-740]
+	mov	dword3915,[ebp-736]
+	fld	dword ptr [dword3913]
+	fsub	dword ptr [dword3915]
+	mov	dword3917,[ebp-744]
+	fstp	dword ptr [dword3917]
+	mov	dword3919,[ebp-740]
+	mov	dword3921,[ebp-736]
+	fld	dword ptr [dword3919+4]
+	fsub	dword ptr [dword3921+4]
+	mov	dword3923,[ebp-744]
+	fstp	dword ptr [dword3923+4]
 label00e1:
 ; end of inline function vec2f_subtract
-	mov	dword3897,[ebp-720]
-	mov	[ebp-748],dword3897
-	lea	dword3846,[ebp-708]
-	mov	[ebp-752],dword3846
+	mov	dword3924,[ebp-720]
+	mov	[ebp-748],dword3924
+	lea	dword3873,[ebp-708]
+	mov	[ebp-752],dword3873
 ; start of inline function vec2f_mul
-	mov	dword3900,[ebp-752]
-	fld	dword ptr [dword3900]
+	mov	dword3927,[ebp-752]
+	fld	dword ptr [dword3927]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword3900]
-	mov	dword3903,[ebp-752]
-	fld	dword ptr [dword3903+4]
+	fstp	dword ptr [dword3927]
+	mov	dword3930,[ebp-752]
+	fld	dword ptr [dword3930+4]
 	fmul	dword ptr [ebp-748]
-	fstp	dword ptr [dword3903+4]
+	fstp	dword ptr [dword3930+4]
 label00e2:
 ; end of inline function vec2f_mul
-	lea	dword3847,[ebp-708]
-	mov	[ebp-724],dword3847
-	mov	dword3849,16
-	add	dword3849,[ebp-664]
-	mov	[ebp-728],dword3849
-	mov	dword3851,[ebp-660]
-	mov	dword3853,[dword3851+192]
-	imul	dword3853,24
-	mov	dword3855,[ebp-660]
-	add	dword3855,dword3853
-	add	dword3855,16
-	mov	[ebp-732],dword3855
+	lea	dword3874,[ebp-708]
+	mov	[ebp-724],dword3874
+	mov	dword3876,16
+	add	dword3876,[ebp-664]
+	mov	[ebp-728],dword3876
+	mov	dword3878,[ebp-660]
+	mov	dword3880,[dword3878+192]
+	imul	dword3880,24
+	mov	dword3882,[ebp-660]
+	add	dword3882,dword3880
+	add	dword3882,16
+	mov	[ebp-732],dword3882
 ; start of inline function vec2f_add
-	mov	dword3873,[ebp-728]
-	mov	dword3875,[ebp-724]
-	fld	dword ptr [dword3873]
-	fadd	dword ptr [dword3875]
-	mov	dword3877,[ebp-732]
-	fstp	dword ptr [dword3877]
-	mov	dword3879,[ebp-728]
-	mov	dword3881,[ebp-724]
-	fld	dword ptr [dword3879+4]
-	fadd	dword ptr [dword3881+4]
-	mov	dword3883,[ebp-732]
-	fstp	dword ptr [dword3883+4]
+	mov	dword3900,[ebp-728]
+	mov	dword3902,[ebp-724]
+	fld	dword ptr [dword3900]
+	fadd	dword ptr [dword3902]
+	mov	dword3904,[ebp-732]
+	fstp	dword ptr [dword3904]
+	mov	dword3906,[ebp-728]
+	mov	dword3908,[ebp-724]
+	fld	dword ptr [dword3906+4]
+	fadd	dword ptr [dword3908+4]
+	mov	dword3910,[ebp-732]
+	fstp	dword ptr [dword3910+4]
 label00e0:
 ; end of inline function vec2f_add
-	mov	dword3858,[ebp-660]
-	inc	dword ptr [dword3858+192]
+	mov	dword3885,[ebp-660]
+	inc	dword ptr [dword3885+192]
 label00dd:
 	add	dword ptr [ebp-664],24
 	add	dword ptr [ebp-668],24
 	jmp	label00da
 label00db:
-	mov	dword3862,[ebp-660]
-	mov	dword3863,[dword3862+192]
-	inc	dword ptr [dword3862+192]
-	imul	dword3863,24
-	mov	dword3866,[ebp-660]
-	add	dword3866,dword3863
-	mov	dword3868,[ebp-660]
-	mov	dword3869,[dword3868]
-	mov	dword3870,[dword3868+4]
-	mov	[dword3866],dword3869
-	mov	[dword3866+4],dword3870
-	mov	dword3869,[dword3868+8]
-	mov	dword3870,[dword3868+12]
-	mov	[dword3866+8],dword3869
-	mov	[dword3866+12],dword3870
-	mov	dword3869,[dword3868+16]
-	mov	dword3870,[dword3868+20]
-	mov	[dword3866+16],dword3869
-	mov	[dword3866+20],dword3870
+	mov	dword3889,[ebp-660]
+	mov	dword3890,[dword3889+192]
+	inc	dword ptr [dword3889+192]
+	imul	dword3890,24
+	mov	dword3893,[ebp-660]
+	add	dword3893,dword3890
+	mov	dword3895,[ebp-660]
+	mov	dword3896,[dword3895]
+	mov	dword3897,[dword3895+4]
+	mov	[dword3893],dword3896
+	mov	[dword3893+4],dword3897
+	mov	dword3896,[dword3895+8]
+	mov	dword3897,[dword3895+12]
+	mov	[dword3893+8],dword3896
+	mov	[dword3893+12],dword3897
+	mov	dword3896,[dword3895+16]
+	mov	dword3897,[dword3895+20]
+	mov	[dword3893+16],dword3896
+	mov	[dword3893+20],dword3897
 label00ed:
 ; end of inline function _clip_on_plain
-	mov	dword2004,[ebp-448]
-	cmp	dword ptr [dword2004+192],1
+	mov	dword2031,[ebp-448]
+	cmp	dword ptr [dword2031+192],1
 	setg	byte31
-	movzx	dword2006,byte31
-	mov	[ebp-800],dword2006
+	movzx	dword2033,byte31
+	mov	[ebp-800],dword2033
 label00ee:
 ; end of inline function _clip_poligon
 	mov	dword2,[ebp-800]
@@ -10836,352 +10878,357 @@ label0003:
 	add	dword15,dword18
 	mov	[ebp-804],dword15
 	lea	dword19,[ebp-132]
-	sal	dword ptr [ebp-136],4
-	add	dword19,[ebp-136]
+	mov	dword22,[ebp-136]
+	sal	dword22,4
+	add	dword19,dword22
 	mov	[ebp-808],dword19
 ; start of inline function _transform_to_screen_space
-	lea	dword4120,dword ptr [__viewport_matrix]
-	mov	[ebp-832],dword4120
-	mov	dword4153,[ebp-804]
-	mov	[ebp-836],dword4153
-	lea	dword4122,[ebp-824]
-	mov	[ebp-840],dword4122
+	lea	dword4147,dword ptr [__viewport_matrix]
+	mov	[ebp-832],dword4147
+	mov	dword4180,[ebp-804]
+	mov	[ebp-836],dword4180
+	lea	dword4149,[ebp-824]
+	mov	[ebp-840],dword4149
 ; start of inline function matrix4f_transform
-	mov	dword4156,[ebp-836]
-	mov	dword4158,[ebp-832]
-	fld	dword ptr [dword4156+4]
-	fmul	dword ptr [dword4158+16]
-	mov	dword4160,[ebp-836]
-	mov	dword4162,[ebp-832]
-	fld	dword ptr [dword4160]
-	fmul	dword ptr [dword4162]
+	mov	dword4183,[ebp-836]
+	mov	dword4185,[ebp-832]
+	fld	dword ptr [dword4183+4]
+	fmul	dword ptr [dword4185+16]
+	mov	dword4187,[ebp-836]
+	mov	dword4189,[ebp-832]
+	fld	dword ptr [dword4187]
+	fmul	dword ptr [dword4189]
 	faddp
-	mov	dword4164,[ebp-836]
-	mov	dword4166,[ebp-832]
-	fld	dword ptr [dword4164+8]
-	fmul	dword ptr [dword4166+32]
+	mov	dword4191,[ebp-836]
+	mov	dword4193,[ebp-832]
+	fld	dword ptr [dword4191+8]
+	fmul	dword ptr [dword4193+32]
 	faddp
-	mov	dword4168,[ebp-836]
-	mov	dword4170,[ebp-832]
-	fld	dword ptr [dword4168+12]
-	fmul	dword ptr [dword4170+48]
+	mov	dword4195,[ebp-836]
+	mov	dword4197,[ebp-832]
+	fld	dword ptr [dword4195+12]
+	fmul	dword ptr [dword4197+48]
 	faddp
-	mov	dword4172,[ebp-840]
-	fstp	dword ptr [dword4172]
-	mov	dword4174,[ebp-832]
-	mov	dword4176,[ebp-836]
-	fld	dword ptr [dword4176]
-	fmul	dword ptr [dword4174+4]
-	mov	dword4178,[ebp-836]
-	mov	dword4180,[ebp-832]
-	fld	dword ptr [dword4178+4]
-	fmul	dword ptr [dword4180+20]
+	mov	dword4199,[ebp-840]
+	fstp	dword ptr [dword4199]
+	mov	dword4201,[ebp-832]
+	mov	dword4203,[ebp-836]
+	fld	dword ptr [dword4203]
+	fmul	dword ptr [dword4201+4]
+	mov	dword4205,[ebp-836]
+	mov	dword4207,[ebp-832]
+	fld	dword ptr [dword4205+4]
+	fmul	dword ptr [dword4207+20]
 	faddp
-	mov	dword4182,[ebp-836]
-	mov	dword4184,[ebp-832]
-	fld	dword ptr [dword4182+8]
-	fmul	dword ptr [dword4184+36]
+	mov	dword4209,[ebp-836]
+	mov	dword4211,[ebp-832]
+	fld	dword ptr [dword4209+8]
+	fmul	dword ptr [dword4211+36]
 	faddp
-	mov	dword4186,[ebp-836]
-	mov	dword4188,[ebp-832]
-	fld	dword ptr [dword4186+12]
-	fmul	dword ptr [dword4188+52]
+	mov	dword4213,[ebp-836]
+	mov	dword4215,[ebp-832]
+	fld	dword ptr [dword4213+12]
+	fmul	dword ptr [dword4215+52]
 	faddp
-	mov	dword4190,[ebp-840]
-	fstp	dword ptr [dword4190+4]
-	mov	dword4192,[ebp-832]
-	mov	dword4194,[ebp-836]
-	fld	dword ptr [dword4194]
-	fmul	dword ptr [dword4192+8]
-	mov	dword4196,[ebp-836]
-	mov	dword4198,[ebp-832]
-	fld	dword ptr [dword4196+4]
-	fmul	dword ptr [dword4198+24]
+	mov	dword4217,[ebp-840]
+	fstp	dword ptr [dword4217+4]
+	mov	dword4219,[ebp-832]
+	mov	dword4221,[ebp-836]
+	fld	dword ptr [dword4221]
+	fmul	dword ptr [dword4219+8]
+	mov	dword4223,[ebp-836]
+	mov	dword4225,[ebp-832]
+	fld	dword ptr [dword4223+4]
+	fmul	dword ptr [dword4225+24]
 	faddp
-	mov	dword4200,[ebp-836]
-	mov	dword4202,[ebp-832]
-	fld	dword ptr [dword4200+8]
-	fmul	dword ptr [dword4202+40]
+	mov	dword4227,[ebp-836]
+	mov	dword4229,[ebp-832]
+	fld	dword ptr [dword4227+8]
+	fmul	dword ptr [dword4229+40]
 	faddp
-	mov	dword4204,[ebp-836]
-	mov	dword4206,[ebp-832]
-	fld	dword ptr [dword4204+12]
-	fmul	dword ptr [dword4206+56]
+	mov	dword4231,[ebp-836]
+	mov	dword4233,[ebp-832]
+	fld	dword ptr [dword4231+12]
+	fmul	dword ptr [dword4233+56]
 	faddp
-	mov	dword4208,[ebp-840]
-	fstp	dword ptr [dword4208+8]
-	mov	dword4210,[ebp-832]
-	mov	dword4212,[ebp-836]
-	fld	dword ptr [dword4212]
-	fmul	dword ptr [dword4210+12]
-	mov	dword4214,[ebp-836]
-	mov	dword4216,[ebp-832]
-	fld	dword ptr [dword4214+4]
-	fmul	dword ptr [dword4216+28]
+	mov	dword4235,[ebp-840]
+	fstp	dword ptr [dword4235+8]
+	mov	dword4237,[ebp-832]
+	mov	dword4239,[ebp-836]
+	fld	dword ptr [dword4239]
+	fmul	dword ptr [dword4237+12]
+	mov	dword4241,[ebp-836]
+	mov	dword4243,[ebp-832]
+	fld	dword ptr [dword4241+4]
+	fmul	dword ptr [dword4243+28]
 	faddp
-	mov	dword4218,[ebp-836]
-	mov	dword4220,[ebp-832]
-	fld	dword ptr [dword4218+8]
-	fmul	dword ptr [dword4220+44]
+	mov	dword4245,[ebp-836]
+	mov	dword4247,[ebp-832]
+	fld	dword ptr [dword4245+8]
+	fmul	dword ptr [dword4247+44]
 	faddp
-	mov	dword4222,[ebp-836]
-	mov	dword4224,[ebp-832]
-	fld	dword ptr [dword4222+12]
-	fmul	dword ptr [dword4224+60]
+	mov	dword4249,[ebp-836]
+	mov	dword4251,[ebp-832]
+	fld	dword ptr [dword4249+12]
+	fmul	dword ptr [dword4251+60]
 	faddp
-	mov	dword4226,[ebp-840]
-	fstp	dword ptr [dword4226+12]
+	mov	dword4253,[ebp-840]
+	fstp	dword ptr [dword4253+12]
 label00f1:
 ; end of inline function matrix4f_transform
-	lea	dword4123,[ebp-824]
-	add	dword4123,12
+	lea	dword4150,[ebp-824]
+	add	dword4150,12
 	fld1
-	fdiv	dword ptr [dword4123]
+	fdiv	dword ptr [dword4150]
 	fstp	dword ptr [ebp-828]
 	fld	dword ptr [ebp-824]
 	fmul	dword ptr [ebp-828]
-	float2int	dword4128
-	mov	dword4130,[ebp-808]
-	mov	[dword4130],dword4128
-	lea	dword4131,[ebp-824]
-	add	dword4131,4
-	fld	dword ptr [dword4131]
+	float2int	dword4155
+	mov	dword4157,[ebp-808]
+	mov	[dword4157],dword4155
+	lea	dword4158,[ebp-824]
+	add	dword4158,4
+	fld	dword ptr [dword4158]
 	fmul	dword ptr [ebp-828]
-	float2int	dword4134
-	mov	dword4136,[ebp-808]
-	mov	[dword4136+4],dword4134
-	mov	dword4138,[ebp-808]
-	cmp	dword ptr [dword4138],0
+	float2int	dword4161
+	mov	dword4163,[ebp-808]
+	mov	[dword4163+4],dword4161
+	mov	dword4165,[ebp-808]
+	cmp	dword ptr [dword4165],0
 	jl	label00f0
-	mov	dword4141,[ebp-808]
-	mov	dword4143,[dword4141]
-	cmp	dword4143,dword ptr [__width]
+	mov	dword4168,[ebp-808]
+	mov	dword4170,[dword4168]
+	cmp	dword4170,dword ptr [__width]
 	jge	label00f0
-	mov	dword4145,[ebp-808]
-	cmp	dword ptr [dword4145+4],0
+	mov	dword4172,[ebp-808]
+	cmp	dword ptr [dword4172+4],0
 	jl	label00f0
-	mov	dword4148,[ebp-808]
-	mov	dword4150,[dword4148+4]
-	cmp	dword4150,dword ptr [__height]
+	mov	dword4175,[ebp-808]
+	mov	dword4177,[dword4175+4]
+	cmp	dword4177,dword ptr [__height]
 	jl	label00ef
 label00f0:
 	mov	dword ptr ds:[0],0
 label00ef:
 label00f2:
 ; end of inline function _transform_to_screen_space
-	lea	dword22,[ebp-132]
-	sal	dword ptr [ebp-136],4
-	add	dword22,[ebp-136]
-	add	dword22,8
-	mov	dword27,[ebp+8]
-	mov	dword30,[ebp-136]
-	imul	dword30,24
-	add	dword27,dword30
-	add	dword27,16
-	mov	dword32,[dword27]
-	mov	dword33,[dword27+4]
-	mov	[dword22],dword32
-	mov	[dword22+4],dword33
+	lea	dword23,[ebp-132]
+	mov	dword26,[ebp-136]
+	sal	dword26,4
+	add	dword23,dword26
+	add	dword23,8
+	mov	dword29,[ebp+8]
+	mov	dword32,[ebp-136]
+	imul	dword32,24
+	add	dword29,dword32
+	add	dword29,16
+	mov	dword34,[dword29]
+	mov	dword35,[dword29+4]
+	mov	[dword23],dword34
+	mov	[dword23+4],dword35
 	inc	dword ptr [ebp-136]
 	jmp	label0003
 label0004:
 	mov	dword ptr [ebp-136],2
 label0005:
 label0006:
-	mov	dword38,[ebp+8]
-	mov	dword40,[dword38+192]
-	dec	dword40
-	cmp	dword40,[ebp-136]
+	mov	dword40,[ebp+8]
+	mov	dword42,[dword40+192]
+	dec	dword42
+	cmp	dword42,[ebp-136]
 	jle	label0007
-	lea	dword42,[ebp-132]
-	sal	dword ptr [ebp-136],4
-	add	dword42,[ebp-136]
-	mov	[ebp-140],dword42
+	lea	dword44,[ebp-132]
 	mov	dword47,[ebp-136]
-	dec	dword47
 	sal	dword47,4
-	lea	dword49,[ebp-132]
-	add	dword49,dword47
-	mov	[ebp-144],dword49
-	lea	dword50,[ebp-132]
-	mov	[ebp-148],dword50
+	add	dword44,dword47
+	mov	[ebp-140],dword44
+	mov	dword50,[ebp-136]
+	dec	dword50
+	sal	dword50,4
+	lea	dword52,[ebp-132]
+	add	dword52,dword50
+	mov	[ebp-144],dword52
+	lea	dword53,[ebp-132]
+	mov	[ebp-148],dword53
 ; start of inline function _rasterize_triangle_2i
-	mov	dword54,[ebp-148]
-	add	dword54,4
-	mov	dword57,[ebp-144]
+	mov	dword57,[ebp-148]
 	add	dword57,4
-	mov	dword59,[dword54]
-	cmp	dword59,[dword57]
+	mov	dword60,[ebp-144]
+	add	dword60,4
+	mov	dword62,[dword57]
+	cmp	dword62,[dword60]
 	jle	label0008
-	mov	dword62,[ebp-148]
-	mov	[ebp-152],dword62
-	mov	dword65,[ebp-144]
-	mov	[ebp-148],dword65
-	mov	dword68,[ebp-152]
-	mov	[ebp-144],dword68
+	mov	dword65,[ebp-148]
+	mov	[ebp-152],dword65
+	mov	dword68,[ebp-144]
+	mov	[ebp-148],dword68
+	mov	dword71,[ebp-152]
+	mov	[ebp-144],dword71
 label0008:
-	mov	dword70,[ebp-148]
-	add	dword70,4
-	mov	dword73,[ebp-140]
+	mov	dword73,[ebp-148]
 	add	dword73,4
-	mov	dword75,[dword70]
-	cmp	dword75,[dword73]
+	mov	dword76,[ebp-140]
+	add	dword76,4
+	mov	dword78,[dword73]
+	cmp	dword78,[dword76]
 	jle	label0009
-	mov	dword78,[ebp-148]
-	mov	[ebp-152],dword78
-	mov	dword81,[ebp-140]
-	mov	[ebp-148],dword81
-	mov	dword84,[ebp-152]
-	mov	[ebp-140],dword84
+	mov	dword81,[ebp-148]
+	mov	[ebp-152],dword81
+	mov	dword84,[ebp-140]
+	mov	[ebp-148],dword84
+	mov	dword87,[ebp-152]
+	mov	[ebp-140],dword87
 label0009:
-	mov	dword86,[ebp-144]
-	add	dword86,4
-	mov	dword89,[ebp-140]
+	mov	dword89,[ebp-144]
 	add	dword89,4
-	mov	dword91,[dword86]
-	cmp	dword91,[dword89]
+	mov	dword92,[ebp-140]
+	add	dword92,4
+	mov	dword94,[dword89]
+	cmp	dword94,[dword92]
 	jle	label000a
-	mov	dword94,[ebp-144]
-	mov	[ebp-152],dword94
-	mov	dword97,[ebp-140]
-	mov	[ebp-144],dword97
-	mov	dword100,[ebp-152]
-	mov	[ebp-140],dword100
+	mov	dword97,[ebp-144]
+	mov	[ebp-152],dword97
+	mov	dword100,[ebp-140]
+	mov	[ebp-144],dword100
+	mov	dword103,[ebp-152]
+	mov	[ebp-140],dword103
 label000a:
-	mov	dword102,[ebp-148]
-	add	dword102,4
-	mov	dword105,[ebp-140]
+	mov	dword105,[ebp-148]
 	add	dword105,4
-	mov	dword107,[dword102]
-	cmp	dword107,[dword105]
+	mov	dword108,[ebp-140]
+	add	dword108,4
+	mov	dword110,[dword105]
+	cmp	dword110,[dword108]
 	jne	label000b
-	mov	dword109,[ebp-148]
-	add	dword109,4
-	cmp	dword ptr [dword109],0
+	mov	dword112,[ebp-148]
+	add	dword112,4
+	cmp	dword ptr [dword112],0
 	jl	label000c
-	mov	dword113,[ebp-148]
-	add	dword113,4
-	mov	dword116,[dword113]
-	cmp	dword116,dword ptr [__height]
+	mov	dword116,[ebp-148]
+	add	dword116,4
+	mov	dword119,[dword116]
+	cmp	dword119,dword ptr [__height]
 	jge	label000c
 	fldz
 	fstp	dword ptr [ebp-320]
 	fldz
 	fstp	dword ptr [ebp-324]
-	mov	dword118,8
-	add	dword118,[ebp-140]
-	mov	[ebp-328],dword118
-	mov	dword120,8
-	add	dword120,[ebp-144]
-	mov	[ebp-332],dword120
-	mov	dword122,8
-	add	dword122,[ebp-148]
-	mov	[ebp-336],dword122
-	mov	dword124,[ebp-148]
-	add	dword124,4
-	mov	dword1270,[dword124]
-	mov	[ebp-340],dword1270
-	mov	dword127,[ebp-140]
-	mov	dword1269,[dword127]
-	mov	[ebp-344],dword1269
-	mov	dword129,[ebp-144]
-	mov	dword1268,[dword129]
-	mov	[ebp-348],dword1268
-	mov	dword131,[ebp-148]
-	mov	dword1267,[dword131]
-	mov	[ebp-352],dword1267
+	mov	dword121,8
+	add	dword121,[ebp-140]
+	mov	[ebp-328],dword121
+	mov	dword123,8
+	add	dword123,[ebp-144]
+	mov	[ebp-332],dword123
+	mov	dword125,8
+	add	dword125,[ebp-148]
+	mov	[ebp-336],dword125
+	mov	dword127,[ebp-148]
+	add	dword127,4
+	mov	dword1285,[dword127]
+	mov	[ebp-340],dword1285
+	mov	dword130,[ebp-140]
+	mov	dword1284,[dword130]
+	mov	[ebp-344],dword1284
+	mov	dword132,[ebp-144]
+	mov	dword1283,[dword132]
+	mov	[ebp-348],dword1283
+	mov	dword134,[ebp-148]
+	mov	dword1282,[dword134]
+	mov	[ebp-352],dword1282
 ; start of inline function _rasterize_triangle_1i
-	mov	dword1274,[ebp-352]
-	cmp	dword1274,[ebp-348]
+	mov	dword1289,[ebp-352]
+	cmp	dword1289,[ebp-348]
 	jge	label0040
-	mov	dword1277,[ebp-344]
-	cmp	dword1277,[ebp-348]
+	mov	dword1292,[ebp-344]
+	cmp	dword1292,[ebp-348]
 	jle	label0041
-	mov	dword1347,[ebp-320]
-	mov	[ebp-356],dword1347
-	mov	dword1346,[ebp-324]
-	mov	[ebp-360],dword1346
-	mov	dword1281,[ebp-336]
-	mov	dword1345,[dword1281+4]
-	mov	[ebp-364],dword1345
-	mov	dword1283,[ebp-336]
-	mov	dword1344,[dword1283]
-	mov	[ebp-368],dword1344
-	mov	dword1343,[ebp-340]
-	mov	[ebp-372],dword1343
-	mov	dword1342,[ebp-344]
-	mov	[ebp-376],dword1342
-	mov	dword1341,[ebp-352]
-	mov	[ebp-380],dword1341
+	mov	dword1362,[ebp-320]
+	mov	[ebp-356],dword1362
+	mov	dword1361,[ebp-324]
+	mov	[ebp-360],dword1361
+	mov	dword1296,[ebp-336]
+	mov	dword1360,[dword1296+4]
+	mov	[ebp-364],dword1360
+	mov	dword1298,[ebp-336]
+	mov	dword1359,[dword1298]
+	mov	[ebp-368],dword1359
+	mov	dword1358,[ebp-340]
+	mov	[ebp-372],dword1358
+	mov	dword1357,[ebp-344]
+	mov	[ebp-376],dword1357
+	mov	dword1356,[ebp-352]
+	mov	[ebp-380],dword1356
 ; start of inline function _rasterize_horiz_line
-	mov	dword1351,dword ptr [__pitch]
-	imul	dword1351,[ebp-372]
-	add	dword1351,dword ptr [__videomem]
-	sal	dword ptr [ebp-380],2
-	add	dword1351,[ebp-380]
-	mov	[ebp-384],dword1351
-	sal	dword ptr [ebp-376],2
-	mov	dword1359,[ebp-384]
-	add	dword1359,[ebp-376]
-	sal	dword ptr [ebp-380],2
-	sub	dword1359,[ebp-380]
-	mov	[ebp-388],dword1359
+	mov	dword1366,dword ptr [__pitch]
+	imul	dword1366,[ebp-372]
+	add	dword1366,dword ptr [__videomem]
+	mov	dword1370,[ebp-380]
+	sal	dword1370,2
+	add	dword1366,dword1370
+	mov	[ebp-384],dword1366
+	mov	dword1374,[ebp-376]
+	sal	dword1374,2
+	add	dword1374,[ebp-384]
+	mov	dword1378,[ebp-380]
+	sal	dword1378,2
+	sub	dword1374,dword1378
+	mov	[ebp-388],dword1374
 label004a:
-	mov	dword1427,[ebp-364]
-	mov	[ebp-428],dword1427
-	mov	dword1426,[ebp-368]
-	mov	[ebp-432],dword1426
+	mov	dword1444,[ebp-364]
+	mov	[ebp-428],dword1444
+	mov	dword1443,[ebp-368]
+	mov	[ebp-432],dword1443
 ; start of inline function _tex2d
-	mov	dword1431,dword ptr [__texture_width]
-	dec	dword1431
-	int2float	dword1431
+	mov	dword1448,dword ptr [__texture_width]
+	dec	dword1448
+	int2float	dword1448
 	fmul	dword ptr [ebp-432]
-	float2int	dword1433
-	mov	[ebp-436],dword1433
-	mov	dword1437,dword ptr [__texture_height]
-	dec	dword1437
-	int2float	dword1437
+	float2int	dword1450
+	mov	[ebp-436],dword1450
+	mov	dword1454,dword ptr [__texture_height]
+	dec	dword1454
+	int2float	dword1454
 	fmul	dword ptr [ebp-428]
-	float2int	dword1439
-	mov	[ebp-440],dword1439
-	mov	dword1443,[ebp-440]
-	imul	dword1443,dword ptr [__texture_width]
-	add	dword1443,[ebp-436]
-	sal	dword1443,2
-	add	dword1443,dword ptr [__texture_data]
-	mov	dword1447,[dword1443]
-	mov	[ebp-444],dword1447
+	float2int	dword1456
+	mov	[ebp-440],dword1456
+	mov	dword1460,[ebp-440]
+	imul	dword1460,dword ptr [__texture_width]
+	add	dword1460,[ebp-436]
+	sal	dword1460,2
+	add	dword1460,dword ptr [__texture_data]
+	mov	dword1464,[dword1460]
+	mov	[ebp-444],dword1464
 label004e:
 ; end of inline function _tex2d
-	mov	dword1365,[ebp-444]
-	mov	[ebp-392],dword1365
-	sar	dword ptr [ebp-392],24
-	mov	dword1370,[ebp-392]
-	and	dword1370,255
-	mov	[ebp-420],dword1370
+	mov	dword1382,[ebp-444]
+	mov	[ebp-392],dword1382
+	mov	dword1386,[ebp-392]
+	sar	dword1386,24
+	and	dword1386,255
+	mov	[ebp-420],dword1386
 	cmp	dword ptr [ebp-420],0
 	je	label004d
 	fild	dword ptr [ebp-420]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-424]
-	mov	dword1377,[ebp-384]
-	mov	dword1379,[dword1377]
-	mov	[ebp-408],dword1379
-	mov	dword1382,[ebp-408]
-	and	dword1382,65280
-	sar	dword1382,8
-	mov	[ebp-412],dword1382
-	mov	dword1387,[ebp-408]
-	and	dword1387,255
-	mov	[ebp-416],dword1387
-	mov	dword1391,[ebp-392]
-	and	dword1391,65280
-	sar	dword1391,8
-	mov	[ebp-400],dword1391
-	mov	dword1396,[ebp-392]
-	and	dword1396,255
-	mov	[ebp-404],dword1396
+	mov	dword1394,[ebp-384]
+	mov	dword1396,[dword1394]
+	mov	[ebp-408],dword1396
+	mov	dword1399,[ebp-408]
+	and	dword1399,65280
+	sar	dword1399,8
+	mov	[ebp-412],dword1399
+	mov	dword1404,[ebp-408]
+	and	dword1404,255
+	mov	[ebp-416],dword1404
+	mov	dword1408,[ebp-392]
+	and	dword1408,65280
+	sar	dword1408,8
+	mov	[ebp-400],dword1408
+	mov	dword1413,[ebp-392]
+	and	dword1413,255
+	mov	[ebp-404],dword1413
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-412]
@@ -11189,8 +11236,8 @@ label004e:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1402
-	mov	[ebp-400],dword1402
+	float2int	dword1419
+	mov	[ebp-400],dword1419
 	fild	dword ptr [ebp-404]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-416]
@@ -11198,15 +11245,15 @@ label004e:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1408
-	mov	[ebp-404],dword1408
-	sal	dword ptr [ebp-400],8
-	mov	dword1413,[ebp-400]
-	add	dword1413,[ebp-404]
-	mov	[ebp-396],dword1413
-	mov	dword1416,[ebp-384]
-	mov	dword1418,[ebp-396]
-	mov	[dword1416],dword1418
+	float2int	dword1425
+	mov	[ebp-404],dword1425
+	mov	dword1429,[ebp-400]
+	sal	dword1429,8
+	add	dword1429,[ebp-404]
+	mov	[ebp-396],dword1429
+	mov	dword1433,[ebp-384]
+	mov	dword1435,[ebp-396]
+	mov	[dword1433],dword1435
 label004d:
 	fld	dword ptr [ebp-368]
 	fadd	dword ptr [ebp-360]
@@ -11216,102 +11263,104 @@ label004d:
 	fstp	dword ptr [ebp-364]
 label004b:
 	add	dword ptr [ebp-384],4
-	mov	dword1425,[ebp-384]
-	cmp	dword1425,[ebp-388]
+	mov	dword1442,[ebp-384]
+	cmp	dword1442,[ebp-388]
 	jl	label004a
 label004c:
 label004f:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0042
 label0041:
-	mov	dword1289,[ebp-344]
-	cmp	dword1289,[ebp-352]
+	mov	dword1304,[ebp-344]
+	cmp	dword1304,[ebp-352]
 	jge	label0043
-	mov	dword1454,[ebp-320]
-	mov	[ebp-356],dword1454
-	mov	dword1453,[ebp-324]
-	mov	[ebp-360],dword1453
-	mov	dword1293,[ebp-328]
-	mov	dword1452,[dword1293+4]
-	mov	[ebp-364],dword1452
-	mov	dword1295,[ebp-328]
-	mov	dword1451,[dword1295]
-	mov	[ebp-368],dword1451
-	mov	dword1450,[ebp-340]
-	mov	[ebp-372],dword1450
-	mov	dword1449,[ebp-348]
-	mov	[ebp-376],dword1449
-	mov	dword1448,[ebp-344]
-	mov	[ebp-380],dword1448
+	mov	dword1471,[ebp-320]
+	mov	[ebp-356],dword1471
+	mov	dword1470,[ebp-324]
+	mov	[ebp-360],dword1470
+	mov	dword1308,[ebp-328]
+	mov	dword1469,[dword1308+4]
+	mov	[ebp-364],dword1469
+	mov	dword1310,[ebp-328]
+	mov	dword1468,[dword1310]
+	mov	[ebp-368],dword1468
+	mov	dword1467,[ebp-340]
+	mov	[ebp-372],dword1467
+	mov	dword1466,[ebp-348]
+	mov	[ebp-376],dword1466
+	mov	dword1465,[ebp-344]
+	mov	[ebp-380],dword1465
 ; start of inline function _rasterize_horiz_line
-	mov	dword1458,dword ptr [__pitch]
-	imul	dword1458,[ebp-372]
-	add	dword1458,dword ptr [__videomem]
-	sal	dword ptr [ebp-380],2
-	add	dword1458,[ebp-380]
-	mov	[ebp-384],dword1458
-	sal	dword ptr [ebp-376],2
-	mov	dword1466,[ebp-384]
-	add	dword1466,[ebp-376]
-	sal	dword ptr [ebp-380],2
-	sub	dword1466,[ebp-380]
-	mov	[ebp-388],dword1466
+	mov	dword1475,dword ptr [__pitch]
+	imul	dword1475,[ebp-372]
+	add	dword1475,dword ptr [__videomem]
+	mov	dword1479,[ebp-380]
+	sal	dword1479,2
+	add	dword1475,dword1479
+	mov	[ebp-384],dword1475
+	mov	dword1483,[ebp-376]
+	sal	dword1483,2
+	add	dword1483,[ebp-384]
+	mov	dword1487,[ebp-380]
+	sal	dword1487,2
+	sub	dword1483,dword1487
+	mov	[ebp-388],dword1483
 label0050:
-	mov	dword1534,[ebp-364]
-	mov	[ebp-428],dword1534
-	mov	dword1533,[ebp-368]
-	mov	[ebp-432],dword1533
+	mov	dword1553,[ebp-364]
+	mov	[ebp-428],dword1553
+	mov	dword1552,[ebp-368]
+	mov	[ebp-432],dword1552
 ; start of inline function _tex2d
-	mov	dword1538,dword ptr [__texture_width]
-	dec	dword1538
-	int2float	dword1538
+	mov	dword1557,dword ptr [__texture_width]
+	dec	dword1557
+	int2float	dword1557
 	fmul	dword ptr [ebp-432]
-	float2int	dword1540
-	mov	[ebp-436],dword1540
-	mov	dword1544,dword ptr [__texture_height]
-	dec	dword1544
-	int2float	dword1544
+	float2int	dword1559
+	mov	[ebp-436],dword1559
+	mov	dword1563,dword ptr [__texture_height]
+	dec	dword1563
+	int2float	dword1563
 	fmul	dword ptr [ebp-428]
-	float2int	dword1546
-	mov	[ebp-440],dword1546
-	mov	dword1550,[ebp-440]
-	imul	dword1550,dword ptr [__texture_width]
-	add	dword1550,[ebp-436]
-	sal	dword1550,2
-	add	dword1550,dword ptr [__texture_data]
-	mov	dword1554,[dword1550]
-	mov	[ebp-444],dword1554
+	float2int	dword1565
+	mov	[ebp-440],dword1565
+	mov	dword1569,[ebp-440]
+	imul	dword1569,dword ptr [__texture_width]
+	add	dword1569,[ebp-436]
+	sal	dword1569,2
+	add	dword1569,dword ptr [__texture_data]
+	mov	dword1573,[dword1569]
+	mov	[ebp-444],dword1573
 label0054:
 ; end of inline function _tex2d
-	mov	dword1472,[ebp-444]
-	mov	[ebp-392],dword1472
-	sar	dword ptr [ebp-392],24
-	mov	dword1477,[ebp-392]
-	and	dword1477,255
-	mov	[ebp-420],dword1477
+	mov	dword1491,[ebp-444]
+	mov	[ebp-392],dword1491
+	mov	dword1495,[ebp-392]
+	sar	dword1495,24
+	and	dword1495,255
+	mov	[ebp-420],dword1495
 	cmp	dword ptr [ebp-420],0
 	je	label0053
 	fild	dword ptr [ebp-420]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-424]
-	mov	dword1484,[ebp-384]
-	mov	dword1486,[dword1484]
-	mov	[ebp-408],dword1486
-	mov	dword1489,[ebp-408]
-	and	dword1489,65280
-	sar	dword1489,8
-	mov	[ebp-412],dword1489
-	mov	dword1494,[ebp-408]
-	and	dword1494,255
-	mov	[ebp-416],dword1494
-	mov	dword1498,[ebp-392]
-	and	dword1498,65280
-	sar	dword1498,8
-	mov	[ebp-400],dword1498
-	mov	dword1503,[ebp-392]
-	and	dword1503,255
-	mov	[ebp-404],dword1503
+	mov	dword1503,[ebp-384]
+	mov	dword1505,[dword1503]
+	mov	[ebp-408],dword1505
+	mov	dword1508,[ebp-408]
+	and	dword1508,65280
+	sar	dword1508,8
+	mov	[ebp-412],dword1508
+	mov	dword1513,[ebp-408]
+	and	dword1513,255
+	mov	[ebp-416],dword1513
+	mov	dword1517,[ebp-392]
+	and	dword1517,65280
+	sar	dword1517,8
+	mov	[ebp-400],dword1517
+	mov	dword1522,[ebp-392]
+	and	dword1522,255
+	mov	[ebp-404],dword1522
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-412]
@@ -11319,8 +11368,8 @@ label0054:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1509
-	mov	[ebp-400],dword1509
+	float2int	dword1528
+	mov	[ebp-400],dword1528
 	fild	dword ptr [ebp-404]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-416]
@@ -11328,15 +11377,15 @@ label0054:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1515
-	mov	[ebp-404],dword1515
-	sal	dword ptr [ebp-400],8
-	mov	dword1520,[ebp-400]
-	add	dword1520,[ebp-404]
-	mov	[ebp-396],dword1520
-	mov	dword1523,[ebp-384]
-	mov	dword1525,[ebp-396]
-	mov	[dword1523],dword1525
+	float2int	dword1534
+	mov	[ebp-404],dword1534
+	mov	dword1538,[ebp-400]
+	sal	dword1538,8
+	add	dword1538,[ebp-404]
+	mov	[ebp-396],dword1538
+	mov	dword1542,[ebp-384]
+	mov	dword1544,[ebp-396]
+	mov	[dword1542],dword1544
 label0053:
 	fld	dword ptr [ebp-368]
 	fadd	dword ptr [ebp-360]
@@ -11346,99 +11395,101 @@ label0053:
 	fstp	dword ptr [ebp-364]
 label0051:
 	add	dword ptr [ebp-384],4
-	mov	dword1532,[ebp-384]
-	cmp	dword1532,[ebp-388]
+	mov	dword1551,[ebp-384]
+	cmp	dword1551,[ebp-388]
 	jl	label0050
 label0052:
 label0055:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0044
 label0043:
-	mov	dword1561,[ebp-320]
-	mov	[ebp-356],dword1561
-	mov	dword1560,[ebp-324]
-	mov	[ebp-360],dword1560
-	mov	dword1302,[ebp-336]
-	mov	dword1559,[dword1302+4]
-	mov	[ebp-364],dword1559
-	mov	dword1304,[ebp-336]
-	mov	dword1558,[dword1304]
-	mov	[ebp-368],dword1558
-	mov	dword1557,[ebp-340]
-	mov	[ebp-372],dword1557
-	mov	dword1556,[ebp-348]
-	mov	[ebp-376],dword1556
-	mov	dword1555,[ebp-352]
-	mov	[ebp-380],dword1555
+	mov	dword1580,[ebp-320]
+	mov	[ebp-356],dword1580
+	mov	dword1579,[ebp-324]
+	mov	[ebp-360],dword1579
+	mov	dword1317,[ebp-336]
+	mov	dword1578,[dword1317+4]
+	mov	[ebp-364],dword1578
+	mov	dword1319,[ebp-336]
+	mov	dword1577,[dword1319]
+	mov	[ebp-368],dword1577
+	mov	dword1576,[ebp-340]
+	mov	[ebp-372],dword1576
+	mov	dword1575,[ebp-348]
+	mov	[ebp-376],dword1575
+	mov	dword1574,[ebp-352]
+	mov	[ebp-380],dword1574
 ; start of inline function _rasterize_horiz_line
-	mov	dword1565,dword ptr [__pitch]
-	imul	dword1565,[ebp-372]
-	add	dword1565,dword ptr [__videomem]
-	sal	dword ptr [ebp-380],2
-	add	dword1565,[ebp-380]
-	mov	[ebp-384],dword1565
-	sal	dword ptr [ebp-376],2
-	mov	dword1573,[ebp-384]
-	add	dword1573,[ebp-376]
-	sal	dword ptr [ebp-380],2
-	sub	dword1573,[ebp-380]
-	mov	[ebp-388],dword1573
+	mov	dword1584,dword ptr [__pitch]
+	imul	dword1584,[ebp-372]
+	add	dword1584,dword ptr [__videomem]
+	mov	dword1588,[ebp-380]
+	sal	dword1588,2
+	add	dword1584,dword1588
+	mov	[ebp-384],dword1584
+	mov	dword1592,[ebp-376]
+	sal	dword1592,2
+	add	dword1592,[ebp-384]
+	mov	dword1596,[ebp-380]
+	sal	dword1596,2
+	sub	dword1592,dword1596
+	mov	[ebp-388],dword1592
 label0056:
-	mov	dword1641,[ebp-364]
-	mov	[ebp-428],dword1641
-	mov	dword1640,[ebp-368]
-	mov	[ebp-432],dword1640
+	mov	dword1662,[ebp-364]
+	mov	[ebp-428],dword1662
+	mov	dword1661,[ebp-368]
+	mov	[ebp-432],dword1661
 ; start of inline function _tex2d
-	mov	dword1645,dword ptr [__texture_width]
-	dec	dword1645
-	int2float	dword1645
+	mov	dword1666,dword ptr [__texture_width]
+	dec	dword1666
+	int2float	dword1666
 	fmul	dword ptr [ebp-432]
-	float2int	dword1647
-	mov	[ebp-436],dword1647
-	mov	dword1651,dword ptr [__texture_height]
-	dec	dword1651
-	int2float	dword1651
+	float2int	dword1668
+	mov	[ebp-436],dword1668
+	mov	dword1672,dword ptr [__texture_height]
+	dec	dword1672
+	int2float	dword1672
 	fmul	dword ptr [ebp-428]
-	float2int	dword1653
-	mov	[ebp-440],dword1653
-	mov	dword1657,[ebp-440]
-	imul	dword1657,dword ptr [__texture_width]
-	add	dword1657,[ebp-436]
-	sal	dword1657,2
-	add	dword1657,dword ptr [__texture_data]
-	mov	dword1661,[dword1657]
-	mov	[ebp-444],dword1661
+	float2int	dword1674
+	mov	[ebp-440],dword1674
+	mov	dword1678,[ebp-440]
+	imul	dword1678,dword ptr [__texture_width]
+	add	dword1678,[ebp-436]
+	sal	dword1678,2
+	add	dword1678,dword ptr [__texture_data]
+	mov	dword1682,[dword1678]
+	mov	[ebp-444],dword1682
 label005a:
 ; end of inline function _tex2d
-	mov	dword1579,[ebp-444]
-	mov	[ebp-392],dword1579
-	sar	dword ptr [ebp-392],24
-	mov	dword1584,[ebp-392]
-	and	dword1584,255
-	mov	[ebp-420],dword1584
+	mov	dword1600,[ebp-444]
+	mov	[ebp-392],dword1600
+	mov	dword1604,[ebp-392]
+	sar	dword1604,24
+	and	dword1604,255
+	mov	[ebp-420],dword1604
 	cmp	dword ptr [ebp-420],0
 	je	label0059
 	fild	dword ptr [ebp-420]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-424]
-	mov	dword1591,[ebp-384]
-	mov	dword1593,[dword1591]
-	mov	[ebp-408],dword1593
-	mov	dword1596,[ebp-408]
-	and	dword1596,65280
-	sar	dword1596,8
-	mov	[ebp-412],dword1596
-	mov	dword1601,[ebp-408]
-	and	dword1601,255
-	mov	[ebp-416],dword1601
-	mov	dword1605,[ebp-392]
-	and	dword1605,65280
-	sar	dword1605,8
-	mov	[ebp-400],dword1605
-	mov	dword1610,[ebp-392]
-	and	dword1610,255
-	mov	[ebp-404],dword1610
+	mov	dword1612,[ebp-384]
+	mov	dword1614,[dword1612]
+	mov	[ebp-408],dword1614
+	mov	dword1617,[ebp-408]
+	and	dword1617,65280
+	sar	dword1617,8
+	mov	[ebp-412],dword1617
+	mov	dword1622,[ebp-408]
+	and	dword1622,255
+	mov	[ebp-416],dword1622
+	mov	dword1626,[ebp-392]
+	and	dword1626,65280
+	sar	dword1626,8
+	mov	[ebp-400],dword1626
+	mov	dword1631,[ebp-392]
+	and	dword1631,255
+	mov	[ebp-404],dword1631
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-412]
@@ -11446,8 +11497,8 @@ label005a:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1616
-	mov	[ebp-400],dword1616
+	float2int	dword1637
+	mov	[ebp-400],dword1637
 	fild	dword ptr [ebp-404]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-416]
@@ -11455,15 +11506,15 @@ label005a:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1622
-	mov	[ebp-404],dword1622
-	sal	dword ptr [ebp-400],8
-	mov	dword1627,[ebp-400]
-	add	dword1627,[ebp-404]
-	mov	[ebp-396],dword1627
-	mov	dword1630,[ebp-384]
-	mov	dword1632,[ebp-396]
-	mov	[dword1630],dword1632
+	float2int	dword1643
+	mov	[ebp-404],dword1643
+	mov	dword1647,[ebp-400]
+	sal	dword1647,8
+	add	dword1647,[ebp-404]
+	mov	[ebp-396],dword1647
+	mov	dword1651,[ebp-384]
+	mov	dword1653,[ebp-396]
+	mov	[dword1651],dword1653
 label0059:
 	fld	dword ptr [ebp-368]
 	fadd	dword ptr [ebp-360]
@@ -11473,8 +11524,8 @@ label0059:
 	fstp	dword ptr [ebp-364]
 label0057:
 	add	dword ptr [ebp-384],4
-	mov	dword1639,[ebp-384]
-	cmp	dword1639,[ebp-388]
+	mov	dword1660,[ebp-384]
+	cmp	dword1660,[ebp-388]
 	jl	label0056
 label0058:
 label005b:
@@ -11483,8 +11534,8 @@ label0044:
 label0042:
 	jmp	label0045
 label0040:
-	mov	dword1310,[ebp-344]
-	cmp	dword1310,[ebp-348]
+	mov	dword1325,[ebp-344]
+	cmp	dword1325,[ebp-348]
 	jge	label0046
 	fld	dword ptr [ebp-320]
 	fldz
@@ -11494,87 +11545,89 @@ label0040:
 	fldz
 	fsubrp
 	fstp	dword ptr [ebp-360]
-	mov	dword1314,[ebp-328]
-	mov	dword1666,[dword1314+4]
-	mov	[ebp-364],dword1666
-	mov	dword1316,[ebp-328]
-	mov	dword1665,[dword1316]
-	mov	[ebp-368],dword1665
-	mov	dword1664,[ebp-340]
-	mov	[ebp-372],dword1664
-	mov	dword1663,[ebp-352]
-	mov	[ebp-376],dword1663
-	mov	dword1662,[ebp-344]
-	mov	[ebp-380],dword1662
+	mov	dword1329,[ebp-328]
+	mov	dword1687,[dword1329+4]
+	mov	[ebp-364],dword1687
+	mov	dword1331,[ebp-328]
+	mov	dword1686,[dword1331]
+	mov	[ebp-368],dword1686
+	mov	dword1685,[ebp-340]
+	mov	[ebp-372],dword1685
+	mov	dword1684,[ebp-352]
+	mov	[ebp-376],dword1684
+	mov	dword1683,[ebp-344]
+	mov	[ebp-380],dword1683
 ; start of inline function _rasterize_horiz_line
-	mov	dword1670,dword ptr [__pitch]
-	imul	dword1670,[ebp-372]
-	add	dword1670,dword ptr [__videomem]
-	sal	dword ptr [ebp-380],2
-	add	dword1670,[ebp-380]
-	mov	[ebp-384],dword1670
-	sal	dword ptr [ebp-376],2
-	mov	dword1678,[ebp-384]
-	add	dword1678,[ebp-376]
-	sal	dword ptr [ebp-380],2
-	sub	dword1678,[ebp-380]
-	mov	[ebp-388],dword1678
+	mov	dword1691,dword ptr [__pitch]
+	imul	dword1691,[ebp-372]
+	add	dword1691,dword ptr [__videomem]
+	mov	dword1695,[ebp-380]
+	sal	dword1695,2
+	add	dword1691,dword1695
+	mov	[ebp-384],dword1691
+	mov	dword1699,[ebp-376]
+	sal	dword1699,2
+	add	dword1699,[ebp-384]
+	mov	dword1703,[ebp-380]
+	sal	dword1703,2
+	sub	dword1699,dword1703
+	mov	[ebp-388],dword1699
 label005c:
-	mov	dword1746,[ebp-364]
-	mov	[ebp-428],dword1746
-	mov	dword1745,[ebp-368]
-	mov	[ebp-432],dword1745
+	mov	dword1769,[ebp-364]
+	mov	[ebp-428],dword1769
+	mov	dword1768,[ebp-368]
+	mov	[ebp-432],dword1768
 ; start of inline function _tex2d
-	mov	dword1750,dword ptr [__texture_width]
-	dec	dword1750
-	int2float	dword1750
+	mov	dword1773,dword ptr [__texture_width]
+	dec	dword1773
+	int2float	dword1773
 	fmul	dword ptr [ebp-432]
-	float2int	dword1752
-	mov	[ebp-436],dword1752
-	mov	dword1756,dword ptr [__texture_height]
-	dec	dword1756
-	int2float	dword1756
+	float2int	dword1775
+	mov	[ebp-436],dword1775
+	mov	dword1779,dword ptr [__texture_height]
+	dec	dword1779
+	int2float	dword1779
 	fmul	dword ptr [ebp-428]
-	float2int	dword1758
-	mov	[ebp-440],dword1758
-	mov	dword1762,[ebp-440]
-	imul	dword1762,dword ptr [__texture_width]
-	add	dword1762,[ebp-436]
-	sal	dword1762,2
-	add	dword1762,dword ptr [__texture_data]
-	mov	dword1766,[dword1762]
-	mov	[ebp-444],dword1766
+	float2int	dword1781
+	mov	[ebp-440],dword1781
+	mov	dword1785,[ebp-440]
+	imul	dword1785,dword ptr [__texture_width]
+	add	dword1785,[ebp-436]
+	sal	dword1785,2
+	add	dword1785,dword ptr [__texture_data]
+	mov	dword1789,[dword1785]
+	mov	[ebp-444],dword1789
 label0060:
 ; end of inline function _tex2d
-	mov	dword1684,[ebp-444]
-	mov	[ebp-392],dword1684
-	sar	dword ptr [ebp-392],24
-	mov	dword1689,[ebp-392]
-	and	dword1689,255
-	mov	[ebp-420],dword1689
+	mov	dword1707,[ebp-444]
+	mov	[ebp-392],dword1707
+	mov	dword1711,[ebp-392]
+	sar	dword1711,24
+	and	dword1711,255
+	mov	[ebp-420],dword1711
 	cmp	dword ptr [ebp-420],0
 	je	label005f
 	fild	dword ptr [ebp-420]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-424]
-	mov	dword1696,[ebp-384]
-	mov	dword1698,[dword1696]
-	mov	[ebp-408],dword1698
-	mov	dword1701,[ebp-408]
-	and	dword1701,65280
-	sar	dword1701,8
-	mov	[ebp-412],dword1701
-	mov	dword1706,[ebp-408]
-	and	dword1706,255
-	mov	[ebp-416],dword1706
-	mov	dword1710,[ebp-392]
-	and	dword1710,65280
-	sar	dword1710,8
-	mov	[ebp-400],dword1710
-	mov	dword1715,[ebp-392]
-	and	dword1715,255
-	mov	[ebp-404],dword1715
+	mov	dword1719,[ebp-384]
+	mov	dword1721,[dword1719]
+	mov	[ebp-408],dword1721
+	mov	dword1724,[ebp-408]
+	and	dword1724,65280
+	sar	dword1724,8
+	mov	[ebp-412],dword1724
+	mov	dword1729,[ebp-408]
+	and	dword1729,255
+	mov	[ebp-416],dword1729
+	mov	dword1733,[ebp-392]
+	and	dword1733,65280
+	sar	dword1733,8
+	mov	[ebp-400],dword1733
+	mov	dword1738,[ebp-392]
+	and	dword1738,255
+	mov	[ebp-404],dword1738
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-412]
@@ -11582,8 +11635,8 @@ label0060:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1721
-	mov	[ebp-400],dword1721
+	float2int	dword1744
+	mov	[ebp-400],dword1744
 	fild	dword ptr [ebp-404]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-416]
@@ -11591,15 +11644,15 @@ label0060:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1727
-	mov	[ebp-404],dword1727
-	sal	dword ptr [ebp-400],8
-	mov	dword1732,[ebp-400]
-	add	dword1732,[ebp-404]
-	mov	[ebp-396],dword1732
-	mov	dword1735,[ebp-384]
-	mov	dword1737,[ebp-396]
-	mov	[dword1735],dword1737
+	float2int	dword1750
+	mov	[ebp-404],dword1750
+	mov	dword1754,[ebp-400]
+	sal	dword1754,8
+	add	dword1754,[ebp-404]
+	mov	[ebp-396],dword1754
+	mov	dword1758,[ebp-384]
+	mov	dword1760,[ebp-396]
+	mov	[dword1758],dword1760
 label005f:
 	fld	dword ptr [ebp-368]
 	fadd	dword ptr [ebp-360]
@@ -11609,16 +11662,16 @@ label005f:
 	fstp	dword ptr [ebp-364]
 label005d:
 	add	dword ptr [ebp-384],4
-	mov	dword1744,[ebp-384]
-	cmp	dword1744,[ebp-388]
+	mov	dword1767,[ebp-384]
+	cmp	dword1767,[ebp-388]
 	jl	label005c
 label005e:
 label0061:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0047
 label0046:
-	mov	dword1322,[ebp-344]
-	cmp	dword1322,[ebp-352]
+	mov	dword1337,[ebp-344]
+	cmp	dword1337,[ebp-352]
 	jle	label0048
 	fld	dword ptr [ebp-320]
 	fldz
@@ -11628,87 +11681,89 @@ label0046:
 	fldz
 	fsubrp
 	fstp	dword ptr [ebp-360]
-	mov	dword1326,[ebp-332]
-	mov	dword1771,[dword1326+4]
-	mov	[ebp-364],dword1771
-	mov	dword1328,[ebp-332]
-	mov	dword1770,[dword1328]
-	mov	[ebp-368],dword1770
-	mov	dword1769,[ebp-340]
-	mov	[ebp-372],dword1769
-	mov	dword1768,[ebp-344]
-	mov	[ebp-376],dword1768
-	mov	dword1767,[ebp-348]
-	mov	[ebp-380],dword1767
+	mov	dword1341,[ebp-332]
+	mov	dword1794,[dword1341+4]
+	mov	[ebp-364],dword1794
+	mov	dword1343,[ebp-332]
+	mov	dword1793,[dword1343]
+	mov	[ebp-368],dword1793
+	mov	dword1792,[ebp-340]
+	mov	[ebp-372],dword1792
+	mov	dword1791,[ebp-344]
+	mov	[ebp-376],dword1791
+	mov	dword1790,[ebp-348]
+	mov	[ebp-380],dword1790
 ; start of inline function _rasterize_horiz_line
-	mov	dword1775,dword ptr [__pitch]
-	imul	dword1775,[ebp-372]
-	add	dword1775,dword ptr [__videomem]
-	sal	dword ptr [ebp-380],2
-	add	dword1775,[ebp-380]
-	mov	[ebp-384],dword1775
-	sal	dword ptr [ebp-376],2
-	mov	dword1783,[ebp-384]
-	add	dword1783,[ebp-376]
-	sal	dword ptr [ebp-380],2
-	sub	dword1783,[ebp-380]
-	mov	[ebp-388],dword1783
+	mov	dword1798,dword ptr [__pitch]
+	imul	dword1798,[ebp-372]
+	add	dword1798,dword ptr [__videomem]
+	mov	dword1802,[ebp-380]
+	sal	dword1802,2
+	add	dword1798,dword1802
+	mov	[ebp-384],dword1798
+	mov	dword1806,[ebp-376]
+	sal	dword1806,2
+	add	dword1806,[ebp-384]
+	mov	dword1810,[ebp-380]
+	sal	dword1810,2
+	sub	dword1806,dword1810
+	mov	[ebp-388],dword1806
 label0062:
-	mov	dword1851,[ebp-364]
-	mov	[ebp-428],dword1851
-	mov	dword1850,[ebp-368]
-	mov	[ebp-432],dword1850
+	mov	dword1876,[ebp-364]
+	mov	[ebp-428],dword1876
+	mov	dword1875,[ebp-368]
+	mov	[ebp-432],dword1875
 ; start of inline function _tex2d
-	mov	dword1855,dword ptr [__texture_width]
-	dec	dword1855
-	int2float	dword1855
+	mov	dword1880,dword ptr [__texture_width]
+	dec	dword1880
+	int2float	dword1880
 	fmul	dword ptr [ebp-432]
-	float2int	dword1857
-	mov	[ebp-436],dword1857
-	mov	dword1861,dword ptr [__texture_height]
-	dec	dword1861
-	int2float	dword1861
+	float2int	dword1882
+	mov	[ebp-436],dword1882
+	mov	dword1886,dword ptr [__texture_height]
+	dec	dword1886
+	int2float	dword1886
 	fmul	dword ptr [ebp-428]
-	float2int	dword1863
-	mov	[ebp-440],dword1863
-	mov	dword1867,[ebp-440]
-	imul	dword1867,dword ptr [__texture_width]
-	add	dword1867,[ebp-436]
-	sal	dword1867,2
-	add	dword1867,dword ptr [__texture_data]
-	mov	dword1871,[dword1867]
-	mov	[ebp-444],dword1871
+	float2int	dword1888
+	mov	[ebp-440],dword1888
+	mov	dword1892,[ebp-440]
+	imul	dword1892,dword ptr [__texture_width]
+	add	dword1892,[ebp-436]
+	sal	dword1892,2
+	add	dword1892,dword ptr [__texture_data]
+	mov	dword1896,[dword1892]
+	mov	[ebp-444],dword1896
 label0066:
 ; end of inline function _tex2d
-	mov	dword1789,[ebp-444]
-	mov	[ebp-392],dword1789
-	sar	dword ptr [ebp-392],24
-	mov	dword1794,[ebp-392]
-	and	dword1794,255
-	mov	[ebp-420],dword1794
+	mov	dword1814,[ebp-444]
+	mov	[ebp-392],dword1814
+	mov	dword1818,[ebp-392]
+	sar	dword1818,24
+	and	dword1818,255
+	mov	[ebp-420],dword1818
 	cmp	dword ptr [ebp-420],0
 	je	label0065
 	fild	dword ptr [ebp-420]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-424]
-	mov	dword1801,[ebp-384]
-	mov	dword1803,[dword1801]
-	mov	[ebp-408],dword1803
-	mov	dword1806,[ebp-408]
-	and	dword1806,65280
-	sar	dword1806,8
-	mov	[ebp-412],dword1806
-	mov	dword1811,[ebp-408]
-	and	dword1811,255
-	mov	[ebp-416],dword1811
-	mov	dword1815,[ebp-392]
-	and	dword1815,65280
-	sar	dword1815,8
-	mov	[ebp-400],dword1815
-	mov	dword1820,[ebp-392]
-	and	dword1820,255
-	mov	[ebp-404],dword1820
+	mov	dword1826,[ebp-384]
+	mov	dword1828,[dword1826]
+	mov	[ebp-408],dword1828
+	mov	dword1831,[ebp-408]
+	and	dword1831,65280
+	sar	dword1831,8
+	mov	[ebp-412],dword1831
+	mov	dword1836,[ebp-408]
+	and	dword1836,255
+	mov	[ebp-416],dword1836
+	mov	dword1840,[ebp-392]
+	and	dword1840,65280
+	sar	dword1840,8
+	mov	[ebp-400],dword1840
+	mov	dword1845,[ebp-392]
+	and	dword1845,255
+	mov	[ebp-404],dword1845
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-412]
@@ -11716,8 +11771,8 @@ label0066:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1826
-	mov	[ebp-400],dword1826
+	float2int	dword1851
+	mov	[ebp-400],dword1851
 	fild	dword ptr [ebp-404]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-416]
@@ -11725,15 +11780,15 @@ label0066:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1832
-	mov	[ebp-404],dword1832
-	sal	dword ptr [ebp-400],8
-	mov	dword1837,[ebp-400]
-	add	dword1837,[ebp-404]
-	mov	[ebp-396],dword1837
-	mov	dword1840,[ebp-384]
-	mov	dword1842,[ebp-396]
-	mov	[dword1840],dword1842
+	float2int	dword1857
+	mov	[ebp-404],dword1857
+	mov	dword1861,[ebp-400]
+	sal	dword1861,8
+	add	dword1861,[ebp-404]
+	mov	[ebp-396],dword1861
+	mov	dword1865,[ebp-384]
+	mov	dword1867,[ebp-396]
+	mov	[dword1865],dword1867
 label0065:
 	fld	dword ptr [ebp-368]
 	fadd	dword ptr [ebp-360]
@@ -11743,8 +11798,8 @@ label0065:
 	fstp	dword ptr [ebp-364]
 label0063:
 	add	dword ptr [ebp-384],4
-	mov	dword1849,[ebp-384]
-	cmp	dword1849,[ebp-388]
+	mov	dword1874,[ebp-384]
+	cmp	dword1874,[ebp-388]
 	jl	label0062
 label0064:
 label0067:
@@ -11759,87 +11814,89 @@ label0048:
 	fldz
 	fsubrp
 	fstp	dword ptr [ebp-360]
-	mov	dword1335,[ebp-332]
-	mov	dword1876,[dword1335+4]
-	mov	[ebp-364],dword1876
-	mov	dword1337,[ebp-332]
-	mov	dword1875,[dword1337]
-	mov	[ebp-368],dword1875
-	mov	dword1874,[ebp-340]
-	mov	[ebp-372],dword1874
-	mov	dword1873,[ebp-352]
-	mov	[ebp-376],dword1873
-	mov	dword1872,[ebp-348]
-	mov	[ebp-380],dword1872
+	mov	dword1350,[ebp-332]
+	mov	dword1901,[dword1350+4]
+	mov	[ebp-364],dword1901
+	mov	dword1352,[ebp-332]
+	mov	dword1900,[dword1352]
+	mov	[ebp-368],dword1900
+	mov	dword1899,[ebp-340]
+	mov	[ebp-372],dword1899
+	mov	dword1898,[ebp-352]
+	mov	[ebp-376],dword1898
+	mov	dword1897,[ebp-348]
+	mov	[ebp-380],dword1897
 ; start of inline function _rasterize_horiz_line
-	mov	dword1880,dword ptr [__pitch]
-	imul	dword1880,[ebp-372]
-	add	dword1880,dword ptr [__videomem]
-	sal	dword ptr [ebp-380],2
-	add	dword1880,[ebp-380]
-	mov	[ebp-384],dword1880
-	sal	dword ptr [ebp-376],2
-	mov	dword1888,[ebp-384]
-	add	dword1888,[ebp-376]
-	sal	dword ptr [ebp-380],2
-	sub	dword1888,[ebp-380]
-	mov	[ebp-388],dword1888
+	mov	dword1905,dword ptr [__pitch]
+	imul	dword1905,[ebp-372]
+	add	dword1905,dword ptr [__videomem]
+	mov	dword1909,[ebp-380]
+	sal	dword1909,2
+	add	dword1905,dword1909
+	mov	[ebp-384],dword1905
+	mov	dword1913,[ebp-376]
+	sal	dword1913,2
+	add	dword1913,[ebp-384]
+	mov	dword1917,[ebp-380]
+	sal	dword1917,2
+	sub	dword1913,dword1917
+	mov	[ebp-388],dword1913
 label0068:
-	mov	dword1956,[ebp-364]
-	mov	[ebp-428],dword1956
-	mov	dword1955,[ebp-368]
-	mov	[ebp-432],dword1955
+	mov	dword1983,[ebp-364]
+	mov	[ebp-428],dword1983
+	mov	dword1982,[ebp-368]
+	mov	[ebp-432],dword1982
 ; start of inline function _tex2d
-	mov	dword1960,dword ptr [__texture_width]
-	dec	dword1960
-	int2float	dword1960
+	mov	dword1987,dword ptr [__texture_width]
+	dec	dword1987
+	int2float	dword1987
 	fmul	dword ptr [ebp-432]
-	float2int	dword1962
-	mov	[ebp-436],dword1962
-	mov	dword1966,dword ptr [__texture_height]
-	dec	dword1966
-	int2float	dword1966
+	float2int	dword1989
+	mov	[ebp-436],dword1989
+	mov	dword1993,dword ptr [__texture_height]
+	dec	dword1993
+	int2float	dword1993
 	fmul	dword ptr [ebp-428]
-	float2int	dword1968
-	mov	[ebp-440],dword1968
-	mov	dword1972,[ebp-440]
-	imul	dword1972,dword ptr [__texture_width]
-	add	dword1972,[ebp-436]
-	sal	dword1972,2
-	add	dword1972,dword ptr [__texture_data]
-	mov	dword1976,[dword1972]
-	mov	[ebp-444],dword1976
+	float2int	dword1995
+	mov	[ebp-440],dword1995
+	mov	dword1999,[ebp-440]
+	imul	dword1999,dword ptr [__texture_width]
+	add	dword1999,[ebp-436]
+	sal	dword1999,2
+	add	dword1999,dword ptr [__texture_data]
+	mov	dword2003,[dword1999]
+	mov	[ebp-444],dword2003
 label006c:
 ; end of inline function _tex2d
-	mov	dword1894,[ebp-444]
-	mov	[ebp-392],dword1894
-	sar	dword ptr [ebp-392],24
-	mov	dword1899,[ebp-392]
-	and	dword1899,255
-	mov	[ebp-420],dword1899
+	mov	dword1921,[ebp-444]
+	mov	[ebp-392],dword1921
+	mov	dword1925,[ebp-392]
+	sar	dword1925,24
+	and	dword1925,255
+	mov	[ebp-420],dword1925
 	cmp	dword ptr [ebp-420],0
 	je	label006b
 	fild	dword ptr [ebp-420]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-424]
-	mov	dword1906,[ebp-384]
-	mov	dword1908,[dword1906]
-	mov	[ebp-408],dword1908
-	mov	dword1911,[ebp-408]
-	and	dword1911,65280
-	sar	dword1911,8
-	mov	[ebp-412],dword1911
-	mov	dword1916,[ebp-408]
-	and	dword1916,255
-	mov	[ebp-416],dword1916
-	mov	dword1920,[ebp-392]
-	and	dword1920,65280
-	sar	dword1920,8
-	mov	[ebp-400],dword1920
-	mov	dword1925,[ebp-392]
-	and	dword1925,255
-	mov	[ebp-404],dword1925
+	mov	dword1933,[ebp-384]
+	mov	dword1935,[dword1933]
+	mov	[ebp-408],dword1935
+	mov	dword1938,[ebp-408]
+	and	dword1938,65280
+	sar	dword1938,8
+	mov	[ebp-412],dword1938
+	mov	dword1943,[ebp-408]
+	and	dword1943,255
+	mov	[ebp-416],dword1943
+	mov	dword1947,[ebp-392]
+	and	dword1947,65280
+	sar	dword1947,8
+	mov	[ebp-400],dword1947
+	mov	dword1952,[ebp-392]
+	and	dword1952,255
+	mov	[ebp-404],dword1952
 	fild	dword ptr [ebp-400]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-412]
@@ -11847,8 +11904,8 @@ label006c:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1931
-	mov	[ebp-400],dword1931
+	float2int	dword1958
+	mov	[ebp-400],dword1958
 	fild	dword ptr [ebp-404]
 	fmul	dword ptr [ebp-424]
 	fild	dword ptr [ebp-416]
@@ -11856,15 +11913,15 @@ label006c:
 	fsub	dword ptr [ebp-424]
 	fmulp
 	faddp
-	float2int	dword1937
-	mov	[ebp-404],dword1937
-	sal	dword ptr [ebp-400],8
-	mov	dword1942,[ebp-400]
-	add	dword1942,[ebp-404]
-	mov	[ebp-396],dword1942
-	mov	dword1945,[ebp-384]
-	mov	dword1947,[ebp-396]
-	mov	[dword1945],dword1947
+	float2int	dword1964
+	mov	[ebp-404],dword1964
+	mov	dword1968,[ebp-400]
+	sal	dword1968,8
+	add	dword1968,[ebp-404]
+	mov	[ebp-396],dword1968
+	mov	dword1972,[ebp-384]
+	mov	dword1974,[ebp-396]
+	mov	[dword1972],dword1974
 label006b:
 	fld	dword ptr [ebp-368]
 	fadd	dword ptr [ebp-360]
@@ -11874,8 +11931,8 @@ label006b:
 	fstp	dword ptr [ebp-364]
 label0069:
 	add	dword ptr [ebp-384],4
-	mov	dword1954,[ebp-384]
-	cmp	dword1954,[ebp-388]
+	mov	dword1981,[ebp-384]
+	cmp	dword1981,[ebp-388]
 	jl	label0068
 label006a:
 label006d:
@@ -11888,272 +11945,274 @@ label006e:
 label000c:
 	jmp	label006f
 label000b:
-	mov	dword133,[ebp-148]
-	add	dword133,4
-	mov	dword136,[dword133]
-	mov	[ebp-164],dword136
+	mov	dword136,[ebp-148]
+	add	dword136,4
+	mov	dword139,[dword136]
+	mov	[ebp-164],dword139
 label000d:
 label000e:
-	mov	dword138,[ebp-144]
-	add	dword138,4
-	mov	dword141,[dword138]
-	cmp	dword141,[ebp-164]
+	mov	dword141,[ebp-144]
+	add	dword141,4
+	mov	dword144,[dword141]
+	cmp	dword144,[ebp-164]
 	jle	label000f
-	mov	dword143,[ebp-148]
-	add	dword143,4
-	mov	dword146,[ebp-164]
-	sub	dword146,[dword143]
-	mov	dword148,[ebp-144]
-	mov	dword150,[ebp-148]
-	mov	dword151,[dword148]
-	sub	dword151,[dword150]
-	imul	dword146,dword151
-	mov	dword153,[ebp-144]
-	add	dword153,4
-	mov	dword156,[ebp-148]
+	mov	dword146,[ebp-148]
+	add	dword146,4
+	mov	dword149,[ebp-164]
+	sub	dword149,[dword146]
+	mov	dword151,[ebp-144]
+	mov	dword153,[ebp-148]
+	mov	dword154,[dword151]
+	sub	dword154,[dword153]
+	imul	dword149,dword154
+	mov	dword156,[ebp-144]
 	add	dword156,4
-	mov	dword158,[dword153]
-	sub	dword158,[dword156]
-	cdq	dword159
-	idiv	dword146,dword158
-	mov	dword161,[ebp-148]
-	add	dword146,[dword161]
-	mov	[ebp-156],dword146
+	mov	dword159,[ebp-148]
+	add	dword159,4
+	mov	dword161,[dword156]
+	sub	dword161,[dword159]
+	cdq	dword162
+	idiv	dword149,dword161
 	mov	dword164,[ebp-148]
-	add	dword164,4
-	mov	dword167,[ebp-164]
-	sub	dword167,[dword164]
-	mov	dword169,[ebp-140]
-	mov	dword171,[ebp-148]
-	mov	dword172,[dword169]
-	sub	dword172,[dword171]
-	imul	dword167,dword172
-	mov	dword174,[ebp-140]
-	add	dword174,4
-	mov	dword177,[ebp-148]
+	add	dword149,[dword164]
+	mov	[ebp-156],dword149
+	mov	dword167,[ebp-148]
+	add	dword167,4
+	mov	dword170,[ebp-164]
+	sub	dword170,[dword167]
+	mov	dword172,[ebp-140]
+	mov	dword174,[ebp-148]
+	mov	dword175,[dword172]
+	sub	dword175,[dword174]
+	imul	dword170,dword175
+	mov	dword177,[ebp-140]
 	add	dword177,4
-	mov	dword179,[dword174]
-	sub	dword179,[dword177]
-	cdq	dword180
-	idiv	dword167,dword179
-	mov	dword182,[ebp-148]
-	add	dword167,[dword182]
-	mov	[ebp-160],dword167
+	mov	dword180,[ebp-148]
+	add	dword180,4
+	mov	dword182,[dword177]
+	sub	dword182,[dword180]
+	cdq	dword183
+	idiv	dword170,dword182
 	mov	dword185,[ebp-148]
-	add	dword185,4
-	mov	dword188,[ebp-164]
-	sub	dword188,[dword185]
-	int2float	dword188
-	mov	dword190,[ebp-144]
-	mov	dword192,[ebp-148]
-	fld	dword ptr [dword190+8]
-	fsub	dword ptr [dword192+8]
+	add	dword170,[dword185]
+	mov	[ebp-160],dword170
+	mov	dword188,[ebp-148]
+	add	dword188,4
+	mov	dword191,[ebp-164]
+	sub	dword191,[dword188]
+	int2float	dword191
+	mov	dword193,[ebp-144]
+	mov	dword195,[ebp-148]
+	fld	dword ptr [dword193+8]
+	fsub	dword ptr [dword195+8]
 	fmulp
-	mov	dword194,[ebp-144]
-	add	dword194,4
-	mov	dword197,[ebp-148]
+	mov	dword197,[ebp-144]
 	add	dword197,4
-	mov	dword199,[dword194]
-	sub	dword199,[dword197]
-	int2float	dword199
+	mov	dword200,[ebp-148]
+	add	dword200,4
+	mov	dword202,[dword197]
+	sub	dword202,[dword200]
+	int2float	dword202
 	fdivp
-	mov	dword201,[ebp-148]
-	fadd	dword ptr [dword201+8]
-	fstp	dword ptr [ebp-168]
 	mov	dword204,[ebp-148]
-	add	dword204,4
-	mov	dword207,[ebp-164]
-	sub	dword207,[dword204]
-	int2float	dword207
-	mov	dword209,[ebp-140]
-	mov	dword211,[ebp-148]
-	fld	dword ptr [dword209+8]
-	fsub	dword ptr [dword211+8]
+	fadd	dword ptr [dword204+8]
+	fstp	dword ptr [ebp-168]
+	mov	dword207,[ebp-148]
+	add	dword207,4
+	mov	dword210,[ebp-164]
+	sub	dword210,[dword207]
+	int2float	dword210
+	mov	dword212,[ebp-140]
+	mov	dword214,[ebp-148]
+	fld	dword ptr [dword212+8]
+	fsub	dword ptr [dword214+8]
 	fmulp
-	mov	dword213,[ebp-140]
-	add	dword213,4
-	mov	dword216,[ebp-148]
+	mov	dword216,[ebp-140]
 	add	dword216,4
-	mov	dword218,[dword213]
-	sub	dword218,[dword216]
-	int2float	dword218
+	mov	dword219,[ebp-148]
+	add	dword219,4
+	mov	dword221,[dword216]
+	sub	dword221,[dword219]
+	int2float	dword221
 	fdivp
-	mov	dword220,[ebp-148]
-	fadd	dword ptr [dword220+8]
-	fstp	dword ptr [ebp-176]
 	mov	dword223,[ebp-148]
-	add	dword223,4
-	mov	dword226,[ebp-164]
-	sub	dword226,[dword223]
-	int2float	dword226
-	mov	dword228,8
-	add	dword228,[ebp-144]
-	add	dword228,4
+	fadd	dword ptr [dword223+8]
+	fstp	dword ptr [ebp-176]
+	mov	dword226,[ebp-148]
+	add	dword226,4
+	mov	dword229,[ebp-164]
+	sub	dword229,[dword226]
+	int2float	dword229
 	mov	dword231,8
-	add	dword231,[ebp-148]
+	add	dword231,[ebp-144]
 	add	dword231,4
-	fld	dword ptr [dword228]
-	fsub	dword ptr [dword231]
-	fmulp
-	mov	dword234,[ebp-144]
+	mov	dword234,8
+	add	dword234,[ebp-148]
 	add	dword234,4
-	mov	dword237,[ebp-148]
-	add	dword237,4
-	mov	dword239,[dword234]
-	sub	dword239,[dword237]
-	int2float	dword239
-	fdivp
-	mov	dword241,8
-	add	dword241,[ebp-148]
-	add	dword241,4
-	fadd	dword ptr [dword241]
-	fstp	dword ptr [ebp-172]
-	mov	dword245,[ebp-148]
-	add	dword245,4
-	mov	dword248,[ebp-164]
-	sub	dword248,[dword245]
-	int2float	dword248
-	mov	dword250,8
-	add	dword250,[ebp-140]
-	add	dword250,4
-	mov	dword253,8
-	add	dword253,[ebp-148]
-	add	dword253,4
-	fld	dword ptr [dword250]
-	fsub	dword ptr [dword253]
+	fld	dword ptr [dword231]
+	fsub	dword ptr [dword234]
 	fmulp
-	mov	dword256,[ebp-140]
-	add	dword256,4
-	mov	dword259,[ebp-148]
-	add	dword259,4
-	mov	dword261,[dword256]
-	sub	dword261,[dword259]
-	int2float	dword261
+	mov	dword237,[ebp-144]
+	add	dword237,4
+	mov	dword240,[ebp-148]
+	add	dword240,4
+	mov	dword242,[dword237]
+	sub	dword242,[dword240]
+	int2float	dword242
 	fdivp
-	mov	dword263,8
-	add	dword263,[ebp-148]
-	add	dword263,4
-	fadd	dword ptr [dword263]
+	mov	dword244,8
+	add	dword244,[ebp-148]
+	add	dword244,4
+	fadd	dword ptr [dword244]
+	fstp	dword ptr [ebp-172]
+	mov	dword248,[ebp-148]
+	add	dword248,4
+	mov	dword251,[ebp-164]
+	sub	dword251,[dword248]
+	int2float	dword251
+	mov	dword253,8
+	add	dword253,[ebp-140]
+	add	dword253,4
+	mov	dword256,8
+	add	dword256,[ebp-148]
+	add	dword256,4
+	fld	dword ptr [dword253]
+	fsub	dword ptr [dword256]
+	fmulp
+	mov	dword259,[ebp-140]
+	add	dword259,4
+	mov	dword262,[ebp-148]
+	add	dword262,4
+	mov	dword264,[dword259]
+	sub	dword264,[dword262]
+	int2float	dword264
+	fdivp
+	mov	dword266,8
+	add	dword266,[ebp-148]
+	add	dword266,4
+	fadd	dword ptr [dword266]
 	fstp	dword ptr [ebp-180]
-	mov	dword268,[ebp-160]
-	sub	dword268,[ebp-156]
-	int2float	dword268
+	mov	dword271,[ebp-160]
+	sub	dword271,[ebp-156]
+	int2float	dword271
 	fld	dword ptr [ebp-176]
 	fsub	dword ptr [ebp-168]
 	fdivrp
 	fstp	dword ptr [ebp-184]
-	mov	dword274,[ebp-160]
-	sub	dword274,[ebp-156]
-	int2float	dword274
+	mov	dword277,[ebp-160]
+	sub	dword277,[ebp-156]
+	int2float	dword277
 	fld	dword ptr [ebp-180]
 	fsub	dword ptr [ebp-172]
 	fdivrp
 	fstp	dword ptr [ebp-188]
-	mov	dword552,[ebp-188]
-	mov	[ebp-192],dword552
-	mov	dword551,[ebp-184]
-	mov	[ebp-196],dword551
-	mov	dword550,[ebp-180]
-	mov	[ebp-200],dword550
-	mov	dword549,[ebp-176]
-	mov	[ebp-204],dword549
-	mov	dword548,[ebp-172]
-	mov	[ebp-208],dword548
-	mov	dword547,[ebp-168]
-	mov	[ebp-212],dword547
-	mov	dword546,[ebp-164]
-	mov	[ebp-216],dword546
-	mov	dword545,[ebp-160]
-	mov	[ebp-220],dword545
-	mov	dword544,[ebp-156]
-	mov	[ebp-224],dword544
+	mov	dword555,[ebp-188]
+	mov	[ebp-192],dword555
+	mov	dword554,[ebp-184]
+	mov	[ebp-196],dword554
+	mov	dword553,[ebp-180]
+	mov	[ebp-200],dword553
+	mov	dword552,[ebp-176]
+	mov	[ebp-204],dword552
+	mov	dword551,[ebp-172]
+	mov	[ebp-208],dword551
+	mov	dword550,[ebp-168]
+	mov	[ebp-212],dword550
+	mov	dword549,[ebp-164]
+	mov	[ebp-216],dword549
+	mov	dword548,[ebp-160]
+	mov	[ebp-220],dword548
+	mov	dword547,[ebp-156]
+	mov	[ebp-224],dword547
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword556,[ebp-224]
-	cmp	dword556,[ebp-220]
+	mov	dword559,[ebp-224]
+	cmp	dword559,[ebp-220]
 	jg	label0013
-	mov	dword577,[ebp-192]
-	mov	[ebp-228],dword577
-	mov	dword576,[ebp-196]
-	mov	[ebp-232],dword576
-	mov	dword575,[ebp-208]
-	mov	[ebp-236],dword575
-	mov	dword574,[ebp-212]
-	mov	[ebp-240],dword574
-	mov	dword573,[ebp-216]
-	mov	[ebp-244],dword573
-	mov	dword572,[ebp-220]
-	mov	[ebp-248],dword572
-	mov	dword571,[ebp-224]
-	mov	[ebp-252],dword571
+	mov	dword580,[ebp-192]
+	mov	[ebp-228],dword580
+	mov	dword579,[ebp-196]
+	mov	[ebp-232],dword579
+	mov	dword578,[ebp-208]
+	mov	[ebp-236],dword578
+	mov	dword577,[ebp-212]
+	mov	[ebp-240],dword577
+	mov	dword576,[ebp-216]
+	mov	[ebp-244],dword576
+	mov	dword575,[ebp-220]
+	mov	[ebp-248],dword575
+	mov	dword574,[ebp-224]
+	mov	[ebp-252],dword574
 ; start of inline function _rasterize_horiz_line
-	mov	dword581,dword ptr [__pitch]
-	imul	dword581,[ebp-244]
-	add	dword581,dword ptr [__videomem]
-	sal	dword ptr [ebp-252],2
-	add	dword581,[ebp-252]
-	mov	[ebp-256],dword581
-	sal	dword ptr [ebp-248],2
-	mov	dword589,[ebp-256]
-	add	dword589,[ebp-248]
-	sal	dword ptr [ebp-252],2
-	sub	dword589,[ebp-252]
-	mov	[ebp-260],dword589
+	mov	dword584,dword ptr [__pitch]
+	imul	dword584,[ebp-244]
+	add	dword584,dword ptr [__videomem]
+	mov	dword588,[ebp-252]
+	sal	dword588,2
+	add	dword584,dword588
+	mov	[ebp-256],dword584
+	mov	dword592,[ebp-248]
+	sal	dword592,2
+	add	dword592,[ebp-256]
+	mov	dword596,[ebp-252]
+	sal	dword596,2
+	sub	dword592,dword596
+	mov	[ebp-260],dword592
 label0015:
-	mov	dword657,[ebp-236]
-	mov	[ebp-300],dword657
-	mov	dword656,[ebp-240]
-	mov	[ebp-304],dword656
+	mov	dword662,[ebp-236]
+	mov	[ebp-300],dword662
+	mov	dword661,[ebp-240]
+	mov	[ebp-304],dword661
 ; start of inline function _tex2d
-	mov	dword661,dword ptr [__texture_width]
-	dec	dword661
-	int2float	dword661
+	mov	dword666,dword ptr [__texture_width]
+	dec	dword666
+	int2float	dword666
 	fmul	dword ptr [ebp-304]
-	float2int	dword663
-	mov	[ebp-308],dword663
-	mov	dword667,dword ptr [__texture_height]
-	dec	dword667
-	int2float	dword667
+	float2int	dword668
+	mov	[ebp-308],dword668
+	mov	dword672,dword ptr [__texture_height]
+	dec	dword672
+	int2float	dword672
 	fmul	dword ptr [ebp-300]
-	float2int	dword669
-	mov	[ebp-312],dword669
-	mov	dword673,[ebp-312]
-	imul	dword673,dword ptr [__texture_width]
-	add	dword673,[ebp-308]
-	sal	dword673,2
-	add	dword673,dword ptr [__texture_data]
-	mov	dword677,[dword673]
-	mov	[ebp-316],dword677
+	float2int	dword674
+	mov	[ebp-312],dword674
+	mov	dword678,[ebp-312]
+	imul	dword678,dword ptr [__texture_width]
+	add	dword678,[ebp-308]
+	sal	dword678,2
+	add	dword678,dword ptr [__texture_data]
+	mov	dword682,[dword678]
+	mov	[ebp-316],dword682
 label0019:
 ; end of inline function _tex2d
-	mov	dword595,[ebp-316]
-	mov	[ebp-264],dword595
-	sar	dword ptr [ebp-264],24
-	mov	dword600,[ebp-264]
-	and	dword600,255
-	mov	[ebp-292],dword600
+	mov	dword600,[ebp-316]
+	mov	[ebp-264],dword600
+	mov	dword604,[ebp-264]
+	sar	dword604,24
+	and	dword604,255
+	mov	[ebp-292],dword604
 	cmp	dword ptr [ebp-292],0
 	je	label0018
 	fild	dword ptr [ebp-292]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-296]
-	mov	dword607,[ebp-256]
-	mov	dword609,[dword607]
-	mov	[ebp-280],dword609
-	mov	dword612,[ebp-280]
-	and	dword612,65280
-	sar	dword612,8
-	mov	[ebp-284],dword612
+	mov	dword612,[ebp-256]
+	mov	dword614,[dword612]
+	mov	[ebp-280],dword614
 	mov	dword617,[ebp-280]
-	and	dword617,255
-	mov	[ebp-288],dword617
-	mov	dword621,[ebp-264]
-	and	dword621,65280
-	sar	dword621,8
-	mov	[ebp-272],dword621
+	and	dword617,65280
+	sar	dword617,8
+	mov	[ebp-284],dword617
+	mov	dword622,[ebp-280]
+	and	dword622,255
+	mov	[ebp-288],dword622
 	mov	dword626,[ebp-264]
-	and	dword626,255
-	mov	[ebp-276],dword626
+	and	dword626,65280
+	sar	dword626,8
+	mov	[ebp-272],dword626
+	mov	dword631,[ebp-264]
+	and	dword631,255
+	mov	[ebp-276],dword631
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-284]
@@ -12161,8 +12220,8 @@ label0019:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword632
-	mov	[ebp-272],dword632
+	float2int	dword637
+	mov	[ebp-272],dword637
 	fild	dword ptr [ebp-276]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-288]
@@ -12170,15 +12229,15 @@ label0019:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword638
-	mov	[ebp-276],dword638
-	sal	dword ptr [ebp-272],8
-	mov	dword643,[ebp-272]
-	add	dword643,[ebp-276]
-	mov	[ebp-268],dword643
-	mov	dword646,[ebp-256]
-	mov	dword648,[ebp-268]
-	mov	[dword646],dword648
+	float2int	dword643
+	mov	[ebp-276],dword643
+	mov	dword647,[ebp-272]
+	sal	dword647,8
+	add	dword647,[ebp-276]
+	mov	[ebp-268],dword647
+	mov	dword651,[ebp-256]
+	mov	dword653,[ebp-268]
+	mov	[dword651],dword653
 label0018:
 	fld	dword ptr [ebp-240]
 	fadd	dword ptr [ebp-232]
@@ -12188,97 +12247,99 @@ label0018:
 	fstp	dword ptr [ebp-236]
 label0016:
 	add	dword ptr [ebp-256],4
-	mov	dword655,[ebp-256]
-	cmp	dword655,[ebp-260]
+	mov	dword660,[ebp-256]
+	cmp	dword660,[ebp-260]
 	jl	label0015
 label0017:
 label001a:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0014
 label0013:
-	mov	dword684,[ebp-192]
-	mov	[ebp-228],dword684
-	mov	dword683,[ebp-196]
-	mov	[ebp-232],dword683
-	mov	dword682,[ebp-200]
-	mov	[ebp-236],dword682
-	mov	dword681,[ebp-204]
-	mov	[ebp-240],dword681
-	mov	dword680,[ebp-216]
-	mov	[ebp-244],dword680
-	mov	dword679,[ebp-224]
-	mov	[ebp-248],dword679
-	mov	dword678,[ebp-220]
-	mov	[ebp-252],dword678
+	mov	dword689,[ebp-192]
+	mov	[ebp-228],dword689
+	mov	dword688,[ebp-196]
+	mov	[ebp-232],dword688
+	mov	dword687,[ebp-200]
+	mov	[ebp-236],dword687
+	mov	dword686,[ebp-204]
+	mov	[ebp-240],dword686
+	mov	dword685,[ebp-216]
+	mov	[ebp-244],dword685
+	mov	dword684,[ebp-224]
+	mov	[ebp-248],dword684
+	mov	dword683,[ebp-220]
+	mov	[ebp-252],dword683
 ; start of inline function _rasterize_horiz_line
-	mov	dword688,dword ptr [__pitch]
-	imul	dword688,[ebp-244]
-	add	dword688,dword ptr [__videomem]
-	sal	dword ptr [ebp-252],2
-	add	dword688,[ebp-252]
-	mov	[ebp-256],dword688
-	sal	dword ptr [ebp-248],2
-	mov	dword696,[ebp-256]
-	add	dword696,[ebp-248]
-	sal	dword ptr [ebp-252],2
-	sub	dword696,[ebp-252]
-	mov	[ebp-260],dword696
+	mov	dword693,dword ptr [__pitch]
+	imul	dword693,[ebp-244]
+	add	dword693,dword ptr [__videomem]
+	mov	dword697,[ebp-252]
+	sal	dword697,2
+	add	dword693,dword697
+	mov	[ebp-256],dword693
+	mov	dword701,[ebp-248]
+	sal	dword701,2
+	add	dword701,[ebp-256]
+	mov	dword705,[ebp-252]
+	sal	dword705,2
+	sub	dword701,dword705
+	mov	[ebp-260],dword701
 label001b:
-	mov	dword764,[ebp-236]
-	mov	[ebp-300],dword764
-	mov	dword763,[ebp-240]
-	mov	[ebp-304],dword763
+	mov	dword771,[ebp-236]
+	mov	[ebp-300],dword771
+	mov	dword770,[ebp-240]
+	mov	[ebp-304],dword770
 ; start of inline function _tex2d
-	mov	dword768,dword ptr [__texture_width]
-	dec	dword768
-	int2float	dword768
+	mov	dword775,dword ptr [__texture_width]
+	dec	dword775
+	int2float	dword775
 	fmul	dword ptr [ebp-304]
-	float2int	dword770
-	mov	[ebp-308],dword770
-	mov	dword774,dword ptr [__texture_height]
-	dec	dword774
-	int2float	dword774
+	float2int	dword777
+	mov	[ebp-308],dword777
+	mov	dword781,dword ptr [__texture_height]
+	dec	dword781
+	int2float	dword781
 	fmul	dword ptr [ebp-300]
-	float2int	dword776
-	mov	[ebp-312],dword776
-	mov	dword780,[ebp-312]
-	imul	dword780,dword ptr [__texture_width]
-	add	dword780,[ebp-308]
-	sal	dword780,2
-	add	dword780,dword ptr [__texture_data]
-	mov	dword784,[dword780]
-	mov	[ebp-316],dword784
+	float2int	dword783
+	mov	[ebp-312],dword783
+	mov	dword787,[ebp-312]
+	imul	dword787,dword ptr [__texture_width]
+	add	dword787,[ebp-308]
+	sal	dword787,2
+	add	dword787,dword ptr [__texture_data]
+	mov	dword791,[dword787]
+	mov	[ebp-316],dword791
 label001f:
 ; end of inline function _tex2d
-	mov	dword702,[ebp-316]
-	mov	[ebp-264],dword702
-	sar	dword ptr [ebp-264],24
-	mov	dword707,[ebp-264]
-	and	dword707,255
-	mov	[ebp-292],dword707
+	mov	dword709,[ebp-316]
+	mov	[ebp-264],dword709
+	mov	dword713,[ebp-264]
+	sar	dword713,24
+	and	dword713,255
+	mov	[ebp-292],dword713
 	cmp	dword ptr [ebp-292],0
 	je	label001e
 	fild	dword ptr [ebp-292]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-296]
-	mov	dword714,[ebp-256]
-	mov	dword716,[dword714]
-	mov	[ebp-280],dword716
-	mov	dword719,[ebp-280]
-	and	dword719,65280
-	sar	dword719,8
-	mov	[ebp-284],dword719
-	mov	dword724,[ebp-280]
-	and	dword724,255
-	mov	[ebp-288],dword724
-	mov	dword728,[ebp-264]
-	and	dword728,65280
-	sar	dword728,8
-	mov	[ebp-272],dword728
-	mov	dword733,[ebp-264]
-	and	dword733,255
-	mov	[ebp-276],dword733
+	mov	dword721,[ebp-256]
+	mov	dword723,[dword721]
+	mov	[ebp-280],dword723
+	mov	dword726,[ebp-280]
+	and	dword726,65280
+	sar	dword726,8
+	mov	[ebp-284],dword726
+	mov	dword731,[ebp-280]
+	and	dword731,255
+	mov	[ebp-288],dword731
+	mov	dword735,[ebp-264]
+	and	dword735,65280
+	sar	dword735,8
+	mov	[ebp-272],dword735
+	mov	dword740,[ebp-264]
+	and	dword740,255
+	mov	[ebp-276],dword740
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-284]
@@ -12286,8 +12347,8 @@ label001f:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword739
-	mov	[ebp-272],dword739
+	float2int	dword746
+	mov	[ebp-272],dword746
 	fild	dword ptr [ebp-276]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-288]
@@ -12295,15 +12356,15 @@ label001f:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword745
-	mov	[ebp-276],dword745
-	sal	dword ptr [ebp-272],8
-	mov	dword750,[ebp-272]
-	add	dword750,[ebp-276]
-	mov	[ebp-268],dword750
-	mov	dword753,[ebp-256]
-	mov	dword755,[ebp-268]
-	mov	[dword753],dword755
+	float2int	dword752
+	mov	[ebp-276],dword752
+	mov	dword756,[ebp-272]
+	sal	dword756,8
+	add	dword756,[ebp-276]
+	mov	[ebp-268],dword756
+	mov	dword760,[ebp-256]
+	mov	dword762,[ebp-268]
+	mov	[dword760],dword762
 label001e:
 	fld	dword ptr [ebp-240]
 	fadd	dword ptr [ebp-232]
@@ -12313,8 +12374,8 @@ label001e:
 	fstp	dword ptr [ebp-236]
 label001c:
 	add	dword ptr [ebp-256],4
-	mov	dword762,[ebp-256]
-	cmp	dword762,[ebp-260]
+	mov	dword769,[ebp-256]
+	cmp	dword769,[ebp-260]
 	jl	label001b
 label001d:
 label0020:
@@ -12325,212 +12386,214 @@ label0021:
 	inc	dword ptr [ebp-164]
 	jmp	label000e
 label000f:
-	mov	dword289,[ebp-144]
-	add	dword289,4
-	mov	dword292,[ebp-148]
+	mov	dword292,[ebp-144]
 	add	dword292,4
-	mov	dword294,[dword289]
-	sub	dword294,[dword292]
-	mov	dword296,[ebp-140]
-	mov	dword298,[ebp-148]
-	mov	dword299,[dword296]
-	sub	dword299,[dword298]
-	imul	dword294,dword299
-	mov	dword301,[ebp-140]
-	add	dword301,4
-	mov	dword304,[ebp-148]
+	mov	dword295,[ebp-148]
+	add	dword295,4
+	mov	dword297,[dword292]
+	sub	dword297,[dword295]
+	mov	dword299,[ebp-140]
+	mov	dword301,[ebp-148]
+	mov	dword302,[dword299]
+	sub	dword302,[dword301]
+	imul	dword297,dword302
+	mov	dword304,[ebp-140]
 	add	dword304,4
-	mov	dword306,[dword301]
-	sub	dword306,[dword304]
-	cdq	dword307
-	idiv	dword294,dword306
-	mov	dword309,[ebp-148]
-	add	dword294,[dword309]
-	mov	[ebp-160],dword294
-	mov	dword312,[ebp-144]
-	add	dword312,4
-	mov	dword315,[ebp-148]
+	mov	dword307,[ebp-148]
+	add	dword307,4
+	mov	dword309,[dword304]
+	sub	dword309,[dword307]
+	cdq	dword310
+	idiv	dword297,dword309
+	mov	dword312,[ebp-148]
+	add	dword297,[dword312]
+	mov	[ebp-160],dword297
+	mov	dword315,[ebp-144]
 	add	dword315,4
-	mov	dword317,[dword312]
-	sub	dword317,[dword315]
-	int2float	dword317
-	mov	dword319,[ebp-140]
-	mov	dword321,[ebp-148]
-	fld	dword ptr [dword319+8]
-	fsub	dword ptr [dword321+8]
+	mov	dword318,[ebp-148]
+	add	dword318,4
+	mov	dword320,[dword315]
+	sub	dword320,[dword318]
+	int2float	dword320
+	mov	dword322,[ebp-140]
+	mov	dword324,[ebp-148]
+	fld	dword ptr [dword322+8]
+	fsub	dword ptr [dword324+8]
 	fmulp
-	mov	dword323,[ebp-140]
-	add	dword323,4
-	mov	dword326,[ebp-148]
+	mov	dword326,[ebp-140]
 	add	dword326,4
-	mov	dword328,[dword323]
-	sub	dword328,[dword326]
-	int2float	dword328
+	mov	dword329,[ebp-148]
+	add	dword329,4
+	mov	dword331,[dword326]
+	sub	dword331,[dword329]
+	int2float	dword331
 	fdivp
-	mov	dword330,[ebp-148]
-	fadd	dword ptr [dword330+8]
+	mov	dword333,[ebp-148]
+	fadd	dword ptr [dword333+8]
 	fstp	dword ptr [ebp-176]
-	mov	dword333,[ebp-144]
-	add	dword333,4
-	mov	dword336,[ebp-148]
+	mov	dword336,[ebp-144]
 	add	dword336,4
-	mov	dword338,[dword333]
-	sub	dword338,[dword336]
-	int2float	dword338
-	mov	dword340,8
-	add	dword340,[ebp-140]
-	add	dword340,4
+	mov	dword339,[ebp-148]
+	add	dword339,4
+	mov	dword341,[dword336]
+	sub	dword341,[dword339]
+	int2float	dword341
 	mov	dword343,8
-	add	dword343,[ebp-148]
+	add	dword343,[ebp-140]
 	add	dword343,4
-	fld	dword ptr [dword340]
-	fsub	dword ptr [dword343]
-	fmulp
-	mov	dword346,[ebp-140]
+	mov	dword346,8
+	add	dword346,[ebp-148]
 	add	dword346,4
-	mov	dword349,[ebp-148]
+	fld	dword ptr [dword343]
+	fsub	dword ptr [dword346]
+	fmulp
+	mov	dword349,[ebp-140]
 	add	dword349,4
-	mov	dword351,[dword346]
-	sub	dword351,[dword349]
-	int2float	dword351
+	mov	dword352,[ebp-148]
+	add	dword352,4
+	mov	dword354,[dword349]
+	sub	dword354,[dword352]
+	int2float	dword354
 	fdivp
-	mov	dword353,8
-	add	dword353,[ebp-148]
-	add	dword353,4
-	fadd	dword ptr [dword353]
+	mov	dword356,8
+	add	dword356,[ebp-148]
+	add	dword356,4
+	fadd	dword ptr [dword356]
 	fstp	dword ptr [ebp-180]
-	mov	dword357,[ebp-144]
-	fld	dword ptr [ebp-176]
-	fsub	dword ptr [dword357+8]
 	mov	dword360,[ebp-144]
-	mov	dword362,[ebp-160]
-	sub	dword362,[dword360]
-	int2float	dword362
+	fld	dword ptr [ebp-176]
+	fsub	dword ptr [dword360+8]
+	mov	dword363,[ebp-144]
+	mov	dword365,[ebp-160]
+	sub	dword365,[dword363]
+	int2float	dword365
 	fdivp
 	fstp	dword ptr [ebp-184]
-	mov	dword365,8
-	add	dword365,[ebp-144]
-	add	dword365,4
+	mov	dword368,8
+	add	dword368,[ebp-144]
+	add	dword368,4
 	fld	dword ptr [ebp-180]
-	fsub	dword ptr [dword365]
-	mov	dword369,[ebp-144]
-	mov	dword371,[ebp-160]
-	sub	dword371,[dword369]
-	int2float	dword371
+	fsub	dword ptr [dword368]
+	mov	dword372,[ebp-144]
+	mov	dword374,[ebp-160]
+	sub	dword374,[dword372]
+	int2float	dword374
 	fdivp
 	fstp	dword ptr [ebp-188]
-	mov	dword793,[ebp-188]
-	mov	[ebp-192],dword793
-	mov	dword792,[ebp-184]
-	mov	[ebp-196],dword792
-	mov	dword376,8
-	add	dword376,[ebp-144]
-	add	dword376,4
-	mov	dword791,[dword376]
-	mov	[ebp-200],dword791
-	mov	dword379,[ebp-144]
-	mov	dword790,[dword379+8]
-	mov	[ebp-204],dword790
-	mov	dword789,[ebp-180]
-	mov	[ebp-208],dword789
-	mov	dword788,[ebp-176]
-	mov	[ebp-212],dword788
-	mov	dword383,[ebp-144]
-	add	dword383,4
-	mov	dword787,[dword383]
-	mov	[ebp-216],dword787
+	mov	dword800,[ebp-188]
+	mov	[ebp-192],dword800
+	mov	dword799,[ebp-184]
+	mov	[ebp-196],dword799
+	mov	dword379,8
+	add	dword379,[ebp-144]
+	add	dword379,4
+	mov	dword798,[dword379]
+	mov	[ebp-200],dword798
+	mov	dword382,[ebp-144]
+	mov	dword797,[dword382+8]
+	mov	[ebp-204],dword797
+	mov	dword796,[ebp-180]
+	mov	[ebp-208],dword796
+	mov	dword795,[ebp-176]
+	mov	[ebp-212],dword795
 	mov	dword386,[ebp-144]
-	mov	dword786,[dword386]
-	mov	[ebp-220],dword786
-	mov	dword785,[ebp-160]
-	mov	[ebp-224],dword785
+	add	dword386,4
+	mov	dword794,[dword386]
+	mov	[ebp-216],dword794
+	mov	dword389,[ebp-144]
+	mov	dword793,[dword389]
+	mov	[ebp-220],dword793
+	mov	dword792,[ebp-160]
+	mov	[ebp-224],dword792
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword797,[ebp-224]
-	cmp	dword797,[ebp-220]
+	mov	dword804,[ebp-224]
+	cmp	dword804,[ebp-220]
 	jg	label0022
-	mov	dword818,[ebp-192]
-	mov	[ebp-228],dword818
-	mov	dword817,[ebp-196]
-	mov	[ebp-232],dword817
-	mov	dword816,[ebp-208]
-	mov	[ebp-236],dword816
-	mov	dword815,[ebp-212]
-	mov	[ebp-240],dword815
-	mov	dword814,[ebp-216]
-	mov	[ebp-244],dword814
-	mov	dword813,[ebp-220]
-	mov	[ebp-248],dword813
-	mov	dword812,[ebp-224]
-	mov	[ebp-252],dword812
+	mov	dword825,[ebp-192]
+	mov	[ebp-228],dword825
+	mov	dword824,[ebp-196]
+	mov	[ebp-232],dword824
+	mov	dword823,[ebp-208]
+	mov	[ebp-236],dword823
+	mov	dword822,[ebp-212]
+	mov	[ebp-240],dword822
+	mov	dword821,[ebp-216]
+	mov	[ebp-244],dword821
+	mov	dword820,[ebp-220]
+	mov	[ebp-248],dword820
+	mov	dword819,[ebp-224]
+	mov	[ebp-252],dword819
 ; start of inline function _rasterize_horiz_line
-	mov	dword822,dword ptr [__pitch]
-	imul	dword822,[ebp-244]
-	add	dword822,dword ptr [__videomem]
-	sal	dword ptr [ebp-252],2
-	add	dword822,[ebp-252]
-	mov	[ebp-256],dword822
-	sal	dword ptr [ebp-248],2
-	mov	dword830,[ebp-256]
-	add	dword830,[ebp-248]
-	sal	dword ptr [ebp-252],2
-	sub	dword830,[ebp-252]
-	mov	[ebp-260],dword830
+	mov	dword829,dword ptr [__pitch]
+	imul	dword829,[ebp-244]
+	add	dword829,dword ptr [__videomem]
+	mov	dword833,[ebp-252]
+	sal	dword833,2
+	add	dword829,dword833
+	mov	[ebp-256],dword829
+	mov	dword837,[ebp-248]
+	sal	dword837,2
+	add	dword837,[ebp-256]
+	mov	dword841,[ebp-252]
+	sal	dword841,2
+	sub	dword837,dword841
+	mov	[ebp-260],dword837
 label0024:
-	mov	dword898,[ebp-236]
-	mov	[ebp-300],dword898
-	mov	dword897,[ebp-240]
-	mov	[ebp-304],dword897
+	mov	dword907,[ebp-236]
+	mov	[ebp-300],dword907
+	mov	dword906,[ebp-240]
+	mov	[ebp-304],dword906
 ; start of inline function _tex2d
-	mov	dword902,dword ptr [__texture_width]
-	dec	dword902
-	int2float	dword902
+	mov	dword911,dword ptr [__texture_width]
+	dec	dword911
+	int2float	dword911
 	fmul	dword ptr [ebp-304]
-	float2int	dword904
-	mov	[ebp-308],dword904
-	mov	dword908,dword ptr [__texture_height]
-	dec	dword908
-	int2float	dword908
+	float2int	dword913
+	mov	[ebp-308],dword913
+	mov	dword917,dword ptr [__texture_height]
+	dec	dword917
+	int2float	dword917
 	fmul	dword ptr [ebp-300]
-	float2int	dword910
-	mov	[ebp-312],dword910
-	mov	dword914,[ebp-312]
-	imul	dword914,dword ptr [__texture_width]
-	add	dword914,[ebp-308]
-	sal	dword914,2
-	add	dword914,dword ptr [__texture_data]
-	mov	dword918,[dword914]
-	mov	[ebp-316],dword918
+	float2int	dword919
+	mov	[ebp-312],dword919
+	mov	dword923,[ebp-312]
+	imul	dword923,dword ptr [__texture_width]
+	add	dword923,[ebp-308]
+	sal	dword923,2
+	add	dword923,dword ptr [__texture_data]
+	mov	dword927,[dword923]
+	mov	[ebp-316],dword927
 label0028:
 ; end of inline function _tex2d
-	mov	dword836,[ebp-316]
-	mov	[ebp-264],dword836
-	sar	dword ptr [ebp-264],24
-	mov	dword841,[ebp-264]
-	and	dword841,255
-	mov	[ebp-292],dword841
+	mov	dword845,[ebp-316]
+	mov	[ebp-264],dword845
+	mov	dword849,[ebp-264]
+	sar	dword849,24
+	and	dword849,255
+	mov	[ebp-292],dword849
 	cmp	dword ptr [ebp-292],0
 	je	label0027
 	fild	dword ptr [ebp-292]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-296]
-	mov	dword848,[ebp-256]
-	mov	dword850,[dword848]
-	mov	[ebp-280],dword850
-	mov	dword853,[ebp-280]
-	and	dword853,65280
-	sar	dword853,8
-	mov	[ebp-284],dword853
-	mov	dword858,[ebp-280]
-	and	dword858,255
-	mov	[ebp-288],dword858
-	mov	dword862,[ebp-264]
+	mov	dword857,[ebp-256]
+	mov	dword859,[dword857]
+	mov	[ebp-280],dword859
+	mov	dword862,[ebp-280]
 	and	dword862,65280
 	sar	dword862,8
-	mov	[ebp-272],dword862
-	mov	dword867,[ebp-264]
+	mov	[ebp-284],dword862
+	mov	dword867,[ebp-280]
 	and	dword867,255
-	mov	[ebp-276],dword867
+	mov	[ebp-288],dword867
+	mov	dword871,[ebp-264]
+	and	dword871,65280
+	sar	dword871,8
+	mov	[ebp-272],dword871
+	mov	dword876,[ebp-264]
+	and	dword876,255
+	mov	[ebp-276],dword876
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-284]
@@ -12538,8 +12601,8 @@ label0028:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword873
-	mov	[ebp-272],dword873
+	float2int	dword882
+	mov	[ebp-272],dword882
 	fild	dword ptr [ebp-276]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-288]
@@ -12547,15 +12610,15 @@ label0028:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword879
-	mov	[ebp-276],dword879
-	sal	dword ptr [ebp-272],8
-	mov	dword884,[ebp-272]
-	add	dword884,[ebp-276]
-	mov	[ebp-268],dword884
-	mov	dword887,[ebp-256]
-	mov	dword889,[ebp-268]
-	mov	[dword887],dword889
+	float2int	dword888
+	mov	[ebp-276],dword888
+	mov	dword892,[ebp-272]
+	sal	dword892,8
+	add	dword892,[ebp-276]
+	mov	[ebp-268],dword892
+	mov	dword896,[ebp-256]
+	mov	dword898,[ebp-268]
+	mov	[dword896],dword898
 label0027:
 	fld	dword ptr [ebp-240]
 	fadd	dword ptr [ebp-232]
@@ -12565,97 +12628,99 @@ label0027:
 	fstp	dword ptr [ebp-236]
 label0025:
 	add	dword ptr [ebp-256],4
-	mov	dword896,[ebp-256]
-	cmp	dword896,[ebp-260]
+	mov	dword905,[ebp-256]
+	cmp	dword905,[ebp-260]
 	jl	label0024
 label0026:
 label0029:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0023
 label0022:
-	mov	dword925,[ebp-192]
-	mov	[ebp-228],dword925
-	mov	dword924,[ebp-196]
-	mov	[ebp-232],dword924
-	mov	dword923,[ebp-200]
-	mov	[ebp-236],dword923
-	mov	dword922,[ebp-204]
-	mov	[ebp-240],dword922
-	mov	dword921,[ebp-216]
-	mov	[ebp-244],dword921
-	mov	dword920,[ebp-224]
-	mov	[ebp-248],dword920
-	mov	dword919,[ebp-220]
-	mov	[ebp-252],dword919
+	mov	dword934,[ebp-192]
+	mov	[ebp-228],dword934
+	mov	dword933,[ebp-196]
+	mov	[ebp-232],dword933
+	mov	dword932,[ebp-200]
+	mov	[ebp-236],dword932
+	mov	dword931,[ebp-204]
+	mov	[ebp-240],dword931
+	mov	dword930,[ebp-216]
+	mov	[ebp-244],dword930
+	mov	dword929,[ebp-224]
+	mov	[ebp-248],dword929
+	mov	dword928,[ebp-220]
+	mov	[ebp-252],dword928
 ; start of inline function _rasterize_horiz_line
-	mov	dword929,dword ptr [__pitch]
-	imul	dword929,[ebp-244]
-	add	dword929,dword ptr [__videomem]
-	sal	dword ptr [ebp-252],2
-	add	dword929,[ebp-252]
-	mov	[ebp-256],dword929
-	sal	dword ptr [ebp-248],2
-	mov	dword937,[ebp-256]
-	add	dword937,[ebp-248]
-	sal	dword ptr [ebp-252],2
-	sub	dword937,[ebp-252]
-	mov	[ebp-260],dword937
+	mov	dword938,dword ptr [__pitch]
+	imul	dword938,[ebp-244]
+	add	dword938,dword ptr [__videomem]
+	mov	dword942,[ebp-252]
+	sal	dword942,2
+	add	dword938,dword942
+	mov	[ebp-256],dword938
+	mov	dword946,[ebp-248]
+	sal	dword946,2
+	add	dword946,[ebp-256]
+	mov	dword950,[ebp-252]
+	sal	dword950,2
+	sub	dword946,dword950
+	mov	[ebp-260],dword946
 label002a:
-	mov	dword1005,[ebp-236]
-	mov	[ebp-300],dword1005
-	mov	dword1004,[ebp-240]
-	mov	[ebp-304],dword1004
+	mov	dword1016,[ebp-236]
+	mov	[ebp-300],dword1016
+	mov	dword1015,[ebp-240]
+	mov	[ebp-304],dword1015
 ; start of inline function _tex2d
-	mov	dword1009,dword ptr [__texture_width]
-	dec	dword1009
-	int2float	dword1009
+	mov	dword1020,dword ptr [__texture_width]
+	dec	dword1020
+	int2float	dword1020
 	fmul	dword ptr [ebp-304]
-	float2int	dword1011
-	mov	[ebp-308],dword1011
-	mov	dword1015,dword ptr [__texture_height]
-	dec	dword1015
-	int2float	dword1015
+	float2int	dword1022
+	mov	[ebp-308],dword1022
+	mov	dword1026,dword ptr [__texture_height]
+	dec	dword1026
+	int2float	dword1026
 	fmul	dword ptr [ebp-300]
-	float2int	dword1017
-	mov	[ebp-312],dword1017
-	mov	dword1021,[ebp-312]
-	imul	dword1021,dword ptr [__texture_width]
-	add	dword1021,[ebp-308]
-	sal	dword1021,2
-	add	dword1021,dword ptr [__texture_data]
-	mov	dword1025,[dword1021]
-	mov	[ebp-316],dword1025
+	float2int	dword1028
+	mov	[ebp-312],dword1028
+	mov	dword1032,[ebp-312]
+	imul	dword1032,dword ptr [__texture_width]
+	add	dword1032,[ebp-308]
+	sal	dword1032,2
+	add	dword1032,dword ptr [__texture_data]
+	mov	dword1036,[dword1032]
+	mov	[ebp-316],dword1036
 label002e:
 ; end of inline function _tex2d
-	mov	dword943,[ebp-316]
-	mov	[ebp-264],dword943
-	sar	dword ptr [ebp-264],24
-	mov	dword948,[ebp-264]
-	and	dword948,255
-	mov	[ebp-292],dword948
+	mov	dword954,[ebp-316]
+	mov	[ebp-264],dword954
+	mov	dword958,[ebp-264]
+	sar	dword958,24
+	and	dword958,255
+	mov	[ebp-292],dword958
 	cmp	dword ptr [ebp-292],0
 	je	label002d
 	fild	dword ptr [ebp-292]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-296]
-	mov	dword955,[ebp-256]
-	mov	dword957,[dword955]
-	mov	[ebp-280],dword957
-	mov	dword960,[ebp-280]
-	and	dword960,65280
-	sar	dword960,8
-	mov	[ebp-284],dword960
-	mov	dword965,[ebp-280]
-	and	dword965,255
-	mov	[ebp-288],dword965
-	mov	dword969,[ebp-264]
-	and	dword969,65280
-	sar	dword969,8
-	mov	[ebp-272],dword969
-	mov	dword974,[ebp-264]
-	and	dword974,255
-	mov	[ebp-276],dword974
+	mov	dword966,[ebp-256]
+	mov	dword968,[dword966]
+	mov	[ebp-280],dword968
+	mov	dword971,[ebp-280]
+	and	dword971,65280
+	sar	dword971,8
+	mov	[ebp-284],dword971
+	mov	dword976,[ebp-280]
+	and	dword976,255
+	mov	[ebp-288],dword976
+	mov	dword980,[ebp-264]
+	and	dword980,65280
+	sar	dword980,8
+	mov	[ebp-272],dword980
+	mov	dword985,[ebp-264]
+	and	dword985,255
+	mov	[ebp-276],dword985
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-284]
@@ -12663,8 +12728,8 @@ label002e:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword980
-	mov	[ebp-272],dword980
+	float2int	dword991
+	mov	[ebp-272],dword991
 	fild	dword ptr [ebp-276]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-288]
@@ -12672,15 +12737,15 @@ label002e:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword986
-	mov	[ebp-276],dword986
-	sal	dword ptr [ebp-272],8
-	mov	dword991,[ebp-272]
-	add	dword991,[ebp-276]
-	mov	[ebp-268],dword991
-	mov	dword994,[ebp-256]
-	mov	dword996,[ebp-268]
-	mov	[dword994],dword996
+	float2int	dword997
+	mov	[ebp-276],dword997
+	mov	dword1001,[ebp-272]
+	sal	dword1001,8
+	add	dword1001,[ebp-276]
+	mov	[ebp-268],dword1001
+	mov	dword1005,[ebp-256]
+	mov	dword1007,[ebp-268]
+	mov	[dword1005],dword1007
 label002d:
 	fld	dword ptr [ebp-240]
 	fadd	dword ptr [ebp-232]
@@ -12690,8 +12755,8 @@ label002d:
 	fstp	dword ptr [ebp-236]
 label002b:
 	add	dword ptr [ebp-256],4
-	mov	dword1003,[ebp-256]
-	cmp	dword1003,[ebp-260]
+	mov	dword1014,[ebp-256]
+	cmp	dword1014,[ebp-260]
 	jl	label002a
 label002c:
 label002f:
@@ -12699,273 +12764,275 @@ label002f:
 label0023:
 label0030:
 ; end of inline function _rasterize_horiz_line__unordered
-	mov	dword389,[ebp-144]
-	add	dword389,4
-	mov	dword391,1
-	add	dword391,[dword389]
-	mov	[ebp-164],dword391
+	mov	dword392,[ebp-144]
+	add	dword392,4
+	mov	dword394,1
+	add	dword394,[dword392]
+	mov	[ebp-164],dword394
 label0010:
 label0011:
-	mov	dword394,[ebp-140]
-	add	dword394,4
-	mov	dword397,[dword394]
-	cmp	dword397,[ebp-164]
+	mov	dword397,[ebp-140]
+	add	dword397,4
+	mov	dword400,[dword397]
+	cmp	dword400,[ebp-164]
 	jle	label0012
-	mov	dword399,[ebp-144]
-	add	dword399,4
-	mov	dword402,[ebp-164]
-	sub	dword402,[dword399]
-	mov	dword404,[ebp-140]
-	mov	dword406,[ebp-144]
-	mov	dword407,[dword404]
-	sub	dword407,[dword406]
-	imul	dword402,dword407
-	mov	dword409,[ebp-140]
-	add	dword409,4
-	mov	dword412,[ebp-144]
+	mov	dword402,[ebp-144]
+	add	dword402,4
+	mov	dword405,[ebp-164]
+	sub	dword405,[dword402]
+	mov	dword407,[ebp-140]
+	mov	dword409,[ebp-144]
+	mov	dword410,[dword407]
+	sub	dword410,[dword409]
+	imul	dword405,dword410
+	mov	dword412,[ebp-140]
 	add	dword412,4
-	mov	dword414,[dword409]
-	sub	dword414,[dword412]
-	cdq	dword415
-	idiv	dword402,dword414
-	mov	dword417,[ebp-144]
-	add	dword402,[dword417]
-	mov	[ebp-156],dword402
-	mov	dword420,[ebp-148]
-	add	dword420,4
-	mov	dword423,[ebp-164]
-	sub	dword423,[dword420]
-	mov	dword425,[ebp-140]
-	mov	dword427,[ebp-148]
-	mov	dword428,[dword425]
-	sub	dword428,[dword427]
-	imul	dword423,dword428
-	mov	dword430,[ebp-140]
-	add	dword430,4
-	mov	dword433,[ebp-148]
+	mov	dword415,[ebp-144]
+	add	dword415,4
+	mov	dword417,[dword412]
+	sub	dword417,[dword415]
+	cdq	dword418
+	idiv	dword405,dword417
+	mov	dword420,[ebp-144]
+	add	dword405,[dword420]
+	mov	[ebp-156],dword405
+	mov	dword423,[ebp-148]
+	add	dword423,4
+	mov	dword426,[ebp-164]
+	sub	dword426,[dword423]
+	mov	dword428,[ebp-140]
+	mov	dword430,[ebp-148]
+	mov	dword431,[dword428]
+	sub	dword431,[dword430]
+	imul	dword426,dword431
+	mov	dword433,[ebp-140]
 	add	dword433,4
-	mov	dword435,[dword430]
-	sub	dword435,[dword433]
-	cdq	dword436
-	idiv	dword423,dword435
-	mov	dword438,[ebp-148]
-	add	dword423,[dword438]
-	mov	[ebp-160],dword423
-	mov	dword441,[ebp-144]
-	add	dword441,4
-	mov	dword444,[ebp-164]
-	sub	dword444,[dword441]
-	int2float	dword444
-	mov	dword446,[ebp-140]
-	mov	dword448,[ebp-144]
-	fld	dword ptr [dword446+8]
-	fsub	dword ptr [dword448+8]
+	mov	dword436,[ebp-148]
+	add	dword436,4
+	mov	dword438,[dword433]
+	sub	dword438,[dword436]
+	cdq	dword439
+	idiv	dword426,dword438
+	mov	dword441,[ebp-148]
+	add	dword426,[dword441]
+	mov	[ebp-160],dword426
+	mov	dword444,[ebp-144]
+	add	dword444,4
+	mov	dword447,[ebp-164]
+	sub	dword447,[dword444]
+	int2float	dword447
+	mov	dword449,[ebp-140]
+	mov	dword451,[ebp-144]
+	fld	dword ptr [dword449+8]
+	fsub	dword ptr [dword451+8]
 	fmulp
-	mov	dword450,[ebp-140]
-	add	dword450,4
-	mov	dword453,[ebp-144]
+	mov	dword453,[ebp-140]
 	add	dword453,4
-	mov	dword455,[dword450]
-	sub	dword455,[dword453]
-	int2float	dword455
+	mov	dword456,[ebp-144]
+	add	dword456,4
+	mov	dword458,[dword453]
+	sub	dword458,[dword456]
+	int2float	dword458
 	fdivp
-	mov	dword457,[ebp-144]
-	fadd	dword ptr [dword457+8]
+	mov	dword460,[ebp-144]
+	fadd	dword ptr [dword460+8]
 	fstp	dword ptr [ebp-168]
-	mov	dword460,[ebp-148]
-	add	dword460,4
-	mov	dword463,[ebp-164]
-	sub	dword463,[dword460]
-	int2float	dword463
-	mov	dword465,[ebp-140]
-	mov	dword467,[ebp-148]
-	fld	dword ptr [dword465+8]
-	fsub	dword ptr [dword467+8]
+	mov	dword463,[ebp-148]
+	add	dword463,4
+	mov	dword466,[ebp-164]
+	sub	dword466,[dword463]
+	int2float	dword466
+	mov	dword468,[ebp-140]
+	mov	dword470,[ebp-148]
+	fld	dword ptr [dword468+8]
+	fsub	dword ptr [dword470+8]
 	fmulp
-	mov	dword469,[ebp-140]
-	add	dword469,4
-	mov	dword472,[ebp-148]
+	mov	dword472,[ebp-140]
 	add	dword472,4
-	mov	dword474,[dword469]
-	sub	dword474,[dword472]
-	int2float	dword474
+	mov	dword475,[ebp-148]
+	add	dword475,4
+	mov	dword477,[dword472]
+	sub	dword477,[dword475]
+	int2float	dword477
 	fdivp
-	mov	dword476,[ebp-148]
-	fadd	dword ptr [dword476+8]
+	mov	dword479,[ebp-148]
+	fadd	dword ptr [dword479+8]
 	fstp	dword ptr [ebp-176]
-	mov	dword479,[ebp-144]
-	add	dword479,4
-	mov	dword482,[ebp-164]
-	sub	dword482,[dword479]
-	int2float	dword482
-	mov	dword484,8
-	add	dword484,[ebp-140]
-	add	dword484,4
+	mov	dword482,[ebp-144]
+	add	dword482,4
+	mov	dword485,[ebp-164]
+	sub	dword485,[dword482]
+	int2float	dword485
 	mov	dword487,8
-	add	dword487,[ebp-144]
+	add	dword487,[ebp-140]
 	add	dword487,4
-	fld	dword ptr [dword484]
-	fsub	dword ptr [dword487]
-	fmulp
-	mov	dword490,[ebp-140]
+	mov	dword490,8
+	add	dword490,[ebp-144]
 	add	dword490,4
-	mov	dword493,[ebp-144]
-	add	dword493,4
-	mov	dword495,[dword490]
-	sub	dword495,[dword493]
-	int2float	dword495
-	fdivp
-	mov	dword497,8
-	add	dword497,[ebp-144]
-	add	dword497,4
-	fadd	dword ptr [dword497]
-	fstp	dword ptr [ebp-172]
-	mov	dword501,[ebp-148]
-	add	dword501,4
-	mov	dword504,[ebp-164]
-	sub	dword504,[dword501]
-	int2float	dword504
-	mov	dword506,8
-	add	dword506,[ebp-140]
-	add	dword506,4
-	mov	dword509,8
-	add	dword509,[ebp-148]
-	add	dword509,4
-	fld	dword ptr [dword506]
-	fsub	dword ptr [dword509]
+	fld	dword ptr [dword487]
+	fsub	dword ptr [dword490]
 	fmulp
-	mov	dword512,[ebp-140]
-	add	dword512,4
-	mov	dword515,[ebp-148]
-	add	dword515,4
-	mov	dword517,[dword512]
-	sub	dword517,[dword515]
-	int2float	dword517
+	mov	dword493,[ebp-140]
+	add	dword493,4
+	mov	dword496,[ebp-144]
+	add	dword496,4
+	mov	dword498,[dword493]
+	sub	dword498,[dword496]
+	int2float	dword498
 	fdivp
-	mov	dword519,8
-	add	dword519,[ebp-148]
-	add	dword519,4
-	fadd	dword ptr [dword519]
+	mov	dword500,8
+	add	dword500,[ebp-144]
+	add	dword500,4
+	fadd	dword ptr [dword500]
+	fstp	dword ptr [ebp-172]
+	mov	dword504,[ebp-148]
+	add	dword504,4
+	mov	dword507,[ebp-164]
+	sub	dword507,[dword504]
+	int2float	dword507
+	mov	dword509,8
+	add	dword509,[ebp-140]
+	add	dword509,4
+	mov	dword512,8
+	add	dword512,[ebp-148]
+	add	dword512,4
+	fld	dword ptr [dword509]
+	fsub	dword ptr [dword512]
+	fmulp
+	mov	dword515,[ebp-140]
+	add	dword515,4
+	mov	dword518,[ebp-148]
+	add	dword518,4
+	mov	dword520,[dword515]
+	sub	dword520,[dword518]
+	int2float	dword520
+	fdivp
+	mov	dword522,8
+	add	dword522,[ebp-148]
+	add	dword522,4
+	fadd	dword ptr [dword522]
 	fstp	dword ptr [ebp-180]
-	mov	dword524,[ebp-160]
-	sub	dword524,[ebp-156]
-	int2float	dword524
+	mov	dword527,[ebp-160]
+	sub	dword527,[ebp-156]
+	int2float	dword527
 	fld	dword ptr [ebp-176]
 	fsub	dword ptr [ebp-168]
 	fdivrp
 	fstp	dword ptr [ebp-184]
-	mov	dword530,[ebp-160]
-	sub	dword530,[ebp-156]
-	int2float	dword530
+	mov	dword533,[ebp-160]
+	sub	dword533,[ebp-156]
+	int2float	dword533
 	fld	dword ptr [ebp-180]
 	fsub	dword ptr [ebp-172]
 	fdivrp
 	fstp	dword ptr [ebp-188]
-	mov	dword1034,[ebp-188]
-	mov	[ebp-192],dword1034
-	mov	dword1033,[ebp-184]
-	mov	[ebp-196],dword1033
-	mov	dword1032,[ebp-180]
-	mov	[ebp-200],dword1032
-	mov	dword1031,[ebp-176]
-	mov	[ebp-204],dword1031
-	mov	dword1030,[ebp-172]
-	mov	[ebp-208],dword1030
-	mov	dword1029,[ebp-168]
-	mov	[ebp-212],dword1029
-	mov	dword1028,[ebp-164]
-	mov	[ebp-216],dword1028
-	mov	dword1027,[ebp-160]
-	mov	[ebp-220],dword1027
-	mov	dword1026,[ebp-156]
-	mov	[ebp-224],dword1026
+	mov	dword1045,[ebp-188]
+	mov	[ebp-192],dword1045
+	mov	dword1044,[ebp-184]
+	mov	[ebp-196],dword1044
+	mov	dword1043,[ebp-180]
+	mov	[ebp-200],dword1043
+	mov	dword1042,[ebp-176]
+	mov	[ebp-204],dword1042
+	mov	dword1041,[ebp-172]
+	mov	[ebp-208],dword1041
+	mov	dword1040,[ebp-168]
+	mov	[ebp-212],dword1040
+	mov	dword1039,[ebp-164]
+	mov	[ebp-216],dword1039
+	mov	dword1038,[ebp-160]
+	mov	[ebp-220],dword1038
+	mov	dword1037,[ebp-156]
+	mov	[ebp-224],dword1037
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword1038,[ebp-224]
-	cmp	dword1038,[ebp-220]
+	mov	dword1049,[ebp-224]
+	cmp	dword1049,[ebp-220]
 	jg	label0031
-	mov	dword1059,[ebp-192]
-	mov	[ebp-228],dword1059
-	mov	dword1058,[ebp-196]
-	mov	[ebp-232],dword1058
-	mov	dword1057,[ebp-208]
-	mov	[ebp-236],dword1057
-	mov	dword1056,[ebp-212]
-	mov	[ebp-240],dword1056
-	mov	dword1055,[ebp-216]
-	mov	[ebp-244],dword1055
-	mov	dword1054,[ebp-220]
-	mov	[ebp-248],dword1054
-	mov	dword1053,[ebp-224]
-	mov	[ebp-252],dword1053
+	mov	dword1070,[ebp-192]
+	mov	[ebp-228],dword1070
+	mov	dword1069,[ebp-196]
+	mov	[ebp-232],dword1069
+	mov	dword1068,[ebp-208]
+	mov	[ebp-236],dword1068
+	mov	dword1067,[ebp-212]
+	mov	[ebp-240],dword1067
+	mov	dword1066,[ebp-216]
+	mov	[ebp-244],dword1066
+	mov	dword1065,[ebp-220]
+	mov	[ebp-248],dword1065
+	mov	dword1064,[ebp-224]
+	mov	[ebp-252],dword1064
 ; start of inline function _rasterize_horiz_line
-	mov	dword1063,dword ptr [__pitch]
-	imul	dword1063,[ebp-244]
-	add	dword1063,dword ptr [__videomem]
-	sal	dword ptr [ebp-252],2
-	add	dword1063,[ebp-252]
-	mov	[ebp-256],dword1063
-	sal	dword ptr [ebp-248],2
-	mov	dword1071,[ebp-256]
-	add	dword1071,[ebp-248]
-	sal	dword ptr [ebp-252],2
-	sub	dword1071,[ebp-252]
-	mov	[ebp-260],dword1071
+	mov	dword1074,dword ptr [__pitch]
+	imul	dword1074,[ebp-244]
+	add	dword1074,dword ptr [__videomem]
+	mov	dword1078,[ebp-252]
+	sal	dword1078,2
+	add	dword1074,dword1078
+	mov	[ebp-256],dword1074
+	mov	dword1082,[ebp-248]
+	sal	dword1082,2
+	add	dword1082,[ebp-256]
+	mov	dword1086,[ebp-252]
+	sal	dword1086,2
+	sub	dword1082,dword1086
+	mov	[ebp-260],dword1082
 label0033:
-	mov	dword1139,[ebp-236]
-	mov	[ebp-300],dword1139
-	mov	dword1138,[ebp-240]
-	mov	[ebp-304],dword1138
+	mov	dword1152,[ebp-236]
+	mov	[ebp-300],dword1152
+	mov	dword1151,[ebp-240]
+	mov	[ebp-304],dword1151
 ; start of inline function _tex2d
-	mov	dword1143,dword ptr [__texture_width]
-	dec	dword1143
-	int2float	dword1143
+	mov	dword1156,dword ptr [__texture_width]
+	dec	dword1156
+	int2float	dword1156
 	fmul	dword ptr [ebp-304]
-	float2int	dword1145
-	mov	[ebp-308],dword1145
-	mov	dword1149,dword ptr [__texture_height]
-	dec	dword1149
-	int2float	dword1149
+	float2int	dword1158
+	mov	[ebp-308],dword1158
+	mov	dword1162,dword ptr [__texture_height]
+	dec	dword1162
+	int2float	dword1162
 	fmul	dword ptr [ebp-300]
-	float2int	dword1151
-	mov	[ebp-312],dword1151
-	mov	dword1155,[ebp-312]
-	imul	dword1155,dword ptr [__texture_width]
-	add	dword1155,[ebp-308]
-	sal	dword1155,2
-	add	dword1155,dword ptr [__texture_data]
-	mov	dword1159,[dword1155]
-	mov	[ebp-316],dword1159
+	float2int	dword1164
+	mov	[ebp-312],dword1164
+	mov	dword1168,[ebp-312]
+	imul	dword1168,dword ptr [__texture_width]
+	add	dword1168,[ebp-308]
+	sal	dword1168,2
+	add	dword1168,dword ptr [__texture_data]
+	mov	dword1172,[dword1168]
+	mov	[ebp-316],dword1172
 label0037:
 ; end of inline function _tex2d
-	mov	dword1077,[ebp-316]
-	mov	[ebp-264],dword1077
-	sar	dword ptr [ebp-264],24
-	mov	dword1082,[ebp-264]
-	and	dword1082,255
-	mov	[ebp-292],dword1082
+	mov	dword1090,[ebp-316]
+	mov	[ebp-264],dword1090
+	mov	dword1094,[ebp-264]
+	sar	dword1094,24
+	and	dword1094,255
+	mov	[ebp-292],dword1094
 	cmp	dword ptr [ebp-292],0
 	je	label0036
 	fild	dword ptr [ebp-292]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-296]
-	mov	dword1089,[ebp-256]
-	mov	dword1091,[dword1089]
-	mov	[ebp-280],dword1091
-	mov	dword1094,[ebp-280]
-	and	dword1094,65280
-	sar	dword1094,8
-	mov	[ebp-284],dword1094
-	mov	dword1099,[ebp-280]
-	and	dword1099,255
-	mov	[ebp-288],dword1099
-	mov	dword1103,[ebp-264]
-	and	dword1103,65280
-	sar	dword1103,8
-	mov	[ebp-272],dword1103
-	mov	dword1108,[ebp-264]
-	and	dword1108,255
-	mov	[ebp-276],dword1108
+	mov	dword1102,[ebp-256]
+	mov	dword1104,[dword1102]
+	mov	[ebp-280],dword1104
+	mov	dword1107,[ebp-280]
+	and	dword1107,65280
+	sar	dword1107,8
+	mov	[ebp-284],dword1107
+	mov	dword1112,[ebp-280]
+	and	dword1112,255
+	mov	[ebp-288],dword1112
+	mov	dword1116,[ebp-264]
+	and	dword1116,65280
+	sar	dword1116,8
+	mov	[ebp-272],dword1116
+	mov	dword1121,[ebp-264]
+	and	dword1121,255
+	mov	[ebp-276],dword1121
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-284]
@@ -12973,8 +13040,8 @@ label0037:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword1114
-	mov	[ebp-272],dword1114
+	float2int	dword1127
+	mov	[ebp-272],dword1127
 	fild	dword ptr [ebp-276]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-288]
@@ -12982,15 +13049,15 @@ label0037:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword1120
-	mov	[ebp-276],dword1120
-	sal	dword ptr [ebp-272],8
-	mov	dword1125,[ebp-272]
-	add	dword1125,[ebp-276]
-	mov	[ebp-268],dword1125
-	mov	dword1128,[ebp-256]
-	mov	dword1130,[ebp-268]
-	mov	[dword1128],dword1130
+	float2int	dword1133
+	mov	[ebp-276],dword1133
+	mov	dword1137,[ebp-272]
+	sal	dword1137,8
+	add	dword1137,[ebp-276]
+	mov	[ebp-268],dword1137
+	mov	dword1141,[ebp-256]
+	mov	dword1143,[ebp-268]
+	mov	[dword1141],dword1143
 label0036:
 	fld	dword ptr [ebp-240]
 	fadd	dword ptr [ebp-232]
@@ -13000,97 +13067,99 @@ label0036:
 	fstp	dword ptr [ebp-236]
 label0034:
 	add	dword ptr [ebp-256],4
-	mov	dword1137,[ebp-256]
-	cmp	dword1137,[ebp-260]
+	mov	dword1150,[ebp-256]
+	cmp	dword1150,[ebp-260]
 	jl	label0033
 label0035:
 label0038:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0032
 label0031:
-	mov	dword1166,[ebp-192]
-	mov	[ebp-228],dword1166
-	mov	dword1165,[ebp-196]
-	mov	[ebp-232],dword1165
-	mov	dword1164,[ebp-200]
-	mov	[ebp-236],dword1164
-	mov	dword1163,[ebp-204]
-	mov	[ebp-240],dword1163
-	mov	dword1162,[ebp-216]
-	mov	[ebp-244],dword1162
-	mov	dword1161,[ebp-224]
-	mov	[ebp-248],dword1161
-	mov	dword1160,[ebp-220]
-	mov	[ebp-252],dword1160
+	mov	dword1179,[ebp-192]
+	mov	[ebp-228],dword1179
+	mov	dword1178,[ebp-196]
+	mov	[ebp-232],dword1178
+	mov	dword1177,[ebp-200]
+	mov	[ebp-236],dword1177
+	mov	dword1176,[ebp-204]
+	mov	[ebp-240],dword1176
+	mov	dword1175,[ebp-216]
+	mov	[ebp-244],dword1175
+	mov	dword1174,[ebp-224]
+	mov	[ebp-248],dword1174
+	mov	dword1173,[ebp-220]
+	mov	[ebp-252],dword1173
 ; start of inline function _rasterize_horiz_line
-	mov	dword1170,dword ptr [__pitch]
-	imul	dword1170,[ebp-244]
-	add	dword1170,dword ptr [__videomem]
-	sal	dword ptr [ebp-252],2
-	add	dword1170,[ebp-252]
-	mov	[ebp-256],dword1170
-	sal	dword ptr [ebp-248],2
-	mov	dword1178,[ebp-256]
-	add	dword1178,[ebp-248]
-	sal	dword ptr [ebp-252],2
-	sub	dword1178,[ebp-252]
-	mov	[ebp-260],dword1178
+	mov	dword1183,dword ptr [__pitch]
+	imul	dword1183,[ebp-244]
+	add	dword1183,dword ptr [__videomem]
+	mov	dword1187,[ebp-252]
+	sal	dword1187,2
+	add	dword1183,dword1187
+	mov	[ebp-256],dword1183
+	mov	dword1191,[ebp-248]
+	sal	dword1191,2
+	add	dword1191,[ebp-256]
+	mov	dword1195,[ebp-252]
+	sal	dword1195,2
+	sub	dword1191,dword1195
+	mov	[ebp-260],dword1191
 label0039:
-	mov	dword1246,[ebp-236]
-	mov	[ebp-300],dword1246
-	mov	dword1245,[ebp-240]
-	mov	[ebp-304],dword1245
+	mov	dword1261,[ebp-236]
+	mov	[ebp-300],dword1261
+	mov	dword1260,[ebp-240]
+	mov	[ebp-304],dword1260
 ; start of inline function _tex2d
-	mov	dword1250,dword ptr [__texture_width]
-	dec	dword1250
-	int2float	dword1250
+	mov	dword1265,dword ptr [__texture_width]
+	dec	dword1265
+	int2float	dword1265
 	fmul	dword ptr [ebp-304]
-	float2int	dword1252
-	mov	[ebp-308],dword1252
-	mov	dword1256,dword ptr [__texture_height]
-	dec	dword1256
-	int2float	dword1256
+	float2int	dword1267
+	mov	[ebp-308],dword1267
+	mov	dword1271,dword ptr [__texture_height]
+	dec	dword1271
+	int2float	dword1271
 	fmul	dword ptr [ebp-300]
-	float2int	dword1258
-	mov	[ebp-312],dword1258
-	mov	dword1262,[ebp-312]
-	imul	dword1262,dword ptr [__texture_width]
-	add	dword1262,[ebp-308]
-	sal	dword1262,2
-	add	dword1262,dword ptr [__texture_data]
-	mov	dword1266,[dword1262]
-	mov	[ebp-316],dword1266
+	float2int	dword1273
+	mov	[ebp-312],dword1273
+	mov	dword1277,[ebp-312]
+	imul	dword1277,dword ptr [__texture_width]
+	add	dword1277,[ebp-308]
+	sal	dword1277,2
+	add	dword1277,dword ptr [__texture_data]
+	mov	dword1281,[dword1277]
+	mov	[ebp-316],dword1281
 label003d:
 ; end of inline function _tex2d
-	mov	dword1184,[ebp-316]
-	mov	[ebp-264],dword1184
-	sar	dword ptr [ebp-264],24
-	mov	dword1189,[ebp-264]
-	and	dword1189,255
-	mov	[ebp-292],dword1189
+	mov	dword1199,[ebp-316]
+	mov	[ebp-264],dword1199
+	mov	dword1203,[ebp-264]
+	sar	dword1203,24
+	and	dword1203,255
+	mov	[ebp-292],dword1203
 	cmp	dword ptr [ebp-292],0
 	je	label003c
 	fild	dword ptr [ebp-292]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-296]
-	mov	dword1196,[ebp-256]
-	mov	dword1198,[dword1196]
-	mov	[ebp-280],dword1198
-	mov	dword1201,[ebp-280]
-	and	dword1201,65280
-	sar	dword1201,8
-	mov	[ebp-284],dword1201
-	mov	dword1206,[ebp-280]
-	and	dword1206,255
-	mov	[ebp-288],dword1206
-	mov	dword1210,[ebp-264]
-	and	dword1210,65280
-	sar	dword1210,8
-	mov	[ebp-272],dword1210
-	mov	dword1215,[ebp-264]
-	and	dword1215,255
-	mov	[ebp-276],dword1215
+	mov	dword1211,[ebp-256]
+	mov	dword1213,[dword1211]
+	mov	[ebp-280],dword1213
+	mov	dword1216,[ebp-280]
+	and	dword1216,65280
+	sar	dword1216,8
+	mov	[ebp-284],dword1216
+	mov	dword1221,[ebp-280]
+	and	dword1221,255
+	mov	[ebp-288],dword1221
+	mov	dword1225,[ebp-264]
+	and	dword1225,65280
+	sar	dword1225,8
+	mov	[ebp-272],dword1225
+	mov	dword1230,[ebp-264]
+	and	dword1230,255
+	mov	[ebp-276],dword1230
 	fild	dword ptr [ebp-272]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-284]
@@ -13098,8 +13167,8 @@ label003d:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword1221
-	mov	[ebp-272],dword1221
+	float2int	dword1236
+	mov	[ebp-272],dword1236
 	fild	dword ptr [ebp-276]
 	fmul	dword ptr [ebp-296]
 	fild	dword ptr [ebp-288]
@@ -13107,15 +13176,15 @@ label003d:
 	fsub	dword ptr [ebp-296]
 	fmulp
 	faddp
-	float2int	dword1227
-	mov	[ebp-276],dword1227
-	sal	dword ptr [ebp-272],8
-	mov	dword1232,[ebp-272]
-	add	dword1232,[ebp-276]
-	mov	[ebp-268],dword1232
-	mov	dword1235,[ebp-256]
-	mov	dword1237,[ebp-268]
-	mov	[dword1235],dword1237
+	float2int	dword1242
+	mov	[ebp-276],dword1242
+	mov	dword1246,[ebp-272]
+	sal	dword1246,8
+	add	dword1246,[ebp-276]
+	mov	[ebp-268],dword1246
+	mov	dword1250,[ebp-256]
+	mov	dword1252,[ebp-268]
+	mov	[dword1250],dword1252
 label003c:
 	fld	dword ptr [ebp-240]
 	fadd	dword ptr [ebp-232]
@@ -13125,8 +13194,8 @@ label003c:
 	fstp	dword ptr [ebp-236]
 label003a:
 	add	dword ptr [ebp-256],4
-	mov	dword1244,[ebp-256]
-	cmp	dword1244,[ebp-260]
+	mov	dword1259,[ebp-256]
+	cmp	dword1259,[ebp-260]
 	jl	label0039
 label003b:
 label003e:
@@ -13272,130 +13341,130 @@ __transform_to_projection_space endp
 
 _rasterizer_triangle3f proc
 	create_stack_frame
-	mov	dword4265,[ebp+8]
-	mov	[ebp-1044],dword4265
+	mov	dword4292,[ebp+8]
+	mov	[ebp-1044],dword4292
 	lea	dword2,[ebp-196]
 	mov	[ebp-1048],dword2
 ; start of inline function _transform_to_projection_space
 	fld1
 	fstp	dword ptr [ebp-1068]
-	mov	dword4268,[ebp-1044]
-	mov	dword4279,[dword4268+8]
-	mov	[ebp-1072],dword4279
-	mov	dword4270,[ebp-1044]
-	mov	dword4278,[dword4270+4]
-	mov	[ebp-1076],dword4278
-	mov	dword4272,[ebp-1044]
-	mov	dword4277,[dword4272]
-	mov	[ebp-1080],dword4277
-	lea	dword4273,[ebp-1064]
-	mov	[ebp-1084],dword4273
+	mov	dword4295,[ebp-1044]
+	mov	dword4306,[dword4295+8]
+	mov	[ebp-1072],dword4306
+	mov	dword4297,[ebp-1044]
+	mov	dword4305,[dword4297+4]
+	mov	[ebp-1076],dword4305
+	mov	dword4299,[ebp-1044]
+	mov	dword4304,[dword4299]
+	mov	[ebp-1080],dword4304
+	lea	dword4300,[ebp-1064]
+	mov	[ebp-1084],dword4300
 ; start of inline function vec4f_assign
-	mov	dword4282,[ebp-1084]
+	mov	dword4309,[ebp-1084]
 	fld	dword ptr [ebp-1080]
-	fstp	dword ptr [dword4282]
-	mov	dword4285,[ebp-1084]
+	fstp	dword ptr [dword4309]
+	mov	dword4312,[ebp-1084]
 	fld	dword ptr [ebp-1076]
-	fstp	dword ptr [dword4285+4]
-	mov	dword4288,[ebp-1084]
+	fstp	dword ptr [dword4312+4]
+	mov	dword4315,[ebp-1084]
 	fld	dword ptr [ebp-1072]
-	fstp	dword ptr [dword4288+8]
-	mov	dword4291,[ebp-1084]
+	fstp	dword ptr [dword4315+8]
+	mov	dword4318,[ebp-1084]
 	fld	dword ptr [ebp-1068]
-	fstp	dword ptr [dword4291+12]
+	fstp	dword ptr [dword4318+12]
 label00f4:
 ; end of inline function vec4f_assign
-	lea	dword4274,dword ptr [__mvproj_matrix]
-	mov	[ebp-1088],dword4274
-	lea	dword4275,[ebp-1064]
-	mov	[ebp-1092],dword4275
-	mov	dword4293,[ebp-1048]
-	mov	[ebp-1096],dword4293
+	lea	dword4301,dword ptr [__mvproj_matrix]
+	mov	[ebp-1088],dword4301
+	lea	dword4302,[ebp-1064]
+	mov	[ebp-1092],dword4302
+	mov	dword4320,[ebp-1048]
+	mov	[ebp-1096],dword4320
 ; start of inline function matrix4f_transform
-	mov	dword4296,[ebp-1092]
-	mov	dword4298,[ebp-1088]
-	fld	dword ptr [dword4296+4]
-	fmul	dword ptr [dword4298+16]
-	mov	dword4300,[ebp-1092]
-	mov	dword4302,[ebp-1088]
-	fld	dword ptr [dword4300]
-	fmul	dword ptr [dword4302]
+	mov	dword4323,[ebp-1092]
+	mov	dword4325,[ebp-1088]
+	fld	dword ptr [dword4323+4]
+	fmul	dword ptr [dword4325+16]
+	mov	dword4327,[ebp-1092]
+	mov	dword4329,[ebp-1088]
+	fld	dword ptr [dword4327]
+	fmul	dword ptr [dword4329]
 	faddp
-	mov	dword4304,[ebp-1092]
-	mov	dword4306,[ebp-1088]
-	fld	dword ptr [dword4304+8]
-	fmul	dword ptr [dword4306+32]
+	mov	dword4331,[ebp-1092]
+	mov	dword4333,[ebp-1088]
+	fld	dword ptr [dword4331+8]
+	fmul	dword ptr [dword4333+32]
 	faddp
-	mov	dword4308,[ebp-1092]
-	mov	dword4310,[ebp-1088]
-	fld	dword ptr [dword4308+12]
-	fmul	dword ptr [dword4310+48]
+	mov	dword4335,[ebp-1092]
+	mov	dword4337,[ebp-1088]
+	fld	dword ptr [dword4335+12]
+	fmul	dword ptr [dword4337+48]
 	faddp
-	mov	dword4312,[ebp-1096]
-	fstp	dword ptr [dword4312]
-	mov	dword4314,[ebp-1088]
-	mov	dword4316,[ebp-1092]
-	fld	dword ptr [dword4316]
-	fmul	dword ptr [dword4314+4]
-	mov	dword4318,[ebp-1092]
-	mov	dword4320,[ebp-1088]
-	fld	dword ptr [dword4318+4]
-	fmul	dword ptr [dword4320+20]
+	mov	dword4339,[ebp-1096]
+	fstp	dword ptr [dword4339]
+	mov	dword4341,[ebp-1088]
+	mov	dword4343,[ebp-1092]
+	fld	dword ptr [dword4343]
+	fmul	dword ptr [dword4341+4]
+	mov	dword4345,[ebp-1092]
+	mov	dword4347,[ebp-1088]
+	fld	dword ptr [dword4345+4]
+	fmul	dword ptr [dword4347+20]
 	faddp
-	mov	dword4322,[ebp-1092]
-	mov	dword4324,[ebp-1088]
-	fld	dword ptr [dword4322+8]
-	fmul	dword ptr [dword4324+36]
+	mov	dword4349,[ebp-1092]
+	mov	dword4351,[ebp-1088]
+	fld	dword ptr [dword4349+8]
+	fmul	dword ptr [dword4351+36]
 	faddp
-	mov	dword4326,[ebp-1092]
-	mov	dword4328,[ebp-1088]
-	fld	dword ptr [dword4326+12]
-	fmul	dword ptr [dword4328+52]
+	mov	dword4353,[ebp-1092]
+	mov	dword4355,[ebp-1088]
+	fld	dword ptr [dword4353+12]
+	fmul	dword ptr [dword4355+52]
 	faddp
-	mov	dword4330,[ebp-1096]
-	fstp	dword ptr [dword4330+4]
-	mov	dword4332,[ebp-1088]
-	mov	dword4334,[ebp-1092]
-	fld	dword ptr [dword4334]
-	fmul	dword ptr [dword4332+8]
-	mov	dword4336,[ebp-1092]
-	mov	dword4338,[ebp-1088]
-	fld	dword ptr [dword4336+4]
-	fmul	dword ptr [dword4338+24]
+	mov	dword4357,[ebp-1096]
+	fstp	dword ptr [dword4357+4]
+	mov	dword4359,[ebp-1088]
+	mov	dword4361,[ebp-1092]
+	fld	dword ptr [dword4361]
+	fmul	dword ptr [dword4359+8]
+	mov	dword4363,[ebp-1092]
+	mov	dword4365,[ebp-1088]
+	fld	dword ptr [dword4363+4]
+	fmul	dword ptr [dword4365+24]
 	faddp
-	mov	dword4340,[ebp-1092]
-	mov	dword4342,[ebp-1088]
-	fld	dword ptr [dword4340+8]
-	fmul	dword ptr [dword4342+40]
+	mov	dword4367,[ebp-1092]
+	mov	dword4369,[ebp-1088]
+	fld	dword ptr [dword4367+8]
+	fmul	dword ptr [dword4369+40]
 	faddp
-	mov	dword4344,[ebp-1092]
-	mov	dword4346,[ebp-1088]
-	fld	dword ptr [dword4344+12]
-	fmul	dword ptr [dword4346+56]
+	mov	dword4371,[ebp-1092]
+	mov	dword4373,[ebp-1088]
+	fld	dword ptr [dword4371+12]
+	fmul	dword ptr [dword4373+56]
 	faddp
-	mov	dword4348,[ebp-1096]
-	fstp	dword ptr [dword4348+8]
-	mov	dword4350,[ebp-1088]
-	mov	dword4352,[ebp-1092]
-	fld	dword ptr [dword4352]
-	fmul	dword ptr [dword4350+12]
-	mov	dword4354,[ebp-1092]
-	mov	dword4356,[ebp-1088]
-	fld	dword ptr [dword4354+4]
-	fmul	dword ptr [dword4356+28]
+	mov	dword4375,[ebp-1096]
+	fstp	dword ptr [dword4375+8]
+	mov	dword4377,[ebp-1088]
+	mov	dword4379,[ebp-1092]
+	fld	dword ptr [dword4379]
+	fmul	dword ptr [dword4377+12]
+	mov	dword4381,[ebp-1092]
+	mov	dword4383,[ebp-1088]
+	fld	dword ptr [dword4381+4]
+	fmul	dword ptr [dword4383+28]
 	faddp
-	mov	dword4358,[ebp-1092]
-	mov	dword4360,[ebp-1088]
-	fld	dword ptr [dword4358+8]
-	fmul	dword ptr [dword4360+44]
+	mov	dword4385,[ebp-1092]
+	mov	dword4387,[ebp-1088]
+	fld	dword ptr [dword4385+8]
+	fmul	dword ptr [dword4387+44]
 	faddp
-	mov	dword4362,[ebp-1092]
-	mov	dword4364,[ebp-1088]
-	fld	dword ptr [dword4362+12]
-	fmul	dword ptr [dword4364+60]
+	mov	dword4389,[ebp-1092]
+	mov	dword4391,[ebp-1088]
+	fld	dword ptr [dword4389+12]
+	fmul	dword ptr [dword4391+60]
 	faddp
-	mov	dword4366,[ebp-1096]
-	fstp	dword ptr [dword4366+12]
+	mov	dword4393,[ebp-1096]
+	fstp	dword ptr [dword4393+12]
 label00f5:
 ; end of inline function matrix4f_transform
 label00f6:
@@ -13407,131 +13476,131 @@ label00f6:
 	mov	dword8,[dword6+4]
 	mov	[dword3],dword7
 	mov	[dword3+4],dword8
-	mov	dword4367,[ebp+12]
-	mov	[ebp-1044],dword4367
+	mov	dword4394,[ebp+12]
+	mov	[ebp-1044],dword4394
 	lea	dword10,[ebp-196]
 	add	dword10,24
 	mov	[ebp-1048],dword10
 ; start of inline function _transform_to_projection_space
 	fld1
 	fstp	dword ptr [ebp-1068]
-	mov	dword4370,[ebp-1044]
-	mov	dword4381,[dword4370+8]
-	mov	[ebp-1072],dword4381
-	mov	dword4372,[ebp-1044]
-	mov	dword4380,[dword4372+4]
-	mov	[ebp-1076],dword4380
-	mov	dword4374,[ebp-1044]
-	mov	dword4379,[dword4374]
-	mov	[ebp-1080],dword4379
-	lea	dword4375,[ebp-1064]
-	mov	[ebp-1084],dword4375
+	mov	dword4397,[ebp-1044]
+	mov	dword4408,[dword4397+8]
+	mov	[ebp-1072],dword4408
+	mov	dword4399,[ebp-1044]
+	mov	dword4407,[dword4399+4]
+	mov	[ebp-1076],dword4407
+	mov	dword4401,[ebp-1044]
+	mov	dword4406,[dword4401]
+	mov	[ebp-1080],dword4406
+	lea	dword4402,[ebp-1064]
+	mov	[ebp-1084],dword4402
 ; start of inline function vec4f_assign
-	mov	dword4384,[ebp-1084]
+	mov	dword4411,[ebp-1084]
 	fld	dword ptr [ebp-1080]
-	fstp	dword ptr [dword4384]
-	mov	dword4387,[ebp-1084]
+	fstp	dword ptr [dword4411]
+	mov	dword4414,[ebp-1084]
 	fld	dword ptr [ebp-1076]
-	fstp	dword ptr [dword4387+4]
-	mov	dword4390,[ebp-1084]
+	fstp	dword ptr [dword4414+4]
+	mov	dword4417,[ebp-1084]
 	fld	dword ptr [ebp-1072]
-	fstp	dword ptr [dword4390+8]
-	mov	dword4393,[ebp-1084]
+	fstp	dword ptr [dword4417+8]
+	mov	dword4420,[ebp-1084]
 	fld	dword ptr [ebp-1068]
-	fstp	dword ptr [dword4393+12]
+	fstp	dword ptr [dword4420+12]
 label00f7:
 ; end of inline function vec4f_assign
-	lea	dword4376,dword ptr [__mvproj_matrix]
-	mov	[ebp-1088],dword4376
-	lea	dword4377,[ebp-1064]
-	mov	[ebp-1092],dword4377
-	mov	dword4395,[ebp-1048]
-	mov	[ebp-1096],dword4395
+	lea	dword4403,dword ptr [__mvproj_matrix]
+	mov	[ebp-1088],dword4403
+	lea	dword4404,[ebp-1064]
+	mov	[ebp-1092],dword4404
+	mov	dword4422,[ebp-1048]
+	mov	[ebp-1096],dword4422
 ; start of inline function matrix4f_transform
-	mov	dword4398,[ebp-1092]
-	mov	dword4400,[ebp-1088]
-	fld	dword ptr [dword4398+4]
-	fmul	dword ptr [dword4400+16]
-	mov	dword4402,[ebp-1092]
-	mov	dword4404,[ebp-1088]
-	fld	dword ptr [dword4402]
-	fmul	dword ptr [dword4404]
+	mov	dword4425,[ebp-1092]
+	mov	dword4427,[ebp-1088]
+	fld	dword ptr [dword4425+4]
+	fmul	dword ptr [dword4427+16]
+	mov	dword4429,[ebp-1092]
+	mov	dword4431,[ebp-1088]
+	fld	dword ptr [dword4429]
+	fmul	dword ptr [dword4431]
 	faddp
-	mov	dword4406,[ebp-1092]
-	mov	dword4408,[ebp-1088]
-	fld	dword ptr [dword4406+8]
-	fmul	dword ptr [dword4408+32]
+	mov	dword4433,[ebp-1092]
+	mov	dword4435,[ebp-1088]
+	fld	dword ptr [dword4433+8]
+	fmul	dword ptr [dword4435+32]
 	faddp
-	mov	dword4410,[ebp-1092]
-	mov	dword4412,[ebp-1088]
-	fld	dword ptr [dword4410+12]
-	fmul	dword ptr [dword4412+48]
+	mov	dword4437,[ebp-1092]
+	mov	dword4439,[ebp-1088]
+	fld	dword ptr [dword4437+12]
+	fmul	dword ptr [dword4439+48]
 	faddp
-	mov	dword4414,[ebp-1096]
-	fstp	dword ptr [dword4414]
-	mov	dword4416,[ebp-1088]
-	mov	dword4418,[ebp-1092]
-	fld	dword ptr [dword4418]
-	fmul	dword ptr [dword4416+4]
-	mov	dword4420,[ebp-1092]
-	mov	dword4422,[ebp-1088]
-	fld	dword ptr [dword4420+4]
-	fmul	dword ptr [dword4422+20]
+	mov	dword4441,[ebp-1096]
+	fstp	dword ptr [dword4441]
+	mov	dword4443,[ebp-1088]
+	mov	dword4445,[ebp-1092]
+	fld	dword ptr [dword4445]
+	fmul	dword ptr [dword4443+4]
+	mov	dword4447,[ebp-1092]
+	mov	dword4449,[ebp-1088]
+	fld	dword ptr [dword4447+4]
+	fmul	dword ptr [dword4449+20]
 	faddp
-	mov	dword4424,[ebp-1092]
-	mov	dword4426,[ebp-1088]
-	fld	dword ptr [dword4424+8]
-	fmul	dword ptr [dword4426+36]
+	mov	dword4451,[ebp-1092]
+	mov	dword4453,[ebp-1088]
+	fld	dword ptr [dword4451+8]
+	fmul	dword ptr [dword4453+36]
 	faddp
-	mov	dword4428,[ebp-1092]
-	mov	dword4430,[ebp-1088]
-	fld	dword ptr [dword4428+12]
-	fmul	dword ptr [dword4430+52]
+	mov	dword4455,[ebp-1092]
+	mov	dword4457,[ebp-1088]
+	fld	dword ptr [dword4455+12]
+	fmul	dword ptr [dword4457+52]
 	faddp
-	mov	dword4432,[ebp-1096]
-	fstp	dword ptr [dword4432+4]
-	mov	dword4434,[ebp-1088]
-	mov	dword4436,[ebp-1092]
-	fld	dword ptr [dword4436]
-	fmul	dword ptr [dword4434+8]
-	mov	dword4438,[ebp-1092]
-	mov	dword4440,[ebp-1088]
-	fld	dword ptr [dword4438+4]
-	fmul	dword ptr [dword4440+24]
+	mov	dword4459,[ebp-1096]
+	fstp	dword ptr [dword4459+4]
+	mov	dword4461,[ebp-1088]
+	mov	dword4463,[ebp-1092]
+	fld	dword ptr [dword4463]
+	fmul	dword ptr [dword4461+8]
+	mov	dword4465,[ebp-1092]
+	mov	dword4467,[ebp-1088]
+	fld	dword ptr [dword4465+4]
+	fmul	dword ptr [dword4467+24]
 	faddp
-	mov	dword4442,[ebp-1092]
-	mov	dword4444,[ebp-1088]
-	fld	dword ptr [dword4442+8]
-	fmul	dword ptr [dword4444+40]
+	mov	dword4469,[ebp-1092]
+	mov	dword4471,[ebp-1088]
+	fld	dword ptr [dword4469+8]
+	fmul	dword ptr [dword4471+40]
 	faddp
-	mov	dword4446,[ebp-1092]
-	mov	dword4448,[ebp-1088]
-	fld	dword ptr [dword4446+12]
-	fmul	dword ptr [dword4448+56]
+	mov	dword4473,[ebp-1092]
+	mov	dword4475,[ebp-1088]
+	fld	dword ptr [dword4473+12]
+	fmul	dword ptr [dword4475+56]
 	faddp
-	mov	dword4450,[ebp-1096]
-	fstp	dword ptr [dword4450+8]
-	mov	dword4452,[ebp-1088]
-	mov	dword4454,[ebp-1092]
-	fld	dword ptr [dword4454]
-	fmul	dword ptr [dword4452+12]
-	mov	dword4456,[ebp-1092]
-	mov	dword4458,[ebp-1088]
-	fld	dword ptr [dword4456+4]
-	fmul	dword ptr [dword4458+28]
+	mov	dword4477,[ebp-1096]
+	fstp	dword ptr [dword4477+8]
+	mov	dword4479,[ebp-1088]
+	mov	dword4481,[ebp-1092]
+	fld	dword ptr [dword4481]
+	fmul	dword ptr [dword4479+12]
+	mov	dword4483,[ebp-1092]
+	mov	dword4485,[ebp-1088]
+	fld	dword ptr [dword4483+4]
+	fmul	dword ptr [dword4485+28]
 	faddp
-	mov	dword4460,[ebp-1092]
-	mov	dword4462,[ebp-1088]
-	fld	dword ptr [dword4460+8]
-	fmul	dword ptr [dword4462+44]
+	mov	dword4487,[ebp-1092]
+	mov	dword4489,[ebp-1088]
+	fld	dword ptr [dword4487+8]
+	fmul	dword ptr [dword4489+44]
 	faddp
-	mov	dword4464,[ebp-1092]
-	mov	dword4466,[ebp-1088]
-	fld	dword ptr [dword4464+12]
-	fmul	dword ptr [dword4466+60]
+	mov	dword4491,[ebp-1092]
+	mov	dword4493,[ebp-1088]
+	fld	dword ptr [dword4491+12]
+	fmul	dword ptr [dword4493+60]
 	faddp
-	mov	dword4468,[ebp-1096]
-	fstp	dword ptr [dword4468+12]
+	mov	dword4495,[ebp-1096]
+	fstp	dword ptr [dword4495+12]
 label00f8:
 ; end of inline function matrix4f_transform
 label00f9:
@@ -13544,131 +13613,131 @@ label00f9:
 	mov	dword18,[dword16+4]
 	mov	[dword12],dword17
 	mov	[dword12+4],dword18
-	mov	dword4469,[ebp+16]
-	mov	[ebp-1044],dword4469
+	mov	dword4496,[ebp+16]
+	mov	[ebp-1044],dword4496
 	lea	dword20,[ebp-196]
 	add	dword20,48
 	mov	[ebp-1048],dword20
 ; start of inline function _transform_to_projection_space
 	fld1
 	fstp	dword ptr [ebp-1068]
-	mov	dword4472,[ebp-1044]
-	mov	dword4483,[dword4472+8]
-	mov	[ebp-1072],dword4483
-	mov	dword4474,[ebp-1044]
-	mov	dword4482,[dword4474+4]
-	mov	[ebp-1076],dword4482
-	mov	dword4476,[ebp-1044]
-	mov	dword4481,[dword4476]
-	mov	[ebp-1080],dword4481
-	lea	dword4477,[ebp-1064]
-	mov	[ebp-1084],dword4477
+	mov	dword4499,[ebp-1044]
+	mov	dword4510,[dword4499+8]
+	mov	[ebp-1072],dword4510
+	mov	dword4501,[ebp-1044]
+	mov	dword4509,[dword4501+4]
+	mov	[ebp-1076],dword4509
+	mov	dword4503,[ebp-1044]
+	mov	dword4508,[dword4503]
+	mov	[ebp-1080],dword4508
+	lea	dword4504,[ebp-1064]
+	mov	[ebp-1084],dword4504
 ; start of inline function vec4f_assign
-	mov	dword4486,[ebp-1084]
+	mov	dword4513,[ebp-1084]
 	fld	dword ptr [ebp-1080]
-	fstp	dword ptr [dword4486]
-	mov	dword4489,[ebp-1084]
+	fstp	dword ptr [dword4513]
+	mov	dword4516,[ebp-1084]
 	fld	dword ptr [ebp-1076]
-	fstp	dword ptr [dword4489+4]
-	mov	dword4492,[ebp-1084]
+	fstp	dword ptr [dword4516+4]
+	mov	dword4519,[ebp-1084]
 	fld	dword ptr [ebp-1072]
-	fstp	dword ptr [dword4492+8]
-	mov	dword4495,[ebp-1084]
+	fstp	dword ptr [dword4519+8]
+	mov	dword4522,[ebp-1084]
 	fld	dword ptr [ebp-1068]
-	fstp	dword ptr [dword4495+12]
+	fstp	dword ptr [dword4522+12]
 label00fa:
 ; end of inline function vec4f_assign
-	lea	dword4478,dword ptr [__mvproj_matrix]
-	mov	[ebp-1088],dword4478
-	lea	dword4479,[ebp-1064]
-	mov	[ebp-1092],dword4479
-	mov	dword4497,[ebp-1048]
-	mov	[ebp-1096],dword4497
+	lea	dword4505,dword ptr [__mvproj_matrix]
+	mov	[ebp-1088],dword4505
+	lea	dword4506,[ebp-1064]
+	mov	[ebp-1092],dword4506
+	mov	dword4524,[ebp-1048]
+	mov	[ebp-1096],dword4524
 ; start of inline function matrix4f_transform
-	mov	dword4500,[ebp-1092]
-	mov	dword4502,[ebp-1088]
-	fld	dword ptr [dword4500+4]
-	fmul	dword ptr [dword4502+16]
-	mov	dword4504,[ebp-1092]
-	mov	dword4506,[ebp-1088]
-	fld	dword ptr [dword4504]
-	fmul	dword ptr [dword4506]
+	mov	dword4527,[ebp-1092]
+	mov	dword4529,[ebp-1088]
+	fld	dword ptr [dword4527+4]
+	fmul	dword ptr [dword4529+16]
+	mov	dword4531,[ebp-1092]
+	mov	dword4533,[ebp-1088]
+	fld	dword ptr [dword4531]
+	fmul	dword ptr [dword4533]
 	faddp
-	mov	dword4508,[ebp-1092]
-	mov	dword4510,[ebp-1088]
-	fld	dword ptr [dword4508+8]
-	fmul	dword ptr [dword4510+32]
+	mov	dword4535,[ebp-1092]
+	mov	dword4537,[ebp-1088]
+	fld	dword ptr [dword4535+8]
+	fmul	dword ptr [dword4537+32]
 	faddp
-	mov	dword4512,[ebp-1092]
-	mov	dword4514,[ebp-1088]
-	fld	dword ptr [dword4512+12]
-	fmul	dword ptr [dword4514+48]
+	mov	dword4539,[ebp-1092]
+	mov	dword4541,[ebp-1088]
+	fld	dword ptr [dword4539+12]
+	fmul	dword ptr [dword4541+48]
 	faddp
-	mov	dword4516,[ebp-1096]
-	fstp	dword ptr [dword4516]
-	mov	dword4518,[ebp-1088]
-	mov	dword4520,[ebp-1092]
-	fld	dword ptr [dword4520]
-	fmul	dword ptr [dword4518+4]
-	mov	dword4522,[ebp-1092]
-	mov	dword4524,[ebp-1088]
-	fld	dword ptr [dword4522+4]
-	fmul	dword ptr [dword4524+20]
+	mov	dword4543,[ebp-1096]
+	fstp	dword ptr [dword4543]
+	mov	dword4545,[ebp-1088]
+	mov	dword4547,[ebp-1092]
+	fld	dword ptr [dword4547]
+	fmul	dword ptr [dword4545+4]
+	mov	dword4549,[ebp-1092]
+	mov	dword4551,[ebp-1088]
+	fld	dword ptr [dword4549+4]
+	fmul	dword ptr [dword4551+20]
 	faddp
-	mov	dword4526,[ebp-1092]
-	mov	dword4528,[ebp-1088]
-	fld	dword ptr [dword4526+8]
-	fmul	dword ptr [dword4528+36]
+	mov	dword4553,[ebp-1092]
+	mov	dword4555,[ebp-1088]
+	fld	dword ptr [dword4553+8]
+	fmul	dword ptr [dword4555+36]
 	faddp
-	mov	dword4530,[ebp-1092]
-	mov	dword4532,[ebp-1088]
-	fld	dword ptr [dword4530+12]
-	fmul	dword ptr [dword4532+52]
+	mov	dword4557,[ebp-1092]
+	mov	dword4559,[ebp-1088]
+	fld	dword ptr [dword4557+12]
+	fmul	dword ptr [dword4559+52]
 	faddp
-	mov	dword4534,[ebp-1096]
-	fstp	dword ptr [dword4534+4]
-	mov	dword4536,[ebp-1088]
-	mov	dword4538,[ebp-1092]
-	fld	dword ptr [dword4538]
-	fmul	dword ptr [dword4536+8]
-	mov	dword4540,[ebp-1092]
-	mov	dword4542,[ebp-1088]
-	fld	dword ptr [dword4540+4]
-	fmul	dword ptr [dword4542+24]
+	mov	dword4561,[ebp-1096]
+	fstp	dword ptr [dword4561+4]
+	mov	dword4563,[ebp-1088]
+	mov	dword4565,[ebp-1092]
+	fld	dword ptr [dword4565]
+	fmul	dword ptr [dword4563+8]
+	mov	dword4567,[ebp-1092]
+	mov	dword4569,[ebp-1088]
+	fld	dword ptr [dword4567+4]
+	fmul	dword ptr [dword4569+24]
 	faddp
-	mov	dword4544,[ebp-1092]
-	mov	dword4546,[ebp-1088]
-	fld	dword ptr [dword4544+8]
-	fmul	dword ptr [dword4546+40]
+	mov	dword4571,[ebp-1092]
+	mov	dword4573,[ebp-1088]
+	fld	dword ptr [dword4571+8]
+	fmul	dword ptr [dword4573+40]
 	faddp
-	mov	dword4548,[ebp-1092]
-	mov	dword4550,[ebp-1088]
-	fld	dword ptr [dword4548+12]
-	fmul	dword ptr [dword4550+56]
+	mov	dword4575,[ebp-1092]
+	mov	dword4577,[ebp-1088]
+	fld	dword ptr [dword4575+12]
+	fmul	dword ptr [dword4577+56]
 	faddp
-	mov	dword4552,[ebp-1096]
-	fstp	dword ptr [dword4552+8]
-	mov	dword4554,[ebp-1088]
-	mov	dword4556,[ebp-1092]
-	fld	dword ptr [dword4556]
-	fmul	dword ptr [dword4554+12]
-	mov	dword4558,[ebp-1092]
-	mov	dword4560,[ebp-1088]
-	fld	dword ptr [dword4558+4]
-	fmul	dword ptr [dword4560+28]
+	mov	dword4579,[ebp-1096]
+	fstp	dword ptr [dword4579+8]
+	mov	dword4581,[ebp-1088]
+	mov	dword4583,[ebp-1092]
+	fld	dword ptr [dword4583]
+	fmul	dword ptr [dword4581+12]
+	mov	dword4585,[ebp-1092]
+	mov	dword4587,[ebp-1088]
+	fld	dword ptr [dword4585+4]
+	fmul	dword ptr [dword4587+28]
 	faddp
-	mov	dword4562,[ebp-1092]
-	mov	dword4564,[ebp-1088]
-	fld	dword ptr [dword4562+8]
-	fmul	dword ptr [dword4564+44]
+	mov	dword4589,[ebp-1092]
+	mov	dword4591,[ebp-1088]
+	fld	dword ptr [dword4589+8]
+	fmul	dword ptr [dword4591+44]
 	faddp
-	mov	dword4566,[ebp-1092]
-	mov	dword4568,[ebp-1088]
-	fld	dword ptr [dword4566+12]
-	fmul	dword ptr [dword4568+60]
+	mov	dword4593,[ebp-1092]
+	mov	dword4595,[ebp-1088]
+	fld	dword ptr [dword4593+12]
+	fmul	dword ptr [dword4595+60]
 	faddp
-	mov	dword4570,[ebp-1096]
-	fstp	dword ptr [dword4570+12]
+	mov	dword4597,[ebp-1096]
+	fstp	dword ptr [dword4597+12]
 label00fb:
 ; end of inline function matrix4f_transform
 label00fc:
@@ -13701,152 +13770,152 @@ label00fc:
 	lea	dword37,[ebp-196]
 	mov	[ebp-200],dword37
 ; start of inline function _rasterize_polygon_4f
-	mov	dword2015,[ebp-200]
-	mov	[ebp-648],dword2015
+	mov	dword2042,[ebp-200]
+	mov	[ebp-648],dword2042
 ; start of inline function _clip_poligon
-	lea	dword2017,dword ptr [__clip_z_far_norm]
-	mov	[ebp-848],dword2017
-	lea	dword2018,dword ptr [__clip_z_far_base]
-	mov	[ebp-852],dword2018
-	mov	dword2045,[ebp-648]
-	mov	[ebp-856],dword2045
-	lea	dword2020,[ebp-844]
-	mov	[ebp-860],dword2020
+	lea	dword2044,dword ptr [__clip_z_far_norm]
+	mov	[ebp-848],dword2044
+	lea	dword2045,dword ptr [__clip_z_far_base]
+	mov	[ebp-852],dword2045
+	mov	dword2072,[ebp-648]
+	mov	[ebp-856],dword2072
+	lea	dword2047,[ebp-844]
+	mov	[ebp-860],dword2047
 ; start of inline function _clip_on_plain
-	mov	dword2048,[ebp-860]
-	mov	dword ptr [dword2048+192],0
-	mov	dword2051,[ebp-856]
-	mov	[ebp-864],dword2051
-	mov	dword2054,[ebp-856]
-	add	dword2054,24
-	mov	[ebp-868],dword2054
+	mov	dword2075,[ebp-860]
+	mov	dword ptr [dword2075+192],0
+	mov	dword2078,[ebp-856]
+	mov	[ebp-864],dword2078
+	mov	dword2081,[ebp-856]
+	add	dword2081,24
+	mov	[ebp-868],dword2081
 label0070:
 label0071:
-	mov	dword2058,[ebp-856]
-	mov	dword2060,[dword2058+192]
-	imul	dword2060,24
-	mov	dword2062,[ebp-856]
-	add	dword2062,dword2060
-	cmp	dword2062,[ebp-868]
+	mov	dword2085,[ebp-856]
+	mov	dword2087,[dword2085+192]
+	imul	dword2087,24
+	mov	dword2089,[ebp-856]
+	add	dword2089,dword2087
+	cmp	dword2089,[ebp-868]
 	jle	label0072
-	mov	dword2208,[ebp-852]
-	mov	[ebp-968],dword2208
-	mov	dword2066,[ebp-864]
-	mov	[ebp-972],dword2066
-	lea	dword2067,[ebp-884]
-	mov	[ebp-976],dword2067
+	mov	dword2235,[ebp-852]
+	mov	[ebp-968],dword2235
+	mov	dword2093,[ebp-864]
+	mov	[ebp-972],dword2093
+	lea	dword2094,[ebp-884]
+	mov	[ebp-976],dword2094
 ; start of inline function vec4f_subtract
-	mov	dword2211,[ebp-972]
-	mov	dword2213,[ebp-968]
-	fld	dword ptr [dword2211]
-	fsub	dword ptr [dword2213]
-	mov	dword2215,[ebp-976]
-	fstp	dword ptr [dword2215]
-	mov	dword2217,[ebp-972]
-	mov	dword2219,[ebp-968]
-	fld	dword ptr [dword2217+4]
-	fsub	dword ptr [dword2219+4]
-	mov	dword2221,[ebp-976]
-	fstp	dword ptr [dword2221+4]
-	mov	dword2223,[ebp-972]
-	mov	dword2225,[ebp-968]
-	fld	dword ptr [dword2223+8]
-	fsub	dword ptr [dword2225+8]
-	mov	dword2227,[ebp-976]
-	fstp	dword ptr [dword2227+8]
-	mov	dword2229,[ebp-972]
-	mov	dword2231,[ebp-968]
-	fld	dword ptr [dword2229+12]
-	fsub	dword ptr [dword2231+12]
-	mov	dword2233,[ebp-976]
-	fstp	dword ptr [dword2233+12]
+	mov	dword2238,[ebp-972]
+	mov	dword2240,[ebp-968]
+	fld	dword ptr [dword2238]
+	fsub	dword ptr [dword2240]
+	mov	dword2242,[ebp-976]
+	fstp	dword ptr [dword2242]
+	mov	dword2244,[ebp-972]
+	mov	dword2246,[ebp-968]
+	fld	dword ptr [dword2244+4]
+	fsub	dword ptr [dword2246+4]
+	mov	dword2248,[ebp-976]
+	fstp	dword ptr [dword2248+4]
+	mov	dword2250,[ebp-972]
+	mov	dword2252,[ebp-968]
+	fld	dword ptr [dword2250+8]
+	fsub	dword ptr [dword2252+8]
+	mov	dword2254,[ebp-976]
+	fstp	dword ptr [dword2254+8]
+	mov	dword2256,[ebp-972]
+	mov	dword2258,[ebp-968]
+	fld	dword ptr [dword2256+12]
+	fsub	dword ptr [dword2258+12]
+	mov	dword2260,[ebp-976]
+	fstp	dword ptr [dword2260+12]
 label007b:
 ; end of inline function vec4f_subtract
-	mov	dword2311,[ebp-848]
-	mov	[ebp-980],dword2311
-	lea	dword2069,[ebp-884]
-	mov	[ebp-984],dword2069
+	mov	dword2338,[ebp-848]
+	mov	[ebp-980],dword2338
+	lea	dword2096,[ebp-884]
+	mov	[ebp-984],dword2096
 ; start of inline function vec4f_dot
-	mov	dword2314,[ebp-984]
-	mov	dword2316,[ebp-980]
-	fld	dword ptr [dword2314+4]
-	fmul	dword ptr [dword2316+4]
-	mov	dword2318,[ebp-984]
-	mov	dword2320,[ebp-980]
-	fld	dword ptr [dword2318]
-	fmul	dword ptr [dword2320]
+	mov	dword2341,[ebp-984]
+	mov	dword2343,[ebp-980]
+	fld	dword ptr [dword2341+4]
+	fmul	dword ptr [dword2343+4]
+	mov	dword2345,[ebp-984]
+	mov	dword2347,[ebp-980]
+	fld	dword ptr [dword2345]
+	fmul	dword ptr [dword2347]
 	faddp
-	mov	dword2322,[ebp-984]
-	mov	dword2324,[ebp-980]
-	fld	dword ptr [dword2322+8]
-	fmul	dword ptr [dword2324+8]
+	mov	dword2349,[ebp-984]
+	mov	dword2351,[ebp-980]
+	fld	dword ptr [dword2349+8]
+	fmul	dword ptr [dword2351+8]
 	faddp
-	mov	dword2326,[ebp-984]
-	mov	dword2328,[ebp-980]
-	fld	dword ptr [dword2326+12]
-	fmul	dword ptr [dword2328+12]
+	mov	dword2353,[ebp-984]
+	mov	dword2355,[ebp-980]
+	fld	dword ptr [dword2353+12]
+	fmul	dword ptr [dword2355+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label007f:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
 	fstp	dword ptr [ebp-912]
-	mov	dword2234,[ebp-852]
-	mov	[ebp-968],dword2234
-	mov	dword2073,[ebp-868]
-	mov	[ebp-972],dword2073
-	lea	dword2074,[ebp-884]
-	mov	[ebp-976],dword2074
+	mov	dword2261,[ebp-852]
+	mov	[ebp-968],dword2261
+	mov	dword2100,[ebp-868]
+	mov	[ebp-972],dword2100
+	lea	dword2101,[ebp-884]
+	mov	[ebp-976],dword2101
 ; start of inline function vec4f_subtract
-	mov	dword2237,[ebp-972]
-	mov	dword2239,[ebp-968]
-	fld	dword ptr [dword2237]
-	fsub	dword ptr [dword2239]
-	mov	dword2241,[ebp-976]
-	fstp	dword ptr [dword2241]
-	mov	dword2243,[ebp-972]
-	mov	dword2245,[ebp-968]
-	fld	dword ptr [dword2243+4]
-	fsub	dword ptr [dword2245+4]
-	mov	dword2247,[ebp-976]
-	fstp	dword ptr [dword2247+4]
-	mov	dword2249,[ebp-972]
-	mov	dword2251,[ebp-968]
-	fld	dword ptr [dword2249+8]
-	fsub	dword ptr [dword2251+8]
-	mov	dword2253,[ebp-976]
-	fstp	dword ptr [dword2253+8]
-	mov	dword2255,[ebp-972]
-	mov	dword2257,[ebp-968]
-	fld	dword ptr [dword2255+12]
-	fsub	dword ptr [dword2257+12]
-	mov	dword2259,[ebp-976]
-	fstp	dword ptr [dword2259+12]
+	mov	dword2264,[ebp-972]
+	mov	dword2266,[ebp-968]
+	fld	dword ptr [dword2264]
+	fsub	dword ptr [dword2266]
+	mov	dword2268,[ebp-976]
+	fstp	dword ptr [dword2268]
+	mov	dword2270,[ebp-972]
+	mov	dword2272,[ebp-968]
+	fld	dword ptr [dword2270+4]
+	fsub	dword ptr [dword2272+4]
+	mov	dword2274,[ebp-976]
+	fstp	dword ptr [dword2274+4]
+	mov	dword2276,[ebp-972]
+	mov	dword2278,[ebp-968]
+	fld	dword ptr [dword2276+8]
+	fsub	dword ptr [dword2278+8]
+	mov	dword2280,[ebp-976]
+	fstp	dword ptr [dword2280+8]
+	mov	dword2282,[ebp-972]
+	mov	dword2284,[ebp-968]
+	fld	dword ptr [dword2282+12]
+	fsub	dword ptr [dword2284+12]
+	mov	dword2286,[ebp-976]
+	fstp	dword ptr [dword2286+12]
 label007c:
 ; end of inline function vec4f_subtract
-	mov	dword2329,[ebp-848]
-	mov	[ebp-980],dword2329
-	lea	dword2076,[ebp-884]
-	mov	[ebp-984],dword2076
+	mov	dword2356,[ebp-848]
+	mov	[ebp-980],dword2356
+	lea	dword2103,[ebp-884]
+	mov	[ebp-984],dword2103
 ; start of inline function vec4f_dot
-	mov	dword2332,[ebp-984]
-	mov	dword2334,[ebp-980]
-	fld	dword ptr [dword2332+4]
-	fmul	dword ptr [dword2334+4]
-	mov	dword2336,[ebp-984]
-	mov	dword2338,[ebp-980]
-	fld	dword ptr [dword2336]
-	fmul	dword ptr [dword2338]
+	mov	dword2359,[ebp-984]
+	mov	dword2361,[ebp-980]
+	fld	dword ptr [dword2359+4]
+	fmul	dword ptr [dword2361+4]
+	mov	dword2363,[ebp-984]
+	mov	dword2365,[ebp-980]
+	fld	dword ptr [dword2363]
+	fmul	dword ptr [dword2365]
 	faddp
-	mov	dword2340,[ebp-984]
-	mov	dword2342,[ebp-980]
-	fld	dword ptr [dword2340+8]
-	fmul	dword ptr [dword2342+8]
+	mov	dword2367,[ebp-984]
+	mov	dword2369,[ebp-980]
+	fld	dword ptr [dword2367+8]
+	fmul	dword ptr [dword2369+8]
 	faddp
-	mov	dword2344,[ebp-984]
-	mov	dword2346,[ebp-980]
-	fld	dword ptr [dword2344+12]
-	fmul	dword ptr [dword2346+12]
+	mov	dword2371,[ebp-984]
+	mov	dword2373,[ebp-980]
+	fld	dword ptr [dword2371+12]
+	fmul	dword ptr [dword2373+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label0080:
@@ -13858,25 +13927,25 @@ label0080:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label0073
-	mov	dword2080,[ebp-860]
-	mov	dword2081,[dword2080+192]
-	inc	dword ptr [dword2080+192]
-	imul	dword2081,24
-	mov	dword2084,[ebp-860]
-	add	dword2084,dword2081
-	mov	dword2086,[ebp-864]
-	mov	dword2087,[dword2086]
-	mov	dword2088,[dword2086+4]
-	mov	[dword2084],dword2087
-	mov	[dword2084+4],dword2088
-	mov	dword2087,[dword2086+8]
-	mov	dword2088,[dword2086+12]
-	mov	[dword2084+8],dword2087
-	mov	[dword2084+12],dword2088
-	mov	dword2087,[dword2086+16]
-	mov	dword2088,[dword2086+20]
-	mov	[dword2084+16],dword2087
-	mov	[dword2084+20],dword2088
+	mov	dword2107,[ebp-860]
+	mov	dword2108,[dword2107+192]
+	inc	dword ptr [dword2107+192]
+	imul	dword2108,24
+	mov	dword2111,[ebp-860]
+	add	dword2111,dword2108
+	mov	dword2113,[ebp-864]
+	mov	dword2114,[dword2113]
+	mov	dword2115,[dword2113+4]
+	mov	[dword2111],dword2114
+	mov	[dword2111+4],dword2115
+	mov	dword2114,[dword2113+8]
+	mov	dword2115,[dword2113+12]
+	mov	[dword2111+8],dword2114
+	mov	[dword2111+12],dword2115
+	mov	dword2114,[dword2113+16]
+	mov	dword2115,[dword2113+20]
+	mov	[dword2111+16],dword2114
+	mov	[dword2111+20],dword2115
 label0073:
 	fldz
 	fld	dword ptr [ebp-912]
@@ -13900,123 +13969,123 @@ label0076:
 	fstp	st
 	jae	label0074
 label0075:
-	mov	dword2094,[ebp-864]
-	mov	[ebp-968],dword2094
-	mov	dword2260,[ebp-852]
-	mov	[ebp-972],dword2260
-	lea	dword2096,[ebp-884]
-	mov	[ebp-976],dword2096
+	mov	dword2121,[ebp-864]
+	mov	[ebp-968],dword2121
+	mov	dword2287,[ebp-852]
+	mov	[ebp-972],dword2287
+	lea	dword2123,[ebp-884]
+	mov	[ebp-976],dword2123
 ; start of inline function vec4f_subtract
-	mov	dword2263,[ebp-972]
-	mov	dword2265,[ebp-968]
-	fld	dword ptr [dword2263]
-	fsub	dword ptr [dword2265]
-	mov	dword2267,[ebp-976]
-	fstp	dword ptr [dword2267]
-	mov	dword2269,[ebp-972]
-	mov	dword2271,[ebp-968]
-	fld	dword ptr [dword2269+4]
-	fsub	dword ptr [dword2271+4]
-	mov	dword2273,[ebp-976]
-	fstp	dword ptr [dword2273+4]
-	mov	dword2275,[ebp-972]
-	mov	dword2277,[ebp-968]
-	fld	dword ptr [dword2275+8]
-	fsub	dword ptr [dword2277+8]
-	mov	dword2279,[ebp-976]
-	fstp	dword ptr [dword2279+8]
-	mov	dword2281,[ebp-972]
-	mov	dword2283,[ebp-968]
-	fld	dword ptr [dword2281+12]
-	fsub	dword ptr [dword2283+12]
-	mov	dword2285,[ebp-976]
-	fstp	dword ptr [dword2285+12]
+	mov	dword2290,[ebp-972]
+	mov	dword2292,[ebp-968]
+	fld	dword ptr [dword2290]
+	fsub	dword ptr [dword2292]
+	mov	dword2294,[ebp-976]
+	fstp	dword ptr [dword2294]
+	mov	dword2296,[ebp-972]
+	mov	dword2298,[ebp-968]
+	fld	dword ptr [dword2296+4]
+	fsub	dword ptr [dword2298+4]
+	mov	dword2300,[ebp-976]
+	fstp	dword ptr [dword2300+4]
+	mov	dword2302,[ebp-972]
+	mov	dword2304,[ebp-968]
+	fld	dword ptr [dword2302+8]
+	fsub	dword ptr [dword2304+8]
+	mov	dword2306,[ebp-976]
+	fstp	dword ptr [dword2306+8]
+	mov	dword2308,[ebp-972]
+	mov	dword2310,[ebp-968]
+	fld	dword ptr [dword2308+12]
+	fsub	dword ptr [dword2310+12]
+	mov	dword2312,[ebp-976]
+	fstp	dword ptr [dword2312+12]
 label007d:
 ; end of inline function vec4f_subtract
-	mov	dword2098,[ebp-864]
-	mov	[ebp-968],dword2098
-	mov	dword2100,[ebp-868]
-	mov	[ebp-972],dword2100
-	lea	dword2101,[ebp-900]
-	mov	[ebp-976],dword2101
+	mov	dword2125,[ebp-864]
+	mov	[ebp-968],dword2125
+	mov	dword2127,[ebp-868]
+	mov	[ebp-972],dword2127
+	lea	dword2128,[ebp-900]
+	mov	[ebp-976],dword2128
 ; start of inline function vec4f_subtract
-	mov	dword2288,[ebp-972]
-	mov	dword2290,[ebp-968]
-	fld	dword ptr [dword2288]
-	fsub	dword ptr [dword2290]
-	mov	dword2292,[ebp-976]
-	fstp	dword ptr [dword2292]
-	mov	dword2294,[ebp-972]
-	mov	dword2296,[ebp-968]
-	fld	dword ptr [dword2294+4]
-	fsub	dword ptr [dword2296+4]
-	mov	dword2298,[ebp-976]
-	fstp	dword ptr [dword2298+4]
-	mov	dword2300,[ebp-972]
-	mov	dword2302,[ebp-968]
-	fld	dword ptr [dword2300+8]
-	fsub	dword ptr [dword2302+8]
-	mov	dword2304,[ebp-976]
-	fstp	dword ptr [dword2304+8]
-	mov	dword2306,[ebp-972]
-	mov	dword2308,[ebp-968]
-	fld	dword ptr [dword2306+12]
-	fsub	dword ptr [dword2308+12]
-	mov	dword2310,[ebp-976]
-	fstp	dword ptr [dword2310+12]
+	mov	dword2315,[ebp-972]
+	mov	dword2317,[ebp-968]
+	fld	dword ptr [dword2315]
+	fsub	dword ptr [dword2317]
+	mov	dword2319,[ebp-976]
+	fstp	dword ptr [dword2319]
+	mov	dword2321,[ebp-972]
+	mov	dword2323,[ebp-968]
+	fld	dword ptr [dword2321+4]
+	fsub	dword ptr [dword2323+4]
+	mov	dword2325,[ebp-976]
+	fstp	dword ptr [dword2325+4]
+	mov	dword2327,[ebp-972]
+	mov	dword2329,[ebp-968]
+	fld	dword ptr [dword2327+8]
+	fsub	dword ptr [dword2329+8]
+	mov	dword2331,[ebp-976]
+	fstp	dword ptr [dword2331+8]
+	mov	dword2333,[ebp-972]
+	mov	dword2335,[ebp-968]
+	fld	dword ptr [dword2333+12]
+	fsub	dword ptr [dword2335+12]
+	mov	dword2337,[ebp-976]
+	fstp	dword ptr [dword2337+12]
 label007e:
 ; end of inline function vec4f_subtract
-	mov	dword2347,[ebp-848]
-	mov	[ebp-980],dword2347
-	lea	dword2103,[ebp-884]
-	mov	[ebp-984],dword2103
+	mov	dword2374,[ebp-848]
+	mov	[ebp-980],dword2374
+	lea	dword2130,[ebp-884]
+	mov	[ebp-984],dword2130
 ; start of inline function vec4f_dot
-	mov	dword2350,[ebp-984]
-	mov	dword2352,[ebp-980]
-	fld	dword ptr [dword2350+4]
-	fmul	dword ptr [dword2352+4]
-	mov	dword2354,[ebp-984]
-	mov	dword2356,[ebp-980]
-	fld	dword ptr [dword2354]
-	fmul	dword ptr [dword2356]
+	mov	dword2377,[ebp-984]
+	mov	dword2379,[ebp-980]
+	fld	dword ptr [dword2377+4]
+	fmul	dword ptr [dword2379+4]
+	mov	dword2381,[ebp-984]
+	mov	dword2383,[ebp-980]
+	fld	dword ptr [dword2381]
+	fmul	dword ptr [dword2383]
 	faddp
-	mov	dword2358,[ebp-984]
-	mov	dword2360,[ebp-980]
-	fld	dword ptr [dword2358+8]
-	fmul	dword ptr [dword2360+8]
+	mov	dword2385,[ebp-984]
+	mov	dword2387,[ebp-980]
+	fld	dword ptr [dword2385+8]
+	fmul	dword ptr [dword2387+8]
 	faddp
-	mov	dword2362,[ebp-984]
-	mov	dword2364,[ebp-980]
-	fld	dword ptr [dword2362+12]
-	fmul	dword ptr [dword2364+12]
+	mov	dword2389,[ebp-984]
+	mov	dword2391,[ebp-980]
+	fld	dword ptr [dword2389+12]
+	fmul	dword ptr [dword2391+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label0081:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
-	mov	dword2365,[ebp-848]
-	mov	[ebp-980],dword2365
-	lea	dword2105,[ebp-900]
-	mov	[ebp-984],dword2105
+	mov	dword2392,[ebp-848]
+	mov	[ebp-980],dword2392
+	lea	dword2132,[ebp-900]
+	mov	[ebp-984],dword2132
 ; start of inline function vec4f_dot
-	mov	dword2368,[ebp-984]
-	mov	dword2370,[ebp-980]
-	fld	dword ptr [dword2368+4]
-	fmul	dword ptr [dword2370+4]
-	mov	dword2372,[ebp-984]
-	mov	dword2374,[ebp-980]
-	fld	dword ptr [dword2372]
-	fmul	dword ptr [dword2374]
+	mov	dword2395,[ebp-984]
+	mov	dword2397,[ebp-980]
+	fld	dword ptr [dword2395+4]
+	fmul	dword ptr [dword2397+4]
+	mov	dword2399,[ebp-984]
+	mov	dword2401,[ebp-980]
+	fld	dword ptr [dword2399]
+	fmul	dword ptr [dword2401]
 	faddp
-	mov	dword2376,[ebp-984]
-	mov	dword2378,[ebp-980]
-	fld	dword ptr [dword2376+8]
-	fmul	dword ptr [dword2378+8]
+	mov	dword2403,[ebp-984]
+	mov	dword2405,[ebp-980]
+	fld	dword ptr [dword2403+8]
+	fmul	dword ptr [dword2405+8]
 	faddp
-	mov	dword2380,[ebp-984]
-	mov	dword2382,[ebp-980]
-	fld	dword ptr [dword2380+12]
-	fmul	dword ptr [dword2382+12]
+	mov	dword2407,[ebp-984]
+	mov	dword2409,[ebp-980]
+	fld	dword ptr [dword2407+12]
+	fmul	dword ptr [dword2409+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label0082:
@@ -14024,302 +14093,302 @@ label0082:
 	fld	dword ptr [ebp-988]
 	fdivp
 	fstp	dword ptr [ebp-920]
-	mov	dword2383,[ebp-920]
-	mov	[ebp-992],dword2383
-	lea	dword2108,[ebp-900]
-	mov	[ebp-996],dword2108
+	mov	dword2410,[ebp-920]
+	mov	[ebp-992],dword2410
+	lea	dword2135,[ebp-900]
+	mov	[ebp-996],dword2135
 ; start of inline function vec4f_mul
-	mov	dword2386,[ebp-996]
-	fld	dword ptr [dword2386]
+	mov	dword2413,[ebp-996]
+	fld	dword ptr [dword2413]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword2386]
-	mov	dword2389,[ebp-996]
-	fld	dword ptr [dword2389+4]
+	fstp	dword ptr [dword2413]
+	mov	dword2416,[ebp-996]
+	fld	dword ptr [dword2416+4]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword2389+4]
-	mov	dword2392,[ebp-996]
-	fld	dword ptr [dword2392+8]
+	fstp	dword ptr [dword2416+4]
+	mov	dword2419,[ebp-996]
+	fld	dword ptr [dword2419+8]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword2392+8]
-	mov	dword2395,[ebp-996]
-	fld	dword ptr [dword2395+12]
+	fstp	dword ptr [dword2419+8]
+	mov	dword2422,[ebp-996]
+	fld	dword ptr [dword2422+12]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword2395+12]
+	fstp	dword ptr [dword2422+12]
 label0083:
 ; end of inline function vec4f_mul
-	lea	dword2109,[ebp-900]
-	mov	[ebp-956],dword2109
-	mov	dword2111,[ebp-864]
-	mov	[ebp-960],dword2111
-	mov	dword2113,[ebp-860]
-	mov	dword2115,[dword2113+192]
-	imul	dword2115,24
-	mov	dword2117,[ebp-860]
-	add	dword2117,dword2115
-	mov	[ebp-964],dword2117
+	lea	dword2136,[ebp-900]
+	mov	[ebp-956],dword2136
+	mov	dword2138,[ebp-864]
+	mov	[ebp-960],dword2138
+	mov	dword2140,[ebp-860]
+	mov	dword2142,[dword2140+192]
+	imul	dword2142,24
+	mov	dword2144,[ebp-860]
+	add	dword2144,dword2142
+	mov	[ebp-964],dword2144
 ; start of inline function vec4f_add
-	mov	dword2185,[ebp-960]
-	mov	dword2187,[ebp-956]
-	fld	dword ptr [dword2185]
-	fadd	dword ptr [dword2187]
-	mov	dword2189,[ebp-964]
-	fstp	dword ptr [dword2189]
-	mov	dword2191,[ebp-960]
-	mov	dword2193,[ebp-956]
-	fld	dword ptr [dword2191+4]
-	fadd	dword ptr [dword2193+4]
-	mov	dword2195,[ebp-964]
-	fstp	dword ptr [dword2195+4]
-	mov	dword2197,[ebp-960]
-	mov	dword2199,[ebp-956]
-	fld	dword ptr [dword2197+8]
-	fadd	dword ptr [dword2199+8]
-	mov	dword2201,[ebp-964]
-	fstp	dword ptr [dword2201+8]
-	mov	dword2203,[ebp-960]
-	mov	dword2205,[ebp-956]
-	fld	dword ptr [dword2203+12]
-	fadd	dword ptr [dword2205+12]
-	mov	dword2207,[ebp-964]
-	fstp	dword ptr [dword2207+12]
+	mov	dword2212,[ebp-960]
+	mov	dword2214,[ebp-956]
+	fld	dword ptr [dword2212]
+	fadd	dword ptr [dword2214]
+	mov	dword2216,[ebp-964]
+	fstp	dword ptr [dword2216]
+	mov	dword2218,[ebp-960]
+	mov	dword2220,[ebp-956]
+	fld	dword ptr [dword2218+4]
+	fadd	dword ptr [dword2220+4]
+	mov	dword2222,[ebp-964]
+	fstp	dword ptr [dword2222+4]
+	mov	dword2224,[ebp-960]
+	mov	dword2226,[ebp-956]
+	fld	dword ptr [dword2224+8]
+	fadd	dword ptr [dword2226+8]
+	mov	dword2228,[ebp-964]
+	fstp	dword ptr [dword2228+8]
+	mov	dword2230,[ebp-960]
+	mov	dword2232,[ebp-956]
+	fld	dword ptr [dword2230+12]
+	fadd	dword ptr [dword2232+12]
+	mov	dword2234,[ebp-964]
+	fstp	dword ptr [dword2234+12]
 label007a:
 ; end of inline function vec4f_add
-	mov	dword2119,16
-	add	dword2119,[ebp-864]
-	mov	[ebp-936],dword2119
-	mov	dword2121,16
-	add	dword2121,[ebp-868]
-	mov	[ebp-940],dword2121
-	lea	dword2122,[ebp-908]
-	mov	[ebp-944],dword2122
+	mov	dword2146,16
+	add	dword2146,[ebp-864]
+	mov	[ebp-936],dword2146
+	mov	dword2148,16
+	add	dword2148,[ebp-868]
+	mov	[ebp-940],dword2148
+	lea	dword2149,[ebp-908]
+	mov	[ebp-944],dword2149
 ; start of inline function vec2f_subtract
-	mov	dword2164,[ebp-940]
-	mov	dword2166,[ebp-936]
-	fld	dword ptr [dword2164]
-	fsub	dword ptr [dword2166]
-	mov	dword2168,[ebp-944]
-	fstp	dword ptr [dword2168]
-	mov	dword2170,[ebp-940]
-	mov	dword2172,[ebp-936]
-	fld	dword ptr [dword2170+4]
-	fsub	dword ptr [dword2172+4]
-	mov	dword2174,[ebp-944]
-	fstp	dword ptr [dword2174+4]
+	mov	dword2191,[ebp-940]
+	mov	dword2193,[ebp-936]
+	fld	dword ptr [dword2191]
+	fsub	dword ptr [dword2193]
+	mov	dword2195,[ebp-944]
+	fstp	dword ptr [dword2195]
+	mov	dword2197,[ebp-940]
+	mov	dword2199,[ebp-936]
+	fld	dword ptr [dword2197+4]
+	fsub	dword ptr [dword2199+4]
+	mov	dword2201,[ebp-944]
+	fstp	dword ptr [dword2201+4]
 label0078:
 ; end of inline function vec2f_subtract
-	mov	dword2175,[ebp-920]
-	mov	[ebp-948],dword2175
-	lea	dword2124,[ebp-908]
-	mov	[ebp-952],dword2124
+	mov	dword2202,[ebp-920]
+	mov	[ebp-948],dword2202
+	lea	dword2151,[ebp-908]
+	mov	[ebp-952],dword2151
 ; start of inline function vec2f_mul
-	mov	dword2178,[ebp-952]
-	fld	dword ptr [dword2178]
+	mov	dword2205,[ebp-952]
+	fld	dword ptr [dword2205]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword2178]
-	mov	dword2181,[ebp-952]
-	fld	dword ptr [dword2181+4]
+	fstp	dword ptr [dword2205]
+	mov	dword2208,[ebp-952]
+	fld	dword ptr [dword2208+4]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword2181+4]
+	fstp	dword ptr [dword2208+4]
 label0079:
 ; end of inline function vec2f_mul
-	lea	dword2125,[ebp-908]
-	mov	[ebp-924],dword2125
-	mov	dword2127,16
-	add	dword2127,[ebp-864]
-	mov	[ebp-928],dword2127
-	mov	dword2129,[ebp-860]
-	mov	dword2131,[dword2129+192]
-	imul	dword2131,24
-	mov	dword2133,[ebp-860]
-	add	dword2133,dword2131
-	add	dword2133,16
-	mov	[ebp-932],dword2133
+	lea	dword2152,[ebp-908]
+	mov	[ebp-924],dword2152
+	mov	dword2154,16
+	add	dword2154,[ebp-864]
+	mov	[ebp-928],dword2154
+	mov	dword2156,[ebp-860]
+	mov	dword2158,[dword2156+192]
+	imul	dword2158,24
+	mov	dword2160,[ebp-860]
+	add	dword2160,dword2158
+	add	dword2160,16
+	mov	[ebp-932],dword2160
 ; start of inline function vec2f_add
-	mov	dword2151,[ebp-928]
-	mov	dword2153,[ebp-924]
-	fld	dword ptr [dword2151]
-	fadd	dword ptr [dword2153]
-	mov	dword2155,[ebp-932]
-	fstp	dword ptr [dword2155]
-	mov	dword2157,[ebp-928]
-	mov	dword2159,[ebp-924]
-	fld	dword ptr [dword2157+4]
-	fadd	dword ptr [dword2159+4]
-	mov	dword2161,[ebp-932]
-	fstp	dword ptr [dword2161+4]
+	mov	dword2178,[ebp-928]
+	mov	dword2180,[ebp-924]
+	fld	dword ptr [dword2178]
+	fadd	dword ptr [dword2180]
+	mov	dword2182,[ebp-932]
+	fstp	dword ptr [dword2182]
+	mov	dword2184,[ebp-928]
+	mov	dword2186,[ebp-924]
+	fld	dword ptr [dword2184+4]
+	fadd	dword ptr [dword2186+4]
+	mov	dword2188,[ebp-932]
+	fstp	dword ptr [dword2188+4]
 label0077:
 ; end of inline function vec2f_add
-	mov	dword2136,[ebp-860]
-	inc	dword ptr [dword2136+192]
+	mov	dword2163,[ebp-860]
+	inc	dword ptr [dword2163+192]
 label0074:
 	add	dword ptr [ebp-864],24
 	add	dword ptr [ebp-868],24
 	jmp	label0071
 label0072:
-	mov	dword2140,[ebp-860]
-	mov	dword2141,[dword2140+192]
-	inc	dword ptr [dword2140+192]
-	imul	dword2141,24
-	mov	dword2144,[ebp-860]
-	add	dword2144,dword2141
-	mov	dword2146,[ebp-860]
-	mov	dword2147,[dword2146]
-	mov	dword2148,[dword2146+4]
-	mov	[dword2144],dword2147
-	mov	[dword2144+4],dword2148
-	mov	dword2147,[dword2146+8]
-	mov	dword2148,[dword2146+12]
-	mov	[dword2144+8],dword2147
-	mov	[dword2144+12],dword2148
-	mov	dword2147,[dword2146+16]
-	mov	dword2148,[dword2146+20]
-	mov	[dword2144+16],dword2147
-	mov	[dword2144+20],dword2148
+	mov	dword2167,[ebp-860]
+	mov	dword2168,[dword2167+192]
+	inc	dword ptr [dword2167+192]
+	imul	dword2168,24
+	mov	dword2171,[ebp-860]
+	add	dword2171,dword2168
+	mov	dword2173,[ebp-860]
+	mov	dword2174,[dword2173]
+	mov	dword2175,[dword2173+4]
+	mov	[dword2171],dword2174
+	mov	[dword2171+4],dword2175
+	mov	dword2174,[dword2173+8]
+	mov	dword2175,[dword2173+12]
+	mov	[dword2171+8],dword2174
+	mov	[dword2171+12],dword2175
+	mov	dword2174,[dword2173+16]
+	mov	dword2175,[dword2173+20]
+	mov	[dword2171+16],dword2174
+	mov	[dword2171+20],dword2175
 label0084:
 ; end of inline function _clip_on_plain
-	lea	dword2021,dword ptr [__clip_z_near_norm]
-	mov	[ebp-848],dword2021
-	lea	dword2022,dword ptr [__clip_z_near_base]
-	mov	[ebp-852],dword2022
-	lea	dword2023,[ebp-844]
-	mov	[ebp-856],dword2023
-	mov	dword2397,[ebp-648]
-	mov	[ebp-860],dword2397
+	lea	dword2048,dword ptr [__clip_z_near_norm]
+	mov	[ebp-848],dword2048
+	lea	dword2049,dword ptr [__clip_z_near_base]
+	mov	[ebp-852],dword2049
+	lea	dword2050,[ebp-844]
+	mov	[ebp-856],dword2050
+	mov	dword2424,[ebp-648]
+	mov	[ebp-860],dword2424
 ; start of inline function _clip_on_plain
-	mov	dword2400,[ebp-860]
-	mov	dword ptr [dword2400+192],0
-	mov	dword2403,[ebp-856]
-	mov	[ebp-864],dword2403
-	mov	dword2406,[ebp-856]
-	add	dword2406,24
-	mov	[ebp-868],dword2406
+	mov	dword2427,[ebp-860]
+	mov	dword ptr [dword2427+192],0
+	mov	dword2430,[ebp-856]
+	mov	[ebp-864],dword2430
+	mov	dword2433,[ebp-856]
+	add	dword2433,24
+	mov	[ebp-868],dword2433
 label0085:
 label0086:
-	mov	dword2410,[ebp-856]
-	mov	dword2412,[dword2410+192]
-	imul	dword2412,24
-	mov	dword2414,[ebp-856]
-	add	dword2414,dword2412
-	cmp	dword2414,[ebp-868]
+	mov	dword2437,[ebp-856]
+	mov	dword2439,[dword2437+192]
+	imul	dword2439,24
+	mov	dword2441,[ebp-856]
+	add	dword2441,dword2439
+	cmp	dword2441,[ebp-868]
 	jle	label0087
-	mov	dword2560,[ebp-852]
-	mov	[ebp-968],dword2560
-	mov	dword2418,[ebp-864]
-	mov	[ebp-972],dword2418
-	lea	dword2419,[ebp-884]
-	mov	[ebp-976],dword2419
+	mov	dword2587,[ebp-852]
+	mov	[ebp-968],dword2587
+	mov	dword2445,[ebp-864]
+	mov	[ebp-972],dword2445
+	lea	dword2446,[ebp-884]
+	mov	[ebp-976],dword2446
 ; start of inline function vec4f_subtract
-	mov	dword2563,[ebp-972]
-	mov	dword2565,[ebp-968]
-	fld	dword ptr [dword2563]
-	fsub	dword ptr [dword2565]
-	mov	dword2567,[ebp-976]
-	fstp	dword ptr [dword2567]
-	mov	dword2569,[ebp-972]
-	mov	dword2571,[ebp-968]
-	fld	dword ptr [dword2569+4]
-	fsub	dword ptr [dword2571+4]
-	mov	dword2573,[ebp-976]
-	fstp	dword ptr [dword2573+4]
-	mov	dword2575,[ebp-972]
-	mov	dword2577,[ebp-968]
-	fld	dword ptr [dword2575+8]
-	fsub	dword ptr [dword2577+8]
-	mov	dword2579,[ebp-976]
-	fstp	dword ptr [dword2579+8]
-	mov	dword2581,[ebp-972]
-	mov	dword2583,[ebp-968]
-	fld	dword ptr [dword2581+12]
-	fsub	dword ptr [dword2583+12]
-	mov	dword2585,[ebp-976]
-	fstp	dword ptr [dword2585+12]
+	mov	dword2590,[ebp-972]
+	mov	dword2592,[ebp-968]
+	fld	dword ptr [dword2590]
+	fsub	dword ptr [dword2592]
+	mov	dword2594,[ebp-976]
+	fstp	dword ptr [dword2594]
+	mov	dword2596,[ebp-972]
+	mov	dword2598,[ebp-968]
+	fld	dword ptr [dword2596+4]
+	fsub	dword ptr [dword2598+4]
+	mov	dword2600,[ebp-976]
+	fstp	dword ptr [dword2600+4]
+	mov	dword2602,[ebp-972]
+	mov	dword2604,[ebp-968]
+	fld	dword ptr [dword2602+8]
+	fsub	dword ptr [dword2604+8]
+	mov	dword2606,[ebp-976]
+	fstp	dword ptr [dword2606+8]
+	mov	dword2608,[ebp-972]
+	mov	dword2610,[ebp-968]
+	fld	dword ptr [dword2608+12]
+	fsub	dword ptr [dword2610+12]
+	mov	dword2612,[ebp-976]
+	fstp	dword ptr [dword2612+12]
 label0090:
 ; end of inline function vec4f_subtract
-	mov	dword2663,[ebp-848]
-	mov	[ebp-980],dword2663
-	lea	dword2421,[ebp-884]
-	mov	[ebp-984],dword2421
+	mov	dword2690,[ebp-848]
+	mov	[ebp-980],dword2690
+	lea	dword2448,[ebp-884]
+	mov	[ebp-984],dword2448
 ; start of inline function vec4f_dot
-	mov	dword2666,[ebp-984]
-	mov	dword2668,[ebp-980]
-	fld	dword ptr [dword2666+4]
-	fmul	dword ptr [dword2668+4]
-	mov	dword2670,[ebp-984]
-	mov	dword2672,[ebp-980]
-	fld	dword ptr [dword2670]
-	fmul	dword ptr [dword2672]
+	mov	dword2693,[ebp-984]
+	mov	dword2695,[ebp-980]
+	fld	dword ptr [dword2693+4]
+	fmul	dword ptr [dword2695+4]
+	mov	dword2697,[ebp-984]
+	mov	dword2699,[ebp-980]
+	fld	dword ptr [dword2697]
+	fmul	dword ptr [dword2699]
 	faddp
-	mov	dword2674,[ebp-984]
-	mov	dword2676,[ebp-980]
-	fld	dword ptr [dword2674+8]
-	fmul	dword ptr [dword2676+8]
+	mov	dword2701,[ebp-984]
+	mov	dword2703,[ebp-980]
+	fld	dword ptr [dword2701+8]
+	fmul	dword ptr [dword2703+8]
 	faddp
-	mov	dword2678,[ebp-984]
-	mov	dword2680,[ebp-980]
-	fld	dword ptr [dword2678+12]
-	fmul	dword ptr [dword2680+12]
+	mov	dword2705,[ebp-984]
+	mov	dword2707,[ebp-980]
+	fld	dword ptr [dword2705+12]
+	fmul	dword ptr [dword2707+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label0094:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
 	fstp	dword ptr [ebp-912]
-	mov	dword2586,[ebp-852]
-	mov	[ebp-968],dword2586
-	mov	dword2425,[ebp-868]
-	mov	[ebp-972],dword2425
-	lea	dword2426,[ebp-884]
-	mov	[ebp-976],dword2426
+	mov	dword2613,[ebp-852]
+	mov	[ebp-968],dword2613
+	mov	dword2452,[ebp-868]
+	mov	[ebp-972],dword2452
+	lea	dword2453,[ebp-884]
+	mov	[ebp-976],dword2453
 ; start of inline function vec4f_subtract
-	mov	dword2589,[ebp-972]
-	mov	dword2591,[ebp-968]
-	fld	dword ptr [dword2589]
-	fsub	dword ptr [dword2591]
-	mov	dword2593,[ebp-976]
-	fstp	dword ptr [dword2593]
-	mov	dword2595,[ebp-972]
-	mov	dword2597,[ebp-968]
-	fld	dword ptr [dword2595+4]
-	fsub	dword ptr [dword2597+4]
-	mov	dword2599,[ebp-976]
-	fstp	dword ptr [dword2599+4]
-	mov	dword2601,[ebp-972]
-	mov	dword2603,[ebp-968]
-	fld	dword ptr [dword2601+8]
-	fsub	dword ptr [dword2603+8]
-	mov	dword2605,[ebp-976]
-	fstp	dword ptr [dword2605+8]
-	mov	dword2607,[ebp-972]
-	mov	dword2609,[ebp-968]
-	fld	dword ptr [dword2607+12]
-	fsub	dword ptr [dword2609+12]
-	mov	dword2611,[ebp-976]
-	fstp	dword ptr [dword2611+12]
+	mov	dword2616,[ebp-972]
+	mov	dword2618,[ebp-968]
+	fld	dword ptr [dword2616]
+	fsub	dword ptr [dword2618]
+	mov	dword2620,[ebp-976]
+	fstp	dword ptr [dword2620]
+	mov	dword2622,[ebp-972]
+	mov	dword2624,[ebp-968]
+	fld	dword ptr [dword2622+4]
+	fsub	dword ptr [dword2624+4]
+	mov	dword2626,[ebp-976]
+	fstp	dword ptr [dword2626+4]
+	mov	dword2628,[ebp-972]
+	mov	dword2630,[ebp-968]
+	fld	dword ptr [dword2628+8]
+	fsub	dword ptr [dword2630+8]
+	mov	dword2632,[ebp-976]
+	fstp	dword ptr [dword2632+8]
+	mov	dword2634,[ebp-972]
+	mov	dword2636,[ebp-968]
+	fld	dword ptr [dword2634+12]
+	fsub	dword ptr [dword2636+12]
+	mov	dword2638,[ebp-976]
+	fstp	dword ptr [dword2638+12]
 label0091:
 ; end of inline function vec4f_subtract
-	mov	dword2681,[ebp-848]
-	mov	[ebp-980],dword2681
-	lea	dword2428,[ebp-884]
-	mov	[ebp-984],dword2428
+	mov	dword2708,[ebp-848]
+	mov	[ebp-980],dword2708
+	lea	dword2455,[ebp-884]
+	mov	[ebp-984],dword2455
 ; start of inline function vec4f_dot
-	mov	dword2684,[ebp-984]
-	mov	dword2686,[ebp-980]
-	fld	dword ptr [dword2684+4]
-	fmul	dword ptr [dword2686+4]
-	mov	dword2688,[ebp-984]
-	mov	dword2690,[ebp-980]
-	fld	dword ptr [dword2688]
-	fmul	dword ptr [dword2690]
+	mov	dword2711,[ebp-984]
+	mov	dword2713,[ebp-980]
+	fld	dword ptr [dword2711+4]
+	fmul	dword ptr [dword2713+4]
+	mov	dword2715,[ebp-984]
+	mov	dword2717,[ebp-980]
+	fld	dword ptr [dword2715]
+	fmul	dword ptr [dword2717]
 	faddp
-	mov	dword2692,[ebp-984]
-	mov	dword2694,[ebp-980]
-	fld	dword ptr [dword2692+8]
-	fmul	dword ptr [dword2694+8]
+	mov	dword2719,[ebp-984]
+	mov	dword2721,[ebp-980]
+	fld	dword ptr [dword2719+8]
+	fmul	dword ptr [dword2721+8]
 	faddp
-	mov	dword2696,[ebp-984]
-	mov	dword2698,[ebp-980]
-	fld	dword ptr [dword2696+12]
-	fmul	dword ptr [dword2698+12]
+	mov	dword2723,[ebp-984]
+	mov	dword2725,[ebp-980]
+	fld	dword ptr [dword2723+12]
+	fmul	dword ptr [dword2725+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label0095:
@@ -14331,25 +14400,25 @@ label0095:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label0088
-	mov	dword2432,[ebp-860]
-	mov	dword2433,[dword2432+192]
-	inc	dword ptr [dword2432+192]
-	imul	dword2433,24
-	mov	dword2436,[ebp-860]
-	add	dword2436,dword2433
-	mov	dword2438,[ebp-864]
-	mov	dword2439,[dword2438]
-	mov	dword2440,[dword2438+4]
-	mov	[dword2436],dword2439
-	mov	[dword2436+4],dword2440
-	mov	dword2439,[dword2438+8]
-	mov	dword2440,[dword2438+12]
-	mov	[dword2436+8],dword2439
-	mov	[dword2436+12],dword2440
-	mov	dword2439,[dword2438+16]
-	mov	dword2440,[dword2438+20]
-	mov	[dword2436+16],dword2439
-	mov	[dword2436+20],dword2440
+	mov	dword2459,[ebp-860]
+	mov	dword2460,[dword2459+192]
+	inc	dword ptr [dword2459+192]
+	imul	dword2460,24
+	mov	dword2463,[ebp-860]
+	add	dword2463,dword2460
+	mov	dword2465,[ebp-864]
+	mov	dword2466,[dword2465]
+	mov	dword2467,[dword2465+4]
+	mov	[dword2463],dword2466
+	mov	[dword2463+4],dword2467
+	mov	dword2466,[dword2465+8]
+	mov	dword2467,[dword2465+12]
+	mov	[dword2463+8],dword2466
+	mov	[dword2463+12],dword2467
+	mov	dword2466,[dword2465+16]
+	mov	dword2467,[dword2465+20]
+	mov	[dword2463+16],dword2466
+	mov	[dword2463+20],dword2467
 label0088:
 	fldz
 	fld	dword ptr [ebp-912]
@@ -14373,123 +14442,123 @@ label008b:
 	fstp	st
 	jae	label0089
 label008a:
-	mov	dword2446,[ebp-864]
-	mov	[ebp-968],dword2446
-	mov	dword2612,[ebp-852]
-	mov	[ebp-972],dword2612
-	lea	dword2448,[ebp-884]
-	mov	[ebp-976],dword2448
+	mov	dword2473,[ebp-864]
+	mov	[ebp-968],dword2473
+	mov	dword2639,[ebp-852]
+	mov	[ebp-972],dword2639
+	lea	dword2475,[ebp-884]
+	mov	[ebp-976],dword2475
 ; start of inline function vec4f_subtract
-	mov	dword2615,[ebp-972]
-	mov	dword2617,[ebp-968]
-	fld	dword ptr [dword2615]
-	fsub	dword ptr [dword2617]
-	mov	dword2619,[ebp-976]
-	fstp	dword ptr [dword2619]
-	mov	dword2621,[ebp-972]
-	mov	dword2623,[ebp-968]
-	fld	dword ptr [dword2621+4]
-	fsub	dword ptr [dword2623+4]
-	mov	dword2625,[ebp-976]
-	fstp	dword ptr [dword2625+4]
-	mov	dword2627,[ebp-972]
-	mov	dword2629,[ebp-968]
-	fld	dword ptr [dword2627+8]
-	fsub	dword ptr [dword2629+8]
-	mov	dword2631,[ebp-976]
-	fstp	dword ptr [dword2631+8]
-	mov	dword2633,[ebp-972]
-	mov	dword2635,[ebp-968]
-	fld	dword ptr [dword2633+12]
-	fsub	dword ptr [dword2635+12]
-	mov	dword2637,[ebp-976]
-	fstp	dword ptr [dword2637+12]
+	mov	dword2642,[ebp-972]
+	mov	dword2644,[ebp-968]
+	fld	dword ptr [dword2642]
+	fsub	dword ptr [dword2644]
+	mov	dword2646,[ebp-976]
+	fstp	dword ptr [dword2646]
+	mov	dword2648,[ebp-972]
+	mov	dword2650,[ebp-968]
+	fld	dword ptr [dword2648+4]
+	fsub	dword ptr [dword2650+4]
+	mov	dword2652,[ebp-976]
+	fstp	dword ptr [dword2652+4]
+	mov	dword2654,[ebp-972]
+	mov	dword2656,[ebp-968]
+	fld	dword ptr [dword2654+8]
+	fsub	dword ptr [dword2656+8]
+	mov	dword2658,[ebp-976]
+	fstp	dword ptr [dword2658+8]
+	mov	dword2660,[ebp-972]
+	mov	dword2662,[ebp-968]
+	fld	dword ptr [dword2660+12]
+	fsub	dword ptr [dword2662+12]
+	mov	dword2664,[ebp-976]
+	fstp	dword ptr [dword2664+12]
 label0092:
 ; end of inline function vec4f_subtract
-	mov	dword2450,[ebp-864]
-	mov	[ebp-968],dword2450
-	mov	dword2452,[ebp-868]
-	mov	[ebp-972],dword2452
-	lea	dword2453,[ebp-900]
-	mov	[ebp-976],dword2453
+	mov	dword2477,[ebp-864]
+	mov	[ebp-968],dword2477
+	mov	dword2479,[ebp-868]
+	mov	[ebp-972],dword2479
+	lea	dword2480,[ebp-900]
+	mov	[ebp-976],dword2480
 ; start of inline function vec4f_subtract
-	mov	dword2640,[ebp-972]
-	mov	dword2642,[ebp-968]
-	fld	dword ptr [dword2640]
-	fsub	dword ptr [dword2642]
-	mov	dword2644,[ebp-976]
-	fstp	dword ptr [dword2644]
-	mov	dword2646,[ebp-972]
-	mov	dword2648,[ebp-968]
-	fld	dword ptr [dword2646+4]
-	fsub	dword ptr [dword2648+4]
-	mov	dword2650,[ebp-976]
-	fstp	dword ptr [dword2650+4]
-	mov	dword2652,[ebp-972]
-	mov	dword2654,[ebp-968]
-	fld	dword ptr [dword2652+8]
-	fsub	dword ptr [dword2654+8]
-	mov	dword2656,[ebp-976]
-	fstp	dword ptr [dword2656+8]
-	mov	dword2658,[ebp-972]
-	mov	dword2660,[ebp-968]
-	fld	dword ptr [dword2658+12]
-	fsub	dword ptr [dword2660+12]
-	mov	dword2662,[ebp-976]
-	fstp	dword ptr [dword2662+12]
+	mov	dword2667,[ebp-972]
+	mov	dword2669,[ebp-968]
+	fld	dword ptr [dword2667]
+	fsub	dword ptr [dword2669]
+	mov	dword2671,[ebp-976]
+	fstp	dword ptr [dword2671]
+	mov	dword2673,[ebp-972]
+	mov	dword2675,[ebp-968]
+	fld	dword ptr [dword2673+4]
+	fsub	dword ptr [dword2675+4]
+	mov	dword2677,[ebp-976]
+	fstp	dword ptr [dword2677+4]
+	mov	dword2679,[ebp-972]
+	mov	dword2681,[ebp-968]
+	fld	dword ptr [dword2679+8]
+	fsub	dword ptr [dword2681+8]
+	mov	dword2683,[ebp-976]
+	fstp	dword ptr [dword2683+8]
+	mov	dword2685,[ebp-972]
+	mov	dword2687,[ebp-968]
+	fld	dword ptr [dword2685+12]
+	fsub	dword ptr [dword2687+12]
+	mov	dword2689,[ebp-976]
+	fstp	dword ptr [dword2689+12]
 label0093:
 ; end of inline function vec4f_subtract
-	mov	dword2699,[ebp-848]
-	mov	[ebp-980],dword2699
-	lea	dword2455,[ebp-884]
-	mov	[ebp-984],dword2455
+	mov	dword2726,[ebp-848]
+	mov	[ebp-980],dword2726
+	lea	dword2482,[ebp-884]
+	mov	[ebp-984],dword2482
 ; start of inline function vec4f_dot
-	mov	dword2702,[ebp-984]
-	mov	dword2704,[ebp-980]
-	fld	dword ptr [dword2702+4]
-	fmul	dword ptr [dword2704+4]
-	mov	dword2706,[ebp-984]
-	mov	dword2708,[ebp-980]
-	fld	dword ptr [dword2706]
-	fmul	dword ptr [dword2708]
+	mov	dword2729,[ebp-984]
+	mov	dword2731,[ebp-980]
+	fld	dword ptr [dword2729+4]
+	fmul	dword ptr [dword2731+4]
+	mov	dword2733,[ebp-984]
+	mov	dword2735,[ebp-980]
+	fld	dword ptr [dword2733]
+	fmul	dword ptr [dword2735]
 	faddp
-	mov	dword2710,[ebp-984]
-	mov	dword2712,[ebp-980]
-	fld	dword ptr [dword2710+8]
-	fmul	dword ptr [dword2712+8]
+	mov	dword2737,[ebp-984]
+	mov	dword2739,[ebp-980]
+	fld	dword ptr [dword2737+8]
+	fmul	dword ptr [dword2739+8]
 	faddp
-	mov	dword2714,[ebp-984]
-	mov	dword2716,[ebp-980]
-	fld	dword ptr [dword2714+12]
-	fmul	dword ptr [dword2716+12]
+	mov	dword2741,[ebp-984]
+	mov	dword2743,[ebp-980]
+	fld	dword ptr [dword2741+12]
+	fmul	dword ptr [dword2743+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label0096:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
-	mov	dword2717,[ebp-848]
-	mov	[ebp-980],dword2717
-	lea	dword2457,[ebp-900]
-	mov	[ebp-984],dword2457
+	mov	dword2744,[ebp-848]
+	mov	[ebp-980],dword2744
+	lea	dword2484,[ebp-900]
+	mov	[ebp-984],dword2484
 ; start of inline function vec4f_dot
-	mov	dword2720,[ebp-984]
-	mov	dword2722,[ebp-980]
-	fld	dword ptr [dword2720+4]
-	fmul	dword ptr [dword2722+4]
-	mov	dword2724,[ebp-984]
-	mov	dword2726,[ebp-980]
-	fld	dword ptr [dword2724]
-	fmul	dword ptr [dword2726]
+	mov	dword2747,[ebp-984]
+	mov	dword2749,[ebp-980]
+	fld	dword ptr [dword2747+4]
+	fmul	dword ptr [dword2749+4]
+	mov	dword2751,[ebp-984]
+	mov	dword2753,[ebp-980]
+	fld	dword ptr [dword2751]
+	fmul	dword ptr [dword2753]
 	faddp
-	mov	dword2728,[ebp-984]
-	mov	dword2730,[ebp-980]
-	fld	dword ptr [dword2728+8]
-	fmul	dword ptr [dword2730+8]
+	mov	dword2755,[ebp-984]
+	mov	dword2757,[ebp-980]
+	fld	dword ptr [dword2755+8]
+	fmul	dword ptr [dword2757+8]
 	faddp
-	mov	dword2732,[ebp-984]
-	mov	dword2734,[ebp-980]
-	fld	dword ptr [dword2732+12]
-	fmul	dword ptr [dword2734+12]
+	mov	dword2759,[ebp-984]
+	mov	dword2761,[ebp-980]
+	fld	dword ptr [dword2759+12]
+	fmul	dword ptr [dword2761+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label0097:
@@ -14497,302 +14566,302 @@ label0097:
 	fld	dword ptr [ebp-988]
 	fdivp
 	fstp	dword ptr [ebp-920]
-	mov	dword2735,[ebp-920]
-	mov	[ebp-992],dword2735
-	lea	dword2460,[ebp-900]
-	mov	[ebp-996],dword2460
+	mov	dword2762,[ebp-920]
+	mov	[ebp-992],dword2762
+	lea	dword2487,[ebp-900]
+	mov	[ebp-996],dword2487
 ; start of inline function vec4f_mul
-	mov	dword2738,[ebp-996]
-	fld	dword ptr [dword2738]
+	mov	dword2765,[ebp-996]
+	fld	dword ptr [dword2765]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword2738]
-	mov	dword2741,[ebp-996]
-	fld	dword ptr [dword2741+4]
+	fstp	dword ptr [dword2765]
+	mov	dword2768,[ebp-996]
+	fld	dword ptr [dword2768+4]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword2741+4]
-	mov	dword2744,[ebp-996]
-	fld	dword ptr [dword2744+8]
+	fstp	dword ptr [dword2768+4]
+	mov	dword2771,[ebp-996]
+	fld	dword ptr [dword2771+8]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword2744+8]
-	mov	dword2747,[ebp-996]
-	fld	dword ptr [dword2747+12]
+	fstp	dword ptr [dword2771+8]
+	mov	dword2774,[ebp-996]
+	fld	dword ptr [dword2774+12]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword2747+12]
+	fstp	dword ptr [dword2774+12]
 label0098:
 ; end of inline function vec4f_mul
-	lea	dword2461,[ebp-900]
-	mov	[ebp-956],dword2461
-	mov	dword2463,[ebp-864]
-	mov	[ebp-960],dword2463
-	mov	dword2465,[ebp-860]
-	mov	dword2467,[dword2465+192]
-	imul	dword2467,24
-	mov	dword2469,[ebp-860]
-	add	dword2469,dword2467
-	mov	[ebp-964],dword2469
+	lea	dword2488,[ebp-900]
+	mov	[ebp-956],dword2488
+	mov	dword2490,[ebp-864]
+	mov	[ebp-960],dword2490
+	mov	dword2492,[ebp-860]
+	mov	dword2494,[dword2492+192]
+	imul	dword2494,24
+	mov	dword2496,[ebp-860]
+	add	dword2496,dword2494
+	mov	[ebp-964],dword2496
 ; start of inline function vec4f_add
-	mov	dword2537,[ebp-960]
-	mov	dword2539,[ebp-956]
-	fld	dword ptr [dword2537]
-	fadd	dword ptr [dword2539]
-	mov	dword2541,[ebp-964]
-	fstp	dword ptr [dword2541]
-	mov	dword2543,[ebp-960]
-	mov	dword2545,[ebp-956]
-	fld	dword ptr [dword2543+4]
-	fadd	dword ptr [dword2545+4]
-	mov	dword2547,[ebp-964]
-	fstp	dword ptr [dword2547+4]
-	mov	dword2549,[ebp-960]
-	mov	dword2551,[ebp-956]
-	fld	dword ptr [dword2549+8]
-	fadd	dword ptr [dword2551+8]
-	mov	dword2553,[ebp-964]
-	fstp	dword ptr [dword2553+8]
-	mov	dword2555,[ebp-960]
-	mov	dword2557,[ebp-956]
-	fld	dword ptr [dword2555+12]
-	fadd	dword ptr [dword2557+12]
-	mov	dword2559,[ebp-964]
-	fstp	dword ptr [dword2559+12]
+	mov	dword2564,[ebp-960]
+	mov	dword2566,[ebp-956]
+	fld	dword ptr [dword2564]
+	fadd	dword ptr [dword2566]
+	mov	dword2568,[ebp-964]
+	fstp	dword ptr [dword2568]
+	mov	dword2570,[ebp-960]
+	mov	dword2572,[ebp-956]
+	fld	dword ptr [dword2570+4]
+	fadd	dword ptr [dword2572+4]
+	mov	dword2574,[ebp-964]
+	fstp	dword ptr [dword2574+4]
+	mov	dword2576,[ebp-960]
+	mov	dword2578,[ebp-956]
+	fld	dword ptr [dword2576+8]
+	fadd	dword ptr [dword2578+8]
+	mov	dword2580,[ebp-964]
+	fstp	dword ptr [dword2580+8]
+	mov	dword2582,[ebp-960]
+	mov	dword2584,[ebp-956]
+	fld	dword ptr [dword2582+12]
+	fadd	dword ptr [dword2584+12]
+	mov	dword2586,[ebp-964]
+	fstp	dword ptr [dword2586+12]
 label008f:
 ; end of inline function vec4f_add
-	mov	dword2471,16
-	add	dword2471,[ebp-864]
-	mov	[ebp-936],dword2471
-	mov	dword2473,16
-	add	dword2473,[ebp-868]
-	mov	[ebp-940],dword2473
-	lea	dword2474,[ebp-908]
-	mov	[ebp-944],dword2474
+	mov	dword2498,16
+	add	dword2498,[ebp-864]
+	mov	[ebp-936],dword2498
+	mov	dword2500,16
+	add	dword2500,[ebp-868]
+	mov	[ebp-940],dword2500
+	lea	dword2501,[ebp-908]
+	mov	[ebp-944],dword2501
 ; start of inline function vec2f_subtract
-	mov	dword2516,[ebp-940]
-	mov	dword2518,[ebp-936]
-	fld	dword ptr [dword2516]
-	fsub	dword ptr [dword2518]
-	mov	dword2520,[ebp-944]
-	fstp	dword ptr [dword2520]
-	mov	dword2522,[ebp-940]
-	mov	dword2524,[ebp-936]
-	fld	dword ptr [dword2522+4]
-	fsub	dword ptr [dword2524+4]
-	mov	dword2526,[ebp-944]
-	fstp	dword ptr [dword2526+4]
+	mov	dword2543,[ebp-940]
+	mov	dword2545,[ebp-936]
+	fld	dword ptr [dword2543]
+	fsub	dword ptr [dword2545]
+	mov	dword2547,[ebp-944]
+	fstp	dword ptr [dword2547]
+	mov	dword2549,[ebp-940]
+	mov	dword2551,[ebp-936]
+	fld	dword ptr [dword2549+4]
+	fsub	dword ptr [dword2551+4]
+	mov	dword2553,[ebp-944]
+	fstp	dword ptr [dword2553+4]
 label008d:
 ; end of inline function vec2f_subtract
-	mov	dword2527,[ebp-920]
-	mov	[ebp-948],dword2527
-	lea	dword2476,[ebp-908]
-	mov	[ebp-952],dword2476
+	mov	dword2554,[ebp-920]
+	mov	[ebp-948],dword2554
+	lea	dword2503,[ebp-908]
+	mov	[ebp-952],dword2503
 ; start of inline function vec2f_mul
-	mov	dword2530,[ebp-952]
-	fld	dword ptr [dword2530]
+	mov	dword2557,[ebp-952]
+	fld	dword ptr [dword2557]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword2530]
-	mov	dword2533,[ebp-952]
-	fld	dword ptr [dword2533+4]
+	fstp	dword ptr [dword2557]
+	mov	dword2560,[ebp-952]
+	fld	dword ptr [dword2560+4]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword2533+4]
+	fstp	dword ptr [dword2560+4]
 label008e:
 ; end of inline function vec2f_mul
-	lea	dword2477,[ebp-908]
-	mov	[ebp-924],dword2477
-	mov	dword2479,16
-	add	dword2479,[ebp-864]
-	mov	[ebp-928],dword2479
-	mov	dword2481,[ebp-860]
-	mov	dword2483,[dword2481+192]
-	imul	dword2483,24
-	mov	dword2485,[ebp-860]
-	add	dword2485,dword2483
-	add	dword2485,16
-	mov	[ebp-932],dword2485
+	lea	dword2504,[ebp-908]
+	mov	[ebp-924],dword2504
+	mov	dword2506,16
+	add	dword2506,[ebp-864]
+	mov	[ebp-928],dword2506
+	mov	dword2508,[ebp-860]
+	mov	dword2510,[dword2508+192]
+	imul	dword2510,24
+	mov	dword2512,[ebp-860]
+	add	dword2512,dword2510
+	add	dword2512,16
+	mov	[ebp-932],dword2512
 ; start of inline function vec2f_add
-	mov	dword2503,[ebp-928]
-	mov	dword2505,[ebp-924]
-	fld	dword ptr [dword2503]
-	fadd	dword ptr [dword2505]
-	mov	dword2507,[ebp-932]
-	fstp	dword ptr [dword2507]
-	mov	dword2509,[ebp-928]
-	mov	dword2511,[ebp-924]
-	fld	dword ptr [dword2509+4]
-	fadd	dword ptr [dword2511+4]
-	mov	dword2513,[ebp-932]
-	fstp	dword ptr [dword2513+4]
+	mov	dword2530,[ebp-928]
+	mov	dword2532,[ebp-924]
+	fld	dword ptr [dword2530]
+	fadd	dword ptr [dword2532]
+	mov	dword2534,[ebp-932]
+	fstp	dword ptr [dword2534]
+	mov	dword2536,[ebp-928]
+	mov	dword2538,[ebp-924]
+	fld	dword ptr [dword2536+4]
+	fadd	dword ptr [dword2538+4]
+	mov	dword2540,[ebp-932]
+	fstp	dword ptr [dword2540+4]
 label008c:
 ; end of inline function vec2f_add
-	mov	dword2488,[ebp-860]
-	inc	dword ptr [dword2488+192]
+	mov	dword2515,[ebp-860]
+	inc	dword ptr [dword2515+192]
 label0089:
 	add	dword ptr [ebp-864],24
 	add	dword ptr [ebp-868],24
 	jmp	label0086
 label0087:
-	mov	dword2492,[ebp-860]
-	mov	dword2493,[dword2492+192]
-	inc	dword ptr [dword2492+192]
-	imul	dword2493,24
-	mov	dword2496,[ebp-860]
-	add	dword2496,dword2493
-	mov	dword2498,[ebp-860]
-	mov	dword2499,[dword2498]
-	mov	dword2500,[dword2498+4]
-	mov	[dword2496],dword2499
-	mov	[dword2496+4],dword2500
-	mov	dword2499,[dword2498+8]
-	mov	dword2500,[dword2498+12]
-	mov	[dword2496+8],dword2499
-	mov	[dword2496+12],dword2500
-	mov	dword2499,[dword2498+16]
-	mov	dword2500,[dword2498+20]
-	mov	[dword2496+16],dword2499
-	mov	[dword2496+20],dword2500
+	mov	dword2519,[ebp-860]
+	mov	dword2520,[dword2519+192]
+	inc	dword ptr [dword2519+192]
+	imul	dword2520,24
+	mov	dword2523,[ebp-860]
+	add	dword2523,dword2520
+	mov	dword2525,[ebp-860]
+	mov	dword2526,[dword2525]
+	mov	dword2527,[dword2525+4]
+	mov	[dword2523],dword2526
+	mov	[dword2523+4],dword2527
+	mov	dword2526,[dword2525+8]
+	mov	dword2527,[dword2525+12]
+	mov	[dword2523+8],dword2526
+	mov	[dword2523+12],dword2527
+	mov	dword2526,[dword2525+16]
+	mov	dword2527,[dword2525+20]
+	mov	[dword2523+16],dword2526
+	mov	[dword2523+20],dword2527
 label0099:
 ; end of inline function _clip_on_plain
-	lea	dword2025,dword ptr [__clip_plane_left_norm]
-	mov	[ebp-848],dword2025
-	lea	dword2026,dword ptr [__clip_plane_left_base]
-	mov	[ebp-852],dword2026
-	mov	dword2749,[ebp-648]
-	mov	[ebp-856],dword2749
-	lea	dword2028,[ebp-844]
-	mov	[ebp-860],dword2028
+	lea	dword2052,dword ptr [__clip_plane_left_norm]
+	mov	[ebp-848],dword2052
+	lea	dword2053,dword ptr [__clip_plane_left_base]
+	mov	[ebp-852],dword2053
+	mov	dword2776,[ebp-648]
+	mov	[ebp-856],dword2776
+	lea	dword2055,[ebp-844]
+	mov	[ebp-860],dword2055
 ; start of inline function _clip_on_plain
-	mov	dword2752,[ebp-860]
-	mov	dword ptr [dword2752+192],0
-	mov	dword2755,[ebp-856]
-	mov	[ebp-864],dword2755
-	mov	dword2758,[ebp-856]
-	add	dword2758,24
-	mov	[ebp-868],dword2758
+	mov	dword2779,[ebp-860]
+	mov	dword ptr [dword2779+192],0
+	mov	dword2782,[ebp-856]
+	mov	[ebp-864],dword2782
+	mov	dword2785,[ebp-856]
+	add	dword2785,24
+	mov	[ebp-868],dword2785
 label009a:
 label009b:
-	mov	dword2762,[ebp-856]
-	mov	dword2764,[dword2762+192]
-	imul	dword2764,24
-	mov	dword2766,[ebp-856]
-	add	dword2766,dword2764
-	cmp	dword2766,[ebp-868]
+	mov	dword2789,[ebp-856]
+	mov	dword2791,[dword2789+192]
+	imul	dword2791,24
+	mov	dword2793,[ebp-856]
+	add	dword2793,dword2791
+	cmp	dword2793,[ebp-868]
 	jle	label009c
-	mov	dword2912,[ebp-852]
-	mov	[ebp-968],dword2912
-	mov	dword2770,[ebp-864]
-	mov	[ebp-972],dword2770
-	lea	dword2771,[ebp-884]
-	mov	[ebp-976],dword2771
+	mov	dword2939,[ebp-852]
+	mov	[ebp-968],dword2939
+	mov	dword2797,[ebp-864]
+	mov	[ebp-972],dword2797
+	lea	dword2798,[ebp-884]
+	mov	[ebp-976],dword2798
 ; start of inline function vec4f_subtract
-	mov	dword2915,[ebp-972]
-	mov	dword2917,[ebp-968]
-	fld	dword ptr [dword2915]
-	fsub	dword ptr [dword2917]
-	mov	dword2919,[ebp-976]
-	fstp	dword ptr [dword2919]
-	mov	dword2921,[ebp-972]
-	mov	dword2923,[ebp-968]
-	fld	dword ptr [dword2921+4]
-	fsub	dword ptr [dword2923+4]
-	mov	dword2925,[ebp-976]
-	fstp	dword ptr [dword2925+4]
-	mov	dword2927,[ebp-972]
-	mov	dword2929,[ebp-968]
-	fld	dword ptr [dword2927+8]
-	fsub	dword ptr [dword2929+8]
-	mov	dword2931,[ebp-976]
-	fstp	dword ptr [dword2931+8]
-	mov	dword2933,[ebp-972]
-	mov	dword2935,[ebp-968]
-	fld	dword ptr [dword2933+12]
-	fsub	dword ptr [dword2935+12]
-	mov	dword2937,[ebp-976]
-	fstp	dword ptr [dword2937+12]
+	mov	dword2942,[ebp-972]
+	mov	dword2944,[ebp-968]
+	fld	dword ptr [dword2942]
+	fsub	dword ptr [dword2944]
+	mov	dword2946,[ebp-976]
+	fstp	dword ptr [dword2946]
+	mov	dword2948,[ebp-972]
+	mov	dword2950,[ebp-968]
+	fld	dword ptr [dword2948+4]
+	fsub	dword ptr [dword2950+4]
+	mov	dword2952,[ebp-976]
+	fstp	dword ptr [dword2952+4]
+	mov	dword2954,[ebp-972]
+	mov	dword2956,[ebp-968]
+	fld	dword ptr [dword2954+8]
+	fsub	dword ptr [dword2956+8]
+	mov	dword2958,[ebp-976]
+	fstp	dword ptr [dword2958+8]
+	mov	dword2960,[ebp-972]
+	mov	dword2962,[ebp-968]
+	fld	dword ptr [dword2960+12]
+	fsub	dword ptr [dword2962+12]
+	mov	dword2964,[ebp-976]
+	fstp	dword ptr [dword2964+12]
 label00a5:
 ; end of inline function vec4f_subtract
-	mov	dword3015,[ebp-848]
-	mov	[ebp-980],dword3015
-	lea	dword2773,[ebp-884]
-	mov	[ebp-984],dword2773
+	mov	dword3042,[ebp-848]
+	mov	[ebp-980],dword3042
+	lea	dword2800,[ebp-884]
+	mov	[ebp-984],dword2800
 ; start of inline function vec4f_dot
-	mov	dword3018,[ebp-984]
-	mov	dword3020,[ebp-980]
-	fld	dword ptr [dword3018+4]
-	fmul	dword ptr [dword3020+4]
-	mov	dword3022,[ebp-984]
-	mov	dword3024,[ebp-980]
-	fld	dword ptr [dword3022]
-	fmul	dword ptr [dword3024]
+	mov	dword3045,[ebp-984]
+	mov	dword3047,[ebp-980]
+	fld	dword ptr [dword3045+4]
+	fmul	dword ptr [dword3047+4]
+	mov	dword3049,[ebp-984]
+	mov	dword3051,[ebp-980]
+	fld	dword ptr [dword3049]
+	fmul	dword ptr [dword3051]
 	faddp
-	mov	dword3026,[ebp-984]
-	mov	dword3028,[ebp-980]
-	fld	dword ptr [dword3026+8]
-	fmul	dword ptr [dword3028+8]
+	mov	dword3053,[ebp-984]
+	mov	dword3055,[ebp-980]
+	fld	dword ptr [dword3053+8]
+	fmul	dword ptr [dword3055+8]
 	faddp
-	mov	dword3030,[ebp-984]
-	mov	dword3032,[ebp-980]
-	fld	dword ptr [dword3030+12]
-	fmul	dword ptr [dword3032+12]
+	mov	dword3057,[ebp-984]
+	mov	dword3059,[ebp-980]
+	fld	dword ptr [dword3057+12]
+	fmul	dword ptr [dword3059+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00a9:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
 	fstp	dword ptr [ebp-912]
-	mov	dword2938,[ebp-852]
-	mov	[ebp-968],dword2938
-	mov	dword2777,[ebp-868]
-	mov	[ebp-972],dword2777
-	lea	dword2778,[ebp-884]
-	mov	[ebp-976],dword2778
+	mov	dword2965,[ebp-852]
+	mov	[ebp-968],dword2965
+	mov	dword2804,[ebp-868]
+	mov	[ebp-972],dword2804
+	lea	dword2805,[ebp-884]
+	mov	[ebp-976],dword2805
 ; start of inline function vec4f_subtract
-	mov	dword2941,[ebp-972]
-	mov	dword2943,[ebp-968]
-	fld	dword ptr [dword2941]
-	fsub	dword ptr [dword2943]
-	mov	dword2945,[ebp-976]
-	fstp	dword ptr [dword2945]
-	mov	dword2947,[ebp-972]
-	mov	dword2949,[ebp-968]
-	fld	dword ptr [dword2947+4]
-	fsub	dword ptr [dword2949+4]
-	mov	dword2951,[ebp-976]
-	fstp	dword ptr [dword2951+4]
-	mov	dword2953,[ebp-972]
-	mov	dword2955,[ebp-968]
-	fld	dword ptr [dword2953+8]
-	fsub	dword ptr [dword2955+8]
-	mov	dword2957,[ebp-976]
-	fstp	dword ptr [dword2957+8]
-	mov	dword2959,[ebp-972]
-	mov	dword2961,[ebp-968]
-	fld	dword ptr [dword2959+12]
-	fsub	dword ptr [dword2961+12]
-	mov	dword2963,[ebp-976]
-	fstp	dword ptr [dword2963+12]
+	mov	dword2968,[ebp-972]
+	mov	dword2970,[ebp-968]
+	fld	dword ptr [dword2968]
+	fsub	dword ptr [dword2970]
+	mov	dword2972,[ebp-976]
+	fstp	dword ptr [dword2972]
+	mov	dword2974,[ebp-972]
+	mov	dword2976,[ebp-968]
+	fld	dword ptr [dword2974+4]
+	fsub	dword ptr [dword2976+4]
+	mov	dword2978,[ebp-976]
+	fstp	dword ptr [dword2978+4]
+	mov	dword2980,[ebp-972]
+	mov	dword2982,[ebp-968]
+	fld	dword ptr [dword2980+8]
+	fsub	dword ptr [dword2982+8]
+	mov	dword2984,[ebp-976]
+	fstp	dword ptr [dword2984+8]
+	mov	dword2986,[ebp-972]
+	mov	dword2988,[ebp-968]
+	fld	dword ptr [dword2986+12]
+	fsub	dword ptr [dword2988+12]
+	mov	dword2990,[ebp-976]
+	fstp	dword ptr [dword2990+12]
 label00a6:
 ; end of inline function vec4f_subtract
-	mov	dword3033,[ebp-848]
-	mov	[ebp-980],dword3033
-	lea	dword2780,[ebp-884]
-	mov	[ebp-984],dword2780
+	mov	dword3060,[ebp-848]
+	mov	[ebp-980],dword3060
+	lea	dword2807,[ebp-884]
+	mov	[ebp-984],dword2807
 ; start of inline function vec4f_dot
-	mov	dword3036,[ebp-984]
-	mov	dword3038,[ebp-980]
-	fld	dword ptr [dword3036+4]
-	fmul	dword ptr [dword3038+4]
-	mov	dword3040,[ebp-984]
-	mov	dword3042,[ebp-980]
-	fld	dword ptr [dword3040]
-	fmul	dword ptr [dword3042]
+	mov	dword3063,[ebp-984]
+	mov	dword3065,[ebp-980]
+	fld	dword ptr [dword3063+4]
+	fmul	dword ptr [dword3065+4]
+	mov	dword3067,[ebp-984]
+	mov	dword3069,[ebp-980]
+	fld	dword ptr [dword3067]
+	fmul	dword ptr [dword3069]
 	faddp
-	mov	dword3044,[ebp-984]
-	mov	dword3046,[ebp-980]
-	fld	dword ptr [dword3044+8]
-	fmul	dword ptr [dword3046+8]
+	mov	dword3071,[ebp-984]
+	mov	dword3073,[ebp-980]
+	fld	dword ptr [dword3071+8]
+	fmul	dword ptr [dword3073+8]
 	faddp
-	mov	dword3048,[ebp-984]
-	mov	dword3050,[ebp-980]
-	fld	dword ptr [dword3048+12]
-	fmul	dword ptr [dword3050+12]
+	mov	dword3075,[ebp-984]
+	mov	dword3077,[ebp-980]
+	fld	dword ptr [dword3075+12]
+	fmul	dword ptr [dword3077+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00aa:
@@ -14804,25 +14873,25 @@ label00aa:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label009d
-	mov	dword2784,[ebp-860]
-	mov	dword2785,[dword2784+192]
-	inc	dword ptr [dword2784+192]
-	imul	dword2785,24
-	mov	dword2788,[ebp-860]
-	add	dword2788,dword2785
-	mov	dword2790,[ebp-864]
-	mov	dword2791,[dword2790]
-	mov	dword2792,[dword2790+4]
-	mov	[dword2788],dword2791
-	mov	[dword2788+4],dword2792
-	mov	dword2791,[dword2790+8]
-	mov	dword2792,[dword2790+12]
-	mov	[dword2788+8],dword2791
-	mov	[dword2788+12],dword2792
-	mov	dword2791,[dword2790+16]
-	mov	dword2792,[dword2790+20]
-	mov	[dword2788+16],dword2791
-	mov	[dword2788+20],dword2792
+	mov	dword2811,[ebp-860]
+	mov	dword2812,[dword2811+192]
+	inc	dword ptr [dword2811+192]
+	imul	dword2812,24
+	mov	dword2815,[ebp-860]
+	add	dword2815,dword2812
+	mov	dword2817,[ebp-864]
+	mov	dword2818,[dword2817]
+	mov	dword2819,[dword2817+4]
+	mov	[dword2815],dword2818
+	mov	[dword2815+4],dword2819
+	mov	dword2818,[dword2817+8]
+	mov	dword2819,[dword2817+12]
+	mov	[dword2815+8],dword2818
+	mov	[dword2815+12],dword2819
+	mov	dword2818,[dword2817+16]
+	mov	dword2819,[dword2817+20]
+	mov	[dword2815+16],dword2818
+	mov	[dword2815+20],dword2819
 label009d:
 	fldz
 	fld	dword ptr [ebp-912]
@@ -14846,123 +14915,123 @@ label00a0:
 	fstp	st
 	jae	label009e
 label009f:
-	mov	dword2798,[ebp-864]
-	mov	[ebp-968],dword2798
-	mov	dword2964,[ebp-852]
-	mov	[ebp-972],dword2964
-	lea	dword2800,[ebp-884]
-	mov	[ebp-976],dword2800
+	mov	dword2825,[ebp-864]
+	mov	[ebp-968],dword2825
+	mov	dword2991,[ebp-852]
+	mov	[ebp-972],dword2991
+	lea	dword2827,[ebp-884]
+	mov	[ebp-976],dword2827
 ; start of inline function vec4f_subtract
-	mov	dword2967,[ebp-972]
-	mov	dword2969,[ebp-968]
-	fld	dword ptr [dword2967]
-	fsub	dword ptr [dword2969]
-	mov	dword2971,[ebp-976]
-	fstp	dword ptr [dword2971]
-	mov	dword2973,[ebp-972]
-	mov	dword2975,[ebp-968]
-	fld	dword ptr [dword2973+4]
-	fsub	dword ptr [dword2975+4]
-	mov	dword2977,[ebp-976]
-	fstp	dword ptr [dword2977+4]
-	mov	dword2979,[ebp-972]
-	mov	dword2981,[ebp-968]
-	fld	dword ptr [dword2979+8]
-	fsub	dword ptr [dword2981+8]
-	mov	dword2983,[ebp-976]
-	fstp	dword ptr [dword2983+8]
-	mov	dword2985,[ebp-972]
-	mov	dword2987,[ebp-968]
-	fld	dword ptr [dword2985+12]
-	fsub	dword ptr [dword2987+12]
-	mov	dword2989,[ebp-976]
-	fstp	dword ptr [dword2989+12]
+	mov	dword2994,[ebp-972]
+	mov	dword2996,[ebp-968]
+	fld	dword ptr [dword2994]
+	fsub	dword ptr [dword2996]
+	mov	dword2998,[ebp-976]
+	fstp	dword ptr [dword2998]
+	mov	dword3000,[ebp-972]
+	mov	dword3002,[ebp-968]
+	fld	dword ptr [dword3000+4]
+	fsub	dword ptr [dword3002+4]
+	mov	dword3004,[ebp-976]
+	fstp	dword ptr [dword3004+4]
+	mov	dword3006,[ebp-972]
+	mov	dword3008,[ebp-968]
+	fld	dword ptr [dword3006+8]
+	fsub	dword ptr [dword3008+8]
+	mov	dword3010,[ebp-976]
+	fstp	dword ptr [dword3010+8]
+	mov	dword3012,[ebp-972]
+	mov	dword3014,[ebp-968]
+	fld	dword ptr [dword3012+12]
+	fsub	dword ptr [dword3014+12]
+	mov	dword3016,[ebp-976]
+	fstp	dword ptr [dword3016+12]
 label00a7:
 ; end of inline function vec4f_subtract
-	mov	dword2802,[ebp-864]
-	mov	[ebp-968],dword2802
-	mov	dword2804,[ebp-868]
-	mov	[ebp-972],dword2804
-	lea	dword2805,[ebp-900]
-	mov	[ebp-976],dword2805
+	mov	dword2829,[ebp-864]
+	mov	[ebp-968],dword2829
+	mov	dword2831,[ebp-868]
+	mov	[ebp-972],dword2831
+	lea	dword2832,[ebp-900]
+	mov	[ebp-976],dword2832
 ; start of inline function vec4f_subtract
-	mov	dword2992,[ebp-972]
-	mov	dword2994,[ebp-968]
-	fld	dword ptr [dword2992]
-	fsub	dword ptr [dword2994]
-	mov	dword2996,[ebp-976]
-	fstp	dword ptr [dword2996]
-	mov	dword2998,[ebp-972]
-	mov	dword3000,[ebp-968]
-	fld	dword ptr [dword2998+4]
-	fsub	dword ptr [dword3000+4]
-	mov	dword3002,[ebp-976]
-	fstp	dword ptr [dword3002+4]
-	mov	dword3004,[ebp-972]
-	mov	dword3006,[ebp-968]
-	fld	dword ptr [dword3004+8]
-	fsub	dword ptr [dword3006+8]
-	mov	dword3008,[ebp-976]
-	fstp	dword ptr [dword3008+8]
-	mov	dword3010,[ebp-972]
-	mov	dword3012,[ebp-968]
-	fld	dword ptr [dword3010+12]
-	fsub	dword ptr [dword3012+12]
-	mov	dword3014,[ebp-976]
-	fstp	dword ptr [dword3014+12]
+	mov	dword3019,[ebp-972]
+	mov	dword3021,[ebp-968]
+	fld	dword ptr [dword3019]
+	fsub	dword ptr [dword3021]
+	mov	dword3023,[ebp-976]
+	fstp	dword ptr [dword3023]
+	mov	dword3025,[ebp-972]
+	mov	dword3027,[ebp-968]
+	fld	dword ptr [dword3025+4]
+	fsub	dword ptr [dword3027+4]
+	mov	dword3029,[ebp-976]
+	fstp	dword ptr [dword3029+4]
+	mov	dword3031,[ebp-972]
+	mov	dword3033,[ebp-968]
+	fld	dword ptr [dword3031+8]
+	fsub	dword ptr [dword3033+8]
+	mov	dword3035,[ebp-976]
+	fstp	dword ptr [dword3035+8]
+	mov	dword3037,[ebp-972]
+	mov	dword3039,[ebp-968]
+	fld	dword ptr [dword3037+12]
+	fsub	dword ptr [dword3039+12]
+	mov	dword3041,[ebp-976]
+	fstp	dword ptr [dword3041+12]
 label00a8:
 ; end of inline function vec4f_subtract
-	mov	dword3051,[ebp-848]
-	mov	[ebp-980],dword3051
-	lea	dword2807,[ebp-884]
-	mov	[ebp-984],dword2807
+	mov	dword3078,[ebp-848]
+	mov	[ebp-980],dword3078
+	lea	dword2834,[ebp-884]
+	mov	[ebp-984],dword2834
 ; start of inline function vec4f_dot
-	mov	dword3054,[ebp-984]
-	mov	dword3056,[ebp-980]
-	fld	dword ptr [dword3054+4]
-	fmul	dword ptr [dword3056+4]
-	mov	dword3058,[ebp-984]
-	mov	dword3060,[ebp-980]
-	fld	dword ptr [dword3058]
-	fmul	dword ptr [dword3060]
+	mov	dword3081,[ebp-984]
+	mov	dword3083,[ebp-980]
+	fld	dword ptr [dword3081+4]
+	fmul	dword ptr [dword3083+4]
+	mov	dword3085,[ebp-984]
+	mov	dword3087,[ebp-980]
+	fld	dword ptr [dword3085]
+	fmul	dword ptr [dword3087]
 	faddp
-	mov	dword3062,[ebp-984]
-	mov	dword3064,[ebp-980]
-	fld	dword ptr [dword3062+8]
-	fmul	dword ptr [dword3064+8]
+	mov	dword3089,[ebp-984]
+	mov	dword3091,[ebp-980]
+	fld	dword ptr [dword3089+8]
+	fmul	dword ptr [dword3091+8]
 	faddp
-	mov	dword3066,[ebp-984]
-	mov	dword3068,[ebp-980]
-	fld	dword ptr [dword3066+12]
-	fmul	dword ptr [dword3068+12]
+	mov	dword3093,[ebp-984]
+	mov	dword3095,[ebp-980]
+	fld	dword ptr [dword3093+12]
+	fmul	dword ptr [dword3095+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00ab:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
-	mov	dword3069,[ebp-848]
-	mov	[ebp-980],dword3069
-	lea	dword2809,[ebp-900]
-	mov	[ebp-984],dword2809
+	mov	dword3096,[ebp-848]
+	mov	[ebp-980],dword3096
+	lea	dword2836,[ebp-900]
+	mov	[ebp-984],dword2836
 ; start of inline function vec4f_dot
-	mov	dword3072,[ebp-984]
-	mov	dword3074,[ebp-980]
-	fld	dword ptr [dword3072+4]
-	fmul	dword ptr [dword3074+4]
-	mov	dword3076,[ebp-984]
-	mov	dword3078,[ebp-980]
-	fld	dword ptr [dword3076]
-	fmul	dword ptr [dword3078]
+	mov	dword3099,[ebp-984]
+	mov	dword3101,[ebp-980]
+	fld	dword ptr [dword3099+4]
+	fmul	dword ptr [dword3101+4]
+	mov	dword3103,[ebp-984]
+	mov	dword3105,[ebp-980]
+	fld	dword ptr [dword3103]
+	fmul	dword ptr [dword3105]
 	faddp
-	mov	dword3080,[ebp-984]
-	mov	dword3082,[ebp-980]
-	fld	dword ptr [dword3080+8]
-	fmul	dword ptr [dword3082+8]
+	mov	dword3107,[ebp-984]
+	mov	dword3109,[ebp-980]
+	fld	dword ptr [dword3107+8]
+	fmul	dword ptr [dword3109+8]
 	faddp
-	mov	dword3084,[ebp-984]
-	mov	dword3086,[ebp-980]
-	fld	dword ptr [dword3084+12]
-	fmul	dword ptr [dword3086+12]
+	mov	dword3111,[ebp-984]
+	mov	dword3113,[ebp-980]
+	fld	dword ptr [dword3111+12]
+	fmul	dword ptr [dword3113+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00ac:
@@ -14970,302 +15039,302 @@ label00ac:
 	fld	dword ptr [ebp-988]
 	fdivp
 	fstp	dword ptr [ebp-920]
-	mov	dword3087,[ebp-920]
-	mov	[ebp-992],dword3087
-	lea	dword2812,[ebp-900]
-	mov	[ebp-996],dword2812
+	mov	dword3114,[ebp-920]
+	mov	[ebp-992],dword3114
+	lea	dword2839,[ebp-900]
+	mov	[ebp-996],dword2839
 ; start of inline function vec4f_mul
-	mov	dword3090,[ebp-996]
-	fld	dword ptr [dword3090]
+	mov	dword3117,[ebp-996]
+	fld	dword ptr [dword3117]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3090]
-	mov	dword3093,[ebp-996]
-	fld	dword ptr [dword3093+4]
+	fstp	dword ptr [dword3117]
+	mov	dword3120,[ebp-996]
+	fld	dword ptr [dword3120+4]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3093+4]
-	mov	dword3096,[ebp-996]
-	fld	dword ptr [dword3096+8]
+	fstp	dword ptr [dword3120+4]
+	mov	dword3123,[ebp-996]
+	fld	dword ptr [dword3123+8]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3096+8]
-	mov	dword3099,[ebp-996]
-	fld	dword ptr [dword3099+12]
+	fstp	dword ptr [dword3123+8]
+	mov	dword3126,[ebp-996]
+	fld	dword ptr [dword3126+12]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3099+12]
+	fstp	dword ptr [dword3126+12]
 label00ad:
 ; end of inline function vec4f_mul
-	lea	dword2813,[ebp-900]
-	mov	[ebp-956],dword2813
-	mov	dword2815,[ebp-864]
-	mov	[ebp-960],dword2815
-	mov	dword2817,[ebp-860]
-	mov	dword2819,[dword2817+192]
-	imul	dword2819,24
-	mov	dword2821,[ebp-860]
-	add	dword2821,dword2819
-	mov	[ebp-964],dword2821
+	lea	dword2840,[ebp-900]
+	mov	[ebp-956],dword2840
+	mov	dword2842,[ebp-864]
+	mov	[ebp-960],dword2842
+	mov	dword2844,[ebp-860]
+	mov	dword2846,[dword2844+192]
+	imul	dword2846,24
+	mov	dword2848,[ebp-860]
+	add	dword2848,dword2846
+	mov	[ebp-964],dword2848
 ; start of inline function vec4f_add
-	mov	dword2889,[ebp-960]
-	mov	dword2891,[ebp-956]
-	fld	dword ptr [dword2889]
-	fadd	dword ptr [dword2891]
-	mov	dword2893,[ebp-964]
-	fstp	dword ptr [dword2893]
-	mov	dword2895,[ebp-960]
-	mov	dword2897,[ebp-956]
-	fld	dword ptr [dword2895+4]
-	fadd	dword ptr [dword2897+4]
-	mov	dword2899,[ebp-964]
-	fstp	dword ptr [dword2899+4]
-	mov	dword2901,[ebp-960]
-	mov	dword2903,[ebp-956]
-	fld	dword ptr [dword2901+8]
-	fadd	dword ptr [dword2903+8]
-	mov	dword2905,[ebp-964]
-	fstp	dword ptr [dword2905+8]
-	mov	dword2907,[ebp-960]
-	mov	dword2909,[ebp-956]
-	fld	dword ptr [dword2907+12]
-	fadd	dword ptr [dword2909+12]
-	mov	dword2911,[ebp-964]
-	fstp	dword ptr [dword2911+12]
+	mov	dword2916,[ebp-960]
+	mov	dword2918,[ebp-956]
+	fld	dword ptr [dword2916]
+	fadd	dword ptr [dword2918]
+	mov	dword2920,[ebp-964]
+	fstp	dword ptr [dword2920]
+	mov	dword2922,[ebp-960]
+	mov	dword2924,[ebp-956]
+	fld	dword ptr [dword2922+4]
+	fadd	dword ptr [dword2924+4]
+	mov	dword2926,[ebp-964]
+	fstp	dword ptr [dword2926+4]
+	mov	dword2928,[ebp-960]
+	mov	dword2930,[ebp-956]
+	fld	dword ptr [dword2928+8]
+	fadd	dword ptr [dword2930+8]
+	mov	dword2932,[ebp-964]
+	fstp	dword ptr [dword2932+8]
+	mov	dword2934,[ebp-960]
+	mov	dword2936,[ebp-956]
+	fld	dword ptr [dword2934+12]
+	fadd	dword ptr [dword2936+12]
+	mov	dword2938,[ebp-964]
+	fstp	dword ptr [dword2938+12]
 label00a4:
 ; end of inline function vec4f_add
-	mov	dword2823,16
-	add	dword2823,[ebp-864]
-	mov	[ebp-936],dword2823
-	mov	dword2825,16
-	add	dword2825,[ebp-868]
-	mov	[ebp-940],dword2825
-	lea	dword2826,[ebp-908]
-	mov	[ebp-944],dword2826
+	mov	dword2850,16
+	add	dword2850,[ebp-864]
+	mov	[ebp-936],dword2850
+	mov	dword2852,16
+	add	dword2852,[ebp-868]
+	mov	[ebp-940],dword2852
+	lea	dword2853,[ebp-908]
+	mov	[ebp-944],dword2853
 ; start of inline function vec2f_subtract
-	mov	dword2868,[ebp-940]
-	mov	dword2870,[ebp-936]
-	fld	dword ptr [dword2868]
-	fsub	dword ptr [dword2870]
-	mov	dword2872,[ebp-944]
-	fstp	dword ptr [dword2872]
-	mov	dword2874,[ebp-940]
-	mov	dword2876,[ebp-936]
-	fld	dword ptr [dword2874+4]
-	fsub	dword ptr [dword2876+4]
-	mov	dword2878,[ebp-944]
-	fstp	dword ptr [dword2878+4]
+	mov	dword2895,[ebp-940]
+	mov	dword2897,[ebp-936]
+	fld	dword ptr [dword2895]
+	fsub	dword ptr [dword2897]
+	mov	dword2899,[ebp-944]
+	fstp	dword ptr [dword2899]
+	mov	dword2901,[ebp-940]
+	mov	dword2903,[ebp-936]
+	fld	dword ptr [dword2901+4]
+	fsub	dword ptr [dword2903+4]
+	mov	dword2905,[ebp-944]
+	fstp	dword ptr [dword2905+4]
 label00a2:
 ; end of inline function vec2f_subtract
-	mov	dword2879,[ebp-920]
-	mov	[ebp-948],dword2879
-	lea	dword2828,[ebp-908]
-	mov	[ebp-952],dword2828
+	mov	dword2906,[ebp-920]
+	mov	[ebp-948],dword2906
+	lea	dword2855,[ebp-908]
+	mov	[ebp-952],dword2855
 ; start of inline function vec2f_mul
-	mov	dword2882,[ebp-952]
-	fld	dword ptr [dword2882]
+	mov	dword2909,[ebp-952]
+	fld	dword ptr [dword2909]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword2882]
-	mov	dword2885,[ebp-952]
-	fld	dword ptr [dword2885+4]
+	fstp	dword ptr [dword2909]
+	mov	dword2912,[ebp-952]
+	fld	dword ptr [dword2912+4]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword2885+4]
+	fstp	dword ptr [dword2912+4]
 label00a3:
 ; end of inline function vec2f_mul
-	lea	dword2829,[ebp-908]
-	mov	[ebp-924],dword2829
-	mov	dword2831,16
-	add	dword2831,[ebp-864]
-	mov	[ebp-928],dword2831
-	mov	dword2833,[ebp-860]
-	mov	dword2835,[dword2833+192]
-	imul	dword2835,24
-	mov	dword2837,[ebp-860]
-	add	dword2837,dword2835
-	add	dword2837,16
-	mov	[ebp-932],dword2837
+	lea	dword2856,[ebp-908]
+	mov	[ebp-924],dword2856
+	mov	dword2858,16
+	add	dword2858,[ebp-864]
+	mov	[ebp-928],dword2858
+	mov	dword2860,[ebp-860]
+	mov	dword2862,[dword2860+192]
+	imul	dword2862,24
+	mov	dword2864,[ebp-860]
+	add	dword2864,dword2862
+	add	dword2864,16
+	mov	[ebp-932],dword2864
 ; start of inline function vec2f_add
-	mov	dword2855,[ebp-928]
-	mov	dword2857,[ebp-924]
-	fld	dword ptr [dword2855]
-	fadd	dword ptr [dword2857]
-	mov	dword2859,[ebp-932]
-	fstp	dword ptr [dword2859]
-	mov	dword2861,[ebp-928]
-	mov	dword2863,[ebp-924]
-	fld	dword ptr [dword2861+4]
-	fadd	dword ptr [dword2863+4]
-	mov	dword2865,[ebp-932]
-	fstp	dword ptr [dword2865+4]
+	mov	dword2882,[ebp-928]
+	mov	dword2884,[ebp-924]
+	fld	dword ptr [dword2882]
+	fadd	dword ptr [dword2884]
+	mov	dword2886,[ebp-932]
+	fstp	dword ptr [dword2886]
+	mov	dword2888,[ebp-928]
+	mov	dword2890,[ebp-924]
+	fld	dword ptr [dword2888+4]
+	fadd	dword ptr [dword2890+4]
+	mov	dword2892,[ebp-932]
+	fstp	dword ptr [dword2892+4]
 label00a1:
 ; end of inline function vec2f_add
-	mov	dword2840,[ebp-860]
-	inc	dword ptr [dword2840+192]
+	mov	dword2867,[ebp-860]
+	inc	dword ptr [dword2867+192]
 label009e:
 	add	dword ptr [ebp-864],24
 	add	dword ptr [ebp-868],24
 	jmp	label009b
 label009c:
-	mov	dword2844,[ebp-860]
-	mov	dword2845,[dword2844+192]
-	inc	dword ptr [dword2844+192]
-	imul	dword2845,24
-	mov	dword2848,[ebp-860]
-	add	dword2848,dword2845
-	mov	dword2850,[ebp-860]
-	mov	dword2851,[dword2850]
-	mov	dword2852,[dword2850+4]
-	mov	[dword2848],dword2851
-	mov	[dword2848+4],dword2852
-	mov	dword2851,[dword2850+8]
-	mov	dword2852,[dword2850+12]
-	mov	[dword2848+8],dword2851
-	mov	[dword2848+12],dword2852
-	mov	dword2851,[dword2850+16]
-	mov	dword2852,[dword2850+20]
-	mov	[dword2848+16],dword2851
-	mov	[dword2848+20],dword2852
+	mov	dword2871,[ebp-860]
+	mov	dword2872,[dword2871+192]
+	inc	dword ptr [dword2871+192]
+	imul	dword2872,24
+	mov	dword2875,[ebp-860]
+	add	dword2875,dword2872
+	mov	dword2877,[ebp-860]
+	mov	dword2878,[dword2877]
+	mov	dword2879,[dword2877+4]
+	mov	[dword2875],dword2878
+	mov	[dword2875+4],dword2879
+	mov	dword2878,[dword2877+8]
+	mov	dword2879,[dword2877+12]
+	mov	[dword2875+8],dword2878
+	mov	[dword2875+12],dword2879
+	mov	dword2878,[dword2877+16]
+	mov	dword2879,[dword2877+20]
+	mov	[dword2875+16],dword2878
+	mov	[dword2875+20],dword2879
 label00ae:
 ; end of inline function _clip_on_plain
-	lea	dword2029,dword ptr [__clip_plane_right_norm]
-	mov	[ebp-848],dword2029
-	lea	dword2030,dword ptr [__clip_plane_right_base]
-	mov	[ebp-852],dword2030
-	lea	dword2031,[ebp-844]
-	mov	[ebp-856],dword2031
-	mov	dword3101,[ebp-648]
-	mov	[ebp-860],dword3101
+	lea	dword2056,dword ptr [__clip_plane_right_norm]
+	mov	[ebp-848],dword2056
+	lea	dword2057,dword ptr [__clip_plane_right_base]
+	mov	[ebp-852],dword2057
+	lea	dword2058,[ebp-844]
+	mov	[ebp-856],dword2058
+	mov	dword3128,[ebp-648]
+	mov	[ebp-860],dword3128
 ; start of inline function _clip_on_plain
-	mov	dword3104,[ebp-860]
-	mov	dword ptr [dword3104+192],0
-	mov	dword3107,[ebp-856]
-	mov	[ebp-864],dword3107
-	mov	dword3110,[ebp-856]
-	add	dword3110,24
-	mov	[ebp-868],dword3110
+	mov	dword3131,[ebp-860]
+	mov	dword ptr [dword3131+192],0
+	mov	dword3134,[ebp-856]
+	mov	[ebp-864],dword3134
+	mov	dword3137,[ebp-856]
+	add	dword3137,24
+	mov	[ebp-868],dword3137
 label00af:
 label00b0:
-	mov	dword3114,[ebp-856]
-	mov	dword3116,[dword3114+192]
-	imul	dword3116,24
-	mov	dword3118,[ebp-856]
-	add	dword3118,dword3116
-	cmp	dword3118,[ebp-868]
+	mov	dword3141,[ebp-856]
+	mov	dword3143,[dword3141+192]
+	imul	dword3143,24
+	mov	dword3145,[ebp-856]
+	add	dword3145,dword3143
+	cmp	dword3145,[ebp-868]
 	jle	label00b1
-	mov	dword3264,[ebp-852]
-	mov	[ebp-968],dword3264
-	mov	dword3122,[ebp-864]
-	mov	[ebp-972],dword3122
-	lea	dword3123,[ebp-884]
-	mov	[ebp-976],dword3123
+	mov	dword3291,[ebp-852]
+	mov	[ebp-968],dword3291
+	mov	dword3149,[ebp-864]
+	mov	[ebp-972],dword3149
+	lea	dword3150,[ebp-884]
+	mov	[ebp-976],dword3150
 ; start of inline function vec4f_subtract
-	mov	dword3267,[ebp-972]
-	mov	dword3269,[ebp-968]
-	fld	dword ptr [dword3267]
-	fsub	dword ptr [dword3269]
-	mov	dword3271,[ebp-976]
-	fstp	dword ptr [dword3271]
-	mov	dword3273,[ebp-972]
-	mov	dword3275,[ebp-968]
-	fld	dword ptr [dword3273+4]
-	fsub	dword ptr [dword3275+4]
-	mov	dword3277,[ebp-976]
-	fstp	dword ptr [dword3277+4]
-	mov	dword3279,[ebp-972]
-	mov	dword3281,[ebp-968]
-	fld	dword ptr [dword3279+8]
-	fsub	dword ptr [dword3281+8]
-	mov	dword3283,[ebp-976]
-	fstp	dword ptr [dword3283+8]
-	mov	dword3285,[ebp-972]
-	mov	dword3287,[ebp-968]
-	fld	dword ptr [dword3285+12]
-	fsub	dword ptr [dword3287+12]
-	mov	dword3289,[ebp-976]
-	fstp	dword ptr [dword3289+12]
+	mov	dword3294,[ebp-972]
+	mov	dword3296,[ebp-968]
+	fld	dword ptr [dword3294]
+	fsub	dword ptr [dword3296]
+	mov	dword3298,[ebp-976]
+	fstp	dword ptr [dword3298]
+	mov	dword3300,[ebp-972]
+	mov	dword3302,[ebp-968]
+	fld	dword ptr [dword3300+4]
+	fsub	dword ptr [dword3302+4]
+	mov	dword3304,[ebp-976]
+	fstp	dword ptr [dword3304+4]
+	mov	dword3306,[ebp-972]
+	mov	dword3308,[ebp-968]
+	fld	dword ptr [dword3306+8]
+	fsub	dword ptr [dword3308+8]
+	mov	dword3310,[ebp-976]
+	fstp	dword ptr [dword3310+8]
+	mov	dword3312,[ebp-972]
+	mov	dword3314,[ebp-968]
+	fld	dword ptr [dword3312+12]
+	fsub	dword ptr [dword3314+12]
+	mov	dword3316,[ebp-976]
+	fstp	dword ptr [dword3316+12]
 label00ba:
 ; end of inline function vec4f_subtract
-	mov	dword3367,[ebp-848]
-	mov	[ebp-980],dword3367
-	lea	dword3125,[ebp-884]
-	mov	[ebp-984],dword3125
+	mov	dword3394,[ebp-848]
+	mov	[ebp-980],dword3394
+	lea	dword3152,[ebp-884]
+	mov	[ebp-984],dword3152
 ; start of inline function vec4f_dot
-	mov	dword3370,[ebp-984]
-	mov	dword3372,[ebp-980]
-	fld	dword ptr [dword3370+4]
-	fmul	dword ptr [dword3372+4]
-	mov	dword3374,[ebp-984]
-	mov	dword3376,[ebp-980]
-	fld	dword ptr [dword3374]
-	fmul	dword ptr [dword3376]
+	mov	dword3397,[ebp-984]
+	mov	dword3399,[ebp-980]
+	fld	dword ptr [dword3397+4]
+	fmul	dword ptr [dword3399+4]
+	mov	dword3401,[ebp-984]
+	mov	dword3403,[ebp-980]
+	fld	dword ptr [dword3401]
+	fmul	dword ptr [dword3403]
 	faddp
-	mov	dword3378,[ebp-984]
-	mov	dword3380,[ebp-980]
-	fld	dword ptr [dword3378+8]
-	fmul	dword ptr [dword3380+8]
+	mov	dword3405,[ebp-984]
+	mov	dword3407,[ebp-980]
+	fld	dword ptr [dword3405+8]
+	fmul	dword ptr [dword3407+8]
 	faddp
-	mov	dword3382,[ebp-984]
-	mov	dword3384,[ebp-980]
-	fld	dword ptr [dword3382+12]
-	fmul	dword ptr [dword3384+12]
+	mov	dword3409,[ebp-984]
+	mov	dword3411,[ebp-980]
+	fld	dword ptr [dword3409+12]
+	fmul	dword ptr [dword3411+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00be:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
 	fstp	dword ptr [ebp-912]
-	mov	dword3290,[ebp-852]
-	mov	[ebp-968],dword3290
-	mov	dword3129,[ebp-868]
-	mov	[ebp-972],dword3129
-	lea	dword3130,[ebp-884]
-	mov	[ebp-976],dword3130
+	mov	dword3317,[ebp-852]
+	mov	[ebp-968],dword3317
+	mov	dword3156,[ebp-868]
+	mov	[ebp-972],dword3156
+	lea	dword3157,[ebp-884]
+	mov	[ebp-976],dword3157
 ; start of inline function vec4f_subtract
-	mov	dword3293,[ebp-972]
-	mov	dword3295,[ebp-968]
-	fld	dword ptr [dword3293]
-	fsub	dword ptr [dword3295]
-	mov	dword3297,[ebp-976]
-	fstp	dword ptr [dword3297]
-	mov	dword3299,[ebp-972]
-	mov	dword3301,[ebp-968]
-	fld	dword ptr [dword3299+4]
-	fsub	dword ptr [dword3301+4]
-	mov	dword3303,[ebp-976]
-	fstp	dword ptr [dword3303+4]
-	mov	dword3305,[ebp-972]
-	mov	dword3307,[ebp-968]
-	fld	dword ptr [dword3305+8]
-	fsub	dword ptr [dword3307+8]
-	mov	dword3309,[ebp-976]
-	fstp	dword ptr [dword3309+8]
-	mov	dword3311,[ebp-972]
-	mov	dword3313,[ebp-968]
-	fld	dword ptr [dword3311+12]
-	fsub	dword ptr [dword3313+12]
-	mov	dword3315,[ebp-976]
-	fstp	dword ptr [dword3315+12]
+	mov	dword3320,[ebp-972]
+	mov	dword3322,[ebp-968]
+	fld	dword ptr [dword3320]
+	fsub	dword ptr [dword3322]
+	mov	dword3324,[ebp-976]
+	fstp	dword ptr [dword3324]
+	mov	dword3326,[ebp-972]
+	mov	dword3328,[ebp-968]
+	fld	dword ptr [dword3326+4]
+	fsub	dword ptr [dword3328+4]
+	mov	dword3330,[ebp-976]
+	fstp	dword ptr [dword3330+4]
+	mov	dword3332,[ebp-972]
+	mov	dword3334,[ebp-968]
+	fld	dword ptr [dword3332+8]
+	fsub	dword ptr [dword3334+8]
+	mov	dword3336,[ebp-976]
+	fstp	dword ptr [dword3336+8]
+	mov	dword3338,[ebp-972]
+	mov	dword3340,[ebp-968]
+	fld	dword ptr [dword3338+12]
+	fsub	dword ptr [dword3340+12]
+	mov	dword3342,[ebp-976]
+	fstp	dword ptr [dword3342+12]
 label00bb:
 ; end of inline function vec4f_subtract
-	mov	dword3385,[ebp-848]
-	mov	[ebp-980],dword3385
-	lea	dword3132,[ebp-884]
-	mov	[ebp-984],dword3132
+	mov	dword3412,[ebp-848]
+	mov	[ebp-980],dword3412
+	lea	dword3159,[ebp-884]
+	mov	[ebp-984],dword3159
 ; start of inline function vec4f_dot
-	mov	dword3388,[ebp-984]
-	mov	dword3390,[ebp-980]
-	fld	dword ptr [dword3388+4]
-	fmul	dword ptr [dword3390+4]
-	mov	dword3392,[ebp-984]
-	mov	dword3394,[ebp-980]
-	fld	dword ptr [dword3392]
-	fmul	dword ptr [dword3394]
+	mov	dword3415,[ebp-984]
+	mov	dword3417,[ebp-980]
+	fld	dword ptr [dword3415+4]
+	fmul	dword ptr [dword3417+4]
+	mov	dword3419,[ebp-984]
+	mov	dword3421,[ebp-980]
+	fld	dword ptr [dword3419]
+	fmul	dword ptr [dword3421]
 	faddp
-	mov	dword3396,[ebp-984]
-	mov	dword3398,[ebp-980]
-	fld	dword ptr [dword3396+8]
-	fmul	dword ptr [dword3398+8]
+	mov	dword3423,[ebp-984]
+	mov	dword3425,[ebp-980]
+	fld	dword ptr [dword3423+8]
+	fmul	dword ptr [dword3425+8]
 	faddp
-	mov	dword3400,[ebp-984]
-	mov	dword3402,[ebp-980]
-	fld	dword ptr [dword3400+12]
-	fmul	dword ptr [dword3402+12]
+	mov	dword3427,[ebp-984]
+	mov	dword3429,[ebp-980]
+	fld	dword ptr [dword3427+12]
+	fmul	dword ptr [dword3429+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00bf:
@@ -15277,25 +15346,25 @@ label00bf:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label00b2
-	mov	dword3136,[ebp-860]
-	mov	dword3137,[dword3136+192]
-	inc	dword ptr [dword3136+192]
-	imul	dword3137,24
-	mov	dword3140,[ebp-860]
-	add	dword3140,dword3137
-	mov	dword3142,[ebp-864]
-	mov	dword3143,[dword3142]
-	mov	dword3144,[dword3142+4]
-	mov	[dword3140],dword3143
-	mov	[dword3140+4],dword3144
-	mov	dword3143,[dword3142+8]
-	mov	dword3144,[dword3142+12]
-	mov	[dword3140+8],dword3143
-	mov	[dword3140+12],dword3144
-	mov	dword3143,[dword3142+16]
-	mov	dword3144,[dword3142+20]
-	mov	[dword3140+16],dword3143
-	mov	[dword3140+20],dword3144
+	mov	dword3163,[ebp-860]
+	mov	dword3164,[dword3163+192]
+	inc	dword ptr [dword3163+192]
+	imul	dword3164,24
+	mov	dword3167,[ebp-860]
+	add	dword3167,dword3164
+	mov	dword3169,[ebp-864]
+	mov	dword3170,[dword3169]
+	mov	dword3171,[dword3169+4]
+	mov	[dword3167],dword3170
+	mov	[dword3167+4],dword3171
+	mov	dword3170,[dword3169+8]
+	mov	dword3171,[dword3169+12]
+	mov	[dword3167+8],dword3170
+	mov	[dword3167+12],dword3171
+	mov	dword3170,[dword3169+16]
+	mov	dword3171,[dword3169+20]
+	mov	[dword3167+16],dword3170
+	mov	[dword3167+20],dword3171
 label00b2:
 	fldz
 	fld	dword ptr [ebp-912]
@@ -15319,123 +15388,123 @@ label00b5:
 	fstp	st
 	jae	label00b3
 label00b4:
-	mov	dword3150,[ebp-864]
-	mov	[ebp-968],dword3150
-	mov	dword3316,[ebp-852]
-	mov	[ebp-972],dword3316
-	lea	dword3152,[ebp-884]
-	mov	[ebp-976],dword3152
+	mov	dword3177,[ebp-864]
+	mov	[ebp-968],dword3177
+	mov	dword3343,[ebp-852]
+	mov	[ebp-972],dword3343
+	lea	dword3179,[ebp-884]
+	mov	[ebp-976],dword3179
 ; start of inline function vec4f_subtract
-	mov	dword3319,[ebp-972]
-	mov	dword3321,[ebp-968]
-	fld	dword ptr [dword3319]
-	fsub	dword ptr [dword3321]
-	mov	dword3323,[ebp-976]
-	fstp	dword ptr [dword3323]
-	mov	dword3325,[ebp-972]
-	mov	dword3327,[ebp-968]
-	fld	dword ptr [dword3325+4]
-	fsub	dword ptr [dword3327+4]
-	mov	dword3329,[ebp-976]
-	fstp	dword ptr [dword3329+4]
-	mov	dword3331,[ebp-972]
-	mov	dword3333,[ebp-968]
-	fld	dword ptr [dword3331+8]
-	fsub	dword ptr [dword3333+8]
-	mov	dword3335,[ebp-976]
-	fstp	dword ptr [dword3335+8]
-	mov	dword3337,[ebp-972]
-	mov	dword3339,[ebp-968]
-	fld	dword ptr [dword3337+12]
-	fsub	dword ptr [dword3339+12]
-	mov	dword3341,[ebp-976]
-	fstp	dword ptr [dword3341+12]
+	mov	dword3346,[ebp-972]
+	mov	dword3348,[ebp-968]
+	fld	dword ptr [dword3346]
+	fsub	dword ptr [dword3348]
+	mov	dword3350,[ebp-976]
+	fstp	dword ptr [dword3350]
+	mov	dword3352,[ebp-972]
+	mov	dword3354,[ebp-968]
+	fld	dword ptr [dword3352+4]
+	fsub	dword ptr [dword3354+4]
+	mov	dword3356,[ebp-976]
+	fstp	dword ptr [dword3356+4]
+	mov	dword3358,[ebp-972]
+	mov	dword3360,[ebp-968]
+	fld	dword ptr [dword3358+8]
+	fsub	dword ptr [dword3360+8]
+	mov	dword3362,[ebp-976]
+	fstp	dword ptr [dword3362+8]
+	mov	dword3364,[ebp-972]
+	mov	dword3366,[ebp-968]
+	fld	dword ptr [dword3364+12]
+	fsub	dword ptr [dword3366+12]
+	mov	dword3368,[ebp-976]
+	fstp	dword ptr [dword3368+12]
 label00bc:
 ; end of inline function vec4f_subtract
-	mov	dword3154,[ebp-864]
-	mov	[ebp-968],dword3154
-	mov	dword3156,[ebp-868]
-	mov	[ebp-972],dword3156
-	lea	dword3157,[ebp-900]
-	mov	[ebp-976],dword3157
+	mov	dword3181,[ebp-864]
+	mov	[ebp-968],dword3181
+	mov	dword3183,[ebp-868]
+	mov	[ebp-972],dword3183
+	lea	dword3184,[ebp-900]
+	mov	[ebp-976],dword3184
 ; start of inline function vec4f_subtract
-	mov	dword3344,[ebp-972]
-	mov	dword3346,[ebp-968]
-	fld	dword ptr [dword3344]
-	fsub	dword ptr [dword3346]
-	mov	dword3348,[ebp-976]
-	fstp	dword ptr [dword3348]
-	mov	dword3350,[ebp-972]
-	mov	dword3352,[ebp-968]
-	fld	dword ptr [dword3350+4]
-	fsub	dword ptr [dword3352+4]
-	mov	dword3354,[ebp-976]
-	fstp	dword ptr [dword3354+4]
-	mov	dword3356,[ebp-972]
-	mov	dword3358,[ebp-968]
-	fld	dword ptr [dword3356+8]
-	fsub	dword ptr [dword3358+8]
-	mov	dword3360,[ebp-976]
-	fstp	dword ptr [dword3360+8]
-	mov	dword3362,[ebp-972]
-	mov	dword3364,[ebp-968]
-	fld	dword ptr [dword3362+12]
-	fsub	dword ptr [dword3364+12]
-	mov	dword3366,[ebp-976]
-	fstp	dword ptr [dword3366+12]
+	mov	dword3371,[ebp-972]
+	mov	dword3373,[ebp-968]
+	fld	dword ptr [dword3371]
+	fsub	dword ptr [dword3373]
+	mov	dword3375,[ebp-976]
+	fstp	dword ptr [dword3375]
+	mov	dword3377,[ebp-972]
+	mov	dword3379,[ebp-968]
+	fld	dword ptr [dword3377+4]
+	fsub	dword ptr [dword3379+4]
+	mov	dword3381,[ebp-976]
+	fstp	dword ptr [dword3381+4]
+	mov	dword3383,[ebp-972]
+	mov	dword3385,[ebp-968]
+	fld	dword ptr [dword3383+8]
+	fsub	dword ptr [dword3385+8]
+	mov	dword3387,[ebp-976]
+	fstp	dword ptr [dword3387+8]
+	mov	dword3389,[ebp-972]
+	mov	dword3391,[ebp-968]
+	fld	dword ptr [dword3389+12]
+	fsub	dword ptr [dword3391+12]
+	mov	dword3393,[ebp-976]
+	fstp	dword ptr [dword3393+12]
 label00bd:
 ; end of inline function vec4f_subtract
-	mov	dword3403,[ebp-848]
-	mov	[ebp-980],dword3403
-	lea	dword3159,[ebp-884]
-	mov	[ebp-984],dword3159
+	mov	dword3430,[ebp-848]
+	mov	[ebp-980],dword3430
+	lea	dword3186,[ebp-884]
+	mov	[ebp-984],dword3186
 ; start of inline function vec4f_dot
-	mov	dword3406,[ebp-984]
-	mov	dword3408,[ebp-980]
-	fld	dword ptr [dword3406+4]
-	fmul	dword ptr [dword3408+4]
-	mov	dword3410,[ebp-984]
-	mov	dword3412,[ebp-980]
-	fld	dword ptr [dword3410]
-	fmul	dword ptr [dword3412]
+	mov	dword3433,[ebp-984]
+	mov	dword3435,[ebp-980]
+	fld	dword ptr [dword3433+4]
+	fmul	dword ptr [dword3435+4]
+	mov	dword3437,[ebp-984]
+	mov	dword3439,[ebp-980]
+	fld	dword ptr [dword3437]
+	fmul	dword ptr [dword3439]
 	faddp
-	mov	dword3414,[ebp-984]
-	mov	dword3416,[ebp-980]
-	fld	dword ptr [dword3414+8]
-	fmul	dword ptr [dword3416+8]
+	mov	dword3441,[ebp-984]
+	mov	dword3443,[ebp-980]
+	fld	dword ptr [dword3441+8]
+	fmul	dword ptr [dword3443+8]
 	faddp
-	mov	dword3418,[ebp-984]
-	mov	dword3420,[ebp-980]
-	fld	dword ptr [dword3418+12]
-	fmul	dword ptr [dword3420+12]
+	mov	dword3445,[ebp-984]
+	mov	dword3447,[ebp-980]
+	fld	dword ptr [dword3445+12]
+	fmul	dword ptr [dword3447+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00c0:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
-	mov	dword3421,[ebp-848]
-	mov	[ebp-980],dword3421
-	lea	dword3161,[ebp-900]
-	mov	[ebp-984],dword3161
+	mov	dword3448,[ebp-848]
+	mov	[ebp-980],dword3448
+	lea	dword3188,[ebp-900]
+	mov	[ebp-984],dword3188
 ; start of inline function vec4f_dot
-	mov	dword3424,[ebp-984]
-	mov	dword3426,[ebp-980]
-	fld	dword ptr [dword3424+4]
-	fmul	dword ptr [dword3426+4]
-	mov	dword3428,[ebp-984]
-	mov	dword3430,[ebp-980]
-	fld	dword ptr [dword3428]
-	fmul	dword ptr [dword3430]
+	mov	dword3451,[ebp-984]
+	mov	dword3453,[ebp-980]
+	fld	dword ptr [dword3451+4]
+	fmul	dword ptr [dword3453+4]
+	mov	dword3455,[ebp-984]
+	mov	dword3457,[ebp-980]
+	fld	dword ptr [dword3455]
+	fmul	dword ptr [dword3457]
 	faddp
-	mov	dword3432,[ebp-984]
-	mov	dword3434,[ebp-980]
-	fld	dword ptr [dword3432+8]
-	fmul	dword ptr [dword3434+8]
+	mov	dword3459,[ebp-984]
+	mov	dword3461,[ebp-980]
+	fld	dword ptr [dword3459+8]
+	fmul	dword ptr [dword3461+8]
 	faddp
-	mov	dword3436,[ebp-984]
-	mov	dword3438,[ebp-980]
-	fld	dword ptr [dword3436+12]
-	fmul	dword ptr [dword3438+12]
+	mov	dword3463,[ebp-984]
+	mov	dword3465,[ebp-980]
+	fld	dword ptr [dword3463+12]
+	fmul	dword ptr [dword3465+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00c1:
@@ -15443,302 +15512,302 @@ label00c1:
 	fld	dword ptr [ebp-988]
 	fdivp
 	fstp	dword ptr [ebp-920]
-	mov	dword3439,[ebp-920]
-	mov	[ebp-992],dword3439
-	lea	dword3164,[ebp-900]
-	mov	[ebp-996],dword3164
+	mov	dword3466,[ebp-920]
+	mov	[ebp-992],dword3466
+	lea	dword3191,[ebp-900]
+	mov	[ebp-996],dword3191
 ; start of inline function vec4f_mul
-	mov	dword3442,[ebp-996]
-	fld	dword ptr [dword3442]
+	mov	dword3469,[ebp-996]
+	fld	dword ptr [dword3469]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3442]
-	mov	dword3445,[ebp-996]
-	fld	dword ptr [dword3445+4]
+	fstp	dword ptr [dword3469]
+	mov	dword3472,[ebp-996]
+	fld	dword ptr [dword3472+4]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3445+4]
-	mov	dword3448,[ebp-996]
-	fld	dword ptr [dword3448+8]
+	fstp	dword ptr [dword3472+4]
+	mov	dword3475,[ebp-996]
+	fld	dword ptr [dword3475+8]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3448+8]
-	mov	dword3451,[ebp-996]
-	fld	dword ptr [dword3451+12]
+	fstp	dword ptr [dword3475+8]
+	mov	dword3478,[ebp-996]
+	fld	dword ptr [dword3478+12]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3451+12]
+	fstp	dword ptr [dword3478+12]
 label00c2:
 ; end of inline function vec4f_mul
-	lea	dword3165,[ebp-900]
-	mov	[ebp-956],dword3165
-	mov	dword3167,[ebp-864]
-	mov	[ebp-960],dword3167
-	mov	dword3169,[ebp-860]
-	mov	dword3171,[dword3169+192]
-	imul	dword3171,24
-	mov	dword3173,[ebp-860]
-	add	dword3173,dword3171
-	mov	[ebp-964],dword3173
+	lea	dword3192,[ebp-900]
+	mov	[ebp-956],dword3192
+	mov	dword3194,[ebp-864]
+	mov	[ebp-960],dword3194
+	mov	dword3196,[ebp-860]
+	mov	dword3198,[dword3196+192]
+	imul	dword3198,24
+	mov	dword3200,[ebp-860]
+	add	dword3200,dword3198
+	mov	[ebp-964],dword3200
 ; start of inline function vec4f_add
-	mov	dword3241,[ebp-960]
-	mov	dword3243,[ebp-956]
-	fld	dword ptr [dword3241]
-	fadd	dword ptr [dword3243]
-	mov	dword3245,[ebp-964]
-	fstp	dword ptr [dword3245]
-	mov	dword3247,[ebp-960]
-	mov	dword3249,[ebp-956]
-	fld	dword ptr [dword3247+4]
-	fadd	dword ptr [dword3249+4]
-	mov	dword3251,[ebp-964]
-	fstp	dword ptr [dword3251+4]
-	mov	dword3253,[ebp-960]
-	mov	dword3255,[ebp-956]
-	fld	dword ptr [dword3253+8]
-	fadd	dword ptr [dword3255+8]
-	mov	dword3257,[ebp-964]
-	fstp	dword ptr [dword3257+8]
-	mov	dword3259,[ebp-960]
-	mov	dword3261,[ebp-956]
-	fld	dword ptr [dword3259+12]
-	fadd	dword ptr [dword3261+12]
-	mov	dword3263,[ebp-964]
-	fstp	dword ptr [dword3263+12]
+	mov	dword3268,[ebp-960]
+	mov	dword3270,[ebp-956]
+	fld	dword ptr [dword3268]
+	fadd	dword ptr [dword3270]
+	mov	dword3272,[ebp-964]
+	fstp	dword ptr [dword3272]
+	mov	dword3274,[ebp-960]
+	mov	dword3276,[ebp-956]
+	fld	dword ptr [dword3274+4]
+	fadd	dword ptr [dword3276+4]
+	mov	dword3278,[ebp-964]
+	fstp	dword ptr [dword3278+4]
+	mov	dword3280,[ebp-960]
+	mov	dword3282,[ebp-956]
+	fld	dword ptr [dword3280+8]
+	fadd	dword ptr [dword3282+8]
+	mov	dword3284,[ebp-964]
+	fstp	dword ptr [dword3284+8]
+	mov	dword3286,[ebp-960]
+	mov	dword3288,[ebp-956]
+	fld	dword ptr [dword3286+12]
+	fadd	dword ptr [dword3288+12]
+	mov	dword3290,[ebp-964]
+	fstp	dword ptr [dword3290+12]
 label00b9:
 ; end of inline function vec4f_add
-	mov	dword3175,16
-	add	dword3175,[ebp-864]
-	mov	[ebp-936],dword3175
-	mov	dword3177,16
-	add	dword3177,[ebp-868]
-	mov	[ebp-940],dword3177
-	lea	dword3178,[ebp-908]
-	mov	[ebp-944],dword3178
+	mov	dword3202,16
+	add	dword3202,[ebp-864]
+	mov	[ebp-936],dword3202
+	mov	dword3204,16
+	add	dword3204,[ebp-868]
+	mov	[ebp-940],dword3204
+	lea	dword3205,[ebp-908]
+	mov	[ebp-944],dword3205
 ; start of inline function vec2f_subtract
-	mov	dword3220,[ebp-940]
-	mov	dword3222,[ebp-936]
-	fld	dword ptr [dword3220]
-	fsub	dword ptr [dword3222]
-	mov	dword3224,[ebp-944]
-	fstp	dword ptr [dword3224]
-	mov	dword3226,[ebp-940]
-	mov	dword3228,[ebp-936]
-	fld	dword ptr [dword3226+4]
-	fsub	dword ptr [dword3228+4]
-	mov	dword3230,[ebp-944]
-	fstp	dword ptr [dword3230+4]
+	mov	dword3247,[ebp-940]
+	mov	dword3249,[ebp-936]
+	fld	dword ptr [dword3247]
+	fsub	dword ptr [dword3249]
+	mov	dword3251,[ebp-944]
+	fstp	dword ptr [dword3251]
+	mov	dword3253,[ebp-940]
+	mov	dword3255,[ebp-936]
+	fld	dword ptr [dword3253+4]
+	fsub	dword ptr [dword3255+4]
+	mov	dword3257,[ebp-944]
+	fstp	dword ptr [dword3257+4]
 label00b7:
 ; end of inline function vec2f_subtract
-	mov	dword3231,[ebp-920]
-	mov	[ebp-948],dword3231
-	lea	dword3180,[ebp-908]
-	mov	[ebp-952],dword3180
+	mov	dword3258,[ebp-920]
+	mov	[ebp-948],dword3258
+	lea	dword3207,[ebp-908]
+	mov	[ebp-952],dword3207
 ; start of inline function vec2f_mul
-	mov	dword3234,[ebp-952]
-	fld	dword ptr [dword3234]
+	mov	dword3261,[ebp-952]
+	fld	dword ptr [dword3261]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword3234]
-	mov	dword3237,[ebp-952]
-	fld	dword ptr [dword3237+4]
+	fstp	dword ptr [dword3261]
+	mov	dword3264,[ebp-952]
+	fld	dword ptr [dword3264+4]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword3237+4]
+	fstp	dword ptr [dword3264+4]
 label00b8:
 ; end of inline function vec2f_mul
-	lea	dword3181,[ebp-908]
-	mov	[ebp-924],dword3181
-	mov	dword3183,16
-	add	dword3183,[ebp-864]
-	mov	[ebp-928],dword3183
-	mov	dword3185,[ebp-860]
-	mov	dword3187,[dword3185+192]
-	imul	dword3187,24
-	mov	dword3189,[ebp-860]
-	add	dword3189,dword3187
-	add	dword3189,16
-	mov	[ebp-932],dword3189
+	lea	dword3208,[ebp-908]
+	mov	[ebp-924],dword3208
+	mov	dword3210,16
+	add	dword3210,[ebp-864]
+	mov	[ebp-928],dword3210
+	mov	dword3212,[ebp-860]
+	mov	dword3214,[dword3212+192]
+	imul	dword3214,24
+	mov	dword3216,[ebp-860]
+	add	dword3216,dword3214
+	add	dword3216,16
+	mov	[ebp-932],dword3216
 ; start of inline function vec2f_add
-	mov	dword3207,[ebp-928]
-	mov	dword3209,[ebp-924]
-	fld	dword ptr [dword3207]
-	fadd	dword ptr [dword3209]
-	mov	dword3211,[ebp-932]
-	fstp	dword ptr [dword3211]
-	mov	dword3213,[ebp-928]
-	mov	dword3215,[ebp-924]
-	fld	dword ptr [dword3213+4]
-	fadd	dword ptr [dword3215+4]
-	mov	dword3217,[ebp-932]
-	fstp	dword ptr [dword3217+4]
+	mov	dword3234,[ebp-928]
+	mov	dword3236,[ebp-924]
+	fld	dword ptr [dword3234]
+	fadd	dword ptr [dword3236]
+	mov	dword3238,[ebp-932]
+	fstp	dword ptr [dword3238]
+	mov	dword3240,[ebp-928]
+	mov	dword3242,[ebp-924]
+	fld	dword ptr [dword3240+4]
+	fadd	dword ptr [dword3242+4]
+	mov	dword3244,[ebp-932]
+	fstp	dword ptr [dword3244+4]
 label00b6:
 ; end of inline function vec2f_add
-	mov	dword3192,[ebp-860]
-	inc	dword ptr [dword3192+192]
+	mov	dword3219,[ebp-860]
+	inc	dword ptr [dword3219+192]
 label00b3:
 	add	dword ptr [ebp-864],24
 	add	dword ptr [ebp-868],24
 	jmp	label00b0
 label00b1:
-	mov	dword3196,[ebp-860]
-	mov	dword3197,[dword3196+192]
-	inc	dword ptr [dword3196+192]
-	imul	dword3197,24
-	mov	dword3200,[ebp-860]
-	add	dword3200,dword3197
-	mov	dword3202,[ebp-860]
-	mov	dword3203,[dword3202]
-	mov	dword3204,[dword3202+4]
-	mov	[dword3200],dword3203
-	mov	[dword3200+4],dword3204
-	mov	dword3203,[dword3202+8]
-	mov	dword3204,[dword3202+12]
-	mov	[dword3200+8],dword3203
-	mov	[dword3200+12],dword3204
-	mov	dword3203,[dword3202+16]
-	mov	dword3204,[dword3202+20]
-	mov	[dword3200+16],dword3203
-	mov	[dword3200+20],dword3204
+	mov	dword3223,[ebp-860]
+	mov	dword3224,[dword3223+192]
+	inc	dword ptr [dword3223+192]
+	imul	dword3224,24
+	mov	dword3227,[ebp-860]
+	add	dword3227,dword3224
+	mov	dword3229,[ebp-860]
+	mov	dword3230,[dword3229]
+	mov	dword3231,[dword3229+4]
+	mov	[dword3227],dword3230
+	mov	[dword3227+4],dword3231
+	mov	dword3230,[dword3229+8]
+	mov	dword3231,[dword3229+12]
+	mov	[dword3227+8],dword3230
+	mov	[dword3227+12],dword3231
+	mov	dword3230,[dword3229+16]
+	mov	dword3231,[dword3229+20]
+	mov	[dword3227+16],dword3230
+	mov	[dword3227+20],dword3231
 label00c3:
 ; end of inline function _clip_on_plain
-	lea	dword2033,dword ptr [__clip_plane_top_norm]
-	mov	[ebp-848],dword2033
-	lea	dword2034,dword ptr [__clip_plane_top_base]
-	mov	[ebp-852],dword2034
-	mov	dword3453,[ebp-648]
-	mov	[ebp-856],dword3453
-	lea	dword2036,[ebp-844]
-	mov	[ebp-860],dword2036
+	lea	dword2060,dword ptr [__clip_plane_top_norm]
+	mov	[ebp-848],dword2060
+	lea	dword2061,dword ptr [__clip_plane_top_base]
+	mov	[ebp-852],dword2061
+	mov	dword3480,[ebp-648]
+	mov	[ebp-856],dword3480
+	lea	dword2063,[ebp-844]
+	mov	[ebp-860],dword2063
 ; start of inline function _clip_on_plain
-	mov	dword3456,[ebp-860]
-	mov	dword ptr [dword3456+192],0
-	mov	dword3459,[ebp-856]
-	mov	[ebp-864],dword3459
-	mov	dword3462,[ebp-856]
-	add	dword3462,24
-	mov	[ebp-868],dword3462
+	mov	dword3483,[ebp-860]
+	mov	dword ptr [dword3483+192],0
+	mov	dword3486,[ebp-856]
+	mov	[ebp-864],dword3486
+	mov	dword3489,[ebp-856]
+	add	dword3489,24
+	mov	[ebp-868],dword3489
 label00c4:
 label00c5:
-	mov	dword3466,[ebp-856]
-	mov	dword3468,[dword3466+192]
-	imul	dword3468,24
-	mov	dword3470,[ebp-856]
-	add	dword3470,dword3468
-	cmp	dword3470,[ebp-868]
+	mov	dword3493,[ebp-856]
+	mov	dword3495,[dword3493+192]
+	imul	dword3495,24
+	mov	dword3497,[ebp-856]
+	add	dword3497,dword3495
+	cmp	dword3497,[ebp-868]
 	jle	label00c6
-	mov	dword3616,[ebp-852]
-	mov	[ebp-968],dword3616
-	mov	dword3474,[ebp-864]
-	mov	[ebp-972],dword3474
-	lea	dword3475,[ebp-884]
-	mov	[ebp-976],dword3475
+	mov	dword3643,[ebp-852]
+	mov	[ebp-968],dword3643
+	mov	dword3501,[ebp-864]
+	mov	[ebp-972],dword3501
+	lea	dword3502,[ebp-884]
+	mov	[ebp-976],dword3502
 ; start of inline function vec4f_subtract
-	mov	dword3619,[ebp-972]
-	mov	dword3621,[ebp-968]
-	fld	dword ptr [dword3619]
-	fsub	dword ptr [dword3621]
-	mov	dword3623,[ebp-976]
-	fstp	dword ptr [dword3623]
-	mov	dword3625,[ebp-972]
-	mov	dword3627,[ebp-968]
-	fld	dword ptr [dword3625+4]
-	fsub	dword ptr [dword3627+4]
-	mov	dword3629,[ebp-976]
-	fstp	dword ptr [dword3629+4]
-	mov	dword3631,[ebp-972]
-	mov	dword3633,[ebp-968]
-	fld	dword ptr [dword3631+8]
-	fsub	dword ptr [dword3633+8]
-	mov	dword3635,[ebp-976]
-	fstp	dword ptr [dword3635+8]
-	mov	dword3637,[ebp-972]
-	mov	dword3639,[ebp-968]
-	fld	dword ptr [dword3637+12]
-	fsub	dword ptr [dword3639+12]
-	mov	dword3641,[ebp-976]
-	fstp	dword ptr [dword3641+12]
+	mov	dword3646,[ebp-972]
+	mov	dword3648,[ebp-968]
+	fld	dword ptr [dword3646]
+	fsub	dword ptr [dword3648]
+	mov	dword3650,[ebp-976]
+	fstp	dword ptr [dword3650]
+	mov	dword3652,[ebp-972]
+	mov	dword3654,[ebp-968]
+	fld	dword ptr [dword3652+4]
+	fsub	dword ptr [dword3654+4]
+	mov	dword3656,[ebp-976]
+	fstp	dword ptr [dword3656+4]
+	mov	dword3658,[ebp-972]
+	mov	dword3660,[ebp-968]
+	fld	dword ptr [dword3658+8]
+	fsub	dword ptr [dword3660+8]
+	mov	dword3662,[ebp-976]
+	fstp	dword ptr [dword3662+8]
+	mov	dword3664,[ebp-972]
+	mov	dword3666,[ebp-968]
+	fld	dword ptr [dword3664+12]
+	fsub	dword ptr [dword3666+12]
+	mov	dword3668,[ebp-976]
+	fstp	dword ptr [dword3668+12]
 label00cf:
 ; end of inline function vec4f_subtract
-	mov	dword3719,[ebp-848]
-	mov	[ebp-980],dword3719
-	lea	dword3477,[ebp-884]
-	mov	[ebp-984],dword3477
+	mov	dword3746,[ebp-848]
+	mov	[ebp-980],dword3746
+	lea	dword3504,[ebp-884]
+	mov	[ebp-984],dword3504
 ; start of inline function vec4f_dot
-	mov	dword3722,[ebp-984]
-	mov	dword3724,[ebp-980]
-	fld	dword ptr [dword3722+4]
-	fmul	dword ptr [dword3724+4]
-	mov	dword3726,[ebp-984]
-	mov	dword3728,[ebp-980]
-	fld	dword ptr [dword3726]
-	fmul	dword ptr [dword3728]
+	mov	dword3749,[ebp-984]
+	mov	dword3751,[ebp-980]
+	fld	dword ptr [dword3749+4]
+	fmul	dword ptr [dword3751+4]
+	mov	dword3753,[ebp-984]
+	mov	dword3755,[ebp-980]
+	fld	dword ptr [dword3753]
+	fmul	dword ptr [dword3755]
 	faddp
-	mov	dword3730,[ebp-984]
-	mov	dword3732,[ebp-980]
-	fld	dword ptr [dword3730+8]
-	fmul	dword ptr [dword3732+8]
+	mov	dword3757,[ebp-984]
+	mov	dword3759,[ebp-980]
+	fld	dword ptr [dword3757+8]
+	fmul	dword ptr [dword3759+8]
 	faddp
-	mov	dword3734,[ebp-984]
-	mov	dword3736,[ebp-980]
-	fld	dword ptr [dword3734+12]
-	fmul	dword ptr [dword3736+12]
+	mov	dword3761,[ebp-984]
+	mov	dword3763,[ebp-980]
+	fld	dword ptr [dword3761+12]
+	fmul	dword ptr [dword3763+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00d3:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
 	fstp	dword ptr [ebp-912]
-	mov	dword3642,[ebp-852]
-	mov	[ebp-968],dword3642
-	mov	dword3481,[ebp-868]
-	mov	[ebp-972],dword3481
-	lea	dword3482,[ebp-884]
-	mov	[ebp-976],dword3482
+	mov	dword3669,[ebp-852]
+	mov	[ebp-968],dword3669
+	mov	dword3508,[ebp-868]
+	mov	[ebp-972],dword3508
+	lea	dword3509,[ebp-884]
+	mov	[ebp-976],dword3509
 ; start of inline function vec4f_subtract
-	mov	dword3645,[ebp-972]
-	mov	dword3647,[ebp-968]
-	fld	dword ptr [dword3645]
-	fsub	dword ptr [dword3647]
-	mov	dword3649,[ebp-976]
-	fstp	dword ptr [dword3649]
-	mov	dword3651,[ebp-972]
-	mov	dword3653,[ebp-968]
-	fld	dword ptr [dword3651+4]
-	fsub	dword ptr [dword3653+4]
-	mov	dword3655,[ebp-976]
-	fstp	dword ptr [dword3655+4]
-	mov	dword3657,[ebp-972]
-	mov	dword3659,[ebp-968]
-	fld	dword ptr [dword3657+8]
-	fsub	dword ptr [dword3659+8]
-	mov	dword3661,[ebp-976]
-	fstp	dword ptr [dword3661+8]
-	mov	dword3663,[ebp-972]
-	mov	dword3665,[ebp-968]
-	fld	dword ptr [dword3663+12]
-	fsub	dword ptr [dword3665+12]
-	mov	dword3667,[ebp-976]
-	fstp	dword ptr [dword3667+12]
+	mov	dword3672,[ebp-972]
+	mov	dword3674,[ebp-968]
+	fld	dword ptr [dword3672]
+	fsub	dword ptr [dword3674]
+	mov	dword3676,[ebp-976]
+	fstp	dword ptr [dword3676]
+	mov	dword3678,[ebp-972]
+	mov	dword3680,[ebp-968]
+	fld	dword ptr [dword3678+4]
+	fsub	dword ptr [dword3680+4]
+	mov	dword3682,[ebp-976]
+	fstp	dword ptr [dword3682+4]
+	mov	dword3684,[ebp-972]
+	mov	dword3686,[ebp-968]
+	fld	dword ptr [dword3684+8]
+	fsub	dword ptr [dword3686+8]
+	mov	dword3688,[ebp-976]
+	fstp	dword ptr [dword3688+8]
+	mov	dword3690,[ebp-972]
+	mov	dword3692,[ebp-968]
+	fld	dword ptr [dword3690+12]
+	fsub	dword ptr [dword3692+12]
+	mov	dword3694,[ebp-976]
+	fstp	dword ptr [dword3694+12]
 label00d0:
 ; end of inline function vec4f_subtract
-	mov	dword3737,[ebp-848]
-	mov	[ebp-980],dword3737
-	lea	dword3484,[ebp-884]
-	mov	[ebp-984],dword3484
+	mov	dword3764,[ebp-848]
+	mov	[ebp-980],dword3764
+	lea	dword3511,[ebp-884]
+	mov	[ebp-984],dword3511
 ; start of inline function vec4f_dot
-	mov	dword3740,[ebp-984]
-	mov	dword3742,[ebp-980]
-	fld	dword ptr [dword3740+4]
-	fmul	dword ptr [dword3742+4]
-	mov	dword3744,[ebp-984]
-	mov	dword3746,[ebp-980]
-	fld	dword ptr [dword3744]
-	fmul	dword ptr [dword3746]
+	mov	dword3767,[ebp-984]
+	mov	dword3769,[ebp-980]
+	fld	dword ptr [dword3767+4]
+	fmul	dword ptr [dword3769+4]
+	mov	dword3771,[ebp-984]
+	mov	dword3773,[ebp-980]
+	fld	dword ptr [dword3771]
+	fmul	dword ptr [dword3773]
 	faddp
-	mov	dword3748,[ebp-984]
-	mov	dword3750,[ebp-980]
-	fld	dword ptr [dword3748+8]
-	fmul	dword ptr [dword3750+8]
+	mov	dword3775,[ebp-984]
+	mov	dword3777,[ebp-980]
+	fld	dword ptr [dword3775+8]
+	fmul	dword ptr [dword3777+8]
 	faddp
-	mov	dword3752,[ebp-984]
-	mov	dword3754,[ebp-980]
-	fld	dword ptr [dword3752+12]
-	fmul	dword ptr [dword3754+12]
+	mov	dword3779,[ebp-984]
+	mov	dword3781,[ebp-980]
+	fld	dword ptr [dword3779+12]
+	fmul	dword ptr [dword3781+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00d4:
@@ -15750,25 +15819,25 @@ label00d4:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label00c7
-	mov	dword3488,[ebp-860]
-	mov	dword3489,[dword3488+192]
-	inc	dword ptr [dword3488+192]
-	imul	dword3489,24
-	mov	dword3492,[ebp-860]
-	add	dword3492,dword3489
-	mov	dword3494,[ebp-864]
-	mov	dword3495,[dword3494]
-	mov	dword3496,[dword3494+4]
-	mov	[dword3492],dword3495
-	mov	[dword3492+4],dword3496
-	mov	dword3495,[dword3494+8]
-	mov	dword3496,[dword3494+12]
-	mov	[dword3492+8],dword3495
-	mov	[dword3492+12],dword3496
-	mov	dword3495,[dword3494+16]
-	mov	dword3496,[dword3494+20]
-	mov	[dword3492+16],dword3495
-	mov	[dword3492+20],dword3496
+	mov	dword3515,[ebp-860]
+	mov	dword3516,[dword3515+192]
+	inc	dword ptr [dword3515+192]
+	imul	dword3516,24
+	mov	dword3519,[ebp-860]
+	add	dword3519,dword3516
+	mov	dword3521,[ebp-864]
+	mov	dword3522,[dword3521]
+	mov	dword3523,[dword3521+4]
+	mov	[dword3519],dword3522
+	mov	[dword3519+4],dword3523
+	mov	dword3522,[dword3521+8]
+	mov	dword3523,[dword3521+12]
+	mov	[dword3519+8],dword3522
+	mov	[dword3519+12],dword3523
+	mov	dword3522,[dword3521+16]
+	mov	dword3523,[dword3521+20]
+	mov	[dword3519+16],dword3522
+	mov	[dword3519+20],dword3523
 label00c7:
 	fldz
 	fld	dword ptr [ebp-912]
@@ -15792,123 +15861,123 @@ label00ca:
 	fstp	st
 	jae	label00c8
 label00c9:
-	mov	dword3502,[ebp-864]
-	mov	[ebp-968],dword3502
-	mov	dword3668,[ebp-852]
-	mov	[ebp-972],dword3668
-	lea	dword3504,[ebp-884]
-	mov	[ebp-976],dword3504
+	mov	dword3529,[ebp-864]
+	mov	[ebp-968],dword3529
+	mov	dword3695,[ebp-852]
+	mov	[ebp-972],dword3695
+	lea	dword3531,[ebp-884]
+	mov	[ebp-976],dword3531
 ; start of inline function vec4f_subtract
-	mov	dword3671,[ebp-972]
-	mov	dword3673,[ebp-968]
-	fld	dword ptr [dword3671]
-	fsub	dword ptr [dword3673]
-	mov	dword3675,[ebp-976]
-	fstp	dword ptr [dword3675]
-	mov	dword3677,[ebp-972]
-	mov	dword3679,[ebp-968]
-	fld	dword ptr [dword3677+4]
-	fsub	dword ptr [dword3679+4]
-	mov	dword3681,[ebp-976]
-	fstp	dword ptr [dword3681+4]
-	mov	dword3683,[ebp-972]
-	mov	dword3685,[ebp-968]
-	fld	dword ptr [dword3683+8]
-	fsub	dword ptr [dword3685+8]
-	mov	dword3687,[ebp-976]
-	fstp	dword ptr [dword3687+8]
-	mov	dword3689,[ebp-972]
-	mov	dword3691,[ebp-968]
-	fld	dword ptr [dword3689+12]
-	fsub	dword ptr [dword3691+12]
-	mov	dword3693,[ebp-976]
-	fstp	dword ptr [dword3693+12]
+	mov	dword3698,[ebp-972]
+	mov	dword3700,[ebp-968]
+	fld	dword ptr [dword3698]
+	fsub	dword ptr [dword3700]
+	mov	dword3702,[ebp-976]
+	fstp	dword ptr [dword3702]
+	mov	dword3704,[ebp-972]
+	mov	dword3706,[ebp-968]
+	fld	dword ptr [dword3704+4]
+	fsub	dword ptr [dword3706+4]
+	mov	dword3708,[ebp-976]
+	fstp	dword ptr [dword3708+4]
+	mov	dword3710,[ebp-972]
+	mov	dword3712,[ebp-968]
+	fld	dword ptr [dword3710+8]
+	fsub	dword ptr [dword3712+8]
+	mov	dword3714,[ebp-976]
+	fstp	dword ptr [dword3714+8]
+	mov	dword3716,[ebp-972]
+	mov	dword3718,[ebp-968]
+	fld	dword ptr [dword3716+12]
+	fsub	dword ptr [dword3718+12]
+	mov	dword3720,[ebp-976]
+	fstp	dword ptr [dword3720+12]
 label00d1:
 ; end of inline function vec4f_subtract
-	mov	dword3506,[ebp-864]
-	mov	[ebp-968],dword3506
-	mov	dword3508,[ebp-868]
-	mov	[ebp-972],dword3508
-	lea	dword3509,[ebp-900]
-	mov	[ebp-976],dword3509
+	mov	dword3533,[ebp-864]
+	mov	[ebp-968],dword3533
+	mov	dword3535,[ebp-868]
+	mov	[ebp-972],dword3535
+	lea	dword3536,[ebp-900]
+	mov	[ebp-976],dword3536
 ; start of inline function vec4f_subtract
-	mov	dword3696,[ebp-972]
-	mov	dword3698,[ebp-968]
-	fld	dword ptr [dword3696]
-	fsub	dword ptr [dword3698]
-	mov	dword3700,[ebp-976]
-	fstp	dword ptr [dword3700]
-	mov	dword3702,[ebp-972]
-	mov	dword3704,[ebp-968]
-	fld	dword ptr [dword3702+4]
-	fsub	dword ptr [dword3704+4]
-	mov	dword3706,[ebp-976]
-	fstp	dword ptr [dword3706+4]
-	mov	dword3708,[ebp-972]
-	mov	dword3710,[ebp-968]
-	fld	dword ptr [dword3708+8]
-	fsub	dword ptr [dword3710+8]
-	mov	dword3712,[ebp-976]
-	fstp	dword ptr [dword3712+8]
-	mov	dword3714,[ebp-972]
-	mov	dword3716,[ebp-968]
-	fld	dword ptr [dword3714+12]
-	fsub	dword ptr [dword3716+12]
-	mov	dword3718,[ebp-976]
-	fstp	dword ptr [dword3718+12]
+	mov	dword3723,[ebp-972]
+	mov	dword3725,[ebp-968]
+	fld	dword ptr [dword3723]
+	fsub	dword ptr [dword3725]
+	mov	dword3727,[ebp-976]
+	fstp	dword ptr [dword3727]
+	mov	dword3729,[ebp-972]
+	mov	dword3731,[ebp-968]
+	fld	dword ptr [dword3729+4]
+	fsub	dword ptr [dword3731+4]
+	mov	dword3733,[ebp-976]
+	fstp	dword ptr [dword3733+4]
+	mov	dword3735,[ebp-972]
+	mov	dword3737,[ebp-968]
+	fld	dword ptr [dword3735+8]
+	fsub	dword ptr [dword3737+8]
+	mov	dword3739,[ebp-976]
+	fstp	dword ptr [dword3739+8]
+	mov	dword3741,[ebp-972]
+	mov	dword3743,[ebp-968]
+	fld	dword ptr [dword3741+12]
+	fsub	dword ptr [dword3743+12]
+	mov	dword3745,[ebp-976]
+	fstp	dword ptr [dword3745+12]
 label00d2:
 ; end of inline function vec4f_subtract
-	mov	dword3755,[ebp-848]
-	mov	[ebp-980],dword3755
-	lea	dword3511,[ebp-884]
-	mov	[ebp-984],dword3511
+	mov	dword3782,[ebp-848]
+	mov	[ebp-980],dword3782
+	lea	dword3538,[ebp-884]
+	mov	[ebp-984],dword3538
 ; start of inline function vec4f_dot
-	mov	dword3758,[ebp-984]
-	mov	dword3760,[ebp-980]
-	fld	dword ptr [dword3758+4]
-	fmul	dword ptr [dword3760+4]
-	mov	dword3762,[ebp-984]
-	mov	dword3764,[ebp-980]
-	fld	dword ptr [dword3762]
-	fmul	dword ptr [dword3764]
+	mov	dword3785,[ebp-984]
+	mov	dword3787,[ebp-980]
+	fld	dword ptr [dword3785+4]
+	fmul	dword ptr [dword3787+4]
+	mov	dword3789,[ebp-984]
+	mov	dword3791,[ebp-980]
+	fld	dword ptr [dword3789]
+	fmul	dword ptr [dword3791]
 	faddp
-	mov	dword3766,[ebp-984]
-	mov	dword3768,[ebp-980]
-	fld	dword ptr [dword3766+8]
-	fmul	dword ptr [dword3768+8]
+	mov	dword3793,[ebp-984]
+	mov	dword3795,[ebp-980]
+	fld	dword ptr [dword3793+8]
+	fmul	dword ptr [dword3795+8]
 	faddp
-	mov	dword3770,[ebp-984]
-	mov	dword3772,[ebp-980]
-	fld	dword ptr [dword3770+12]
-	fmul	dword ptr [dword3772+12]
+	mov	dword3797,[ebp-984]
+	mov	dword3799,[ebp-980]
+	fld	dword ptr [dword3797+12]
+	fmul	dword ptr [dword3799+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00d5:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
-	mov	dword3773,[ebp-848]
-	mov	[ebp-980],dword3773
-	lea	dword3513,[ebp-900]
-	mov	[ebp-984],dword3513
+	mov	dword3800,[ebp-848]
+	mov	[ebp-980],dword3800
+	lea	dword3540,[ebp-900]
+	mov	[ebp-984],dword3540
 ; start of inline function vec4f_dot
-	mov	dword3776,[ebp-984]
-	mov	dword3778,[ebp-980]
-	fld	dword ptr [dword3776+4]
-	fmul	dword ptr [dword3778+4]
-	mov	dword3780,[ebp-984]
-	mov	dword3782,[ebp-980]
-	fld	dword ptr [dword3780]
-	fmul	dword ptr [dword3782]
+	mov	dword3803,[ebp-984]
+	mov	dword3805,[ebp-980]
+	fld	dword ptr [dword3803+4]
+	fmul	dword ptr [dword3805+4]
+	mov	dword3807,[ebp-984]
+	mov	dword3809,[ebp-980]
+	fld	dword ptr [dword3807]
+	fmul	dword ptr [dword3809]
 	faddp
-	mov	dword3784,[ebp-984]
-	mov	dword3786,[ebp-980]
-	fld	dword ptr [dword3784+8]
-	fmul	dword ptr [dword3786+8]
+	mov	dword3811,[ebp-984]
+	mov	dword3813,[ebp-980]
+	fld	dword ptr [dword3811+8]
+	fmul	dword ptr [dword3813+8]
 	faddp
-	mov	dword3788,[ebp-984]
-	mov	dword3790,[ebp-980]
-	fld	dword ptr [dword3788+12]
-	fmul	dword ptr [dword3790+12]
+	mov	dword3815,[ebp-984]
+	mov	dword3817,[ebp-980]
+	fld	dword ptr [dword3815+12]
+	fmul	dword ptr [dword3817+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00d6:
@@ -15916,302 +15985,302 @@ label00d6:
 	fld	dword ptr [ebp-988]
 	fdivp
 	fstp	dword ptr [ebp-920]
-	mov	dword3791,[ebp-920]
-	mov	[ebp-992],dword3791
-	lea	dword3516,[ebp-900]
-	mov	[ebp-996],dword3516
+	mov	dword3818,[ebp-920]
+	mov	[ebp-992],dword3818
+	lea	dword3543,[ebp-900]
+	mov	[ebp-996],dword3543
 ; start of inline function vec4f_mul
-	mov	dword3794,[ebp-996]
-	fld	dword ptr [dword3794]
+	mov	dword3821,[ebp-996]
+	fld	dword ptr [dword3821]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3794]
-	mov	dword3797,[ebp-996]
-	fld	dword ptr [dword3797+4]
+	fstp	dword ptr [dword3821]
+	mov	dword3824,[ebp-996]
+	fld	dword ptr [dword3824+4]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3797+4]
-	mov	dword3800,[ebp-996]
-	fld	dword ptr [dword3800+8]
+	fstp	dword ptr [dword3824+4]
+	mov	dword3827,[ebp-996]
+	fld	dword ptr [dword3827+8]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3800+8]
-	mov	dword3803,[ebp-996]
-	fld	dword ptr [dword3803+12]
+	fstp	dword ptr [dword3827+8]
+	mov	dword3830,[ebp-996]
+	fld	dword ptr [dword3830+12]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword3803+12]
+	fstp	dword ptr [dword3830+12]
 label00d7:
 ; end of inline function vec4f_mul
-	lea	dword3517,[ebp-900]
-	mov	[ebp-956],dword3517
-	mov	dword3519,[ebp-864]
-	mov	[ebp-960],dword3519
-	mov	dword3521,[ebp-860]
-	mov	dword3523,[dword3521+192]
-	imul	dword3523,24
-	mov	dword3525,[ebp-860]
-	add	dword3525,dword3523
-	mov	[ebp-964],dword3525
+	lea	dword3544,[ebp-900]
+	mov	[ebp-956],dword3544
+	mov	dword3546,[ebp-864]
+	mov	[ebp-960],dword3546
+	mov	dword3548,[ebp-860]
+	mov	dword3550,[dword3548+192]
+	imul	dword3550,24
+	mov	dword3552,[ebp-860]
+	add	dword3552,dword3550
+	mov	[ebp-964],dword3552
 ; start of inline function vec4f_add
-	mov	dword3593,[ebp-960]
-	mov	dword3595,[ebp-956]
-	fld	dword ptr [dword3593]
-	fadd	dword ptr [dword3595]
-	mov	dword3597,[ebp-964]
-	fstp	dword ptr [dword3597]
-	mov	dword3599,[ebp-960]
-	mov	dword3601,[ebp-956]
-	fld	dword ptr [dword3599+4]
-	fadd	dword ptr [dword3601+4]
-	mov	dword3603,[ebp-964]
-	fstp	dword ptr [dword3603+4]
-	mov	dword3605,[ebp-960]
-	mov	dword3607,[ebp-956]
-	fld	dword ptr [dword3605+8]
-	fadd	dword ptr [dword3607+8]
-	mov	dword3609,[ebp-964]
-	fstp	dword ptr [dword3609+8]
-	mov	dword3611,[ebp-960]
-	mov	dword3613,[ebp-956]
-	fld	dword ptr [dword3611+12]
-	fadd	dword ptr [dword3613+12]
-	mov	dword3615,[ebp-964]
-	fstp	dword ptr [dword3615+12]
+	mov	dword3620,[ebp-960]
+	mov	dword3622,[ebp-956]
+	fld	dword ptr [dword3620]
+	fadd	dword ptr [dword3622]
+	mov	dword3624,[ebp-964]
+	fstp	dword ptr [dword3624]
+	mov	dword3626,[ebp-960]
+	mov	dword3628,[ebp-956]
+	fld	dword ptr [dword3626+4]
+	fadd	dword ptr [dword3628+4]
+	mov	dword3630,[ebp-964]
+	fstp	dword ptr [dword3630+4]
+	mov	dword3632,[ebp-960]
+	mov	dword3634,[ebp-956]
+	fld	dword ptr [dword3632+8]
+	fadd	dword ptr [dword3634+8]
+	mov	dword3636,[ebp-964]
+	fstp	dword ptr [dword3636+8]
+	mov	dword3638,[ebp-960]
+	mov	dword3640,[ebp-956]
+	fld	dword ptr [dword3638+12]
+	fadd	dword ptr [dword3640+12]
+	mov	dword3642,[ebp-964]
+	fstp	dword ptr [dword3642+12]
 label00ce:
 ; end of inline function vec4f_add
-	mov	dword3527,16
-	add	dword3527,[ebp-864]
-	mov	[ebp-936],dword3527
-	mov	dword3529,16
-	add	dword3529,[ebp-868]
-	mov	[ebp-940],dword3529
-	lea	dword3530,[ebp-908]
-	mov	[ebp-944],dword3530
+	mov	dword3554,16
+	add	dword3554,[ebp-864]
+	mov	[ebp-936],dword3554
+	mov	dword3556,16
+	add	dword3556,[ebp-868]
+	mov	[ebp-940],dword3556
+	lea	dword3557,[ebp-908]
+	mov	[ebp-944],dword3557
 ; start of inline function vec2f_subtract
-	mov	dword3572,[ebp-940]
-	mov	dword3574,[ebp-936]
-	fld	dword ptr [dword3572]
-	fsub	dword ptr [dword3574]
-	mov	dword3576,[ebp-944]
-	fstp	dword ptr [dword3576]
-	mov	dword3578,[ebp-940]
-	mov	dword3580,[ebp-936]
-	fld	dword ptr [dword3578+4]
-	fsub	dword ptr [dword3580+4]
-	mov	dword3582,[ebp-944]
-	fstp	dword ptr [dword3582+4]
+	mov	dword3599,[ebp-940]
+	mov	dword3601,[ebp-936]
+	fld	dword ptr [dword3599]
+	fsub	dword ptr [dword3601]
+	mov	dword3603,[ebp-944]
+	fstp	dword ptr [dword3603]
+	mov	dword3605,[ebp-940]
+	mov	dword3607,[ebp-936]
+	fld	dword ptr [dword3605+4]
+	fsub	dword ptr [dword3607+4]
+	mov	dword3609,[ebp-944]
+	fstp	dword ptr [dword3609+4]
 label00cc:
 ; end of inline function vec2f_subtract
-	mov	dword3583,[ebp-920]
-	mov	[ebp-948],dword3583
-	lea	dword3532,[ebp-908]
-	mov	[ebp-952],dword3532
+	mov	dword3610,[ebp-920]
+	mov	[ebp-948],dword3610
+	lea	dword3559,[ebp-908]
+	mov	[ebp-952],dword3559
 ; start of inline function vec2f_mul
-	mov	dword3586,[ebp-952]
-	fld	dword ptr [dword3586]
+	mov	dword3613,[ebp-952]
+	fld	dword ptr [dword3613]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword3586]
-	mov	dword3589,[ebp-952]
-	fld	dword ptr [dword3589+4]
+	fstp	dword ptr [dword3613]
+	mov	dword3616,[ebp-952]
+	fld	dword ptr [dword3616+4]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword3589+4]
+	fstp	dword ptr [dword3616+4]
 label00cd:
 ; end of inline function vec2f_mul
-	lea	dword3533,[ebp-908]
-	mov	[ebp-924],dword3533
-	mov	dword3535,16
-	add	dword3535,[ebp-864]
-	mov	[ebp-928],dword3535
-	mov	dword3537,[ebp-860]
-	mov	dword3539,[dword3537+192]
-	imul	dword3539,24
-	mov	dword3541,[ebp-860]
-	add	dword3541,dword3539
-	add	dword3541,16
-	mov	[ebp-932],dword3541
+	lea	dword3560,[ebp-908]
+	mov	[ebp-924],dword3560
+	mov	dword3562,16
+	add	dword3562,[ebp-864]
+	mov	[ebp-928],dword3562
+	mov	dword3564,[ebp-860]
+	mov	dword3566,[dword3564+192]
+	imul	dword3566,24
+	mov	dword3568,[ebp-860]
+	add	dword3568,dword3566
+	add	dword3568,16
+	mov	[ebp-932],dword3568
 ; start of inline function vec2f_add
-	mov	dword3559,[ebp-928]
-	mov	dword3561,[ebp-924]
-	fld	dword ptr [dword3559]
-	fadd	dword ptr [dword3561]
-	mov	dword3563,[ebp-932]
-	fstp	dword ptr [dword3563]
-	mov	dword3565,[ebp-928]
-	mov	dword3567,[ebp-924]
-	fld	dword ptr [dword3565+4]
-	fadd	dword ptr [dword3567+4]
-	mov	dword3569,[ebp-932]
-	fstp	dword ptr [dword3569+4]
+	mov	dword3586,[ebp-928]
+	mov	dword3588,[ebp-924]
+	fld	dword ptr [dword3586]
+	fadd	dword ptr [dword3588]
+	mov	dword3590,[ebp-932]
+	fstp	dword ptr [dword3590]
+	mov	dword3592,[ebp-928]
+	mov	dword3594,[ebp-924]
+	fld	dword ptr [dword3592+4]
+	fadd	dword ptr [dword3594+4]
+	mov	dword3596,[ebp-932]
+	fstp	dword ptr [dword3596+4]
 label00cb:
 ; end of inline function vec2f_add
-	mov	dword3544,[ebp-860]
-	inc	dword ptr [dword3544+192]
+	mov	dword3571,[ebp-860]
+	inc	dword ptr [dword3571+192]
 label00c8:
 	add	dword ptr [ebp-864],24
 	add	dword ptr [ebp-868],24
 	jmp	label00c5
 label00c6:
-	mov	dword3548,[ebp-860]
-	mov	dword3549,[dword3548+192]
-	inc	dword ptr [dword3548+192]
-	imul	dword3549,24
-	mov	dword3552,[ebp-860]
-	add	dword3552,dword3549
-	mov	dword3554,[ebp-860]
-	mov	dword3555,[dword3554]
-	mov	dword3556,[dword3554+4]
-	mov	[dword3552],dword3555
-	mov	[dword3552+4],dword3556
-	mov	dword3555,[dword3554+8]
-	mov	dword3556,[dword3554+12]
-	mov	[dword3552+8],dword3555
-	mov	[dword3552+12],dword3556
-	mov	dword3555,[dword3554+16]
-	mov	dword3556,[dword3554+20]
-	mov	[dword3552+16],dword3555
-	mov	[dword3552+20],dword3556
+	mov	dword3575,[ebp-860]
+	mov	dword3576,[dword3575+192]
+	inc	dword ptr [dword3575+192]
+	imul	dword3576,24
+	mov	dword3579,[ebp-860]
+	add	dword3579,dword3576
+	mov	dword3581,[ebp-860]
+	mov	dword3582,[dword3581]
+	mov	dword3583,[dword3581+4]
+	mov	[dword3579],dword3582
+	mov	[dword3579+4],dword3583
+	mov	dword3582,[dword3581+8]
+	mov	dword3583,[dword3581+12]
+	mov	[dword3579+8],dword3582
+	mov	[dword3579+12],dword3583
+	mov	dword3582,[dword3581+16]
+	mov	dword3583,[dword3581+20]
+	mov	[dword3579+16],dword3582
+	mov	[dword3579+20],dword3583
 label00d8:
 ; end of inline function _clip_on_plain
-	lea	dword2037,dword ptr [__clip_plane_bottom_norm]
-	mov	[ebp-848],dword2037
-	lea	dword2038,dword ptr [__clip_plane_bottom_base]
-	mov	[ebp-852],dword2038
-	lea	dword2039,[ebp-844]
-	mov	[ebp-856],dword2039
-	mov	dword3805,[ebp-648]
-	mov	[ebp-860],dword3805
+	lea	dword2064,dword ptr [__clip_plane_bottom_norm]
+	mov	[ebp-848],dword2064
+	lea	dword2065,dword ptr [__clip_plane_bottom_base]
+	mov	[ebp-852],dword2065
+	lea	dword2066,[ebp-844]
+	mov	[ebp-856],dword2066
+	mov	dword3832,[ebp-648]
+	mov	[ebp-860],dword3832
 ; start of inline function _clip_on_plain
-	mov	dword3808,[ebp-860]
-	mov	dword ptr [dword3808+192],0
-	mov	dword3811,[ebp-856]
-	mov	[ebp-864],dword3811
-	mov	dword3814,[ebp-856]
-	add	dword3814,24
-	mov	[ebp-868],dword3814
+	mov	dword3835,[ebp-860]
+	mov	dword ptr [dword3835+192],0
+	mov	dword3838,[ebp-856]
+	mov	[ebp-864],dword3838
+	mov	dword3841,[ebp-856]
+	add	dword3841,24
+	mov	[ebp-868],dword3841
 label00d9:
 label00da:
-	mov	dword3818,[ebp-856]
-	mov	dword3820,[dword3818+192]
-	imul	dword3820,24
-	mov	dword3822,[ebp-856]
-	add	dword3822,dword3820
-	cmp	dword3822,[ebp-868]
+	mov	dword3845,[ebp-856]
+	mov	dword3847,[dword3845+192]
+	imul	dword3847,24
+	mov	dword3849,[ebp-856]
+	add	dword3849,dword3847
+	cmp	dword3849,[ebp-868]
 	jle	label00db
-	mov	dword3968,[ebp-852]
-	mov	[ebp-968],dword3968
-	mov	dword3826,[ebp-864]
-	mov	[ebp-972],dword3826
-	lea	dword3827,[ebp-884]
-	mov	[ebp-976],dword3827
+	mov	dword3995,[ebp-852]
+	mov	[ebp-968],dword3995
+	mov	dword3853,[ebp-864]
+	mov	[ebp-972],dword3853
+	lea	dword3854,[ebp-884]
+	mov	[ebp-976],dword3854
 ; start of inline function vec4f_subtract
-	mov	dword3971,[ebp-972]
-	mov	dword3973,[ebp-968]
-	fld	dword ptr [dword3971]
-	fsub	dword ptr [dword3973]
-	mov	dword3975,[ebp-976]
-	fstp	dword ptr [dword3975]
-	mov	dword3977,[ebp-972]
-	mov	dword3979,[ebp-968]
-	fld	dword ptr [dword3977+4]
-	fsub	dword ptr [dword3979+4]
-	mov	dword3981,[ebp-976]
-	fstp	dword ptr [dword3981+4]
-	mov	dword3983,[ebp-972]
-	mov	dword3985,[ebp-968]
-	fld	dword ptr [dword3983+8]
-	fsub	dword ptr [dword3985+8]
-	mov	dword3987,[ebp-976]
-	fstp	dword ptr [dword3987+8]
-	mov	dword3989,[ebp-972]
-	mov	dword3991,[ebp-968]
-	fld	dword ptr [dword3989+12]
-	fsub	dword ptr [dword3991+12]
-	mov	dword3993,[ebp-976]
-	fstp	dword ptr [dword3993+12]
+	mov	dword3998,[ebp-972]
+	mov	dword4000,[ebp-968]
+	fld	dword ptr [dword3998]
+	fsub	dword ptr [dword4000]
+	mov	dword4002,[ebp-976]
+	fstp	dword ptr [dword4002]
+	mov	dword4004,[ebp-972]
+	mov	dword4006,[ebp-968]
+	fld	dword ptr [dword4004+4]
+	fsub	dword ptr [dword4006+4]
+	mov	dword4008,[ebp-976]
+	fstp	dword ptr [dword4008+4]
+	mov	dword4010,[ebp-972]
+	mov	dword4012,[ebp-968]
+	fld	dword ptr [dword4010+8]
+	fsub	dword ptr [dword4012+8]
+	mov	dword4014,[ebp-976]
+	fstp	dword ptr [dword4014+8]
+	mov	dword4016,[ebp-972]
+	mov	dword4018,[ebp-968]
+	fld	dword ptr [dword4016+12]
+	fsub	dword ptr [dword4018+12]
+	mov	dword4020,[ebp-976]
+	fstp	dword ptr [dword4020+12]
 label00e4:
 ; end of inline function vec4f_subtract
-	mov	dword4071,[ebp-848]
-	mov	[ebp-980],dword4071
-	lea	dword3829,[ebp-884]
-	mov	[ebp-984],dword3829
+	mov	dword4098,[ebp-848]
+	mov	[ebp-980],dword4098
+	lea	dword3856,[ebp-884]
+	mov	[ebp-984],dword3856
 ; start of inline function vec4f_dot
-	mov	dword4074,[ebp-984]
-	mov	dword4076,[ebp-980]
-	fld	dword ptr [dword4074+4]
-	fmul	dword ptr [dword4076+4]
-	mov	dword4078,[ebp-984]
-	mov	dword4080,[ebp-980]
-	fld	dword ptr [dword4078]
-	fmul	dword ptr [dword4080]
+	mov	dword4101,[ebp-984]
+	mov	dword4103,[ebp-980]
+	fld	dword ptr [dword4101+4]
+	fmul	dword ptr [dword4103+4]
+	mov	dword4105,[ebp-984]
+	mov	dword4107,[ebp-980]
+	fld	dword ptr [dword4105]
+	fmul	dword ptr [dword4107]
 	faddp
-	mov	dword4082,[ebp-984]
-	mov	dword4084,[ebp-980]
-	fld	dword ptr [dword4082+8]
-	fmul	dword ptr [dword4084+8]
+	mov	dword4109,[ebp-984]
+	mov	dword4111,[ebp-980]
+	fld	dword ptr [dword4109+8]
+	fmul	dword ptr [dword4111+8]
 	faddp
-	mov	dword4086,[ebp-984]
-	mov	dword4088,[ebp-980]
-	fld	dword ptr [dword4086+12]
-	fmul	dword ptr [dword4088+12]
+	mov	dword4113,[ebp-984]
+	mov	dword4115,[ebp-980]
+	fld	dword ptr [dword4113+12]
+	fmul	dword ptr [dword4115+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00e8:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
 	fstp	dword ptr [ebp-912]
-	mov	dword3994,[ebp-852]
-	mov	[ebp-968],dword3994
-	mov	dword3833,[ebp-868]
-	mov	[ebp-972],dword3833
-	lea	dword3834,[ebp-884]
-	mov	[ebp-976],dword3834
+	mov	dword4021,[ebp-852]
+	mov	[ebp-968],dword4021
+	mov	dword3860,[ebp-868]
+	mov	[ebp-972],dword3860
+	lea	dword3861,[ebp-884]
+	mov	[ebp-976],dword3861
 ; start of inline function vec4f_subtract
-	mov	dword3997,[ebp-972]
-	mov	dword3999,[ebp-968]
-	fld	dword ptr [dword3997]
-	fsub	dword ptr [dword3999]
-	mov	dword4001,[ebp-976]
-	fstp	dword ptr [dword4001]
-	mov	dword4003,[ebp-972]
-	mov	dword4005,[ebp-968]
-	fld	dword ptr [dword4003+4]
-	fsub	dword ptr [dword4005+4]
-	mov	dword4007,[ebp-976]
-	fstp	dword ptr [dword4007+4]
-	mov	dword4009,[ebp-972]
-	mov	dword4011,[ebp-968]
-	fld	dword ptr [dword4009+8]
-	fsub	dword ptr [dword4011+8]
-	mov	dword4013,[ebp-976]
-	fstp	dword ptr [dword4013+8]
-	mov	dword4015,[ebp-972]
-	mov	dword4017,[ebp-968]
-	fld	dword ptr [dword4015+12]
-	fsub	dword ptr [dword4017+12]
-	mov	dword4019,[ebp-976]
-	fstp	dword ptr [dword4019+12]
+	mov	dword4024,[ebp-972]
+	mov	dword4026,[ebp-968]
+	fld	dword ptr [dword4024]
+	fsub	dword ptr [dword4026]
+	mov	dword4028,[ebp-976]
+	fstp	dword ptr [dword4028]
+	mov	dword4030,[ebp-972]
+	mov	dword4032,[ebp-968]
+	fld	dword ptr [dword4030+4]
+	fsub	dword ptr [dword4032+4]
+	mov	dword4034,[ebp-976]
+	fstp	dword ptr [dword4034+4]
+	mov	dword4036,[ebp-972]
+	mov	dword4038,[ebp-968]
+	fld	dword ptr [dword4036+8]
+	fsub	dword ptr [dword4038+8]
+	mov	dword4040,[ebp-976]
+	fstp	dword ptr [dword4040+8]
+	mov	dword4042,[ebp-972]
+	mov	dword4044,[ebp-968]
+	fld	dword ptr [dword4042+12]
+	fsub	dword ptr [dword4044+12]
+	mov	dword4046,[ebp-976]
+	fstp	dword ptr [dword4046+12]
 label00e5:
 ; end of inline function vec4f_subtract
-	mov	dword4089,[ebp-848]
-	mov	[ebp-980],dword4089
-	lea	dword3836,[ebp-884]
-	mov	[ebp-984],dword3836
+	mov	dword4116,[ebp-848]
+	mov	[ebp-980],dword4116
+	lea	dword3863,[ebp-884]
+	mov	[ebp-984],dword3863
 ; start of inline function vec4f_dot
-	mov	dword4092,[ebp-984]
-	mov	dword4094,[ebp-980]
-	fld	dword ptr [dword4092+4]
-	fmul	dword ptr [dword4094+4]
-	mov	dword4096,[ebp-984]
-	mov	dword4098,[ebp-980]
-	fld	dword ptr [dword4096]
-	fmul	dword ptr [dword4098]
+	mov	dword4119,[ebp-984]
+	mov	dword4121,[ebp-980]
+	fld	dword ptr [dword4119+4]
+	fmul	dword ptr [dword4121+4]
+	mov	dword4123,[ebp-984]
+	mov	dword4125,[ebp-980]
+	fld	dword ptr [dword4123]
+	fmul	dword ptr [dword4125]
 	faddp
-	mov	dword4100,[ebp-984]
-	mov	dword4102,[ebp-980]
-	fld	dword ptr [dword4100+8]
-	fmul	dword ptr [dword4102+8]
+	mov	dword4127,[ebp-984]
+	mov	dword4129,[ebp-980]
+	fld	dword ptr [dword4127+8]
+	fmul	dword ptr [dword4129+8]
 	faddp
-	mov	dword4104,[ebp-984]
-	mov	dword4106,[ebp-980]
-	fld	dword ptr [dword4104+12]
-	fmul	dword ptr [dword4106+12]
+	mov	dword4131,[ebp-984]
+	mov	dword4133,[ebp-980]
+	fld	dword ptr [dword4131+12]
+	fmul	dword ptr [dword4133+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00e9:
@@ -16223,25 +16292,25 @@ label00e9:
 	fucomip	st,st(1)
 	fstp	st
 	jb	label00dc
-	mov	dword3840,[ebp-860]
-	mov	dword3841,[dword3840+192]
-	inc	dword ptr [dword3840+192]
-	imul	dword3841,24
-	mov	dword3844,[ebp-860]
-	add	dword3844,dword3841
-	mov	dword3846,[ebp-864]
-	mov	dword3847,[dword3846]
-	mov	dword3848,[dword3846+4]
-	mov	[dword3844],dword3847
-	mov	[dword3844+4],dword3848
-	mov	dword3847,[dword3846+8]
-	mov	dword3848,[dword3846+12]
-	mov	[dword3844+8],dword3847
-	mov	[dword3844+12],dword3848
-	mov	dword3847,[dword3846+16]
-	mov	dword3848,[dword3846+20]
-	mov	[dword3844+16],dword3847
-	mov	[dword3844+20],dword3848
+	mov	dword3867,[ebp-860]
+	mov	dword3868,[dword3867+192]
+	inc	dword ptr [dword3867+192]
+	imul	dword3868,24
+	mov	dword3871,[ebp-860]
+	add	dword3871,dword3868
+	mov	dword3873,[ebp-864]
+	mov	dword3874,[dword3873]
+	mov	dword3875,[dword3873+4]
+	mov	[dword3871],dword3874
+	mov	[dword3871+4],dword3875
+	mov	dword3874,[dword3873+8]
+	mov	dword3875,[dword3873+12]
+	mov	[dword3871+8],dword3874
+	mov	[dword3871+12],dword3875
+	mov	dword3874,[dword3873+16]
+	mov	dword3875,[dword3873+20]
+	mov	[dword3871+16],dword3874
+	mov	[dword3871+20],dword3875
 label00dc:
 	fldz
 	fld	dword ptr [ebp-912]
@@ -16265,123 +16334,123 @@ label00df:
 	fstp	st
 	jae	label00dd
 label00de:
-	mov	dword3854,[ebp-864]
-	mov	[ebp-968],dword3854
-	mov	dword4020,[ebp-852]
-	mov	[ebp-972],dword4020
-	lea	dword3856,[ebp-884]
-	mov	[ebp-976],dword3856
+	mov	dword3881,[ebp-864]
+	mov	[ebp-968],dword3881
+	mov	dword4047,[ebp-852]
+	mov	[ebp-972],dword4047
+	lea	dword3883,[ebp-884]
+	mov	[ebp-976],dword3883
 ; start of inline function vec4f_subtract
-	mov	dword4023,[ebp-972]
-	mov	dword4025,[ebp-968]
-	fld	dword ptr [dword4023]
-	fsub	dword ptr [dword4025]
-	mov	dword4027,[ebp-976]
-	fstp	dword ptr [dword4027]
-	mov	dword4029,[ebp-972]
-	mov	dword4031,[ebp-968]
-	fld	dword ptr [dword4029+4]
-	fsub	dword ptr [dword4031+4]
-	mov	dword4033,[ebp-976]
-	fstp	dword ptr [dword4033+4]
-	mov	dword4035,[ebp-972]
-	mov	dword4037,[ebp-968]
-	fld	dword ptr [dword4035+8]
-	fsub	dword ptr [dword4037+8]
-	mov	dword4039,[ebp-976]
-	fstp	dword ptr [dword4039+8]
-	mov	dword4041,[ebp-972]
-	mov	dword4043,[ebp-968]
-	fld	dword ptr [dword4041+12]
-	fsub	dword ptr [dword4043+12]
-	mov	dword4045,[ebp-976]
-	fstp	dword ptr [dword4045+12]
+	mov	dword4050,[ebp-972]
+	mov	dword4052,[ebp-968]
+	fld	dword ptr [dword4050]
+	fsub	dword ptr [dword4052]
+	mov	dword4054,[ebp-976]
+	fstp	dword ptr [dword4054]
+	mov	dword4056,[ebp-972]
+	mov	dword4058,[ebp-968]
+	fld	dword ptr [dword4056+4]
+	fsub	dword ptr [dword4058+4]
+	mov	dword4060,[ebp-976]
+	fstp	dword ptr [dword4060+4]
+	mov	dword4062,[ebp-972]
+	mov	dword4064,[ebp-968]
+	fld	dword ptr [dword4062+8]
+	fsub	dword ptr [dword4064+8]
+	mov	dword4066,[ebp-976]
+	fstp	dword ptr [dword4066+8]
+	mov	dword4068,[ebp-972]
+	mov	dword4070,[ebp-968]
+	fld	dword ptr [dword4068+12]
+	fsub	dword ptr [dword4070+12]
+	mov	dword4072,[ebp-976]
+	fstp	dword ptr [dword4072+12]
 label00e6:
 ; end of inline function vec4f_subtract
-	mov	dword3858,[ebp-864]
-	mov	[ebp-968],dword3858
-	mov	dword3860,[ebp-868]
-	mov	[ebp-972],dword3860
-	lea	dword3861,[ebp-900]
-	mov	[ebp-976],dword3861
+	mov	dword3885,[ebp-864]
+	mov	[ebp-968],dword3885
+	mov	dword3887,[ebp-868]
+	mov	[ebp-972],dword3887
+	lea	dword3888,[ebp-900]
+	mov	[ebp-976],dword3888
 ; start of inline function vec4f_subtract
-	mov	dword4048,[ebp-972]
-	mov	dword4050,[ebp-968]
-	fld	dword ptr [dword4048]
-	fsub	dword ptr [dword4050]
-	mov	dword4052,[ebp-976]
-	fstp	dword ptr [dword4052]
-	mov	dword4054,[ebp-972]
-	mov	dword4056,[ebp-968]
-	fld	dword ptr [dword4054+4]
-	fsub	dword ptr [dword4056+4]
-	mov	dword4058,[ebp-976]
-	fstp	dword ptr [dword4058+4]
-	mov	dword4060,[ebp-972]
-	mov	dword4062,[ebp-968]
-	fld	dword ptr [dword4060+8]
-	fsub	dword ptr [dword4062+8]
-	mov	dword4064,[ebp-976]
-	fstp	dword ptr [dword4064+8]
-	mov	dword4066,[ebp-972]
-	mov	dword4068,[ebp-968]
-	fld	dword ptr [dword4066+12]
-	fsub	dword ptr [dword4068+12]
-	mov	dword4070,[ebp-976]
-	fstp	dword ptr [dword4070+12]
+	mov	dword4075,[ebp-972]
+	mov	dword4077,[ebp-968]
+	fld	dword ptr [dword4075]
+	fsub	dword ptr [dword4077]
+	mov	dword4079,[ebp-976]
+	fstp	dword ptr [dword4079]
+	mov	dword4081,[ebp-972]
+	mov	dword4083,[ebp-968]
+	fld	dword ptr [dword4081+4]
+	fsub	dword ptr [dword4083+4]
+	mov	dword4085,[ebp-976]
+	fstp	dword ptr [dword4085+4]
+	mov	dword4087,[ebp-972]
+	mov	dword4089,[ebp-968]
+	fld	dword ptr [dword4087+8]
+	fsub	dword ptr [dword4089+8]
+	mov	dword4091,[ebp-976]
+	fstp	dword ptr [dword4091+8]
+	mov	dword4093,[ebp-972]
+	mov	dword4095,[ebp-968]
+	fld	dword ptr [dword4093+12]
+	fsub	dword ptr [dword4095+12]
+	mov	dword4097,[ebp-976]
+	fstp	dword ptr [dword4097+12]
 label00e7:
 ; end of inline function vec4f_subtract
-	mov	dword4107,[ebp-848]
-	mov	[ebp-980],dword4107
-	lea	dword3863,[ebp-884]
-	mov	[ebp-984],dword3863
+	mov	dword4134,[ebp-848]
+	mov	[ebp-980],dword4134
+	lea	dword3890,[ebp-884]
+	mov	[ebp-984],dword3890
 ; start of inline function vec4f_dot
-	mov	dword4110,[ebp-984]
-	mov	dword4112,[ebp-980]
-	fld	dword ptr [dword4110+4]
-	fmul	dword ptr [dword4112+4]
-	mov	dword4114,[ebp-984]
-	mov	dword4116,[ebp-980]
-	fld	dword ptr [dword4114]
-	fmul	dword ptr [dword4116]
+	mov	dword4137,[ebp-984]
+	mov	dword4139,[ebp-980]
+	fld	dword ptr [dword4137+4]
+	fmul	dword ptr [dword4139+4]
+	mov	dword4141,[ebp-984]
+	mov	dword4143,[ebp-980]
+	fld	dword ptr [dword4141]
+	fmul	dword ptr [dword4143]
 	faddp
-	mov	dword4118,[ebp-984]
-	mov	dword4120,[ebp-980]
-	fld	dword ptr [dword4118+8]
-	fmul	dword ptr [dword4120+8]
+	mov	dword4145,[ebp-984]
+	mov	dword4147,[ebp-980]
+	fld	dword ptr [dword4145+8]
+	fmul	dword ptr [dword4147+8]
 	faddp
-	mov	dword4122,[ebp-984]
-	mov	dword4124,[ebp-980]
-	fld	dword ptr [dword4122+12]
-	fmul	dword ptr [dword4124+12]
+	mov	dword4149,[ebp-984]
+	mov	dword4151,[ebp-980]
+	fld	dword ptr [dword4149+12]
+	fmul	dword ptr [dword4151+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00ea:
 ; end of inline function vec4f_dot
 	fld	dword ptr [ebp-988]
-	mov	dword4125,[ebp-848]
-	mov	[ebp-980],dword4125
-	lea	dword3865,[ebp-900]
-	mov	[ebp-984],dword3865
+	mov	dword4152,[ebp-848]
+	mov	[ebp-980],dword4152
+	lea	dword3892,[ebp-900]
+	mov	[ebp-984],dword3892
 ; start of inline function vec4f_dot
-	mov	dword4128,[ebp-984]
-	mov	dword4130,[ebp-980]
-	fld	dword ptr [dword4128+4]
-	fmul	dword ptr [dword4130+4]
-	mov	dword4132,[ebp-984]
-	mov	dword4134,[ebp-980]
-	fld	dword ptr [dword4132]
-	fmul	dword ptr [dword4134]
+	mov	dword4155,[ebp-984]
+	mov	dword4157,[ebp-980]
+	fld	dword ptr [dword4155+4]
+	fmul	dword ptr [dword4157+4]
+	mov	dword4159,[ebp-984]
+	mov	dword4161,[ebp-980]
+	fld	dword ptr [dword4159]
+	fmul	dword ptr [dword4161]
 	faddp
-	mov	dword4136,[ebp-984]
-	mov	dword4138,[ebp-980]
-	fld	dword ptr [dword4136+8]
-	fmul	dword ptr [dword4138+8]
+	mov	dword4163,[ebp-984]
+	mov	dword4165,[ebp-980]
+	fld	dword ptr [dword4163+8]
+	fmul	dword ptr [dword4165+8]
 	faddp
-	mov	dword4140,[ebp-984]
-	mov	dword4142,[ebp-980]
-	fld	dword ptr [dword4140+12]
-	fmul	dword ptr [dword4142+12]
+	mov	dword4167,[ebp-984]
+	mov	dword4169,[ebp-980]
+	fld	dword ptr [dword4167+12]
+	fmul	dword ptr [dword4169+12]
 	faddp
 	fstp	dword ptr [ebp-988]
 label00eb:
@@ -16389,164 +16458,164 @@ label00eb:
 	fld	dword ptr [ebp-988]
 	fdivp
 	fstp	dword ptr [ebp-920]
-	mov	dword4143,[ebp-920]
-	mov	[ebp-992],dword4143
-	lea	dword3868,[ebp-900]
-	mov	[ebp-996],dword3868
+	mov	dword4170,[ebp-920]
+	mov	[ebp-992],dword4170
+	lea	dword3895,[ebp-900]
+	mov	[ebp-996],dword3895
 ; start of inline function vec4f_mul
-	mov	dword4146,[ebp-996]
-	fld	dword ptr [dword4146]
+	mov	dword4173,[ebp-996]
+	fld	dword ptr [dword4173]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword4146]
-	mov	dword4149,[ebp-996]
-	fld	dword ptr [dword4149+4]
+	fstp	dword ptr [dword4173]
+	mov	dword4176,[ebp-996]
+	fld	dword ptr [dword4176+4]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword4149+4]
-	mov	dword4152,[ebp-996]
-	fld	dword ptr [dword4152+8]
+	fstp	dword ptr [dword4176+4]
+	mov	dword4179,[ebp-996]
+	fld	dword ptr [dword4179+8]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword4152+8]
-	mov	dword4155,[ebp-996]
-	fld	dword ptr [dword4155+12]
+	fstp	dword ptr [dword4179+8]
+	mov	dword4182,[ebp-996]
+	fld	dword ptr [dword4182+12]
 	fmul	dword ptr [ebp-992]
-	fstp	dword ptr [dword4155+12]
+	fstp	dword ptr [dword4182+12]
 label00ec:
 ; end of inline function vec4f_mul
-	lea	dword3869,[ebp-900]
-	mov	[ebp-956],dword3869
-	mov	dword3871,[ebp-864]
-	mov	[ebp-960],dword3871
-	mov	dword3873,[ebp-860]
-	mov	dword3875,[dword3873+192]
-	imul	dword3875,24
-	mov	dword3877,[ebp-860]
-	add	dword3877,dword3875
-	mov	[ebp-964],dword3877
+	lea	dword3896,[ebp-900]
+	mov	[ebp-956],dword3896
+	mov	dword3898,[ebp-864]
+	mov	[ebp-960],dword3898
+	mov	dword3900,[ebp-860]
+	mov	dword3902,[dword3900+192]
+	imul	dword3902,24
+	mov	dword3904,[ebp-860]
+	add	dword3904,dword3902
+	mov	[ebp-964],dword3904
 ; start of inline function vec4f_add
-	mov	dword3945,[ebp-960]
-	mov	dword3947,[ebp-956]
-	fld	dword ptr [dword3945]
-	fadd	dword ptr [dword3947]
-	mov	dword3949,[ebp-964]
-	fstp	dword ptr [dword3949]
-	mov	dword3951,[ebp-960]
-	mov	dword3953,[ebp-956]
-	fld	dword ptr [dword3951+4]
-	fadd	dword ptr [dword3953+4]
-	mov	dword3955,[ebp-964]
-	fstp	dword ptr [dword3955+4]
-	mov	dword3957,[ebp-960]
-	mov	dword3959,[ebp-956]
-	fld	dword ptr [dword3957+8]
-	fadd	dword ptr [dword3959+8]
-	mov	dword3961,[ebp-964]
-	fstp	dword ptr [dword3961+8]
-	mov	dword3963,[ebp-960]
-	mov	dword3965,[ebp-956]
-	fld	dword ptr [dword3963+12]
-	fadd	dword ptr [dword3965+12]
-	mov	dword3967,[ebp-964]
-	fstp	dword ptr [dword3967+12]
+	mov	dword3972,[ebp-960]
+	mov	dword3974,[ebp-956]
+	fld	dword ptr [dword3972]
+	fadd	dword ptr [dword3974]
+	mov	dword3976,[ebp-964]
+	fstp	dword ptr [dword3976]
+	mov	dword3978,[ebp-960]
+	mov	dword3980,[ebp-956]
+	fld	dword ptr [dword3978+4]
+	fadd	dword ptr [dword3980+4]
+	mov	dword3982,[ebp-964]
+	fstp	dword ptr [dword3982+4]
+	mov	dword3984,[ebp-960]
+	mov	dword3986,[ebp-956]
+	fld	dword ptr [dword3984+8]
+	fadd	dword ptr [dword3986+8]
+	mov	dword3988,[ebp-964]
+	fstp	dword ptr [dword3988+8]
+	mov	dword3990,[ebp-960]
+	mov	dword3992,[ebp-956]
+	fld	dword ptr [dword3990+12]
+	fadd	dword ptr [dword3992+12]
+	mov	dword3994,[ebp-964]
+	fstp	dword ptr [dword3994+12]
 label00e3:
 ; end of inline function vec4f_add
-	mov	dword3879,16
-	add	dword3879,[ebp-864]
-	mov	[ebp-936],dword3879
-	mov	dword3881,16
-	add	dword3881,[ebp-868]
-	mov	[ebp-940],dword3881
-	lea	dword3882,[ebp-908]
-	mov	[ebp-944],dword3882
+	mov	dword3906,16
+	add	dword3906,[ebp-864]
+	mov	[ebp-936],dword3906
+	mov	dword3908,16
+	add	dword3908,[ebp-868]
+	mov	[ebp-940],dword3908
+	lea	dword3909,[ebp-908]
+	mov	[ebp-944],dword3909
 ; start of inline function vec2f_subtract
-	mov	dword3924,[ebp-940]
-	mov	dword3926,[ebp-936]
-	fld	dword ptr [dword3924]
-	fsub	dword ptr [dword3926]
-	mov	dword3928,[ebp-944]
-	fstp	dword ptr [dword3928]
-	mov	dword3930,[ebp-940]
-	mov	dword3932,[ebp-936]
-	fld	dword ptr [dword3930+4]
-	fsub	dword ptr [dword3932+4]
-	mov	dword3934,[ebp-944]
-	fstp	dword ptr [dword3934+4]
+	mov	dword3951,[ebp-940]
+	mov	dword3953,[ebp-936]
+	fld	dword ptr [dword3951]
+	fsub	dword ptr [dword3953]
+	mov	dword3955,[ebp-944]
+	fstp	dword ptr [dword3955]
+	mov	dword3957,[ebp-940]
+	mov	dword3959,[ebp-936]
+	fld	dword ptr [dword3957+4]
+	fsub	dword ptr [dword3959+4]
+	mov	dword3961,[ebp-944]
+	fstp	dword ptr [dword3961+4]
 label00e1:
 ; end of inline function vec2f_subtract
-	mov	dword3935,[ebp-920]
-	mov	[ebp-948],dword3935
-	lea	dword3884,[ebp-908]
-	mov	[ebp-952],dword3884
+	mov	dword3962,[ebp-920]
+	mov	[ebp-948],dword3962
+	lea	dword3911,[ebp-908]
+	mov	[ebp-952],dword3911
 ; start of inline function vec2f_mul
-	mov	dword3938,[ebp-952]
-	fld	dword ptr [dword3938]
+	mov	dword3965,[ebp-952]
+	fld	dword ptr [dword3965]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword3938]
-	mov	dword3941,[ebp-952]
-	fld	dword ptr [dword3941+4]
+	fstp	dword ptr [dword3965]
+	mov	dword3968,[ebp-952]
+	fld	dword ptr [dword3968+4]
 	fmul	dword ptr [ebp-948]
-	fstp	dword ptr [dword3941+4]
+	fstp	dword ptr [dword3968+4]
 label00e2:
 ; end of inline function vec2f_mul
-	lea	dword3885,[ebp-908]
-	mov	[ebp-924],dword3885
-	mov	dword3887,16
-	add	dword3887,[ebp-864]
-	mov	[ebp-928],dword3887
-	mov	dword3889,[ebp-860]
-	mov	dword3891,[dword3889+192]
-	imul	dword3891,24
-	mov	dword3893,[ebp-860]
-	add	dword3893,dword3891
-	add	dword3893,16
-	mov	[ebp-932],dword3893
+	lea	dword3912,[ebp-908]
+	mov	[ebp-924],dword3912
+	mov	dword3914,16
+	add	dword3914,[ebp-864]
+	mov	[ebp-928],dword3914
+	mov	dword3916,[ebp-860]
+	mov	dword3918,[dword3916+192]
+	imul	dword3918,24
+	mov	dword3920,[ebp-860]
+	add	dword3920,dword3918
+	add	dword3920,16
+	mov	[ebp-932],dword3920
 ; start of inline function vec2f_add
-	mov	dword3911,[ebp-928]
-	mov	dword3913,[ebp-924]
-	fld	dword ptr [dword3911]
-	fadd	dword ptr [dword3913]
-	mov	dword3915,[ebp-932]
-	fstp	dword ptr [dword3915]
-	mov	dword3917,[ebp-928]
-	mov	dword3919,[ebp-924]
-	fld	dword ptr [dword3917+4]
-	fadd	dword ptr [dword3919+4]
-	mov	dword3921,[ebp-932]
-	fstp	dword ptr [dword3921+4]
+	mov	dword3938,[ebp-928]
+	mov	dword3940,[ebp-924]
+	fld	dword ptr [dword3938]
+	fadd	dword ptr [dword3940]
+	mov	dword3942,[ebp-932]
+	fstp	dword ptr [dword3942]
+	mov	dword3944,[ebp-928]
+	mov	dword3946,[ebp-924]
+	fld	dword ptr [dword3944+4]
+	fadd	dword ptr [dword3946+4]
+	mov	dword3948,[ebp-932]
+	fstp	dword ptr [dword3948+4]
 label00e0:
 ; end of inline function vec2f_add
-	mov	dword3896,[ebp-860]
-	inc	dword ptr [dword3896+192]
+	mov	dword3923,[ebp-860]
+	inc	dword ptr [dword3923+192]
 label00dd:
 	add	dword ptr [ebp-864],24
 	add	dword ptr [ebp-868],24
 	jmp	label00da
 label00db:
-	mov	dword3900,[ebp-860]
-	mov	dword3901,[dword3900+192]
-	inc	dword ptr [dword3900+192]
-	imul	dword3901,24
-	mov	dword3904,[ebp-860]
-	add	dword3904,dword3901
-	mov	dword3906,[ebp-860]
-	mov	dword3907,[dword3906]
-	mov	dword3908,[dword3906+4]
-	mov	[dword3904],dword3907
-	mov	[dword3904+4],dword3908
-	mov	dword3907,[dword3906+8]
-	mov	dword3908,[dword3906+12]
-	mov	[dword3904+8],dword3907
-	mov	[dword3904+12],dword3908
-	mov	dword3907,[dword3906+16]
-	mov	dword3908,[dword3906+20]
-	mov	[dword3904+16],dword3907
-	mov	[dword3904+20],dword3908
+	mov	dword3927,[ebp-860]
+	mov	dword3928,[dword3927+192]
+	inc	dword ptr [dword3927+192]
+	imul	dword3928,24
+	mov	dword3931,[ebp-860]
+	add	dword3931,dword3928
+	mov	dword3933,[ebp-860]
+	mov	dword3934,[dword3933]
+	mov	dword3935,[dword3933+4]
+	mov	[dword3931],dword3934
+	mov	[dword3931+4],dword3935
+	mov	dword3934,[dword3933+8]
+	mov	dword3935,[dword3933+12]
+	mov	[dword3931+8],dword3934
+	mov	[dword3931+12],dword3935
+	mov	dword3934,[dword3933+16]
+	mov	dword3935,[dword3933+20]
+	mov	[dword3931+16],dword3934
+	mov	[dword3931+20],dword3935
 label00ed:
 ; end of inline function _clip_on_plain
-	mov	dword2042,[ebp-648]
-	cmp	dword ptr [dword2042+192],1
+	mov	dword2069,[ebp-648]
+	cmp	dword ptr [dword2069+192],1
 	setg	byte32
-	movzx	dword2044,byte32
-	mov	[ebp-1000],dword2044
+	movzx	dword2071,byte32
+	mov	[ebp-1000],dword2071
 label00ee:
 ; end of inline function _clip_poligon
 	mov	dword40,[ebp-1000]
@@ -16572,352 +16641,357 @@ label0003:
 	add	dword53,dword56
 	mov	[ebp-1004],dword53
 	lea	dword57,[ebp-332]
-	sal	dword ptr [ebp-336],4
-	add	dword57,[ebp-336]
+	mov	dword60,[ebp-336]
+	sal	dword60,4
+	add	dword57,dword60
 	mov	[ebp-1008],dword57
 ; start of inline function _transform_to_screen_space
-	lea	dword4158,dword ptr [__viewport_matrix]
-	mov	[ebp-1032],dword4158
-	mov	dword4191,[ebp-1004]
-	mov	[ebp-1036],dword4191
-	lea	dword4160,[ebp-1024]
-	mov	[ebp-1040],dword4160
+	lea	dword4185,dword ptr [__viewport_matrix]
+	mov	[ebp-1032],dword4185
+	mov	dword4218,[ebp-1004]
+	mov	[ebp-1036],dword4218
+	lea	dword4187,[ebp-1024]
+	mov	[ebp-1040],dword4187
 ; start of inline function matrix4f_transform
-	mov	dword4194,[ebp-1036]
-	mov	dword4196,[ebp-1032]
-	fld	dword ptr [dword4194+4]
-	fmul	dword ptr [dword4196+16]
-	mov	dword4198,[ebp-1036]
-	mov	dword4200,[ebp-1032]
-	fld	dword ptr [dword4198]
-	fmul	dword ptr [dword4200]
+	mov	dword4221,[ebp-1036]
+	mov	dword4223,[ebp-1032]
+	fld	dword ptr [dword4221+4]
+	fmul	dword ptr [dword4223+16]
+	mov	dword4225,[ebp-1036]
+	mov	dword4227,[ebp-1032]
+	fld	dword ptr [dword4225]
+	fmul	dword ptr [dword4227]
 	faddp
-	mov	dword4202,[ebp-1036]
-	mov	dword4204,[ebp-1032]
-	fld	dword ptr [dword4202+8]
-	fmul	dword ptr [dword4204+32]
+	mov	dword4229,[ebp-1036]
+	mov	dword4231,[ebp-1032]
+	fld	dword ptr [dword4229+8]
+	fmul	dword ptr [dword4231+32]
 	faddp
-	mov	dword4206,[ebp-1036]
-	mov	dword4208,[ebp-1032]
-	fld	dword ptr [dword4206+12]
-	fmul	dword ptr [dword4208+48]
+	mov	dword4233,[ebp-1036]
+	mov	dword4235,[ebp-1032]
+	fld	dword ptr [dword4233+12]
+	fmul	dword ptr [dword4235+48]
 	faddp
-	mov	dword4210,[ebp-1040]
-	fstp	dword ptr [dword4210]
-	mov	dword4212,[ebp-1032]
-	mov	dword4214,[ebp-1036]
-	fld	dword ptr [dword4214]
-	fmul	dword ptr [dword4212+4]
-	mov	dword4216,[ebp-1036]
-	mov	dword4218,[ebp-1032]
-	fld	dword ptr [dword4216+4]
-	fmul	dword ptr [dword4218+20]
+	mov	dword4237,[ebp-1040]
+	fstp	dword ptr [dword4237]
+	mov	dword4239,[ebp-1032]
+	mov	dword4241,[ebp-1036]
+	fld	dword ptr [dword4241]
+	fmul	dword ptr [dword4239+4]
+	mov	dword4243,[ebp-1036]
+	mov	dword4245,[ebp-1032]
+	fld	dword ptr [dword4243+4]
+	fmul	dword ptr [dword4245+20]
 	faddp
-	mov	dword4220,[ebp-1036]
-	mov	dword4222,[ebp-1032]
-	fld	dword ptr [dword4220+8]
-	fmul	dword ptr [dword4222+36]
+	mov	dword4247,[ebp-1036]
+	mov	dword4249,[ebp-1032]
+	fld	dword ptr [dword4247+8]
+	fmul	dword ptr [dword4249+36]
 	faddp
-	mov	dword4224,[ebp-1036]
-	mov	dword4226,[ebp-1032]
-	fld	dword ptr [dword4224+12]
-	fmul	dword ptr [dword4226+52]
+	mov	dword4251,[ebp-1036]
+	mov	dword4253,[ebp-1032]
+	fld	dword ptr [dword4251+12]
+	fmul	dword ptr [dword4253+52]
 	faddp
-	mov	dword4228,[ebp-1040]
-	fstp	dword ptr [dword4228+4]
-	mov	dword4230,[ebp-1032]
-	mov	dword4232,[ebp-1036]
-	fld	dword ptr [dword4232]
-	fmul	dword ptr [dword4230+8]
-	mov	dword4234,[ebp-1036]
-	mov	dword4236,[ebp-1032]
-	fld	dword ptr [dword4234+4]
-	fmul	dword ptr [dword4236+24]
+	mov	dword4255,[ebp-1040]
+	fstp	dword ptr [dword4255+4]
+	mov	dword4257,[ebp-1032]
+	mov	dword4259,[ebp-1036]
+	fld	dword ptr [dword4259]
+	fmul	dword ptr [dword4257+8]
+	mov	dword4261,[ebp-1036]
+	mov	dword4263,[ebp-1032]
+	fld	dword ptr [dword4261+4]
+	fmul	dword ptr [dword4263+24]
 	faddp
-	mov	dword4238,[ebp-1036]
-	mov	dword4240,[ebp-1032]
-	fld	dword ptr [dword4238+8]
-	fmul	dword ptr [dword4240+40]
+	mov	dword4265,[ebp-1036]
+	mov	dword4267,[ebp-1032]
+	fld	dword ptr [dword4265+8]
+	fmul	dword ptr [dword4267+40]
 	faddp
-	mov	dword4242,[ebp-1036]
-	mov	dword4244,[ebp-1032]
-	fld	dword ptr [dword4242+12]
-	fmul	dword ptr [dword4244+56]
+	mov	dword4269,[ebp-1036]
+	mov	dword4271,[ebp-1032]
+	fld	dword ptr [dword4269+12]
+	fmul	dword ptr [dword4271+56]
 	faddp
-	mov	dword4246,[ebp-1040]
-	fstp	dword ptr [dword4246+8]
-	mov	dword4248,[ebp-1032]
-	mov	dword4250,[ebp-1036]
-	fld	dword ptr [dword4250]
-	fmul	dword ptr [dword4248+12]
-	mov	dword4252,[ebp-1036]
-	mov	dword4254,[ebp-1032]
-	fld	dword ptr [dword4252+4]
-	fmul	dword ptr [dword4254+28]
+	mov	dword4273,[ebp-1040]
+	fstp	dword ptr [dword4273+8]
+	mov	dword4275,[ebp-1032]
+	mov	dword4277,[ebp-1036]
+	fld	dword ptr [dword4277]
+	fmul	dword ptr [dword4275+12]
+	mov	dword4279,[ebp-1036]
+	mov	dword4281,[ebp-1032]
+	fld	dword ptr [dword4279+4]
+	fmul	dword ptr [dword4281+28]
 	faddp
-	mov	dword4256,[ebp-1036]
-	mov	dword4258,[ebp-1032]
-	fld	dword ptr [dword4256+8]
-	fmul	dword ptr [dword4258+44]
+	mov	dword4283,[ebp-1036]
+	mov	dword4285,[ebp-1032]
+	fld	dword ptr [dword4283+8]
+	fmul	dword ptr [dword4285+44]
 	faddp
-	mov	dword4260,[ebp-1036]
-	mov	dword4262,[ebp-1032]
-	fld	dword ptr [dword4260+12]
-	fmul	dword ptr [dword4262+60]
+	mov	dword4287,[ebp-1036]
+	mov	dword4289,[ebp-1032]
+	fld	dword ptr [dword4287+12]
+	fmul	dword ptr [dword4289+60]
 	faddp
-	mov	dword4264,[ebp-1040]
-	fstp	dword ptr [dword4264+12]
+	mov	dword4291,[ebp-1040]
+	fstp	dword ptr [dword4291+12]
 label00f1:
 ; end of inline function matrix4f_transform
-	lea	dword4161,[ebp-1024]
-	add	dword4161,12
+	lea	dword4188,[ebp-1024]
+	add	dword4188,12
 	fld1
-	fdiv	dword ptr [dword4161]
+	fdiv	dword ptr [dword4188]
 	fstp	dword ptr [ebp-1028]
 	fld	dword ptr [ebp-1024]
 	fmul	dword ptr [ebp-1028]
-	float2int	dword4166
-	mov	dword4168,[ebp-1008]
-	mov	[dword4168],dword4166
-	lea	dword4169,[ebp-1024]
-	add	dword4169,4
-	fld	dword ptr [dword4169]
+	float2int	dword4193
+	mov	dword4195,[ebp-1008]
+	mov	[dword4195],dword4193
+	lea	dword4196,[ebp-1024]
+	add	dword4196,4
+	fld	dword ptr [dword4196]
 	fmul	dword ptr [ebp-1028]
-	float2int	dword4172
-	mov	dword4174,[ebp-1008]
-	mov	[dword4174+4],dword4172
-	mov	dword4176,[ebp-1008]
-	cmp	dword ptr [dword4176],0
+	float2int	dword4199
+	mov	dword4201,[ebp-1008]
+	mov	[dword4201+4],dword4199
+	mov	dword4203,[ebp-1008]
+	cmp	dword ptr [dword4203],0
 	jl	label00f0
-	mov	dword4179,[ebp-1008]
-	mov	dword4181,[dword4179]
-	cmp	dword4181,dword ptr [__width]
+	mov	dword4206,[ebp-1008]
+	mov	dword4208,[dword4206]
+	cmp	dword4208,dword ptr [__width]
 	jge	label00f0
-	mov	dword4183,[ebp-1008]
-	cmp	dword ptr [dword4183+4],0
+	mov	dword4210,[ebp-1008]
+	cmp	dword ptr [dword4210+4],0
 	jl	label00f0
-	mov	dword4186,[ebp-1008]
-	mov	dword4188,[dword4186+4]
-	cmp	dword4188,dword ptr [__height]
+	mov	dword4213,[ebp-1008]
+	mov	dword4215,[dword4213+4]
+	cmp	dword4215,dword ptr [__height]
 	jl	label00ef
 label00f0:
 	mov	dword ptr ds:[0],0
 label00ef:
 label00f2:
 ; end of inline function _transform_to_screen_space
-	lea	dword60,[ebp-332]
-	sal	dword ptr [ebp-336],4
-	add	dword60,[ebp-336]
-	add	dword60,8
-	mov	dword65,[ebp-200]
-	mov	dword68,[ebp-336]
-	imul	dword68,24
-	add	dword65,dword68
-	add	dword65,16
-	mov	dword70,[dword65]
-	mov	dword71,[dword65+4]
-	mov	[dword60],dword70
-	mov	[dword60+4],dword71
+	lea	dword61,[ebp-332]
+	mov	dword64,[ebp-336]
+	sal	dword64,4
+	add	dword61,dword64
+	add	dword61,8
+	mov	dword67,[ebp-200]
+	mov	dword70,[ebp-336]
+	imul	dword70,24
+	add	dword67,dword70
+	add	dword67,16
+	mov	dword72,[dword67]
+	mov	dword73,[dword67+4]
+	mov	[dword61],dword72
+	mov	[dword61+4],dword73
 	inc	dword ptr [ebp-336]
 	jmp	label0003
 label0004:
 	mov	dword ptr [ebp-336],2
 label0005:
 label0006:
-	mov	dword76,[ebp-200]
-	mov	dword78,[dword76+192]
-	dec	dword78
-	cmp	dword78,[ebp-336]
+	mov	dword78,[ebp-200]
+	mov	dword80,[dword78+192]
+	dec	dword80
+	cmp	dword80,[ebp-336]
 	jle	label0007
-	lea	dword80,[ebp-332]
-	sal	dword ptr [ebp-336],4
-	add	dword80,[ebp-336]
-	mov	[ebp-340],dword80
+	lea	dword82,[ebp-332]
 	mov	dword85,[ebp-336]
-	dec	dword85
 	sal	dword85,4
-	lea	dword87,[ebp-332]
-	add	dword87,dword85
-	mov	[ebp-344],dword87
-	lea	dword88,[ebp-332]
-	mov	[ebp-348],dword88
+	add	dword82,dword85
+	mov	[ebp-340],dword82
+	mov	dword88,[ebp-336]
+	dec	dword88
+	sal	dword88,4
+	lea	dword90,[ebp-332]
+	add	dword90,dword88
+	mov	[ebp-344],dword90
+	lea	dword91,[ebp-332]
+	mov	[ebp-348],dword91
 ; start of inline function _rasterize_triangle_2i
-	mov	dword92,[ebp-348]
-	add	dword92,4
-	mov	dword95,[ebp-344]
+	mov	dword95,[ebp-348]
 	add	dword95,4
-	mov	dword97,[dword92]
-	cmp	dword97,[dword95]
+	mov	dword98,[ebp-344]
+	add	dword98,4
+	mov	dword100,[dword95]
+	cmp	dword100,[dword98]
 	jle	label0008
-	mov	dword100,[ebp-348]
-	mov	[ebp-352],dword100
-	mov	dword103,[ebp-344]
-	mov	[ebp-348],dword103
-	mov	dword106,[ebp-352]
-	mov	[ebp-344],dword106
+	mov	dword103,[ebp-348]
+	mov	[ebp-352],dword103
+	mov	dword106,[ebp-344]
+	mov	[ebp-348],dword106
+	mov	dword109,[ebp-352]
+	mov	[ebp-344],dword109
 label0008:
-	mov	dword108,[ebp-348]
-	add	dword108,4
-	mov	dword111,[ebp-340]
+	mov	dword111,[ebp-348]
 	add	dword111,4
-	mov	dword113,[dword108]
-	cmp	dword113,[dword111]
+	mov	dword114,[ebp-340]
+	add	dword114,4
+	mov	dword116,[dword111]
+	cmp	dword116,[dword114]
 	jle	label0009
-	mov	dword116,[ebp-348]
-	mov	[ebp-352],dword116
-	mov	dword119,[ebp-340]
-	mov	[ebp-348],dword119
-	mov	dword122,[ebp-352]
-	mov	[ebp-340],dword122
+	mov	dword119,[ebp-348]
+	mov	[ebp-352],dword119
+	mov	dword122,[ebp-340]
+	mov	[ebp-348],dword122
+	mov	dword125,[ebp-352]
+	mov	[ebp-340],dword125
 label0009:
-	mov	dword124,[ebp-344]
-	add	dword124,4
-	mov	dword127,[ebp-340]
+	mov	dword127,[ebp-344]
 	add	dword127,4
-	mov	dword129,[dword124]
-	cmp	dword129,[dword127]
+	mov	dword130,[ebp-340]
+	add	dword130,4
+	mov	dword132,[dword127]
+	cmp	dword132,[dword130]
 	jle	label000a
-	mov	dword132,[ebp-344]
-	mov	[ebp-352],dword132
-	mov	dword135,[ebp-340]
-	mov	[ebp-344],dword135
-	mov	dword138,[ebp-352]
-	mov	[ebp-340],dword138
+	mov	dword135,[ebp-344]
+	mov	[ebp-352],dword135
+	mov	dword138,[ebp-340]
+	mov	[ebp-344],dword138
+	mov	dword141,[ebp-352]
+	mov	[ebp-340],dword141
 label000a:
-	mov	dword140,[ebp-348]
-	add	dword140,4
-	mov	dword143,[ebp-340]
+	mov	dword143,[ebp-348]
 	add	dword143,4
-	mov	dword145,[dword140]
-	cmp	dword145,[dword143]
+	mov	dword146,[ebp-340]
+	add	dword146,4
+	mov	dword148,[dword143]
+	cmp	dword148,[dword146]
 	jne	label000b
-	mov	dword147,[ebp-348]
-	add	dword147,4
-	cmp	dword ptr [dword147],0
+	mov	dword150,[ebp-348]
+	add	dword150,4
+	cmp	dword ptr [dword150],0
 	jl	label000c
-	mov	dword151,[ebp-348]
-	add	dword151,4
-	mov	dword154,[dword151]
-	cmp	dword154,dword ptr [__height]
+	mov	dword154,[ebp-348]
+	add	dword154,4
+	mov	dword157,[dword154]
+	cmp	dword157,dword ptr [__height]
 	jge	label000c
 	fldz
 	fstp	dword ptr [ebp-520]
 	fldz
 	fstp	dword ptr [ebp-524]
-	mov	dword156,8
-	add	dword156,[ebp-340]
-	mov	[ebp-528],dword156
-	mov	dword158,8
-	add	dword158,[ebp-344]
-	mov	[ebp-532],dword158
-	mov	dword160,8
-	add	dword160,[ebp-348]
-	mov	[ebp-536],dword160
-	mov	dword162,[ebp-348]
-	add	dword162,4
-	mov	dword1308,[dword162]
-	mov	[ebp-540],dword1308
-	mov	dword165,[ebp-340]
-	mov	dword1307,[dword165]
-	mov	[ebp-544],dword1307
-	mov	dword167,[ebp-344]
-	mov	dword1306,[dword167]
-	mov	[ebp-548],dword1306
-	mov	dword169,[ebp-348]
-	mov	dword1305,[dword169]
-	mov	[ebp-552],dword1305
+	mov	dword159,8
+	add	dword159,[ebp-340]
+	mov	[ebp-528],dword159
+	mov	dword161,8
+	add	dword161,[ebp-344]
+	mov	[ebp-532],dword161
+	mov	dword163,8
+	add	dword163,[ebp-348]
+	mov	[ebp-536],dword163
+	mov	dword165,[ebp-348]
+	add	dword165,4
+	mov	dword1323,[dword165]
+	mov	[ebp-540],dword1323
+	mov	dword168,[ebp-340]
+	mov	dword1322,[dword168]
+	mov	[ebp-544],dword1322
+	mov	dword170,[ebp-344]
+	mov	dword1321,[dword170]
+	mov	[ebp-548],dword1321
+	mov	dword172,[ebp-348]
+	mov	dword1320,[dword172]
+	mov	[ebp-552],dword1320
 ; start of inline function _rasterize_triangle_1i
-	mov	dword1312,[ebp-552]
-	cmp	dword1312,[ebp-548]
+	mov	dword1327,[ebp-552]
+	cmp	dword1327,[ebp-548]
 	jge	label0040
-	mov	dword1315,[ebp-544]
-	cmp	dword1315,[ebp-548]
+	mov	dword1330,[ebp-544]
+	cmp	dword1330,[ebp-548]
 	jle	label0041
-	mov	dword1385,[ebp-520]
-	mov	[ebp-556],dword1385
-	mov	dword1384,[ebp-524]
-	mov	[ebp-560],dword1384
-	mov	dword1319,[ebp-536]
-	mov	dword1383,[dword1319+4]
-	mov	[ebp-564],dword1383
-	mov	dword1321,[ebp-536]
-	mov	dword1382,[dword1321]
-	mov	[ebp-568],dword1382
-	mov	dword1381,[ebp-540]
-	mov	[ebp-572],dword1381
-	mov	dword1380,[ebp-544]
-	mov	[ebp-576],dword1380
-	mov	dword1379,[ebp-552]
-	mov	[ebp-580],dword1379
+	mov	dword1400,[ebp-520]
+	mov	[ebp-556],dword1400
+	mov	dword1399,[ebp-524]
+	mov	[ebp-560],dword1399
+	mov	dword1334,[ebp-536]
+	mov	dword1398,[dword1334+4]
+	mov	[ebp-564],dword1398
+	mov	dword1336,[ebp-536]
+	mov	dword1397,[dword1336]
+	mov	[ebp-568],dword1397
+	mov	dword1396,[ebp-540]
+	mov	[ebp-572],dword1396
+	mov	dword1395,[ebp-544]
+	mov	[ebp-576],dword1395
+	mov	dword1394,[ebp-552]
+	mov	[ebp-580],dword1394
 ; start of inline function _rasterize_horiz_line
-	mov	dword1389,dword ptr [__pitch]
-	imul	dword1389,[ebp-572]
-	add	dword1389,dword ptr [__videomem]
-	sal	dword ptr [ebp-580],2
-	add	dword1389,[ebp-580]
-	mov	[ebp-584],dword1389
-	sal	dword ptr [ebp-576],2
-	mov	dword1397,[ebp-584]
-	add	dword1397,[ebp-576]
-	sal	dword ptr [ebp-580],2
-	sub	dword1397,[ebp-580]
-	mov	[ebp-588],dword1397
+	mov	dword1404,dword ptr [__pitch]
+	imul	dword1404,[ebp-572]
+	add	dword1404,dword ptr [__videomem]
+	mov	dword1408,[ebp-580]
+	sal	dword1408,2
+	add	dword1404,dword1408
+	mov	[ebp-584],dword1404
+	mov	dword1412,[ebp-576]
+	sal	dword1412,2
+	add	dword1412,[ebp-584]
+	mov	dword1416,[ebp-580]
+	sal	dword1416,2
+	sub	dword1412,dword1416
+	mov	[ebp-588],dword1412
 label004a:
-	mov	dword1465,[ebp-564]
-	mov	[ebp-628],dword1465
-	mov	dword1464,[ebp-568]
-	mov	[ebp-632],dword1464
+	mov	dword1482,[ebp-564]
+	mov	[ebp-628],dword1482
+	mov	dword1481,[ebp-568]
+	mov	[ebp-632],dword1481
 ; start of inline function _tex2d
-	mov	dword1469,dword ptr [__texture_width]
-	dec	dword1469
-	int2float	dword1469
+	mov	dword1486,dword ptr [__texture_width]
+	dec	dword1486
+	int2float	dword1486
 	fmul	dword ptr [ebp-632]
-	float2int	dword1471
-	mov	[ebp-636],dword1471
-	mov	dword1475,dword ptr [__texture_height]
-	dec	dword1475
-	int2float	dword1475
+	float2int	dword1488
+	mov	[ebp-636],dword1488
+	mov	dword1492,dword ptr [__texture_height]
+	dec	dword1492
+	int2float	dword1492
 	fmul	dword ptr [ebp-628]
-	float2int	dword1477
-	mov	[ebp-640],dword1477
-	mov	dword1481,[ebp-640]
-	imul	dword1481,dword ptr [__texture_width]
-	add	dword1481,[ebp-636]
-	sal	dword1481,2
-	add	dword1481,dword ptr [__texture_data]
-	mov	dword1485,[dword1481]
-	mov	[ebp-644],dword1485
+	float2int	dword1494
+	mov	[ebp-640],dword1494
+	mov	dword1498,[ebp-640]
+	imul	dword1498,dword ptr [__texture_width]
+	add	dword1498,[ebp-636]
+	sal	dword1498,2
+	add	dword1498,dword ptr [__texture_data]
+	mov	dword1502,[dword1498]
+	mov	[ebp-644],dword1502
 label004e:
 ; end of inline function _tex2d
-	mov	dword1403,[ebp-644]
-	mov	[ebp-592],dword1403
-	sar	dword ptr [ebp-592],24
-	mov	dword1408,[ebp-592]
-	and	dword1408,255
-	mov	[ebp-620],dword1408
+	mov	dword1420,[ebp-644]
+	mov	[ebp-592],dword1420
+	mov	dword1424,[ebp-592]
+	sar	dword1424,24
+	and	dword1424,255
+	mov	[ebp-620],dword1424
 	cmp	dword ptr [ebp-620],0
 	je	label004d
 	fild	dword ptr [ebp-620]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-624]
-	mov	dword1415,[ebp-584]
-	mov	dword1417,[dword1415]
-	mov	[ebp-608],dword1417
-	mov	dword1420,[ebp-608]
-	and	dword1420,65280
-	sar	dword1420,8
-	mov	[ebp-612],dword1420
-	mov	dword1425,[ebp-608]
-	and	dword1425,255
-	mov	[ebp-616],dword1425
-	mov	dword1429,[ebp-592]
-	and	dword1429,65280
-	sar	dword1429,8
-	mov	[ebp-600],dword1429
-	mov	dword1434,[ebp-592]
-	and	dword1434,255
-	mov	[ebp-604],dword1434
+	mov	dword1432,[ebp-584]
+	mov	dword1434,[dword1432]
+	mov	[ebp-608],dword1434
+	mov	dword1437,[ebp-608]
+	and	dword1437,65280
+	sar	dword1437,8
+	mov	[ebp-612],dword1437
+	mov	dword1442,[ebp-608]
+	and	dword1442,255
+	mov	[ebp-616],dword1442
+	mov	dword1446,[ebp-592]
+	and	dword1446,65280
+	sar	dword1446,8
+	mov	[ebp-600],dword1446
+	mov	dword1451,[ebp-592]
+	and	dword1451,255
+	mov	[ebp-604],dword1451
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-612]
@@ -16925,8 +16999,8 @@ label004e:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1440
-	mov	[ebp-600],dword1440
+	float2int	dword1457
+	mov	[ebp-600],dword1457
 	fild	dword ptr [ebp-604]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-616]
@@ -16934,15 +17008,15 @@ label004e:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1446
-	mov	[ebp-604],dword1446
-	sal	dword ptr [ebp-600],8
-	mov	dword1451,[ebp-600]
-	add	dword1451,[ebp-604]
-	mov	[ebp-596],dword1451
-	mov	dword1454,[ebp-584]
-	mov	dword1456,[ebp-596]
-	mov	[dword1454],dword1456
+	float2int	dword1463
+	mov	[ebp-604],dword1463
+	mov	dword1467,[ebp-600]
+	sal	dword1467,8
+	add	dword1467,[ebp-604]
+	mov	[ebp-596],dword1467
+	mov	dword1471,[ebp-584]
+	mov	dword1473,[ebp-596]
+	mov	[dword1471],dword1473
 label004d:
 	fld	dword ptr [ebp-568]
 	fadd	dword ptr [ebp-560]
@@ -16952,102 +17026,104 @@ label004d:
 	fstp	dword ptr [ebp-564]
 label004b:
 	add	dword ptr [ebp-584],4
-	mov	dword1463,[ebp-584]
-	cmp	dword1463,[ebp-588]
+	mov	dword1480,[ebp-584]
+	cmp	dword1480,[ebp-588]
 	jl	label004a
 label004c:
 label004f:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0042
 label0041:
-	mov	dword1327,[ebp-544]
-	cmp	dword1327,[ebp-552]
+	mov	dword1342,[ebp-544]
+	cmp	dword1342,[ebp-552]
 	jge	label0043
-	mov	dword1492,[ebp-520]
-	mov	[ebp-556],dword1492
-	mov	dword1491,[ebp-524]
-	mov	[ebp-560],dword1491
-	mov	dword1331,[ebp-528]
-	mov	dword1490,[dword1331+4]
-	mov	[ebp-564],dword1490
-	mov	dword1333,[ebp-528]
-	mov	dword1489,[dword1333]
-	mov	[ebp-568],dword1489
-	mov	dword1488,[ebp-540]
-	mov	[ebp-572],dword1488
-	mov	dword1487,[ebp-548]
-	mov	[ebp-576],dword1487
-	mov	dword1486,[ebp-544]
-	mov	[ebp-580],dword1486
+	mov	dword1509,[ebp-520]
+	mov	[ebp-556],dword1509
+	mov	dword1508,[ebp-524]
+	mov	[ebp-560],dword1508
+	mov	dword1346,[ebp-528]
+	mov	dword1507,[dword1346+4]
+	mov	[ebp-564],dword1507
+	mov	dword1348,[ebp-528]
+	mov	dword1506,[dword1348]
+	mov	[ebp-568],dword1506
+	mov	dword1505,[ebp-540]
+	mov	[ebp-572],dword1505
+	mov	dword1504,[ebp-548]
+	mov	[ebp-576],dword1504
+	mov	dword1503,[ebp-544]
+	mov	[ebp-580],dword1503
 ; start of inline function _rasterize_horiz_line
-	mov	dword1496,dword ptr [__pitch]
-	imul	dword1496,[ebp-572]
-	add	dword1496,dword ptr [__videomem]
-	sal	dword ptr [ebp-580],2
-	add	dword1496,[ebp-580]
-	mov	[ebp-584],dword1496
-	sal	dword ptr [ebp-576],2
-	mov	dword1504,[ebp-584]
-	add	dword1504,[ebp-576]
-	sal	dword ptr [ebp-580],2
-	sub	dword1504,[ebp-580]
-	mov	[ebp-588],dword1504
+	mov	dword1513,dword ptr [__pitch]
+	imul	dword1513,[ebp-572]
+	add	dword1513,dword ptr [__videomem]
+	mov	dword1517,[ebp-580]
+	sal	dword1517,2
+	add	dword1513,dword1517
+	mov	[ebp-584],dword1513
+	mov	dword1521,[ebp-576]
+	sal	dword1521,2
+	add	dword1521,[ebp-584]
+	mov	dword1525,[ebp-580]
+	sal	dword1525,2
+	sub	dword1521,dword1525
+	mov	[ebp-588],dword1521
 label0050:
-	mov	dword1572,[ebp-564]
-	mov	[ebp-628],dword1572
-	mov	dword1571,[ebp-568]
-	mov	[ebp-632],dword1571
+	mov	dword1591,[ebp-564]
+	mov	[ebp-628],dword1591
+	mov	dword1590,[ebp-568]
+	mov	[ebp-632],dword1590
 ; start of inline function _tex2d
-	mov	dword1576,dword ptr [__texture_width]
-	dec	dword1576
-	int2float	dword1576
+	mov	dword1595,dword ptr [__texture_width]
+	dec	dword1595
+	int2float	dword1595
 	fmul	dword ptr [ebp-632]
-	float2int	dword1578
-	mov	[ebp-636],dword1578
-	mov	dword1582,dword ptr [__texture_height]
-	dec	dword1582
-	int2float	dword1582
+	float2int	dword1597
+	mov	[ebp-636],dword1597
+	mov	dword1601,dword ptr [__texture_height]
+	dec	dword1601
+	int2float	dword1601
 	fmul	dword ptr [ebp-628]
-	float2int	dword1584
-	mov	[ebp-640],dword1584
-	mov	dword1588,[ebp-640]
-	imul	dword1588,dword ptr [__texture_width]
-	add	dword1588,[ebp-636]
-	sal	dword1588,2
-	add	dword1588,dword ptr [__texture_data]
-	mov	dword1592,[dword1588]
-	mov	[ebp-644],dword1592
+	float2int	dword1603
+	mov	[ebp-640],dword1603
+	mov	dword1607,[ebp-640]
+	imul	dword1607,dword ptr [__texture_width]
+	add	dword1607,[ebp-636]
+	sal	dword1607,2
+	add	dword1607,dword ptr [__texture_data]
+	mov	dword1611,[dword1607]
+	mov	[ebp-644],dword1611
 label0054:
 ; end of inline function _tex2d
-	mov	dword1510,[ebp-644]
-	mov	[ebp-592],dword1510
-	sar	dword ptr [ebp-592],24
-	mov	dword1515,[ebp-592]
-	and	dword1515,255
-	mov	[ebp-620],dword1515
+	mov	dword1529,[ebp-644]
+	mov	[ebp-592],dword1529
+	mov	dword1533,[ebp-592]
+	sar	dword1533,24
+	and	dword1533,255
+	mov	[ebp-620],dword1533
 	cmp	dword ptr [ebp-620],0
 	je	label0053
 	fild	dword ptr [ebp-620]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-624]
-	mov	dword1522,[ebp-584]
-	mov	dword1524,[dword1522]
-	mov	[ebp-608],dword1524
-	mov	dword1527,[ebp-608]
-	and	dword1527,65280
-	sar	dword1527,8
-	mov	[ebp-612],dword1527
-	mov	dword1532,[ebp-608]
-	and	dword1532,255
-	mov	[ebp-616],dword1532
-	mov	dword1536,[ebp-592]
-	and	dword1536,65280
-	sar	dword1536,8
-	mov	[ebp-600],dword1536
-	mov	dword1541,[ebp-592]
-	and	dword1541,255
-	mov	[ebp-604],dword1541
+	mov	dword1541,[ebp-584]
+	mov	dword1543,[dword1541]
+	mov	[ebp-608],dword1543
+	mov	dword1546,[ebp-608]
+	and	dword1546,65280
+	sar	dword1546,8
+	mov	[ebp-612],dword1546
+	mov	dword1551,[ebp-608]
+	and	dword1551,255
+	mov	[ebp-616],dword1551
+	mov	dword1555,[ebp-592]
+	and	dword1555,65280
+	sar	dword1555,8
+	mov	[ebp-600],dword1555
+	mov	dword1560,[ebp-592]
+	and	dword1560,255
+	mov	[ebp-604],dword1560
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-612]
@@ -17055,8 +17131,8 @@ label0054:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1547
-	mov	[ebp-600],dword1547
+	float2int	dword1566
+	mov	[ebp-600],dword1566
 	fild	dword ptr [ebp-604]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-616]
@@ -17064,15 +17140,15 @@ label0054:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1553
-	mov	[ebp-604],dword1553
-	sal	dword ptr [ebp-600],8
-	mov	dword1558,[ebp-600]
-	add	dword1558,[ebp-604]
-	mov	[ebp-596],dword1558
-	mov	dword1561,[ebp-584]
-	mov	dword1563,[ebp-596]
-	mov	[dword1561],dword1563
+	float2int	dword1572
+	mov	[ebp-604],dword1572
+	mov	dword1576,[ebp-600]
+	sal	dword1576,8
+	add	dword1576,[ebp-604]
+	mov	[ebp-596],dword1576
+	mov	dword1580,[ebp-584]
+	mov	dword1582,[ebp-596]
+	mov	[dword1580],dword1582
 label0053:
 	fld	dword ptr [ebp-568]
 	fadd	dword ptr [ebp-560]
@@ -17082,99 +17158,101 @@ label0053:
 	fstp	dword ptr [ebp-564]
 label0051:
 	add	dword ptr [ebp-584],4
-	mov	dword1570,[ebp-584]
-	cmp	dword1570,[ebp-588]
+	mov	dword1589,[ebp-584]
+	cmp	dword1589,[ebp-588]
 	jl	label0050
 label0052:
 label0055:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0044
 label0043:
-	mov	dword1599,[ebp-520]
-	mov	[ebp-556],dword1599
-	mov	dword1598,[ebp-524]
-	mov	[ebp-560],dword1598
-	mov	dword1340,[ebp-536]
-	mov	dword1597,[dword1340+4]
-	mov	[ebp-564],dword1597
-	mov	dword1342,[ebp-536]
-	mov	dword1596,[dword1342]
-	mov	[ebp-568],dword1596
-	mov	dword1595,[ebp-540]
-	mov	[ebp-572],dword1595
-	mov	dword1594,[ebp-548]
-	mov	[ebp-576],dword1594
-	mov	dword1593,[ebp-552]
-	mov	[ebp-580],dword1593
+	mov	dword1618,[ebp-520]
+	mov	[ebp-556],dword1618
+	mov	dword1617,[ebp-524]
+	mov	[ebp-560],dword1617
+	mov	dword1355,[ebp-536]
+	mov	dword1616,[dword1355+4]
+	mov	[ebp-564],dword1616
+	mov	dword1357,[ebp-536]
+	mov	dword1615,[dword1357]
+	mov	[ebp-568],dword1615
+	mov	dword1614,[ebp-540]
+	mov	[ebp-572],dword1614
+	mov	dword1613,[ebp-548]
+	mov	[ebp-576],dword1613
+	mov	dword1612,[ebp-552]
+	mov	[ebp-580],dword1612
 ; start of inline function _rasterize_horiz_line
-	mov	dword1603,dword ptr [__pitch]
-	imul	dword1603,[ebp-572]
-	add	dword1603,dword ptr [__videomem]
-	sal	dword ptr [ebp-580],2
-	add	dword1603,[ebp-580]
-	mov	[ebp-584],dword1603
-	sal	dword ptr [ebp-576],2
-	mov	dword1611,[ebp-584]
-	add	dword1611,[ebp-576]
-	sal	dword ptr [ebp-580],2
-	sub	dword1611,[ebp-580]
-	mov	[ebp-588],dword1611
+	mov	dword1622,dword ptr [__pitch]
+	imul	dword1622,[ebp-572]
+	add	dword1622,dword ptr [__videomem]
+	mov	dword1626,[ebp-580]
+	sal	dword1626,2
+	add	dword1622,dword1626
+	mov	[ebp-584],dword1622
+	mov	dword1630,[ebp-576]
+	sal	dword1630,2
+	add	dword1630,[ebp-584]
+	mov	dword1634,[ebp-580]
+	sal	dword1634,2
+	sub	dword1630,dword1634
+	mov	[ebp-588],dword1630
 label0056:
-	mov	dword1679,[ebp-564]
-	mov	[ebp-628],dword1679
-	mov	dword1678,[ebp-568]
-	mov	[ebp-632],dword1678
+	mov	dword1700,[ebp-564]
+	mov	[ebp-628],dword1700
+	mov	dword1699,[ebp-568]
+	mov	[ebp-632],dword1699
 ; start of inline function _tex2d
-	mov	dword1683,dword ptr [__texture_width]
-	dec	dword1683
-	int2float	dword1683
+	mov	dword1704,dword ptr [__texture_width]
+	dec	dword1704
+	int2float	dword1704
 	fmul	dword ptr [ebp-632]
-	float2int	dword1685
-	mov	[ebp-636],dword1685
-	mov	dword1689,dword ptr [__texture_height]
-	dec	dword1689
-	int2float	dword1689
+	float2int	dword1706
+	mov	[ebp-636],dword1706
+	mov	dword1710,dword ptr [__texture_height]
+	dec	dword1710
+	int2float	dword1710
 	fmul	dword ptr [ebp-628]
-	float2int	dword1691
-	mov	[ebp-640],dword1691
-	mov	dword1695,[ebp-640]
-	imul	dword1695,dword ptr [__texture_width]
-	add	dword1695,[ebp-636]
-	sal	dword1695,2
-	add	dword1695,dword ptr [__texture_data]
-	mov	dword1699,[dword1695]
-	mov	[ebp-644],dword1699
+	float2int	dword1712
+	mov	[ebp-640],dword1712
+	mov	dword1716,[ebp-640]
+	imul	dword1716,dword ptr [__texture_width]
+	add	dword1716,[ebp-636]
+	sal	dword1716,2
+	add	dword1716,dword ptr [__texture_data]
+	mov	dword1720,[dword1716]
+	mov	[ebp-644],dword1720
 label005a:
 ; end of inline function _tex2d
-	mov	dword1617,[ebp-644]
-	mov	[ebp-592],dword1617
-	sar	dword ptr [ebp-592],24
-	mov	dword1622,[ebp-592]
-	and	dword1622,255
-	mov	[ebp-620],dword1622
+	mov	dword1638,[ebp-644]
+	mov	[ebp-592],dword1638
+	mov	dword1642,[ebp-592]
+	sar	dword1642,24
+	and	dword1642,255
+	mov	[ebp-620],dword1642
 	cmp	dword ptr [ebp-620],0
 	je	label0059
 	fild	dword ptr [ebp-620]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-624]
-	mov	dword1629,[ebp-584]
-	mov	dword1631,[dword1629]
-	mov	[ebp-608],dword1631
-	mov	dword1634,[ebp-608]
-	and	dword1634,65280
-	sar	dword1634,8
-	mov	[ebp-612],dword1634
-	mov	dword1639,[ebp-608]
-	and	dword1639,255
-	mov	[ebp-616],dword1639
-	mov	dword1643,[ebp-592]
-	and	dword1643,65280
-	sar	dword1643,8
-	mov	[ebp-600],dword1643
-	mov	dword1648,[ebp-592]
-	and	dword1648,255
-	mov	[ebp-604],dword1648
+	mov	dword1650,[ebp-584]
+	mov	dword1652,[dword1650]
+	mov	[ebp-608],dword1652
+	mov	dword1655,[ebp-608]
+	and	dword1655,65280
+	sar	dword1655,8
+	mov	[ebp-612],dword1655
+	mov	dword1660,[ebp-608]
+	and	dword1660,255
+	mov	[ebp-616],dword1660
+	mov	dword1664,[ebp-592]
+	and	dword1664,65280
+	sar	dword1664,8
+	mov	[ebp-600],dword1664
+	mov	dword1669,[ebp-592]
+	and	dword1669,255
+	mov	[ebp-604],dword1669
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-612]
@@ -17182,8 +17260,8 @@ label005a:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1654
-	mov	[ebp-600],dword1654
+	float2int	dword1675
+	mov	[ebp-600],dword1675
 	fild	dword ptr [ebp-604]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-616]
@@ -17191,15 +17269,15 @@ label005a:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1660
-	mov	[ebp-604],dword1660
-	sal	dword ptr [ebp-600],8
-	mov	dword1665,[ebp-600]
-	add	dword1665,[ebp-604]
-	mov	[ebp-596],dword1665
-	mov	dword1668,[ebp-584]
-	mov	dword1670,[ebp-596]
-	mov	[dword1668],dword1670
+	float2int	dword1681
+	mov	[ebp-604],dword1681
+	mov	dword1685,[ebp-600]
+	sal	dword1685,8
+	add	dword1685,[ebp-604]
+	mov	[ebp-596],dword1685
+	mov	dword1689,[ebp-584]
+	mov	dword1691,[ebp-596]
+	mov	[dword1689],dword1691
 label0059:
 	fld	dword ptr [ebp-568]
 	fadd	dword ptr [ebp-560]
@@ -17209,8 +17287,8 @@ label0059:
 	fstp	dword ptr [ebp-564]
 label0057:
 	add	dword ptr [ebp-584],4
-	mov	dword1677,[ebp-584]
-	cmp	dword1677,[ebp-588]
+	mov	dword1698,[ebp-584]
+	cmp	dword1698,[ebp-588]
 	jl	label0056
 label0058:
 label005b:
@@ -17219,8 +17297,8 @@ label0044:
 label0042:
 	jmp	label0045
 label0040:
-	mov	dword1348,[ebp-544]
-	cmp	dword1348,[ebp-548]
+	mov	dword1363,[ebp-544]
+	cmp	dword1363,[ebp-548]
 	jge	label0046
 	fld	dword ptr [ebp-520]
 	fldz
@@ -17230,87 +17308,89 @@ label0040:
 	fldz
 	fsubrp
 	fstp	dword ptr [ebp-560]
-	mov	dword1352,[ebp-528]
-	mov	dword1704,[dword1352+4]
-	mov	[ebp-564],dword1704
-	mov	dword1354,[ebp-528]
-	mov	dword1703,[dword1354]
-	mov	[ebp-568],dword1703
-	mov	dword1702,[ebp-540]
-	mov	[ebp-572],dword1702
-	mov	dword1701,[ebp-552]
-	mov	[ebp-576],dword1701
-	mov	dword1700,[ebp-544]
-	mov	[ebp-580],dword1700
+	mov	dword1367,[ebp-528]
+	mov	dword1725,[dword1367+4]
+	mov	[ebp-564],dword1725
+	mov	dword1369,[ebp-528]
+	mov	dword1724,[dword1369]
+	mov	[ebp-568],dword1724
+	mov	dword1723,[ebp-540]
+	mov	[ebp-572],dword1723
+	mov	dword1722,[ebp-552]
+	mov	[ebp-576],dword1722
+	mov	dword1721,[ebp-544]
+	mov	[ebp-580],dword1721
 ; start of inline function _rasterize_horiz_line
-	mov	dword1708,dword ptr [__pitch]
-	imul	dword1708,[ebp-572]
-	add	dword1708,dword ptr [__videomem]
-	sal	dword ptr [ebp-580],2
-	add	dword1708,[ebp-580]
-	mov	[ebp-584],dword1708
-	sal	dword ptr [ebp-576],2
-	mov	dword1716,[ebp-584]
-	add	dword1716,[ebp-576]
-	sal	dword ptr [ebp-580],2
-	sub	dword1716,[ebp-580]
-	mov	[ebp-588],dword1716
+	mov	dword1729,dword ptr [__pitch]
+	imul	dword1729,[ebp-572]
+	add	dword1729,dword ptr [__videomem]
+	mov	dword1733,[ebp-580]
+	sal	dword1733,2
+	add	dword1729,dword1733
+	mov	[ebp-584],dword1729
+	mov	dword1737,[ebp-576]
+	sal	dword1737,2
+	add	dword1737,[ebp-584]
+	mov	dword1741,[ebp-580]
+	sal	dword1741,2
+	sub	dword1737,dword1741
+	mov	[ebp-588],dword1737
 label005c:
-	mov	dword1784,[ebp-564]
-	mov	[ebp-628],dword1784
-	mov	dword1783,[ebp-568]
-	mov	[ebp-632],dword1783
+	mov	dword1807,[ebp-564]
+	mov	[ebp-628],dword1807
+	mov	dword1806,[ebp-568]
+	mov	[ebp-632],dword1806
 ; start of inline function _tex2d
-	mov	dword1788,dword ptr [__texture_width]
-	dec	dword1788
-	int2float	dword1788
+	mov	dword1811,dword ptr [__texture_width]
+	dec	dword1811
+	int2float	dword1811
 	fmul	dword ptr [ebp-632]
-	float2int	dword1790
-	mov	[ebp-636],dword1790
-	mov	dword1794,dword ptr [__texture_height]
-	dec	dword1794
-	int2float	dword1794
+	float2int	dword1813
+	mov	[ebp-636],dword1813
+	mov	dword1817,dword ptr [__texture_height]
+	dec	dword1817
+	int2float	dword1817
 	fmul	dword ptr [ebp-628]
-	float2int	dword1796
-	mov	[ebp-640],dword1796
-	mov	dword1800,[ebp-640]
-	imul	dword1800,dword ptr [__texture_width]
-	add	dword1800,[ebp-636]
-	sal	dword1800,2
-	add	dword1800,dword ptr [__texture_data]
-	mov	dword1804,[dword1800]
-	mov	[ebp-644],dword1804
+	float2int	dword1819
+	mov	[ebp-640],dword1819
+	mov	dword1823,[ebp-640]
+	imul	dword1823,dword ptr [__texture_width]
+	add	dword1823,[ebp-636]
+	sal	dword1823,2
+	add	dword1823,dword ptr [__texture_data]
+	mov	dword1827,[dword1823]
+	mov	[ebp-644],dword1827
 label0060:
 ; end of inline function _tex2d
-	mov	dword1722,[ebp-644]
-	mov	[ebp-592],dword1722
-	sar	dword ptr [ebp-592],24
-	mov	dword1727,[ebp-592]
-	and	dword1727,255
-	mov	[ebp-620],dword1727
+	mov	dword1745,[ebp-644]
+	mov	[ebp-592],dword1745
+	mov	dword1749,[ebp-592]
+	sar	dword1749,24
+	and	dword1749,255
+	mov	[ebp-620],dword1749
 	cmp	dword ptr [ebp-620],0
 	je	label005f
 	fild	dword ptr [ebp-620]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-624]
-	mov	dword1734,[ebp-584]
-	mov	dword1736,[dword1734]
-	mov	[ebp-608],dword1736
-	mov	dword1739,[ebp-608]
-	and	dword1739,65280
-	sar	dword1739,8
-	mov	[ebp-612],dword1739
-	mov	dword1744,[ebp-608]
-	and	dword1744,255
-	mov	[ebp-616],dword1744
-	mov	dword1748,[ebp-592]
-	and	dword1748,65280
-	sar	dword1748,8
-	mov	[ebp-600],dword1748
-	mov	dword1753,[ebp-592]
-	and	dword1753,255
-	mov	[ebp-604],dword1753
+	mov	dword1757,[ebp-584]
+	mov	dword1759,[dword1757]
+	mov	[ebp-608],dword1759
+	mov	dword1762,[ebp-608]
+	and	dword1762,65280
+	sar	dword1762,8
+	mov	[ebp-612],dword1762
+	mov	dword1767,[ebp-608]
+	and	dword1767,255
+	mov	[ebp-616],dword1767
+	mov	dword1771,[ebp-592]
+	and	dword1771,65280
+	sar	dword1771,8
+	mov	[ebp-600],dword1771
+	mov	dword1776,[ebp-592]
+	and	dword1776,255
+	mov	[ebp-604],dword1776
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-612]
@@ -17318,8 +17398,8 @@ label0060:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1759
-	mov	[ebp-600],dword1759
+	float2int	dword1782
+	mov	[ebp-600],dword1782
 	fild	dword ptr [ebp-604]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-616]
@@ -17327,15 +17407,15 @@ label0060:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1765
-	mov	[ebp-604],dword1765
-	sal	dword ptr [ebp-600],8
-	mov	dword1770,[ebp-600]
-	add	dword1770,[ebp-604]
-	mov	[ebp-596],dword1770
-	mov	dword1773,[ebp-584]
-	mov	dword1775,[ebp-596]
-	mov	[dword1773],dword1775
+	float2int	dword1788
+	mov	[ebp-604],dword1788
+	mov	dword1792,[ebp-600]
+	sal	dword1792,8
+	add	dword1792,[ebp-604]
+	mov	[ebp-596],dword1792
+	mov	dword1796,[ebp-584]
+	mov	dword1798,[ebp-596]
+	mov	[dword1796],dword1798
 label005f:
 	fld	dword ptr [ebp-568]
 	fadd	dword ptr [ebp-560]
@@ -17345,16 +17425,16 @@ label005f:
 	fstp	dword ptr [ebp-564]
 label005d:
 	add	dword ptr [ebp-584],4
-	mov	dword1782,[ebp-584]
-	cmp	dword1782,[ebp-588]
+	mov	dword1805,[ebp-584]
+	cmp	dword1805,[ebp-588]
 	jl	label005c
 label005e:
 label0061:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0047
 label0046:
-	mov	dword1360,[ebp-544]
-	cmp	dword1360,[ebp-552]
+	mov	dword1375,[ebp-544]
+	cmp	dword1375,[ebp-552]
 	jle	label0048
 	fld	dword ptr [ebp-520]
 	fldz
@@ -17364,87 +17444,89 @@ label0046:
 	fldz
 	fsubrp
 	fstp	dword ptr [ebp-560]
-	mov	dword1364,[ebp-532]
-	mov	dword1809,[dword1364+4]
-	mov	[ebp-564],dword1809
-	mov	dword1366,[ebp-532]
-	mov	dword1808,[dword1366]
-	mov	[ebp-568],dword1808
-	mov	dword1807,[ebp-540]
-	mov	[ebp-572],dword1807
-	mov	dword1806,[ebp-544]
-	mov	[ebp-576],dword1806
-	mov	dword1805,[ebp-548]
-	mov	[ebp-580],dword1805
+	mov	dword1379,[ebp-532]
+	mov	dword1832,[dword1379+4]
+	mov	[ebp-564],dword1832
+	mov	dword1381,[ebp-532]
+	mov	dword1831,[dword1381]
+	mov	[ebp-568],dword1831
+	mov	dword1830,[ebp-540]
+	mov	[ebp-572],dword1830
+	mov	dword1829,[ebp-544]
+	mov	[ebp-576],dword1829
+	mov	dword1828,[ebp-548]
+	mov	[ebp-580],dword1828
 ; start of inline function _rasterize_horiz_line
-	mov	dword1813,dword ptr [__pitch]
-	imul	dword1813,[ebp-572]
-	add	dword1813,dword ptr [__videomem]
-	sal	dword ptr [ebp-580],2
-	add	dword1813,[ebp-580]
-	mov	[ebp-584],dword1813
-	sal	dword ptr [ebp-576],2
-	mov	dword1821,[ebp-584]
-	add	dword1821,[ebp-576]
-	sal	dword ptr [ebp-580],2
-	sub	dword1821,[ebp-580]
-	mov	[ebp-588],dword1821
+	mov	dword1836,dword ptr [__pitch]
+	imul	dword1836,[ebp-572]
+	add	dword1836,dword ptr [__videomem]
+	mov	dword1840,[ebp-580]
+	sal	dword1840,2
+	add	dword1836,dword1840
+	mov	[ebp-584],dword1836
+	mov	dword1844,[ebp-576]
+	sal	dword1844,2
+	add	dword1844,[ebp-584]
+	mov	dword1848,[ebp-580]
+	sal	dword1848,2
+	sub	dword1844,dword1848
+	mov	[ebp-588],dword1844
 label0062:
-	mov	dword1889,[ebp-564]
-	mov	[ebp-628],dword1889
-	mov	dword1888,[ebp-568]
-	mov	[ebp-632],dword1888
+	mov	dword1914,[ebp-564]
+	mov	[ebp-628],dword1914
+	mov	dword1913,[ebp-568]
+	mov	[ebp-632],dword1913
 ; start of inline function _tex2d
-	mov	dword1893,dword ptr [__texture_width]
-	dec	dword1893
-	int2float	dword1893
+	mov	dword1918,dword ptr [__texture_width]
+	dec	dword1918
+	int2float	dword1918
 	fmul	dword ptr [ebp-632]
-	float2int	dword1895
-	mov	[ebp-636],dword1895
-	mov	dword1899,dword ptr [__texture_height]
-	dec	dword1899
-	int2float	dword1899
+	float2int	dword1920
+	mov	[ebp-636],dword1920
+	mov	dword1924,dword ptr [__texture_height]
+	dec	dword1924
+	int2float	dword1924
 	fmul	dword ptr [ebp-628]
-	float2int	dword1901
-	mov	[ebp-640],dword1901
-	mov	dword1905,[ebp-640]
-	imul	dword1905,dword ptr [__texture_width]
-	add	dword1905,[ebp-636]
-	sal	dword1905,2
-	add	dword1905,dword ptr [__texture_data]
-	mov	dword1909,[dword1905]
-	mov	[ebp-644],dword1909
+	float2int	dword1926
+	mov	[ebp-640],dword1926
+	mov	dword1930,[ebp-640]
+	imul	dword1930,dword ptr [__texture_width]
+	add	dword1930,[ebp-636]
+	sal	dword1930,2
+	add	dword1930,dword ptr [__texture_data]
+	mov	dword1934,[dword1930]
+	mov	[ebp-644],dword1934
 label0066:
 ; end of inline function _tex2d
-	mov	dword1827,[ebp-644]
-	mov	[ebp-592],dword1827
-	sar	dword ptr [ebp-592],24
-	mov	dword1832,[ebp-592]
-	and	dword1832,255
-	mov	[ebp-620],dword1832
+	mov	dword1852,[ebp-644]
+	mov	[ebp-592],dword1852
+	mov	dword1856,[ebp-592]
+	sar	dword1856,24
+	and	dword1856,255
+	mov	[ebp-620],dword1856
 	cmp	dword ptr [ebp-620],0
 	je	label0065
 	fild	dword ptr [ebp-620]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-624]
-	mov	dword1839,[ebp-584]
-	mov	dword1841,[dword1839]
-	mov	[ebp-608],dword1841
-	mov	dword1844,[ebp-608]
-	and	dword1844,65280
-	sar	dword1844,8
-	mov	[ebp-612],dword1844
-	mov	dword1849,[ebp-608]
-	and	dword1849,255
-	mov	[ebp-616],dword1849
-	mov	dword1853,[ebp-592]
-	and	dword1853,65280
-	sar	dword1853,8
-	mov	[ebp-600],dword1853
-	mov	dword1858,[ebp-592]
-	and	dword1858,255
-	mov	[ebp-604],dword1858
+	mov	dword1864,[ebp-584]
+	mov	dword1866,[dword1864]
+	mov	[ebp-608],dword1866
+	mov	dword1869,[ebp-608]
+	and	dword1869,65280
+	sar	dword1869,8
+	mov	[ebp-612],dword1869
+	mov	dword1874,[ebp-608]
+	and	dword1874,255
+	mov	[ebp-616],dword1874
+	mov	dword1878,[ebp-592]
+	and	dword1878,65280
+	sar	dword1878,8
+	mov	[ebp-600],dword1878
+	mov	dword1883,[ebp-592]
+	and	dword1883,255
+	mov	[ebp-604],dword1883
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-612]
@@ -17452,8 +17534,8 @@ label0066:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1864
-	mov	[ebp-600],dword1864
+	float2int	dword1889
+	mov	[ebp-600],dword1889
 	fild	dword ptr [ebp-604]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-616]
@@ -17461,15 +17543,15 @@ label0066:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1870
-	mov	[ebp-604],dword1870
-	sal	dword ptr [ebp-600],8
-	mov	dword1875,[ebp-600]
-	add	dword1875,[ebp-604]
-	mov	[ebp-596],dword1875
-	mov	dword1878,[ebp-584]
-	mov	dword1880,[ebp-596]
-	mov	[dword1878],dword1880
+	float2int	dword1895
+	mov	[ebp-604],dword1895
+	mov	dword1899,[ebp-600]
+	sal	dword1899,8
+	add	dword1899,[ebp-604]
+	mov	[ebp-596],dword1899
+	mov	dword1903,[ebp-584]
+	mov	dword1905,[ebp-596]
+	mov	[dword1903],dword1905
 label0065:
 	fld	dword ptr [ebp-568]
 	fadd	dword ptr [ebp-560]
@@ -17479,8 +17561,8 @@ label0065:
 	fstp	dword ptr [ebp-564]
 label0063:
 	add	dword ptr [ebp-584],4
-	mov	dword1887,[ebp-584]
-	cmp	dword1887,[ebp-588]
+	mov	dword1912,[ebp-584]
+	cmp	dword1912,[ebp-588]
 	jl	label0062
 label0064:
 label0067:
@@ -17495,87 +17577,89 @@ label0048:
 	fldz
 	fsubrp
 	fstp	dword ptr [ebp-560]
-	mov	dword1373,[ebp-532]
-	mov	dword1914,[dword1373+4]
-	mov	[ebp-564],dword1914
-	mov	dword1375,[ebp-532]
-	mov	dword1913,[dword1375]
-	mov	[ebp-568],dword1913
-	mov	dword1912,[ebp-540]
-	mov	[ebp-572],dword1912
-	mov	dword1911,[ebp-552]
-	mov	[ebp-576],dword1911
-	mov	dword1910,[ebp-548]
-	mov	[ebp-580],dword1910
+	mov	dword1388,[ebp-532]
+	mov	dword1939,[dword1388+4]
+	mov	[ebp-564],dword1939
+	mov	dword1390,[ebp-532]
+	mov	dword1938,[dword1390]
+	mov	[ebp-568],dword1938
+	mov	dword1937,[ebp-540]
+	mov	[ebp-572],dword1937
+	mov	dword1936,[ebp-552]
+	mov	[ebp-576],dword1936
+	mov	dword1935,[ebp-548]
+	mov	[ebp-580],dword1935
 ; start of inline function _rasterize_horiz_line
-	mov	dword1918,dword ptr [__pitch]
-	imul	dword1918,[ebp-572]
-	add	dword1918,dword ptr [__videomem]
-	sal	dword ptr [ebp-580],2
-	add	dword1918,[ebp-580]
-	mov	[ebp-584],dword1918
-	sal	dword ptr [ebp-576],2
-	mov	dword1926,[ebp-584]
-	add	dword1926,[ebp-576]
-	sal	dword ptr [ebp-580],2
-	sub	dword1926,[ebp-580]
-	mov	[ebp-588],dword1926
+	mov	dword1943,dword ptr [__pitch]
+	imul	dword1943,[ebp-572]
+	add	dword1943,dword ptr [__videomem]
+	mov	dword1947,[ebp-580]
+	sal	dword1947,2
+	add	dword1943,dword1947
+	mov	[ebp-584],dword1943
+	mov	dword1951,[ebp-576]
+	sal	dword1951,2
+	add	dword1951,[ebp-584]
+	mov	dword1955,[ebp-580]
+	sal	dword1955,2
+	sub	dword1951,dword1955
+	mov	[ebp-588],dword1951
 label0068:
-	mov	dword1994,[ebp-564]
-	mov	[ebp-628],dword1994
-	mov	dword1993,[ebp-568]
-	mov	[ebp-632],dword1993
+	mov	dword2021,[ebp-564]
+	mov	[ebp-628],dword2021
+	mov	dword2020,[ebp-568]
+	mov	[ebp-632],dword2020
 ; start of inline function _tex2d
-	mov	dword1998,dword ptr [__texture_width]
-	dec	dword1998
-	int2float	dword1998
+	mov	dword2025,dword ptr [__texture_width]
+	dec	dword2025
+	int2float	dword2025
 	fmul	dword ptr [ebp-632]
-	float2int	dword2000
-	mov	[ebp-636],dword2000
-	mov	dword2004,dword ptr [__texture_height]
-	dec	dword2004
-	int2float	dword2004
+	float2int	dword2027
+	mov	[ebp-636],dword2027
+	mov	dword2031,dword ptr [__texture_height]
+	dec	dword2031
+	int2float	dword2031
 	fmul	dword ptr [ebp-628]
-	float2int	dword2006
-	mov	[ebp-640],dword2006
-	mov	dword2010,[ebp-640]
-	imul	dword2010,dword ptr [__texture_width]
-	add	dword2010,[ebp-636]
-	sal	dword2010,2
-	add	dword2010,dword ptr [__texture_data]
-	mov	dword2014,[dword2010]
-	mov	[ebp-644],dword2014
+	float2int	dword2033
+	mov	[ebp-640],dword2033
+	mov	dword2037,[ebp-640]
+	imul	dword2037,dword ptr [__texture_width]
+	add	dword2037,[ebp-636]
+	sal	dword2037,2
+	add	dword2037,dword ptr [__texture_data]
+	mov	dword2041,[dword2037]
+	mov	[ebp-644],dword2041
 label006c:
 ; end of inline function _tex2d
-	mov	dword1932,[ebp-644]
-	mov	[ebp-592],dword1932
-	sar	dword ptr [ebp-592],24
-	mov	dword1937,[ebp-592]
-	and	dword1937,255
-	mov	[ebp-620],dword1937
+	mov	dword1959,[ebp-644]
+	mov	[ebp-592],dword1959
+	mov	dword1963,[ebp-592]
+	sar	dword1963,24
+	and	dword1963,255
+	mov	[ebp-620],dword1963
 	cmp	dword ptr [ebp-620],0
 	je	label006b
 	fild	dword ptr [ebp-620]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-624]
-	mov	dword1944,[ebp-584]
-	mov	dword1946,[dword1944]
-	mov	[ebp-608],dword1946
-	mov	dword1949,[ebp-608]
-	and	dword1949,65280
-	sar	dword1949,8
-	mov	[ebp-612],dword1949
-	mov	dword1954,[ebp-608]
-	and	dword1954,255
-	mov	[ebp-616],dword1954
-	mov	dword1958,[ebp-592]
-	and	dword1958,65280
-	sar	dword1958,8
-	mov	[ebp-600],dword1958
-	mov	dword1963,[ebp-592]
-	and	dword1963,255
-	mov	[ebp-604],dword1963
+	mov	dword1971,[ebp-584]
+	mov	dword1973,[dword1971]
+	mov	[ebp-608],dword1973
+	mov	dword1976,[ebp-608]
+	and	dword1976,65280
+	sar	dword1976,8
+	mov	[ebp-612],dword1976
+	mov	dword1981,[ebp-608]
+	and	dword1981,255
+	mov	[ebp-616],dword1981
+	mov	dword1985,[ebp-592]
+	and	dword1985,65280
+	sar	dword1985,8
+	mov	[ebp-600],dword1985
+	mov	dword1990,[ebp-592]
+	and	dword1990,255
+	mov	[ebp-604],dword1990
 	fild	dword ptr [ebp-600]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-612]
@@ -17583,8 +17667,8 @@ label006c:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1969
-	mov	[ebp-600],dword1969
+	float2int	dword1996
+	mov	[ebp-600],dword1996
 	fild	dword ptr [ebp-604]
 	fmul	dword ptr [ebp-624]
 	fild	dword ptr [ebp-616]
@@ -17592,15 +17676,15 @@ label006c:
 	fsub	dword ptr [ebp-624]
 	fmulp
 	faddp
-	float2int	dword1975
-	mov	[ebp-604],dword1975
-	sal	dword ptr [ebp-600],8
-	mov	dword1980,[ebp-600]
-	add	dword1980,[ebp-604]
-	mov	[ebp-596],dword1980
-	mov	dword1983,[ebp-584]
-	mov	dword1985,[ebp-596]
-	mov	[dword1983],dword1985
+	float2int	dword2002
+	mov	[ebp-604],dword2002
+	mov	dword2006,[ebp-600]
+	sal	dword2006,8
+	add	dword2006,[ebp-604]
+	mov	[ebp-596],dword2006
+	mov	dword2010,[ebp-584]
+	mov	dword2012,[ebp-596]
+	mov	[dword2010],dword2012
 label006b:
 	fld	dword ptr [ebp-568]
 	fadd	dword ptr [ebp-560]
@@ -17610,8 +17694,8 @@ label006b:
 	fstp	dword ptr [ebp-564]
 label0069:
 	add	dword ptr [ebp-584],4
-	mov	dword1992,[ebp-584]
-	cmp	dword1992,[ebp-588]
+	mov	dword2019,[ebp-584]
+	cmp	dword2019,[ebp-588]
 	jl	label0068
 label006a:
 label006d:
@@ -17624,272 +17708,274 @@ label006e:
 label000c:
 	jmp	label006f
 label000b:
-	mov	dword171,[ebp-348]
-	add	dword171,4
-	mov	dword174,[dword171]
-	mov	[ebp-364],dword174
+	mov	dword174,[ebp-348]
+	add	dword174,4
+	mov	dword177,[dword174]
+	mov	[ebp-364],dword177
 label000d:
 label000e:
-	mov	dword176,[ebp-344]
-	add	dword176,4
-	mov	dword179,[dword176]
-	cmp	dword179,[ebp-364]
+	mov	dword179,[ebp-344]
+	add	dword179,4
+	mov	dword182,[dword179]
+	cmp	dword182,[ebp-364]
 	jle	label000f
-	mov	dword181,[ebp-348]
-	add	dword181,4
-	mov	dword184,[ebp-364]
-	sub	dword184,[dword181]
-	mov	dword186,[ebp-344]
-	mov	dword188,[ebp-348]
-	mov	dword189,[dword186]
-	sub	dword189,[dword188]
-	imul	dword184,dword189
-	mov	dword191,[ebp-344]
-	add	dword191,4
-	mov	dword194,[ebp-348]
+	mov	dword184,[ebp-348]
+	add	dword184,4
+	mov	dword187,[ebp-364]
+	sub	dword187,[dword184]
+	mov	dword189,[ebp-344]
+	mov	dword191,[ebp-348]
+	mov	dword192,[dword189]
+	sub	dword192,[dword191]
+	imul	dword187,dword192
+	mov	dword194,[ebp-344]
 	add	dword194,4
-	mov	dword196,[dword191]
-	sub	dword196,[dword194]
-	cdq	dword197
-	idiv	dword184,dword196
-	mov	dword199,[ebp-348]
-	add	dword184,[dword199]
-	mov	[ebp-356],dword184
+	mov	dword197,[ebp-348]
+	add	dword197,4
+	mov	dword199,[dword194]
+	sub	dword199,[dword197]
+	cdq	dword200
+	idiv	dword187,dword199
 	mov	dword202,[ebp-348]
-	add	dword202,4
-	mov	dword205,[ebp-364]
-	sub	dword205,[dword202]
-	mov	dword207,[ebp-340]
-	mov	dword209,[ebp-348]
-	mov	dword210,[dword207]
-	sub	dword210,[dword209]
-	imul	dword205,dword210
-	mov	dword212,[ebp-340]
-	add	dword212,4
-	mov	dword215,[ebp-348]
+	add	dword187,[dword202]
+	mov	[ebp-356],dword187
+	mov	dword205,[ebp-348]
+	add	dword205,4
+	mov	dword208,[ebp-364]
+	sub	dword208,[dword205]
+	mov	dword210,[ebp-340]
+	mov	dword212,[ebp-348]
+	mov	dword213,[dword210]
+	sub	dword213,[dword212]
+	imul	dword208,dword213
+	mov	dword215,[ebp-340]
 	add	dword215,4
-	mov	dword217,[dword212]
-	sub	dword217,[dword215]
-	cdq	dword218
-	idiv	dword205,dword217
-	mov	dword220,[ebp-348]
-	add	dword205,[dword220]
-	mov	[ebp-360],dword205
+	mov	dword218,[ebp-348]
+	add	dword218,4
+	mov	dword220,[dword215]
+	sub	dword220,[dword218]
+	cdq	dword221
+	idiv	dword208,dword220
 	mov	dword223,[ebp-348]
-	add	dword223,4
-	mov	dword226,[ebp-364]
-	sub	dword226,[dword223]
-	int2float	dword226
-	mov	dword228,[ebp-344]
-	mov	dword230,[ebp-348]
-	fld	dword ptr [dword228+8]
-	fsub	dword ptr [dword230+8]
+	add	dword208,[dword223]
+	mov	[ebp-360],dword208
+	mov	dword226,[ebp-348]
+	add	dword226,4
+	mov	dword229,[ebp-364]
+	sub	dword229,[dword226]
+	int2float	dword229
+	mov	dword231,[ebp-344]
+	mov	dword233,[ebp-348]
+	fld	dword ptr [dword231+8]
+	fsub	dword ptr [dword233+8]
 	fmulp
-	mov	dword232,[ebp-344]
-	add	dword232,4
-	mov	dword235,[ebp-348]
+	mov	dword235,[ebp-344]
 	add	dword235,4
-	mov	dword237,[dword232]
-	sub	dword237,[dword235]
-	int2float	dword237
+	mov	dword238,[ebp-348]
+	add	dword238,4
+	mov	dword240,[dword235]
+	sub	dword240,[dword238]
+	int2float	dword240
 	fdivp
-	mov	dword239,[ebp-348]
-	fadd	dword ptr [dword239+8]
-	fstp	dword ptr [ebp-368]
 	mov	dword242,[ebp-348]
-	add	dword242,4
-	mov	dword245,[ebp-364]
-	sub	dword245,[dword242]
-	int2float	dword245
-	mov	dword247,[ebp-340]
-	mov	dword249,[ebp-348]
-	fld	dword ptr [dword247+8]
-	fsub	dword ptr [dword249+8]
+	fadd	dword ptr [dword242+8]
+	fstp	dword ptr [ebp-368]
+	mov	dword245,[ebp-348]
+	add	dword245,4
+	mov	dword248,[ebp-364]
+	sub	dword248,[dword245]
+	int2float	dword248
+	mov	dword250,[ebp-340]
+	mov	dword252,[ebp-348]
+	fld	dword ptr [dword250+8]
+	fsub	dword ptr [dword252+8]
 	fmulp
-	mov	dword251,[ebp-340]
-	add	dword251,4
-	mov	dword254,[ebp-348]
+	mov	dword254,[ebp-340]
 	add	dword254,4
-	mov	dword256,[dword251]
-	sub	dword256,[dword254]
-	int2float	dword256
+	mov	dword257,[ebp-348]
+	add	dword257,4
+	mov	dword259,[dword254]
+	sub	dword259,[dword257]
+	int2float	dword259
 	fdivp
-	mov	dword258,[ebp-348]
-	fadd	dword ptr [dword258+8]
-	fstp	dword ptr [ebp-376]
 	mov	dword261,[ebp-348]
-	add	dword261,4
-	mov	dword264,[ebp-364]
-	sub	dword264,[dword261]
-	int2float	dword264
-	mov	dword266,8
-	add	dword266,[ebp-344]
-	add	dword266,4
+	fadd	dword ptr [dword261+8]
+	fstp	dword ptr [ebp-376]
+	mov	dword264,[ebp-348]
+	add	dword264,4
+	mov	dword267,[ebp-364]
+	sub	dword267,[dword264]
+	int2float	dword267
 	mov	dword269,8
-	add	dword269,[ebp-348]
+	add	dword269,[ebp-344]
 	add	dword269,4
-	fld	dword ptr [dword266]
-	fsub	dword ptr [dword269]
-	fmulp
-	mov	dword272,[ebp-344]
+	mov	dword272,8
+	add	dword272,[ebp-348]
 	add	dword272,4
-	mov	dword275,[ebp-348]
-	add	dword275,4
-	mov	dword277,[dword272]
-	sub	dword277,[dword275]
-	int2float	dword277
-	fdivp
-	mov	dword279,8
-	add	dword279,[ebp-348]
-	add	dword279,4
-	fadd	dword ptr [dword279]
-	fstp	dword ptr [ebp-372]
-	mov	dword283,[ebp-348]
-	add	dword283,4
-	mov	dword286,[ebp-364]
-	sub	dword286,[dword283]
-	int2float	dword286
-	mov	dword288,8
-	add	dword288,[ebp-340]
-	add	dword288,4
-	mov	dword291,8
-	add	dword291,[ebp-348]
-	add	dword291,4
-	fld	dword ptr [dword288]
-	fsub	dword ptr [dword291]
+	fld	dword ptr [dword269]
+	fsub	dword ptr [dword272]
 	fmulp
-	mov	dword294,[ebp-340]
-	add	dword294,4
-	mov	dword297,[ebp-348]
-	add	dword297,4
-	mov	dword299,[dword294]
-	sub	dword299,[dword297]
-	int2float	dword299
+	mov	dword275,[ebp-344]
+	add	dword275,4
+	mov	dword278,[ebp-348]
+	add	dword278,4
+	mov	dword280,[dword275]
+	sub	dword280,[dword278]
+	int2float	dword280
 	fdivp
-	mov	dword301,8
-	add	dword301,[ebp-348]
-	add	dword301,4
-	fadd	dword ptr [dword301]
+	mov	dword282,8
+	add	dword282,[ebp-348]
+	add	dword282,4
+	fadd	dword ptr [dword282]
+	fstp	dword ptr [ebp-372]
+	mov	dword286,[ebp-348]
+	add	dword286,4
+	mov	dword289,[ebp-364]
+	sub	dword289,[dword286]
+	int2float	dword289
+	mov	dword291,8
+	add	dword291,[ebp-340]
+	add	dword291,4
+	mov	dword294,8
+	add	dword294,[ebp-348]
+	add	dword294,4
+	fld	dword ptr [dword291]
+	fsub	dword ptr [dword294]
+	fmulp
+	mov	dword297,[ebp-340]
+	add	dword297,4
+	mov	dword300,[ebp-348]
+	add	dword300,4
+	mov	dword302,[dword297]
+	sub	dword302,[dword300]
+	int2float	dword302
+	fdivp
+	mov	dword304,8
+	add	dword304,[ebp-348]
+	add	dword304,4
+	fadd	dword ptr [dword304]
 	fstp	dword ptr [ebp-380]
-	mov	dword306,[ebp-360]
-	sub	dword306,[ebp-356]
-	int2float	dword306
+	mov	dword309,[ebp-360]
+	sub	dword309,[ebp-356]
+	int2float	dword309
 	fld	dword ptr [ebp-376]
 	fsub	dword ptr [ebp-368]
 	fdivrp
 	fstp	dword ptr [ebp-384]
-	mov	dword312,[ebp-360]
-	sub	dword312,[ebp-356]
-	int2float	dword312
+	mov	dword315,[ebp-360]
+	sub	dword315,[ebp-356]
+	int2float	dword315
 	fld	dword ptr [ebp-380]
 	fsub	dword ptr [ebp-372]
 	fdivrp
 	fstp	dword ptr [ebp-388]
-	mov	dword590,[ebp-388]
-	mov	[ebp-392],dword590
-	mov	dword589,[ebp-384]
-	mov	[ebp-396],dword589
-	mov	dword588,[ebp-380]
-	mov	[ebp-400],dword588
-	mov	dword587,[ebp-376]
-	mov	[ebp-404],dword587
-	mov	dword586,[ebp-372]
-	mov	[ebp-408],dword586
-	mov	dword585,[ebp-368]
-	mov	[ebp-412],dword585
-	mov	dword584,[ebp-364]
-	mov	[ebp-416],dword584
-	mov	dword583,[ebp-360]
-	mov	[ebp-420],dword583
-	mov	dword582,[ebp-356]
-	mov	[ebp-424],dword582
+	mov	dword593,[ebp-388]
+	mov	[ebp-392],dword593
+	mov	dword592,[ebp-384]
+	mov	[ebp-396],dword592
+	mov	dword591,[ebp-380]
+	mov	[ebp-400],dword591
+	mov	dword590,[ebp-376]
+	mov	[ebp-404],dword590
+	mov	dword589,[ebp-372]
+	mov	[ebp-408],dword589
+	mov	dword588,[ebp-368]
+	mov	[ebp-412],dword588
+	mov	dword587,[ebp-364]
+	mov	[ebp-416],dword587
+	mov	dword586,[ebp-360]
+	mov	[ebp-420],dword586
+	mov	dword585,[ebp-356]
+	mov	[ebp-424],dword585
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword594,[ebp-424]
-	cmp	dword594,[ebp-420]
+	mov	dword597,[ebp-424]
+	cmp	dword597,[ebp-420]
 	jg	label0013
-	mov	dword615,[ebp-392]
-	mov	[ebp-428],dword615
-	mov	dword614,[ebp-396]
-	mov	[ebp-432],dword614
-	mov	dword613,[ebp-408]
-	mov	[ebp-436],dword613
-	mov	dword612,[ebp-412]
-	mov	[ebp-440],dword612
-	mov	dword611,[ebp-416]
-	mov	[ebp-444],dword611
-	mov	dword610,[ebp-420]
-	mov	[ebp-448],dword610
-	mov	dword609,[ebp-424]
-	mov	[ebp-452],dword609
+	mov	dword618,[ebp-392]
+	mov	[ebp-428],dword618
+	mov	dword617,[ebp-396]
+	mov	[ebp-432],dword617
+	mov	dword616,[ebp-408]
+	mov	[ebp-436],dword616
+	mov	dword615,[ebp-412]
+	mov	[ebp-440],dword615
+	mov	dword614,[ebp-416]
+	mov	[ebp-444],dword614
+	mov	dword613,[ebp-420]
+	mov	[ebp-448],dword613
+	mov	dword612,[ebp-424]
+	mov	[ebp-452],dword612
 ; start of inline function _rasterize_horiz_line
-	mov	dword619,dword ptr [__pitch]
-	imul	dword619,[ebp-444]
-	add	dword619,dword ptr [__videomem]
-	sal	dword ptr [ebp-452],2
-	add	dword619,[ebp-452]
-	mov	[ebp-456],dword619
-	sal	dword ptr [ebp-448],2
-	mov	dword627,[ebp-456]
-	add	dword627,[ebp-448]
-	sal	dword ptr [ebp-452],2
-	sub	dword627,[ebp-452]
-	mov	[ebp-460],dword627
+	mov	dword622,dword ptr [__pitch]
+	imul	dword622,[ebp-444]
+	add	dword622,dword ptr [__videomem]
+	mov	dword626,[ebp-452]
+	sal	dword626,2
+	add	dword622,dword626
+	mov	[ebp-456],dword622
+	mov	dword630,[ebp-448]
+	sal	dword630,2
+	add	dword630,[ebp-456]
+	mov	dword634,[ebp-452]
+	sal	dword634,2
+	sub	dword630,dword634
+	mov	[ebp-460],dword630
 label0015:
-	mov	dword695,[ebp-436]
-	mov	[ebp-500],dword695
-	mov	dword694,[ebp-440]
-	mov	[ebp-504],dword694
+	mov	dword700,[ebp-436]
+	mov	[ebp-500],dword700
+	mov	dword699,[ebp-440]
+	mov	[ebp-504],dword699
 ; start of inline function _tex2d
-	mov	dword699,dword ptr [__texture_width]
-	dec	dword699
-	int2float	dword699
+	mov	dword704,dword ptr [__texture_width]
+	dec	dword704
+	int2float	dword704
 	fmul	dword ptr [ebp-504]
-	float2int	dword701
-	mov	[ebp-508],dword701
-	mov	dword705,dword ptr [__texture_height]
-	dec	dword705
-	int2float	dword705
+	float2int	dword706
+	mov	[ebp-508],dword706
+	mov	dword710,dword ptr [__texture_height]
+	dec	dword710
+	int2float	dword710
 	fmul	dword ptr [ebp-500]
-	float2int	dword707
-	mov	[ebp-512],dword707
-	mov	dword711,[ebp-512]
-	imul	dword711,dword ptr [__texture_width]
-	add	dword711,[ebp-508]
-	sal	dword711,2
-	add	dword711,dword ptr [__texture_data]
-	mov	dword715,[dword711]
-	mov	[ebp-516],dword715
+	float2int	dword712
+	mov	[ebp-512],dword712
+	mov	dword716,[ebp-512]
+	imul	dword716,dword ptr [__texture_width]
+	add	dword716,[ebp-508]
+	sal	dword716,2
+	add	dword716,dword ptr [__texture_data]
+	mov	dword720,[dword716]
+	mov	[ebp-516],dword720
 label0019:
 ; end of inline function _tex2d
-	mov	dword633,[ebp-516]
-	mov	[ebp-464],dword633
-	sar	dword ptr [ebp-464],24
-	mov	dword638,[ebp-464]
-	and	dword638,255
-	mov	[ebp-492],dword638
+	mov	dword638,[ebp-516]
+	mov	[ebp-464],dword638
+	mov	dword642,[ebp-464]
+	sar	dword642,24
+	and	dword642,255
+	mov	[ebp-492],dword642
 	cmp	dword ptr [ebp-492],0
 	je	label0018
 	fild	dword ptr [ebp-492]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-496]
-	mov	dword645,[ebp-456]
-	mov	dword647,[dword645]
-	mov	[ebp-480],dword647
-	mov	dword650,[ebp-480]
-	and	dword650,65280
-	sar	dword650,8
-	mov	[ebp-484],dword650
+	mov	dword650,[ebp-456]
+	mov	dword652,[dword650]
+	mov	[ebp-480],dword652
 	mov	dword655,[ebp-480]
-	and	dword655,255
-	mov	[ebp-488],dword655
-	mov	dword659,[ebp-464]
-	and	dword659,65280
-	sar	dword659,8
-	mov	[ebp-472],dword659
+	and	dword655,65280
+	sar	dword655,8
+	mov	[ebp-484],dword655
+	mov	dword660,[ebp-480]
+	and	dword660,255
+	mov	[ebp-488],dword660
 	mov	dword664,[ebp-464]
-	and	dword664,255
-	mov	[ebp-476],dword664
+	and	dword664,65280
+	sar	dword664,8
+	mov	[ebp-472],dword664
+	mov	dword669,[ebp-464]
+	and	dword669,255
+	mov	[ebp-476],dword669
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-484]
@@ -17897,8 +17983,8 @@ label0019:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword670
-	mov	[ebp-472],dword670
+	float2int	dword675
+	mov	[ebp-472],dword675
 	fild	dword ptr [ebp-476]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-488]
@@ -17906,15 +17992,15 @@ label0019:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword676
-	mov	[ebp-476],dword676
-	sal	dword ptr [ebp-472],8
-	mov	dword681,[ebp-472]
-	add	dword681,[ebp-476]
-	mov	[ebp-468],dword681
-	mov	dword684,[ebp-456]
-	mov	dword686,[ebp-468]
-	mov	[dword684],dword686
+	float2int	dword681
+	mov	[ebp-476],dword681
+	mov	dword685,[ebp-472]
+	sal	dword685,8
+	add	dword685,[ebp-476]
+	mov	[ebp-468],dword685
+	mov	dword689,[ebp-456]
+	mov	dword691,[ebp-468]
+	mov	[dword689],dword691
 label0018:
 	fld	dword ptr [ebp-440]
 	fadd	dword ptr [ebp-432]
@@ -17924,97 +18010,99 @@ label0018:
 	fstp	dword ptr [ebp-436]
 label0016:
 	add	dword ptr [ebp-456],4
-	mov	dword693,[ebp-456]
-	cmp	dword693,[ebp-460]
+	mov	dword698,[ebp-456]
+	cmp	dword698,[ebp-460]
 	jl	label0015
 label0017:
 label001a:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0014
 label0013:
-	mov	dword722,[ebp-392]
-	mov	[ebp-428],dword722
-	mov	dword721,[ebp-396]
-	mov	[ebp-432],dword721
-	mov	dword720,[ebp-400]
-	mov	[ebp-436],dword720
-	mov	dword719,[ebp-404]
-	mov	[ebp-440],dword719
-	mov	dword718,[ebp-416]
-	mov	[ebp-444],dword718
-	mov	dword717,[ebp-424]
-	mov	[ebp-448],dword717
-	mov	dword716,[ebp-420]
-	mov	[ebp-452],dword716
+	mov	dword727,[ebp-392]
+	mov	[ebp-428],dword727
+	mov	dword726,[ebp-396]
+	mov	[ebp-432],dword726
+	mov	dword725,[ebp-400]
+	mov	[ebp-436],dword725
+	mov	dword724,[ebp-404]
+	mov	[ebp-440],dword724
+	mov	dword723,[ebp-416]
+	mov	[ebp-444],dword723
+	mov	dword722,[ebp-424]
+	mov	[ebp-448],dword722
+	mov	dword721,[ebp-420]
+	mov	[ebp-452],dword721
 ; start of inline function _rasterize_horiz_line
-	mov	dword726,dword ptr [__pitch]
-	imul	dword726,[ebp-444]
-	add	dword726,dword ptr [__videomem]
-	sal	dword ptr [ebp-452],2
-	add	dword726,[ebp-452]
-	mov	[ebp-456],dword726
-	sal	dword ptr [ebp-448],2
-	mov	dword734,[ebp-456]
-	add	dword734,[ebp-448]
-	sal	dword ptr [ebp-452],2
-	sub	dword734,[ebp-452]
-	mov	[ebp-460],dword734
+	mov	dword731,dword ptr [__pitch]
+	imul	dword731,[ebp-444]
+	add	dword731,dword ptr [__videomem]
+	mov	dword735,[ebp-452]
+	sal	dword735,2
+	add	dword731,dword735
+	mov	[ebp-456],dword731
+	mov	dword739,[ebp-448]
+	sal	dword739,2
+	add	dword739,[ebp-456]
+	mov	dword743,[ebp-452]
+	sal	dword743,2
+	sub	dword739,dword743
+	mov	[ebp-460],dword739
 label001b:
-	mov	dword802,[ebp-436]
-	mov	[ebp-500],dword802
-	mov	dword801,[ebp-440]
-	mov	[ebp-504],dword801
+	mov	dword809,[ebp-436]
+	mov	[ebp-500],dword809
+	mov	dword808,[ebp-440]
+	mov	[ebp-504],dword808
 ; start of inline function _tex2d
-	mov	dword806,dword ptr [__texture_width]
-	dec	dword806
-	int2float	dword806
+	mov	dword813,dword ptr [__texture_width]
+	dec	dword813
+	int2float	dword813
 	fmul	dword ptr [ebp-504]
-	float2int	dword808
-	mov	[ebp-508],dword808
-	mov	dword812,dword ptr [__texture_height]
-	dec	dword812
-	int2float	dword812
+	float2int	dword815
+	mov	[ebp-508],dword815
+	mov	dword819,dword ptr [__texture_height]
+	dec	dword819
+	int2float	dword819
 	fmul	dword ptr [ebp-500]
-	float2int	dword814
-	mov	[ebp-512],dword814
-	mov	dword818,[ebp-512]
-	imul	dword818,dword ptr [__texture_width]
-	add	dword818,[ebp-508]
-	sal	dword818,2
-	add	dword818,dword ptr [__texture_data]
-	mov	dword822,[dword818]
-	mov	[ebp-516],dword822
+	float2int	dword821
+	mov	[ebp-512],dword821
+	mov	dword825,[ebp-512]
+	imul	dword825,dword ptr [__texture_width]
+	add	dword825,[ebp-508]
+	sal	dword825,2
+	add	dword825,dword ptr [__texture_data]
+	mov	dword829,[dword825]
+	mov	[ebp-516],dword829
 label001f:
 ; end of inline function _tex2d
-	mov	dword740,[ebp-516]
-	mov	[ebp-464],dword740
-	sar	dword ptr [ebp-464],24
-	mov	dword745,[ebp-464]
-	and	dword745,255
-	mov	[ebp-492],dword745
+	mov	dword747,[ebp-516]
+	mov	[ebp-464],dword747
+	mov	dword751,[ebp-464]
+	sar	dword751,24
+	and	dword751,255
+	mov	[ebp-492],dword751
 	cmp	dword ptr [ebp-492],0
 	je	label001e
 	fild	dword ptr [ebp-492]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-496]
-	mov	dword752,[ebp-456]
-	mov	dword754,[dword752]
-	mov	[ebp-480],dword754
-	mov	dword757,[ebp-480]
-	and	dword757,65280
-	sar	dword757,8
-	mov	[ebp-484],dword757
-	mov	dword762,[ebp-480]
-	and	dword762,255
-	mov	[ebp-488],dword762
-	mov	dword766,[ebp-464]
-	and	dword766,65280
-	sar	dword766,8
-	mov	[ebp-472],dword766
-	mov	dword771,[ebp-464]
-	and	dword771,255
-	mov	[ebp-476],dword771
+	mov	dword759,[ebp-456]
+	mov	dword761,[dword759]
+	mov	[ebp-480],dword761
+	mov	dword764,[ebp-480]
+	and	dword764,65280
+	sar	dword764,8
+	mov	[ebp-484],dword764
+	mov	dword769,[ebp-480]
+	and	dword769,255
+	mov	[ebp-488],dword769
+	mov	dword773,[ebp-464]
+	and	dword773,65280
+	sar	dword773,8
+	mov	[ebp-472],dword773
+	mov	dword778,[ebp-464]
+	and	dword778,255
+	mov	[ebp-476],dword778
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-484]
@@ -18022,8 +18110,8 @@ label001f:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword777
-	mov	[ebp-472],dword777
+	float2int	dword784
+	mov	[ebp-472],dword784
 	fild	dword ptr [ebp-476]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-488]
@@ -18031,15 +18119,15 @@ label001f:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword783
-	mov	[ebp-476],dword783
-	sal	dword ptr [ebp-472],8
-	mov	dword788,[ebp-472]
-	add	dword788,[ebp-476]
-	mov	[ebp-468],dword788
-	mov	dword791,[ebp-456]
-	mov	dword793,[ebp-468]
-	mov	[dword791],dword793
+	float2int	dword790
+	mov	[ebp-476],dword790
+	mov	dword794,[ebp-472]
+	sal	dword794,8
+	add	dword794,[ebp-476]
+	mov	[ebp-468],dword794
+	mov	dword798,[ebp-456]
+	mov	dword800,[ebp-468]
+	mov	[dword798],dword800
 label001e:
 	fld	dword ptr [ebp-440]
 	fadd	dword ptr [ebp-432]
@@ -18049,8 +18137,8 @@ label001e:
 	fstp	dword ptr [ebp-436]
 label001c:
 	add	dword ptr [ebp-456],4
-	mov	dword800,[ebp-456]
-	cmp	dword800,[ebp-460]
+	mov	dword807,[ebp-456]
+	cmp	dword807,[ebp-460]
 	jl	label001b
 label001d:
 label0020:
@@ -18061,212 +18149,214 @@ label0021:
 	inc	dword ptr [ebp-364]
 	jmp	label000e
 label000f:
-	mov	dword327,[ebp-344]
-	add	dword327,4
-	mov	dword330,[ebp-348]
+	mov	dword330,[ebp-344]
 	add	dword330,4
-	mov	dword332,[dword327]
-	sub	dword332,[dword330]
-	mov	dword334,[ebp-340]
-	mov	dword336,[ebp-348]
-	mov	dword337,[dword334]
-	sub	dword337,[dword336]
-	imul	dword332,dword337
-	mov	dword339,[ebp-340]
-	add	dword339,4
-	mov	dword342,[ebp-348]
+	mov	dword333,[ebp-348]
+	add	dword333,4
+	mov	dword335,[dword330]
+	sub	dword335,[dword333]
+	mov	dword337,[ebp-340]
+	mov	dword339,[ebp-348]
+	mov	dword340,[dword337]
+	sub	dword340,[dword339]
+	imul	dword335,dword340
+	mov	dword342,[ebp-340]
 	add	dword342,4
-	mov	dword344,[dword339]
-	sub	dword344,[dword342]
-	cdq	dword345
-	idiv	dword332,dword344
-	mov	dword347,[ebp-348]
-	add	dword332,[dword347]
-	mov	[ebp-360],dword332
-	mov	dword350,[ebp-344]
-	add	dword350,4
-	mov	dword353,[ebp-348]
+	mov	dword345,[ebp-348]
+	add	dword345,4
+	mov	dword347,[dword342]
+	sub	dword347,[dword345]
+	cdq	dword348
+	idiv	dword335,dword347
+	mov	dword350,[ebp-348]
+	add	dword335,[dword350]
+	mov	[ebp-360],dword335
+	mov	dword353,[ebp-344]
 	add	dword353,4
-	mov	dword355,[dword350]
-	sub	dword355,[dword353]
-	int2float	dword355
-	mov	dword357,[ebp-340]
-	mov	dword359,[ebp-348]
-	fld	dword ptr [dword357+8]
-	fsub	dword ptr [dword359+8]
+	mov	dword356,[ebp-348]
+	add	dword356,4
+	mov	dword358,[dword353]
+	sub	dword358,[dword356]
+	int2float	dword358
+	mov	dword360,[ebp-340]
+	mov	dword362,[ebp-348]
+	fld	dword ptr [dword360+8]
+	fsub	dword ptr [dword362+8]
 	fmulp
-	mov	dword361,[ebp-340]
-	add	dword361,4
-	mov	dword364,[ebp-348]
+	mov	dword364,[ebp-340]
 	add	dword364,4
-	mov	dword366,[dword361]
-	sub	dword366,[dword364]
-	int2float	dword366
+	mov	dword367,[ebp-348]
+	add	dword367,4
+	mov	dword369,[dword364]
+	sub	dword369,[dword367]
+	int2float	dword369
 	fdivp
-	mov	dword368,[ebp-348]
-	fadd	dword ptr [dword368+8]
+	mov	dword371,[ebp-348]
+	fadd	dword ptr [dword371+8]
 	fstp	dword ptr [ebp-376]
-	mov	dword371,[ebp-344]
-	add	dword371,4
-	mov	dword374,[ebp-348]
+	mov	dword374,[ebp-344]
 	add	dword374,4
-	mov	dword376,[dword371]
-	sub	dword376,[dword374]
-	int2float	dword376
-	mov	dword378,8
-	add	dword378,[ebp-340]
-	add	dword378,4
+	mov	dword377,[ebp-348]
+	add	dword377,4
+	mov	dword379,[dword374]
+	sub	dword379,[dword377]
+	int2float	dword379
 	mov	dword381,8
-	add	dword381,[ebp-348]
+	add	dword381,[ebp-340]
 	add	dword381,4
-	fld	dword ptr [dword378]
-	fsub	dword ptr [dword381]
-	fmulp
-	mov	dword384,[ebp-340]
+	mov	dword384,8
+	add	dword384,[ebp-348]
 	add	dword384,4
-	mov	dword387,[ebp-348]
+	fld	dword ptr [dword381]
+	fsub	dword ptr [dword384]
+	fmulp
+	mov	dword387,[ebp-340]
 	add	dword387,4
-	mov	dword389,[dword384]
-	sub	dword389,[dword387]
-	int2float	dword389
+	mov	dword390,[ebp-348]
+	add	dword390,4
+	mov	dword392,[dword387]
+	sub	dword392,[dword390]
+	int2float	dword392
 	fdivp
-	mov	dword391,8
-	add	dword391,[ebp-348]
-	add	dword391,4
-	fadd	dword ptr [dword391]
+	mov	dword394,8
+	add	dword394,[ebp-348]
+	add	dword394,4
+	fadd	dword ptr [dword394]
 	fstp	dword ptr [ebp-380]
-	mov	dword395,[ebp-344]
-	fld	dword ptr [ebp-376]
-	fsub	dword ptr [dword395+8]
 	mov	dword398,[ebp-344]
-	mov	dword400,[ebp-360]
-	sub	dword400,[dword398]
-	int2float	dword400
+	fld	dword ptr [ebp-376]
+	fsub	dword ptr [dword398+8]
+	mov	dword401,[ebp-344]
+	mov	dword403,[ebp-360]
+	sub	dword403,[dword401]
+	int2float	dword403
 	fdivp
 	fstp	dword ptr [ebp-384]
-	mov	dword403,8
-	add	dword403,[ebp-344]
-	add	dword403,4
+	mov	dword406,8
+	add	dword406,[ebp-344]
+	add	dword406,4
 	fld	dword ptr [ebp-380]
-	fsub	dword ptr [dword403]
-	mov	dword407,[ebp-344]
-	mov	dword409,[ebp-360]
-	sub	dword409,[dword407]
-	int2float	dword409
+	fsub	dword ptr [dword406]
+	mov	dword410,[ebp-344]
+	mov	dword412,[ebp-360]
+	sub	dword412,[dword410]
+	int2float	dword412
 	fdivp
 	fstp	dword ptr [ebp-388]
-	mov	dword831,[ebp-388]
-	mov	[ebp-392],dword831
-	mov	dword830,[ebp-384]
-	mov	[ebp-396],dword830
-	mov	dword414,8
-	add	dword414,[ebp-344]
-	add	dword414,4
-	mov	dword829,[dword414]
-	mov	[ebp-400],dword829
-	mov	dword417,[ebp-344]
-	mov	dword828,[dword417+8]
-	mov	[ebp-404],dword828
-	mov	dword827,[ebp-380]
-	mov	[ebp-408],dword827
-	mov	dword826,[ebp-376]
-	mov	[ebp-412],dword826
-	mov	dword421,[ebp-344]
-	add	dword421,4
-	mov	dword825,[dword421]
-	mov	[ebp-416],dword825
+	mov	dword838,[ebp-388]
+	mov	[ebp-392],dword838
+	mov	dword837,[ebp-384]
+	mov	[ebp-396],dword837
+	mov	dword417,8
+	add	dword417,[ebp-344]
+	add	dword417,4
+	mov	dword836,[dword417]
+	mov	[ebp-400],dword836
+	mov	dword420,[ebp-344]
+	mov	dword835,[dword420+8]
+	mov	[ebp-404],dword835
+	mov	dword834,[ebp-380]
+	mov	[ebp-408],dword834
+	mov	dword833,[ebp-376]
+	mov	[ebp-412],dword833
 	mov	dword424,[ebp-344]
-	mov	dword824,[dword424]
-	mov	[ebp-420],dword824
-	mov	dword823,[ebp-360]
-	mov	[ebp-424],dword823
+	add	dword424,4
+	mov	dword832,[dword424]
+	mov	[ebp-416],dword832
+	mov	dword427,[ebp-344]
+	mov	dword831,[dword427]
+	mov	[ebp-420],dword831
+	mov	dword830,[ebp-360]
+	mov	[ebp-424],dword830
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword835,[ebp-424]
-	cmp	dword835,[ebp-420]
+	mov	dword842,[ebp-424]
+	cmp	dword842,[ebp-420]
 	jg	label0022
-	mov	dword856,[ebp-392]
-	mov	[ebp-428],dword856
-	mov	dword855,[ebp-396]
-	mov	[ebp-432],dword855
-	mov	dword854,[ebp-408]
-	mov	[ebp-436],dword854
-	mov	dword853,[ebp-412]
-	mov	[ebp-440],dword853
-	mov	dword852,[ebp-416]
-	mov	[ebp-444],dword852
-	mov	dword851,[ebp-420]
-	mov	[ebp-448],dword851
-	mov	dword850,[ebp-424]
-	mov	[ebp-452],dword850
+	mov	dword863,[ebp-392]
+	mov	[ebp-428],dword863
+	mov	dword862,[ebp-396]
+	mov	[ebp-432],dword862
+	mov	dword861,[ebp-408]
+	mov	[ebp-436],dword861
+	mov	dword860,[ebp-412]
+	mov	[ebp-440],dword860
+	mov	dword859,[ebp-416]
+	mov	[ebp-444],dword859
+	mov	dword858,[ebp-420]
+	mov	[ebp-448],dword858
+	mov	dword857,[ebp-424]
+	mov	[ebp-452],dword857
 ; start of inline function _rasterize_horiz_line
-	mov	dword860,dword ptr [__pitch]
-	imul	dword860,[ebp-444]
-	add	dword860,dword ptr [__videomem]
-	sal	dword ptr [ebp-452],2
-	add	dword860,[ebp-452]
-	mov	[ebp-456],dword860
-	sal	dword ptr [ebp-448],2
-	mov	dword868,[ebp-456]
-	add	dword868,[ebp-448]
-	sal	dword ptr [ebp-452],2
-	sub	dword868,[ebp-452]
-	mov	[ebp-460],dword868
+	mov	dword867,dword ptr [__pitch]
+	imul	dword867,[ebp-444]
+	add	dword867,dword ptr [__videomem]
+	mov	dword871,[ebp-452]
+	sal	dword871,2
+	add	dword867,dword871
+	mov	[ebp-456],dword867
+	mov	dword875,[ebp-448]
+	sal	dword875,2
+	add	dword875,[ebp-456]
+	mov	dword879,[ebp-452]
+	sal	dword879,2
+	sub	dword875,dword879
+	mov	[ebp-460],dword875
 label0024:
-	mov	dword936,[ebp-436]
-	mov	[ebp-500],dword936
-	mov	dword935,[ebp-440]
-	mov	[ebp-504],dword935
+	mov	dword945,[ebp-436]
+	mov	[ebp-500],dword945
+	mov	dword944,[ebp-440]
+	mov	[ebp-504],dword944
 ; start of inline function _tex2d
-	mov	dword940,dword ptr [__texture_width]
-	dec	dword940
-	int2float	dword940
+	mov	dword949,dword ptr [__texture_width]
+	dec	dword949
+	int2float	dword949
 	fmul	dword ptr [ebp-504]
-	float2int	dword942
-	mov	[ebp-508],dword942
-	mov	dword946,dword ptr [__texture_height]
-	dec	dword946
-	int2float	dword946
+	float2int	dword951
+	mov	[ebp-508],dword951
+	mov	dword955,dword ptr [__texture_height]
+	dec	dword955
+	int2float	dword955
 	fmul	dword ptr [ebp-500]
-	float2int	dword948
-	mov	[ebp-512],dword948
-	mov	dword952,[ebp-512]
-	imul	dword952,dword ptr [__texture_width]
-	add	dword952,[ebp-508]
-	sal	dword952,2
-	add	dword952,dword ptr [__texture_data]
-	mov	dword956,[dword952]
-	mov	[ebp-516],dword956
+	float2int	dword957
+	mov	[ebp-512],dword957
+	mov	dword961,[ebp-512]
+	imul	dword961,dword ptr [__texture_width]
+	add	dword961,[ebp-508]
+	sal	dword961,2
+	add	dword961,dword ptr [__texture_data]
+	mov	dword965,[dword961]
+	mov	[ebp-516],dword965
 label0028:
 ; end of inline function _tex2d
-	mov	dword874,[ebp-516]
-	mov	[ebp-464],dword874
-	sar	dword ptr [ebp-464],24
-	mov	dword879,[ebp-464]
-	and	dword879,255
-	mov	[ebp-492],dword879
+	mov	dword883,[ebp-516]
+	mov	[ebp-464],dword883
+	mov	dword887,[ebp-464]
+	sar	dword887,24
+	and	dword887,255
+	mov	[ebp-492],dword887
 	cmp	dword ptr [ebp-492],0
 	je	label0027
 	fild	dword ptr [ebp-492]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-496]
-	mov	dword886,[ebp-456]
-	mov	dword888,[dword886]
-	mov	[ebp-480],dword888
-	mov	dword891,[ebp-480]
-	and	dword891,65280
-	sar	dword891,8
-	mov	[ebp-484],dword891
-	mov	dword896,[ebp-480]
-	and	dword896,255
-	mov	[ebp-488],dword896
-	mov	dword900,[ebp-464]
+	mov	dword895,[ebp-456]
+	mov	dword897,[dword895]
+	mov	[ebp-480],dword897
+	mov	dword900,[ebp-480]
 	and	dword900,65280
 	sar	dword900,8
-	mov	[ebp-472],dword900
-	mov	dword905,[ebp-464]
+	mov	[ebp-484],dword900
+	mov	dword905,[ebp-480]
 	and	dword905,255
-	mov	[ebp-476],dword905
+	mov	[ebp-488],dword905
+	mov	dword909,[ebp-464]
+	and	dword909,65280
+	sar	dword909,8
+	mov	[ebp-472],dword909
+	mov	dword914,[ebp-464]
+	and	dword914,255
+	mov	[ebp-476],dword914
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-484]
@@ -18274,8 +18364,8 @@ label0028:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword911
-	mov	[ebp-472],dword911
+	float2int	dword920
+	mov	[ebp-472],dword920
 	fild	dword ptr [ebp-476]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-488]
@@ -18283,15 +18373,15 @@ label0028:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword917
-	mov	[ebp-476],dword917
-	sal	dword ptr [ebp-472],8
-	mov	dword922,[ebp-472]
-	add	dword922,[ebp-476]
-	mov	[ebp-468],dword922
-	mov	dword925,[ebp-456]
-	mov	dword927,[ebp-468]
-	mov	[dword925],dword927
+	float2int	dword926
+	mov	[ebp-476],dword926
+	mov	dword930,[ebp-472]
+	sal	dword930,8
+	add	dword930,[ebp-476]
+	mov	[ebp-468],dword930
+	mov	dword934,[ebp-456]
+	mov	dword936,[ebp-468]
+	mov	[dword934],dword936
 label0027:
 	fld	dword ptr [ebp-440]
 	fadd	dword ptr [ebp-432]
@@ -18301,97 +18391,99 @@ label0027:
 	fstp	dword ptr [ebp-436]
 label0025:
 	add	dword ptr [ebp-456],4
-	mov	dword934,[ebp-456]
-	cmp	dword934,[ebp-460]
+	mov	dword943,[ebp-456]
+	cmp	dword943,[ebp-460]
 	jl	label0024
 label0026:
 label0029:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0023
 label0022:
-	mov	dword963,[ebp-392]
-	mov	[ebp-428],dword963
-	mov	dword962,[ebp-396]
-	mov	[ebp-432],dword962
-	mov	dword961,[ebp-400]
-	mov	[ebp-436],dword961
-	mov	dword960,[ebp-404]
-	mov	[ebp-440],dword960
-	mov	dword959,[ebp-416]
-	mov	[ebp-444],dword959
-	mov	dword958,[ebp-424]
-	mov	[ebp-448],dword958
-	mov	dword957,[ebp-420]
-	mov	[ebp-452],dword957
+	mov	dword972,[ebp-392]
+	mov	[ebp-428],dword972
+	mov	dword971,[ebp-396]
+	mov	[ebp-432],dword971
+	mov	dword970,[ebp-400]
+	mov	[ebp-436],dword970
+	mov	dword969,[ebp-404]
+	mov	[ebp-440],dword969
+	mov	dword968,[ebp-416]
+	mov	[ebp-444],dword968
+	mov	dword967,[ebp-424]
+	mov	[ebp-448],dword967
+	mov	dword966,[ebp-420]
+	mov	[ebp-452],dword966
 ; start of inline function _rasterize_horiz_line
-	mov	dword967,dword ptr [__pitch]
-	imul	dword967,[ebp-444]
-	add	dword967,dword ptr [__videomem]
-	sal	dword ptr [ebp-452],2
-	add	dword967,[ebp-452]
-	mov	[ebp-456],dword967
-	sal	dword ptr [ebp-448],2
-	mov	dword975,[ebp-456]
-	add	dword975,[ebp-448]
-	sal	dword ptr [ebp-452],2
-	sub	dword975,[ebp-452]
-	mov	[ebp-460],dword975
+	mov	dword976,dword ptr [__pitch]
+	imul	dword976,[ebp-444]
+	add	dword976,dword ptr [__videomem]
+	mov	dword980,[ebp-452]
+	sal	dword980,2
+	add	dword976,dword980
+	mov	[ebp-456],dword976
+	mov	dword984,[ebp-448]
+	sal	dword984,2
+	add	dword984,[ebp-456]
+	mov	dword988,[ebp-452]
+	sal	dword988,2
+	sub	dword984,dword988
+	mov	[ebp-460],dword984
 label002a:
-	mov	dword1043,[ebp-436]
-	mov	[ebp-500],dword1043
-	mov	dword1042,[ebp-440]
-	mov	[ebp-504],dword1042
+	mov	dword1054,[ebp-436]
+	mov	[ebp-500],dword1054
+	mov	dword1053,[ebp-440]
+	mov	[ebp-504],dword1053
 ; start of inline function _tex2d
-	mov	dword1047,dword ptr [__texture_width]
-	dec	dword1047
-	int2float	dword1047
+	mov	dword1058,dword ptr [__texture_width]
+	dec	dword1058
+	int2float	dword1058
 	fmul	dword ptr [ebp-504]
-	float2int	dword1049
-	mov	[ebp-508],dword1049
-	mov	dword1053,dword ptr [__texture_height]
-	dec	dword1053
-	int2float	dword1053
+	float2int	dword1060
+	mov	[ebp-508],dword1060
+	mov	dword1064,dword ptr [__texture_height]
+	dec	dword1064
+	int2float	dword1064
 	fmul	dword ptr [ebp-500]
-	float2int	dword1055
-	mov	[ebp-512],dword1055
-	mov	dword1059,[ebp-512]
-	imul	dword1059,dword ptr [__texture_width]
-	add	dword1059,[ebp-508]
-	sal	dword1059,2
-	add	dword1059,dword ptr [__texture_data]
-	mov	dword1063,[dword1059]
-	mov	[ebp-516],dword1063
+	float2int	dword1066
+	mov	[ebp-512],dword1066
+	mov	dword1070,[ebp-512]
+	imul	dword1070,dword ptr [__texture_width]
+	add	dword1070,[ebp-508]
+	sal	dword1070,2
+	add	dword1070,dword ptr [__texture_data]
+	mov	dword1074,[dword1070]
+	mov	[ebp-516],dword1074
 label002e:
 ; end of inline function _tex2d
-	mov	dword981,[ebp-516]
-	mov	[ebp-464],dword981
-	sar	dword ptr [ebp-464],24
-	mov	dword986,[ebp-464]
-	and	dword986,255
-	mov	[ebp-492],dword986
+	mov	dword992,[ebp-516]
+	mov	[ebp-464],dword992
+	mov	dword996,[ebp-464]
+	sar	dword996,24
+	and	dword996,255
+	mov	[ebp-492],dword996
 	cmp	dword ptr [ebp-492],0
 	je	label002d
 	fild	dword ptr [ebp-492]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-496]
-	mov	dword993,[ebp-456]
-	mov	dword995,[dword993]
-	mov	[ebp-480],dword995
-	mov	dword998,[ebp-480]
-	and	dword998,65280
-	sar	dword998,8
-	mov	[ebp-484],dword998
-	mov	dword1003,[ebp-480]
-	and	dword1003,255
-	mov	[ebp-488],dword1003
-	mov	dword1007,[ebp-464]
-	and	dword1007,65280
-	sar	dword1007,8
-	mov	[ebp-472],dword1007
-	mov	dword1012,[ebp-464]
-	and	dword1012,255
-	mov	[ebp-476],dword1012
+	mov	dword1004,[ebp-456]
+	mov	dword1006,[dword1004]
+	mov	[ebp-480],dword1006
+	mov	dword1009,[ebp-480]
+	and	dword1009,65280
+	sar	dword1009,8
+	mov	[ebp-484],dword1009
+	mov	dword1014,[ebp-480]
+	and	dword1014,255
+	mov	[ebp-488],dword1014
+	mov	dword1018,[ebp-464]
+	and	dword1018,65280
+	sar	dword1018,8
+	mov	[ebp-472],dword1018
+	mov	dword1023,[ebp-464]
+	and	dword1023,255
+	mov	[ebp-476],dword1023
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-484]
@@ -18399,8 +18491,8 @@ label002e:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword1018
-	mov	[ebp-472],dword1018
+	float2int	dword1029
+	mov	[ebp-472],dword1029
 	fild	dword ptr [ebp-476]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-488]
@@ -18408,15 +18500,15 @@ label002e:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword1024
-	mov	[ebp-476],dword1024
-	sal	dword ptr [ebp-472],8
-	mov	dword1029,[ebp-472]
-	add	dword1029,[ebp-476]
-	mov	[ebp-468],dword1029
-	mov	dword1032,[ebp-456]
-	mov	dword1034,[ebp-468]
-	mov	[dword1032],dword1034
+	float2int	dword1035
+	mov	[ebp-476],dword1035
+	mov	dword1039,[ebp-472]
+	sal	dword1039,8
+	add	dword1039,[ebp-476]
+	mov	[ebp-468],dword1039
+	mov	dword1043,[ebp-456]
+	mov	dword1045,[ebp-468]
+	mov	[dword1043],dword1045
 label002d:
 	fld	dword ptr [ebp-440]
 	fadd	dword ptr [ebp-432]
@@ -18426,8 +18518,8 @@ label002d:
 	fstp	dword ptr [ebp-436]
 label002b:
 	add	dword ptr [ebp-456],4
-	mov	dword1041,[ebp-456]
-	cmp	dword1041,[ebp-460]
+	mov	dword1052,[ebp-456]
+	cmp	dword1052,[ebp-460]
 	jl	label002a
 label002c:
 label002f:
@@ -18435,273 +18527,275 @@ label002f:
 label0023:
 label0030:
 ; end of inline function _rasterize_horiz_line__unordered
-	mov	dword427,[ebp-344]
-	add	dword427,4
-	mov	dword429,1
-	add	dword429,[dword427]
-	mov	[ebp-364],dword429
+	mov	dword430,[ebp-344]
+	add	dword430,4
+	mov	dword432,1
+	add	dword432,[dword430]
+	mov	[ebp-364],dword432
 label0010:
 label0011:
-	mov	dword432,[ebp-340]
-	add	dword432,4
-	mov	dword435,[dword432]
-	cmp	dword435,[ebp-364]
+	mov	dword435,[ebp-340]
+	add	dword435,4
+	mov	dword438,[dword435]
+	cmp	dword438,[ebp-364]
 	jle	label0012
-	mov	dword437,[ebp-344]
-	add	dword437,4
-	mov	dword440,[ebp-364]
-	sub	dword440,[dword437]
-	mov	dword442,[ebp-340]
-	mov	dword444,[ebp-344]
-	mov	dword445,[dword442]
-	sub	dword445,[dword444]
-	imul	dword440,dword445
-	mov	dword447,[ebp-340]
-	add	dword447,4
-	mov	dword450,[ebp-344]
+	mov	dword440,[ebp-344]
+	add	dword440,4
+	mov	dword443,[ebp-364]
+	sub	dword443,[dword440]
+	mov	dword445,[ebp-340]
+	mov	dword447,[ebp-344]
+	mov	dword448,[dword445]
+	sub	dword448,[dword447]
+	imul	dword443,dword448
+	mov	dword450,[ebp-340]
 	add	dword450,4
-	mov	dword452,[dword447]
-	sub	dword452,[dword450]
-	cdq	dword453
-	idiv	dword440,dword452
-	mov	dword455,[ebp-344]
-	add	dword440,[dword455]
-	mov	[ebp-356],dword440
-	mov	dword458,[ebp-348]
-	add	dword458,4
-	mov	dword461,[ebp-364]
-	sub	dword461,[dword458]
-	mov	dword463,[ebp-340]
-	mov	dword465,[ebp-348]
-	mov	dword466,[dword463]
-	sub	dword466,[dword465]
-	imul	dword461,dword466
-	mov	dword468,[ebp-340]
-	add	dword468,4
-	mov	dword471,[ebp-348]
+	mov	dword453,[ebp-344]
+	add	dword453,4
+	mov	dword455,[dword450]
+	sub	dword455,[dword453]
+	cdq	dword456
+	idiv	dword443,dword455
+	mov	dword458,[ebp-344]
+	add	dword443,[dword458]
+	mov	[ebp-356],dword443
+	mov	dword461,[ebp-348]
+	add	dword461,4
+	mov	dword464,[ebp-364]
+	sub	dword464,[dword461]
+	mov	dword466,[ebp-340]
+	mov	dword468,[ebp-348]
+	mov	dword469,[dword466]
+	sub	dword469,[dword468]
+	imul	dword464,dword469
+	mov	dword471,[ebp-340]
 	add	dword471,4
-	mov	dword473,[dword468]
-	sub	dword473,[dword471]
-	cdq	dword474
-	idiv	dword461,dword473
-	mov	dword476,[ebp-348]
-	add	dword461,[dword476]
-	mov	[ebp-360],dword461
-	mov	dword479,[ebp-344]
-	add	dword479,4
-	mov	dword482,[ebp-364]
-	sub	dword482,[dword479]
-	int2float	dword482
-	mov	dword484,[ebp-340]
-	mov	dword486,[ebp-344]
-	fld	dword ptr [dword484+8]
-	fsub	dword ptr [dword486+8]
+	mov	dword474,[ebp-348]
+	add	dword474,4
+	mov	dword476,[dword471]
+	sub	dword476,[dword474]
+	cdq	dword477
+	idiv	dword464,dword476
+	mov	dword479,[ebp-348]
+	add	dword464,[dword479]
+	mov	[ebp-360],dword464
+	mov	dword482,[ebp-344]
+	add	dword482,4
+	mov	dword485,[ebp-364]
+	sub	dword485,[dword482]
+	int2float	dword485
+	mov	dword487,[ebp-340]
+	mov	dword489,[ebp-344]
+	fld	dword ptr [dword487+8]
+	fsub	dword ptr [dword489+8]
 	fmulp
-	mov	dword488,[ebp-340]
-	add	dword488,4
-	mov	dword491,[ebp-344]
+	mov	dword491,[ebp-340]
 	add	dword491,4
-	mov	dword493,[dword488]
-	sub	dword493,[dword491]
-	int2float	dword493
+	mov	dword494,[ebp-344]
+	add	dword494,4
+	mov	dword496,[dword491]
+	sub	dword496,[dword494]
+	int2float	dword496
 	fdivp
-	mov	dword495,[ebp-344]
-	fadd	dword ptr [dword495+8]
+	mov	dword498,[ebp-344]
+	fadd	dword ptr [dword498+8]
 	fstp	dword ptr [ebp-368]
-	mov	dword498,[ebp-348]
-	add	dword498,4
-	mov	dword501,[ebp-364]
-	sub	dword501,[dword498]
-	int2float	dword501
-	mov	dword503,[ebp-340]
-	mov	dword505,[ebp-348]
-	fld	dword ptr [dword503+8]
-	fsub	dword ptr [dword505+8]
+	mov	dword501,[ebp-348]
+	add	dword501,4
+	mov	dword504,[ebp-364]
+	sub	dword504,[dword501]
+	int2float	dword504
+	mov	dword506,[ebp-340]
+	mov	dword508,[ebp-348]
+	fld	dword ptr [dword506+8]
+	fsub	dword ptr [dword508+8]
 	fmulp
-	mov	dword507,[ebp-340]
-	add	dword507,4
-	mov	dword510,[ebp-348]
+	mov	dword510,[ebp-340]
 	add	dword510,4
-	mov	dword512,[dword507]
-	sub	dword512,[dword510]
-	int2float	dword512
+	mov	dword513,[ebp-348]
+	add	dword513,4
+	mov	dword515,[dword510]
+	sub	dword515,[dword513]
+	int2float	dword515
 	fdivp
-	mov	dword514,[ebp-348]
-	fadd	dword ptr [dword514+8]
+	mov	dword517,[ebp-348]
+	fadd	dword ptr [dword517+8]
 	fstp	dword ptr [ebp-376]
-	mov	dword517,[ebp-344]
-	add	dword517,4
-	mov	dword520,[ebp-364]
-	sub	dword520,[dword517]
-	int2float	dword520
-	mov	dword522,8
-	add	dword522,[ebp-340]
-	add	dword522,4
+	mov	dword520,[ebp-344]
+	add	dword520,4
+	mov	dword523,[ebp-364]
+	sub	dword523,[dword520]
+	int2float	dword523
 	mov	dword525,8
-	add	dword525,[ebp-344]
+	add	dword525,[ebp-340]
 	add	dword525,4
-	fld	dword ptr [dword522]
-	fsub	dword ptr [dword525]
-	fmulp
-	mov	dword528,[ebp-340]
+	mov	dword528,8
+	add	dword528,[ebp-344]
 	add	dword528,4
-	mov	dword531,[ebp-344]
-	add	dword531,4
-	mov	dword533,[dword528]
-	sub	dword533,[dword531]
-	int2float	dword533
-	fdivp
-	mov	dword535,8
-	add	dword535,[ebp-344]
-	add	dword535,4
-	fadd	dword ptr [dword535]
-	fstp	dword ptr [ebp-372]
-	mov	dword539,[ebp-348]
-	add	dword539,4
-	mov	dword542,[ebp-364]
-	sub	dword542,[dword539]
-	int2float	dword542
-	mov	dword544,8
-	add	dword544,[ebp-340]
-	add	dword544,4
-	mov	dword547,8
-	add	dword547,[ebp-348]
-	add	dword547,4
-	fld	dword ptr [dword544]
-	fsub	dword ptr [dword547]
+	fld	dword ptr [dword525]
+	fsub	dword ptr [dword528]
 	fmulp
-	mov	dword550,[ebp-340]
-	add	dword550,4
-	mov	dword553,[ebp-348]
-	add	dword553,4
-	mov	dword555,[dword550]
-	sub	dword555,[dword553]
-	int2float	dword555
+	mov	dword531,[ebp-340]
+	add	dword531,4
+	mov	dword534,[ebp-344]
+	add	dword534,4
+	mov	dword536,[dword531]
+	sub	dword536,[dword534]
+	int2float	dword536
 	fdivp
-	mov	dword557,8
-	add	dword557,[ebp-348]
-	add	dword557,4
-	fadd	dword ptr [dword557]
+	mov	dword538,8
+	add	dword538,[ebp-344]
+	add	dword538,4
+	fadd	dword ptr [dword538]
+	fstp	dword ptr [ebp-372]
+	mov	dword542,[ebp-348]
+	add	dword542,4
+	mov	dword545,[ebp-364]
+	sub	dword545,[dword542]
+	int2float	dword545
+	mov	dword547,8
+	add	dword547,[ebp-340]
+	add	dword547,4
+	mov	dword550,8
+	add	dword550,[ebp-348]
+	add	dword550,4
+	fld	dword ptr [dword547]
+	fsub	dword ptr [dword550]
+	fmulp
+	mov	dword553,[ebp-340]
+	add	dword553,4
+	mov	dword556,[ebp-348]
+	add	dword556,4
+	mov	dword558,[dword553]
+	sub	dword558,[dword556]
+	int2float	dword558
+	fdivp
+	mov	dword560,8
+	add	dword560,[ebp-348]
+	add	dword560,4
+	fadd	dword ptr [dword560]
 	fstp	dword ptr [ebp-380]
-	mov	dword562,[ebp-360]
-	sub	dword562,[ebp-356]
-	int2float	dword562
+	mov	dword565,[ebp-360]
+	sub	dword565,[ebp-356]
+	int2float	dword565
 	fld	dword ptr [ebp-376]
 	fsub	dword ptr [ebp-368]
 	fdivrp
 	fstp	dword ptr [ebp-384]
-	mov	dword568,[ebp-360]
-	sub	dword568,[ebp-356]
-	int2float	dword568
+	mov	dword571,[ebp-360]
+	sub	dword571,[ebp-356]
+	int2float	dword571
 	fld	dword ptr [ebp-380]
 	fsub	dword ptr [ebp-372]
 	fdivrp
 	fstp	dword ptr [ebp-388]
-	mov	dword1072,[ebp-388]
-	mov	[ebp-392],dword1072
-	mov	dword1071,[ebp-384]
-	mov	[ebp-396],dword1071
-	mov	dword1070,[ebp-380]
-	mov	[ebp-400],dword1070
-	mov	dword1069,[ebp-376]
-	mov	[ebp-404],dword1069
-	mov	dword1068,[ebp-372]
-	mov	[ebp-408],dword1068
-	mov	dword1067,[ebp-368]
-	mov	[ebp-412],dword1067
-	mov	dword1066,[ebp-364]
-	mov	[ebp-416],dword1066
-	mov	dword1065,[ebp-360]
-	mov	[ebp-420],dword1065
-	mov	dword1064,[ebp-356]
-	mov	[ebp-424],dword1064
+	mov	dword1083,[ebp-388]
+	mov	[ebp-392],dword1083
+	mov	dword1082,[ebp-384]
+	mov	[ebp-396],dword1082
+	mov	dword1081,[ebp-380]
+	mov	[ebp-400],dword1081
+	mov	dword1080,[ebp-376]
+	mov	[ebp-404],dword1080
+	mov	dword1079,[ebp-372]
+	mov	[ebp-408],dword1079
+	mov	dword1078,[ebp-368]
+	mov	[ebp-412],dword1078
+	mov	dword1077,[ebp-364]
+	mov	[ebp-416],dword1077
+	mov	dword1076,[ebp-360]
+	mov	[ebp-420],dword1076
+	mov	dword1075,[ebp-356]
+	mov	[ebp-424],dword1075
 ; start of inline function _rasterize_horiz_line__unordered
-	mov	dword1076,[ebp-424]
-	cmp	dword1076,[ebp-420]
+	mov	dword1087,[ebp-424]
+	cmp	dword1087,[ebp-420]
 	jg	label0031
-	mov	dword1097,[ebp-392]
-	mov	[ebp-428],dword1097
-	mov	dword1096,[ebp-396]
-	mov	[ebp-432],dword1096
-	mov	dword1095,[ebp-408]
-	mov	[ebp-436],dword1095
-	mov	dword1094,[ebp-412]
-	mov	[ebp-440],dword1094
-	mov	dword1093,[ebp-416]
-	mov	[ebp-444],dword1093
-	mov	dword1092,[ebp-420]
-	mov	[ebp-448],dword1092
-	mov	dword1091,[ebp-424]
-	mov	[ebp-452],dword1091
+	mov	dword1108,[ebp-392]
+	mov	[ebp-428],dword1108
+	mov	dword1107,[ebp-396]
+	mov	[ebp-432],dword1107
+	mov	dword1106,[ebp-408]
+	mov	[ebp-436],dword1106
+	mov	dword1105,[ebp-412]
+	mov	[ebp-440],dword1105
+	mov	dword1104,[ebp-416]
+	mov	[ebp-444],dword1104
+	mov	dword1103,[ebp-420]
+	mov	[ebp-448],dword1103
+	mov	dword1102,[ebp-424]
+	mov	[ebp-452],dword1102
 ; start of inline function _rasterize_horiz_line
-	mov	dword1101,dword ptr [__pitch]
-	imul	dword1101,[ebp-444]
-	add	dword1101,dword ptr [__videomem]
-	sal	dword ptr [ebp-452],2
-	add	dword1101,[ebp-452]
-	mov	[ebp-456],dword1101
-	sal	dword ptr [ebp-448],2
-	mov	dword1109,[ebp-456]
-	add	dword1109,[ebp-448]
-	sal	dword ptr [ebp-452],2
-	sub	dword1109,[ebp-452]
-	mov	[ebp-460],dword1109
+	mov	dword1112,dword ptr [__pitch]
+	imul	dword1112,[ebp-444]
+	add	dword1112,dword ptr [__videomem]
+	mov	dword1116,[ebp-452]
+	sal	dword1116,2
+	add	dword1112,dword1116
+	mov	[ebp-456],dword1112
+	mov	dword1120,[ebp-448]
+	sal	dword1120,2
+	add	dword1120,[ebp-456]
+	mov	dword1124,[ebp-452]
+	sal	dword1124,2
+	sub	dword1120,dword1124
+	mov	[ebp-460],dword1120
 label0033:
-	mov	dword1177,[ebp-436]
-	mov	[ebp-500],dword1177
-	mov	dword1176,[ebp-440]
-	mov	[ebp-504],dword1176
+	mov	dword1190,[ebp-436]
+	mov	[ebp-500],dword1190
+	mov	dword1189,[ebp-440]
+	mov	[ebp-504],dword1189
 ; start of inline function _tex2d
-	mov	dword1181,dword ptr [__texture_width]
-	dec	dword1181
-	int2float	dword1181
+	mov	dword1194,dword ptr [__texture_width]
+	dec	dword1194
+	int2float	dword1194
 	fmul	dword ptr [ebp-504]
-	float2int	dword1183
-	mov	[ebp-508],dword1183
-	mov	dword1187,dword ptr [__texture_height]
-	dec	dword1187
-	int2float	dword1187
+	float2int	dword1196
+	mov	[ebp-508],dword1196
+	mov	dword1200,dword ptr [__texture_height]
+	dec	dword1200
+	int2float	dword1200
 	fmul	dword ptr [ebp-500]
-	float2int	dword1189
-	mov	[ebp-512],dword1189
-	mov	dword1193,[ebp-512]
-	imul	dword1193,dword ptr [__texture_width]
-	add	dword1193,[ebp-508]
-	sal	dword1193,2
-	add	dword1193,dword ptr [__texture_data]
-	mov	dword1197,[dword1193]
-	mov	[ebp-516],dword1197
+	float2int	dword1202
+	mov	[ebp-512],dword1202
+	mov	dword1206,[ebp-512]
+	imul	dword1206,dword ptr [__texture_width]
+	add	dword1206,[ebp-508]
+	sal	dword1206,2
+	add	dword1206,dword ptr [__texture_data]
+	mov	dword1210,[dword1206]
+	mov	[ebp-516],dword1210
 label0037:
 ; end of inline function _tex2d
-	mov	dword1115,[ebp-516]
-	mov	[ebp-464],dword1115
-	sar	dword ptr [ebp-464],24
-	mov	dword1120,[ebp-464]
-	and	dword1120,255
-	mov	[ebp-492],dword1120
+	mov	dword1128,[ebp-516]
+	mov	[ebp-464],dword1128
+	mov	dword1132,[ebp-464]
+	sar	dword1132,24
+	and	dword1132,255
+	mov	[ebp-492],dword1132
 	cmp	dword ptr [ebp-492],0
 	je	label0036
 	fild	dword ptr [ebp-492]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-496]
-	mov	dword1127,[ebp-456]
-	mov	dword1129,[dword1127]
-	mov	[ebp-480],dword1129
-	mov	dword1132,[ebp-480]
-	and	dword1132,65280
-	sar	dword1132,8
-	mov	[ebp-484],dword1132
-	mov	dword1137,[ebp-480]
-	and	dword1137,255
-	mov	[ebp-488],dword1137
-	mov	dword1141,[ebp-464]
-	and	dword1141,65280
-	sar	dword1141,8
-	mov	[ebp-472],dword1141
-	mov	dword1146,[ebp-464]
-	and	dword1146,255
-	mov	[ebp-476],dword1146
+	mov	dword1140,[ebp-456]
+	mov	dword1142,[dword1140]
+	mov	[ebp-480],dword1142
+	mov	dword1145,[ebp-480]
+	and	dword1145,65280
+	sar	dword1145,8
+	mov	[ebp-484],dword1145
+	mov	dword1150,[ebp-480]
+	and	dword1150,255
+	mov	[ebp-488],dword1150
+	mov	dword1154,[ebp-464]
+	and	dword1154,65280
+	sar	dword1154,8
+	mov	[ebp-472],dword1154
+	mov	dword1159,[ebp-464]
+	and	dword1159,255
+	mov	[ebp-476],dword1159
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-484]
@@ -18709,8 +18803,8 @@ label0037:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword1152
-	mov	[ebp-472],dword1152
+	float2int	dword1165
+	mov	[ebp-472],dword1165
 	fild	dword ptr [ebp-476]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-488]
@@ -18718,15 +18812,15 @@ label0037:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword1158
-	mov	[ebp-476],dword1158
-	sal	dword ptr [ebp-472],8
-	mov	dword1163,[ebp-472]
-	add	dword1163,[ebp-476]
-	mov	[ebp-468],dword1163
-	mov	dword1166,[ebp-456]
-	mov	dword1168,[ebp-468]
-	mov	[dword1166],dword1168
+	float2int	dword1171
+	mov	[ebp-476],dword1171
+	mov	dword1175,[ebp-472]
+	sal	dword1175,8
+	add	dword1175,[ebp-476]
+	mov	[ebp-468],dword1175
+	mov	dword1179,[ebp-456]
+	mov	dword1181,[ebp-468]
+	mov	[dword1179],dword1181
 label0036:
 	fld	dword ptr [ebp-440]
 	fadd	dword ptr [ebp-432]
@@ -18736,97 +18830,99 @@ label0036:
 	fstp	dword ptr [ebp-436]
 label0034:
 	add	dword ptr [ebp-456],4
-	mov	dword1175,[ebp-456]
-	cmp	dword1175,[ebp-460]
+	mov	dword1188,[ebp-456]
+	cmp	dword1188,[ebp-460]
 	jl	label0033
 label0035:
 label0038:
 ; end of inline function _rasterize_horiz_line
 	jmp	label0032
 label0031:
-	mov	dword1204,[ebp-392]
-	mov	[ebp-428],dword1204
-	mov	dword1203,[ebp-396]
-	mov	[ebp-432],dword1203
-	mov	dword1202,[ebp-400]
-	mov	[ebp-436],dword1202
-	mov	dword1201,[ebp-404]
-	mov	[ebp-440],dword1201
-	mov	dword1200,[ebp-416]
-	mov	[ebp-444],dword1200
-	mov	dword1199,[ebp-424]
-	mov	[ebp-448],dword1199
-	mov	dword1198,[ebp-420]
-	mov	[ebp-452],dword1198
+	mov	dword1217,[ebp-392]
+	mov	[ebp-428],dword1217
+	mov	dword1216,[ebp-396]
+	mov	[ebp-432],dword1216
+	mov	dword1215,[ebp-400]
+	mov	[ebp-436],dword1215
+	mov	dword1214,[ebp-404]
+	mov	[ebp-440],dword1214
+	mov	dword1213,[ebp-416]
+	mov	[ebp-444],dword1213
+	mov	dword1212,[ebp-424]
+	mov	[ebp-448],dword1212
+	mov	dword1211,[ebp-420]
+	mov	[ebp-452],dword1211
 ; start of inline function _rasterize_horiz_line
-	mov	dword1208,dword ptr [__pitch]
-	imul	dword1208,[ebp-444]
-	add	dword1208,dword ptr [__videomem]
-	sal	dword ptr [ebp-452],2
-	add	dword1208,[ebp-452]
-	mov	[ebp-456],dword1208
-	sal	dword ptr [ebp-448],2
-	mov	dword1216,[ebp-456]
-	add	dword1216,[ebp-448]
-	sal	dword ptr [ebp-452],2
-	sub	dword1216,[ebp-452]
-	mov	[ebp-460],dword1216
+	mov	dword1221,dword ptr [__pitch]
+	imul	dword1221,[ebp-444]
+	add	dword1221,dword ptr [__videomem]
+	mov	dword1225,[ebp-452]
+	sal	dword1225,2
+	add	dword1221,dword1225
+	mov	[ebp-456],dword1221
+	mov	dword1229,[ebp-448]
+	sal	dword1229,2
+	add	dword1229,[ebp-456]
+	mov	dword1233,[ebp-452]
+	sal	dword1233,2
+	sub	dword1229,dword1233
+	mov	[ebp-460],dword1229
 label0039:
-	mov	dword1284,[ebp-436]
-	mov	[ebp-500],dword1284
-	mov	dword1283,[ebp-440]
-	mov	[ebp-504],dword1283
+	mov	dword1299,[ebp-436]
+	mov	[ebp-500],dword1299
+	mov	dword1298,[ebp-440]
+	mov	[ebp-504],dword1298
 ; start of inline function _tex2d
-	mov	dword1288,dword ptr [__texture_width]
-	dec	dword1288
-	int2float	dword1288
+	mov	dword1303,dword ptr [__texture_width]
+	dec	dword1303
+	int2float	dword1303
 	fmul	dword ptr [ebp-504]
-	float2int	dword1290
-	mov	[ebp-508],dword1290
-	mov	dword1294,dword ptr [__texture_height]
-	dec	dword1294
-	int2float	dword1294
+	float2int	dword1305
+	mov	[ebp-508],dword1305
+	mov	dword1309,dword ptr [__texture_height]
+	dec	dword1309
+	int2float	dword1309
 	fmul	dword ptr [ebp-500]
-	float2int	dword1296
-	mov	[ebp-512],dword1296
-	mov	dword1300,[ebp-512]
-	imul	dword1300,dword ptr [__texture_width]
-	add	dword1300,[ebp-508]
-	sal	dword1300,2
-	add	dword1300,dword ptr [__texture_data]
-	mov	dword1304,[dword1300]
-	mov	[ebp-516],dword1304
+	float2int	dword1311
+	mov	[ebp-512],dword1311
+	mov	dword1315,[ebp-512]
+	imul	dword1315,dword ptr [__texture_width]
+	add	dword1315,[ebp-508]
+	sal	dword1315,2
+	add	dword1315,dword ptr [__texture_data]
+	mov	dword1319,[dword1315]
+	mov	[ebp-516],dword1319
 label003d:
 ; end of inline function _tex2d
-	mov	dword1222,[ebp-516]
-	mov	[ebp-464],dword1222
-	sar	dword ptr [ebp-464],24
-	mov	dword1227,[ebp-464]
-	and	dword1227,255
-	mov	[ebp-492],dword1227
+	mov	dword1237,[ebp-516]
+	mov	[ebp-464],dword1237
+	mov	dword1241,[ebp-464]
+	sar	dword1241,24
+	and	dword1241,255
+	mov	[ebp-492],dword1241
 	cmp	dword ptr [ebp-492],0
 	je	label003c
 	fild	dword ptr [ebp-492]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-496]
-	mov	dword1234,[ebp-456]
-	mov	dword1236,[dword1234]
-	mov	[ebp-480],dword1236
-	mov	dword1239,[ebp-480]
-	and	dword1239,65280
-	sar	dword1239,8
-	mov	[ebp-484],dword1239
-	mov	dword1244,[ebp-480]
-	and	dword1244,255
-	mov	[ebp-488],dword1244
-	mov	dword1248,[ebp-464]
-	and	dword1248,65280
-	sar	dword1248,8
-	mov	[ebp-472],dword1248
-	mov	dword1253,[ebp-464]
-	and	dword1253,255
-	mov	[ebp-476],dword1253
+	mov	dword1249,[ebp-456]
+	mov	dword1251,[dword1249]
+	mov	[ebp-480],dword1251
+	mov	dword1254,[ebp-480]
+	and	dword1254,65280
+	sar	dword1254,8
+	mov	[ebp-484],dword1254
+	mov	dword1259,[ebp-480]
+	and	dword1259,255
+	mov	[ebp-488],dword1259
+	mov	dword1263,[ebp-464]
+	and	dword1263,65280
+	sar	dword1263,8
+	mov	[ebp-472],dword1263
+	mov	dword1268,[ebp-464]
+	and	dword1268,255
+	mov	[ebp-476],dword1268
 	fild	dword ptr [ebp-472]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-484]
@@ -18834,8 +18930,8 @@ label003d:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword1259
-	mov	[ebp-472],dword1259
+	float2int	dword1274
+	mov	[ebp-472],dword1274
 	fild	dword ptr [ebp-476]
 	fmul	dword ptr [ebp-496]
 	fild	dword ptr [ebp-488]
@@ -18843,15 +18939,15 @@ label003d:
 	fsub	dword ptr [ebp-496]
 	fmulp
 	faddp
-	float2int	dword1265
-	mov	[ebp-476],dword1265
-	sal	dword ptr [ebp-472],8
-	mov	dword1270,[ebp-472]
-	add	dword1270,[ebp-476]
-	mov	[ebp-468],dword1270
-	mov	dword1273,[ebp-456]
-	mov	dword1275,[ebp-468]
-	mov	[dword1273],dword1275
+	float2int	dword1280
+	mov	[ebp-476],dword1280
+	mov	dword1284,[ebp-472]
+	sal	dword1284,8
+	add	dword1284,[ebp-476]
+	mov	[ebp-468],dword1284
+	mov	dword1288,[ebp-456]
+	mov	dword1290,[ebp-468]
+	mov	[dword1288],dword1290
 label003c:
 	fld	dword ptr [ebp-440]
 	fadd	dword ptr [ebp-432]
@@ -18861,8 +18957,8 @@ label003c:
 	fstp	dword ptr [ebp-436]
 label003a:
 	add	dword ptr [ebp-456],4
-	mov	dword1282,[ebp-456]
-	cmp	dword1282,[ebp-460]
+	mov	dword1297,[ebp-456]
+	cmp	dword1297,[ebp-460]
 	jl	label0039
 label003b:
 label003e:

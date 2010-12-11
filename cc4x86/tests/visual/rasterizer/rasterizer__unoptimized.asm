@@ -1249,14 +1249,16 @@ __rasterize_horiz_line proc
 	mov	dword3,dword ptr [__pitch]
 	imul	dword3,[ebp+16]
 	add	dword3,dword ptr [__videomem]
-	sal	dword ptr [ebp+8],2
-	add	dword3,[ebp+8]
+	mov	dword7,[ebp+8]
+	sal	dword7,2
+	add	dword3,dword7
 	mov	[ebp-4],dword3
-	sal	dword ptr [ebp+12],2
-	mov	dword11,[ebp-4]
-	add	dword11,[ebp+12]
-	sal	dword ptr [ebp+8],2
-	sub	dword11,[ebp+8]
+	mov	dword11,[ebp+12]
+	sal	dword11,2
+	add	dword11,[ebp-4]
+	mov	dword15,[ebp+8]
+	sal	dword15,2
+	sub	dword11,dword15
 	mov	[ebp-8],dword11
 label0000:
 	push_all
@@ -1265,35 +1267,35 @@ label0000:
 	call	__tex2d
 	restore_stack	8
 	pop_all
-	read_retval	dword17
-	mov	[ebp-12],dword17
-	sar	dword ptr [ebp-12],24
-	mov	dword22,[ebp-12]
-	and	dword22,255
-	mov	[ebp-40],dword22
+	read_retval	dword19
+	mov	[ebp-12],dword19
+	mov	dword23,[ebp-12]
+	sar	dword23,24
+	and	dword23,255
+	mov	[ebp-40],dword23
 	cmp	dword ptr [ebp-40],0
 	je	label0003
 	fild	dword ptr [ebp-40]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-44]
-	mov	dword29,[ebp-4]
-	mov	dword31,[dword29]
-	mov	[ebp-28],dword31
-	mov	dword34,[ebp-28]
-	and	dword34,65280
-	sar	dword34,8
-	mov	[ebp-32],dword34
-	mov	dword39,[ebp-28]
-	and	dword39,255
-	mov	[ebp-36],dword39
-	mov	dword43,[ebp-12]
-	and	dword43,65280
-	sar	dword43,8
-	mov	[ebp-20],dword43
-	mov	dword48,[ebp-12]
-	and	dword48,255
-	mov	[ebp-24],dword48
+	mov	dword31,[ebp-4]
+	mov	dword33,[dword31]
+	mov	[ebp-28],dword33
+	mov	dword36,[ebp-28]
+	and	dword36,65280
+	sar	dword36,8
+	mov	[ebp-32],dword36
+	mov	dword41,[ebp-28]
+	and	dword41,255
+	mov	[ebp-36],dword41
+	mov	dword45,[ebp-12]
+	and	dword45,65280
+	sar	dword45,8
+	mov	[ebp-20],dword45
+	mov	dword50,[ebp-12]
+	and	dword50,255
+	mov	[ebp-24],dword50
 	fild	dword ptr [ebp-20]
 	fmul	dword ptr [ebp-44]
 	fild	dword ptr [ebp-32]
@@ -1301,8 +1303,8 @@ label0000:
 	fsub	dword ptr [ebp-44]
 	fmulp
 	faddp
-	float2int	dword54
-	mov	[ebp-20],dword54
+	float2int	dword56
+	mov	[ebp-20],dword56
 	fild	dword ptr [ebp-24]
 	fmul	dword ptr [ebp-44]
 	fild	dword ptr [ebp-36]
@@ -1310,15 +1312,15 @@ label0000:
 	fsub	dword ptr [ebp-44]
 	fmulp
 	faddp
-	float2int	dword60
-	mov	[ebp-24],dword60
-	sal	dword ptr [ebp-20],8
-	mov	dword65,[ebp-20]
-	add	dword65,[ebp-24]
-	mov	[ebp-16],dword65
-	mov	dword68,[ebp-4]
-	mov	dword70,[ebp-16]
-	mov	[dword68],dword70
+	float2int	dword62
+	mov	[ebp-24],dword62
+	mov	dword66,[ebp-20]
+	sal	dword66,8
+	add	dword66,[ebp-24]
+	mov	[ebp-16],dword66
+	mov	dword70,[ebp-4]
+	mov	dword72,[ebp-16]
+	mov	[dword70],dword72
 label0003:
 	fld	dword ptr [ebp+20]
 	fadd	dword ptr [ebp+28]
@@ -1328,8 +1330,8 @@ label0003:
 	fstp	dword ptr [ebp+24]
 label0001:
 	add	dword ptr [ebp-4],4
-	mov	dword77,[ebp-4]
-	cmp	dword77,[ebp-8]
+	mov	dword79,[ebp-4]
+	cmp	dword79,[ebp-8]
 	jl	label0000
 label0002:
 	destroy_stack_frame
@@ -2447,49 +2449,52 @@ label0003:
 	add	dword15,dword18
 	push_arg	dword15,4
 	lea	dword19,[ebp-132]
-	sal	dword ptr [ebp-136],4
-	add	dword19,[ebp-136]
+	mov	dword22,[ebp-136]
+	sal	dword22,4
+	add	dword19,dword22
 	push_arg	dword19,4
 	call	__transform_to_screen_space
 	restore_stack	8
 	pop_all
-	lea	dword22,[ebp-132]
-	sal	dword ptr [ebp-136],4
-	add	dword22,[ebp-136]
-	add	dword22,8
-	mov	dword27,[ebp+8]
-	mov	dword30,[ebp-136]
-	imul	dword30,24
-	add	dword27,dword30
-	add	dword27,16
-	mov	dword32,[dword27]
-	mov	dword33,[dword27+4]
-	mov	[dword22],dword32
-	mov	[dword22+4],dword33
+	lea	dword23,[ebp-132]
+	mov	dword26,[ebp-136]
+	sal	dword26,4
+	add	dword23,dword26
+	add	dword23,8
+	mov	dword29,[ebp+8]
+	mov	dword32,[ebp-136]
+	imul	dword32,24
+	add	dword29,dword32
+	add	dword29,16
+	mov	dword34,[dword29]
+	mov	dword35,[dword29+4]
+	mov	[dword23],dword34
+	mov	[dword23+4],dword35
 	inc	dword ptr [ebp-136]
 	jmp	label0003
 label0004:
 	mov	dword ptr [ebp-136],2
 label0005:
 label0006:
-	mov	dword38,[ebp+8]
-	mov	dword40,[dword38+192]
-	dec	dword40
-	cmp	dword40,[ebp-136]
+	mov	dword40,[ebp+8]
+	mov	dword42,[dword40+192]
+	dec	dword42
+	cmp	dword42,[ebp-136]
 	jle	label0007
 	push_all
-	lea	dword42,[ebp-132]
-	sal	dword ptr [ebp-136],4
-	add	dword42,[ebp-136]
-	push_arg	dword42,4
+	lea	dword44,[ebp-132]
 	mov	dword47,[ebp-136]
-	dec	dword47
 	sal	dword47,4
-	lea	dword49,[ebp-132]
-	add	dword49,dword47
-	push_arg	dword49,4
-	lea	dword50,[ebp-132]
-	push_arg	dword50,4
+	add	dword44,dword47
+	push_arg	dword44,4
+	mov	dword50,[ebp-136]
+	dec	dword50
+	sal	dword50,4
+	lea	dword52,[ebp-132]
+	add	dword52,dword50
+	push_arg	dword52,4
+	lea	dword53,[ebp-132]
+	push_arg	dword53,4
 	call	__rasterize_triangle_2i
 	restore_stack	12
 	pop_all

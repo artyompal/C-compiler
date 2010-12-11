@@ -417,9 +417,16 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
         if (op2->op_loc == x86loc_address) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op2->op_type);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, op2);
-            unit_push_binary_instruction(insn, op1, &tmp);
         } else {
-            unit_push_binary_instruction(insn, op1, op2);
+            tmp = *op2;
+        }
+
+        if (op1->op_loc == x86loc_address) {
+            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
+            unit_push_binary_instruction(x86insn_int_mov, res, op1);
+            unit_push_binary_instruction(insn, res, &tmp);
+        } else {
+            unit_push_binary_instruction(insn, op1, &tmp);
         }
     } else if (op1->op_loc == x86loc_address) {
         if (op2->op_loc == x86loc_register && (insn == x86insn_int_add || insn == x86insn_int_imul)) {
