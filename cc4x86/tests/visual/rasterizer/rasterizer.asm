@@ -1376,13 +1376,15 @@ __rasterize_horiz_line proc
 	mov	esi,dword ptr [__pitch]
 	imul	esi,[ebp+16]
 	add	esi,dword ptr [__videomem]
-	sal	edi,2
-	add	esi,edi
-	sal	dword ptr [ebp+12],2
-	mov	ebx,esi
-	add	ebx,[ebp+12]
-	sal	edi,2
-	sub	ebx,edi
+	mov	eax,edi
+	sal	eax,2
+	add	esi,eax
+	mov	ebx,[ebp+12]
+	sal	ebx,2
+	add	ebx,esi
+	mov	eax,edi
+	sal	eax,2
+	sub	ebx,eax
 label0000:
 	mov	eax,[ebp+24]
 	mov	[ebp-48],eax
@@ -1415,8 +1417,8 @@ label0000:
 label0004:
 ; end of inline function _tex2d
 	mov	edx,[ebp-64]
-	sar	edx,24
 	mov	eax,edx
+	sar	eax,24
 	and	eax,255
 	mov	[ebp-40],eax
 	cmp	dword ptr [ebp-40],0
@@ -1460,8 +1462,8 @@ label0004:
 	fistp	dword ptr [ebp-68]
 	mov	eax,[ebp-68]
 	mov	[ebp-24],eax
-	sal	dword ptr [ebp-20],8
 	mov	eax,[ebp-20]
+	sal	eax,8
 	add	eax,[ebp-24]
 	mov	[esi],eax
 label0003:
@@ -1511,14 +1513,16 @@ __rasterize_horiz_line__unordered proc
 	mov	eax,dword ptr [__pitch]
 	imul	eax,[ebp-20]
 	add	eax,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	eax,[ebp-28]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	add	eax,ecx
 	mov	[ebp-32],eax
-	sal	dword ptr [ebp-24],2
-	mov	eax,[ebp-32]
-	add	eax,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	eax,[ebp-28]
+	mov	eax,[ebp-24]
+	sal	eax,2
+	add	eax,[ebp-32]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	sub	eax,ecx
 	mov	[ebp-36],eax
 label0002:
 	mov	eax,[ebp-12]
@@ -1553,8 +1557,8 @@ label0006:
 ; end of inline function _tex2d
 	mov	eax,[ebp-92]
 	mov	[ebp-40],eax
-	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
+	sar	eax,24
 	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
@@ -1600,8 +1604,8 @@ label0006:
 	fistp	dword ptr [ebp-96]
 	mov	eax,[ebp-96]
 	mov	[ebp-52],eax
-	sal	dword ptr [ebp-48],8
 	mov	eax,[ebp-48]
+	sal	eax,8
 	add	eax,[ebp-52]
 	mov	[ebp-44],eax
 	mov	eax,[ebp-32]
@@ -1639,14 +1643,16 @@ label0000:
 	mov	eax,dword ptr [__pitch]
 	imul	eax,[ebp-20]
 	add	eax,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	eax,[ebp-28]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	add	eax,ecx
 	mov	[ebp-32],eax
-	sal	dword ptr [ebp-24],2
-	mov	eax,[ebp-32]
-	add	eax,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	eax,[ebp-28]
+	mov	eax,[ebp-24]
+	sal	eax,2
+	add	eax,[ebp-32]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	sub	eax,ecx
 	mov	[ebp-36],eax
 label0008:
 	mov	eax,[ebp-12]
@@ -1681,8 +1687,8 @@ label000c:
 ; end of inline function _tex2d
 	mov	eax,[ebp-92]
 	mov	[ebp-40],eax
-	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
+	sar	eax,24
 	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
@@ -1728,8 +1734,8 @@ label000c:
 	fistp	dword ptr [ebp-96]
 	mov	eax,[ebp-96]
 	mov	[ebp-52],eax
-	sal	dword ptr [ebp-48],8
 	mov	eax,[ebp-48]
+	sal	eax,8
 	add	eax,[ebp-52]
 	mov	[ebp-44],eax
 	mov	eax,[ebp-32]
@@ -1791,14 +1797,16 @@ __rasterize_triangle_1i proc
 	mov	eax,dword ptr [__pitch]
 	imul	eax,[ebp-20]
 	add	eax,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	eax,[ebp-28]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	add	eax,ecx
 	mov	[ebp-32],eax
-	sal	dword ptr [ebp-24],2
-	mov	eax,[ebp-32]
-	add	eax,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	eax,[ebp-28]
+	mov	eax,[ebp-24]
+	sal	eax,2
+	add	eax,[ebp-32]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	sub	eax,ecx
 	mov	[ebp-36],eax
 label000a:
 	mov	eax,[ebp-12]
@@ -1833,8 +1841,8 @@ label000e:
 ; end of inline function _tex2d
 	mov	eax,[ebp-92]
 	mov	[ebp-40],eax
-	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
+	sar	eax,24
 	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
@@ -1880,8 +1888,8 @@ label000e:
 	fistp	dword ptr [ebp-96]
 	mov	eax,[ebp-96]
 	mov	[ebp-52],eax
-	sal	dword ptr [ebp-48],8
 	mov	eax,[ebp-48]
+	sal	eax,8
 	add	eax,[ebp-52]
 	mov	[ebp-44],eax
 	mov	eax,[ebp-32]
@@ -1923,14 +1931,16 @@ label0001:
 	mov	eax,dword ptr [__pitch]
 	imul	eax,[ebp-20]
 	add	eax,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	eax,[ebp-28]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	add	eax,ecx
 	mov	[ebp-32],eax
-	sal	dword ptr [ebp-24],2
-	mov	eax,[ebp-32]
-	add	eax,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	eax,[ebp-28]
+	mov	eax,[ebp-24]
+	sal	eax,2
+	add	eax,[ebp-32]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	sub	eax,ecx
 	mov	[ebp-36],eax
 label0010:
 	mov	eax,[ebp-12]
@@ -1965,8 +1975,8 @@ label0014:
 ; end of inline function _tex2d
 	mov	eax,[ebp-92]
 	mov	[ebp-40],eax
-	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
+	sar	eax,24
 	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
@@ -2012,8 +2022,8 @@ label0014:
 	fistp	dword ptr [ebp-96]
 	mov	eax,[ebp-96]
 	mov	[ebp-52],eax
-	sal	dword ptr [ebp-48],8
 	mov	eax,[ebp-48]
+	sal	eax,8
 	add	eax,[ebp-52]
 	mov	[ebp-44],eax
 	mov	eax,[ebp-32]
@@ -2053,14 +2063,16 @@ label0003:
 	mov	eax,dword ptr [__pitch]
 	imul	eax,[ebp-20]
 	add	eax,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	eax,[ebp-28]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	add	eax,ecx
 	mov	[ebp-32],eax
-	sal	dword ptr [ebp-24],2
-	mov	eax,[ebp-32]
-	add	eax,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	eax,[ebp-28]
+	mov	eax,[ebp-24]
+	sal	eax,2
+	add	eax,[ebp-32]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	sub	eax,ecx
 	mov	[ebp-36],eax
 label0016:
 	mov	eax,[ebp-12]
@@ -2095,8 +2107,8 @@ label001a:
 ; end of inline function _tex2d
 	mov	eax,[ebp-92]
 	mov	[ebp-40],eax
-	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
+	sar	eax,24
 	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
@@ -2142,8 +2154,8 @@ label001a:
 	fistp	dword ptr [ebp-96]
 	mov	eax,[ebp-96]
 	mov	[ebp-52],eax
-	sal	dword ptr [ebp-48],8
 	mov	eax,[ebp-48]
+	sal	eax,8
 	add	eax,[ebp-52]
 	mov	[ebp-44],eax
 	mov	eax,[ebp-32]
@@ -2191,14 +2203,16 @@ label0000:
 	mov	eax,dword ptr [__pitch]
 	imul	eax,[ebp-20]
 	add	eax,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	eax,[ebp-28]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	add	eax,ecx
 	mov	[ebp-32],eax
-	sal	dword ptr [ebp-24],2
-	mov	eax,[ebp-32]
-	add	eax,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	eax,[ebp-28]
+	mov	eax,[ebp-24]
+	sal	eax,2
+	add	eax,[ebp-32]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	sub	eax,ecx
 	mov	[ebp-36],eax
 label001c:
 	mov	eax,[ebp-12]
@@ -2233,8 +2247,8 @@ label0020:
 ; end of inline function _tex2d
 	mov	eax,[ebp-92]
 	mov	[ebp-40],eax
-	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
+	sar	eax,24
 	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
@@ -2280,8 +2294,8 @@ label0020:
 	fistp	dword ptr [ebp-96]
 	mov	eax,[ebp-96]
 	mov	[ebp-52],eax
-	sal	dword ptr [ebp-48],8
 	mov	eax,[ebp-48]
+	sal	eax,8
 	add	eax,[ebp-52]
 	mov	[ebp-44],eax
 	mov	eax,[ebp-32]
@@ -2327,14 +2341,16 @@ label0006:
 	mov	eax,dword ptr [__pitch]
 	imul	eax,[ebp-20]
 	add	eax,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	eax,[ebp-28]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	add	eax,ecx
 	mov	[ebp-32],eax
-	sal	dword ptr [ebp-24],2
-	mov	eax,[ebp-32]
-	add	eax,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	eax,[ebp-28]
+	mov	eax,[ebp-24]
+	sal	eax,2
+	add	eax,[ebp-32]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	sub	eax,ecx
 	mov	[ebp-36],eax
 label0022:
 	mov	eax,[ebp-12]
@@ -2369,8 +2385,8 @@ label0026:
 ; end of inline function _tex2d
 	mov	eax,[ebp-92]
 	mov	[ebp-40],eax
-	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
+	sar	eax,24
 	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
@@ -2416,8 +2432,8 @@ label0026:
 	fistp	dword ptr [ebp-96]
 	mov	eax,[ebp-96]
 	mov	[ebp-52],eax
-	sal	dword ptr [ebp-48],8
 	mov	eax,[ebp-48]
+	sal	eax,8
 	add	eax,[ebp-52]
 	mov	[ebp-44],eax
 	mov	eax,[ebp-32]
@@ -2461,14 +2477,16 @@ label0008:
 	mov	eax,dword ptr [__pitch]
 	imul	eax,[ebp-20]
 	add	eax,dword ptr [__videomem]
-	sal	dword ptr [ebp-28],2
-	add	eax,[ebp-28]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	add	eax,ecx
 	mov	[ebp-32],eax
-	sal	dword ptr [ebp-24],2
-	mov	eax,[ebp-32]
-	add	eax,[ebp-24]
-	sal	dword ptr [ebp-28],2
-	sub	eax,[ebp-28]
+	mov	eax,[ebp-24]
+	sal	eax,2
+	add	eax,[ebp-32]
+	mov	ecx,[ebp-28]
+	sal	ecx,2
+	sub	eax,ecx
 	mov	[ebp-36],eax
 label0028:
 	mov	eax,[ebp-12]
@@ -2503,8 +2521,8 @@ label002c:
 ; end of inline function _tex2d
 	mov	eax,[ebp-92]
 	mov	[ebp-40],eax
-	sar	dword ptr [ebp-40],24
 	mov	eax,[ebp-40]
+	sar	eax,24
 	and	eax,255
 	mov	[ebp-68],eax
 	cmp	dword ptr [ebp-68],0
@@ -2550,8 +2568,8 @@ label002c:
 	fistp	dword ptr [ebp-96]
 	mov	eax,[ebp-96]
 	mov	[ebp-52],eax
-	sal	dword ptr [ebp-48],8
 	mov	eax,[ebp-48]
+	sal	eax,8
 	add	eax,[ebp-52]
 	mov	[ebp-44],eax
 	mov	eax,[ebp-32]
