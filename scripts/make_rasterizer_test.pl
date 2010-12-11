@@ -21,6 +21,9 @@ run("cc4x86.exe --debug-disable-regalloc --output-file-name ..\\..\\tests\\visua
 # generate optimized listing with pseudo-registers
 run("cc4x86.exe --optimize --debug-disable-regalloc --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__pseudo_registers.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 
+# generate no-inline optimized listing with pseudo-registers
+run("cc4x86.exe --optimize --no-inline --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__no_inline.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
+
 # generate finally optimized listing
 run("cc4x86.exe --optimize ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 

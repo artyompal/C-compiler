@@ -865,7 +865,7 @@ void unit_codegen(void)
             x86_optimization_after_codegen(_curr_func);
         }
 
-        if (option_enable_optimization) {
+        if (option_enable_optimization && !option_no_inline) {
             x86_analyze_registers_usage(_curr_func);
             x86_inlining_analyze_function(_curr_func);
         }
@@ -873,7 +873,7 @@ void unit_codegen(void)
         allocator_finish_function();
     }
 
-    if (option_enable_optimization) {
+    if (option_enable_optimization && !option_no_inline) {
         for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
             x86_inlining_process_function(_curr_func);
             allocator_finish_function();

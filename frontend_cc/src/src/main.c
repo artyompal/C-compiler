@@ -19,6 +19,7 @@ struct option_decl {
     {"debug-disable-basic-opt", &option_debug_disable_basic_opt,    "don't optimize well-known sequences after code generation"},
     {"optimize",                &option_enable_optimization,        "enables code optimization"},
     {"use-sse2",                &option_use_sse2,                   "enables SSE2 code generation"},
+    {"no-inline",               &option_no_inline,                  "disables functions inlining"},
     {"debug-xml-dump",          &option_debug_xml_dump,             "dumps syntax tree as xml"},
     {"output-file-name",        0,                                  "lets to specify the name of the output file"},
     {NULL, NULL, NULL},
