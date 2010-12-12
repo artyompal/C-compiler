@@ -43,7 +43,7 @@ sub run_test2{
 		run_test($test_name, "release", "") &&
 		run_test($test_name, "release", "--optimize") &&
 		run_test($test_name, "debug", "") &&
-		run_test($test_name, "debug", "--optimize --no-inline");
+		run_test($test_name, "debug", "--optimize --no-inline") &&
 		run_test($test_name, "debug", "--optimize");
 }
 
@@ -68,7 +68,7 @@ if (
 ) {
 	print ("ALL TESTS PASSED\n");
 } else {
-	print ("TESTS FAILED\n");
+	print ("TEST FAILED\n");
 }
 
 

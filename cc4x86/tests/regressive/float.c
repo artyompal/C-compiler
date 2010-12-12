@@ -1,7 +1,7 @@
 
 
-float fabs(float x) { return (x >= 0 ? x : -x); }
-int eq(double a, double b) { return (fabs(a-b) < 0.001f); }
+static float fabs(float x) { return (x >= 0 ? x : -x); }
+static int eq(double a, double b) { return (fabs(a-b) < 0.001f); }
 
 int test()
 {

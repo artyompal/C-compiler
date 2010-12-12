@@ -77,12 +77,12 @@ _rasterizer_init proc
 	fild	dword ptr [ebp+16]
 	fdivp
 	fstp	dword ptr [ebp-32]
-	mov	eax,[ebp+32]
-	mov	[ebp-36],eax
-	mov	eax,[ebp+28]
-	mov	[ebp-40],eax
-	mov	eax,[ebp+24]
-	mov	[ebp-44],eax
+	fld	dword ptr [ebp+32]
+	fstp	dword ptr [ebp-36]
+	fld	dword ptr [ebp+28]
+	fstp	dword ptr [ebp-40]
+	fld	dword ptr [ebp+24]
+	fstp	dword ptr [ebp-44]
 	lea	eax,dword ptr [__mvproj_matrix]
 	mov	[ebp-48],eax
 ; start of inline function matrix4f_make_perspective
@@ -150,10 +150,10 @@ _rasterizer_init proc
 	fstp	dword ptr [eax+60]
 label0010:
 ; end of inline function matrix4f_make_perspective
-	mov	eax,[ebp+28]
-	mov	[ebp-60],eax
-	mov	eax,[ebp+24]
-	mov	[ebp-64],eax
+	fld	dword ptr [ebp+28]
+	fstp	dword ptr [ebp-60]
+	fld	dword ptr [ebp+24]
+	fstp	dword ptr [ebp-64]
 	fild	dword ptr [ebp+16]
 	fstp	dword ptr [ebp-68]
 	fild	dword ptr [ebp+12]
@@ -221,8 +221,8 @@ label0011:
 ; end of inline function matrix4f_make_viewport
 	fld1
 	fstp	dword ptr [ebp-12]
-	mov	eax,[ebp+24]
-	mov	[ebp-16],eax
+	fld	dword ptr [ebp+24]
+	fstp	dword ptr [ebp-16]
 	fldz
 	fstp	dword ptr [ebp-20]
 	fldz
@@ -258,8 +258,8 @@ label0000:
 label0001:
 	fld1
 	fstp	dword ptr [ebp-12]
-	mov	eax,[ebp-4]
-	mov	[ebp-16],eax
+	fld	dword ptr [ebp-4]
+	fstp	dword ptr [ebp-16]
 	fldz
 	fstp	dword ptr [ebp-20]
 	fldz
@@ -283,8 +283,8 @@ label0005:
 ; end of inline function vec4f_assign
 	fld1
 	fstp	dword ptr [ebp-12]
-	mov	eax,[ebp+28]
-	mov	[ebp-16],eax
+	fld	dword ptr [ebp+28]
+	fstp	dword ptr [ebp-16]
 	fldz
 	fstp	dword ptr [ebp-20]
 	fldz
@@ -320,8 +320,8 @@ label0002:
 label0003:
 	fld1
 	fstp	dword ptr [ebp-12]
-	mov	eax,[ebp-8]
-	mov	[ebp-16],eax
+	fld	dword ptr [ebp-8]
+	fstp	dword ptr [ebp-16]
 	fldz
 	fstp	dword ptr [ebp-20]
 	fldz
@@ -652,10 +652,10 @@ __rasterize_horiz_line proc
 	sal	eax,2
 	sub	ebx,eax
 label0000:
-	mov	eax,[ebp+24]
-	mov	[ebp-48],eax
-	mov	eax,[ebp+20]
-	mov	[ebp-52],eax
+	fld	dword ptr [ebp+24]
+	fstp	dword ptr [ebp-48]
+	fld	dword ptr [ebp+20]
+	fstp	dword ptr [ebp-52]
 ; start of inline function _tex2d
 	mov	eax,dword ptr [__texture_width]
 	dec	eax
@@ -1061,8 +1061,8 @@ label0012:
 	fld	dword ptr [ebp-128]
 	fdivp
 	fstp	dword ptr [ebp-60]
-	mov	eax,[ebp-60]
-	mov	[ebp-132],eax
+	fld	dword ptr [ebp-60]
+	fstp	dword ptr [ebp-132]
 	lea	eax,[ebp-40]
 	mov	[ebp-136],eax
 ; start of inline function vec4f_mul
@@ -1142,8 +1142,8 @@ label000a:
 	fstp	dword ptr [eax+4]
 label0008:
 ; end of inline function vec2f_subtract
-	mov	eax,[ebp-60]
-	mov	[ebp-88],eax
+	fld	dword ptr [ebp-60]
+	fstp	dword ptr [ebp-88]
 	lea	eax,[ebp-48]
 	mov	[ebp-92],eax
 ; start of inline function vec2f_mul
@@ -1222,12 +1222,12 @@ __transform_to_projection_space proc
 	mov	edi,[ebp+12]
 	fld1
 	fstp	dword ptr [ebp-20]
-	mov	eax,[edi+8]
-	mov	[ebp-24],eax
-	mov	eax,[edi+4]
-	mov	[ebp-28],eax
-	mov	eax,[edi]
-	mov	[ebp-32],eax
+	fld	dword ptr [edi+8]
+	fstp	dword ptr [ebp-24]
+	fld	dword ptr [edi+4]
+	fstp	dword ptr [ebp-28]
+	fld	dword ptr [edi]
+	fstp	dword ptr [ebp-32]
 	lea	eax,[ebp-16]
 	mov	[ebp-36],eax
 ; start of inline function vec4f_assign
@@ -2054,18 +2054,18 @@ label000e:
 	fsub	dword ptr [ebp-372]
 	fdivrp
 	fstp	dword ptr [ebp-388]
-	mov	eax,[ebp-388]
-	mov	[ebp-392],eax
-	mov	eax,[ebp-384]
-	mov	[ebp-396],eax
-	mov	eax,[ebp-380]
-	mov	[ebp-400],eax
-	mov	eax,[ebp-376]
-	mov	[ebp-404],eax
-	mov	eax,[ebp-372]
-	mov	[ebp-408],eax
-	mov	eax,[ebp-368]
-	mov	[ebp-412],eax
+	fld	dword ptr [ebp-388]
+	fstp	dword ptr [ebp-392]
+	fld	dword ptr [ebp-384]
+	fstp	dword ptr [ebp-396]
+	fld	dword ptr [ebp-380]
+	fstp	dword ptr [ebp-400]
+	fld	dword ptr [ebp-376]
+	fstp	dword ptr [ebp-404]
+	fld	dword ptr [ebp-372]
+	fstp	dword ptr [ebp-408]
+	fld	dword ptr [ebp-368]
+	fstp	dword ptr [ebp-412]
 	mov	eax,[ebp-364]
 	mov	[ebp-416],eax
 	mov	eax,[ebp-360]
@@ -2203,22 +2203,22 @@ label000f:
 	fild	dword ptr [ebp-708]
 	fdivp
 	fstp	dword ptr [ebp-388]
-	mov	eax,[ebp-388]
-	mov	[ebp-392],eax
-	mov	eax,[ebp-384]
-	mov	[ebp-396],eax
+	fld	dword ptr [ebp-388]
+	fstp	dword ptr [ebp-392]
+	fld	dword ptr [ebp-384]
+	fstp	dword ptr [ebp-396]
 	mov	eax,8
 	add	eax,[ebp-344]
 	add	eax,4
-	mov	ecx,[eax]
-	mov	[ebp-400],ecx
+	fld	dword ptr [eax]
+	fstp	dword ptr [ebp-400]
 	mov	eax,[ebp-344]
-	mov	ecx,[eax+8]
-	mov	[ebp-404],ecx
-	mov	eax,[ebp-380]
-	mov	[ebp-408],eax
-	mov	eax,[ebp-376]
-	mov	[ebp-412],eax
+	fld	dword ptr [eax+8]
+	fstp	dword ptr [ebp-404]
+	fld	dword ptr [ebp-380]
+	fstp	dword ptr [ebp-408]
+	fld	dword ptr [ebp-376]
+	fstp	dword ptr [ebp-412]
 	mov	eax,[ebp-344]
 	add	eax,4
 	mov	ecx,[eax]
@@ -2429,18 +2429,18 @@ label0011:
 	fsub	dword ptr [ebp-372]
 	fdivrp
 	fstp	dword ptr [ebp-388]
-	mov	eax,[ebp-388]
-	mov	[ebp-392],eax
-	mov	eax,[ebp-384]
-	mov	[ebp-396],eax
-	mov	eax,[ebp-380]
-	mov	[ebp-400],eax
-	mov	eax,[ebp-376]
-	mov	[ebp-404],eax
-	mov	eax,[ebp-372]
-	mov	[ebp-408],eax
-	mov	eax,[ebp-368]
-	mov	[ebp-412],eax
+	fld	dword ptr [ebp-388]
+	fstp	dword ptr [ebp-392]
+	fld	dword ptr [ebp-384]
+	fstp	dword ptr [ebp-396]
+	fld	dword ptr [ebp-380]
+	fstp	dword ptr [ebp-400]
+	fld	dword ptr [ebp-376]
+	fstp	dword ptr [ebp-404]
+	fld	dword ptr [ebp-372]
+	fstp	dword ptr [ebp-408]
+	fld	dword ptr [ebp-368]
+	fstp	dword ptr [ebp-412]
 	mov	eax,[ebp-364]
 	mov	[ebp-416],eax
 	mov	eax,[ebp-360]
