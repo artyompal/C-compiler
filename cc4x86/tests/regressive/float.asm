@@ -27,67 +27,6 @@ public	___unnamed_double_9
 
 .code
 
-_fabs proc
-	push	ebp
-	mov	ebp,esp
-	sub	esp,4
-	fldz
-	fld	dword ptr [ebp+8]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0000
-	fld	dword ptr [ebp+8]
-	fstp	dword ptr [ebp-4]
-	jmp	label0001
-label0000:
-	fld	dword ptr [ebp+8]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-4]
-label0001:
-	fld	dword ptr [ebp-4]
-	add	esp,4
-	pop	ebp
-	ret
-_fabs endp	
-
-_eq proc
-	push	ebp
-	mov	ebp,esp
-	sub	esp,12
-	fld	qword ptr [ebp+8]
-	fsub	qword ptr [ebp+16]
-	fstp	dword ptr [ebp-4]
-; start of inline function fabs
-	fldz
-	fld	dword ptr [ebp-4]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0000
-	fld	dword ptr [ebp-4]
-	fstp	dword ptr [ebp-8]
-	jmp	label0001
-label0000:
-	fld	dword ptr [ebp-4]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-8]
-label0001:
-	fld	dword ptr [ebp-4]
-	fstp	dword ptr [ebp-12]
-label0002:
-; end of inline function fabs
-	fld	dword ptr [ebp-12]
-	fld	dword ptr [___unnamed_float_0]
-	fucomip	st,st(1)
-	fstp	st
-	seta	al
-	movzx	eax,al
-	add	esp,12
-	pop	ebp
-	ret
-_eq endp	
-
 _test proc
 	push	ebp
 	mov	ebp,esp
@@ -101,8 +40,8 @@ _test proc
 	fstp	qword ptr [ebp-20]
 	fld	qword ptr [___unnamed_double_3]
 	fstp	qword ptr [ebp-28]
-	mov	eax,[ebp-20]
-	mov	[ebp-36],eax
+	fld	qword ptr [ebp-20]
+	fstp	qword ptr [ebp-36]
 ; start of inline function eq
 	fld	qword ptr [ebp-36]
 	fsub	qword ptr [ebp-28]
@@ -148,8 +87,8 @@ label0000:
 	fstp	qword ptr [ebp-20]
 	fld	qword ptr [___unnamed_double_4]
 	fstp	qword ptr [ebp-28]
-	mov	eax,[ebp-20]
-	mov	[ebp-36],eax
+	fld	qword ptr [ebp-20]
+	fstp	qword ptr [ebp-36]
 ; start of inline function eq
 	fld	qword ptr [ebp-36]
 	fsub	qword ptr [ebp-28]
@@ -195,8 +134,8 @@ label0001:
 	fstp	qword ptr [ebp-20]
 	fld	qword ptr [___unnamed_double_5]
 	fstp	qword ptr [ebp-28]
-	mov	eax,[ebp-20]
-	mov	[ebp-36],eax
+	fld	qword ptr [ebp-20]
+	fstp	qword ptr [ebp-36]
 ; start of inline function eq
 	fld	qword ptr [ebp-36]
 	fsub	qword ptr [ebp-28]
@@ -242,8 +181,8 @@ label0002:
 	fstp	qword ptr [ebp-20]
 	fld	qword ptr [___unnamed_double_6]
 	fstp	qword ptr [ebp-28]
-	mov	eax,[ebp-20]
-	mov	[ebp-36],eax
+	fld	qword ptr [ebp-20]
+	fstp	qword ptr [ebp-36]
 ; start of inline function eq
 	fld	qword ptr [ebp-36]
 	fsub	qword ptr [ebp-28]
