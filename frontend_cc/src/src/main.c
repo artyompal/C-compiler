@@ -20,7 +20,7 @@ struct option_decl {
     {"optimize",                &option_enable_optimization,        "enables code optimization"},
     {"use-sse2",                &option_use_sse2,                   "enables SSE2 code generation"},
     {"no-inline",               &option_no_inline,                  "disables functions inlining"},
-    {"debug-xml-dump",          &option_debug_xml_dump,             "dumps syntax tree as xml"},
+    {"debug-xml-dump",          &option_debug_xml_dump,             "dumps XML syntax tree"},
     {"output-file-name",        0,                                  "lets to specify the name of the output file"},
     {NULL, NULL, NULL},
 };
@@ -30,7 +30,7 @@ const char *next_option;
 
 static void _print_version(void)
 {
-    puts("cc4x86 version 0.03");
+    puts("cc4x86 version 0.04");
 }
 
 static void _print_help(const char *program_name)

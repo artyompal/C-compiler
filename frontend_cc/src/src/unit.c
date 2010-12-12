@@ -685,7 +685,13 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
                 if (val->expr_code == code_expr_int_constant) {
                     x86data_declare_initialized_int(sym, val->data.int_const);
                 } else if (val->expr_code == code_expr_float_constant) {
-                    x86data_declare_initialized_float(sym, val->data.float_const.val);
+                    if (val->expr_type->type_code == code_type_float) {
+                        x86data_declare_initialized_float(sym, val->data.float_const.val);
+                    } else if (val->expr_type->type_code == code_type_double) {
+                        x86data_declare_initialized_double(sym, val->data.float_const.val);
+                    } else {
+                        ASSERT(FALSE);
+                    }
                 } else if (val->expr_code == code_expr_string) {
                     if (sym->sym_type->type_code == code_type_unsized_array
                         && sym->sym_type->data.array.item_type->type_code == code_type_char)

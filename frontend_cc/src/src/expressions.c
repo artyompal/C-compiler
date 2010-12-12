@@ -227,7 +227,6 @@ static expression *_evaluate_const_float_unary_expression(arithmetic_opcode opco
     if (opcode == op_convert_float2int) {
         return expr_create_from_integer((int) value, type);
     } else {
-        ASSERT(opcode == op_neg);
         return expr_create_from_float(-value, type);
     }
 }

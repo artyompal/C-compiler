@@ -181,16 +181,13 @@ typedef struct expression_decl {
 #define IS_FLOAT_CONSTANT_EXPR(EXPR)((EXPR)->expr_code == code_expr_float_constant)
 
 #define IS_UNARY_OP(OP)             ((OP) >= op_neg)
-#define IS_BINARY_OP(OP)            ((OP) >= 0 && (OP) < op_neg)
+#define IS_BINARY_OP(OP)            ((OP) >= 0 && (OP) <= op_or_assign)
 #define IS_COMPARE_OP(OP)           ((OP) >= op_less_then && (OP) <= op_non_equal)
-#define IS_ASSIGN_OP(OP)            ((OP) >= op_assign && (OP) < op_neg)
-#define IS_SHIFT_OP(OP)             ((OP) == op_shl || (OP) == op_shr ||(OP) == op_shl_assign || (OP) == op_shr_assign)
+#define IS_ASSIGN_OP(OP)            ((OP) >= op_assign && (OP) <= op_or_assign)
+#define IS_SHIFT_OP(OP)             ((OP) == op_shl || (OP) == op_shr)
 #define IS_INCREMENT_DECREMENT(OP)  ((OP) >= op_increment && (OP) <= op_post_decrement)
 #define IS_SELF_MOD_OP(OP)          (IS_ASSIGN_OP(OP) || IS_INCREMENT_DECREMENT(OP))
 #define IS_POST_OPERATION(OP)       ((OP) == op_post_increment || (OP) == op_post_decrement)
-#define IS_MULTIPLY_OP(OP)          ((OP) == op_mul || (OP) == op_mul_assign)
-#define IS_DIVISION_OP(OP)          ((OP) == op_div || (OP) == op_div_assign)
-#define IS_MODULO_OP(OP)            ((OP) == op_mod || (OP) == op_mod_assign)
 #define IS_INTERNAL(OP)             ((OP) >= op_convert_int2float && (OP) <= op_notnot)
 
 

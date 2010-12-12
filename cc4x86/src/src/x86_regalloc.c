@@ -3,7 +3,6 @@
 #include "x86_bincode.h"
 #include "x86_regalloc.h"
 #include "x86_stack_frame.h"
-#include "x86_text_output.h"
 
 
 typedef struct register_map_decl {
@@ -309,6 +308,7 @@ static void _maintain_fpu_stack(function_desc *function)
 {
     x86_instruction *insn, *next_insn;
     int fp_registers_cnt = 0, i, last_pusha_count = 0, num, sz, tmp = 0;
+    BOOL has_float_res = _type_is_func_returning_float(function->func_sym->sym_type);
 
     for (insn = function->func_binary_code; insn; insn = next_insn) {
         next_insn = insn->in_next;
@@ -405,7 +405,8 @@ static void _maintain_fpu_stack(function_desc *function)
         } else {
             // вычисляем вершину FP-стека после текущей инструкции
             if (insn->in_code == x86insn_fpu_ld || insn->in_code == x86insn_fpu_ld_int
-                || IS_FLOAT_UNARY_ARITHM_INSN(insn->in_code)) {
+                || IS_FLOAT_UNARY_ARITHM_INSN(insn->in_code)
+                || insn->in_code == x86insn_set_retval && has_float_res && OP_IS_ADDRESS(insn->in_op1)) {
                     fp_registers_cnt++;
             } else if (insn->in_code == x86insn_fpu_stp || insn->in_code == x86insn_fpu_stp_int
                 || IS_FLOAT_BINARY_ARITHM_INSN(insn->in_code) && insn->in_op1.op_loc == x86loc_register) {
@@ -422,7 +423,7 @@ static void _maintain_fpu_stack(function_desc *function)
 
     ASSERT(last_pusha_count == 0);
 
-    if (_type_is_func_returning_float(function->func_sym->sym_type)) {
+    if (has_float_res) {
         ASSERT(fp_registers_cnt == 1);
     } else {
         ASSERT(fp_registers_cnt == 0);
@@ -702,14 +703,14 @@ static void _handle_pseudo_instructions(function_desc *function)
                 }
             } else {
                 if (insn->in_op1.op_loc == x86loc_address) {
-                    unit_push_unary_instruction(x86insn_fpu_ld, &insn->in_op1);
+                    bincode_insert_unary_instruction(function, insn, x86insn_fpu_ld, &insn->in_op1);
                 } else {
                     if (!option_use_sse2) {
                         // результат уже находится в st(0)
                     } else {
                         // результат в xmm0
                         bincode_create_operand_from_register(&tmp, x86op_float, 0);
-                        bincode_insert_instruction(function, insn, x86insn_sse_mov, &tmp, &insn->in_op1);
+                        bincode_insert_instruction(function, insn, x86insn_sse_movss, &tmp, &insn->in_op1);
                     }
                 }
             }

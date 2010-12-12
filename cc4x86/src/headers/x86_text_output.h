@@ -19,7 +19,8 @@ void    text_output_begin_text_section          (void);
 
 void    text_output_declare_uninitialized_bytes (symbol *sym, int size);
 void    text_output_declare_initialized_int     (symbol *sym, long value);
-void    text_output_declare_initialized_float   (symbol *sym, double value);
+void    text_output_declare_initialized_float   (symbol *sym, float value);
+void    text_output_declare_initialized_double  (symbol *sym, double value);
 void    text_output_declare_initialized_string  (symbol *sym, const char *value);
 void    text_output_declare_ptr_to_relocable    (symbol *ptr_sym, symbol *rel_sym);
 
