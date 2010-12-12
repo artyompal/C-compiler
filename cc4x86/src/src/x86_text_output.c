@@ -51,9 +51,15 @@ void text_output_declare_initialized_int(symbol *sym, long value)
     fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
 
-void text_output_declare_initialized_float(symbol *sym, double value)
+void text_output_declare_initialized_float(symbol *sym, float value)
 {
     fprintf(asm_file, "_%s\tdd\t%f\n", sym->sym_name, value);
+    fprintf(asm_file, "public\t_%s\n", sym->sym_name);
+}
+
+void text_output_declare_initialized_double(symbol *sym, double value)
+{
+    fprintf(asm_file, "_%s\tdq\t%f\n", sym->sym_name, value);
     fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
 
@@ -169,13 +175,20 @@ static const char *_x86_instructions[] = {
     "float2int",
 
     // SSE2 арифметика:
-    "movss",
     "cvtsi2ss",
     "cvttss2si",
+
+    "movss",
     "addss",
     "subss",
     "mulss",
     "divss",
+
+    "movsd",
+    "addsd",
+    "subsd",
+    "mulsd",
+    "divsd",
 
     // Инструкции для внутреннего пользования.
     // арифметические модифицирующие:

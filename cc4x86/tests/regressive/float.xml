@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unit>
+  <general>
+    <source_module>..\float.c</source_module>
+  </general>
+  <functions_list>
+    <function>
+      <name>fabs</name>
+      <parameters>
+        <parameter name="x" type="float"/>
+      </parameters>
+      <local_variables>
+        <variable name="__tmp0" type="float"/>
+      </local_variables>
+      <body>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0000" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="2" code="greater_equal">
+            <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="0.000000"/>
+          </condition>
+        </expression>
+        <expression type="float" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="__tmp0"/>
+          <operand_2 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
+        <expression type="float" lvalue="no" complexity="3" code="assign">
+          <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="__tmp0"/>
+          <operand_2 type="float" lvalue="no" complexity="2" code="neg">
+            <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+          </operand_2>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="float" lvalue="yes" complexity="1" code="variable" name="__tmp0"/>
+        </expression>
+      </body>
+    </function>
+    <function>
+      <name>eq</name>
+      <parameters>
+        <parameter name="a" type="double"/>
+        <parameter name="b" type="double"/>
+      </parameters>
+      <body>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="20" code="less_then">
+            <operand_1 type="float" lvalue="no" complexity="19" code="function call">
+              <func_address type="float (float)" lvalue="yes" complexity="1" code="variable" name="fabs"/>
+              <func_argument_0 type="float" lvalue="no" complexity="3" code="convert_double2float">
+                <operand_1 type="double" lvalue="no" complexity="2" code="sub">
+                  <operand_1 type="double" lvalue="yes" complexity="1" code="variable" name="a"/>
+                  <operand_2 type="double" lvalue="yes" complexity="1" code="variable" name="b"/>
+                </operand_1>
+              </func_argument_0>
+            </operand_1>
+            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="0.001000"/>
+          </retvalue>
+        </expression>
+      </body>
+    </function>
+    <function>
+      <name>test</name>
+      <parameters>
+      </parameters>
+      <local_variables>
+        <variable name="x" type="float"/>
+        <variable name="y" type="double"/>
+        <variable name="z" type="double"/>
+      </local_variables>
+      <body>
+        <expression type="float" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="2.000000"/>
+        </expression>
+        <expression type="double" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="double" lvalue="yes" complexity="1" code="variable" name="y"/>
+          <operand_2 type="double" lvalue="no" complexity="1" code="float literal" value="3.000000"/>
+        </expression>
+        <expression type="double" lvalue="no" complexity="4" code="assign">
+          <operand_1 type="double" lvalue="yes" complexity="1" code="variable" name="z"/>
+          <operand_2 type="double" lvalue="no" complexity="3" code="add">
+            <operand_1 type="double" lvalue="no" complexity="2" code="convert_float2double">
+              <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+            </operand_1>
+            <operand_2 type="double" lvalue="yes" complexity="1" code="variable" name="y"/>
+          </operand_2>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0000" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="19" code="not">
+            <operand_1 type="int" lvalue="no" complexity="18" code="function call">
+              <func_address type="int (double, double)" lvalue="yes" complexity="1" code="variable" name="eq"/>
+              <func_argument_0 type="double" lvalue="yes" complexity="1" code="variable" name="z"/>
+              <func_argument_1 type="double" lvalue="no" complexity="1" code="float literal" value="5.000000"/>
+            </operand_1>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
+        <expression type="double" lvalue="no" complexity="4" code="assign">
+          <operand_1 type="double" lvalue="yes" complexity="1" code="variable" name="z"/>
+          <operand_2 type="double" lvalue="no" complexity="3" code="sub">
+            <operand_1 type="double" lvalue="no" complexity="2" code="convert_float2double">
+              <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+            </operand_1>
+            <operand_2 type="double" lvalue="yes" complexity="1" code="variable" name="y"/>
+          </operand_2>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0001" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="19" code="not">
+            <operand_1 type="int" lvalue="no" complexity="18" code="function call">
+              <func_address type="int (double, double)" lvalue="yes" complexity="1" code="variable" name="eq"/>
+              <func_argument_0 type="double" lvalue="yes" complexity="1" code="variable" name="z"/>
+              <func_argument_1 type="double" lvalue="no" complexity="1" code="float literal" value="-1.000000"/>
+            </operand_1>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="double" lvalue="no" complexity="4" code="assign">
+          <operand_1 type="double" lvalue="yes" complexity="1" code="variable" name="z"/>
+          <operand_2 type="double" lvalue="no" complexity="3" code="mul">
+            <operand_1 type="double" lvalue="no" complexity="2" code="convert_float2double">
+              <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+            </operand_1>
+            <operand_2 type="double" lvalue="yes" complexity="1" code="variable" name="y"/>
+          </operand_2>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0002" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="19" code="not">
+            <operand_1 type="int" lvalue="no" complexity="18" code="function call">
+              <func_address type="int (double, double)" lvalue="yes" complexity="1" code="variable" name="eq"/>
+              <func_argument_0 type="double" lvalue="yes" complexity="1" code="variable" name="z"/>
+              <func_argument_1 type="double" lvalue="no" complexity="1" code="float literal" value="6.000000"/>
+            </operand_1>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="3"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0002"/>
+        <expression type="double" lvalue="no" complexity="4" code="assign">
+          <operand_1 type="double" lvalue="yes" complexity="1" code="variable" name="z"/>
+          <operand_2 type="double" lvalue="no" complexity="3" code="div">
+            <operand_1 type="double" lvalue="no" complexity="2" code="convert_float2double">
+              <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+            </operand_1>
+            <operand_2 type="double" lvalue="yes" complexity="1" code="variable" name="y"/>
+          </operand_2>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0003" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="19" code="not">
+            <operand_1 type="int" lvalue="no" complexity="18" code="function call">
+              <func_address type="int (double, double)" lvalue="yes" complexity="1" code="variable" name="eq"/>
+              <func_argument_0 type="double" lvalue="yes" complexity="1" code="variable" name="z"/>
+              <func_argument_1 type="double" lvalue="no" complexity="1" code="float literal" value="0.666000"/>
+            </operand_1>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="4"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
+        <expression type="float" lvalue="no" complexity="2" code="add_assign">
+          <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="2.000000"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0004" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="20" code="not">
+            <operand_1 type="int" lvalue="no" complexity="19" code="function call">
+              <func_address type="int (double, double)" lvalue="yes" complexity="1" code="variable" name="eq"/>
+              <func_argument_0 type="double" lvalue="no" complexity="2" code="convert_float2double">
+                <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+              </func_argument_0>
+              <func_argument_1 type="double" lvalue="no" complexity="1" code="float literal" value="4.000000"/>
+            </operand_1>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="5"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0004"/>
+        <expression type="float" lvalue="no" complexity="2" code="sub_assign">
+          <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="1.000000"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0005" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="20" code="not">
+            <operand_1 type="int" lvalue="no" complexity="19" code="function call">
+              <func_address type="int (double, double)" lvalue="yes" complexity="1" code="variable" name="eq"/>
+              <func_argument_0 type="double" lvalue="no" complexity="2" code="convert_float2double">
+                <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+              </func_argument_0>
+              <func_argument_1 type="double" lvalue="no" complexity="1" code="float literal" value="3.000000"/>
+            </operand_1>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="6"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0005"/>
+        <expression type="float" lvalue="no" complexity="2" code="mul_assign">
+          <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="2.000000"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0006" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="20" code="not">
+            <operand_1 type="int" lvalue="no" complexity="19" code="function call">
+              <func_address type="int (double, double)" lvalue="yes" complexity="1" code="variable" name="eq"/>
+              <func_argument_0 type="double" lvalue="no" complexity="2" code="convert_float2double">
+                <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+              </func_argument_0>
+              <func_argument_1 type="double" lvalue="no" complexity="1" code="float literal" value="6.000000"/>
+            </operand_1>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="7"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0006"/>
+        <expression type="float" lvalue="no" complexity="2" code="div_assign">
+          <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="3.000000"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0007" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="20" code="not">
+            <operand_1 type="int" lvalue="no" complexity="19" code="function call">
+              <func_address type="int (double, double)" lvalue="yes" complexity="1" code="variable" name="eq"/>
+              <func_argument_0 type="double" lvalue="no" complexity="2" code="convert_float2double">
+                <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
+              </func_argument_0>
+              <func_argument_1 type="double" lvalue="no" complexity="1" code="float literal" value="2.000000"/>
+            </operand_1>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="8"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0007"/>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
+        </expression>
+      </body>
+    </function>
+  </functions_list>
+</unit>

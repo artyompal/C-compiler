@@ -195,13 +195,20 @@ typedef enum x86_instruction_code_decl {
     x86insn_fpu_float2int,
 
     // SSE2 арифметика:
-    x86insn_sse_mov,
     x86insn_sse_load_int,
     x86insn_sse_store_int,
-    x86insn_sse_add,
-    x86insn_sse_sub,
-    x86insn_sse_mul,
-    x86insn_sse_div,
+
+    x86insn_sse_movss,
+    x86insn_sse_addss,
+    x86insn_sse_subss,
+    x86insn_sse_mulss,
+    x86insn_sse_divss,
+
+    x86insn_sse_movsd,
+    x86insn_sse_addsd,
+    x86insn_sse_subsd,
+    x86insn_sse_mulsd,
+    x86insn_sse_divsd,
 
     // Инструкции для внутреннего пользования.
     // арифметические модифицирующие:

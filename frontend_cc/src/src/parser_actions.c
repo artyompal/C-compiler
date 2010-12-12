@@ -266,7 +266,7 @@ parameter *parser_create_unnamed_parameter(decl_specifier spec, data_type *type)
 {
     parameter *res;
 
-    if (!type) { return NULL; }
+    type_apply_decl_specifiers_to_type(spec, &type);
 
     res                 = allocator_alloc(allocator_global_pool, sizeof(parameter));
 

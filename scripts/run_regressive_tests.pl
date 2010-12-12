@@ -43,6 +43,7 @@ sub run_test2{
 		run_test($test_name, "release", "") &&
 		run_test($test_name, "release", "--optimize") &&
 		run_test($test_name, "debug", "") &&
+		run_test($test_name, "debug", "--optimize --no-inline");
 		run_test($test_name, "debug", "--optimize");
 }
 
@@ -61,8 +62,9 @@ if (
 	run_test2("idiv.c") and
 	run_test2("mul_div.c") and
 	run_test2("shl_shr.c") and
-	run_test2("string_literal.c") and
-	run_test2("byte_word.c")
+	run_test2("float.c")
+#	run_test2("string_literal.c") and
+#	run_test2("byte_word.c")
 ) {
 	print ("ALL TESTS PASSED\n");
 } else {

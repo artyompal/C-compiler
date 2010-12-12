@@ -20,7 +20,7 @@ typedef struct float_symbol_decl {
     symbol *    sym;
 } float_symbol;
 
-static hash_id float_table;
+static hash_id float_table, double_table;
 
 
 static unsigned int float_hash(float_symbol *key)
@@ -36,7 +36,8 @@ static int float_equal(float_symbol *key1, float_symbol *key2)
 
 void x86data_init(void)
 {
-    float_table = hash_init((hash_function) float_hash, (hash_equal_function) float_equal);
+    float_table     = hash_init((hash_function) float_hash, (hash_equal_function) float_equal);
+    double_table    = hash_init((hash_function) float_hash, (hash_equal_function) float_equal);
 }
 
 
@@ -56,7 +57,7 @@ void x86data_enter_text_section(void)
     }
 }
 
-symbol *x86data_insert_float_constant(double constant)
+symbol *x86data_insert_float_constant(float constant)
 {
     float_symbol *key = allocator_alloc(allocator_global_pool, sizeof(float_symbol));
     float_symbol *found;
@@ -79,6 +80,29 @@ symbol *x86data_insert_float_constant(double constant)
     return sym;
 }
 
+symbol *x86data_insert_double_constant(double constant)
+{
+    float_symbol *key = allocator_alloc(allocator_global_pool, sizeof(float_symbol));
+    float_symbol *found;
+    symbol *sym;
+
+    key->value  = constant;
+    found       = hash_find(double_table, key);
+
+    if (found) {
+        allocator_free(allocator_global_pool, key, sizeof(float_symbol));
+        return found->sym;
+    }
+
+    sym         = symbol_create_unnamed("double", code_sym_variable, type_create_arithmetic(code_type_double));
+    key->sym    = sym;
+    hash_insert(double_table, key);
+
+    _ensure_data_section();
+    text_output_declare_initialized_double(sym, constant);
+    return sym;
+}
+
 void x86data_declare_uninitialized_bytes(symbol *sym, int size)
 {
     _ensure_data_section();
@@ -91,10 +115,16 @@ void x86data_declare_initialized_int(symbol *sym, long value)
     text_output_declare_initialized_int(sym, value);
 }
 
-void x86data_declare_initialized_float(symbol *sym, double value)
+void x86data_declare_initialized_float(symbol *sym, float value)
 {
     _ensure_data_section();
     text_output_declare_initialized_float(sym, value);
+}
+
+void x86data_declare_initialized_double(symbol *sym, double value)
+{
+    _ensure_data_section();
+    text_output_declare_initialized_double(sym, value);
 }
 
 void x86data_declare_initialized_string(symbol *sym, const char *value)

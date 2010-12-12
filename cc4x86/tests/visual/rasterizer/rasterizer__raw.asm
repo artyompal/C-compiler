@@ -50,8 +50,8 @@ __texture_width	dd	?
 public	__texture_width
 __texture_height	dd	?
 public	__texture_height
-___unnamed_float_0	dd	0.000100
-public	___unnamed_float_0
+___unnamed_double_0	dq	0.000100
+public	___unnamed_double_0
 ___unnamed_float_1	dd	2.000000
 public	___unnamed_float_1
 ___unnamed_float_2	dd	-1.000000
