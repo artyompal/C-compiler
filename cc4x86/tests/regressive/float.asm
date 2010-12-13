@@ -4,26 +4,30 @@
 
 .data
 
-___unnamed_float_0	dd	0.001000
+___unnamed_float_0	dd	03a83126fh
 public	___unnamed_float_0
-___unnamed_float_1	dd	2.000000
+___unnamed_float_1	dd	040000000h
 public	___unnamed_float_1
-___unnamed_double_2	dq	3.000000
+___unnamed_double_2	dq	04008000000000000h
 public	___unnamed_double_2
-___unnamed_double_3	dq	5.000000
+___unnamed_double_3	dq	04014000000000000h
 public	___unnamed_double_3
-___unnamed_double_4	dq	-1.000000
+___unnamed_double_4	dq	0bff0000000000000h
 public	___unnamed_double_4
-___unnamed_double_5	dq	6.000000
+___unnamed_double_5	dq	04018000000000000h
 public	___unnamed_double_5
-___unnamed_double_6	dq	0.666000
+___unnamed_double_6	dq	03fe54fdf3b645a1dh
 public	___unnamed_double_6
-___unnamed_double_7	dq	4.000000
+___unnamed_double_7	dq	04010000000000000h
 public	___unnamed_double_7
-___unnamed_float_8	dd	3.000000
-public	___unnamed_float_8
-___unnamed_double_9	dq	2.000000
+___unnamed_double_8	dq	04008000000000000h
+public	___unnamed_double_8
+___unnamed_double_9	dq	04018000000000000h
 public	___unnamed_double_9
+___unnamed_float_10	dd	040400000h
+public	___unnamed_float_10
+___unnamed_double_11	dq	04000000000000000h
+public	___unnamed_double_11
 
 .code
 
@@ -275,7 +279,7 @@ label0004:
 	fld	dword ptr [ebp-4]
 	fsubrp
 	fstp	dword ptr [ebp-4]
-	fld	qword ptr [___unnamed_double_2]
+	fld	qword ptr [___unnamed_double_8]
 	fstp	qword ptr [ebp-28]
 	fld	dword ptr [ebp-4]
 	fstp	qword ptr [ebp-36]
@@ -323,7 +327,7 @@ label0005:
 	fld	dword ptr [ebp-4]
 	fmulp
 	fstp	dword ptr [ebp-4]
-	fld	qword ptr [___unnamed_double_5]
+	fld	qword ptr [___unnamed_double_9]
 	fstp	qword ptr [ebp-28]
 	fld	dword ptr [ebp-4]
 	fstp	qword ptr [ebp-36]
@@ -367,11 +371,11 @@ label0023:
 	pop	ebp
 	ret
 label0006:
-	fld	dword ptr [___unnamed_float_8]
+	fld	dword ptr [___unnamed_float_10]
 	fld	dword ptr [ebp-4]
 	fdivrp
 	fstp	dword ptr [ebp-4]
-	fld	qword ptr [___unnamed_double_9]
+	fld	qword ptr [___unnamed_double_11]
 	fstp	qword ptr [ebp-28]
 	fld	dword ptr [ebp-4]
 	fstp	qword ptr [ebp-36]

@@ -45,21 +45,15 @@ void text_output_declare_uninitialized_bytes(symbol *sym, int size)
     fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
 
-void text_output_declare_initialized_int(symbol *sym, long value)
+void text_output_declare_initialized_dword(symbol *sym, long value)
 {
-    fprintf(asm_file, "_%s\tdd\t%d\n", sym->sym_name, value);
+    fprintf(asm_file, "_%s\tdd\t0%xh\n", sym->sym_name, value);
     fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
 
-void text_output_declare_initialized_float(symbol *sym, float value)
+void text_output_declare_initialized_qword(symbol *sym, __int64 value)
 {
-    fprintf(asm_file, "_%s\tdd\t%f\n", sym->sym_name, value);
-    fprintf(asm_file, "public\t_%s\n", sym->sym_name);
-}
-
-void text_output_declare_initialized_double(symbol *sym, double value)
-{
-    fprintf(asm_file, "_%s\tdq\t%f\n", sym->sym_name, value);
+    fprintf(asm_file, "_%s\tdq\t0%I64xh\n", sym->sym_name, value);
     fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
 
@@ -177,18 +171,24 @@ static const char *_x86_instructions[] = {
     // SSE2 арифметика:
     "cvtsi2ss",
     "cvttss2si",
+    "cvtsi2sd",
+    "cvtsd2si",
 
     "movss",
     "addss",
     "subss",
     "mulss",
     "divss",
+    "comiss",
+    "xorps",
 
     "movsd",
     "addsd",
     "subsd",
     "mulsd",
     "divsd",
+    "comisd",
+    "xorpd",
 
     // Инструкции для внутреннего пользования.
     // арифметические модифицирующие:
@@ -412,7 +412,7 @@ static void _output_push_unary_instruction(FILE *output, x86_instruction_code co
     if (code == x86insn_label) {
         _print_op(output, op);
         fputc(':', output);
-    } else if (op->op_loc == x86loc_register && OP_IS_FLOAT(*op)) {
+    } else if (op->op_loc == x86loc_register && OP_IS_FLOAT(*op) && !option_use_sse2) {
         ASSERT(code < x86insn_count);
         fprintf(output, "\t%sp", _x86_instructions[code]);
     } else {

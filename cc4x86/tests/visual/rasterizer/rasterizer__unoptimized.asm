@@ -50,13 +50,13 @@ __texture_width	dd	?
 public	__texture_width
 __texture_height	dd	?
 public	__texture_height
-___unnamed_double_0	dq	0.000100
+___unnamed_double_0	dq	03f1a36e2eb1c432dh
 public	___unnamed_double_0
-___unnamed_float_1	dd	2.000000
+___unnamed_float_1	dd	040000000h
 public	___unnamed_float_1
-___unnamed_float_2	dd	-1.000000
+___unnamed_float_2	dd	0bf800000h
 public	___unnamed_float_2
-___unnamed_float_3	dd	255.000000
+___unnamed_float_3	dd	0437f0000h
 public	___unnamed_float_3
 
 .code

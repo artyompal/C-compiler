@@ -683,12 +683,13 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
                 expression *val = sym->sym_init->init_data.value;
 
                 if (val->expr_code == code_expr_int_constant) {
-                    x86data_declare_initialized_int(sym, val->data.int_const);
+                    x86data_declare_initialized_dword(sym, val->data.int_const);
                 } else if (val->expr_code == code_expr_float_constant) {
                     if (val->expr_type->type_code == code_type_float) {
-                        x86data_declare_initialized_float(sym, val->data.float_const.val);
+                        float c = val->data.float_const.val;
+                        x86data_declare_initialized_dword(sym, *(int*)&c);
                     } else if (val->expr_type->type_code == code_type_double) {
-                        x86data_declare_initialized_double(sym, val->data.float_const.val);
+                        x86data_declare_initialized_qword(sym, *(__int64*)&val->data.float_const.val);
                     } else {
                         ASSERT(FALSE);
                     }
