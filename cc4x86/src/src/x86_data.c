@@ -16,16 +16,21 @@ static section_type _current_section = section_unknown;
 
 
 typedef struct float_symbol_decl {
-    double      value;
+    long        value;
     symbol *    sym;
 } float_symbol;
+
+typedef struct double_symbol_decl {
+    __int64     value;
+    symbol *    sym;
+} double_symbol;
 
 static hash_id float_table, double_table;
 
 
 static unsigned int float_hash(float_symbol *key)
 {
-    return (*(unsigned int *)&key->value) ^ 0x5C5C5C5C;
+    return key->value;
 }
 
 static int float_equal(float_symbol *key1, float_symbol *key2)
@@ -34,10 +39,21 @@ static int float_equal(float_symbol *key1, float_symbol *key2)
 }
 
 
+static unsigned int double_hash(double_symbol *key)
+{
+    return key->value;
+}
+
+static int double_equal(double_symbol *key1, double_symbol *key2)
+{
+    return (key1->value == key2->value);
+}
+
+
 void x86data_init(void)
 {
     float_table     = hash_init((hash_function) float_hash, (hash_equal_function) float_equal);
-    double_table    = hash_init((hash_function) float_hash, (hash_equal_function) float_equal);
+    double_table    = hash_init((hash_function) double_hash, (hash_equal_function) double_equal);
 }
 
 
@@ -57,7 +73,7 @@ void x86data_enter_text_section(void)
     }
 }
 
-symbol *x86data_insert_float_constant(float constant)
+symbol *x86data_insert_float_constant(long constant)
 {
     float_symbol *key = allocator_alloc(allocator_global_pool, sizeof(float_symbol));
     float_symbol *found;
@@ -76,11 +92,11 @@ symbol *x86data_insert_float_constant(float constant)
     hash_insert(float_table, key);
 
     _ensure_data_section();
-    text_output_declare_initialized_float(sym, constant);
+    text_output_declare_initialized_dword(sym, constant);
     return sym;
 }
 
-symbol *x86data_insert_double_constant(double constant)
+symbol *x86data_insert_double_constant(__int64 constant)
 {
     float_symbol *key = allocator_alloc(allocator_global_pool, sizeof(float_symbol));
     float_symbol *found;
@@ -99,7 +115,7 @@ symbol *x86data_insert_double_constant(double constant)
     hash_insert(double_table, key);
 
     _ensure_data_section();
-    text_output_declare_initialized_double(sym, constant);
+    text_output_declare_initialized_qword(sym, constant);
     return sym;
 }
 
@@ -109,22 +125,16 @@ void x86data_declare_uninitialized_bytes(symbol *sym, int size)
     text_output_declare_uninitialized_bytes(sym, size);
 }
 
-void x86data_declare_initialized_int(symbol *sym, long value)
+void x86data_declare_initialized_dword(symbol *sym, long value)
 {
     _ensure_data_section();
-    text_output_declare_initialized_int(sym, value);
+    text_output_declare_initialized_dword(sym, value);
 }
 
-void x86data_declare_initialized_float(symbol *sym, float value)
+void x86data_declare_initialized_qword(symbol *sym, __int64 value)
 {
     _ensure_data_section();
-    text_output_declare_initialized_float(sym, value);
-}
-
-void x86data_declare_initialized_double(symbol *sym, double value)
-{
-    _ensure_data_section();
-    text_output_declare_initialized_double(sym, value);
+    text_output_declare_initialized_qword(sym, value);
 }
 
 void x86data_declare_initialized_string(symbol *sym, const char *value)

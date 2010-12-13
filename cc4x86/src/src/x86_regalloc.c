@@ -191,11 +191,17 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
             if (new_reg_type == type && insn->in_op1.data.reg >= pseudoregs_cnt) {
                 // Новые псевдорегистры могут появляться только как первый операнд инструкции.
-                ASSERT(insn->in_code == x86insn_int_mov || insn->in_code == x86insn_lea
-                    || insn->in_code == x86insn_imul_const || insn->in_code == x86insn_movzx
-                    || insn->in_code == x86insn_movsx || insn->in_code == x86insn_fpu_float2int
-                    || insn->in_code == x86insn_read_retval || IS_SET_INSN(insn->in_code)
-                    || insn->in_code == x86insn_cdq || insn->in_code == x86insn_xor_edx_edx);
+                if (type == x86op_dword) {
+                    ASSERT(insn->in_code == x86insn_int_mov || insn->in_code == x86insn_lea
+                        || insn->in_code == x86insn_imul_const || insn->in_code == x86insn_movzx
+                        || insn->in_code == x86insn_movsx || insn->in_code == x86insn_fpu_float2int
+                        || insn->in_code == x86insn_read_retval || IS_SET_INSN(insn->in_code)
+                        || insn->in_code == x86insn_cdq || insn->in_code == x86insn_xor_edx_edx);
+                } else {
+                    ASSERT(insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_double2float
+                         || insn->in_code == x86insn_sse_float2double || insn->in_code == x86insn_read_retval);
+                }
+
                 pseudoregs_cnt = insn->in_op1.data.reg + 1;
             }
         }
@@ -701,18 +707,14 @@ static void _handle_pseudo_instructions(function_desc *function)
                     bincode_create_operand_from_register(&tmp, insn->in_op1.op_type, x86reg_eax);
                     bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
                 }
+            } else if (!option_use_sse2 && insn->in_op1.op_loc == x86loc_address) {
+                bincode_insert_unary_instruction(function, insn, x86insn_fpu_ld, &insn->in_op1);
+            } else if (!option_use_sse2) {
+                // результат уже находится в st(0)
             } else {
-                if (insn->in_op1.op_loc == x86loc_address) {
-                    bincode_insert_unary_instruction(function, insn, x86insn_fpu_ld, &insn->in_op1);
-                } else {
-                    if (!option_use_sse2) {
-                        // результат уже находится в st(0)
-                    } else {
-                        // результат в xmm0
-                        bincode_create_operand_from_register(&tmp, x86op_float, 0);
-                        bincode_insert_instruction(function, insn, x86insn_sse_movss, &tmp, &insn->in_op1);
-                    }
-                }
+                // результат в xmm0
+                bincode_create_operand_from_register(&tmp, x86op_float, 0);
+                bincode_insert_instruction(function, insn, x86insn_sse_movss, &tmp, &insn->in_op1);
             }
         } else if (insn->in_code == x86insn_read_retval) {
             if (OP_IS_INT(insn->in_op1)) {
@@ -720,8 +722,11 @@ static void _handle_pseudo_instructions(function_desc *function)
                     insn->in_code = x86insn_int_mov;
                     bincode_create_operand_from_register(&insn->in_op2, insn->in_op1.op_type, x86reg_eax);
                 }
-            } else {
+            } else if (!option_use_sse2) {
                 // результат уже находится в st(0)
+            } else {
+                bincode_create_operand_from_register(&tmp, x86op_float, 0);
+                bincode_insert_instruction(function, insn, x86insn_sse_movss, &insn->in_op1, &tmp);
             }
         }
     }
