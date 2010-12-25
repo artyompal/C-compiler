@@ -1,6 +1,7 @@
 
 .686
 .model flat
+.xmm
 
 .data
 
