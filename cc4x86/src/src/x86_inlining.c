@@ -115,24 +115,11 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
                 }
             }
 
-            if (OP_IS_FLOAT(inserted->in_op1)) {
-                if (inserted->in_op1.op_loc == x86loc_register) {
-                    inserted->in_code = x86insn_fpu_stp;
+            if (!OP_IS_FLOAT(inserted->in_op1)) {
+                inserted->in_code   = x86insn_int_mov;
 
-                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                        inserted->in_op1.op_type, res_ofs);
-                } else {
-                    inserted->in_code = x86insn_fpu_stp;
-
-                    bincode_insert_unary_instruction(caller, inserted, x86insn_fpu_ld, &inserted->in_op1);
-                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                        inserted->in_op1.op_type, res_ofs);
-                }
-            } else {
                 if (inserted->in_op1.op_loc == x86loc_register) {
                     inserted->in_op2    = inserted->in_op1;
-                    inserted->in_code   = x86insn_int_mov;
-
                     bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
                         inserted->in_op1.op_type, res_ofs);
                 } else {
@@ -141,10 +128,34 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
                     bincode_insert_instruction(caller, inserted, x86insn_int_mov, &op, &inserted->in_op1);
 
                     inserted->in_op2    = op;
-                    inserted->in_code   = x86insn_int_mov;
-
                     bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
                         inserted->in_op1.op_type, res_ofs);
+                }
+            } else if (!option_use_sse2) {
+                inserted->in_code = x86insn_fpu_stp;
+
+                if (inserted->in_op1.op_loc == x86loc_register) {
+                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                        inserted->in_op1.op_type, res_ofs);
+                } else {
+                    bincode_insert_unary_instruction(caller, inserted, x86insn_fpu_ld, &inserted->in_op1);
+                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                        inserted->in_op1.op_type, res_ofs);
+                }
+            } else {
+                //  SSE-вариант для записи результата
+                inserted->in_code = ENCODE_SSE_MOV(inserted->in_op1.op_type);
+
+                if (inserted->in_op1.op_loc == x86loc_register) {
+                    inserted->in_op2 = inserted->in_op1;
+                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                        inserted->in_op1.op_type, res_ofs);
+                } else {
+                    bincode_create_operand_and_alloc_pseudoreg_in_function(caller, &op, inserted->in_op1.op_type);
+                    bincode_insert_instruction(caller, inserted, inserted->in_code, &op, &inserted->in_op1);
+                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                        inserted->in_op1.op_type, res_ofs);
+                    inserted->in_op2 = op;
                 }
             }
         } else {
@@ -229,30 +240,39 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             sz = insn->in_op2.data.int_val;
 
             if (insn->in_op1.op_loc == x86loc_register) {
-                if (OP_IS_FLOAT(insn->in_op1)) {
-                    insn->in_code       = x86insn_fpu_stp;
+                if (!OP_IS_FLOAT(insn->in_op1)) {
+                    insn->in_code = x86insn_int_mov;
+                    insn->in_op2  = insn->in_op1;
+                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, insn->in_op1.op_type, ofs + params_ofs);
+                } else if (!option_use_sse2) {
+                    insn->in_code = x86insn_fpu_stp;
                     bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, insn->in_op1.op_type, ofs + params_ofs);
                     insn->in_op2.op_loc = x86loc_none;
                 } else {
-                    insn->in_code       = x86insn_int_mov;
-                    insn->in_op2        = insn->in_op1;
+                    insn->in_code = ENCODE_SSE_MOV(insn->in_op1.op_type);
                     bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, insn->in_op1.op_type, ofs + params_ofs);
                 }
             } else if (insn->in_op1.op_loc == x86loc_address || insn->in_op1.op_loc == x86loc_symbol) {
-                if (OP_IS_FLOAT(insn->in_op1)) {
+                if (!OP_IS_FLOAT(insn->in_op1)) {
+                    insn->in_code       = x86insn_int_mov;
+                    insn->in_op2        = insn->in_op1;
+
+                    bincode_create_operand_and_alloc_pseudoreg_in_function(caller, &insn->in_op1, x86op_dword);
+                    bincode_create_operand_addr_from_ebp_offset(&tmp, x86op_dword, ofs + params_ofs);
+                    bincode_insert_instruction(caller, insn->in_next, x86insn_int_mov, &tmp, &insn->in_op1);
+                } else if (!option_use_sse2) {
                     insn->in_code       = x86insn_fpu_ld;
                     insn->in_op2.op_loc = x86op_none;
 
                     bincode_create_operand_addr_from_ebp_offset(&tmp, insn->in_op1.op_type, ofs + params_ofs);
                     bincode_insert_unary_instruction(caller, insn->in_next, x86insn_fpu_stp, &tmp);
                 } else {
-                    insn->in_code       = x86insn_int_mov;
+                    insn->in_code       = ENCODE_SSE_MOV(insn->in_op1.op_type);
                     insn->in_op2        = insn->in_op1;
-                    bincode_create_operand_from_pseudoreg(&insn->in_op1, x86op_dword,
-                        caller->func_pseudoregs_count[x86op_dword]++);
 
-                    bincode_create_operand_addr_from_ebp_offset(&tmp, x86op_dword, ofs + params_ofs);
-                    bincode_insert_instruction(caller, insn->in_next, x86insn_int_mov, &tmp, &insn->in_op1);
+                    bincode_create_operand_and_alloc_pseudoreg_in_function(caller, &insn->in_op1, insn->in_op2.op_type);
+                    bincode_create_operand_addr_from_ebp_offset(&tmp, insn->in_op2.op_type, ofs + params_ofs);
+                    bincode_insert_instruction(caller, insn->in_next, insn->in_code, &tmp, &insn->in_op1);
                 }
             } else if (insn->in_op1.op_loc == x86loc_int_constant || insn->in_op1.op_loc == x86loc_symbol_offset) {
                 ASSERT(OP_IS_INT(insn->in_op1));
@@ -301,12 +321,19 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 
                 ASSERT(OP_IS_REGISTER(insn->in_op1));
 
-                if (OP_IS_FLOAT(insn->in_op1)) {
-                    insn->in_code = x86insn_fpu_ld;
-                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_dword, res_ofs);
-                } else {
+                if (!OP_IS_FLOAT(insn->in_op1)) {
                     insn->in_code = x86insn_int_mov;
-                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op2, x86op_dword, res_ofs);
+
+                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op2, insn->in_op1.op_type, res_ofs);
+                } else if (!option_use_sse2) {
+                    insn->in_code = x86insn_fpu_ld;
+
+                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, insn->in_op1.op_type, res_ofs);
+                } else {
+                    insn->in_code = ENCODE_SSE_MOV(insn->in_op1.op_type);
+                    insn->in_op2  = insn->in_op1;
+
+                    bincode_create_operand_and_alloc_pseudoreg_in_function(caller, &insn->in_op1, insn->in_op2.op_type);
                 }
 
                 break;

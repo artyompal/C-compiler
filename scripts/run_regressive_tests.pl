@@ -45,6 +45,7 @@ sub run_test2{
 		run_test($test_name, "debug", "") &&
 		run_test($test_name, "debug", "--optimize --no-inline") &&
 		run_test($test_name, "debug", "--optimize");
+#		run_test($test_name, "debug", "--use-sse2");
 }
 
 

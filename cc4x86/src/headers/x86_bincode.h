@@ -283,7 +283,7 @@ typedef struct x86_instruction_decl {
 
 #define OP_IS_INT(OP)                   ((OP).op_type >= x86op_byte && (OP).op_type <= x86op_qword)
 #define OP_IS_DWORD(OP)                 ((OP).op_type == x86op_dword)
-#define OP_IS_FLOAT(OP)                 ((OP).op_type >= x86op_float && (OP).op_type <= x86op_double)
+#define OP_IS_FLOAT(OP)                 ((OP).op_type == x86op_float || (OP).op_type == x86op_double)
 #define OP_IS_REGISTER(OP)              ((OP).op_loc == x86loc_register)
 #define OP_IS_ADDRESS(OP)               ((OP).op_loc == x86loc_address)
 #define OP_IS_ADDRESS_OR_SYMBOL(OP)     ((OP).op_loc == x86loc_address || (OP).op_loc == x86loc_symbol)
@@ -299,6 +299,9 @@ typedef struct x86_instruction_decl {
 #define OP_IS_SPEC_EBP_OFFSET(OP, OFS)  ((OP).op_loc == x86loc_address && (OP).data.address.base == ~x86reg_ebp \
                                             && (OP).data.address.index == 0 && (OP).data.address.offset == (OFS))
 
+#define ENCODE_SSE_MOV(TYPE)            ((TYPE) == x86op_float ? x86insn_sse_movss : x86insn_sse_movsd)
+#define ENCODE_SSE_COMPARE(TYPE)        ((TYPE) == x86op_float ? x86insn_sse_comiss : x86insn_sse_comisd)
+
 
 void    bincode_extract_pseudoregs_from_operand         (x86_operand *op, x86_operand_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_pseudoregs_from_insn            (x86_instruction *insn, x86_operand_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
@@ -313,6 +316,7 @@ void    bincode_create_operand_from_int_constant        (x86_operand *op, x86_op
 void    bincode_create_operand_from_register            (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_create_operand_from_pseudoreg           (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_create_operand_and_alloc_pseudoreg      (x86_operand *op, x86_operand_type type);
+void    bincode_create_operand_and_alloc_pseudoreg_in_function(function_desc *func, x86_operand *op, x86_operand_type type);
 void    bincode_create_operand_addr_from_reg            (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_create_operand_addr_from_reg_offset     (x86_operand *op, x86_operand_type type, int reg, int offset);
 void    bincode_create_operand_addr_from_reg_reg        (x86_operand *op, x86_operand_type type, int reg1, int reg2);

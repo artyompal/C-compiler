@@ -18,7 +18,7 @@ void text_output_begin_unit(void)
         aux_fatal_error("failed to open output file '%s'", option_output_filename);
     }
 
-    fprintf(asm_file, "\n.686\n.model flat\n");
+    fprintf(asm_file, "\n.686\n.model flat\n.xmm\n");
 }
 
 void text_output_end_unit(void)
@@ -171,8 +171,8 @@ static const char *_x86_instructions[] = {
     // SSE2 арифметика:
     "cvtsi2ss",
     "cvttss2si",
-    "cvtsi2sd",
-    "cvtsd2si",
+    "cvtss2sd",
+    "cvtsd2ss",
 
     "movss",
     "addss",
@@ -436,10 +436,17 @@ static void _output_push_binary_instruction(FILE *output, x86_instruction_code c
 
     if (op1->op_loc == x86loc_address && (op2->op_loc == x86loc_int_constant || IS_SHIFT_INSN(code))) {
         fputs("dword ptr ", output);
+    } else if (OP_IS_ADDRESS(*op1) && OP_IS_FLOAT(*op1) && option_use_sse2) {
+        fprintf(output, "%s ptr ", (op1->op_type == x86op_float ? "dword" : "qword"));
     }
 
     _print_op(output, op1);
     fputc(',', output);
+
+    if (OP_IS_ADDRESS(*op2) && OP_IS_FLOAT(*op2) && option_use_sse2) {
+        fprintf(output, "%s ptr ", (op2->op_type == x86op_float ? "dword" : "qword"));
+    }
+
     _print_op(output, op2);
     fputc('\n', output);
 }
