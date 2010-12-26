@@ -40,12 +40,12 @@ sub run_test {
 sub run_test2{
 	my $test_name = shift;
 	return
-		run_test($test_name, "release", "") &&
-		run_test($test_name, "release", "--optimize") &&
 		run_test($test_name, "debug", "") &&
-		run_test($test_name, "debug", "--optimize --no-inline") &&
-		run_test($test_name, "debug", "--optimize");
-#		run_test($test_name, "debug", "--use-sse2");
+		run_test($test_name, "debug", "--optimize") &&
+		run_test($test_name, "release", "") &&
+		run_test($test_name, "release", "--optimize --no-inline") &&
+		run_test($test_name, "release", "--optimize") &&
+		run_test($test_name, "release", "--optimize --use-sse2");
 }
 
 

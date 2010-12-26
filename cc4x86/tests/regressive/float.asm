@@ -5,30 +5,36 @@
 
 .data
 
-___unnamed_float_0	dd	03a83126fh
+___unnamed_float_0	dd	00h
 public	___unnamed_float_0
-___unnamed_float_1	dd	040000000h
+___unnamed_float_1	dd	080000000h
 public	___unnamed_float_1
-___unnamed_double_2	dq	04008000000000000h
-public	___unnamed_double_2
-___unnamed_double_3	dq	04014000000000000h
-public	___unnamed_double_3
-___unnamed_double_4	dq	0bff0000000000000h
+___unnamed_float_2	dd	03a83126fh
+public	___unnamed_float_2
+___unnamed_float_3	dd	040000000h
+public	___unnamed_float_3
+___unnamed_double_4	dq	04008000000000000h
 public	___unnamed_double_4
-___unnamed_double_5	dq	04018000000000000h
+___unnamed_double_5	dq	04014000000000000h
 public	___unnamed_double_5
-___unnamed_double_6	dq	03fe54fdf3b645a1dh
+___unnamed_double_6	dq	0bff0000000000000h
 public	___unnamed_double_6
-___unnamed_double_7	dq	04010000000000000h
+___unnamed_double_7	dq	04018000000000000h
 public	___unnamed_double_7
-___unnamed_double_8	dq	04008000000000000h
+___unnamed_double_8	dq	03fe54fdf3b645a1dh
 public	___unnamed_double_8
-___unnamed_double_9	dq	04018000000000000h
+___unnamed_double_9	dq	04010000000000000h
 public	___unnamed_double_9
-___unnamed_float_10	dd	040400000h
+___unnamed_float_10	dd	03f800000h
 public	___unnamed_float_10
-___unnamed_double_11	dq	04000000000000000h
+___unnamed_double_11	dq	04008000000000000h
 public	___unnamed_double_11
+___unnamed_double_12	dq	04018000000000000h
+public	___unnamed_double_12
+___unnamed_float_13	dd	040400000h
+public	___unnamed_float_13
+___unnamed_double_14	dq	04000000000000000h
+public	___unnamed_double_14
 
 .code
 
@@ -36,45 +42,42 @@ _test proc
 	push	ebp
 	mov	ebp,esp
 	sub	esp,52
-	fld	dword ptr [___unnamed_float_1]
-	fstp	dword ptr [ebp-4]
-	fld	qword ptr [___unnamed_double_2]
-	fstp	qword ptr [ebp-12]
-	fld	dword ptr [ebp-4]
-	fadd	qword ptr [ebp-12]
-	fstp	qword ptr [ebp-20]
-	fld	qword ptr [___unnamed_double_3]
-	fstp	qword ptr [ebp-28]
-	fld	qword ptr [ebp-20]
-	fstp	qword ptr [ebp-36]
+	movss	xmm0,dword ptr [___unnamed_float_3]
+	movss	dword ptr [ebp-4],xmm0
+	movsd	xmm0,qword ptr [___unnamed_double_4]
+	movsd	qword ptr [ebp-12],xmm0
+	cvtss2sd	xmm0,dword ptr [ebp-4]
+	addsd	xmm0,qword ptr [ebp-12]
+	movsd	qword ptr [ebp-20],xmm0
+	movsd	xmm0,qword ptr [___unnamed_double_5]
+	movsd	qword ptr [ebp-28],xmm0
+	movsd	xmm0,qword ptr [ebp-20]
+	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
-	fld	qword ptr [ebp-36]
-	fsub	qword ptr [ebp-28]
-	fstp	dword ptr [ebp-40]
+	movsd	xmm0,qword ptr [ebp-36]
+	subsd	xmm0,qword ptr [ebp-28]
+	cvtsd2ss	xmm1,xmm0
+	movss	dword ptr [ebp-40],xmm1
 ; start of inline function fabs
-	fldz
-	fld	dword ptr [ebp-40]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0008
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [___unnamed_float_0]
+	comiss	xmm0,dword ptr [ebp-40]
+	ja	label0008
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-44],xmm0
 	jmp	label0009
 label0008:
-	fld	dword ptr [ebp-40]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [ebp-40]
+	xorps	xmm0,dword ptr [___unnamed_float_1]
+	movss	dword ptr [ebp-44],xmm0
 label0009:
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-48]
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-48],xmm0
 label000a:
 ; end of inline function fabs
-	fld	dword ptr [ebp-48]
-	fld	dword ptr [___unnamed_float_0]
-	fucomip	st,st(1)
-	fstp	st
-	seta	al
+	movss	xmm0,xmm1
+	movss	xmm0,dword ptr [___unnamed_float_2]
+	comiss	xmm1,xmm0
+	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
 label000b:
@@ -87,41 +90,38 @@ label000b:
 	pop	ebp
 	ret
 label0000:
-	fld	dword ptr [ebp-4]
-	fsub	qword ptr [ebp-12]
-	fstp	qword ptr [ebp-20]
-	fld	qword ptr [___unnamed_double_4]
-	fstp	qword ptr [ebp-28]
-	fld	qword ptr [ebp-20]
-	fstp	qword ptr [ebp-36]
+	cvtss2sd	xmm0,dword ptr [ebp-4]
+	subsd	xmm0,qword ptr [ebp-12]
+	movsd	qword ptr [ebp-20],xmm0
+	movsd	xmm0,qword ptr [___unnamed_double_6]
+	movsd	qword ptr [ebp-28],xmm0
+	movsd	xmm0,qword ptr [ebp-20]
+	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
-	fld	qword ptr [ebp-36]
-	fsub	qword ptr [ebp-28]
-	fstp	dword ptr [ebp-40]
+	movsd	xmm0,qword ptr [ebp-36]
+	subsd	xmm0,qword ptr [ebp-28]
+	cvtsd2ss	xmm1,xmm0
+	movss	dword ptr [ebp-40],xmm1
 ; start of inline function fabs
-	fldz
-	fld	dword ptr [ebp-40]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label000c
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [___unnamed_float_0]
+	comiss	xmm0,dword ptr [ebp-40]
+	ja	label000c
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-44],xmm0
 	jmp	label000d
 label000c:
-	fld	dword ptr [ebp-40]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [ebp-40]
+	xorps	xmm0,dword ptr [___unnamed_float_1]
+	movss	dword ptr [ebp-44],xmm0
 label000d:
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-48]
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-48],xmm0
 label000e:
 ; end of inline function fabs
-	fld	dword ptr [ebp-48]
-	fld	dword ptr [___unnamed_float_0]
-	fucomip	st,st(1)
-	fstp	st
-	seta	al
+	movss	xmm0,xmm1
+	movss	xmm0,dword ptr [___unnamed_float_2]
+	comiss	xmm1,xmm0
+	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
 label000f:
@@ -134,41 +134,38 @@ label000f:
 	pop	ebp
 	ret
 label0001:
-	fld	dword ptr [ebp-4]
-	fmul	qword ptr [ebp-12]
-	fstp	qword ptr [ebp-20]
-	fld	qword ptr [___unnamed_double_5]
-	fstp	qword ptr [ebp-28]
-	fld	qword ptr [ebp-20]
-	fstp	qword ptr [ebp-36]
+	cvtss2sd	xmm0,dword ptr [ebp-4]
+	mulsd	xmm0,qword ptr [ebp-12]
+	movsd	qword ptr [ebp-20],xmm0
+	movsd	xmm0,qword ptr [___unnamed_double_7]
+	movsd	qword ptr [ebp-28],xmm0
+	movsd	xmm0,qword ptr [ebp-20]
+	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
-	fld	qword ptr [ebp-36]
-	fsub	qword ptr [ebp-28]
-	fstp	dword ptr [ebp-40]
+	movsd	xmm0,qword ptr [ebp-36]
+	subsd	xmm0,qword ptr [ebp-28]
+	cvtsd2ss	xmm1,xmm0
+	movss	dword ptr [ebp-40],xmm1
 ; start of inline function fabs
-	fldz
-	fld	dword ptr [ebp-40]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0010
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [___unnamed_float_0]
+	comiss	xmm0,dword ptr [ebp-40]
+	ja	label0010
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-44],xmm0
 	jmp	label0011
 label0010:
-	fld	dword ptr [ebp-40]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [ebp-40]
+	xorps	xmm0,dword ptr [___unnamed_float_1]
+	movss	dword ptr [ebp-44],xmm0
 label0011:
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-48]
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-48],xmm0
 label0012:
 ; end of inline function fabs
-	fld	dword ptr [ebp-48]
-	fld	dword ptr [___unnamed_float_0]
-	fucomip	st,st(1)
-	fstp	st
-	seta	al
+	movss	xmm0,xmm1
+	movss	xmm0,dword ptr [___unnamed_float_2]
+	comiss	xmm1,xmm0
+	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
 label0013:
@@ -181,41 +178,38 @@ label0013:
 	pop	ebp
 	ret
 label0002:
-	fld	dword ptr [ebp-4]
-	fdiv	qword ptr [ebp-12]
-	fstp	qword ptr [ebp-20]
-	fld	qword ptr [___unnamed_double_6]
-	fstp	qword ptr [ebp-28]
-	fld	qword ptr [ebp-20]
-	fstp	qword ptr [ebp-36]
+	cvtss2sd	xmm0,dword ptr [ebp-4]
+	divsd	xmm0,qword ptr [ebp-12]
+	movsd	qword ptr [ebp-20],xmm0
+	movsd	xmm0,qword ptr [___unnamed_double_8]
+	movsd	qword ptr [ebp-28],xmm0
+	movsd	xmm0,qword ptr [ebp-20]
+	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
-	fld	qword ptr [ebp-36]
-	fsub	qword ptr [ebp-28]
-	fstp	dword ptr [ebp-40]
+	movsd	xmm0,qword ptr [ebp-36]
+	subsd	xmm0,qword ptr [ebp-28]
+	cvtsd2ss	xmm1,xmm0
+	movss	dword ptr [ebp-40],xmm1
 ; start of inline function fabs
-	fldz
-	fld	dword ptr [ebp-40]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0014
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [___unnamed_float_0]
+	comiss	xmm0,dword ptr [ebp-40]
+	ja	label0014
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-44],xmm0
 	jmp	label0015
 label0014:
-	fld	dword ptr [ebp-40]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [ebp-40]
+	xorps	xmm0,dword ptr [___unnamed_float_1]
+	movss	dword ptr [ebp-44],xmm0
 label0015:
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-48]
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-48],xmm0
 label0016:
 ; end of inline function fabs
-	fld	dword ptr [ebp-48]
-	fld	dword ptr [___unnamed_float_0]
-	fucomip	st,st(1)
-	fstp	st
-	seta	al
+	movss	xmm0,xmm1
+	movss	xmm0,dword ptr [___unnamed_float_2]
+	comiss	xmm1,xmm0
+	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
 label0017:
@@ -228,42 +222,39 @@ label0017:
 	pop	ebp
 	ret
 label0003:
-	fld	dword ptr [___unnamed_float_1]
-	fld	dword ptr [ebp-4]
-	faddp
-	fstp	dword ptr [ebp-4]
-	fld	qword ptr [___unnamed_double_7]
-	fstp	qword ptr [ebp-28]
-	fld	dword ptr [ebp-4]
-	fstp	qword ptr [ebp-36]
+	movss	xmm0,dword ptr [___unnamed_float_3]
+	movss	xmm1,dword ptr [ebp-4]
+	addss	xmm1,xmm0
+	movss	dword ptr [ebp-4],xmm1
+	movsd	xmm0,qword ptr [___unnamed_double_9]
+	movsd	qword ptr [ebp-28],xmm0
+	cvtss2sd	xmm0,dword ptr [ebp-4]
+	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
-	fld	qword ptr [ebp-36]
-	fsub	qword ptr [ebp-28]
-	fstp	dword ptr [ebp-40]
+	movsd	xmm0,qword ptr [ebp-36]
+	subsd	xmm0,qword ptr [ebp-28]
+	cvtsd2ss	xmm1,xmm0
+	movss	dword ptr [ebp-40],xmm1
 ; start of inline function fabs
-	fldz
-	fld	dword ptr [ebp-40]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0018
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [___unnamed_float_0]
+	comiss	xmm0,dword ptr [ebp-40]
+	ja	label0018
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-44],xmm0
 	jmp	label0019
 label0018:
-	fld	dword ptr [ebp-40]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [ebp-40]
+	xorps	xmm0,dword ptr [___unnamed_float_1]
+	movss	dword ptr [ebp-44],xmm0
 label0019:
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-48]
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-48],xmm0
 label001a:
 ; end of inline function fabs
-	fld	dword ptr [ebp-48]
-	fld	dword ptr [___unnamed_float_0]
-	fucomip	st,st(1)
-	fstp	st
-	seta	al
+	movss	xmm0,xmm1
+	movss	xmm0,dword ptr [___unnamed_float_2]
+	comiss	xmm1,xmm0
+	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
 label001b:
@@ -276,42 +267,39 @@ label001b:
 	pop	ebp
 	ret
 label0004:
-	fld1
-	fld	dword ptr [ebp-4]
-	fsubrp
-	fstp	dword ptr [ebp-4]
-	fld	qword ptr [___unnamed_double_8]
-	fstp	qword ptr [ebp-28]
-	fld	dword ptr [ebp-4]
-	fstp	qword ptr [ebp-36]
+	movss	xmm0,dword ptr [___unnamed_float_10]
+	movss	xmm1,dword ptr [ebp-4]
+	subss	xmm1,xmm0
+	movss	dword ptr [ebp-4],xmm1
+	movsd	xmm0,qword ptr [___unnamed_double_11]
+	movsd	qword ptr [ebp-28],xmm0
+	cvtss2sd	xmm0,dword ptr [ebp-4]
+	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
-	fld	qword ptr [ebp-36]
-	fsub	qword ptr [ebp-28]
-	fstp	dword ptr [ebp-40]
+	movsd	xmm0,qword ptr [ebp-36]
+	subsd	xmm0,qword ptr [ebp-28]
+	cvtsd2ss	xmm1,xmm0
+	movss	dword ptr [ebp-40],xmm1
 ; start of inline function fabs
-	fldz
-	fld	dword ptr [ebp-40]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label001c
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [___unnamed_float_0]
+	comiss	xmm0,dword ptr [ebp-40]
+	ja	label001c
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-44],xmm0
 	jmp	label001d
 label001c:
-	fld	dword ptr [ebp-40]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [ebp-40]
+	xorps	xmm0,dword ptr [___unnamed_float_1]
+	movss	dword ptr [ebp-44],xmm0
 label001d:
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-48]
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-48],xmm0
 label001e:
 ; end of inline function fabs
-	fld	dword ptr [ebp-48]
-	fld	dword ptr [___unnamed_float_0]
-	fucomip	st,st(1)
-	fstp	st
-	seta	al
+	movss	xmm0,xmm1
+	movss	xmm0,dword ptr [___unnamed_float_2]
+	comiss	xmm1,xmm0
+	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
 label001f:
@@ -324,42 +312,39 @@ label001f:
 	pop	ebp
 	ret
 label0005:
-	fld	dword ptr [___unnamed_float_1]
-	fld	dword ptr [ebp-4]
-	fmulp
-	fstp	dword ptr [ebp-4]
-	fld	qword ptr [___unnamed_double_9]
-	fstp	qword ptr [ebp-28]
-	fld	dword ptr [ebp-4]
-	fstp	qword ptr [ebp-36]
+	movss	xmm0,dword ptr [___unnamed_float_3]
+	movss	xmm1,dword ptr [ebp-4]
+	mulss	xmm1,xmm0
+	movss	dword ptr [ebp-4],xmm1
+	movsd	xmm0,qword ptr [___unnamed_double_12]
+	movsd	qword ptr [ebp-28],xmm0
+	cvtss2sd	xmm0,dword ptr [ebp-4]
+	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
-	fld	qword ptr [ebp-36]
-	fsub	qword ptr [ebp-28]
-	fstp	dword ptr [ebp-40]
+	movsd	xmm0,qword ptr [ebp-36]
+	subsd	xmm0,qword ptr [ebp-28]
+	cvtsd2ss	xmm1,xmm0
+	movss	dword ptr [ebp-40],xmm1
 ; start of inline function fabs
-	fldz
-	fld	dword ptr [ebp-40]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0020
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [___unnamed_float_0]
+	comiss	xmm0,dword ptr [ebp-40]
+	ja	label0020
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-44],xmm0
 	jmp	label0021
 label0020:
-	fld	dword ptr [ebp-40]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [ebp-40]
+	xorps	xmm0,dword ptr [___unnamed_float_1]
+	movss	dword ptr [ebp-44],xmm0
 label0021:
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-48]
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-48],xmm0
 label0022:
 ; end of inline function fabs
-	fld	dword ptr [ebp-48]
-	fld	dword ptr [___unnamed_float_0]
-	fucomip	st,st(1)
-	fstp	st
-	seta	al
+	movss	xmm0,xmm1
+	movss	xmm0,dword ptr [___unnamed_float_2]
+	comiss	xmm1,xmm0
+	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
 label0023:
@@ -372,42 +357,39 @@ label0023:
 	pop	ebp
 	ret
 label0006:
-	fld	dword ptr [___unnamed_float_10]
-	fld	dword ptr [ebp-4]
-	fdivrp
-	fstp	dword ptr [ebp-4]
-	fld	qword ptr [___unnamed_double_11]
-	fstp	qword ptr [ebp-28]
-	fld	dword ptr [ebp-4]
-	fstp	qword ptr [ebp-36]
+	movss	xmm0,dword ptr [___unnamed_float_13]
+	movss	xmm1,dword ptr [ebp-4]
+	divss	xmm1,xmm0
+	movss	dword ptr [ebp-4],xmm1
+	movsd	xmm0,qword ptr [___unnamed_double_14]
+	movsd	qword ptr [ebp-28],xmm0
+	cvtss2sd	xmm0,dword ptr [ebp-4]
+	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
-	fld	qword ptr [ebp-36]
-	fsub	qword ptr [ebp-28]
-	fstp	dword ptr [ebp-40]
+	movsd	xmm0,qword ptr [ebp-36]
+	subsd	xmm0,qword ptr [ebp-28]
+	cvtsd2ss	xmm1,xmm0
+	movss	dword ptr [ebp-40],xmm1
 ; start of inline function fabs
-	fldz
-	fld	dword ptr [ebp-40]
-	fucomip	st,st(1)
-	fstp	st
-	jb	label0024
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [___unnamed_float_0]
+	comiss	xmm0,dword ptr [ebp-40]
+	ja	label0024
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-44],xmm0
 	jmp	label0025
 label0024:
-	fld	dword ptr [ebp-40]
-	fldz
-	fsubrp
-	fstp	dword ptr [ebp-44]
+	movss	xmm0,dword ptr [ebp-40]
+	xorps	xmm0,dword ptr [___unnamed_float_1]
+	movss	dword ptr [ebp-44],xmm0
 label0025:
-	fld	dword ptr [ebp-40]
-	fstp	dword ptr [ebp-48]
+	movss	xmm0,dword ptr [ebp-40]
+	movss	dword ptr [ebp-48],xmm0
 label0026:
 ; end of inline function fabs
-	fld	dword ptr [ebp-48]
-	fld	dword ptr [___unnamed_float_0]
-	fucomip	st,st(1)
-	fstp	st
-	seta	al
+	movss	xmm0,xmm1
+	movss	xmm0,dword ptr [___unnamed_float_2]
+	comiss	xmm1,xmm0
+	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
 label0027:
