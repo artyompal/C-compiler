@@ -665,7 +665,6 @@ static void _generate_fpu_binary_expr(expression *expr, x86_operand *res, x86_op
 static void _generate_sse_binary_expr(expression *expr, x86_operand *res, x86_operand *op1, x86_operand *op2)
 {
     x86_instruction_code insn = _opcode_to_sse_instruction(expr->data.arithm.opcode);
-    x86_operand tmp;
 
     ASSERT(OP_IS_FLOAT(*op1) && OP_IS_REGISTER_OR_ADDRESS(*op1));
     ASSERT(OP_IS_FLOAT(*op2) && OP_IS_REGISTER_OR_ADDRESS(*op2));
@@ -674,9 +673,9 @@ static void _generate_sse_binary_expr(expression *expr, x86_operand *res, x86_op
 
     if (expr->data.arithm.opcode == op_assign) {
         if (OP_IS_ADDRESS(*op1) && OP_IS_ADDRESS(*op2)) {
-            bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);
-            unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), &tmp, op2);
-            unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), op1, &tmp);
+            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
+            unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), res, op2);
+            unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), op1, res);
         } else {
             unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), op1, op2);
         }
@@ -693,9 +692,9 @@ static void _generate_sse_binary_expr(expression *expr, x86_operand *res, x86_op
         unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), op1, res);
     } else if (IS_COMPARE_OP(expr->data.arithm.opcode)) {
         if (OP_IS_ADDRESS(*op1) && OP_IS_ADDRESS(*op2)) {
-            bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);
-            unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), &tmp, op1);
-            unit_push_binary_instruction(ENCODE_SSE_COMPARE(op1->op_type), &tmp, op2);
+            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
+            unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), res, op1);
+            unit_push_binary_instruction(ENCODE_SSE_COMPARE(op1->op_type), res, op2);
         } else if (OP_IS_ADDRESS(*op1)) {
             unit_push_binary_instruction(ENCODE_SSE_COMPARE(op1->op_type), op2, op1);
             insn = _invert_comparison_operands(insn);
@@ -714,9 +713,9 @@ static void _generate_sse_binary_expr(expression *expr, x86_operand *res, x86_op
         }
 
         if (OP_IS_ADDRESS(*op1)) {
-            bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);
-            unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), &tmp, op1);
-            unit_push_binary_instruction(insn, &tmp, op2);
+            bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
+            unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), res, op1);
+            unit_push_binary_instruction(insn, res, op2);
         } else {
             unit_push_binary_instruction(insn, op1, op2);
         }

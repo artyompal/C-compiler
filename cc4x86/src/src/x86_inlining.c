@@ -250,6 +250,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
                     insn->in_op2.op_loc = x86loc_none;
                 } else {
                     insn->in_code = ENCODE_SSE_MOV(insn->in_op1.op_type);
+                    insn->in_op2  = insn->in_op1;
                     bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, insn->in_op1.op_type, ofs + params_ofs);
                 }
             } else if (insn->in_op1.op_loc == x86loc_address || insn->in_op1.op_loc == x86loc_symbol) {
