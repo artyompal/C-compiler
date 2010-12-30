@@ -59,7 +59,8 @@ ___unnamed_float_2	dd	00h
 public	___unnamed_float_2
 ___unnamed_float_3	dd	040000000h
 public	___unnamed_float_3
-___unnamed_float_4	dd	080000000h
+align 16
+___unnamed_float_4	dd	080000000h, 00h, 00h, 00h
 public	___unnamed_float_4
 ___unnamed_float_5	dd	0bf800000h
 public	___unnamed_float_5
@@ -478,8 +479,8 @@ _rasterizer_init proc
 	mov	dword12,[ebp+20]
 	mov	dword ptr [__pitch],dword12
 	push_all
-	cvtsi2ss	sse1,[ebp+12]
-	cvtsi2ss	sse2,[ebp+16]
+	cvtsi2ss	sse1,dword ptr [ebp+12]
+	cvtsi2ss	sse2,dword ptr [ebp+16]
 	divss	sse1,sse2
 	push_arg	sse1,4
 	push_arg	dword ptr [ebp+32],4
@@ -493,9 +494,9 @@ _rasterizer_init proc
 	push_all
 	push_arg	dword ptr [ebp+28],4
 	push_arg	dword ptr [ebp+24],4
-	cvtsi2ss	sse3,[ebp+16]
+	cvtsi2ss	sse3,dword ptr [ebp+16]
 	push_arg	sse3,4
-	cvtsi2ss	sse4,[ebp+12]
+	cvtsi2ss	sse4,dword ptr [ebp+12]
 	push_arg	sse4,4
 	lea	dword23,dword ptr [__viewport_matrix]
 	push_arg	dword23,4
@@ -581,7 +582,7 @@ label0003:
 	push_arg	sse24,4
 	movss	sse25,dword ptr [___unnamed_float_2]
 	push_arg	sse25,4
-	cvtsi2ss	sse26,[ebp+12]
+	cvtsi2ss	sse26,dword ptr [ebp+12]
 	movss	sse27,dword ptr [___unnamed_float_1]
 	divss	sse27,sse26
 	movss	sse28,dword ptr [___unnamed_float_5]
@@ -613,7 +614,7 @@ label0003:
 	push_arg	sse34,4
 	movss	sse35,dword ptr [___unnamed_float_2]
 	push_arg	sse35,4
-	cvtsi2ss	sse36,[ebp+12]
+	cvtsi2ss	sse36,dword ptr [ebp+12]
 	movss	sse37,dword ptr [___unnamed_float_1]
 	divss	sse37,sse36
 	movss	sse38,dword ptr [___unnamed_float_1]
@@ -643,7 +644,7 @@ label0003:
 	push_arg	sse43,4
 	movss	sse44,dword ptr [___unnamed_float_2]
 	push_arg	sse44,4
-	cvtsi2ss	sse45,[ebp+16]
+	cvtsi2ss	sse45,dword ptr [ebp+16]
 	movss	sse46,dword ptr [___unnamed_float_1]
 	divss	sse46,sse45
 	movss	sse47,dword ptr [___unnamed_float_5]
@@ -824,7 +825,7 @@ label0000:
 	mov	[ebp-40],dword23
 	cmp	dword ptr [ebp-40],0
 	je	label0003
-	cvtsi2ss	sse1,[ebp-40]
+	cvtsi2ss	sse1,dword ptr [ebp-40]
 	movss	sse2,dword ptr [___unnamed_float_6]
 	divss	sse1,sse2
 	movss	dword ptr [ebp-44],sse1
@@ -845,18 +846,18 @@ label0000:
 	mov	dword50,[ebp-12]
 	and	dword50,255
 	mov	[ebp-24],dword50
-	cvtsi2ss	sse3,[ebp-20]
+	cvtsi2ss	sse3,dword ptr [ebp-20]
 	mulss	sse3,dword ptr [ebp-44]
-	cvtsi2ss	sse4,[ebp-32]
+	cvtsi2ss	sse4,dword ptr [ebp-32]
 	movss	sse5,dword ptr [___unnamed_float_1]
 	subss	sse5,dword ptr [ebp-44]
 	mulss	sse4,sse5
 	addss	sse3,sse4
 	cvttss2si	dword57,sse3
 	mov	[ebp-20],dword57
-	cvtsi2ss	sse6,[ebp-24]
+	cvtsi2ss	sse6,dword ptr [ebp-24]
 	mulss	sse6,dword ptr [ebp-44]
-	cvtsi2ss	sse7,[ebp-36]
+	cvtsi2ss	sse7,dword ptr [ebp-36]
 	movss	sse8,dword ptr [___unnamed_float_1]
 	subss	sse8,dword ptr [ebp-44]
 	mulss	sse7,sse8

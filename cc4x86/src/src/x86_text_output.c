@@ -57,6 +57,13 @@ void text_output_declare_initialized_qword(symbol *sym, __int64 value)
     fprintf(asm_file, "public\t_%s\n", sym->sym_name);
 }
 
+void text_output_declare_initialized_xmmword(symbol *sym, long c1, long c2, long c3, long c4)
+{
+    fprintf(asm_file, "align 16\n");
+    fprintf(asm_file, "_%s\tdd\t0%xh, 0%xh, 0%xh, 0%xh\n", sym->sym_name, c1, c2, c3, c4);
+    fprintf(asm_file, "public\t_%s\n", sym->sym_name);
+}
+
 void text_output_declare_initialized_string(symbol *sym, const char *value)
 {
     int i;
@@ -443,8 +450,8 @@ static void _output_push_binary_instruction(FILE *output, x86_instruction_code c
     _print_op(output, op1);
     fputc(',', output);
 
-    if (OP_IS_ADDRESS(*op2) && OP_IS_FLOAT(*op2) && option_use_sse2) {
-        fprintf(output, "%s ptr ", (op2->op_type == x86op_float ? "dword" : "qword"));
+    if (OP_IS_ADDRESS(*op2) && (OP_IS_FLOAT(*op1) || OP_IS_FLOAT(*op2)) && option_use_sse2) {
+        fprintf(output, "%s ptr ", (op2->op_type == x86op_double ? "qword" : "dword"));
     }
 
     _print_op(output, op2);

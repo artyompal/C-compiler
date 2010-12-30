@@ -59,7 +59,8 @@ ___unnamed_float_2	dd	00h
 public	___unnamed_float_2
 ___unnamed_float_3	dd	040000000h
 public	___unnamed_float_3
-___unnamed_float_4	dd	080000000h
+align 16
+___unnamed_float_4	dd	080000000h, 00h, 00h, 00h
 public	___unnamed_float_4
 ___unnamed_float_5	dd	0bf800000h
 public	___unnamed_float_5
@@ -766,9 +767,9 @@ _rasterizer_init proc
 	mov	[dword10],dword12
 	push_all
 	lea	dword13,[ebp+12]
-	cvtsi2ss	sse1,[dword13]
+	cvtsi2ss	sse1,dword ptr [dword13]
 	lea	dword14,[ebp+16]
-	cvtsi2ss	sse2,[dword14]
+	cvtsi2ss	sse2,dword ptr [dword14]
 	divss	sse1,sse2
 	push_arg	sse1,4
 	lea	dword15,[ebp+32]
@@ -788,10 +789,10 @@ _rasterizer_init proc
 	lea	dword20,[ebp+24]
 	push_arg	dword ptr [dword20],4
 	lea	dword21,[ebp+16]
-	cvtsi2ss	sse3,[dword21]
+	cvtsi2ss	sse3,dword ptr [dword21]
 	push_arg	sse3,4
 	lea	dword22,[ebp+12]
-	cvtsi2ss	sse4,[dword22]
+	cvtsi2ss	sse4,dword ptr [dword22]
 	push_arg	sse4,4
 	lea	dword23,dword ptr [__viewport_matrix]
 	push_arg	dword23,4
@@ -909,7 +910,7 @@ label0003:
 	movss	sse25,dword ptr [dword58]
 	push_arg	sse25,4
 	lea	dword59,[ebp+12]
-	cvtsi2ss	sse26,[dword59]
+	cvtsi2ss	sse26,dword ptr [dword59]
 	lea	dword60,dword ptr [___unnamed_float_1]
 	movss	sse27,dword ptr [dword60]
 	divss	sse27,sse26
@@ -951,7 +952,7 @@ label0003:
 	movss	sse35,dword ptr [dword70]
 	push_arg	sse35,4
 	lea	dword71,[ebp+12]
-	cvtsi2ss	sse36,[dword71]
+	cvtsi2ss	sse36,dword ptr [dword71]
 	lea	dword72,dword ptr [___unnamed_float_1]
 	movss	sse37,dword ptr [dword72]
 	divss	sse37,sse36
@@ -990,7 +991,7 @@ label0003:
 	movss	sse44,dword ptr [dword81]
 	push_arg	sse44,4
 	lea	dword82,[ebp+16]
-	cvtsi2ss	sse45,[dword82]
+	cvtsi2ss	sse45,dword ptr [dword82]
 	lea	dword83,dword ptr [___unnamed_float_1]
 	movss	sse46,dword ptr [dword83]
 	divss	sse46,sse45
@@ -1232,7 +1233,7 @@ label0000:
 	cmp	dword ptr [dword26],0
 	je	label0003
 	lea	dword27,[ebp-40]
-	cvtsi2ss	sse1,[dword27]
+	cvtsi2ss	sse1,dword ptr [dword27]
 	lea	dword28,dword ptr [___unnamed_float_6]
 	movss	sse2,dword ptr [dword28]
 	divss	sse1,sse2
@@ -1272,11 +1273,11 @@ label0000:
 	lea	dword51,[ebp-24]
 	mov	[dword51],dword50
 	lea	dword52,[ebp-20]
-	cvtsi2ss	sse3,[dword52]
+	cvtsi2ss	sse3,dword ptr [dword52]
 	lea	dword53,[ebp-44]
 	mulss	sse3,dword ptr [dword53]
 	lea	dword54,[ebp-32]
-	cvtsi2ss	sse4,[dword54]
+	cvtsi2ss	sse4,dword ptr [dword54]
 	lea	dword55,dword ptr [___unnamed_float_1]
 	movss	sse5,dword ptr [dword55]
 	lea	dword56,[ebp-44]
@@ -1287,11 +1288,11 @@ label0000:
 	lea	dword58,[ebp-20]
 	mov	[dword58],dword57
 	lea	dword59,[ebp-24]
-	cvtsi2ss	sse6,[dword59]
+	cvtsi2ss	sse6,dword ptr [dword59]
 	lea	dword60,[ebp-44]
 	mulss	sse6,dword ptr [dword60]
 	lea	dword61,[ebp-36]
-	cvtsi2ss	sse7,[dword61]
+	cvtsi2ss	sse7,dword ptr [dword61]
 	lea	dword62,dword ptr [___unnamed_float_1]
 	movss	sse8,dword ptr [dword62]
 	lea	dword63,[ebp-44]

@@ -25,7 +25,12 @@ typedef struct double_symbol_decl {
     symbol *    sym;
 } double_symbol;
 
-static hash_id float_table, double_table;
+typedef struct xmmword_symbol_decl {
+    long        c1, c2, c3, c4;
+    symbol *    sym;
+} xmmword_symbol;
+
+static hash_id float_table, double_table, xmmword_table;
 
 
 static unsigned int float_hash(float_symbol *key)
@@ -50,10 +55,22 @@ static int double_equal(double_symbol *key1, double_symbol *key2)
 }
 
 
+static unsigned int xmmword_hash(xmmword_symbol *key)
+{
+    return (key->c1 ^ key->c2 ^ key->c4 ^ key->c4);
+}
+
+static int xmmword_equal(xmmword_symbol *key1, xmmword_symbol *key2)
+{
+    return (key1->c1 == key2->c1 && key1->c2 == key2->c2 && key1->c3 == key2->c3 && key1->c4 == key2->c4);
+}
+
+
 void x86data_init(void)
 {
     float_table     = hash_init((hash_function) float_hash, (hash_equal_function) float_equal);
     double_table    = hash_init((hash_function) double_hash, (hash_equal_function) double_equal);
+    xmmword_table   = hash_init((hash_function) xmmword_hash, (hash_equal_function) xmmword_equal);
 }
 
 
@@ -118,6 +135,30 @@ symbol *x86data_insert_double_constant(__int64 constant)
     text_output_declare_initialized_qword(sym, constant);
     return sym;
 }
+
+symbol *x86data_insert_float4_constant(long c1, long c2, long c3, long c4)
+{
+    xmmword_symbol *key = allocator_alloc(allocator_global_pool, sizeof(xmmword_symbol));
+    xmmword_symbol *found;
+    symbol *sym;
+
+    key->c1 = c1, key->c2 = c2, key->c3 = c3, key->c4 = c4;
+    found       = hash_find(xmmword_table, key);
+
+    if (found) {
+        allocator_free(allocator_global_pool, key, sizeof(xmmword_symbol));
+        return found->sym;
+    }
+
+    sym         = symbol_create_unnamed("float", code_sym_variable, type_create_arithmetic(code_type_float));
+    key->sym    = sym;
+    hash_insert(xmmword_table, key);
+
+    _ensure_data_section();
+    text_output_declare_initialized_xmmword(sym, c1, c2, c3, c4);
+    return sym;
+}
+
 
 void x86data_declare_uninitialized_bytes(symbol *sym, int size)
 {

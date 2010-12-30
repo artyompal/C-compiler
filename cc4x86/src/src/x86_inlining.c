@@ -324,17 +324,13 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 
                 if (!OP_IS_FLOAT(insn->in_op1)) {
                     insn->in_code = x86insn_int_mov;
-
                     bincode_create_operand_addr_from_ebp_offset(&insn->in_op2, insn->in_op1.op_type, res_ofs);
                 } else if (!option_use_sse2) {
                     insn->in_code = x86insn_fpu_ld;
-
                     bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, insn->in_op1.op_type, res_ofs);
                 } else {
                     insn->in_code = ENCODE_SSE_MOV(insn->in_op1.op_type);
-                    insn->in_op2  = insn->in_op1;
-
-                    bincode_create_operand_and_alloc_pseudoreg_in_function(caller, &insn->in_op1, insn->in_op2.op_type);
+                    bincode_create_operand_addr_from_ebp_offset(&insn->in_op2, insn->in_op1.op_type, res_ofs);
                 }
 
                 break;
