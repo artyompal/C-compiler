@@ -245,7 +245,7 @@ void bincode_create_operand_and_alloc_pseudoreg_in_function(function_desc *func,
 {
     op->op_loc              = x86loc_register;
     op->op_type             = type;
-    op->data.reg            = func->func_pseudoregs_count[type]++;
+    op->data.reg            = func->func_pseudoregs_count[(type == x86op_double ? x86op_float : type)]++;
 }
 
 void bincode_create_operand_addr_from_reg(x86_operand *op, x86_operand_type type, int reg)

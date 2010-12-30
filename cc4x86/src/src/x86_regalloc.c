@@ -13,7 +13,34 @@ typedef struct register_map_decl {
 } register_map;
 
 static register_map _dword_register_map;
-static register_map _sse2_register_map;
+static register_map _sse_register_map;
+
+
+#define X86_DWORD_REGISTERS_COUNT   (6)
+#define X86_SSE_REGISTERS_COUNT     (8)
+
+
+int x86_get_max_register_count(x86_operand_type type)
+{
+    if (type == x86op_dword) {
+        return X86_DWORD_REGISTERS_COUNT;
+    } else if (type == x86op_float) {
+        return X86_SSE_REGISTERS_COUNT;
+    } else {
+        ASSERT(FALSE);
+    }
+}
+
+int _get_max_register_count(register_map *regmap)
+{
+    if (regmap == &_dword_register_map) {
+        return X86_DWORD_REGISTERS_COUNT;
+    } else if (regmap == &_sse_register_map) {
+        return X86_SSE_REGISTERS_COUNT;
+    } else {
+        ASSERT(FALSE);
+    }
+}
 
 
 static register_map *_get_register_map(x86_operand_type type)
@@ -22,7 +49,7 @@ static register_map *_get_register_map(x86_operand_type type)
     case x86op_dword:
         return &_dword_register_map;
     case x86op_float:
-        return &_sse2_register_map;
+        return &_sse_register_map;
     default:
         ASSERT(FALSE);
     }
@@ -69,7 +96,7 @@ static int _alloc_real_register(register_map *regmap, int pseudoreg)
 {
     int reg;
 
-    ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+    ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
     regmap->real_registers_cnt++;
 
     for (reg = 0; ; reg++) {
@@ -92,7 +119,7 @@ static int _alloc_real_register_for_regvar(register_map *regmap, int pseudoreg)
 {
     int reg;
 
-    ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+    ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
     regmap->real_registers_cnt++;
 
     for (reg = X86_MAX_REG - 1; ; reg--) {
@@ -129,13 +156,14 @@ static void _commit_register_reservation(function_desc *function, x86_instructio
 {
     int real_reg = pseudoregs_map[pseudoreg].reg_location;
     ASSERT(pseudoregs_map[pseudoreg].reg_status == register_reserved);
-    ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+    ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
 
     if (regmap->real_registers_map[real_reg] != -1) {
         // Регистр занят, вытесняем его в другой реальный регистр.
         int conflicting_reg = regmap->real_registers_map[real_reg];
         int new_reg         = _alloc_real_register_for_regvar(regmap, conflicting_reg);
 
+        ASSERT(regmap == &_dword_register_map);
         bincode_insert_int_reg_reg(function, insn, x86insn_int_mov, x86op_dword, ~new_reg, ~real_reg);
         pseudoregs_map[conflicting_reg].reg_location = new_reg;
     } else {
@@ -151,7 +179,7 @@ static int _alloc_byte_register(register_map *regmap, int pseudoreg)
     int reg;
 
     ASSERT(regmap == &_dword_register_map);
-    ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+    ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
     regmap->real_registers_cnt++;
 
     for (reg = 0; ; reg++) {
@@ -196,11 +224,12 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                         || insn->in_code == x86insn_imul_const || insn->in_code == x86insn_movzx
                         || insn->in_code == x86insn_movsx || insn->in_code == x86insn_fpu_float2int
                         || insn->in_code == x86insn_read_retval || IS_SET_INSN(insn->in_code)
-                        || insn->in_code == x86insn_cdq || insn->in_code == x86insn_xor_edx_edx);
+                        || insn->in_code == x86insn_cdq || insn->in_code == x86insn_xor_edx_edx
+                        || insn->in_code == x86insn_sse_store_int);
                 } else {
                     ASSERT(insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd
-                        || insn->in_code == x86insn_sse_double2float
-                        || insn->in_code == x86insn_sse_float2double || insn->in_code == x86insn_read_retval);
+                        || insn->in_code == x86insn_sse_double2float || insn->in_code == x86insn_sse_float2double
+                        || insn->in_code == x86insn_read_retval || insn->in_code == x86insn_sse_load_int);
                 }
 
                 pseudoregs_cnt = insn->in_op1.data.reg + 1;
@@ -212,11 +241,11 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
     // Выделяем память под статистику.
     if (!stat->ptr || pseudoregs_cnt > stat->count) {
         if (stat->ptr) {
-            allocator_free(allocator_per_function_pool, stat->ptr,
+            allocator_free(allocator_global_pool, stat->ptr,
                 sizeof(x86_pseudoreg_info) * stat->count);
         }
 
-        stat->ptr = allocator_alloc(allocator_per_function_pool, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
+        stat->ptr = allocator_alloc(allocator_global_pool, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
     }
 
     stat->count     = pseudoregs_cnt;
@@ -237,7 +266,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
             reg = registers[i].reg_value;
             ASSERT(reg < pseudoregs_cnt);
 
-            if (X86_IS_REGVAR(reg) && type == x86op_dword) {
+            if (X86_IS_REGVAR(reg, type)) {
                 // FIXME: считается, что регистровые переменные используются до конца функции.
                 // Это нужно потому, что переход может вернуть нас в область её использования.
                 pseudoregs_map[reg].reg_last_read = function->func_binary_code_end;
@@ -262,7 +291,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                 pseudoregs_map[reg].reg_changes_value   = TRUE;
             }
 
-            if (X86_IS_REGVAR(reg) && type == x86op_dword) {
+            if (X86_IS_REGVAR(reg, type)) {
                 pseudoregs_map[reg].reg_last_read = function->func_binary_code_end;
             } else {
                 pseudoregs_map[reg].reg_last_read = insn;
@@ -300,7 +329,7 @@ void x86_analyze_registers_usage(function_desc *function)
     _analyze_registers_usage(function, &function->func_dword_regstat, x86op_dword);
 
     if (option_use_sse2) {
-        _analyze_registers_usage(function, &function->func_sse2_regstat, x86op_float);
+        _analyze_registers_usage(function, &function->func_sse_regstat, x86op_float);
     }
 }
 
@@ -563,9 +592,9 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
             } else {
                 // нужен новый регистр
                 ASSERT(pseudoregs_map[reg].reg_status == register_free);
-                UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < X86_TMP_REGISTERS_COUNT);
+                UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
 
-                if (X86_IS_REGVAR(reg) && type == x86op_dword) {
+                if (X86_IS_REGVAR(reg, type)) {
                     real_reg = _alloc_real_register_for_regvar(regmap, reg);
                 } else {
                     real_reg = _alloc_real_register(regmap, reg);
@@ -581,7 +610,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         for (i = 0; i < registers_count; i++) {
             reg = pseudoregs[i];
 
-            if (X86_IS_REGVAR(reg) && type == x86op_dword) continue;
+            if (X86_IS_REGVAR(reg, type)) continue;
 
             if (pseudoregs_map[reg].reg_last_read == insn && pseudoregs_map[reg].reg_status == register_allocated) {
                 pseudoregs_map[reg].reg_status = register_free;
@@ -623,7 +652,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
     for (i = 0; i < X86_MAX_REG; i++) {
         reg = regmap->real_registers_map[i];
 
-        if (X86_IS_REGVAR(reg) && type == x86op_dword) {
+        if (X86_IS_REGVAR(reg, type)) {
             registers_count++;
         } else {
             ASSERT(reg == -1);
@@ -790,7 +819,7 @@ void x86_allocate_registers(function_desc *function)
 
     if (option_use_sse2) {
         // Запускаем аллокатор регистров для SSE-регистров.
-        _allocate_registers(function, &function->func_sse2_regstat, x86op_float);
+        _allocate_registers(function, &function->func_sse_regstat, x86op_float);
     }
 
     // Обрабатываем псевдо-инструкции и сохраняем изменённые регистры EBX/ESI/EDI.

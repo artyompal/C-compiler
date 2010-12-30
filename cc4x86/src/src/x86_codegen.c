@@ -213,20 +213,11 @@ static x86_instruction_code _invert_jump_operands(x86_instruction_code jump_insn
 
 static void _generate_convert_int2float(x86_operand *res, x86_operand *op)
 {
-    x86_operand tmp;
-
     ASSERT(OP_IS_INT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
     if (option_use_sse2) {
-        if (OP_IS_ADDRESS(*op)) {
-            bincode_create_operand_and_alloc_pseudoreg(&tmp, op->op_type);
-            unit_push_binary_instruction(x86insn_int_mov, &tmp, op);
-            bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
-            unit_push_binary_instruction(x86insn_sse_load_int, res, &tmp);
-        } else {
-            bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
-            unit_push_binary_instruction(x86insn_sse_load_int, res, op);
-        }
+        bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
+        unit_push_binary_instruction(x86insn_sse_load_int, res, op);
     } else {
         if (OP_IS_REGISTER(*op)) {
             unit_push_unary_instruction(x86insn_fpu_int2float, op);
@@ -250,9 +241,10 @@ static void _generate_convert_float2int(x86_operand *res, x86_operand *op)
         if (OP_IS_ADDRESS(*op)) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_float);
             unit_push_binary_instruction(x86insn_sse_movss, &tmp, op);
+            unit_push_binary_instruction(x86insn_sse_store_int, res, &tmp);
+        } else {
+            unit_push_binary_instruction(x86insn_sse_store_int, res, op);
         }
-
-        unit_push_binary_instruction(x86insn_sse_store_int, res, &tmp);
     } else {
         if (OP_IS_ADDRESS(*op)) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_float);

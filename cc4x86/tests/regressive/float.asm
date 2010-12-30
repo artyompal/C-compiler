@@ -42,17 +42,13 @@ _test proc
 	push	ebp
 	mov	ebp,esp
 	sub	esp,52
-	movss	xmm0,dword ptr [___unnamed_float_3]
-	movss	dword ptr [ebp-4],xmm0
-	movsd	xmm0,qword ptr [___unnamed_double_4]
-	movsd	qword ptr [ebp-12],xmm0
-	cvtss2sd	xmm0,dword ptr [ebp-4]
-	addsd	xmm0,qword ptr [ebp-12]
-	movsd	qword ptr [ebp-20],xmm0
+	movss	xmm7,dword ptr [___unnamed_float_3]
+	movsd	xmm6,qword ptr [___unnamed_double_4]
+	cvtss2sd	xmm5,xmm7
+	addsd	xmm5,xmm6
 	movsd	xmm0,qword ptr [___unnamed_double_5]
 	movsd	qword ptr [ebp-28],xmm0
-	movsd	xmm0,qword ptr [ebp-20]
-	movsd	qword ptr [ebp-36],xmm0
+	movsd	qword ptr [ebp-36],xmm5
 ; start of inline function eq
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
@@ -90,13 +86,12 @@ label000b:
 	pop	ebp
 	ret
 label0000:
-	cvtss2sd	xmm0,dword ptr [ebp-4]
-	subsd	xmm0,qword ptr [ebp-12]
-	movsd	qword ptr [ebp-20],xmm0
+	cvtss2sd	xmm0,xmm7
+	subsd	xmm0,xmm6
+	movsd	xmm5,xmm0
 	movsd	xmm0,qword ptr [___unnamed_double_6]
 	movsd	qword ptr [ebp-28],xmm0
-	movsd	xmm0,qword ptr [ebp-20]
-	movsd	qword ptr [ebp-36],xmm0
+	movsd	qword ptr [ebp-36],xmm5
 ; start of inline function eq
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
@@ -134,13 +129,12 @@ label000f:
 	pop	ebp
 	ret
 label0001:
-	cvtss2sd	xmm0,dword ptr [ebp-4]
-	mulsd	xmm0,qword ptr [ebp-12]
-	movsd	qword ptr [ebp-20],xmm0
+	cvtss2sd	xmm0,xmm7
+	mulsd	xmm0,xmm6
+	movsd	xmm5,xmm0
 	movsd	xmm0,qword ptr [___unnamed_double_7]
 	movsd	qword ptr [ebp-28],xmm0
-	movsd	xmm0,qword ptr [ebp-20]
-	movsd	qword ptr [ebp-36],xmm0
+	movsd	qword ptr [ebp-36],xmm5
 ; start of inline function eq
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
@@ -178,13 +172,12 @@ label0013:
 	pop	ebp
 	ret
 label0002:
-	cvtss2sd	xmm0,dword ptr [ebp-4]
-	divsd	xmm0,qword ptr [ebp-12]
-	movsd	qword ptr [ebp-20],xmm0
+	cvtss2sd	xmm0,xmm7
+	divsd	xmm0,xmm6
+	movsd	xmm5,xmm0
 	movsd	xmm0,qword ptr [___unnamed_double_8]
 	movsd	qword ptr [ebp-28],xmm0
-	movsd	xmm0,qword ptr [ebp-20]
-	movsd	qword ptr [ebp-36],xmm0
+	movsd	qword ptr [ebp-36],xmm5
 ; start of inline function eq
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
@@ -223,12 +216,12 @@ label0017:
 	ret
 label0003:
 	movss	xmm0,dword ptr [___unnamed_float_3]
-	movss	xmm1,dword ptr [ebp-4]
+	movss	xmm1,xmm7
 	addss	xmm1,xmm0
-	movss	dword ptr [ebp-4],xmm1
+	movss	xmm7,xmm1
 	movsd	xmm0,qword ptr [___unnamed_double_9]
 	movsd	qword ptr [ebp-28],xmm0
-	cvtss2sd	xmm0,dword ptr [ebp-4]
+	cvtss2sd	xmm0,xmm7
 	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
 	movsd	xmm0,qword ptr [ebp-36]
@@ -268,12 +261,12 @@ label001b:
 	ret
 label0004:
 	movss	xmm0,dword ptr [___unnamed_float_10]
-	movss	xmm1,dword ptr [ebp-4]
+	movss	xmm1,xmm7
 	subss	xmm1,xmm0
-	movss	dword ptr [ebp-4],xmm1
+	movss	xmm7,xmm1
 	movsd	xmm0,qword ptr [___unnamed_double_11]
 	movsd	qword ptr [ebp-28],xmm0
-	cvtss2sd	xmm0,dword ptr [ebp-4]
+	cvtss2sd	xmm0,xmm7
 	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
 	movsd	xmm0,qword ptr [ebp-36]
@@ -313,12 +306,12 @@ label001f:
 	ret
 label0005:
 	movss	xmm0,dword ptr [___unnamed_float_3]
-	movss	xmm1,dword ptr [ebp-4]
+	movss	xmm1,xmm7
 	mulss	xmm1,xmm0
-	movss	dword ptr [ebp-4],xmm1
+	movss	xmm7,xmm1
 	movsd	xmm0,qword ptr [___unnamed_double_12]
 	movsd	qword ptr [ebp-28],xmm0
-	cvtss2sd	xmm0,dword ptr [ebp-4]
+	cvtss2sd	xmm0,xmm7
 	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
 	movsd	xmm0,qword ptr [ebp-36]
@@ -358,12 +351,12 @@ label0023:
 	ret
 label0006:
 	movss	xmm0,dword ptr [___unnamed_float_13]
-	movss	xmm1,dword ptr [ebp-4]
+	movss	xmm1,xmm7
 	divss	xmm1,xmm0
-	movss	dword ptr [ebp-4],xmm1
+	movss	xmm7,xmm1
 	movsd	xmm0,qword ptr [___unnamed_double_14]
 	movsd	qword ptr [ebp-28],xmm0
-	cvtss2sd	xmm0,dword ptr [ebp-4]
+	cvtss2sd	xmm0,xmm7
 	movsd	qword ptr [ebp-36],xmm0
 ; start of inline function eq
 	movsd	xmm0,qword ptr [ebp-36]

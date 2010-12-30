@@ -874,7 +874,8 @@ void unit_codegen(void)
         x86_stack_frame_begin_function(_curr_func);
         x86_codegen_do_function(_curr_func);
 
-        _curr_func->func_start_of_regvars = INT_MAX;
+        _curr_func->func_start_of_regvars[x86op_dword] = INT_MAX;
+        _curr_func->func_start_of_regvars[x86op_float] = INT_MAX;
 
         if (!option_debug_disable_basic_opt) {
             x86_analyze_registers_usage(_curr_func);
@@ -955,5 +956,17 @@ void unit_push_binary_instruction(x86_instruction_code code, x86_operand *op1, x
     res->in_prev            = _curr_func->func_binary_code_end;
 
     _curr_func->func_binary_code_end = res;
+}
+
+
+register_stat * unit_get_regstat(function_desc *function, x86_operand_type type)
+{
+    if (type == x86op_dword) {
+        return &function->func_dword_regstat;
+    } else if (type == x86op_float || type == x86op_double) {
+        return &function->func_sse_regstat;
+    } else {
+        ASSERT(FALSE);
+    }
 }
 
