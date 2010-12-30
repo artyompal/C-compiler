@@ -514,35 +514,39 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
     int reg, regvar, regs_cnt, i;
     x86_register_ref regs_arr[MAX_REGISTERS_PER_INSN];
     x86_instruction *insn2;
+    x86_operand_type type   = insn->in_op1.op_type;
+    register_stat *regstat  = unit_get_regstat(function, type);
+
 
     // если регистр где-то изменяется, его нельзя удалять
     reg     = insn->in_op1.data.reg;
-    if (function->func_dword_regstat.ptr[reg].reg_changes_value) {
+    if (regstat->ptr[reg].reg_changes_value) {
         return FALSE;
     }
 
     // если второй операнд - не регистровая переменная, выходим
     regvar  = insn->in_op2.data.reg;
-    if (regvar < function->func_start_of_regvars) {
+    if (regvar < function->func_start_of_regvars[type]) {
         return FALSE;
     }
 
     // если переменная меняет значение до конца жизни регистра либо туда возможны переходы, то нельзя удалять
-    for (insn2 = function->func_dword_regstat.ptr[reg].reg_first_write;
-        insn2 != function->func_dword_regstat.ptr[reg].reg_last_read; insn2 = insn2->in_next)
-            if (IS_INT_MODIFYING_INSN(insn2->in_code) && insn2->in_op1.data.reg == insn->in_op2.data.reg
-                || insn2->in_code == x86insn_label) {
+    for (insn2 = regstat->ptr[reg].reg_first_write;
+        insn2 != regstat->ptr[reg].reg_last_read; insn2 = insn2->in_next)
+            if (IS_INT_MODIFYING_INSN(insn2->in_code) && insn2->in_op1.op_type == type
+                && insn2->in_op1.data.reg == insn->in_op2.data.reg || insn2->in_code == x86insn_label) {
                     return FALSE;
                 }
 
     insn2  = insn->in_next;
     bincode_erase_instruction(function, insn);
 
-    insn   = insn2;
-    insn2  = function->func_dword_regstat.ptr[reg].reg_last_read->in_next;
+    insn    = insn2;
+    regstat = unit_get_regstat(function, type);
+    insn2   = regstat->ptr[reg].reg_last_read->in_next;
 
     for (; insn != insn2; insn = insn->in_next) {
-        bincode_extract_pseudoregs_from_insn(insn, x86op_dword, regs_arr, &regs_cnt);
+        bincode_extract_pseudoregs_from_insn(insn, type, regs_arr, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             if (*regs_arr[i].reg_addr == reg) {
@@ -560,20 +564,23 @@ static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruc
     int reg, regvar, regs_cnt, i;
     x86_register_ref regs_arr[MAX_REGISTERS_PER_INSN];
     x86_instruction *insn2;
+    x86_operand_type type = insn->in_op1.op_type;
+    register_stat *regstat  = unit_get_regstat(function, type);
+
 
     reg     = insn->in_op2.data.reg;
-    if (reg >= function->func_start_of_regvars) {
+    if (reg >= function->func_start_of_regvars[type]) {
         return FALSE;
     }
 
     regvar  = insn->in_op1.data.reg;
-    if (regvar < function->func_start_of_regvars) {
+    if (regvar < function->func_start_of_regvars[type]) {
         return FALSE;
     }
 
     // Проверяем, что ранее этой инструкции регистровая переменная не использовалась в этой функции.
     for (insn2 = function->func_binary_code; insn2 != insn; insn2 = insn2->in_next) {
-        bincode_extract_pseudoregs_from_insn(insn2, x86op_dword, regs_arr, &regs_cnt);
+        bincode_extract_pseudoregs_from_insn(insn2, type, regs_arr, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             if (*regs_arr[i].reg_addr == regvar) {
@@ -583,8 +590,8 @@ static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruc
     }
 
     // Заменяем все вхождения регистра на регистровую переменную.
-    for (insn2 = function->func_dword_regstat.ptr[reg].reg_first_write; insn2 != insn; insn2 = insn2->in_next) {
-        bincode_extract_pseudoregs_from_insn(insn2, x86op_dword, regs_arr, &regs_cnt);
+    for (insn2 = regstat->ptr[reg].reg_first_write; insn2 != insn; insn2 = insn2->in_next) {
+        bincode_extract_pseudoregs_from_insn(insn2, type, regs_arr, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             if (*regs_arr[i].reg_addr == reg) {
@@ -614,10 +621,11 @@ void x86_optimization_after_regvar_allocation(function_desc *function)
         for (insn = function->func_binary_code; insn; insn = next) {
             next = insn->in_next;
 
-            if (insn->in_code == x86insn_int_mov && OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2)) {
-                if (_try_kill_copies_of_regvar(function, insn) || _try_optimize_regvar_evaluation(function, insn)) {
-                    was_smth = TRUE;
-                }
+            if ((insn->in_code == x86insn_int_mov || insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd)
+                && OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2)) {
+                    if (_try_kill_copies_of_regvar(function, insn) || _try_optimize_regvar_evaluation(function, insn)) {
+                        was_smth = TRUE;
+                    }
             }
         }
 
@@ -639,8 +647,9 @@ void x86_optimization_after_regvar_allocation(function_desc *function)
             x86_optimization_after_codegen(function);
 
             // Считаем число инструкций в функции.
-            for (insn_count = 0, insn = function->func_binary_code; insn; insn = insn->in_next)
+            for (insn_count = 0, insn = function->func_binary_code; insn; insn = insn->in_next) {
                 insn_count++;
+            }
 
             // Лишние инструкции появиться не должны.
             ASSERT(insn_count <= orig_insn_count);

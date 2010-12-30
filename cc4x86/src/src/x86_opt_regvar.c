@@ -151,7 +151,7 @@ static void _search_for_addressing_or_int2float(expression *expr, void *result)
 }
 
 // ƒобавл€ет переменную в список, если нигде не берЄтс€ еЄ адрес.
-static void _try_create_register_variable(function_desc *function, symbol *sym)
+static void _try_create_register_variable(function_desc *function, symbol *sym, x86_operand_type type)
 {
     address_lookup_result address_taken;
 
@@ -162,7 +162,11 @@ static void _try_create_register_variable(function_desc *function, symbol *sym)
         return;
     }
 
-    if (!TYPE_IS_X86_DWORD(sym->sym_type)) {
+    if (type == x86op_dword && !TYPE_IS_X86_DWORD(sym->sym_type)) {
+        return;
+    }
+
+    if (type == x86op_float && !TYPE_IS_FLOATING(sym->sym_type)) {
         return;
     }
 
@@ -185,7 +189,7 @@ static void _usage_counter(expression *sym_expr, void *unused)
 }
 
 //
-// ¬ычисл€ет дл€ каждой переменной число еЄ использовани€.
+// ¬ычисл€ет дл€ каждой переменной число еЄ использований.
 // TODO: нужно давать больший приоритет переменным, использующимс€ во внутренних циклах.
 static void _analyze_variables_usage(function_desc *function)
 {
@@ -209,7 +213,7 @@ static void _analyze_variables_usage(function_desc *function)
 
 //
 // ¬ы€вл€ет все переменные, которые можно сделать регистровыми, и сортирует их по частоте использовани€.
-static void _choose_possible_register_variables(function_desc *function)
+static void _choose_possible_register_variables(function_desc *function, x86_operand_type type)
 {
     symbol *var;
     parameter *param;
@@ -220,12 +224,12 @@ static void _choose_possible_register_variables(function_desc *function)
     _register_vars_list.first = _register_vars_list.last = NULL;
 
     for (var = function->func_locals.list_first; var; var = var->sym_next) {
-        _try_create_register_variable(function, var);
+        _try_create_register_variable(function, var, type);
     }
 
     for (param = func_type->data.function.parameters_list->param_first; param; param = param->param_next) {
         if (param->param_code == code_symbol_parameter) {
-            _try_create_register_variable(function, param->param_sym);
+            _try_create_register_variable(function, param->param_sym, type);
         }
     }
 
@@ -234,19 +238,19 @@ static void _choose_possible_register_variables(function_desc *function)
 
 //
 // ¬ычисл€ет максимальное число одновременно выделенных регистров в данной функции.
-static int _estimate_num_of_used_pseudo_registers(function_desc *function)
+static int _estimate_num_of_used_pseudo_registers(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
     int max_registers, current_regs_cnt, regs_cnt, i;
     x86_register regs_arr[MAX_REGISTERS_PER_INSN];
-    x86_pseudoreg_info *reg_info = function->func_dword_regstat.ptr;
+    x86_pseudoreg_info *reg_info = unit_get_regstat(function, type)->ptr;
 
 
     LOG(("_estimate_num_of_used_pseudo_registers(%s)\n", function->func_sym->sym_name));
     max_registers = current_regs_cnt = 0;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        bincode_extract_pseudoregs_from_insn_wo_dupes(insn, x86op_dword, regs_arr, &regs_cnt);
+        bincode_extract_pseudoregs_from_insn_wo_dupes(insn, type, regs_arr, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             if (insn == reg_info[regs_arr[i].reg_value].reg_first_write) {
@@ -271,7 +275,7 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function)
 
 //
 // «амен€ет все вхождени€ регистровой переменной на регистр.
-static void _replace_variable_with_register(function_desc *function, x86_register_var *reg_var)
+static void _replace_variable_with_register(function_desc *function, x86_register_var *reg_var, x86_operand_type type)
 {
     x86_instruction *insn;
     int var_offset  = reg_var->sym->sym_offset;
@@ -285,57 +289,62 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
     insn = insn->in_next;
 
     if (var_offset > 0) {
-        bincode_insert_int_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, var_reg, var_offset);
+        bincode_insert_int_reg_ebp_offset(function, insn,
+            (type == x86op_dword ? x86insn_int_mov : ENCODE_SSE_MOV(type)), type, var_reg, var_offset);
     }
 
     for (; insn; insn = insn->in_next) {
         if (OP_IS_SPEC_EBP_OFFSET(insn->in_op1, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&insn->in_op1, x86op_dword, var_reg);
+            bincode_create_operand_from_pseudoreg(&insn->in_op1, type, var_reg);
         } else if (OP_IS_SPEC_EBP_OFFSET(insn->in_op2, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&insn->in_op2, x86op_dword, var_reg);
+            bincode_create_operand_from_pseudoreg(&insn->in_op2, type, var_reg);
         }
     }
 }
 
-
 //
-// √лобальна€ точка входа в аллокатор регистровых переменных.
-void x86_create_register_variables(function_desc *function)
+// —оздаЄт столько регистровых переменных заданного типа, сколько возможно,
+// с приоритетом по частоте использовани€.
+static void _create_register_variables_for_type(function_desc *function, x86_operand_type type)
 {
     int free_registers, last_pseudo_register;
     x86_register_var *reg_var;
+    register_stat *regstat = unit_get_regstat(function, type);
 
 
-    free_registers = X86_TMP_REGISTERS_COUNT - _estimate_num_of_used_pseudo_registers(function);
+    free_registers =
+        x86_get_max_register_count(type) - _estimate_num_of_used_pseudo_registers(function, type);
+
     if (free_registers <= 0) {
         // Ќет свободных регистров.
         return;
     }
 
-    _choose_possible_register_variables(function);
+    _choose_possible_register_variables(function, type);
+
     if (!_register_vars_list.first) {
         // Ќет потенциальных регистровых переменных.
         return;
     }
 
 
-    last_pseudo_register            = function->func_dword_regstat.count+1;
-    function->func_start_of_regvars = last_pseudo_register;
-    reg_var                         = _register_vars_list.first;
+    last_pseudo_register                    = regstat->count+1;
+    function->func_start_of_regvars[type]   = last_pseudo_register;
+    reg_var                                 = _register_vars_list.first;
 
-    LOG(("x86_create_register_variables(function=%s start_of_regvars=%d)\n",
-        function->func_sym->sym_name, function->func_start_of_regvars));
+    LOG(("_create_register_variables_for_type(function=%s start_of_regvars=%d type=%d)\n",
+        function->func_sym->sym_name, function->func_start_of_regvars[type], type));
 
 
     // TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные, если эти регистры используютс€ как специальные.
 
     do {
-        LOG(("x86_create_register_variables iteration\n"));
+        LOG(("_create_register_variables_for_type iteration\n"));
 
         // —оздаЄм регистровые переменные, начина€ с более приоритетных.
         for (; reg_var && free_registers; reg_var = reg_var->next, free_registers--) {
             reg_var->pseudo_reg = last_pseudo_register++;
-            _replace_variable_with_register(function, reg_var);
+            _replace_variable_with_register(function, reg_var, type);
         }
 
         // ћы создали новые псевдо-регистры, поэтому мы должны перестроить регистровую статистику.
@@ -350,6 +359,20 @@ void x86_create_register_variables(function_desc *function)
             return;
         }
 
-        free_registers = X86_TMP_REGISTERS_COUNT - _estimate_num_of_used_pseudo_registers(function);
+        free_registers =
+            x86_get_max_register_count(type) - _estimate_num_of_used_pseudo_registers(function, type);
     } while (free_registers > 0);
 }
+
+
+//
+// √лобальна€ точка входа в аллокатор регистровых переменных.
+void x86_create_register_variables(function_desc *function)
+{
+    _create_register_variables_for_type(function, x86op_dword);
+
+    if (option_use_sse2) {
+        _create_register_variables_for_type(function, x86op_float);
+    }
+}
+

@@ -14,6 +14,7 @@ typedef struct x86_instruction_decl     x86_instruction;
 typedef struct x86_pseudoreg_info_decl  x86_pseudoreg_info;
 typedef enum x86_instruction_code_decl  x86_instruction_code;
 typedef struct x86_operand_decl         x86_operand;
+typedef enum x86_operand_type_decl      x86_operand_type;
 
 
 typedef struct register_stat_decl {
@@ -38,8 +39,8 @@ typedef struct function_desc_decl {
 
     // информаци€ аллокатора регистров:
     register_stat               func_dword_regstat;         // регистровые статистики дл€ соответствующих наборов регистров;
-    register_stat               func_sse2_regstat;          // мы не выдел€ем 8-битные, 16-битные и FPU-регистры
-    int                         func_start_of_regvars;      // перва€ регистрова€ переменна€ (номер псевдорегистра)
+    register_stat               func_sse_regstat;           // мы не выдел€ем 8-битные, 16-битные и FPU-регистры
+    int                         func_start_of_regvars[6];   // перва€ регистрова€ переменна€ (номер псевдорегистра)
     int                         func_labels_count;          // последн€€ аллоцированна€ метка в функции
     int                         func_pseudoregs_count[6];   // X86_REGISTER_TYPES_COUNT
 
@@ -84,7 +85,6 @@ void            unit_push_break                     ();
 void            unit_push_continue_break_targets    (int continue_target, int break_target);
 void            unit_pop_continue_break_targets     ();
 
-
 // поддержка switch/case/default
 void            unit_open_switch_stmt               (expression *value);
 void            unit_push_case_label                (expression *value);
@@ -101,6 +101,9 @@ void            unit_codegen                        (void);
 void            unit_push_nullary_instruction       (x86_instruction_code code);
 void            unit_push_unary_instruction         (x86_instruction_code code, x86_operand *op);
 void            unit_push_binary_instruction        (x86_instruction_code code, x86_operand *op1, x86_operand *op2);
+
+// поддержка оптимизатора
+register_stat * unit_get_regstat                    (function_desc *function, x86_operand_type type);
 
 
 #else
