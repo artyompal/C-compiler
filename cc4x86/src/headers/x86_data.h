@@ -11,6 +11,7 @@ void        x86data_init                                (void);
 void        x86data_enter_text_section                  (void);
 symbol *    x86data_insert_float_constant               (long constant);
 symbol *    x86data_insert_double_constant              (__int64 constant);
+symbol *    x86data_insert_float4_constant              (long c1, long c2, long c3, long c4);
 void        x86data_declare_uninitialized_bytes         (symbol *sym, int size);
 void        x86data_declare_initialized_dword           (symbol *sym, long value);
 void        x86data_declare_initialized_qword           (symbol *sym, __int64 value);

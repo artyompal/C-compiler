@@ -59,7 +59,8 @@ ___unnamed_float_2	dd	00h
 public	___unnamed_float_2
 ___unnamed_float_3	dd	040000000h
 public	___unnamed_float_3
-___unnamed_float_4	dd	080000000h
+align 16
+___unnamed_float_4	dd	080000000h, 00h, 00h, 00h
 public	___unnamed_float_4
 ___unnamed_float_5	dd	0bf800000h
 public	___unnamed_float_5
@@ -442,8 +443,8 @@ _rasterizer_init proc
 	mov	dword ptr [__height],eax
 	mov	eax,[ebp+20]
 	mov	dword ptr [__pitch],eax
-	cvtsi2ss	xmm0,[ebp+12]
-	cvtsi2ss	xmm1,[ebp+16]
+	cvtsi2ss	xmm0,dword ptr [ebp+12]
+	cvtsi2ss	xmm1,dword ptr [ebp+16]
 	divss	xmm0,xmm1
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
@@ -462,10 +463,10 @@ _rasterizer_init proc
 	sub	esp,4
 	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
-	cvtsi2ss	xmm0,[ebp+16]
+	cvtsi2ss	xmm0,dword ptr [ebp+16]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
-	cvtsi2ss	xmm0,[ebp+12]
+	cvtsi2ss	xmm0,dword ptr [ebp+12]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
 	lea	eax,dword ptr [__viewport_matrix]
@@ -559,7 +560,7 @@ label0003:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
-	cvtsi2ss	xmm0,[ebp+12]
+	cvtsi2ss	xmm0,dword ptr [ebp+12]
 	movss	xmm1,dword ptr [___unnamed_float_1]
 	divss	xmm1,xmm0
 	movss	xmm0,dword ptr [___unnamed_float_5]
@@ -595,7 +596,7 @@ label0003:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
-	cvtsi2ss	xmm0,[ebp+12]
+	cvtsi2ss	xmm0,dword ptr [ebp+12]
 	movss	xmm1,dword ptr [___unnamed_float_1]
 	divss	xmm1,xmm0
 	movss	xmm0,dword ptr [___unnamed_float_1]
@@ -628,7 +629,7 @@ label0003:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
-	cvtsi2ss	xmm0,[ebp+16]
+	cvtsi2ss	xmm0,dword ptr [ebp+16]
 	movss	xmm1,dword ptr [___unnamed_float_1]
 	divss	xmm1,xmm0
 	movss	xmm0,dword ptr [___unnamed_float_5]
@@ -831,7 +832,7 @@ label0000:
 	mov	[ebp-40],eax
 	cmp	dword ptr [ebp-40],0
 	je	label0003
-	cvtsi2ss	xmm5,[ebp-40]
+	cvtsi2ss	xmm5,dword ptr [ebp-40]
 	movss	xmm0,dword ptr [___unnamed_float_6]
 	divss	xmm5,xmm0
 	mov	ecx,[esi]
@@ -849,18 +850,18 @@ label0000:
 	mov	eax,edx
 	and	eax,255
 	mov	[ebp-24],eax
-	cvtsi2ss	xmm0,[ebp-20]
+	cvtsi2ss	xmm0,dword ptr [ebp-20]
 	mulss	xmm0,xmm5
-	cvtsi2ss	xmm1,[ebp-32]
+	cvtsi2ss	xmm1,dword ptr [ebp-32]
 	movss	xmm2,dword ptr [___unnamed_float_1]
 	subss	xmm2,xmm5
 	mulss	xmm1,xmm2
 	addss	xmm0,xmm1
 	cvttss2si	eax,xmm0
 	mov	[ebp-20],eax
-	cvtsi2ss	xmm0,[ebp-24]
+	cvtsi2ss	xmm0,dword ptr [ebp-24]
 	mulss	xmm0,xmm5
-	cvtsi2ss	xmm1,[ebp-36]
+	cvtsi2ss	xmm1,dword ptr [ebp-36]
 	movss	xmm2,dword ptr [___unnamed_float_1]
 	subss	xmm2,xmm5
 	mulss	xmm1,xmm2

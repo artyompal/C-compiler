@@ -397,15 +397,10 @@ static void _generate_common_unary_arithm_expr(expression *expr, x86_operand *re
                 unit_push_binary_instruction(ENCODE_SSE_MOV(op->op_type), res, op);
             }
 
-            if (op->op_type == x86op_float) {
-                constant = x86data_insert_float_constant(_negate_float);
-                bincode_create_operand_from_symbol(&tmp, constant);
-                unit_push_binary_instruction(x86insn_sse_xorps, res, &tmp);
-            } else {
-                constant = x86data_insert_float_constant(_negate_double);
-                bincode_create_operand_from_symbol(&tmp, constant);
-                unit_push_binary_instruction(x86insn_sse_xorpd, res, &tmp);
-            }
+            constant = x86data_insert_float4_constant(_negate_float, 0, 0, 0);
+            bincode_create_operand_from_symbol(&tmp, constant);
+            unit_push_binary_instruction(
+                (op->op_type == x86op_float ? x86insn_sse_xorps : x86insn_sse_xorpd), res, &tmp);
         } else {
             if (op->op_loc == x86loc_address) {
                 unit_push_unary_instruction(x86insn_fpu_ld, op);
