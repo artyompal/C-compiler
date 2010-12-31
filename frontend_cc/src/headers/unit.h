@@ -104,6 +104,7 @@ void            unit_push_binary_instruction        (x86_instruction_code code, 
 
 // поддержка оптимизатора
 register_stat * unit_get_regstat                    (function_desc *function, x86_operand_type type);
+int             unit_get_instruction_count          (function_desc *function);
 
 
 #else

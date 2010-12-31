@@ -971,3 +971,20 @@ register_stat * unit_get_regstat(function_desc *function, x86_operand_type type)
     }
 }
 
+//
+// Считает число инструкций в функции.
+//
+int unit_get_instruction_count(function_desc *function)
+{
+    int insn_count;
+    x86_instruction *insn;
+
+    insn_count = 0;
+
+    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
+        insn_count++;
+    }
+
+    return insn_count;
+}
+

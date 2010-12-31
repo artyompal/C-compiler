@@ -623,52 +623,54 @@ static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruc
     return TRUE;
 }
 
+// Пробует провести какие-нибудь оптимизации регистровых переменных в данной функции.
+static BOOL _try_optimize_regvars_usage(function_desc *function)
+{
+    x86_instruction *insn, *next;
+    BOOL was_smth = FALSE;
+
+    // Пробуем устранить лишние копирования регистров.
+    for (insn = function->func_binary_code; insn; insn = next) {
+        next = insn->in_next;
+
+        if ((insn->in_code == x86insn_int_mov || insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd)
+            && OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2)) {
+                if (_try_kill_copies_of_regvar(function, insn) || _try_optimize_regvar_evaluation(function, insn)) {
+                    was_smth = TRUE;
+                }
+        }
+    }
+
+    return was_smth;
+}
+
 
 //
 // Этап оптимизации, который выполняется после введения регистровых переменных.
 // Работает итеративно, пока ему удаётся уменьшить число инструкций.
 void x86_optimization_after_regvar_allocation(function_desc *function)
 {
-    x86_instruction *insn, *next;
-    BOOL was_smth;
     int orig_insn_count, insn_count;
 
     for (;;) {
-        was_smth = FALSE;
-
-        // Пробуем устранить лишние копирования регистров.
-        for (insn = function->func_binary_code; insn; insn = next) {
-            next = insn->in_next;
-
-            if ((insn->in_code == x86insn_int_mov || insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd)
-                && OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2)) {
-                    if (_try_kill_copies_of_regvar(function, insn) || _try_optimize_regvar_evaluation(function, insn)) {
-                        was_smth = TRUE;
-                    }
-            }
-        }
-
-        if (!was_smth)
+        // Итерация оптимизации.
+        if (!_try_optimize_regvars_usage(function))
             return;
 
         // Считаем число инструкций в функции.
-        for (insn_count = 0, insn = function->func_binary_code; insn; insn = insn->in_next)
-            insn_count++;
+        insn_count = unit_get_instruction_count(function);
 
         // Пока оптимизация даёт результаты, её можно повторять.
         do {
             // Регистровая статистика стала невалидной, поэтому мы обязаны её перестроить.
             x86_analyze_registers_usage(function);
-
             orig_insn_count = insn_count;
 
             // Выполняем итерацию оптимизации.
             x86_optimization_after_codegen(function);
 
             // Считаем число инструкций в функции.
-            for (insn_count = 0, insn = function->func_binary_code; insn; insn = insn->in_next) {
-                insn_count++;
-            }
+            insn_count = unit_get_instruction_count(function);
 
             // Лишние инструкции появиться не должны.
             ASSERT(insn_count <= orig_insn_count);
