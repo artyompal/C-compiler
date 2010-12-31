@@ -7,20 +7,6 @@
 
 
 //
-// Считает число инструкций в функции.
-//
-static void _update_instructions_count(function_desc *function)
-{
-    x86_instruction *insn;
-
-    function->func_insn_count = 0;
-
-    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        function->func_insn_count++;
-    }
-}
-
-//
 // Собирает статистику использования этой и других функций:
 // - вычисляет длину этой функции в инструкциях;
 // - инкрементирует счётчики использования всех функций, вызываемых из данной.
@@ -30,7 +16,7 @@ void x86_inlining_analyze_function(function_desc *function)
     x86_instruction *insn;
     function_desc *callee;
 
-    _update_instructions_count(function);
+    function->func_insn_count = unit_get_instruction_count(function);
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         if (insn->in_code == x86insn_call && insn->in_op1.op_loc == x86loc_symbol) {
@@ -359,7 +345,6 @@ void x86_inlining_process_function(function_desc *function)
         }
     }
 
-    // Пересчитываем число инструкций.
-    _update_instructions_count(function);
+    function->func_insn_count = unit_get_instruction_count(function);
 }
 
