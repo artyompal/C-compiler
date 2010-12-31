@@ -123,8 +123,8 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
                     bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
                         inserted->in_op1.op_type, res_ofs);
                 } else {
-                    bincode_create_operand_from_pseudoreg(&op, inserted->in_op1.op_type,
-                        caller->func_pseudoregs_count[inserted->in_op1.op_type]++);
+                    bincode_create_operand_and_alloc_pseudoreg_in_function(
+                        caller, &op, inserted->in_op1.op_type);
                     bincode_insert_instruction(caller, inserted, x86insn_int_mov, &op, &inserted->in_op1);
 
                     inserted->in_op2    = op;

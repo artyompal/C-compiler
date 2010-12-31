@@ -268,7 +268,6 @@ typedef struct x86_instruction_decl {
 #define IS_INT_INSN(INSN)               ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
                                             || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_pop)
 #define IS_SET_INSN(INSN)               ((INSN) >= x86insn_int_sete && (INSN) <= x86insn_int_seta)
-#define IS_FLOAT_INSN(INSN)             ((INSN) >= x86insn_fpu_ld && (INSN) <= x86insn_fpu_ln_2)
 #define IS_JMP_INSN(INSN)               ((INSN) >= x86insn_jmp && (INSN) <= x86insn_ja)
 #define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
 #define IS_INT_MODIFYING_INSN(INSN)     ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \

@@ -74,6 +74,12 @@ x86_operand_type x86_encode_register_type(x86_operand_type type)
     }
 }
 
+BOOL x86_equal_types(x86_operand_type type1, x86_operand_type type2)
+{
+    return (type1 == type2 ||
+        (type1 == x86op_float || type1 == x86op_double) && (type2 == x86op_float || type2 == x86op_double));
+}
+
 
 static void _clear_register_map(register_map *regmap)
 {
@@ -215,9 +221,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         if (insn->in_op1.op_loc == x86loc_register) {
-            x86_operand_type new_reg_type = x86_encode_register_type(insn->in_op1.op_type);
-
-            if (new_reg_type == type && insn->in_op1.data.reg >= pseudoregs_cnt) {
+            if (x86_equal_types(insn->in_op1.op_type, type) && insn->in_op1.data.reg >= pseudoregs_cnt) {
                 // Новые псевдорегистры могут появляться только как первый операнд инструкции.
                 if (type == x86op_dword) {
                     ASSERT(insn->in_code == x86insn_int_mov || insn->in_code == x86insn_lea
@@ -259,7 +263,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
         bincode_extract_pseudoregs_read_by_insn(insn, registers, &registers_count);
 
         for (i = 0; i < registers_count; i++) {
-            if (x86_encode_register_type(registers[i].reg_type) != type) {
+            if (!x86_equal_types(registers[i].reg_type, type)) {
                 continue;
             }
 
@@ -278,7 +282,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
         bincode_extract_pseudoregs_written_by_insn(insn, registers, &registers_count);
 
         for (i = 0; i < registers_count; i++) {
-            if (x86_encode_register_type(registers[i].reg_type) != type) {
+            if (!x86_equal_types(registers[i].reg_type, type)) {
                 continue;
             }
 
