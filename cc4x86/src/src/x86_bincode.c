@@ -15,11 +15,10 @@ static void _extract_pseudoregs_from_operand(x86_operand *op, x86_operand_type t
     if (OP_IS_REGISTER(*op)) {
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
-        if (op->data.reg > 0 && (op->op_type == type
-            || OP_IS_FLOAT(*op) && (type == x86op_float || type == x86op_double))) {
-                regs[*regs_cnt].reg_type    = op->op_type;
-                regs[*regs_cnt].reg_addr    = &op->data.reg;
-                ++*regs_cnt;
+        if (op->data.reg > 0 && x86_equal_types(op->op_type, type)) {
+            regs[*regs_cnt].reg_type    = op->op_type;
+            regs[*regs_cnt].reg_addr    = &op->data.reg;
+            ++*regs_cnt;
         }
     } else if (OP_IS_ADDRESS(*op) && type == x86op_dword) {
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 2);
@@ -245,7 +244,7 @@ void bincode_create_operand_and_alloc_pseudoreg_in_function(function_desc *func,
 {
     op->op_loc              = x86loc_register;
     op->op_type             = type;
-    op->data.reg            = func->func_pseudoregs_count[(type == x86op_double ? x86op_float : type)]++;
+    op->data.reg            = func->func_pseudoregs_count[x86_encode_register_type(type)]++;
 }
 
 void bincode_create_operand_addr_from_reg(x86_operand *op, x86_operand_type type, int reg)
