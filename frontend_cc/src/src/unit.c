@@ -914,6 +914,7 @@ void unit_codegen(void)
             continue;
         }
 
+        x86_optimization_after_inlining(_curr_func);
         x86_analyze_registers_usage(_curr_func);
 
         if (option_enable_optimization) {

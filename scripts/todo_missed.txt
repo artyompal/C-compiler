@@ -4,7 +4,6 @@ x86_codegen.c:      TODO: возвращать результат типа QWORD
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD + MOVSB
 x86_opt_basic.c:    FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
-x86_opt_basic.c:    FIXME: надо вернуть оптимизацию pop_all/push_all
 x86_opt_regvar.c:   TODO: нужно давать больший приоритет переменным, использующимся во внутренних циклах.
 x86_opt_regvar.c:   TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные, если эти регистры используются как специальные.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);

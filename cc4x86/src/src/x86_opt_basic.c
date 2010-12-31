@@ -496,13 +496,32 @@ void x86_optimization_after_codegen(function_desc *function)
         case x86insn_int_sub:
             _try_optimize_add_sub(function, insn);
             break;
+        }
+    }
+}
 
-        //case x86insn_push_all:    // FIXME: надо вернуть оптимизацию pop_all/push_all
-        //    if (prev && prev->in_code == x86insn_pop_all) {
-        //        bincode_erase_instruction(function, insn);
-        //        bincode_erase_instruction(function, prev);
-        //        continue;
-        //    }
+//
+// Ётап оптимизации, который выполн€етс€ после инлайнинга и до введени€ регистровых переменных.
+// ћы не могли раньше разрушать структуру кода, например, мы не могли удал€ть лишние push_all/pop_all,
+// так как они используютс€ модулем инлайнинга.
+//
+
+void x86_optimization_after_inlining(function_desc *function)
+{
+    x86_instruction *insn, *next, *prev;
+
+    for (insn = function->func_binary_code; insn; insn = next) {
+        next = insn->in_next;
+        prev = insn->in_prev;
+
+        switch (insn->in_code) {
+        case x86insn_push_all:
+            if (prev && prev->in_code == x86insn_pop_all) {
+                bincode_erase_instruction(function, insn);
+                bincode_erase_instruction(function, prev);
+                continue;
+            }
+            break;
         }
     }
 }

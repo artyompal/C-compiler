@@ -11,6 +11,7 @@ typedef struct function_desc_decl function_desc;
 
 
 void    x86_optimization_after_codegen              (function_desc *function);
+void    x86_optimization_after_inlining             (function_desc *function);
 void    x86_create_register_variables               (function_desc *function);
 void    x86_optimization_after_regvar_allocation    (function_desc *function);
 
