@@ -14,7 +14,6 @@ _test proc
 	push	ebx
 	mov	edi,0
 	mov	esi,0
-label0000:
 label0001:
 	cmp	esi,8
 	jge	label0002

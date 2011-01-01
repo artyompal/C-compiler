@@ -851,12 +851,10 @@ label0003:
 	movss	sse10,dword ptr [ebp+24]
 	addss	sse10,dword ptr [ebp+32]
 	movss	dword ptr [ebp+24],sse10
-label0001:
 	add	dword ptr [ebp-4],4
 	mov	dword81,[ebp-4]
 	cmp	dword81,[ebp-8]
 	jl	label0000
-label0002:
 	destroy_stack_frame
 	ret
 __rasterize_horiz_line endp	
@@ -1115,7 +1113,6 @@ label0003:
 	add	dword83,4
 	mov	dword86,[dword83]
 	mov	[ebp-16],dword86
-label0005:
 label0006:
 	mov	dword88,[ebp+12]
 	add	dword88,4
@@ -1407,7 +1404,6 @@ label0007:
 	mov	dword341,1
 	add	dword341,[dword339]
 	mov	[ebp-16],dword341
-label0008:
 label0009:
 	mov	dword344,[ebp+16]
 	add	dword344,4
@@ -1593,7 +1589,6 @@ __clip_on_plain proc
 	mov	dword8,[ebp+12]
 	add	dword8,24
 	mov	[ebp-8],dword8
-label0000:
 label0001:
 	mov	dword12,[ebp+12]
 	mov	dword14,[dword12+192]
@@ -1917,7 +1912,6 @@ label0000:
 	mov	dword ptr ds:[0],0
 label0001:
 	mov	dword ptr [ebp-136],0
-label0002:
 label0003:
 	mov	dword11,[ebp+8]
 	mov	dword13,[dword11+192]
@@ -1955,7 +1949,6 @@ label0003:
 	jmp	label0003
 label0004:
 	mov	dword ptr [ebp-136],2
-label0005:
 label0006:
 	mov	dword40,[ebp+8]
 	mov	dword42,[dword40+192]

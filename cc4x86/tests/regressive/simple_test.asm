@@ -25,11 +25,6 @@ label0000:
 	add	esp,12
 	pop	ebp
 	ret
-label0001:
-	pop	edi
-	add	esp,12
-	pop	ebp
-	ret
 _test endp	
 
 end

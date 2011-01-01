@@ -154,7 +154,6 @@ _rasterizer_init proc
 	mov	dword318,[ebp-48]
 	movss	sse148,dword ptr [___unnamed_float_2]
 	movss	dword ptr [dword318+60],sse148
-label0010:
 ; end of inline function matrix4f_make_perspective
 ; start of inline function matrix4f_make_viewport
 	movss	dword ptr [ebp-60],sse174
@@ -218,7 +217,6 @@ label0010:
 	mov	dword372,[ebp-76]
 	movss	sse171,dword ptr [___unnamed_float_1]
 	movss	dword ptr [dword372+60],sse171
-label0011:
 ; end of inline function matrix4f_make_viewport
 ; start of inline function vec4f_assign
 	movss	sse5,dword ptr [___unnamed_float_1]
@@ -241,7 +239,6 @@ label0011:
 	mov	dword113,[ebp-28]
 	movss	sse66,dword ptr [ebp-12]
 	movss	dword ptr [dword113+12],sse66
-label0004:
 ; end of inline function vec4f_assign
 	movss	sse8,sse174
 	comiss	sse8,sse173
@@ -272,7 +269,6 @@ label0001:
 	mov	dword126,[ebp-28]
 	movss	sse72,dword ptr [ebp-12]
 	movss	dword ptr [dword126+12],sse72
-label0005:
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
 	movss	sse14,dword ptr [___unnamed_float_1]
@@ -295,7 +291,6 @@ label0005:
 	mov	dword139,[ebp-28]
 	movss	sse78,dword ptr [ebp-12]
 	movss	dword ptr [dword139+12],sse78
-label0006:
 ; end of inline function vec4f_assign
 	movss	sse17,sse174
 	comiss	sse17,sse173
@@ -326,7 +321,6 @@ label0003:
 	mov	dword152,[ebp-28]
 	movss	sse84,dword ptr [ebp-12]
 	movss	dword ptr [dword152+12],sse84
-label0007:
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
 	movss	sse23,dword ptr [___unnamed_float_1]
@@ -354,7 +348,6 @@ label0007:
 	mov	dword165,[ebp-28]
 	movss	sse89,dword ptr [ebp-12]
 	movss	dword ptr [dword165+12],sse89
-label0008:
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
 	movss	sse29,dword ptr [___unnamed_float_1]
@@ -378,7 +371,6 @@ label0008:
 	mov	dword178,[ebp-28]
 	movss	sse94,dword ptr [ebp-12]
 	movss	dword ptr [dword178+12],sse94
-label0009:
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
 	movss	sse33,dword ptr [___unnamed_float_1]
@@ -406,7 +398,6 @@ label0009:
 	mov	dword191,[ebp-28]
 	movss	sse99,dword ptr [ebp-12]
 	movss	dword ptr [dword191+12],sse99
-label000a:
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
 	movss	sse39,dword ptr [___unnamed_float_1]
@@ -430,7 +421,6 @@ label000a:
 	mov	dword204,[ebp-28]
 	movss	sse104,dword ptr [ebp-12]
 	movss	dword ptr [dword204+12],sse104
-label000b:
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
 	movss	sse43,dword ptr [___unnamed_float_1]
@@ -458,7 +448,6 @@ label000b:
 	mov	dword217,[ebp-28]
 	movss	sse109,dword ptr [ebp-12]
 	movss	dword ptr [dword217+12],sse109
-label000c:
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
 	movss	sse49,dword ptr [___unnamed_float_1]
@@ -482,7 +471,6 @@ label000c:
 	mov	dword230,[ebp-28]
 	movss	sse114,dword ptr [ebp-12]
 	movss	dword ptr [dword230+12],sse114
-label000d:
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
 	movss	sse53,dword ptr [___unnamed_float_1]
@@ -506,7 +494,6 @@ label000d:
 	mov	dword243,[ebp-28]
 	movss	sse119,dword ptr [ebp-12]
 	movss	dword ptr [dword243+12],sse119
-label000e:
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
 	movss	sse57,dword ptr [___unnamed_float_1]
@@ -530,7 +517,6 @@ label000e:
 	mov	dword256,[ebp-28]
 	movss	sse124,dword ptr [ebp-12]
 	movss	dword ptr [dword256+12],sse124
-label000f:
 ; end of inline function vec4f_assign
 	destroy_stack_frame
 	ret
@@ -643,7 +629,6 @@ label0000:
 	add	dword97,dword ptr [__texture_data]
 	mov	dword101,[dword97]
 	mov	[ebp-64],dword101
-label0004:
 ; end of inline function _tex2d
 	mov	dword104,[ebp-64]
 	mov	dword23,dword104
@@ -698,11 +683,9 @@ label0003:
 	movss	sse10,sse19
 	addss	sse10,dword ptr [ebp+32]
 	movss	sse19,sse10
-label0001:
 	add	dword103,4
 	cmp	dword103,dword106
 	jl	label0000
-label0002:
 	destroy_stack_frame
 	ret
 __rasterize_horiz_line endp	
@@ -714,7 +697,6 @@ __clip_on_plain proc
 	mov	dword355,[ebp+12]
 	mov	dword356,[ebp+12]
 	add	dword356,24
-label0000:
 label0001:
 	mov	dword12,[ebp+12]
 	mov	dword14,[dword12+192]
@@ -753,7 +735,6 @@ label0001:
 	subss	sse29,dword ptr [dword189+12]
 	mov	dword191,[ebp-116]
 	movss	dword ptr [dword191+12],sse29
-label000b:
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
 	mov	dword269,[ebp+20]
@@ -780,7 +761,6 @@ label000b:
 	mulss	sse49,dword ptr [dword286+12]
 	addss	sse47,sse49
 	movss	dword ptr [ebp-128],sse47
-label000f:
 ; end of inline function vec4f_dot
 	movss	sse72,dword ptr [ebp-128]
 ; start of inline function vec4f_subtract
@@ -813,7 +793,6 @@ label000f:
 	subss	sse34,dword ptr [dword215+12]
 	mov	dword217,[ebp-116]
 	movss	dword ptr [dword217+12],sse34
-label000c:
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
 	mov	dword287,[ebp+20]
@@ -840,7 +819,6 @@ label000c:
 	mulss	sse54,dword ptr [dword304+12]
 	addss	sse52,sse54
 	movss	dword ptr [ebp-128],sse52
-label0010:
 ; end of inline function vec4f_dot
 	movss	sse73,dword ptr [ebp-128]
 	movss	sse3,dword ptr [___unnamed_float_2]
@@ -908,7 +886,6 @@ label0005:
 	subss	sse39,dword ptr [dword241+12]
 	mov	dword243,[ebp-116]
 	movss	dword ptr [dword243+12],sse39
-label000d:
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_subtract
 	mov	[ebp-108],dword355
@@ -939,7 +916,6 @@ label000d:
 	subss	sse44,dword ptr [dword266+12]
 	mov	dword268,[ebp-116]
 	movss	dword ptr [dword268+12],sse44
-label000e:
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
 	mov	dword305,[ebp+20]
@@ -966,7 +942,6 @@ label000e:
 	mulss	sse59,dword ptr [dword322+12]
 	addss	sse57,sse59
 	movss	dword ptr [ebp-128],sse57
-label0011:
 ; end of inline function vec4f_dot
 	movss	sse74,dword ptr [ebp-128]
 ; start of inline function vec4f_dot
@@ -994,7 +969,6 @@ label0011:
 	mulss	sse64,dword ptr [dword340+12]
 	addss	sse62,sse64
 	movss	dword ptr [ebp-128],sse62
-label0012:
 ; end of inline function vec4f_dot
 	divss	sse74,dword ptr [ebp-128]
 ; start of inline function vec4f_mul
@@ -1017,7 +991,6 @@ label0012:
 	movss	sse70,dword ptr [dword352+12]
 	mulss	sse70,dword ptr [ebp-132]
 	movss	dword ptr [dword352+12],sse70
-label0013:
 ; end of inline function vec4f_mul
 ; start of inline function vec4f_add
 	lea	dword68,[ebp-40]
@@ -1052,7 +1025,6 @@ label0013:
 	addss	sse24,dword ptr [dword163+12]
 	mov	dword165,[ebp-104]
 	movss	dword ptr [dword165+12],sse24
-label000a:
 ; end of inline function vec4f_add
 ; start of inline function vec2f_subtract
 	mov	dword78,16
@@ -1075,7 +1047,6 @@ label000a:
 	subss	sse15,dword ptr [dword131+4]
 	mov	dword133,[ebp-84]
 	movss	dword ptr [dword133+4],sse15
-label0008:
 ; end of inline function vec2f_subtract
 ; start of inline function vec2f_mul
 	movss	dword ptr [ebp-88],sse74
@@ -1089,7 +1060,6 @@ label0008:
 	movss	sse19,dword ptr [dword139+4]
 	mulss	sse19,dword ptr [ebp-88]
 	movss	dword ptr [dword139+4],sse19
-label0009:
 ; end of inline function vec2f_mul
 ; start of inline function vec2f_add
 	lea	dword84,[ebp-48]
@@ -1115,7 +1085,6 @@ label0009:
 	addss	sse12,dword ptr [dword118+4]
 	mov	dword120,[ebp-72]
 	movss	dword ptr [dword120+4],sse12
-label0007:
 ; end of inline function vec2f_add
 	inc	dword ptr [dword354+192]
 label0004:
@@ -1170,7 +1139,6 @@ __transform_to_projection_space proc
 	mov	dword23,[ebp-36]
 	movss	sse9,dword ptr [ebp-20]
 	movss	dword ptr [dword23+12],sse9
-label0000:
 ; end of inline function vec4f_assign
 ; start of inline function matrix4f_transform
 	mov	[ebp-40],(offset __mvproj_matrix)
@@ -1262,7 +1230,6 @@ label0000:
 	addss	sse23,sse26
 	mov	dword98,[ebp-48]
 	movss	dword ptr [dword98+12],sse23
-label0001:
 ; end of inline function matrix4f_transform
 	destroy_stack_frame
 	ret
@@ -1400,7 +1367,6 @@ _rasterizer_triangle3f proc
 	setg	byte8
 	movzx	dword753,byte8
 	mov	[ebp-664],dword753
-label0028:
 ; end of inline function _clip_poligon
 	mov	dword40,[ebp-664]
 	cmp	dword40,0
@@ -1413,7 +1379,6 @@ label0000:
 	mov	dword ptr ds:[0],0
 label0001:
 	mov	dword ptr [ebp-336],0
-label0002:
 label0003:
 	mov	dword49,[ebp-200]
 	mov	dword51,[dword49+192]
@@ -1521,7 +1486,6 @@ label0003:
 	addss	sse93,sse96
 	mov	dword862,[ebp-704]
 	movss	dword ptr [dword862+12],sse93
-label002b:
 ; end of inline function matrix4f_transform
 	lea	dword758,[ebp-688]
 	add	dword758,12
@@ -1557,7 +1521,6 @@ label002b:
 label002a:
 	mov	dword ptr ds:[0],0
 label0029:
-label002c:
 ; end of inline function _transform_to_screen_space
 	lea	dword61,[ebp-332]
 	mov	dword64,[ebp-336]
@@ -1577,7 +1540,6 @@ label002c:
 	jmp	label0003
 label0004:
 	mov	dword ptr [ebp-336],2
-label0005:
 label0006:
 	mov	dword78,[ebp-200]
 	mov	dword80,[dword78+192]
@@ -1803,7 +1765,6 @@ label0024:
 label0025:
 label0023:
 label0021:
-label0026:
 ; end of inline function _rasterize_triangle_1i
 label000c:
 	jmp	label0027
@@ -1812,7 +1773,6 @@ label000b:
 	add	dword176,4
 	mov	dword179,[dword176]
 	mov	[ebp-364],dword179
-label000d:
 label000e:
 	mov	dword181,[ebp-344]
 	add	dword181,4
@@ -2016,7 +1976,6 @@ label0013:
 	restore_stack	28
 	pop_all
 label0014:
-label0015:
 ; end of inline function _rasterize_horiz_line__unordered
 	inc	dword ptr [ebp-364]
 	jmp	label000e
@@ -2169,14 +2128,12 @@ label0016:
 	restore_stack	28
 	pop_all
 label0017:
-label0018:
 ; end of inline function _rasterize_horiz_line__unordered
 	mov	dword432,[ebp-344]
 	add	dword432,4
 	mov	dword434,1
 	add	dword434,[dword432]
 	mov	[ebp-364],dword434
-label0010:
 label0011:
 	mov	dword437,[ebp-340]
 	add	dword437,4
@@ -2380,7 +2337,6 @@ label0019:
 	restore_stack	28
 	pop_all
 label001a:
-label001b:
 ; end of inline function _rasterize_horiz_line__unordered
 	inc	dword ptr [ebp-364]
 	jmp	label0011

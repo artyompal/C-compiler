@@ -32,7 +32,6 @@ _test proc
 	movss	dword ptr [ebp-4],xmm0
 	movss	xmm0,dword ptr [ebp-4]
 	movss	dword ptr [ebp-12],xmm0
-label0002:
 ; end of inline function test1
 	movss	xmm0,dword ptr [ebp-12]
 	comiss	xmm0,dword ptr [___unnamed_float_2]
@@ -48,7 +47,6 @@ label0000:
 	movss	xmm0,dword ptr [ebp-16]
 	addss	xmm0,dword ptr [___unnamed_float_0]
 	movss	dword ptr [ebp-20],xmm0
-label0003:
 ; end of inline function test2
 	movss	xmm0,dword ptr [ebp-20]
 	comiss	xmm0,dword ptr [___unnamed_float_3]

@@ -541,13 +541,38 @@ void x86_optimization_after_codegen(function_desc *function)
     }
 }
 
-//
-// Этап оптимизации, который выполняется после инлайнинга и до введения регистровых переменных.
-// Мы не могли раньше разрушать структуру кода, например, мы не могли удалять лишние push_all/pop_all,
-// так как они используются модулем инлайнинга.
-//
+// Устраняет неиспользуемые метки в коде.
+static void _optimize_labels(function_desc *function)
+{
+    int labels_count    = function->func_labels_count;
+    int *labels_stat    = (int *) allocator_alloc(allocator_per_function_pool, labels_count*sizeof(int));
+    x86_instruction *insn, *next;
 
-void x86_optimization_after_inlining(function_desc *function)
+    memset(labels_stat, 0, labels_count*sizeof(int));
+
+    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
+        if (IS_JMP_INSN(insn->in_code)) {
+            ASSERT(insn->in_op1.op_loc == x86loc_label);
+            labels_stat[insn->in_op1.data.label]++;
+        }
+    }
+
+    for (insn = function->func_binary_code; insn; insn = next) {
+        next = insn->in_next;
+
+        if (insn->in_code == x86insn_label) {
+            ASSERT(insn->in_op1.op_loc == x86loc_label);
+            if (labels_stat[insn->in_op1.data.label] == 0) {
+                bincode_erase_instruction(function, insn);
+            }
+        }
+    }
+
+    allocator_free(allocator_per_function_pool, labels_stat, labels_count*sizeof(int));
+}
+
+// Устраняет лишние push_all/pop_all
+static void _kill_extra_push_all_pop_all(function_desc *function)
 {
     x86_instruction *insn, *next, *prev;
 
@@ -565,6 +590,19 @@ void x86_optimization_after_inlining(function_desc *function)
             break;
         }
     }
+}
+
+
+//
+// Этап оптимизации, который выполняется после инлайнинга и до введения регистровых переменных.
+// Мы не могли раньше разрушать структуру кода, например, мы не могли удалять лишние push_all/pop_all,
+// так как они используются модулем инлайнинга.
+//
+
+void x86_optimization_after_inlining(function_desc *function)
+{
+    _optimize_labels(function);
+    _kill_extra_push_all_pop_all(function);
 }
 
 
