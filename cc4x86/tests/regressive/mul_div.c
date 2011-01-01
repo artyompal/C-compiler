@@ -1,6 +1,6 @@
 
 
-extern int test()
+int test()
 {
     unsigned a = 2, b = 3, c = 4, d = 5;
     unsigned res;

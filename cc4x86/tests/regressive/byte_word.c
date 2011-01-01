@@ -1,6 +1,6 @@
 
 
-extern int test()
+int test()
 {
 	char a = -128, b = -128;
 	short c, d;

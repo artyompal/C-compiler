@@ -5,7 +5,7 @@ static int test0(const char str[])
 	return (str[0] == 'a' ? 0 : -1);
 }
 
-extern int test()
+int test()
 {
 	const char * const str = "abvsport";
 	int len;

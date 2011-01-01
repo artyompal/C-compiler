@@ -1,6 +1,6 @@
 
 
-extern int test()
+int test()
 {
     int a = 4, b = 2;
     int c = 1, *ptr;
