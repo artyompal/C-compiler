@@ -167,10 +167,9 @@ label0010:
 	mov	[ebp-76],(offset __viewport_matrix)
 ; start of inline function matrix4f_make_viewport
 	mov	eax,[ebp-76]
-	movss	xmm0,dword ptr [___unnamed_float_3]
-	movss	xmm1,dword ptr [ebp-72]
-	divss	xmm1,xmm0
-	movss	dword ptr [eax],xmm1
+	movss	xmm0,dword ptr [ebp-72]
+	divss	xmm0,dword ptr [___unnamed_float_3]
+	movss	dword ptr [eax],xmm0
 	mov	eax,[ebp-76]
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [eax+4],xmm0
@@ -186,8 +185,7 @@ label0010:
 	mov	eax,[ebp-76]
 	movss	xmm0,dword ptr [ebp-68]
 	xorps	xmm0,dword ptr [___unnamed_float_4]
-	movss	xmm1,dword ptr [___unnamed_float_3]
-	divss	xmm0,xmm1
+	divss	xmm0,dword ptr [___unnamed_float_3]
 	movss	dword ptr [eax+20],xmm0
 	mov	eax,[ebp-76]
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -209,15 +207,13 @@ label0010:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [eax+44],xmm0
 	mov	eax,[ebp-76]
-	movss	xmm0,dword ptr [___unnamed_float_3]
-	movss	xmm1,dword ptr [ebp-72]
-	divss	xmm1,xmm0
-	movss	dword ptr [eax+48],xmm1
+	movss	xmm0,dword ptr [ebp-72]
+	divss	xmm0,dword ptr [___unnamed_float_3]
+	movss	dword ptr [eax+48],xmm0
 	mov	eax,[ebp-76]
-	movss	xmm0,dword ptr [___unnamed_float_3]
-	movss	xmm1,dword ptr [ebp-68]
-	divss	xmm1,xmm0
-	movss	dword ptr [eax+52],xmm1
+	movss	xmm0,dword ptr [ebp-68]
+	divss	xmm0,dword ptr [___unnamed_float_3]
+	movss	dword ptr [eax+52],xmm0
 	mov	eax,[ebp-76]
 	movss	xmm0,dword ptr [ebp-64]
 	movss	dword ptr [eax+56],xmm0
@@ -255,8 +251,7 @@ label0004:
 	movss	xmm5,dword ptr [___unnamed_float_1]
 	jmp	label0001
 label0000:
-	movss	xmm0,dword ptr [___unnamed_float_5]
-	movss	xmm5,xmm0
+	movss	xmm5,dword ptr [___unnamed_float_5]
 label0001:
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
@@ -310,8 +305,7 @@ label0006:
 	movss	xmm4,dword ptr [___unnamed_float_5]
 	jmp	label0003
 label0002:
-	movss	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm4,xmm0
+	movss	xmm4,dword ptr [___unnamed_float_1]
 label0003:
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
@@ -671,8 +665,7 @@ label0004:
 	cmp	dword ptr [ebp-40],0
 	je	label0003
 	cvtsi2ss	xmm5,dword ptr [ebp-40]
-	movss	xmm0,dword ptr [___unnamed_float_6]
-	divss	xmm5,xmm0
+	divss	xmm5,dword ptr [___unnamed_float_6]
 	mov	ecx,[esi]
 	mov	eax,ecx
 	and	eax,65280
@@ -1024,8 +1017,7 @@ label0011:
 	movss	dword ptr [ebp-128],xmm1
 label0012:
 ; end of inline function vec4f_dot
-	movss	xmm0,dword ptr [ebp-128]
-	divss	xmm5,xmm0
+	divss	xmm5,dword ptr [ebp-128]
 	movss	dword ptr [ebp-132],xmm5
 	lea	eax,[ebp-40]
 	mov	[ebp-136],eax

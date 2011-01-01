@@ -11,58 +11,55 @@ ___unnamed_float_1	dd	03f800000h
 public	___unnamed_float_1
 ___unnamed_float_2	dd	040400000h
 public	___unnamed_float_2
+___unnamed_float_3	dd	040800000h
+public	___unnamed_float_3
 
 .code
-
-_test2 proc
-	push	ebp
-	mov	ebp,esp
-	sub	esp,4
-	movss	xmm7,dword ptr [ebp+8]
-	movss	xmm6,xmm7
-	movss	xmm0,dword ptr [___unnamed_float_0]
-	movss	xmm1,xmm6
-	addss	xmm1,xmm0
-	movss	xmm6,xmm1
-	movss	xmm7,xmm6
-	movss	xmm0,xmm7
-	add	esp,4
-	pop	ebp
-	ret
-_test2 endp	
 
 _test proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,16
-	push	edi
+	sub	esp,20
 	movss	xmm0,dword ptr [___unnamed_float_1]
+	movss	dword ptr [ebp-4],xmm0
+; start of inline function test1
+	movss	xmm0,dword ptr [ebp-4]
 	movss	dword ptr [ebp-8],xmm0
-; start of inline function test2
 	movss	xmm0,dword ptr [ebp-8]
+	addss	xmm0,dword ptr [___unnamed_float_0]
+	movss	dword ptr [ebp-8],xmm0
+	movss	xmm0,dword ptr [ebp-8]
+	movss	dword ptr [ebp-4],xmm0
+	movss	xmm0,dword ptr [ebp-4]
 	movss	dword ptr [ebp-12],xmm0
-	movss	xmm0,dword ptr [___unnamed_float_0]
-	movss	xmm1,dword ptr [ebp-12]
-	addss	xmm1,xmm0
-	movss	dword ptr [ebp-12],xmm1
-	movss	xmm0,dword ptr [ebp-12]
-	movss	dword ptr [ebp-8],xmm0
-	movss	xmm0,dword ptr [ebp-8]
-	movss	dword ptr [ebp-16],xmm0
 label0002:
-; end of inline function test2
-	movss	xmm0,dword ptr [ebp-16]
-	movss	xmm1,dword ptr [___unnamed_float_2]
-	comiss	xmm0,xmm1
-	jne	label0000
-	mov	edi,0
-	jmp	label0001
+; end of inline function test1
+	movss	xmm0,dword ptr [ebp-12]
+	comiss	xmm0,dword ptr [___unnamed_float_2]
+	je	label0000
+	mov	eax,1
+	add	esp,20
+	pop	ebp
+	ret
 label0000:
-	mov	edi,1
+	movss	xmm0,dword ptr [___unnamed_float_0]
+	movss	dword ptr [ebp-16],xmm0
+; start of inline function test2
+	movss	xmm0,dword ptr [ebp-16]
+	addss	xmm0,dword ptr [___unnamed_float_0]
+	movss	dword ptr [ebp-20],xmm0
+label0003:
+; end of inline function test2
+	movss	xmm0,dword ptr [ebp-20]
+	comiss	xmm0,dword ptr [___unnamed_float_3]
+	je	label0001
+	mov	eax,2
+	add	esp,20
+	pop	ebp
+	ret
 label0001:
-	mov	eax,edi
-	pop	edi
-	add	esp,16
+	mov	eax,0
+	add	esp,20
 	pop	ebp
 	ret
 _test endp	

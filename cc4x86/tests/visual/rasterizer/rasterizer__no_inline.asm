@@ -319,10 +319,9 @@ _matrix4f_make_viewport proc
 	movss	xmm6,dword ptr [ebp+16]
 	movss	xmm5,dword ptr [ebp+12]
 	mov	edi,[ebp+8]
-	movss	xmm0,dword ptr [___unnamed_float_3]
-	movss	xmm1,xmm5
-	divss	xmm1,xmm0
-	movss	dword ptr [edi],xmm1
+	movss	xmm0,xmm5
+	divss	xmm0,dword ptr [___unnamed_float_3]
+	movss	dword ptr [edi],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [edi+4],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -333,8 +332,7 @@ _matrix4f_make_viewport proc
 	movss	dword ptr [edi+16],xmm0
 	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_4]
-	movss	xmm1,dword ptr [___unnamed_float_3]
-	divss	xmm0,xmm1
+	divss	xmm0,dword ptr [___unnamed_float_3]
 	movss	dword ptr [edi+20],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [edi+24],xmm0
@@ -349,14 +347,12 @@ _matrix4f_make_viewport proc
 	movss	dword ptr [edi+40],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [edi+44],xmm0
-	movss	xmm0,dword ptr [___unnamed_float_3]
-	movss	xmm1,xmm5
-	divss	xmm1,xmm0
-	movss	dword ptr [edi+48],xmm1
-	movss	xmm0,dword ptr [___unnamed_float_3]
-	movss	xmm1,xmm6
-	divss	xmm1,xmm0
-	movss	dword ptr [edi+52],xmm1
+	movss	xmm0,xmm5
+	divss	xmm0,dword ptr [___unnamed_float_3]
+	movss	dword ptr [edi+48],xmm0
+	movss	xmm0,xmm6
+	divss	xmm0,dword ptr [___unnamed_float_3]
+	movss	dword ptr [edi+52],xmm0
 	movss	dword ptr [edi+56],xmm7
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [edi+60],xmm0
@@ -494,8 +490,7 @@ _rasterizer_init proc
 	movss	xmm5,dword ptr [___unnamed_float_1]
 	jmp	label0001
 label0000:
-	movss	xmm0,dword ptr [___unnamed_float_5]
-	movss	xmm5,xmm0
+	movss	xmm5,dword ptr [___unnamed_float_5]
 label0001:
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [esp-4],xmm0
@@ -533,8 +528,7 @@ label0001:
 	movss	xmm4,dword ptr [___unnamed_float_5]
 	jmp	label0003
 label0002:
-	movss	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm4,xmm0
+	movss	xmm4,dword ptr [___unnamed_float_1]
 label0003:
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [esp-4],xmm0
@@ -833,8 +827,7 @@ label0000:
 	cmp	dword ptr [ebp-40],0
 	je	label0003
 	cvtsi2ss	xmm5,dword ptr [ebp-40]
-	movss	xmm0,dword ptr [___unnamed_float_6]
-	divss	xmm5,xmm0
+	divss	xmm5,dword ptr [___unnamed_float_6]
 	mov	ecx,[esi]
 	mov	eax,ecx
 	and	eax,65280

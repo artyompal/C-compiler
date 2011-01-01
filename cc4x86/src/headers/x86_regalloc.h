@@ -25,7 +25,7 @@ typedef struct x86_pseudoreg_info_decl {
 } x86_pseudoreg_info;
 
 
-#define X86_IS_REGVAR(REG, TYPE)    ((REG) >= function->func_start_of_regvars[(TYPE)])
+#define OP_IS_REGVAR(REG, TYPE) ((REG) >= function->func_start_of_regvars[(TYPE)])
 
 
 x86_operand_type            x86_encode_register_type        (x86_operand_type type);

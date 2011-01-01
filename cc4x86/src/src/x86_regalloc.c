@@ -270,7 +270,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
             reg = registers[i].reg_value;
             ASSERT(reg < pseudoregs_cnt);
 
-            if (X86_IS_REGVAR(reg, type)) {
+            if (OP_IS_REGVAR(reg, type)) {
                 // FIXME: считается, что регистровые переменные используются до конца функции.
                 // Это нужно потому, что переход может вернуть нас в область её использования.
                 pseudoregs_map[reg].reg_last_read = function->func_binary_code_end;
@@ -295,7 +295,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                 pseudoregs_map[reg].reg_changes_value   = TRUE;
             }
 
-            if (X86_IS_REGVAR(reg, type)) {
+            if (OP_IS_REGVAR(reg, type)) {
                 pseudoregs_map[reg].reg_last_read = function->func_binary_code_end;
             } else {
                 pseudoregs_map[reg].reg_last_read = insn;
@@ -539,9 +539,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
     int                 saved_real_registers_map[X86_MAX_REG];
 
 
-    LOG(("x86_allocate_registers(function=%s)\n", function->func_sym->sym_name));
-
-
     //
     // Проходим по инструкциям функции и заменяем регистры.
     // Если под псевдорегистр не выделен реальный регистр, выделяем.
@@ -598,7 +595,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
                 ASSERT(pseudoregs_map[reg].reg_status == register_free);
                 UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
 
-                if (X86_IS_REGVAR(reg, type)) {
+                if (OP_IS_REGVAR(reg, type)) {
                     real_reg = _alloc_real_register_for_regvar(regmap, reg);
                 } else {
                     real_reg = _alloc_real_register(regmap, reg);
@@ -614,7 +611,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         for (i = 0; i < registers_count; i++) {
             reg = pseudoregs[i];
 
-            if (X86_IS_REGVAR(reg, type)) continue;
+            if (OP_IS_REGVAR(reg, type)) continue;
 
             if (pseudoregs_map[reg].reg_last_read == insn && pseudoregs_map[reg].reg_status == register_allocated) {
                 pseudoregs_map[reg].reg_status = register_free;
@@ -656,7 +653,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
     for (i = 0; i < X86_MAX_REG; i++) {
         reg = regmap->real_registers_map[i];
 
-        if (X86_IS_REGVAR(reg, type)) {
+        if (OP_IS_REGVAR(reg, type)) {
             registers_count++;
         } else {
             ASSERT(reg == -1);
