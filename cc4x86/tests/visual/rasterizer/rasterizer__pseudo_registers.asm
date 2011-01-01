@@ -165,9 +165,8 @@ label0010:
 	mov	[ebp-76],(offset __viewport_matrix)
 ; start of inline function matrix4f_make_viewport
 	mov	dword322,[ebp-76]
-	movss	sse152,dword ptr [___unnamed_float_3]
 	movss	sse153,dword ptr [ebp-72]
-	divss	sse153,sse152
+	divss	sse153,dword ptr [___unnamed_float_3]
 	movss	dword ptr [dword322],sse153
 	mov	dword326,[ebp-76]
 	movss	sse154,dword ptr [___unnamed_float_2]
@@ -184,8 +183,7 @@ label0010:
 	mov	dword338,[ebp-76]
 	movss	sse158,dword ptr [ebp-68]
 	xorps	sse158,dword ptr [___unnamed_float_4]
-	movss	sse159,dword ptr [___unnamed_float_3]
-	divss	sse158,sse159
+	divss	sse158,dword ptr [___unnamed_float_3]
 	movss	dword ptr [dword338+20],sse158
 	mov	dword342,[ebp-76]
 	movss	sse160,dword ptr [___unnamed_float_2]
@@ -207,14 +205,12 @@ label0010:
 	movss	sse165,dword ptr [___unnamed_float_2]
 	movss	dword ptr [dword358+44],sse165
 	mov	dword361,[ebp-76]
-	movss	sse166,dword ptr [___unnamed_float_3]
 	movss	sse167,dword ptr [ebp-72]
-	divss	sse167,sse166
+	divss	sse167,dword ptr [___unnamed_float_3]
 	movss	dword ptr [dword361+48],sse167
 	mov	dword365,[ebp-76]
-	movss	sse168,dword ptr [___unnamed_float_3]
 	movss	sse169,dword ptr [ebp-68]
-	divss	sse169,sse168
+	divss	sse169,dword ptr [___unnamed_float_3]
 	movss	dword ptr [dword365+52],sse169
 	mov	dword369,[ebp-76]
 	movss	sse170,dword ptr [ebp-64]
@@ -253,8 +249,7 @@ label0004:
 	movss	sse175,dword ptr [___unnamed_float_1]
 	jmp	label0001
 label0000:
-	movss	sse10,dword ptr [___unnamed_float_5]
-	movss	sse175,sse10
+	movss	sse175,dword ptr [___unnamed_float_5]
 label0001:
 	movss	sse11,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],sse11
@@ -308,8 +303,7 @@ label0006:
 	movss	sse176,dword ptr [___unnamed_float_5]
 	jmp	label0003
 label0002:
-	movss	sse19,dword ptr [___unnamed_float_1]
-	movss	sse176,sse19
+	movss	sse176,dword ptr [___unnamed_float_1]
 label0003:
 	movss	sse20,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],sse20
@@ -659,8 +653,7 @@ label0004:
 	cmp	dword ptr [ebp-40],0
 	je	label0003
 	cvtsi2ss	sse17,dword ptr [ebp-40]
-	movss	sse2,dword ptr [___unnamed_float_6]
-	divss	sse17,sse2
+	divss	sse17,dword ptr [___unnamed_float_6]
 	mov	dword105,[dword103]
 	mov	dword36,dword105
 	and	dword36,65280
@@ -1003,8 +996,7 @@ label0011:
 	movss	dword ptr [ebp-128],sse62
 label0012:
 ; end of inline function vec4f_dot
-	movss	sse9,dword ptr [ebp-128]
-	divss	sse74,sse9
+	divss	sse74,dword ptr [ebp-128]
 	movss	dword ptr [ebp-132],sse74
 	lea	dword67,[ebp-40]
 	mov	[ebp-136],dword67

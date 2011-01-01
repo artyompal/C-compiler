@@ -246,7 +246,6 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function, x86_o
     x86_pseudoreg_info *reg_info = unit_get_regstat(function, type)->ptr;
 
 
-    LOG(("_estimate_num_of_used_pseudo_registers(%s)\n", function->func_sym->sym_name));
     max_registers = current_regs_cnt = 0;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
@@ -280,9 +279,6 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
     x86_instruction *insn;
     int var_offset  = reg_var->sym->sym_offset;
     int var_reg     = reg_var->pseudo_reg;
-
-    LOG(("_replace_variable_with_register(sym=%s offset=%d count=%d)\n",
-        reg_var->sym->sym_name, reg_var->sym->sym_offset, reg_var->sym->sym_usage_count));
 
     insn = function->func_binary_code;
     ASSERT(insn->in_code == x86insn_create_stack_frame);
@@ -332,15 +328,10 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
     function->func_start_of_regvars[type]   = last_pseudo_register;
     reg_var                                 = _register_vars_list.first;
 
-    LOG(("_create_register_variables_for_type(function=%s start_of_regvars=%d type=%d)\n",
-        function->func_sym->sym_name, function->func_start_of_regvars[type], type));
-
 
     // TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные, если эти регистры используются как специальные.
 
     do {
-        LOG(("_create_register_variables_for_type iteration\n"));
-
         // Создаём регистровые переменные, начиная с более приоритетных.
         for (; reg_var && free_registers; reg_var = reg_var->next, free_registers--) {
             reg_var->pseudo_reg = last_pseudo_register++;

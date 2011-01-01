@@ -419,6 +419,42 @@ static void _try_optimize_add_sub_const(function_desc *function, x86_instruction
     }
 }
 
+//
+// ѕытаетс€ распростран€ть константу вместо регистра.
+static void _try_optimize_movss(function_desc *function, x86_instruction *insn)
+{
+    x86_instruction *usage;
+    int reg                             = insn->in_op1.data.reg;
+    x86_pseudoreg_info *pseudoreg_info  = &function->func_sse_regstat.ptr[reg];
+
+    if (!OP_IS_PSEUDO_REG(insn->in_op1) || OP_IS_REGVAR(insn->in_op1.data.reg, insn->in_op1.op_type)) {
+        return;
+    }
+
+    // ≈сли регистр нигде не модифицируетс€, просто подставл€ем второй операнд вместо него.
+    if (!pseudoreg_info->reg_changes_value) {
+        for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
+            ASSERT(usage);
+
+            if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, insn->in_op2.op_type, reg)) {
+                return;
+            }
+
+            if (OP_IS_THIS_PSEUDO_REG(usage->in_op2, insn->in_op2.op_type, reg)) {
+                if (!OP_IS_PSEUDO_REG(usage->in_op1)) {
+                    return;
+                }
+
+                usage->in_op2 = insn->in_op2;
+            }
+        }
+
+        bincode_erase_instruction(function, insn);
+        return;
+    }
+}
+
+
 
 //
 //
@@ -496,6 +532,11 @@ void x86_optimization_after_codegen(function_desc *function)
         case x86insn_int_sub:
             _try_optimize_add_sub(function, insn);
             break;
+
+        case x86insn_sse_movss:
+        case x86insn_sse_movsd:
+            _try_optimize_movss(function, insn);
+            break;
         }
     }
 }
@@ -545,7 +586,7 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
 
     // если второй операнд - не регистрова€ переменна€, выходим
     regvar  = insn->in_op2.data.reg;
-    if (regvar < function->func_start_of_regvars[type]) {
+    if (!OP_IS_REGVAR(regvar, type)) {
         return FALSE;
     }
 
@@ -588,12 +629,12 @@ static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruc
 
 
     reg     = insn->in_op2.data.reg;
-    if (reg >= function->func_start_of_regvars[type]) {
+    if (OP_IS_REGVAR(reg, type)) {
         return FALSE;
     }
 
     regvar  = insn->in_op1.data.reg;
-    if (regvar < function->func_start_of_regvars[type]) {
+    if (!OP_IS_REGVAR(regvar, type)) {
         return FALSE;
     }
 
@@ -623,13 +664,12 @@ static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruc
     return TRUE;
 }
 
-// ѕробует провести какие-нибудь оптимизации регистровых переменных в данной функции.
+// ѕробует устранить лишние копировани€ регистров.
 static BOOL _try_optimize_regvars_usage(function_desc *function)
 {
     x86_instruction *insn, *next;
     BOOL was_smth = FALSE;
 
-    // ѕробуем устранить лишние копировани€ регистров.
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
 
