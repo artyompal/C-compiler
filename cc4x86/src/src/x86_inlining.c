@@ -141,7 +141,6 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
     int return_label;
 
     return_label = caller->func_labels_count++;
-    bincode_insert_comment(caller, point, "start of inline function", callee->func_sym->sym_name);
 
     for (insn = callee->func_binary_code; insn; insn = insn->in_next) {
         if (insn->in_code == x86insn_create_stack_frame || insn->in_code == x86insn_destroy_stack_frame) {
@@ -173,7 +172,6 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
 
     bincode_create_operand_from_label(&op, return_label);
     bincode_insert_unary_instruction(caller, point, x86insn_label, &op);
-    bincode_insert_comment(caller, point, "end of inline function", callee->func_sym->sym_name);
 }
 
 //
@@ -286,6 +284,8 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             ofs += sz;
         }
 
+        bincode_insert_comment(caller, insn, "start of inline function", callee->func_sym->sym_name);
+
         ASSERT(insn->in_code == x86insn_push_all);
         bincode_erase_instruction(caller, insn);
         insn = next_insn;
@@ -312,6 +312,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
         caller->func_labels_count += callee->func_labels_count;
 
         _insert_function_code(insn, callee, caller, params_ofs, locals_ofs, regs_ofs, labels_ofs, res_ofs);
+        bincode_insert_comment(caller, insn, "end of inline function", callee->func_sym->sym_name);
 
 
         if (res_ofs != 0) {
