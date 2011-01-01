@@ -48,7 +48,6 @@ label0007:
 label0005:
 	cmp	esi,100
 	jl	label0004
-label0006:
 	cmp	ebx,50
 	je	label0008
 	mov	eax,1

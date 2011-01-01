@@ -870,11 +870,9 @@ label0003:
 	movss	xmm0,xmm7
 	addss	xmm0,dword ptr [ebp+32]
 	movss	xmm7,xmm0
-label0001:
 	add	esi,4
 	cmp	esi,ebx
 	jl	label0000
-label0002:
 	pop	ebx
 	pop	esi
 	pop	edi
@@ -1184,7 +1182,6 @@ label0003:
 	add	eax,4
 	mov	ecx,[eax]
 	mov	[ebp-16],ecx
-label0005:
 label0006:
 	mov	eax,[ebp+12]
 	add	eax,4
@@ -1483,7 +1480,6 @@ label0007:
 	mov	ecx,1
 	add	ecx,[eax]
 	mov	[ebp-16],ecx
-label0008:
 label0009:
 	mov	eax,[ebp+16]
 	add	eax,4
@@ -1683,7 +1679,6 @@ __clip_on_plain proc
 	mov	esi,[ebp+12]
 	mov	ebx,[ebp+12]
 	add	ebx,24
-label0000:
 label0001:
 	mov	eax,[ebp+12]
 	mov	ecx,[eax+192]
@@ -1997,7 +1992,6 @@ label0000:
 	mov	dword ptr ds:[0],0
 label0001:
 	mov	esi,0
-label0002:
 label0003:
 	mov	eax,[edi+192]
 	cmp	eax,esi
@@ -2032,7 +2026,6 @@ label0003:
 	jmp	label0003
 label0004:
 	mov	esi,2
-label0005:
 label0006:
 	mov	eax,[edi+192]
 	dec	eax

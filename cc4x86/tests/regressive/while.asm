@@ -37,10 +37,8 @@ label0003:
 	sal	eax,1
 	mov	esi,eax
 	inc	ebx
-label0004:
 	cmp	esi,65536
 	jl	label0003
-label0005:
 	cmp	ebx,16
 	je	label0006
 	mov	eax,1

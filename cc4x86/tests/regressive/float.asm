@@ -69,14 +69,12 @@ label0008:
 label0009:
 	movss	xmm0,dword ptr [ebp-44]
 	movss	dword ptr [ebp-48],xmm0
-label000a:
 ; end of inline function fabs
 	movss	xmm0,dword ptr [ebp-48]
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
-label000b:
 ; end of inline function eq
 	mov	eax,[ebp-52]
 	cmp	eax,0
@@ -111,14 +109,12 @@ label000c:
 label000d:
 	movss	xmm0,dword ptr [ebp-44]
 	movss	dword ptr [ebp-48],xmm0
-label000e:
 ; end of inline function fabs
 	movss	xmm0,dword ptr [ebp-48]
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
-label000f:
 ; end of inline function eq
 	mov	eax,[ebp-52]
 	cmp	eax,0
@@ -153,14 +149,12 @@ label0010:
 label0011:
 	movss	xmm0,dword ptr [ebp-44]
 	movss	dword ptr [ebp-48],xmm0
-label0012:
 ; end of inline function fabs
 	movss	xmm0,dword ptr [ebp-48]
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
-label0013:
 ; end of inline function eq
 	mov	eax,[ebp-52]
 	cmp	eax,0
@@ -195,14 +189,12 @@ label0014:
 label0015:
 	movss	xmm0,dword ptr [ebp-44]
 	movss	dword ptr [ebp-48],xmm0
-label0016:
 ; end of inline function fabs
 	movss	xmm0,dword ptr [ebp-48]
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
-label0017:
 ; end of inline function eq
 	mov	eax,[ebp-52]
 	cmp	eax,0
@@ -238,14 +230,12 @@ label0018:
 label0019:
 	movss	xmm0,dword ptr [ebp-44]
 	movss	dword ptr [ebp-48],xmm0
-label001a:
 ; end of inline function fabs
 	movss	xmm0,dword ptr [ebp-48]
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
-label001b:
 ; end of inline function eq
 	mov	eax,[ebp-52]
 	cmp	eax,0
@@ -281,14 +271,12 @@ label001c:
 label001d:
 	movss	xmm0,dword ptr [ebp-44]
 	movss	dword ptr [ebp-48],xmm0
-label001e:
 ; end of inline function fabs
 	movss	xmm0,dword ptr [ebp-48]
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
-label001f:
 ; end of inline function eq
 	mov	eax,[ebp-52]
 	cmp	eax,0
@@ -324,14 +312,12 @@ label0020:
 label0021:
 	movss	xmm0,dword ptr [ebp-44]
 	movss	dword ptr [ebp-48],xmm0
-label0022:
 ; end of inline function fabs
 	movss	xmm0,dword ptr [ebp-48]
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
-label0023:
 ; end of inline function eq
 	mov	eax,[ebp-52]
 	cmp	eax,0
@@ -367,14 +353,12 @@ label0024:
 label0025:
 	movss	xmm0,dword ptr [ebp-44]
 	movss	dword ptr [ebp-48],xmm0
-label0026:
 ; end of inline function fabs
 	movss	xmm0,dword ptr [ebp-48]
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 	mov	[ebp-52],eax
-label0027:
 ; end of inline function eq
 	mov	eax,[ebp-52]
 	cmp	eax,0

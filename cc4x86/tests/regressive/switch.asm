@@ -37,11 +37,6 @@ label0004:
 	add	esp,8
 	pop	ebp
 	ret
-label0000:
-	pop	edi
-	add	esp,8
-	pop	ebp
-	ret
 _test_case endp	
 
 _test_case2 proc
@@ -79,11 +74,6 @@ label0005:
 	add	esp,8
 	pop	ebp
 	ret
-label0000:
-	pop	edi
-	add	esp,8
-	pop	ebp
-	ret
 _test_case2 endp	
 
 _test_default proc
@@ -105,19 +95,7 @@ label0002:
 	pop	ebp
 	ret
 label0003:
-label0004:
 	mov	eax,0
-	pop	edi
-	add	esp,8
-	pop	ebp
-	ret
-label0005:
-	mov	eax,1
-	pop	edi
-	add	esp,8
-	pop	ebp
-	ret
-label0000:
 	pop	edi
 	add	esp,8
 	pop	ebp
@@ -152,7 +130,6 @@ label0007:
 	mov	eax,1
 	mov	[ebp-12],eax
 	jmp	label0008
-label0003:
 label0008:
 ; end of inline function test_case
 	mov	eax,[ebp-12]
@@ -190,7 +167,6 @@ label000e:
 	mov	eax,1
 	mov	[ebp-24],eax
 	jmp	label000f
-label0009:
 label000f:
 ; end of inline function test_case2
 	mov	eax,[ebp-24]
@@ -216,15 +192,12 @@ label0012:
 	mov	[ebp-36],eax
 	jmp	label0016
 label0013:
-label0014:
 	mov	eax,0
 	mov	[ebp-36],eax
 	jmp	label0016
-label0015:
 	mov	eax,1
 	mov	[ebp-36],eax
 	jmp	label0016
-label0010:
 label0016:
 ; end of inline function test_default
 	mov	eax,[ebp-36]

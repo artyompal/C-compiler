@@ -12,7 +12,6 @@ _test proc
 	push	edi
 	mov	edi,0
 label0000:
-label0001:
 	cmp	edi,8
 	jge	label0002
 	cmp	edi,4
