@@ -83,6 +83,7 @@ _rasterizer_init proc
 	mov	dword ptr [__height],eax
 	mov	eax,[ebp+20]
 	mov	dword ptr [__pitch],eax
+; start of inline function matrix4f_make_perspective
 	cvtsi2ss	xmm0,dword ptr [ebp+12]
 	cvtsi2ss	xmm1,dword ptr [ebp+16]
 	divss	xmm0,xmm1
@@ -92,7 +93,6 @@ _rasterizer_init proc
 	movss	dword ptr [ebp-40],xmm7
 	movss	dword ptr [ebp-44],xmm6
 	mov	[ebp-48],(offset __mvproj_matrix)
-; start of inline function matrix4f_make_perspective
 	movss	xmm0,dword ptr [ebp-36]
 	mulss	xmm0,dword ptr [ebp-44]
 	movss	dword ptr [ebp-52],xmm0
@@ -158,6 +158,7 @@ _rasterizer_init proc
 	movss	dword ptr [eax+60],xmm0
 label0010:
 ; end of inline function matrix4f_make_perspective
+; start of inline function matrix4f_make_viewport
 	movss	dword ptr [ebp-60],xmm7
 	movss	dword ptr [ebp-64],xmm6
 	cvtsi2ss	xmm0,dword ptr [ebp+16]
@@ -165,7 +166,6 @@ label0010:
 	cvtsi2ss	xmm0,dword ptr [ebp+12]
 	movss	dword ptr [ebp-72],xmm0
 	mov	[ebp-76],(offset __viewport_matrix)
-; start of inline function matrix4f_make_viewport
 	mov	eax,[ebp-76]
 	movss	xmm0,dword ptr [ebp-72]
 	divss	xmm0,dword ptr [___unnamed_float_3]
@@ -222,6 +222,7 @@ label0010:
 	movss	dword ptr [eax+60],xmm0
 label0011:
 ; end of inline function matrix4f_make_viewport
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	dword ptr [ebp-16],xmm6
@@ -230,7 +231,6 @@ label0011:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_z_near_base)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -253,6 +253,7 @@ label0004:
 label0000:
 	movss	xmm5,dword ptr [___unnamed_float_5]
 label0001:
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	dword ptr [ebp-16],xmm5
@@ -261,7 +262,6 @@ label0001:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_z_near_norm)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -276,6 +276,7 @@ label0001:
 	movss	dword ptr [eax+12],xmm0
 label0005:
 ; end of inline function vec4f_assign
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	dword ptr [ebp-16],xmm7
@@ -284,7 +285,6 @@ label0005:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_z_far_base)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -307,6 +307,7 @@ label0006:
 label0002:
 	movss	xmm4,dword ptr [___unnamed_float_1]
 label0003:
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	dword ptr [ebp-16],xmm4
@@ -315,7 +316,6 @@ label0003:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_z_far_norm)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -330,6 +330,7 @@ label0003:
 	movss	dword ptr [eax+12],xmm0
 label0007:
 ; end of inline function vec4f_assign
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -343,7 +344,6 @@ label0007:
 	addss	xmm0,xmm1
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_plane_left_base)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -358,6 +358,7 @@ label0007:
 	movss	dword ptr [eax+12],xmm0
 label0008:
 ; end of inline function vec4f_assign
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -367,7 +368,6 @@ label0008:
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_plane_left_norm)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -382,6 +382,7 @@ label0008:
 	movss	dword ptr [eax+12],xmm0
 label0009:
 ; end of inline function vec4f_assign
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -395,7 +396,6 @@ label0009:
 	subss	xmm0,xmm1
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_plane_right_base)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -410,6 +410,7 @@ label0009:
 	movss	dword ptr [eax+12],xmm0
 label000a:
 ; end of inline function vec4f_assign
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -419,7 +420,6 @@ label000a:
 	movss	xmm0,dword ptr [___unnamed_float_5]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_plane_right_norm)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -434,6 +434,7 @@ label000a:
 	movss	dword ptr [eax+12],xmm0
 label000b:
 ; end of inline function vec4f_assign
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -447,7 +448,6 @@ label000b:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_plane_top_base)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -462,6 +462,7 @@ label000b:
 	movss	dword ptr [eax+12],xmm0
 label000c:
 ; end of inline function vec4f_assign
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -471,7 +472,6 @@ label000c:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_plane_top_norm)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -486,6 +486,7 @@ label000c:
 	movss	dword ptr [eax+12],xmm0
 label000d:
 ; end of inline function vec4f_assign
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -495,7 +496,6 @@ label000d:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_plane_bottom_base)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -510,6 +510,7 @@ label000d:
 	movss	dword ptr [eax+12],xmm0
 label000e:
 ; end of inline function vec4f_assign
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-12],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -519,7 +520,6 @@ label000e:
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [ebp-24],xmm0
 	mov	[ebp-28],(offset __clip_plane_bottom_norm)
-; start of inline function vec4f_assign
 	mov	eax,[ebp-28]
 	movss	xmm0,dword ptr [ebp-24]
 	movss	dword ptr [eax],xmm0
@@ -633,9 +633,9 @@ __rasterize_horiz_line proc
 	sal	eax,2
 	sub	ebx,eax
 label0000:
+; start of inline function _tex2d
 	movss	dword ptr [ebp-48],xmm7
 	movss	dword ptr [ebp-52],xmm6
-; start of inline function _tex2d
 	mov	eax,dword ptr [__texture_width]
 	dec	eax
 	cvtsi2ss	xmm0,eax
@@ -744,12 +744,12 @@ label0001:
 	add	eax,ecx
 	cmp	eax,ebx
 	jle	label0002
+; start of inline function vec4f_subtract
 	mov	eax,[ebp+16]
 	mov	[ebp-108],eax
 	mov	[ebp-112],esi
 	lea	eax,[ebp-24]
 	mov	[ebp-116],eax
-; start of inline function vec4f_subtract
 	mov	eax,[ebp-112]
 	mov	ecx,[ebp-108]
 	movss	xmm0,dword ptr [eax]
@@ -776,11 +776,11 @@ label0001:
 	movss	dword ptr [eax+12],xmm0
 label000b:
 ; end of inline function vec4f_subtract
+; start of inline function vec4f_dot
 	mov	eax,[ebp+20]
 	mov	[ebp-120],eax
 	lea	eax,[ebp-24]
 	mov	[ebp-124],eax
-; start of inline function vec4f_dot
 	mov	eax,[ebp-124]
 	mov	ecx,[ebp-120]
 	movss	xmm0,dword ptr [eax+4]
@@ -804,12 +804,12 @@ label000b:
 label000f:
 ; end of inline function vec4f_dot
 	movss	xmm7,dword ptr [ebp-128]
+; start of inline function vec4f_subtract
 	mov	eax,[ebp+16]
 	mov	[ebp-108],eax
 	mov	[ebp-112],ebx
 	lea	eax,[ebp-24]
 	mov	[ebp-116],eax
-; start of inline function vec4f_subtract
 	mov	eax,[ebp-112]
 	mov	ecx,[ebp-108]
 	movss	xmm0,dword ptr [eax]
@@ -836,11 +836,11 @@ label000f:
 	movss	dword ptr [eax+12],xmm0
 label000c:
 ; end of inline function vec4f_subtract
+; start of inline function vec4f_dot
 	mov	eax,[ebp+20]
 	mov	[ebp-120],eax
 	lea	eax,[ebp-24]
 	mov	[ebp-124],eax
-; start of inline function vec4f_dot
 	mov	eax,[ebp-124]
 	mov	ecx,[ebp-120]
 	movss	xmm0,dword ptr [eax+4]
@@ -899,12 +899,12 @@ label0006:
 	comiss	xmm0,xmm7
 	jbe	label0004
 label0005:
+; start of inline function vec4f_subtract
 	mov	[ebp-108],esi
 	mov	eax,[ebp+16]
 	mov	[ebp-112],eax
 	lea	eax,[ebp-24]
 	mov	[ebp-116],eax
-; start of inline function vec4f_subtract
 	mov	eax,[ebp-112]
 	mov	ecx,[ebp-108]
 	movss	xmm0,dword ptr [eax]
@@ -931,11 +931,11 @@ label0005:
 	movss	dword ptr [eax+12],xmm0
 label000d:
 ; end of inline function vec4f_subtract
+; start of inline function vec4f_subtract
 	mov	[ebp-108],esi
 	mov	[ebp-112],ebx
 	lea	eax,[ebp-40]
 	mov	[ebp-116],eax
-; start of inline function vec4f_subtract
 	mov	eax,[ebp-112]
 	mov	ecx,[ebp-108]
 	movss	xmm0,dword ptr [eax]
@@ -962,11 +962,11 @@ label000d:
 	movss	dword ptr [eax+12],xmm0
 label000e:
 ; end of inline function vec4f_subtract
+; start of inline function vec4f_dot
 	mov	eax,[ebp+20]
 	mov	[ebp-120],eax
 	lea	eax,[ebp-24]
 	mov	[ebp-124],eax
-; start of inline function vec4f_dot
 	mov	eax,[ebp-124]
 	mov	ecx,[ebp-120]
 	movss	xmm0,dword ptr [eax+4]
@@ -990,11 +990,11 @@ label000e:
 label0011:
 ; end of inline function vec4f_dot
 	movss	xmm5,dword ptr [ebp-128]
+; start of inline function vec4f_dot
 	mov	eax,[ebp+20]
 	mov	[ebp-120],eax
 	lea	eax,[ebp-40]
 	mov	[ebp-124],eax
-; start of inline function vec4f_dot
 	mov	eax,[ebp-124]
 	mov	ecx,[ebp-120]
 	movss	xmm0,dword ptr [eax+4]
@@ -1018,10 +1018,10 @@ label0011:
 label0012:
 ; end of inline function vec4f_dot
 	divss	xmm5,dword ptr [ebp-128]
+; start of inline function vec4f_mul
 	movss	dword ptr [ebp-132],xmm5
 	lea	eax,[ebp-40]
 	mov	[ebp-136],eax
-; start of inline function vec4f_mul
 	mov	eax,[ebp-136]
 	movss	xmm0,dword ptr [eax]
 	mulss	xmm0,dword ptr [ebp-132]
@@ -1040,6 +1040,7 @@ label0012:
 	movss	dword ptr [eax+12],xmm0
 label0013:
 ; end of inline function vec4f_mul
+; start of inline function vec4f_add
 	lea	eax,[ebp-40]
 	mov	[ebp-96],eax
 	mov	[ebp-100],esi
@@ -1048,7 +1049,6 @@ label0013:
 	mov	ecx,edi
 	add	ecx,eax
 	mov	[ebp-104],ecx
-; start of inline function vec4f_add
 	mov	eax,[ebp-100]
 	mov	ecx,[ebp-96]
 	movss	xmm0,dword ptr [eax]
@@ -1075,6 +1075,7 @@ label0013:
 	movss	dword ptr [eax+12],xmm0
 label000a:
 ; end of inline function vec4f_add
+; start of inline function vec2f_subtract
 	mov	eax,16
 	add	eax,esi
 	mov	[ebp-76],eax
@@ -1083,7 +1084,6 @@ label000a:
 	mov	[ebp-80],eax
 	lea	eax,[ebp-48]
 	mov	[ebp-84],eax
-; start of inline function vec2f_subtract
 	mov	eax,[ebp-80]
 	mov	ecx,[ebp-76]
 	movss	xmm0,dword ptr [eax]
@@ -1098,10 +1098,10 @@ label000a:
 	movss	dword ptr [eax+4],xmm0
 label0008:
 ; end of inline function vec2f_subtract
+; start of inline function vec2f_mul
 	movss	dword ptr [ebp-88],xmm5
 	lea	eax,[ebp-48]
 	mov	[ebp-92],eax
-; start of inline function vec2f_mul
 	mov	eax,[ebp-92]
 	movss	xmm0,dword ptr [eax]
 	mulss	xmm0,dword ptr [ebp-88]
@@ -1112,6 +1112,7 @@ label0008:
 	movss	dword ptr [eax+4],xmm0
 label0009:
 ; end of inline function vec2f_mul
+; start of inline function vec2f_add
 	lea	eax,[ebp-48]
 	mov	[ebp-64],eax
 	mov	eax,16
@@ -1123,7 +1124,6 @@ label0009:
 	add	ecx,eax
 	add	ecx,16
 	mov	[ebp-72],ecx
-; start of inline function vec2f_add
 	mov	eax,[ebp-68]
 	mov	ecx,[ebp-64]
 	movss	xmm0,dword ptr [eax]
@@ -1175,6 +1175,7 @@ __transform_to_projection_space proc
 	sub	esp,48
 	push	edi
 	mov	edi,[ebp+12]
+; start of inline function vec4f_assign
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-20],xmm0
 	movss	xmm0,dword ptr [edi+8]
@@ -1185,7 +1186,6 @@ __transform_to_projection_space proc
 	movss	dword ptr [ebp-32],xmm0
 	lea	eax,[ebp-16]
 	mov	[ebp-36],eax
-; start of inline function vec4f_assign
 	mov	eax,[ebp-36]
 	movss	xmm0,dword ptr [ebp-32]
 	movss	dword ptr [eax],xmm0
@@ -1200,12 +1200,12 @@ __transform_to_projection_space proc
 	movss	dword ptr [eax+12],xmm0
 label0000:
 ; end of inline function vec4f_assign
+; start of inline function matrix4f_transform
 	mov	[ebp-40],(offset __mvproj_matrix)
 	lea	eax,[ebp-16]
 	mov	[ebp-44],eax
 	mov	eax,[ebp+8]
 	mov	[ebp-48],eax
-; start of inline function matrix4f_transform
 	mov	eax,[ebp-44]
 	mov	ecx,[ebp-40]
 	movss	xmm0,dword ptr [eax+4]
@@ -1361,12 +1361,12 @@ _rasterizer_triangle3f proc
 	lea	eax,[ebp-196]
 	add	eax,192
 	mov	dword ptr [eax],4
+; start of inline function _rasterize_polygon_4f
 	lea	eax,[ebp-196]
 	mov	[ebp-200],eax
-; start of inline function _rasterize_polygon_4f
+; start of inline function _clip_poligon
 	mov	eax,[ebp-200]
 	mov	[ebp-464],eax
-; start of inline function _clip_poligon
 	lea	eax,dword ptr [__clip_z_far_norm]
 	push	eax
 	lea	eax,dword ptr [__clip_z_far_base]
@@ -1445,6 +1445,7 @@ label0003:
 	mov	ecx,[eax+192]
 	cmp	ecx,[ebp-336]
 	jle	label0004
+; start of inline function _transform_to_screen_space
 	mov	eax,[ebp-200]
 	mov	ecx,[ebp-336]
 	imul	ecx,24
@@ -1455,14 +1456,13 @@ label0003:
 	sal	ecx,4
 	add	eax,ecx
 	mov	[ebp-672],eax
-; start of inline function _transform_to_screen_space
+; start of inline function matrix4f_transform
 	lea	eax,dword ptr [__viewport_matrix]
 	mov	[ebp-696],eax
 	mov	eax,[ebp-668]
 	mov	[ebp-700],eax
 	lea	eax,[ebp-688]
 	mov	[ebp-704],eax
-; start of inline function matrix4f_transform
 	mov	eax,[ebp-700]
 	mov	ecx,[ebp-696]
 	movss	xmm0,dword ptr [eax+4]
@@ -1610,6 +1610,7 @@ label0006:
 	dec	ecx
 	cmp	ecx,[ebp-336]
 	jle	label0007
+; start of inline function _rasterize_triangle_2i
 	lea	eax,[ebp-332]
 	mov	ecx,[ebp-336]
 	sal	ecx,4
@@ -1623,7 +1624,6 @@ label0006:
 	mov	[ebp-344],ecx
 	lea	eax,[ebp-332]
 	mov	[ebp-348],eax
-; start of inline function _rasterize_triangle_2i
 	mov	eax,[ebp-348]
 	add	eax,4
 	mov	ecx,[ebp-344]
@@ -1682,6 +1682,7 @@ label000a:
 	mov	ecx,[eax]
 	cmp	ecx,dword ptr [__height]
 	jge	label000c
+; start of inline function _rasterize_triangle_1i
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	movss	dword ptr [ebp-428],xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
@@ -1708,7 +1709,6 @@ label000a:
 	mov	eax,[ebp-348]
 	mov	ecx,[eax]
 	mov	[ebp-460],ecx
-; start of inline function _rasterize_triangle_1i
 	mov	eax,[ebp-460]
 	cmp	eax,[ebp-456]
 	jge	label001c
@@ -1991,6 +1991,7 @@ label000e:
 	subss	xmm1,dword ptr [ebp-372]
 	divss	xmm1,xmm0
 	movss	dword ptr [ebp-388],xmm1
+; start of inline function _rasterize_horiz_line__unordered
 	movss	xmm0,dword ptr [ebp-388]
 	movss	dword ptr [ebp-392],xmm0
 	movss	xmm0,dword ptr [ebp-384]
@@ -2009,7 +2010,6 @@ label000e:
 	mov	[ebp-420],eax
 	mov	eax,[ebp-356]
 	mov	[ebp-424],eax
-; start of inline function _rasterize_horiz_line__unordered
 	mov	eax,[ebp-424]
 	cmp	eax,[ebp-420]
 	jg	label0013
@@ -2134,6 +2134,7 @@ label000f:
 	cvtsi2ss	xmm1,ecx
 	divss	xmm0,xmm1
 	movss	dword ptr [ebp-388],xmm0
+; start of inline function _rasterize_horiz_line__unordered
 	movss	xmm0,dword ptr [ebp-388]
 	movss	dword ptr [ebp-392],xmm0
 	movss	xmm0,dword ptr [ebp-384]
@@ -2159,7 +2160,6 @@ label000f:
 	mov	[ebp-420],ecx
 	mov	eax,[ebp-360]
 	mov	[ebp-424],eax
-; start of inline function _rasterize_horiz_line__unordered
 	mov	eax,[ebp-424]
 	cmp	eax,[ebp-420]
 	jg	label0016
@@ -2350,6 +2350,7 @@ label0011:
 	subss	xmm1,dword ptr [ebp-372]
 	divss	xmm1,xmm0
 	movss	dword ptr [ebp-388],xmm1
+; start of inline function _rasterize_horiz_line__unordered
 	movss	xmm0,dword ptr [ebp-388]
 	movss	dword ptr [ebp-392],xmm0
 	movss	xmm0,dword ptr [ebp-384]
@@ -2368,7 +2369,6 @@ label0011:
 	mov	[ebp-420],eax
 	mov	eax,[ebp-356]
 	mov	[ebp-424],eax
-; start of inline function _rasterize_horiz_line__unordered
 	mov	eax,[ebp-424]
 	cmp	eax,[ebp-420]
 	jg	label0019

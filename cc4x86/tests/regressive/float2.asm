@@ -20,9 +20,9 @@ _test proc
 	push	ebp
 	mov	ebp,esp
 	sub	esp,20
+; start of inline function test1
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-4],xmm0
-; start of inline function test1
 	movss	xmm0,dword ptr [ebp-4]
 	movss	dword ptr [ebp-8],xmm0
 	movss	xmm0,dword ptr [ebp-8]
@@ -42,9 +42,9 @@ label0002:
 	pop	ebp
 	ret
 label0000:
+; start of inline function test2
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	movss	dword ptr [ebp-16],xmm0
-; start of inline function test2
 	movss	xmm0,dword ptr [ebp-16]
 	addss	xmm0,dword ptr [___unnamed_float_0]
 	movss	dword ptr [ebp-20],xmm0

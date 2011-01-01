@@ -47,15 +47,15 @@ _test proc
 	movsd	xmm6,qword ptr [___unnamed_double_4]
 	cvtss2sd	xmm5,xmm7
 	addsd	xmm5,xmm6
+; start of inline function eq
 	movsd	xmm0,qword ptr [___unnamed_double_5]
 	movsd	qword ptr [ebp-28],xmm0
 	movsd	qword ptr [ebp-36],xmm5
-; start of inline function eq
+; start of inline function fabs
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
 	cvtsd2ss	xmm1,xmm0
 	movss	dword ptr [ebp-40],xmm1
-; start of inline function fabs
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	comiss	xmm0,dword ptr [ebp-40]
 	ja	label0008
@@ -89,15 +89,15 @@ label0000:
 	cvtss2sd	xmm0,xmm7
 	subsd	xmm0,xmm6
 	movsd	xmm5,xmm0
+; start of inline function eq
 	movsd	xmm0,qword ptr [___unnamed_double_6]
 	movsd	qword ptr [ebp-28],xmm0
 	movsd	qword ptr [ebp-36],xmm5
-; start of inline function eq
+; start of inline function fabs
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
 	cvtsd2ss	xmm1,xmm0
 	movss	dword ptr [ebp-40],xmm1
-; start of inline function fabs
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	comiss	xmm0,dword ptr [ebp-40]
 	ja	label000c
@@ -131,15 +131,15 @@ label0001:
 	cvtss2sd	xmm0,xmm7
 	mulsd	xmm0,xmm6
 	movsd	xmm5,xmm0
+; start of inline function eq
 	movsd	xmm0,qword ptr [___unnamed_double_7]
 	movsd	qword ptr [ebp-28],xmm0
 	movsd	qword ptr [ebp-36],xmm5
-; start of inline function eq
+; start of inline function fabs
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
 	cvtsd2ss	xmm1,xmm0
 	movss	dword ptr [ebp-40],xmm1
-; start of inline function fabs
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	comiss	xmm0,dword ptr [ebp-40]
 	ja	label0010
@@ -173,15 +173,15 @@ label0002:
 	cvtss2sd	xmm0,xmm7
 	divsd	xmm0,xmm6
 	movsd	xmm5,xmm0
+; start of inline function eq
 	movsd	xmm0,qword ptr [___unnamed_double_8]
 	movsd	qword ptr [ebp-28],xmm0
 	movsd	qword ptr [ebp-36],xmm5
-; start of inline function eq
+; start of inline function fabs
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
 	cvtsd2ss	xmm1,xmm0
 	movss	dword ptr [ebp-40],xmm1
-; start of inline function fabs
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	comiss	xmm0,dword ptr [ebp-40]
 	ja	label0014
@@ -215,16 +215,16 @@ label0003:
 	movss	xmm0,xmm7
 	addss	xmm0,dword ptr [___unnamed_float_3]
 	movss	xmm7,xmm0
+; start of inline function eq
 	movsd	xmm0,qword ptr [___unnamed_double_9]
 	movsd	qword ptr [ebp-28],xmm0
 	cvtss2sd	xmm0,xmm7
 	movsd	qword ptr [ebp-36],xmm0
-; start of inline function eq
+; start of inline function fabs
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
 	cvtsd2ss	xmm1,xmm0
 	movss	dword ptr [ebp-40],xmm1
-; start of inline function fabs
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	comiss	xmm0,dword ptr [ebp-40]
 	ja	label0018
@@ -258,16 +258,16 @@ label0004:
 	movss	xmm0,xmm7
 	subss	xmm0,dword ptr [___unnamed_float_10]
 	movss	xmm7,xmm0
+; start of inline function eq
 	movsd	xmm0,qword ptr [___unnamed_double_11]
 	movsd	qword ptr [ebp-28],xmm0
 	cvtss2sd	xmm0,xmm7
 	movsd	qword ptr [ebp-36],xmm0
-; start of inline function eq
+; start of inline function fabs
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
 	cvtsd2ss	xmm1,xmm0
 	movss	dword ptr [ebp-40],xmm1
-; start of inline function fabs
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	comiss	xmm0,dword ptr [ebp-40]
 	ja	label001c
@@ -301,16 +301,16 @@ label0005:
 	movss	xmm0,xmm7
 	mulss	xmm0,dword ptr [___unnamed_float_3]
 	movss	xmm7,xmm0
+; start of inline function eq
 	movsd	xmm0,qword ptr [___unnamed_double_12]
 	movsd	qword ptr [ebp-28],xmm0
 	cvtss2sd	xmm0,xmm7
 	movsd	qword ptr [ebp-36],xmm0
-; start of inline function eq
+; start of inline function fabs
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
 	cvtsd2ss	xmm1,xmm0
 	movss	dword ptr [ebp-40],xmm1
-; start of inline function fabs
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	comiss	xmm0,dword ptr [ebp-40]
 	ja	label0020
@@ -344,16 +344,16 @@ label0006:
 	movss	xmm0,xmm7
 	divss	xmm0,dword ptr [___unnamed_float_13]
 	movss	xmm7,xmm0
+; start of inline function eq
 	movsd	xmm0,qword ptr [___unnamed_double_14]
 	movsd	qword ptr [ebp-28],xmm0
 	cvtss2sd	xmm0,xmm7
 	movsd	qword ptr [ebp-36],xmm0
-; start of inline function eq
+; start of inline function fabs
 	movsd	xmm0,qword ptr [ebp-36]
 	subsd	xmm0,qword ptr [ebp-28]
 	cvtsd2ss	xmm1,xmm0
 	movss	dword ptr [ebp-40],xmm1
-; start of inline function fabs
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	comiss	xmm0,dword ptr [ebp-40]
 	ja	label0024
