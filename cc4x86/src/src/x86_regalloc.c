@@ -725,7 +725,10 @@ static void _handle_pseudo_instructions(function_desc *function)
 
             bincode_insert_pop_reg(function, insn, x86op_dword, ~x86reg_ebp);
         } else if (insn->in_code == x86insn_push_arg) {
-            if (OP_IS_FLOAT(insn->in_op1)) {
+            if (!OP_IS_FLOAT(insn->in_op1) || insn->in_op1.op_type == x86op_float && OP_IS_ADDRESS(insn->in_op1)) {
+                insn->in_code       = x86insn_push;
+                insn->in_op2.op_loc = x86loc_none;
+            } else {
                 sz              = (insn->in_op1.op_type == x86op_float ? 4 : 8);
                 insn->in_code   = ENCODE_SSE_MOV(insn->in_op1.op_type);
                 insn->in_op2    = insn->in_op1;
@@ -739,9 +742,6 @@ static void _handle_pseudo_instructions(function_desc *function)
 
                 bincode_create_operand_addr_from_esp_offset(&insn->in_op1, insn->in_op2.op_type, -sz);
                 bincode_insert_int_reg_const(function, insn->in_next, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
-            } else {
-                insn->in_code       = x86insn_push;
-                insn->in_op2.op_loc = x86loc_none;
             }
         } else if (insn->in_code == x86insn_restore_stack) {
             insn->in_code  = x86insn_int_add;
