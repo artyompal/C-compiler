@@ -444,9 +444,7 @@ _rasterizer_init proc
 	divss	xmm0,xmm1
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
-	movss	xmm0,dword ptr [ebp+32]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp+32]
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	dword ptr [esp-4],xmm6
@@ -902,12 +900,8 @@ __rasterize_horiz_line__unordered proc
 	sub	esp,4
 	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
-	movss	xmm0,dword ptr [ebp+24]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp+20]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp+24]
+	push	dword ptr [ebp+20]
 	push	edi
 	push	esi
 	push	ebx
@@ -919,12 +913,8 @@ label0000:
 	sub	esp,4
 	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
-	movss	xmm0,dword ptr [ebp+32]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp+28]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp+32]
+	push	dword ptr [ebp+28]
 	push	edi
 	push	ebx
 	push	esi
@@ -961,12 +951,8 @@ __rasterize_triangle_1i proc
 	sub	esp,4
 	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
-	movss	xmm0,dword ptr [edi+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [edi]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [edi+4]
+	push	dword ptr [edi]
 	push	esi
 	push	ecx
 	push	edx
@@ -985,13 +971,9 @@ label0001:
 	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
 	mov	eax,[ebp+32]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp+32]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	esi
 	push	ebx
 	push	ecx
@@ -1007,12 +989,8 @@ label0003:
 	sub	esp,4
 	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
-	movss	xmm0,dword ptr [edi+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [edi]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [edi+4]
+	push	dword ptr [edi]
 	push	esi
 	push	ebx
 	push	edx
@@ -1037,13 +1015,9 @@ label0000:
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
 	mov	eax,[ebp+32]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp+32]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	esi
 	push	edx
 	push	ecx
@@ -1066,13 +1040,9 @@ label0006:
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
 	mov	eax,[ebp+28]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp+28]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	esi
 	push	ecx
 	push	ebx
@@ -1093,13 +1063,9 @@ label0008:
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
 	mov	eax,[ebp+28]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp+28]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	esi
 	push	edx
 	push	ebx
@@ -1496,13 +1462,9 @@ label0007:
 	mov	eax,8
 	add	eax,[ebp+12]
 	add	eax,4
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	mov	eax,[ebp+12]
-	movss	xmm0,dword ptr [eax+8]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+8]
 	movss	dword ptr [esp-4],xmm4
 	sub	esp,4
 	movss	dword ptr [esp-4],xmm6
@@ -2111,15 +2073,9 @@ __transform_to_projection_space proc
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
-	movss	xmm0,dword ptr [edi+8]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [edi+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [edi]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [edi+8]
+	push	dword ptr [edi+4]
+	push	dword ptr [edi]
 	lea	eax,[ebp-16]
 	push	eax
 	call	_vec4f_assign

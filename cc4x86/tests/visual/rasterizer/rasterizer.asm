@@ -1715,20 +1715,12 @@ label000a:
 	mov	eax,[ebp-452]
 	cmp	eax,[ebp-456]
 	jle	label001d
-	movss	xmm0,dword ptr [ebp-428]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-432]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp-428]
+	push	dword ptr [ebp-432]
 	mov	eax,[ebp-444]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp-444]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	dword ptr [ebp-448]
 	push	dword ptr [ebp-452]
 	push	dword ptr [ebp-460]
@@ -1739,20 +1731,12 @@ label001d:
 	mov	eax,[ebp-452]
 	cmp	eax,[ebp-460]
 	jge	label001f
-	movss	xmm0,dword ptr [ebp-428]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-432]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp-428]
+	push	dword ptr [ebp-432]
 	mov	eax,[ebp-436]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp-436]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	dword ptr [ebp-448]
 	push	dword ptr [ebp-456]
 	push	dword ptr [ebp-452]
@@ -1760,20 +1744,12 @@ label001d:
 	add	esp,28
 	jmp	label0020
 label001f:
-	movss	xmm0,dword ptr [ebp-428]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-432]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp-428]
+	push	dword ptr [ebp-432]
 	mov	eax,[ebp-444]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp-444]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	dword ptr [ebp-448]
 	push	dword ptr [ebp-456]
 	push	dword ptr [ebp-460]
@@ -1795,13 +1771,9 @@ label001c:
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
 	mov	eax,[ebp-436]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp-436]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	dword ptr [ebp-448]
 	push	dword ptr [ebp-460]
 	push	dword ptr [ebp-452]
@@ -1821,13 +1793,9 @@ label0022:
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
 	mov	eax,[ebp-440]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp-440]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	dword ptr [ebp-448]
 	push	dword ptr [ebp-452]
 	push	dword ptr [ebp-456]
@@ -1844,13 +1812,9 @@ label0024:
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
 	mov	eax,[ebp-440]
-	movss	xmm0,dword ptr [eax+4]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax+4]
 	mov	eax,[ebp-440]
-	movss	xmm0,dword ptr [eax]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [eax]
 	push	dword ptr [ebp-448]
 	push	dword ptr [ebp-460]
 	push	dword ptr [ebp-456]
@@ -2049,18 +2013,10 @@ label000e:
 	mov	eax,[ebp-424]
 	cmp	eax,[ebp-420]
 	jg	label0013
-	movss	xmm0,dword ptr [ebp-392]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-396]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-408]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-412]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-408]
+	push	dword ptr [ebp-412]
 	push	dword ptr [ebp-416]
 	push	dword ptr [ebp-420]
 	push	dword ptr [ebp-424]
@@ -2068,18 +2024,10 @@ label000e:
 	add	esp,28
 	jmp	label0014
 label0013:
-	movss	xmm0,dword ptr [ebp-392]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-396]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-400]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-404]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-400]
+	push	dword ptr [ebp-404]
 	push	dword ptr [ebp-416]
 	push	dword ptr [ebp-424]
 	push	dword ptr [ebp-420]
@@ -2215,18 +2163,10 @@ label000f:
 	mov	eax,[ebp-424]
 	cmp	eax,[ebp-420]
 	jg	label0016
-	movss	xmm0,dword ptr [ebp-392]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-396]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-408]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-412]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-408]
+	push	dword ptr [ebp-412]
 	push	dword ptr [ebp-416]
 	push	dword ptr [ebp-420]
 	push	dword ptr [ebp-424]
@@ -2234,18 +2174,10 @@ label000f:
 	add	esp,28
 	jmp	label0017
 label0016:
-	movss	xmm0,dword ptr [ebp-392]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-396]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-400]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-404]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-400]
+	push	dword ptr [ebp-404]
 	push	dword ptr [ebp-416]
 	push	dword ptr [ebp-424]
 	push	dword ptr [ebp-420]
@@ -2440,18 +2372,10 @@ label0011:
 	mov	eax,[ebp-424]
 	cmp	eax,[ebp-420]
 	jg	label0019
-	movss	xmm0,dword ptr [ebp-392]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-396]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-408]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-412]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-408]
+	push	dword ptr [ebp-412]
 	push	dword ptr [ebp-416]
 	push	dword ptr [ebp-420]
 	push	dword ptr [ebp-424]
@@ -2459,18 +2383,10 @@ label0011:
 	add	esp,28
 	jmp	label001a
 label0019:
-	movss	xmm0,dword ptr [ebp-392]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-396]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-400]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
-	movss	xmm0,dword ptr [ebp-404]
-	movss	dword ptr [esp-4],xmm0
-	sub	esp,4
+	push	dword ptr [ebp-392]
+	push	dword ptr [ebp-396]
+	push	dword ptr [ebp-400]
+	push	dword ptr [ebp-404]
 	push	dword ptr [ebp-416]
 	push	dword ptr [ebp-424]
 	push	dword ptr [ebp-420]
