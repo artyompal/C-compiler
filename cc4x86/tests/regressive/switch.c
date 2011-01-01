@@ -47,7 +47,7 @@ int test_default()
     }
 }
 
-extern int test()
+int test()
 {
     if (test_case() != 0)
         return 1;

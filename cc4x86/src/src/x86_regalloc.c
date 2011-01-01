@@ -466,7 +466,7 @@ static void _maintain_fpu_stack(function_desc *function)
     ASSERT(last_pusha_count == 0);
 
     if (has_float_res) {
-        ASSERT(fp_registers_cnt == 1);
+        ASSERT(fp_registers_cnt == 1 || fp_registers_cnt == 0);
     } else {
         ASSERT(fp_registers_cnt == 0);
     }

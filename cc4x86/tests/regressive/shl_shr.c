@@ -1,6 +1,6 @@
 
 
-extern int test()
+int test()
 {
     int x = -16;
     unsigned y = -16;

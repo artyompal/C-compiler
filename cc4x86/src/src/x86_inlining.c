@@ -40,12 +40,87 @@ void x86_inlining_analyze_function(function_desc *function)
 
 
 //
-// Корректирует адреса параметров и локальных переменных заинлайненной функции.
+// Корректирует стековый адрес в заинлайненной функции в данном операнде.
 //
 static void _fixup_stack_address(x86_operand *op, int params_ofs, int locals_ofs)
 {
     if (op->op_loc == x86loc_address && op->data.address.base == ~x86reg_ebp) {
         op->data.address.offset += (op->data.address.offset > 0 ? params_ofs : locals_ofs);
+    }
+}
+
+//
+// Корректирует стековые адреса и псевдорегистры в данной инструкции.
+//
+static void _fixup_instruction(x86_instruction *inserted, int regs_ofs[X86_REGISTER_TYPES_COUNT],
+    int params_ofs, int locals_ofs)
+{
+    int i, type, regs_cnt;
+    x86_register_ref regs[MAX_REGISTERS_PER_INSN];
+
+    for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
+        bincode_extract_pseudoregs_from_insn(inserted, type, regs, &regs_cnt);
+
+        for (i = 0; i < regs_cnt; i++) {
+            *regs[i].reg_addr += regs_ofs[type];
+        }
+    }
+
+    _fixup_stack_address(&inserted->in_op1, params_ofs, locals_ofs);
+    _fixup_stack_address(&inserted->in_op2, params_ofs, locals_ofs);
+}
+
+//
+// Генерирует код, возвращающий значение из заинлайненой функции.
+//
+static void _patch_retval(function_desc *caller, x86_instruction *inserted, int res_ofs)
+{
+    x86_operand op;
+
+    ASSERT(OP_IS_REGISTER_OR_ADDRESS(inserted->in_op1));
+
+    if (!OP_IS_FLOAT(inserted->in_op1)) {
+        inserted->in_code   = x86insn_int_mov;
+
+        if (inserted->in_op1.op_loc == x86loc_register) {
+            inserted->in_op2    = inserted->in_op1;
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                inserted->in_op1.op_type, res_ofs);
+        } else {
+            bincode_create_operand_and_alloc_pseudoreg_in_function(
+                caller, &op, inserted->in_op1.op_type);
+            bincode_insert_instruction(caller, inserted, x86insn_int_mov, &op, &inserted->in_op1);
+
+            inserted->in_op2    = op;
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                inserted->in_op1.op_type, res_ofs);
+        }
+    } else if (!option_use_sse2) {
+        inserted->in_code = x86insn_fpu_stp;
+
+        if (inserted->in_op1.op_loc == x86loc_register) {
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                inserted->in_op1.op_type, res_ofs);
+        } else {
+            bincode_insert_unary_instruction(caller, inserted, x86insn_fpu_ld, &inserted->in_op1);
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                inserted->in_op1.op_type, res_ofs);
+        }
+    } else {
+        //  SSE-вариант для записи результата
+        inserted->in_code = ENCODE_SSE_MOV(inserted->in_op1.op_type);
+
+        if (inserted->in_op1.op_loc == x86loc_register) {
+            inserted->in_op2 = inserted->in_op1;
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                inserted->in_op1.op_type, res_ofs);
+        } else {
+            bincode_create_operand_and_alloc_pseudoreg_in_function(caller, &op, inserted->in_op1.op_type);
+            bincode_insert_instruction(caller, inserted, inserted->in_code, &op, &inserted->in_op1);
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
+                inserted->in_op1.op_type, res_ofs);
+            inserted->in_op2 = op;
+        }
     }
 }
 
@@ -61,11 +136,9 @@ static void _fixup_stack_address(x86_operand *op, int params_ofs, int locals_ofs
 static void _insert_function_code(x86_instruction *point, function_desc *callee, function_desc *caller,
     int params_ofs, int locals_ofs, int regs_ofs[X86_REGISTER_TYPES_COUNT], int labels_ofs, int res_ofs)
 {
-    x86_instruction *insn, *inserted;
-    x86_register_ref regs[MAX_REGISTERS_PER_INSN];
-    int i, return_label, regs_cnt, type;
     x86_operand op;
-
+    x86_instruction *insn, *inserted;
+    int return_label;
 
     return_label = caller->func_labels_count++;
     bincode_insert_comment(caller, point, "start of inline function", callee->func_sym->sym_name);
@@ -91,70 +164,10 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
         } else if (IS_JMP_INSN(inserted->in_code)) {
             inserted->in_op1.data.label += labels_ofs;
         } else if (inserted->in_code == x86insn_set_retval) {
-            ASSERT(OP_IS_REGISTER_OR_ADDRESS(inserted->in_op1));
-
-            for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
-                bincode_extract_pseudoregs_from_insn(inserted, type, regs, &regs_cnt);
-
-                for (i = 0; i < regs_cnt; i++) {
-                    *regs[i].reg_addr += regs_ofs[type];
-                }
-            }
-
-            if (!OP_IS_FLOAT(inserted->in_op1)) {
-                inserted->in_code   = x86insn_int_mov;
-
-                if (inserted->in_op1.op_loc == x86loc_register) {
-                    inserted->in_op2    = inserted->in_op1;
-                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                        inserted->in_op1.op_type, res_ofs);
-                } else {
-                    bincode_create_operand_and_alloc_pseudoreg_in_function(
-                        caller, &op, inserted->in_op1.op_type);
-                    bincode_insert_instruction(caller, inserted, x86insn_int_mov, &op, &inserted->in_op1);
-
-                    inserted->in_op2    = op;
-                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                        inserted->in_op1.op_type, res_ofs);
-                }
-            } else if (!option_use_sse2) {
-                inserted->in_code = x86insn_fpu_stp;
-
-                if (inserted->in_op1.op_loc == x86loc_register) {
-                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                        inserted->in_op1.op_type, res_ofs);
-                } else {
-                    bincode_insert_unary_instruction(caller, inserted, x86insn_fpu_ld, &inserted->in_op1);
-                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                        inserted->in_op1.op_type, res_ofs);
-                }
-            } else {
-                //  SSE-вариант для записи результата
-                inserted->in_code = ENCODE_SSE_MOV(inserted->in_op1.op_type);
-
-                if (inserted->in_op1.op_loc == x86loc_register) {
-                    inserted->in_op2 = inserted->in_op1;
-                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                        inserted->in_op1.op_type, res_ofs);
-                } else {
-                    bincode_create_operand_and_alloc_pseudoreg_in_function(caller, &op, inserted->in_op1.op_type);
-                    bincode_insert_instruction(caller, inserted, inserted->in_code, &op, &inserted->in_op1);
-                    bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                        inserted->in_op1.op_type, res_ofs);
-                    inserted->in_op2 = op;
-                }
-            }
+            _fixup_instruction(inserted, regs_ofs, params_ofs, locals_ofs);
+            _patch_retval(caller, inserted, res_ofs);
         } else {
-            for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
-                bincode_extract_pseudoregs_from_insn(inserted, type, regs, &regs_cnt);
-
-                for (i = 0; i < regs_cnt; i++) {
-                    *regs[i].reg_addr += regs_ofs[type];
-                }
-            }
-
-            _fixup_stack_address(&inserted->in_op1, params_ofs, locals_ofs);
-            _fixup_stack_address(&inserted->in_op2, params_ofs, locals_ofs);
+            _fixup_instruction(inserted, regs_ofs, params_ofs, locals_ofs);
         }
     }
 

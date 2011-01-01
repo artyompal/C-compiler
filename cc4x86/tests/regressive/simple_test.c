@@ -1,6 +1,6 @@
 
 
-extern int test()
+int test()
 {
     int a = 2;
     int b = 2;
