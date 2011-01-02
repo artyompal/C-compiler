@@ -6,6 +6,13 @@ sub run {
 	system $cmd_line;
 }
 
+sub assemble {
+	my $filename = shift;
+	chdir("../../tests/visual/rasterizer") or die("chdir: $!");
+	system("c:\\bin\\msvs8\\VC\\bin\\ml /Fl /nologo $filename");
+	chdir("../../../../cc4x86/bin/release/") or die("chdir: $!");
+}
+
 
 chdir("../cc4x86/bin/release/") or die("chdir: $!");
 
@@ -23,12 +30,9 @@ run("cc4x86.exe --use-sse2 --optimize --debug-disable-regalloc --output-file-nam
 
 # generate no-inline optimized listing with pseudo-registers
 run("cc4x86.exe --use-sse2 --optimize --no-inline --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__no_inline.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
+assemble("rasterizer__no_inline.asm");
 
 # generate finally optimized listing
 run("cc4x86.exe --use-sse2 --optimize ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
+assemble("rasterizer.asm");
 
-# assemble the test
-chdir("../../tests/visual/rasterizer") or die("chdir: $!");
-system("c:\\bin\\msvs8\\VC\\bin\\ml /Fl /nologo rasterizer.asm");
-
-chdir("../../../../scripts") or die("chdir: $!");
