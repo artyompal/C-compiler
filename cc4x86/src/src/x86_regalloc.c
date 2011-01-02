@@ -527,6 +527,81 @@ static BOOL _handle_byte_registers(function_desc *function, x86_instruction *ins
     return FALSE;
 }
 
+static BOOL _is_double_register(int reg, register_map *regmap, x86_pseudoreg_info *pseudoregs_map)
+{
+    x86_instruction *insn = pseudoregs_map[regmap->real_registers_map[reg]].reg_first_write;
+    ASSERT(insn->in_op1.op_type == x86op_float || insn->in_op1.op_type == x86op_double);
+    return (insn->in_op1.op_type == x86op_double);
+}
+
+static void _emulate_push_all(function_desc *function, x86_instruction *insn, x86_operand_type type,
+    register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int saved_real_registers_map[X86_MAX_REG])
+{
+    x86_operand op1, op2;
+    int i;
+
+    if (type == x86op_dword) {
+        // Нам необходимо сохранять те из регистров EAX/ECX/EDX, которые в данный момент используются.
+        for (i = 0; i <= x86reg_edx; i++) {
+            if (regmap->real_registers_map[i] != -1) {
+                bincode_insert_push_reg(function, insn, type, ~i);
+            }
+        }
+    } else {
+        ASSERT(type == x86op_float);
+
+        for (i = 0; i < X86_MAX_REG; i++) {
+            if (regmap->real_registers_map[i] != -1) {
+                if (!_is_double_register(i, regmap, pseudoregs_map)) {
+                    bincode_create_operand_addr_from_esp_offset(&op1, x86op_float, -4);
+                    bincode_create_operand_from_register(&op2, x86op_float, i);
+                    bincode_insert_instruction(function, insn, x86insn_sse_movss, &op1, &op2);
+                    bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, 4);
+                } else {
+                    bincode_create_operand_addr_from_esp_offset(&op1, x86op_double, -8);
+                    bincode_create_operand_from_register(&op2, x86op_double, i);
+                    bincode_insert_instruction(function, insn, x86insn_sse_movsd, &op1, &op2);
+                    bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, 8);
+                }
+            }
+        }
+    }
+
+    memcpy(saved_real_registers_map, regmap->real_registers_map, sizeof(int)*X86_MAX_REG);
+}
+
+static void _emulate_pop_all(function_desc *function, x86_instruction *insn, x86_operand_type type,
+    register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int saved_real_registers_map[X86_MAX_REG])
+{
+    x86_operand op1, op2;
+    int i;
+
+    if (type == x86op_dword) {
+        for (i = x86reg_edx; i >= 0; i--) {
+            if (saved_real_registers_map[i] != -1) {
+                bincode_insert_pop_reg(function, insn, type, ~i);
+            }
+        }
+    } else {
+        ASSERT(type == x86op_float);
+
+        for (i = X86_MAX_REG-1; i >= 0; i--) {
+            if (regmap->real_registers_map[i] != -1) {
+                if (!_is_double_register(i, regmap, pseudoregs_map)) {
+                    bincode_create_operand_from_register(&op1, x86op_float, i);
+                    bincode_create_operand_addr_from_esp_offset(&op2, x86op_float, 0);
+                    bincode_insert_instruction(function, insn, x86insn_sse_movss, &op1, &op2);
+                    bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, 4);
+                } else {
+                    bincode_create_operand_from_register(&op1, x86op_double, i);
+                    bincode_create_operand_addr_from_esp_offset(&op2, x86op_double, 0);
+                    bincode_insert_instruction(function, insn, x86insn_sse_movsd, &op1, &op2);
+                    bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, 8);
+                }
+            }
+        }
+    }
+}
 
 static void _allocate_registers(function_desc *function, register_stat *stat, x86_operand_type type)
 {
@@ -629,21 +704,10 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         }
 
         // Эмулируем псевдоинструкции, для этого вставляем реальные инструкции перед ними.
-        // Нам необходимо сохранять те из регистров EAX/ECX/EDX, которые в данный момент используются.
         if (insn->in_code == x86insn_push_all) {
-            for (i = 0; i <= x86reg_edx; i++) {
-                if (regmap->real_registers_map[i] != -1) {
-                    bincode_insert_push_reg(function, insn, type, ~i);
-                }
-            }
-
-            memcpy(saved_real_registers_map, regmap->real_registers_map, sizeof(saved_real_registers_map));
+            _emulate_push_all(function, insn, type, regmap, pseudoregs_map, saved_real_registers_map);
         } else if (insn->in_code == x86insn_pop_all) {
-            for (i = x86reg_edx; i >= 0; i--) {
-                if (saved_real_registers_map[i] != -1) {
-                    bincode_insert_pop_reg(function, insn, type, ~i);
-                }
-            }
+            _emulate_pop_all(function, insn, type, regmap, pseudoregs_map, saved_real_registers_map);
         }
     }
 
