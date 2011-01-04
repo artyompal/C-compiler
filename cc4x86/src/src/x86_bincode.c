@@ -157,7 +157,7 @@ void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_register
             regs[*regs_cnt].reg_value   = insn->in_op1.data.address.index;
             ++*regs_cnt;
         }
-    } else if (IS_CONSTANT_INSN(insn->in_code) && OP_IS_REGISTER(insn->in_op1)) {
+    } else if (!IS_MODIFYING_INSN(insn->in_code) && OP_IS_REGISTER(insn->in_op1)) {
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
         if (insn->in_op1.data.reg > 0) {
@@ -196,7 +196,7 @@ void bincode_extract_pseudoregs_written_by_insn(x86_instruction *insn, x86_regis
 {
     *regs_cnt = 0;
 
-    if (OP_IS_REGISTER(insn->in_op1) && !IS_CONSTANT_INSN(insn->in_code)) {
+    if (OP_IS_REGISTER(insn->in_op1) && IS_MODIFYING_INSN(insn->in_code)) {
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
         if (insn->in_op1.data.reg > 0) {

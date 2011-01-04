@@ -631,7 +631,7 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
     // если переменная меняет значение до конца жизни регистра либо туда возможны переходы, то нельзя удалять
     for (insn2 = regstat->ptr[reg].reg_first_write;
         insn2 != regstat->ptr[reg].reg_last_read; insn2 = insn2->in_next)
-            if (IS_INT_MODIFYING_INSN(insn2->in_code) && insn2->in_op1.op_type == type
+            if (IS_MODIFYING_INSN(insn2->in_code) && insn2->in_op1.op_type == type
                 && insn2->in_op1.data.reg == insn->in_op2.data.reg || insn2->in_code == x86insn_label) {
                     return FALSE;
                 }
@@ -640,7 +640,6 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
     bincode_erase_instruction(function, insn);
 
     insn    = insn2;
-    regstat = unit_get_regstat(function, type);
     insn2   = regstat->ptr[reg].reg_last_read->in_next;
 
     for (; insn != insn2; insn = insn->in_next) {
@@ -702,6 +701,64 @@ static BOOL _try_optimize_regvar_evaluation(function_desc *function, x86_instruc
     return TRUE;
 }
 
+// Выкидывает регистр, если он используется для модификации регистровой переменной.
+static BOOL _try_optimize_regvar_modification(function_desc *function, x86_instruction *insn)
+{
+    int reg, regvar, regs_cnt, i;
+    x86_register_ref regs_arr[MAX_REGISTERS_PER_INSN];
+    x86_instruction *insn2;
+    x86_operand_type type   = insn->in_op1.op_type;
+    register_stat *regstat  = unit_get_regstat(function, type);
+
+
+    // если первый операнд - регистровая переменная, выходим
+    reg = insn->in_op1.data.reg;
+    if (OP_IS_REGVAR(reg, type)) {
+        return FALSE;
+    }
+
+    // если второй операнд - не регистровая переменная, выходим
+    regvar = insn->in_op2.data.reg;
+    if (!OP_IS_REGVAR(regvar, type)) {
+        return FALSE;
+    }
+
+    // если переменная меняет значение до конца жизни регистра либо туда возможны переходы, то нельзя удалять
+    for (insn2 = regstat->ptr[reg].reg_first_write;
+        insn2 != regstat->ptr[reg].reg_last_read; insn2 = insn2->in_next)
+            if (IS_MODIFYING_INSN(insn2->in_code) && (OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, regvar)
+                || OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, regvar)) || insn2->in_code == x86insn_label) {
+                    return FALSE;
+                }
+
+    // последняя инструкция должна записывать значение обратно в регистровую переменную
+    if (insn2->in_code != x86insn_int_mov && insn2->in_code != x86insn_sse_movss
+        && insn2->in_code != x86insn_sse_movsd || !OP_IS_THIS_PSEUDO_REG(insn2->in_op1, type, regvar)
+            || !OP_IS_THIS_PSEUDO_REG(insn2->in_op2, type, reg)) {
+                return FALSE;
+            }
+
+    insn2  = insn->in_next;
+    bincode_erase_instruction(function, insn);
+
+    insn    = insn2;
+    insn2   = regstat->ptr[reg].reg_last_read;
+
+    for (; insn != insn2; insn = insn->in_next) {
+        bincode_extract_pseudoregs_from_insn(insn, type, regs_arr, &regs_cnt);
+
+        for (i = 0; i < regs_cnt; i++) {
+            if (*regs_arr[i].reg_addr == reg) {
+                *regs_arr[i].reg_addr = regvar;
+            }
+        }
+    }
+
+    bincode_erase_instruction(function, insn2);
+    return TRUE;
+}
+
+
 // Пробует устранить лишние копирования регистров.
 static BOOL _try_optimize_regvars_usage(function_desc *function)
 {
@@ -713,9 +770,11 @@ static BOOL _try_optimize_regvars_usage(function_desc *function)
 
         if ((insn->in_code == x86insn_int_mov || insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd)
             && OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2)) {
-                if (_try_kill_copies_of_regvar(function, insn) || _try_optimize_regvar_evaluation(function, insn)) {
-                    was_smth = TRUE;
-                }
+                if (_try_kill_copies_of_regvar(function, insn)
+                    || _try_optimize_regvar_evaluation(function, insn)
+                        || _try_optimize_regvar_modification(function, insn) ) {
+                            was_smth = TRUE;
+                        }
         }
     }
 

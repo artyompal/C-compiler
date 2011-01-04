@@ -76,9 +76,7 @@ label0003:
 label0004:
 	mov	ecx,5
 	add	ecx,esi
-	mov	eax,edi
-	sal	eax,cl
-	mov	edi,eax
+	sal	edi,cl
 	cmp	edi,64
 	je	label0005
 	mov	eax,6

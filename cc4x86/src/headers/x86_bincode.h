@@ -269,10 +269,12 @@ typedef struct x86_instruction_decl {
                                             || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_pop)
 #define IS_SET_INSN(INSN)               ((INSN) >= x86insn_int_sete && (INSN) <= x86insn_int_seta)
 #define IS_JMP_INSN(INSN)               ((INSN) >= x86insn_jmp && (INSN) <= x86insn_ja)
-#define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
-#define IS_INT_MODIFYING_INSN(INSN)     ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
-                                            || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \
-                                            || (INSN) == x86insn_pop)
+#define IS_MODIFYING_INSN(INSN)         ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
+                                            || (INSN) >= x86insn_sse_load_int && (INSN) <= x86insn_sse_divss \
+                                            || (INSN) >= x86insn_sse_xorps && (INSN) <= x86insn_sse_divsd \
+                                            || (INSN) >= x86insn_sse_xorpd && (INSN) <= x86insn_movzx \
+                                            || (INSN) == x86insn_pop || (INSN) == x86insn_cdq \
+                                            || (INSN) == x86insn_xor_edx_edx || (INSN) == x86insn_read_retval)
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
 
 #define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)

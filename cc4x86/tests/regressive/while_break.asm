@@ -38,9 +38,7 @@ label0003:
 label0004:
 	cmp	esi,50
 	jne	label0007
-	mov	eax,esi
-	add	eax,50
-	mov	esi,eax
+	add	esi,50
 	jmp	label0005
 label0007:
 	inc	esi

@@ -508,12 +508,8 @@ label0000:
 	add	dword107,[ebp-24]
 	mov	[dword103],dword107
 label0003:
-	movss	sse9,sse18
-	addss	sse9,dword ptr [ebp+28]
-	movss	sse18,sse9
-	movss	sse10,sse19
-	addss	sse10,dword ptr [ebp+32]
-	movss	sse19,sse10
+	addss	sse18,dword ptr [ebp+28]
+	addss	sse19,dword ptr [ebp+32]
 	add	dword103,4
 	cmp	dword103,dword106
 	jl	label0000
