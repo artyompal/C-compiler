@@ -522,12 +522,8 @@ label0000:
 	add	eax,[ebp-24]
 	mov	[edi],eax
 label0003:
-	movss	xmm0,xmm6
-	addss	xmm0,dword ptr [ebp+28]
-	movss	xmm6,xmm0
-	movss	xmm0,xmm7
-	addss	xmm0,dword ptr [ebp+32]
-	movss	xmm7,xmm0
+	addss	xmm6,dword ptr [ebp+28]
+	addss	xmm7,dword ptr [ebp+32]
 	add	edi,4
 	cmp	edi,esi
 	jl	label0000

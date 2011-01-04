@@ -33,9 +33,7 @@ label0002:
 	mov	esi,1
 	mov	ebx,0
 label0003:
-	mov	eax,esi
-	sal	eax,1
-	mov	esi,eax
+	sal	esi,1
 	inc	ebx
 	cmp	esi,65536
 	jl	label0003

@@ -490,8 +490,7 @@ _rasterizer_init proc
 	add	esp,4
 	movss	xmm6,dword ptr [esp]
 	add	esp,4
-	movss	xmm0,xmm7
-	comiss	xmm0,xmm6
+	comiss	xmm7,xmm6
 	jbe	label0000
 	movss	xmm5,dword ptr [___unnamed_float_1]
 	jmp	label0001
@@ -540,8 +539,7 @@ label0001:
 	add	esp,4
 	movss	xmm5,dword ptr [esp]
 	add	esp,4
-	movss	xmm0,xmm7
-	comiss	xmm0,xmm6
+	comiss	xmm7,xmm6
 	jbe	label0002
 	movss	xmm4,dword ptr [___unnamed_float_5]
 	jmp	label0003
@@ -908,12 +906,8 @@ label0000:
 	add	eax,[ebp-24]
 	mov	[esi],eax
 label0003:
-	movss	xmm0,xmm6
-	addss	xmm0,dword ptr [ebp+28]
-	movss	xmm6,xmm0
-	movss	xmm0,xmm7
-	addss	xmm0,dword ptr [ebp+32]
-	movss	xmm7,xmm0
+	addss	xmm6,dword ptr [ebp+28]
+	addss	xmm7,dword ptr [ebp+32]
 	add	esi,4
 	cmp	esi,ebx
 	jl	label0000
@@ -1862,8 +1856,7 @@ label0001:
 	cmp	eax,ebx
 	jle	label0002
 	push	dword ptr [ebp+16]
-	mov	eax,esi
-	push	eax
+	push	esi
 	lea	eax,[ebp-24]
 	push	eax
 	call	_vec4f_subtract
@@ -1877,8 +1870,7 @@ label0001:
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	push	dword ptr [ebp+16]
-	mov	eax,ebx
-	push	eax
+	push	ebx
 	lea	eax,[ebp-24]
 	push	eax
 	call	_vec4f_subtract
@@ -1930,17 +1922,14 @@ label0005:
 	sub	esp,4
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
-	mov	eax,esi
-	push	eax
+	push	esi
 	push	dword ptr [ebp+16]
 	lea	eax,[ebp-24]
 	push	eax
 	call	_vec4f_subtract
 	add	esp,12
-	mov	eax,esi
-	push	eax
-	mov	eax,ebx
-	push	eax
+	push	esi
+	push	ebx
 	lea	eax,[ebp-40]
 	push	eax
 	call	_vec4f_subtract
@@ -1987,8 +1976,7 @@ label0005:
 	add	esp,8
 	lea	eax,[ebp-40]
 	push	eax
-	mov	eax,esi
-	push	eax
+	push	esi
 	mov	eax,[edi+192]
 	imul	eax,24
 	mov	ecx,edi
