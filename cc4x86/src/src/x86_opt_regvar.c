@@ -133,7 +133,7 @@ static void _create_register_variable(symbol *sym)
 
     res->sym            = sym;
     res->pseudo_reg     = 0;
-    res->is_parameter   = (sym->sym_offset > 0);    // we rely on offset regarding EBP
+    res->is_parameter   = (sym->sym_offset > 0); // у параметров положительное смещение относительно EBP
     res->next           = NULL;
 }
 
@@ -196,6 +196,7 @@ static void _analyze_variables_usage(function_desc *function)
     symbol *var;
     parameter *param;
     data_type *func_type = function->func_sym->sym_type;
+    x86_instruction *insn;
 
     for (var = function->func_locals.list_first; var; var = var->sym_next) {
         var->sym_usage_count = 0;
@@ -207,7 +208,26 @@ static void _analyze_variables_usage(function_desc *function)
         }
     }
 
-    expr_iterate_through_subexpressions(function->func_body, code_expr_symbol, EXPR_IT_APPLY_FILTER, _usage_counter, 0);
+    // FIXME: перебор O(NM), N-число инструкций, M-число переменных
+    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
+        for (var = function->func_locals.list_first; var; var = var->sym_next) {
+            if (OP_IS_SPEC_EBP_OFFSET(insn->in_op1, var->sym_offset)) {
+                var->sym_usage_count++;
+            } else if (OP_IS_SPEC_EBP_OFFSET(insn->in_op2, var->sym_offset)) {
+                var->sym_usage_count++;
+            }
+        }
+
+        for (param = func_type->data.function.parameters_list->param_first; param; param = param->param_next) {
+            if (param->param_code == code_symbol_parameter) {
+                if (OP_IS_SPEC_EBP_OFFSET(insn->in_op1, param->param_sym->sym_offset)) {
+                    param->param_sym->sym_usage_count++;
+                } else if (OP_IS_SPEC_EBP_OFFSET(insn->in_op2, param->param_sym->sym_offset)) {
+                    param->param_sym->sym_usage_count++;
+                }
+            }
+        }
+    }
 }
 
 
