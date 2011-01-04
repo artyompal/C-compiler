@@ -86,56 +86,55 @@ _rasterizer_init proc
 	movss	dword ptr [ebp-32],sse1
 	movss	sse127,dword ptr [ebp+32]
 	movss	dword ptr [ebp-36],sse127
-	movss	sse222,dword ptr [ebp+28]
-	movss	sse221,dword ptr [ebp+24]
-	mov	dword386,(offset __mvproj_matrix)
+	movss	sse178,dword ptr [ebp+28]
+	movss	sse177,dword ptr [ebp+24]
 	movss	sse129,dword ptr [ebp-36]
-	mulss	sse129,sse221
+	mulss	sse129,sse177
 	movss	dword ptr [ebp-52],sse129
 	movss	sse130,dword ptr [ebp-52]
 	mulss	sse130,dword ptr [ebp-32]
 	movss	dword ptr [ebp-56],sse130
-	movss	sse131,sse221
+	movss	sse131,sse177
 	divss	sse131,dword ptr [ebp-56]
-	movss	dword ptr [dword386],sse131
+	movss	dword ptr [__mvproj_matrix],sse131
 	movss	sse132,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+4],sse132
+	movss	dword ptr [__mvproj_matrix+4],sse132
 	movss	sse133,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+8],sse133
+	movss	dword ptr [__mvproj_matrix+8],sse133
 	movss	sse134,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+12],sse134
+	movss	dword ptr [__mvproj_matrix+12],sse134
 	movss	sse135,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+16],sse135
-	movss	sse136,sse221
+	movss	dword ptr [__mvproj_matrix+16],sse135
+	movss	sse136,sse177
 	divss	sse136,dword ptr [ebp-52]
-	movss	dword ptr [dword386+20],sse136
+	movss	dword ptr [__mvproj_matrix+20],sse136
 	movss	sse137,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+24],sse137
+	movss	dword ptr [__mvproj_matrix+24],sse137
 	movss	sse138,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+28],sse138
+	movss	dword ptr [__mvproj_matrix+28],sse138
 	movss	sse139,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+32],sse139
+	movss	dword ptr [__mvproj_matrix+32],sse139
 	movss	sse140,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+36],sse140
-	movss	sse141,sse222
-	subss	sse141,sse221
-	movss	sse142,sse222
+	movss	dword ptr [__mvproj_matrix+36],sse140
+	movss	sse141,sse178
+	subss	sse141,sse177
+	movss	sse142,sse178
 	divss	sse142,sse141
-	movss	dword ptr [dword386+40],sse142
+	movss	dword ptr [__mvproj_matrix+40],sse142
 	movss	sse143,dword ptr [___unnamed_float_1]
-	movss	dword ptr [dword386+44],sse143
+	movss	dword ptr [__mvproj_matrix+44],sse143
 	movss	sse144,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+48],sse144
+	movss	dword ptr [__mvproj_matrix+48],sse144
 	movss	sse145,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+52],sse145
-	movss	sse146,sse221
-	mulss	sse146,sse222
-	movss	sse147,sse221
-	subss	sse147,sse222
+	movss	dword ptr [__mvproj_matrix+52],sse145
+	movss	sse146,sse177
+	mulss	sse146,sse178
+	movss	sse147,sse177
+	subss	sse147,sse178
 	divss	sse146,sse147
-	movss	dword ptr [dword386+56],sse146
+	movss	dword ptr [__mvproj_matrix+56],sse146
 	movss	sse148,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword386+60],sse148
+	movss	dword ptr [__mvproj_matrix+60],sse148
 ; end of inline function matrix4f_make_perspective
 ; start of inline function matrix4f_make_viewport
 	movss	sse150,dword ptr [ebp+28]
@@ -146,45 +145,44 @@ _rasterizer_init proc
 	movss	dword ptr [ebp-68],sse3
 	cvtsi2ss	sse4,dword ptr [ebp+12]
 	movss	dword ptr [ebp-72],sse4
-	mov	dword387,(offset __viewport_matrix)
 	movss	sse153,dword ptr [ebp-72]
 	divss	sse153,dword ptr [___unnamed_float_3]
-	movss	dword ptr [dword387],sse153
+	movss	dword ptr [__viewport_matrix],sse153
 	movss	sse154,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword387+4],sse154
+	movss	dword ptr [__viewport_matrix+4],sse154
 	movss	sse155,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword387+8],sse155
+	movss	dword ptr [__viewport_matrix+8],sse155
 	movss	sse156,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword387+12],sse156
+	movss	dword ptr [__viewport_matrix+12],sse156
 	movss	sse157,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword387+16],sse157
+	movss	dword ptr [__viewport_matrix+16],sse157
 	movss	sse158,dword ptr [ebp-68]
 	xorps	sse158,dword ptr [___unnamed_float_4]
 	divss	sse158,dword ptr [___unnamed_float_3]
-	movss	dword ptr [dword387+20],sse158
+	movss	dword ptr [__viewport_matrix+20],sse158
 	movss	sse160,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword387+24],sse160
+	movss	dword ptr [__viewport_matrix+24],sse160
 	movss	sse161,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword387+28],sse161
+	movss	dword ptr [__viewport_matrix+28],sse161
 	movss	sse162,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword387+32],sse162
+	movss	dword ptr [__viewport_matrix+32],sse162
 	movss	sse163,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword387+36],sse163
+	movss	dword ptr [__viewport_matrix+36],sse163
 	movss	sse164,dword ptr [ebp-60]
 	subss	sse164,dword ptr [ebp-64]
-	movss	dword ptr [dword387+40],sse164
+	movss	dword ptr [__viewport_matrix+40],sse164
 	movss	sse165,dword ptr [___unnamed_float_2]
-	movss	dword ptr [dword387+44],sse165
+	movss	dword ptr [__viewport_matrix+44],sse165
 	movss	sse167,dword ptr [ebp-72]
 	divss	sse167,dword ptr [___unnamed_float_3]
-	movss	dword ptr [dword387+48],sse167
+	movss	dword ptr [__viewport_matrix+48],sse167
 	movss	sse169,dword ptr [ebp-68]
 	divss	sse169,dword ptr [___unnamed_float_3]
-	movss	dword ptr [dword387+52],sse169
+	movss	dword ptr [__viewport_matrix+52],sse169
 	movss	sse170,dword ptr [ebp-64]
-	movss	dword ptr [dword387+56],sse170
+	movss	dword ptr [__viewport_matrix+56],sse170
 	movss	sse171,dword ptr [___unnamed_float_1]
-	movss	dword ptr [dword387+60],sse171
+	movss	dword ptr [__viewport_matrix+60],sse171
 ; end of inline function matrix4f_make_viewport
 ; start of inline function vec4f_assign
 	movss	sse176,dword ptr [___unnamed_float_1]
@@ -1377,8 +1375,8 @@ label000a:
 	cmp	dword157,dword ptr [__height]
 	jge	label000c
 ; start of inline function _rasterize_triangle_1i
-	movss	sse107,dword ptr [___unnamed_float_2]
-	movss	sse106,dword ptr [___unnamed_float_2]
+	movss	sse103,dword ptr [___unnamed_float_2]
+	movss	sse102,dword ptr [___unnamed_float_2]
 	mov	dword161,8
 	add	dword161,[ebp-340]
 	mov	[ebp-436],dword161
@@ -1408,8 +1406,8 @@ label000a:
 	cmp	dword660,[ebp-456]
 	jle	label001d
 	push_all
-	push_arg	sse107,4
-	push_arg	sse106,4
+	push_arg	sse103,4
+	push_arg	sse102,4
 	mov	dword664,[ebp-444]
 	push_arg	dword ptr [dword664+4],4
 	mov	dword666,[ebp-444]
@@ -1426,8 +1424,8 @@ label001d:
 	cmp	dword672,[ebp-460]
 	jge	label001f
 	push_all
-	push_arg	sse107,4
-	push_arg	sse106,4
+	push_arg	sse103,4
+	push_arg	sse102,4
 	mov	dword676,[ebp-436]
 	push_arg	dword ptr [dword676+4],4
 	mov	dword678,[ebp-436]
@@ -1441,8 +1439,8 @@ label001d:
 	jmp	label0020
 label001f:
 	push_all
-	push_arg	sse107,4
-	push_arg	sse106,4
+	push_arg	sse103,4
+	push_arg	sse102,4
 	mov	dword685,[ebp-444]
 	push_arg	dword ptr [dword685+4],4
 	mov	dword687,[ebp-444]
@@ -1461,10 +1459,10 @@ label001c:
 	cmp	dword693,[ebp-456]
 	jge	label0022
 	push_all
-	movss	sse69,sse107
+	movss	sse69,sse103
 	xorps	sse69,dword ptr [___unnamed_float_4]
 	push_arg	sse69,4
-	movss	sse70,sse106
+	movss	sse70,sse102
 	xorps	sse70,dword ptr [___unnamed_float_4]
 	push_arg	sse70,4
 	mov	dword697,[ebp-436]
@@ -1483,10 +1481,10 @@ label0022:
 	cmp	dword705,[ebp-460]
 	jle	label0024
 	push_all
-	movss	sse71,sse107
+	movss	sse71,sse103
 	xorps	sse71,dword ptr [___unnamed_float_4]
 	push_arg	sse71,4
-	movss	sse72,sse106
+	movss	sse72,sse102
 	xorps	sse72,dword ptr [___unnamed_float_4]
 	push_arg	sse72,4
 	mov	dword709,[ebp-440]
@@ -1502,10 +1500,10 @@ label0022:
 	jmp	label0025
 label0024:
 	push_all
-	movss	sse73,sse107
+	movss	sse73,sse103
 	xorps	sse73,dword ptr [___unnamed_float_4]
 	push_arg	sse73,4
-	movss	sse74,sse106
+	movss	sse74,sse102
 	xorps	sse74,dword ptr [___unnamed_float_4]
 	push_arg	sse74,4
 	mov	dword718,[ebp-440]

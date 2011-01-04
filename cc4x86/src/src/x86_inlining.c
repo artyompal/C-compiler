@@ -209,7 +209,18 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             if (next_insn->in_code == x86insn_restore_stack) {
                 // если есть параметры, выделяем место в стеке
                 params_total_sz = next_insn->in_op1.data.int_val;
-                params_ofs = x86_stack_frame_alloc_tmp_var(caller, params_total_sz) - 8;
+                params_ofs      = x86_stack_frame_alloc_tmp_var(caller, params_total_sz) - 8;
+
+                // для каждого параметра создаём локальную переменную
+                param   = callee->func_sym->sym_type->data.function.parameters_list->param_first;
+                ofs     = params_ofs + 8;
+
+                for (; param; param = param->param_next) {
+                    sym             = unit_create_temporary_variable(caller, param->param_sym->sym_type);
+                    sym->sym_offset = ofs;
+                    sz              = type_calculate_sizeof(param->param_sym->sym_type);
+                    ofs             += sz;
+                }
             }
 
             if (callee->func_local_vars_sz) {
@@ -243,7 +254,6 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 
         ASSERT(insn->in_code == x86insn_call);
         bincode_erase_instruction(caller, insn);
-        param = callee->func_sym->sym_type->data.function.parameters_list->param_first;
 
         for (insn = prev_insn; insn->in_code != x86insn_push_all; insn = prev_insn) {
             prev_insn = insn->in_prev;
@@ -252,12 +262,6 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             ASSERT(insn->in_op2.op_loc == x86loc_int_constant)
             sz = insn->in_op2.data.int_val;
             insn->in_op2 = insn->in_op1;
-
-            // создаём локальную переменную для каждого фактического параметра
-            ASSERT(bincode_encode_type(param->param_sym->sym_type) == insn->in_op1.op_type);
-            sym             = unit_create_temporary_variable(caller, param->param_sym->sym_type);
-            sym->sym_offset = ofs + params_ofs;
-            param           = param->param_next;
 
             // патчим push_arg на специфичную для типа данных инструкцию
             if (insn->in_op1.op_loc == x86loc_register) {
