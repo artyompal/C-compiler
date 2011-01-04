@@ -86,19 +86,19 @@ function_desc *unit_get_functions_list(void)
 }
 
 
-symbol *unit_create_temporary_variable(data_type *type)
+symbol *unit_create_temporary_variable(function_desc *function, data_type *type)
 {
     symbol *tmp         = symbol_create_temporary(type);
     tmp->sym_is_local   = TRUE;
 
-    ASSERT(_curr_func);
+    ASSERT(function);
 
-    if (_curr_func->func_locals.list_last) {
-        _curr_func->func_locals.list_last->sym_next  = tmp;
-        _curr_func->func_locals.list_last            = tmp;
+    if (function->func_locals.list_last) {
+        function->func_locals.list_last->sym_next  = tmp;
+        function->func_locals.list_last            = tmp;
     } else {
-        _curr_func->func_locals.list_first           = tmp;
-        _curr_func->func_locals.list_last            = tmp;
+        function->func_locals.list_first           = tmp;
+        function->func_locals.list_last            = tmp;
     }
 
     return tmp;
@@ -297,7 +297,7 @@ void unit_open_switch_stmt(expression *value)
         return;
     }
 
-    tmp = unit_create_temporary_variable(value->expr_type);
+    tmp = unit_create_temporary_variable(_curr_func, value->expr_type);
 
     unit_push_expression(
         expr_create_binary(
@@ -513,7 +513,7 @@ static void _replace_boolean_with_jumps(expression *expr, void *unused)
 
     aux_warning("logical and/or outside of 'if', performance hit because of extra branching");
 
-    tmp     = unit_create_temporary_variable(arithm->operand1->expr_type);
+    tmp     = unit_create_temporary_variable(_curr_func, arithm->operand1->expr_type);
     label   = unit_create_label(_curr_func);
 
 

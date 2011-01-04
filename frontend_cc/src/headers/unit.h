@@ -60,7 +60,7 @@ function_desc * unit_get_current_function           (void);
 // поддержка объ€влений функций и переменных
 function_desc * unit_get_functions_list             (void);
 function_desc * unit_find_function                  (symbol *name);
-symbol *        unit_create_temporary_variable      (data_type *type);
+symbol *        unit_create_temporary_variable      (function_desc *function, data_type *type);
 void            unit_handle_variable_declarations   (decl_specifier decl_spec, symbol_list *symbols);
 void            unit_handle_function_prototype      (decl_specifier *spec, symbol *sym);
 void            unit_handle_function_body           (symbol *sym);

@@ -589,7 +589,7 @@ expression *expr_create_ternary(expression *e1, expression *e2, expression *e3)
         return NULL;
     }
 
-    tmp         = unit_create_temporary_variable(e2->expr_type);
+    tmp         = unit_create_temporary_variable(unit_get_current_function(), e2->expr_type);
     if_dest     = unit_create_label_and_push_jump(e1, TRUE);
 
     expr        = expr_create_binary(expr_create_from_identifier(tmp), e2, op_assign);

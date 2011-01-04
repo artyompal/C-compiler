@@ -187,6 +187,8 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
     int params_total_sz = 0, params_ofs = 0, locals_ofs = 0, ofs, sz, type, labels_ofs, res_ofs = 0;
     int regs_ofs[X86_REGISTER_TYPES_COUNT];
     x86_operand tmp;
+    symbol *sym, *sym_copy;
+    parameter *param;
 
 
     for (insn = caller->func_binary_code; insn; insn = next_insn) {
@@ -205,18 +207,31 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             ASSERT(insn->in_code == x86insn_call);
 
             if (next_insn->in_code == x86insn_restore_stack) {
+                // если есть параметры, выделяем место в стеке
                 params_total_sz = next_insn->in_op1.data.int_val;
                 params_ofs = x86_stack_frame_alloc_tmp_var(caller, params_total_sz) - 8;
             }
 
             if (callee->func_local_vars_sz) {
+                // если есть локальные переменные, выделяем под них место в стеке
                 locals_ofs = x86_stack_frame_alloc_tmp_var(caller, callee->func_local_vars_sz)
                     + callee->func_local_vars_sz;
+
+                // для каждой из них создаём локальную переменную в стеке вызывающей функции
+                for (sym = callee->func_locals.list_first; sym; sym = sym->sym_next) {
+                    sym_copy = unit_create_temporary_variable(caller, sym->sym_type);
+                    sym_copy->sym_offset = sym->sym_offset + locals_ofs;
+                }
             }
 
             if (insn->in_op2.op_type != x86op_unused) {
+                // если есть возвращаемое значение, выделяем под него место в стеке
                 res_ofs = x86_stack_frame_alloc_tmp_var(caller,
                     type_calculate_sizeof(callee->func_sym->sym_type->data.function.result_type));
+
+                // создаём локальную переменную для результата
+                sym = unit_create_temporary_variable(caller, callee->func_sym->sym_type->data.function.result_type);
+                sym->sym_offset = res_ofs;
             }
         }
 
@@ -228,6 +243,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 
         ASSERT(insn->in_code == x86insn_call);
         bincode_erase_instruction(caller, insn);
+        param = callee->func_sym->sym_type->data.function.parameters_list->param_first;
 
         for (insn = prev_insn; insn->in_code != x86insn_push_all; insn = prev_insn) {
             prev_insn = insn->in_prev;
@@ -237,6 +253,13 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             sz = insn->in_op2.data.int_val;
             insn->in_op2 = insn->in_op1;
 
+            // создаём локальную переменную для каждого фактического параметра
+            ASSERT(bincode_encode_type(param->param_sym->sym_type) == insn->in_op1.op_type);
+            sym             = unit_create_temporary_variable(caller, param->param_sym->sym_type);
+            sym->sym_offset = ofs + params_ofs;
+            param           = param->param_next;
+
+            // патчим push_arg на специфичную для типа данных инструкцию
             if (insn->in_op1.op_loc == x86loc_register) {
                 if (!OP_IS_FLOAT(insn->in_op1)) {
                     insn->in_code       = x86insn_int_mov;
