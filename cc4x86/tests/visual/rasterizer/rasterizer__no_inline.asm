@@ -1020,7 +1020,7 @@ __rasterize_triangle_1i proc
 	add	esp,4
 	movss	xmm6,dword ptr [esp]
 	add	esp,4
-	jmp	label0002
+	jmp	label0004
 label0001:
 	cmp	ecx,edx
 	jge	label0003
@@ -1075,8 +1075,7 @@ label0003:
 	movss	xmm6,dword ptr [esp]
 	add	esp,4
 label0004:
-label0002:
-	jmp	label0005
+	jmp	label0009
 label0000:
 	cmp	ecx,ebx
 	jge	label0006
@@ -1109,7 +1108,7 @@ label0000:
 	add	esp,4
 	movss	xmm6,dword ptr [esp]
 	add	esp,4
-	jmp	label0007
+	jmp	label0009
 label0006:
 	cmp	ecx,edx
 	jle	label0008
@@ -1174,8 +1173,6 @@ label0008:
 	movss	xmm6,dword ptr [esp]
 	add	esp,4
 label0009:
-label0007:
-label0005:
 	pop	ebx
 	pop	esi
 	pop	edi

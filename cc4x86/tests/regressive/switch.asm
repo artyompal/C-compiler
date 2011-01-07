@@ -14,12 +14,11 @@ _test_case proc
 	cmp	edi,1
 	je	label0001
 	cmp	edi,2
-	je	label0002
+	je	label0001
 	cmp	edi,3
 	je	label0003
 	jmp	label0004
 label0001:
-label0002:
 	mov	eax,-1
 	pop	edi
 	add	esp,8
@@ -50,9 +49,9 @@ _test_case2 proc
 	cmp	edi,1
 	je	label0002
 	cmp	edi,2
-	je	label0003
+	je	label0002
 	cmp	edi,3
-	je	label0004
+	je	label0002
 	jmp	label0005
 label0001:
 	mov	eax,-1
@@ -61,8 +60,6 @@ label0001:
 	pop	ebp
 	ret
 label0002:
-label0003:
-label0004:
 	mov	eax,0
 	pop	edi
 	add	esp,8
@@ -85,10 +82,9 @@ _test_default proc
 	cmp	edi,1
 	je	label0001
 	cmp	edi,2
-	je	label0002
+	je	label0001
 	jmp	label0003
 label0001:
-label0002:
 	mov	eax,-1
 	pop	edi
 	add	esp,8
@@ -115,12 +111,11 @@ _test proc
 	cmp	edi,1
 	je	label0004
 	cmp	edi,2
-	je	label0005
+	je	label0004
 	cmp	edi,3
 	je	label0006
 	jmp	label0007
 label0004:
-label0005:
 	mov	esi,-1
 	jmp	label0008
 label0006:
@@ -149,16 +144,14 @@ label0000:
 	cmp	ebx,1
 	je	label000b
 	cmp	ebx,2
-	je	label000c
+	je	label000b
 	cmp	ebx,3
-	je	label000d
+	je	label000b
 	jmp	label000e
 label000a:
 	mov	edx,-1
 	jmp	label000f
 label000b:
-label000c:
-label000d:
 	mov	edx,0
 	jmp	label000f
 label000e:
@@ -183,10 +176,9 @@ label0001:
 	cmp	dword ptr [ebp-32],1
 	je	label0011
 	cmp	dword ptr [ebp-32],2
-	je	label0012
+	je	label0011
 	jmp	label0013
 label0011:
-label0012:
 	mov	ecx,-1
 	jmp	label0016
 label0013:
