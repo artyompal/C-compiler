@@ -1154,7 +1154,7 @@ _rasterizer_triangle3f proc
 	mov	eax,[ebp-664]
 	cmp	eax,0
 	jne	label0000
-	jmp	label002d
+	jmp	label0007
 label0000:
 	mov	eax,[ebp-200]
 	cmp	dword ptr [eax+192],8
@@ -1452,7 +1452,7 @@ label000a:
 	add	esp,4
 	movss	xmm6,dword ptr [esp]
 	add	esp,4
-	jmp	label001e
+	jmp	label0020
 label001d:
 	mov	eax,[ebp-452]
 	cmp	eax,[ebp-460]
@@ -1502,8 +1502,7 @@ label001f:
 	movss	xmm6,dword ptr [esp]
 	add	esp,4
 label0020:
-label001e:
-	jmp	label0021
+	jmp	label0025
 label001c:
 	mov	eax,[ebp-452]
 	cmp	eax,[ebp-456]
@@ -1533,7 +1532,7 @@ label001c:
 	add	esp,4
 	movss	xmm6,dword ptr [esp]
 	add	esp,4
-	jmp	label0023
+	jmp	label0025
 label0022:
 	mov	eax,[ebp-452]
 	cmp	eax,[ebp-460]
@@ -1591,11 +1590,9 @@ label0024:
 	movss	xmm6,dword ptr [esp]
 	add	esp,4
 label0025:
-label0023:
-label0021:
 ; end of inline function _rasterize_triangle_1i
 label000c:
-	jmp	label0027
+	jmp	label0012
 label000b:
 	mov	eax,[ebp-348]
 	add	eax,4
@@ -2304,12 +2301,10 @@ label001a:
 	inc	dword ptr [ebp-364]
 	jmp	label0011
 label0012:
-label0027:
 ; end of inline function _rasterize_triangle_2i
 	inc	dword ptr [ebp-336]
 	jmp	label0006
 label0007:
-label002d:
 ; end of inline function _rasterize_polygon_4f
 	pop	ebx
 	pop	edi

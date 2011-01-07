@@ -571,7 +571,33 @@ static void _optimize_labels(function_desc *function)
     allocator_free(allocator_per_function_pool, labels_stat, labels_count*sizeof(int));
 }
 
-// Устраняет лишние push_all/pop_all
+// Удаляет дублирующиеся метки в коде.
+static void _kill_duplicated_labels(function_desc *function)
+{
+    x86_instruction *insn, *label, *next, *jump;
+
+    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
+        if (insn->in_code != x86insn_label) {
+            continue;
+        }
+
+        for (label = insn->in_next; label->in_code == x86insn_label; label = next) {
+            next = label->in_next;
+            ASSERT(label->in_op1.op_loc == x86loc_label);
+
+            for (jump = function->func_binary_code; jump; jump = jump->in_next) {
+                if (IS_JMP_INSN(jump->in_code) && jump->in_op1.data.label == label->in_op1.data.label) {
+                    ASSERT(jump->in_op1.op_loc == x86loc_label);
+                    jump->in_op1.data.label = insn->in_op1.data.label;
+                }
+            }
+
+            bincode_erase_instruction(function, label);
+        }
+    }
+}
+
+// Устраняет лишние push_all/pop_all.
 static void _kill_extra_push_all_pop_all(function_desc *function)
 {
     x86_instruction *insn, *next, *prev;
@@ -602,6 +628,7 @@ static void _kill_extra_push_all_pop_all(function_desc *function)
 void x86_optimization_after_inlining(function_desc *function)
 {
     _optimize_labels(function);
+    _kill_duplicated_labels(function);
     _kill_extra_push_all_pop_all(function);
 }
 

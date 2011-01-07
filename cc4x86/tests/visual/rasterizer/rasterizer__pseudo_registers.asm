@@ -1124,7 +1124,7 @@ _rasterizer_triangle3f proc
 	mov	dword40,[ebp-664]
 	cmp	dword40,0
 	jne	label0000
-	jmp	label002d
+	jmp	label0007
 label0000:
 	mov	dword42,[ebp-200]
 	cmp	dword ptr [dword42+192],8
@@ -1414,7 +1414,7 @@ label000a:
 	call	__rasterize_horiz_line
 	restore_stack	28
 	pop_all
-	jmp	label001e
+	jmp	label0020
 label001d:
 	mov	dword672,[ebp-452]
 	cmp	dword672,[ebp-460]
@@ -1448,8 +1448,7 @@ label001f:
 	restore_stack	28
 	pop_all
 label0020:
-label001e:
-	jmp	label0021
+	jmp	label0025
 label001c:
 	mov	dword693,[ebp-452]
 	cmp	dword693,[ebp-456]
@@ -1471,7 +1470,7 @@ label001c:
 	call	__rasterize_horiz_line
 	restore_stack	28
 	pop_all
-	jmp	label0023
+	jmp	label0025
 label0022:
 	mov	dword705,[ebp-452]
 	cmp	dword705,[ebp-460]
@@ -1513,11 +1512,9 @@ label0024:
 	restore_stack	28
 	pop_all
 label0025:
-label0023:
-label0021:
 ; end of inline function _rasterize_triangle_1i
 label000c:
-	jmp	label0027
+	jmp	label0012
 label000b:
 	mov	dword176,[ebp-348]
 	add	dword176,4
@@ -2077,12 +2074,10 @@ label001a:
 	inc	dword ptr [ebp-364]
 	jmp	label0011
 label0012:
-label0027:
 ; end of inline function _rasterize_triangle_2i
 	inc	dword ptr [ebp-336]
 	jmp	label0006
 label0007:
-label002d:
 ; end of inline function _rasterize_polygon_4f
 	destroy_stack_frame
 	ret
