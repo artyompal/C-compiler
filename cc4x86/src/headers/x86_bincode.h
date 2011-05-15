@@ -266,15 +266,24 @@ typedef struct x86_instruction_decl {
 
 
 #define IS_INT_INSN(INSN)               ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
-                                            || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_pop)
+                                        || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_pop)
 #define IS_SET_INSN(INSN)               ((INSN) >= x86insn_int_sete && (INSN) <= x86insn_int_seta)
 #define IS_JMP_INSN(INSN)               ((INSN) >= x86insn_jmp && (INSN) <= x86insn_ja)
 #define IS_MODIFYING_INSN(INSN)         ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
-                                            || (INSN) >= x86insn_sse_load_int && (INSN) <= x86insn_sse_divss \
-                                            || (INSN) >= x86insn_sse_xorps && (INSN) <= x86insn_sse_divsd \
-                                            || (INSN) >= x86insn_sse_xorpd && (INSN) <= x86insn_movzx \
-                                            || (INSN) == x86insn_pop || (INSN) == x86insn_cdq \
-                                            || (INSN) == x86insn_xor_edx_edx || (INSN) == x86insn_read_retval)
+                                        || (INSN) >= x86insn_sse_load_int && (INSN) <= x86insn_sse_divss \
+                                        || (INSN) >= x86insn_sse_xorps && (INSN) <= x86insn_sse_divsd \
+                                        || (INSN) >= x86insn_sse_xorpd && (INSN) <= x86insn_movzx \
+                                        || (INSN) == x86insn_pop || (INSN) == x86insn_cdq \
+                                        || (INSN) == x86insn_xor_edx_edx || (INSN) == x86insn_read_retval)
+#define IS_DWORD_DEFINING_INSN(INSN)    ((INSN) == x86insn_int_mov || (INSN) == x86insn_lea \
+                                        || (INSN) == x86insn_imul_const || (INSN) == x86insn_movzx \
+                                        || (INSN) == x86insn_movsx || (INSN) == x86insn_fpu_float2int \
+                                        || (INSN) == x86insn_read_retval || IS_SET_INSN((INSN)) \
+                                        || (INSN) == x86insn_cdq || (INSN) == x86insn_xor_edx_edx \
+                                        || (INSN) == x86insn_sse_store_int)
+#define IS_FLOAT_DEFINING_INSN(INSN)    ((INSN) == x86insn_sse_movss || (INSN) == x86insn_sse_movsd \
+                                        || (INSN) == x86insn_sse_double2float || (INSN) == x86insn_sse_float2double \
+                                        || (INSN) == x86insn_read_retval || (INSN) == x86insn_sse_load_int)
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
 
 #define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)
@@ -298,7 +307,7 @@ typedef struct x86_instruction_decl {
 #define OP_IS_CONSTANT(OP)              ((OP).op_loc == x86loc_int_constant)
 #define OP_IS_ADDRESS(OP)               ((OP).op_loc == x86loc_address)
 #define OP_IS_SPEC_EBP_OFFSET(OP, OFS)  ((OP).op_loc == x86loc_address && (OP).data.address.base == ~x86reg_ebp \
-                                            && (OP).data.address.index == 0 && (OP).data.address.offset == (OFS))
+                                        && (OP).data.address.index == 0 && (OP).data.address.offset == (OFS))
 
 #define ENCODE_SSE_MOV(TYPE)            ((TYPE) == x86op_float ? x86insn_sse_movss : x86insn_sse_movsd)
 #define ENCODE_SSE_COMPARE(TYPE)        ((TYPE) == x86op_float ? x86insn_sse_comiss : x86insn_sse_comisd)

@@ -1,6 +1,6 @@
 
-#ifndef DEBUG_H__INCLUDED
-#define DEBUG_H__INCLUDED
+#ifndef XML_DUMP_H__INCLUDED
+#define XML_DUMP_H__INCLUDED
 
 #if defined(_MSC_VER) && AUX_USE_PRAGMA_ONCE
 #pragma once
@@ -11,5 +11,5 @@ void debug_dump_unit(const char *src_filename);
 
 
 #else
-#error Header debug.h duplicated.
-#endif // DEBUG_H__INCLUDED
+#error Header xml_dump.h duplicated.
+#endif // XML_DUMP_H__INCLUDED

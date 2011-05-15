@@ -15,13 +15,7 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res);
 
 int x86_codegen_alloc_pseudoreg(x86_operand_type type)
 {
-    if (type == x86op_qword) {
-        int res = _curr_func->func_pseudoregs_count[x86op_dword]++;
-        _curr_func->func_pseudoregs_count[x86op_dword]++;
-        return res;
-    } else {
-        return _curr_func->func_pseudoregs_count[x86_encode_register_type(type)]++;
-    }
+    return _curr_func->func_pseudoregs_count[x86_encode_register_type(type)]++;
 }
 
 

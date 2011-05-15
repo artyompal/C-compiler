@@ -1,6 +1,6 @@
 
-#ifndef X86_STACK_FRAME
-#define X86_STACK_FRAME
+#ifndef X86_STACK_FRAME_H__INCLUDED
+#define X86_STACK_FRAME_H__INCLUDED
 
 #if defined(_MSC_VER) && AUX_USE_PRAGMA_ONCE
 #pragma once
@@ -18,4 +18,4 @@ int         x86_stack_frame_alloc_tmp_var       (function_desc *function, int si
 
 #else
 #error Header x86_stack_frame.h duplicated.
-#endif // X86_STACK_FRAME
+#endif // X86_STACK_FRAME_H__INCLUDED
