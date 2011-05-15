@@ -224,16 +224,9 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
             if (x86_equal_types(insn->in_op1.op_type, type) && insn->in_op1.data.reg >= pseudoregs_cnt) {
                 // Новые псевдорегистры могут появляться только как первый операнд инструкции.
                 if (type == x86op_dword) {
-                    ASSERT(insn->in_code == x86insn_int_mov || insn->in_code == x86insn_lea
-                        || insn->in_code == x86insn_imul_const || insn->in_code == x86insn_movzx
-                        || insn->in_code == x86insn_movsx || insn->in_code == x86insn_fpu_float2int
-                        || insn->in_code == x86insn_read_retval || IS_SET_INSN(insn->in_code)
-                        || insn->in_code == x86insn_cdq || insn->in_code == x86insn_xor_edx_edx
-                        || insn->in_code == x86insn_sse_store_int);
+                    ASSERT(IS_DWORD_DEFINING_INSN(insn->in_code));
                 } else {
-                    ASSERT(insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd
-                        || insn->in_code == x86insn_sse_double2float || insn->in_code == x86insn_sse_float2double
-                        || insn->in_code == x86insn_read_retval || insn->in_code == x86insn_sse_load_int);
+                    ASSERT(IS_FLOAT_DEFINING_INSN(insn->in_code));
                 }
 
                 pseudoregs_cnt = insn->in_op1.data.reg + 1;
