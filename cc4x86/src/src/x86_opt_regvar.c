@@ -208,7 +208,6 @@ static void _analyze_variables_usage(function_desc *function)
         }
     }
 
-    // FIXME: перебор O(NM), N-число инструкций, M-число переменных
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         for (var = function->func_locals.list_first; var; var = var->sym_next) {
             if (OP_IS_SPEC_EBP_OFFSET(insn->in_op1, var->sym_offset)) {

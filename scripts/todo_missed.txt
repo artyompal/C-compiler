@@ -6,7 +6,6 @@ x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy 
 x86_opt_basic.c:    FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
 x86_opt_data_flow.c:TODO: leader_index должен использовать индексы из таблицы определений
 x86_opt_regvar.c:   TODO: нужно давать больший приоритет переменным, использующимся во внутренних циклах.
-x86_opt_regvar.c:   FIXME: перебор O(NM), N-число инструкций, M-число переменных
 x86_opt_regvar.c:   TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные, если эти регистры используются как специальные.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
@@ -21,6 +20,7 @@ symbol_table.c:     FIXME: символы могут переопределяться несколько раз
 types.c:            unimplemented_error("unsupported type for overriding declaration specifiers");
 types.c:            FIXME: массивы не поддерживают константность элементов, поэтому невозможно сравнивать типы с учётом константости
 types.c:            UNIMPLEMENTED_ASSERT("unsupported type specifiers");
+types.c:            FIXME: константность здесь означает константность самого указателя, а не того, на что он указывает.
 unit.c:             UNIMPLEMENTED_ASSERT(sym->sym_init->init_code == code_terminal_initializer);
 unit.c:             TODO: чтобы выдавать этот варнинг, нужно статическим анализом доказать достижимость этого кода.
 unit.c:             TODO: поддержка локальных переменных во вложенных блоках с правильными областями видимости.

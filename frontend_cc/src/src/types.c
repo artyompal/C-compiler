@@ -623,7 +623,7 @@ data_type *type_create_pointer_with_spec(decl_specifier decl_spec)
 {
     data_type *ptr              = type_create_pointer_node(NULL);
 
-    ptr->data.ptr.is_const      = decl_spec.spec_const;
+    ptr->data.ptr.is_const      = decl_spec.spec_const; // FIXME: константность здесь означает константность самого указателя, а не того, на что он указывает.
     ptr->data.ptr.is_volatile   = decl_spec.spec_volatile;
 
     return ptr;
