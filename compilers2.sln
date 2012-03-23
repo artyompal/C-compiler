@@ -1,15 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cc4x86", "cc4x86\src\cc4x86.vcproj", "{F1E3DDFC-CABE-4114-B0E1-7E32AA9AA5C3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{24FAF309-B755-4928-AF48-7D00601E9702} = {24FAF309-B755-4928-AF48-7D00601E9702}
-		{0AA734BB-3DC2-4059-9E10-AC18E727F148} = {0AA734BB-3DC2-4059-9E10-AC18E727F148}
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cc4x86", "cc4x86\src\cc4x86.vcxproj", "{F1E3DDFC-CABE-4114-B0E1-7E32AA9AA5C3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common_codegen", "common_codegen\src\common_codegen.vcproj", "{0AA734BB-3DC2-4059-9E10-AC18E727F148}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common_codegen", "common_codegen\src\common_codegen.vcxproj", "{0AA734BB-3DC2-4059-9E10-AC18E727F148}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "frontend_cc", "frontend_cc\src\frontend_cc.vcproj", "{24FAF309-B755-4928-AF48-7D00601E9702}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "frontend_cc", "frontend_cc\src\frontend_cc.vcxproj", "{24FAF309-B755-4928-AF48-7D00601E9702}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
