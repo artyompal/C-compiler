@@ -43,6 +43,7 @@ _test proc
 	push	ebp
 	mov	ebp,esp
 	sub	esp,52
+	push	edi
 	movss	xmm7,dword ptr [___unnamed_float_3]
 	movsd	xmm0,qword ptr [___unnamed_double_4]
 	movsd	qword ptr [ebp-12],xmm0
@@ -55,27 +56,28 @@ _test proc
 ; start of inline function fabs
 	movsd	xmm0,xmm5
 	subsd	xmm0,xmm6
-	cvtsd2ss	xmm4,xmm0
+	cvtsd2ss	xmm6,xmm0
 	movss	xmm0,dword ptr [___unnamed_float_0]
-	comiss	xmm0,xmm4
+	comiss	xmm0,xmm6
 	ja	label0008
-	movss	xmm3,xmm4
+	movss	xmm5,xmm6
 	jmp	label0009
 label0008:
-	movss	xmm0,xmm4
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm3,xmm0
+	movss	xmm5,xmm0
 label0009:
-	movss	xmm2,xmm3
+	movss	xmm6,xmm5
 ; end of inline function fabs
-	comiss	xmm2,dword ptr [___unnamed_float_2]
+	movss	xmm0,xmm6
+	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 ; end of inline function eq
 	cmp	eax,0
 	jne	label0000
-	mov	ecx,1
-	mov	eax,ecx
+	mov	eax,1
+	pop	edi
 	add	esp,52
 	pop	ebp
 	ret
@@ -90,28 +92,29 @@ label0000:
 	movsd	xmm0,xmm5
 	subsd	xmm0,xmm6
 	cvtsd2ss	xmm1,xmm0
-	movss	xmm4,xmm1
+	movss	xmm6,xmm1
 	movss	xmm0,dword ptr [___unnamed_float_0]
-	comiss	xmm0,xmm4
+	comiss	xmm0,xmm6
 	ja	label000c
-	movss	xmm3,xmm4
+	movss	xmm5,xmm6
 	jmp	label000d
 label000c:
-	movss	xmm0,xmm4
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm3,xmm0
+	movss	xmm5,xmm0
 label000d:
-	movss	xmm2,xmm3
+	movss	xmm6,xmm5
 ; end of inline function fabs
-	comiss	xmm2,dword ptr [___unnamed_float_2]
-	setb	cl
-	movzx	ecx,cl
-	mov	eax,ecx
+	movss	xmm0,xmm6
+	comiss	xmm0,dword ptr [___unnamed_float_2]
+	setb	al
+	movzx	eax,al
+	mov	edi,eax
 ; end of inline function eq
-	cmp	eax,0
+	cmp	edi,0
 	jne	label0001
-	mov	ecx,2
-	mov	eax,ecx
+	mov	eax,2
+	pop	edi
 	add	esp,52
 	pop	ebp
 	ret
@@ -127,28 +130,29 @@ label0001:
 	movsd	xmm0,xmm5
 	subsd	xmm0,xmm6
 	cvtsd2ss	xmm1,xmm0
-	movss	xmm4,xmm1
+	movss	xmm6,xmm1
 	movss	xmm0,dword ptr [___unnamed_float_0]
-	comiss	xmm0,xmm4
+	comiss	xmm0,xmm6
 	ja	label0010
-	movss	xmm3,xmm4
+	movss	xmm5,xmm6
 	jmp	label0011
 label0010:
-	movss	xmm0,xmm4
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm3,xmm0
+	movss	xmm5,xmm0
 label0011:
-	movss	xmm2,xmm3
+	movss	xmm6,xmm5
 ; end of inline function fabs
-	comiss	xmm2,dword ptr [___unnamed_float_2]
-	setb	cl
-	movzx	ecx,cl
-	mov	eax,ecx
+	movss	xmm0,xmm6
+	comiss	xmm0,dword ptr [___unnamed_float_2]
+	setb	al
+	movzx	eax,al
+	mov	edi,eax
 ; end of inline function eq
-	cmp	eax,0
+	cmp	edi,0
 	jne	label0002
-	mov	ecx,3
-	mov	eax,ecx
+	mov	eax,3
+	pop	edi
 	add	esp,52
 	pop	ebp
 	ret
@@ -164,28 +168,29 @@ label0002:
 	movsd	xmm0,xmm5
 	subsd	xmm0,xmm6
 	cvtsd2ss	xmm1,xmm0
-	movss	xmm4,xmm1
+	movss	xmm6,xmm1
 	movss	xmm0,dword ptr [___unnamed_float_0]
-	comiss	xmm0,xmm4
+	comiss	xmm0,xmm6
 	ja	label0014
-	movss	xmm3,xmm4
+	movss	xmm5,xmm6
 	jmp	label0015
 label0014:
-	movss	xmm0,xmm4
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm3,xmm0
+	movss	xmm5,xmm0
 label0015:
-	movss	xmm2,xmm3
+	movss	xmm6,xmm5
 ; end of inline function fabs
-	comiss	xmm2,dword ptr [___unnamed_float_2]
-	setb	cl
-	movzx	ecx,cl
-	mov	eax,ecx
+	movss	xmm0,xmm6
+	comiss	xmm0,dword ptr [___unnamed_float_2]
+	setb	al
+	movzx	eax,al
+	mov	edi,eax
 ; end of inline function eq
-	cmp	eax,0
+	cmp	edi,0
 	jne	label0003
-	mov	ecx,4
-	mov	eax,ecx
+	mov	eax,4
+	pop	edi
 	add	esp,52
 	pop	ebp
 	ret
@@ -199,28 +204,29 @@ label0003:
 	movsd	xmm0,xmm5
 	subsd	xmm0,xmm6
 	cvtsd2ss	xmm1,xmm0
-	movss	xmm4,xmm1
+	movss	xmm6,xmm1
 	movss	xmm0,dword ptr [___unnamed_float_0]
-	comiss	xmm0,xmm4
+	comiss	xmm0,xmm6
 	ja	label0018
-	movss	xmm3,xmm4
+	movss	xmm5,xmm6
 	jmp	label0019
 label0018:
-	movss	xmm0,xmm4
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm3,xmm0
+	movss	xmm5,xmm0
 label0019:
-	movss	xmm2,xmm3
+	movss	xmm6,xmm5
 ; end of inline function fabs
-	comiss	xmm2,dword ptr [___unnamed_float_2]
-	setb	cl
-	movzx	ecx,cl
-	mov	eax,ecx
+	movss	xmm0,xmm6
+	comiss	xmm0,dword ptr [___unnamed_float_2]
+	setb	al
+	movzx	eax,al
+	mov	edi,eax
 ; end of inline function eq
-	cmp	eax,0
+	cmp	edi,0
 	jne	label0004
-	mov	ecx,5
-	mov	eax,ecx
+	mov	eax,5
+	pop	edi
 	add	esp,52
 	pop	ebp
 	ret
@@ -234,28 +240,29 @@ label0004:
 	movsd	xmm0,xmm5
 	subsd	xmm0,xmm6
 	cvtsd2ss	xmm1,xmm0
-	movss	xmm4,xmm1
+	movss	xmm6,xmm1
 	movss	xmm0,dword ptr [___unnamed_float_0]
-	comiss	xmm0,xmm4
+	comiss	xmm0,xmm6
 	ja	label001c
-	movss	xmm3,xmm4
+	movss	xmm5,xmm6
 	jmp	label001d
 label001c:
-	movss	xmm0,xmm4
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm3,xmm0
+	movss	xmm5,xmm0
 label001d:
-	movss	xmm2,xmm3
+	movss	xmm6,xmm5
 ; end of inline function fabs
-	comiss	xmm2,dword ptr [___unnamed_float_2]
-	setb	cl
-	movzx	ecx,cl
-	mov	eax,ecx
+	movss	xmm0,xmm6
+	comiss	xmm0,dword ptr [___unnamed_float_2]
+	setb	al
+	movzx	eax,al
+	mov	edi,eax
 ; end of inline function eq
-	cmp	eax,0
+	cmp	edi,0
 	jne	label0005
-	mov	ecx,6
-	mov	eax,ecx
+	mov	eax,6
+	pop	edi
 	add	esp,52
 	pop	ebp
 	ret
@@ -269,28 +276,29 @@ label0005:
 	movsd	xmm0,xmm5
 	subsd	xmm0,xmm6
 	cvtsd2ss	xmm1,xmm0
-	movss	xmm4,xmm1
+	movss	xmm6,xmm1
 	movss	xmm0,dword ptr [___unnamed_float_0]
-	comiss	xmm0,xmm4
+	comiss	xmm0,xmm6
 	ja	label0020
-	movss	xmm3,xmm4
+	movss	xmm5,xmm6
 	jmp	label0021
 label0020:
-	movss	xmm0,xmm4
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm3,xmm0
+	movss	xmm5,xmm0
 label0021:
-	movss	xmm2,xmm3
+	movss	xmm6,xmm5
 ; end of inline function fabs
-	comiss	xmm2,dword ptr [___unnamed_float_2]
-	setb	cl
-	movzx	ecx,cl
-	mov	eax,ecx
+	movss	xmm0,xmm6
+	comiss	xmm0,dword ptr [___unnamed_float_2]
+	setb	al
+	movzx	eax,al
+	mov	edi,eax
 ; end of inline function eq
-	cmp	eax,0
+	cmp	edi,0
 	jne	label0006
-	mov	ecx,7
-	mov	eax,ecx
+	mov	eax,7
+	pop	edi
 	add	esp,52
 	pop	ebp
 	ret
@@ -299,39 +307,40 @@ label0006:
 ; start of inline function eq
 	movsd	xmm6,qword ptr [___unnamed_double_14]
 	cvtss2sd	xmm0,xmm7
-	movsd	xmm5,xmm0
+	movsd	xmm7,xmm0
 ; start of inline function fabs
-	movsd	xmm0,xmm5
+	movsd	xmm0,xmm7
 	subsd	xmm0,xmm6
 	cvtsd2ss	xmm1,xmm0
-	movss	xmm4,xmm1
+	movss	xmm7,xmm1
 	movss	xmm0,dword ptr [___unnamed_float_0]
-	comiss	xmm0,xmm4
+	comiss	xmm0,xmm7
 	ja	label0024
-	movss	xmm3,xmm4
+	movss	xmm6,xmm7
 	jmp	label0025
 label0024:
-	movss	xmm0,xmm4
+	movss	xmm0,xmm7
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm3,xmm0
+	movss	xmm6,xmm0
 label0025:
-	movss	xmm2,xmm3
+	movss	xmm7,xmm6
 ; end of inline function fabs
-	comiss	xmm2,dword ptr [___unnamed_float_2]
-	setb	cl
-	movzx	ecx,cl
-	mov	eax,ecx
+	movss	xmm0,xmm7
+	comiss	xmm0,dword ptr [___unnamed_float_2]
+	setb	al
+	movzx	eax,al
+	mov	edi,eax
 ; end of inline function eq
-	cmp	eax,0
+	cmp	edi,0
 	jne	label0007
-	mov	ecx,8
-	mov	eax,ecx
+	mov	eax,8
+	pop	edi
 	add	esp,52
 	pop	ebp
 	ret
 label0007:
-	mov	ecx,0
-	mov	eax,ecx
+	mov	eax,0
+	pop	edi
 	add	esp,52
 	pop	ebp
 	ret

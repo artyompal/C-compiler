@@ -6,7 +6,7 @@ x86_codegen.c:      TODO: возвращать результат типа QWORD
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD + MOVSB
 x86_opt_basic.c:    FIXME: при кодогенерации не должно по€вл€тьс€ байтовых регистров; нужно делать movzx/movsx в нужных местах.
-x86_opt_data_flow.c:FIXME: квадратичное врем€ от количества базовых блоков
+x86_opt_data_flow.c:TODO: SET_ALLOCA()
 x86_opt_data_flow.c:FIXME: квадратичное врем€ от количества базовых блоков
 x86_opt_data_flow.c:FIXME: квадратична€ сложность от числа инструкций в блоке.
 x86_opt_data_flow.c:FIXME: IS_JMP_INSN???
@@ -18,6 +18,7 @@ x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
 x86_regalloc.c:     FIXME: считаетс€, что регистровые переменные используютс€ до конца функции.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
+x86_regalloc.c:     TODO: push_all/pop_all должны сохран€ть только те регистры, которые €вл€ютс€ живыми на момент call-а.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);
 symbol_table.h:     TODO: независимые неймспейсы дл€ меток/мемберов/тайпдефов
 expressions.c:      TODO: нужно поддержать вычитание указателей

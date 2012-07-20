@@ -62,7 +62,7 @@ static void set_clear_to_ones(set *s)
         s->set_base[i] = 0xffffffff;
 
     if (s->set_count % 32 != 0)
-        s->set_base[s->set_count/32] &= (1 << (s->set_count % 32)) - 1;
+        s->set_base[s->set_count/32] = (1 << (s->set_count % 32)) - 1;
 }
 
 static void set_swap(set *a, set *b)

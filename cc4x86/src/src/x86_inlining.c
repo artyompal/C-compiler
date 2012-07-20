@@ -84,27 +84,22 @@ static void _patch_retval(function_desc *caller, x86_instruction *inserted, int 
 
         if (inserted->in_op1.op_loc == x86loc_register) {
             inserted->in_op2    = inserted->in_op1;
-            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                inserted->in_op1.op_type, res_ofs);
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1, inserted->in_op1.op_type, res_ofs);
         } else {
-            bincode_create_operand_and_alloc_pseudoreg_in_function(
-                caller, &op, inserted->in_op1.op_type);
+            bincode_create_operand_and_alloc_pseudoreg_in_function(caller, &op, inserted->in_op1.op_type);
             bincode_insert_instruction(caller, inserted, x86insn_int_mov, &op, &inserted->in_op1);
 
             inserted->in_op2    = op;
-            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                inserted->in_op1.op_type, res_ofs);
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1, inserted->in_op1.op_type, res_ofs);
         }
     } else if (!option_sse2) {
         inserted->in_code = x86insn_fpu_stp;
 
         if (inserted->in_op1.op_loc == x86loc_register) {
-            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                inserted->in_op1.op_type, res_ofs);
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1, inserted->in_op1.op_type, res_ofs);
         } else {
             bincode_insert_unary_instruction(caller, inserted, x86insn_fpu_ld, &inserted->in_op1);
-            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                inserted->in_op1.op_type, res_ofs);
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1, inserted->in_op1.op_type, res_ofs);
         }
     } else {
         //  SSE-вариант для записи результата
@@ -112,13 +107,11 @@ static void _patch_retval(function_desc *caller, x86_instruction *inserted, int 
 
         if (inserted->in_op1.op_loc == x86loc_register) {
             inserted->in_op2 = inserted->in_op1;
-            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                inserted->in_op1.op_type, res_ofs);
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1, inserted->in_op1.op_type, res_ofs);
         } else {
             bincode_create_operand_and_alloc_pseudoreg_in_function(caller, &op, inserted->in_op1.op_type);
             bincode_insert_instruction(caller, inserted, inserted->in_code, &op, &inserted->in_op1);
-            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1,
-                inserted->in_op1.op_type, res_ofs);
+            bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1, inserted->in_op1.op_type, res_ofs);
             inserted->in_op2 = op;
         }
     }

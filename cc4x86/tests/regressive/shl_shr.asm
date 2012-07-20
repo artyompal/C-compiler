@@ -24,7 +24,7 @@ _test proc
 	pop	ebp
 	ret
 label0000:
-	mov	eax,esi
+	mov	eax,edi
 	shr	eax,4
 	cmp	eax,268435455
 	je	label0001
@@ -48,7 +48,7 @@ label0001:
 	pop	ebp
 	ret
 label0002:
-	mov	eax,esi
+	mov	eax,edi
 	shl	eax,1
 	cmp	eax,-2147483648
 	je	label0003
@@ -75,7 +75,7 @@ label0003:
 	ret
 label0004:
 	mov	ecx,5
-	add	ecx,esi
+	add	ecx,edi
 	sal	edi,cl
 	cmp	edi,64
 	je	label0005

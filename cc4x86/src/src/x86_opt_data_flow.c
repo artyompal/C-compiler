@@ -163,13 +163,13 @@ static void _detect_use(set *use, basic_block *block, function_desc *function, x
 static void _build_alive_pseudoreg_tables(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
-    int changed, block, j;
+    int changed, block, j, label;
     set use, def, new_in;
 
     setvec_resize(&_reg_in[type], _basic_blocks.blocks_count, function->func_pseudoregs_count[type]);
     setvec_resize(&_reg_out[type], _basic_blocks.blocks_count, function->func_pseudoregs_count[type]);
 
-    set_alloc(&use, function->func_pseudoregs_count[type]); // SET_ALLOCA?
+    set_alloc(&use, function->func_pseudoregs_count[type]); // TODO: SET_ALLOCA()
     set_alloc(&def, function->func_pseudoregs_count[type]);
     set_alloc(&new_in, function->func_pseudoregs_count[type]);
 
@@ -192,30 +192,22 @@ static void _build_alive_pseudoreg_tables(function_desc *function, x86_operand_t
             if (insn->in_code != x86insn_ret && insn->in_code != x86insn_jmp)
             {
                 ASSERT(insn->in_next);
+                ASSERT(block+1 < _basic_blocks.blocks_count);
+                ASSERT(_basic_blocks.blocks_base[block+1].block_leader == insn->in_next);
 
-                // FIXME: квадратичное время от количества базовых блоков
-                for (j = 0; ; j++)
-                {
-                    ASSERT(j < _basic_blocks.blocks_count);
-
-                    if (_basic_blocks.blocks_base[j].block_leader == insn->in_next)
-                    {
-                        set_unite(&_reg_out[type].vec_base[block], &_reg_in[type].vec_base[j]);
-                        break;
-                    }
-                }
+                set_unite(&_reg_out[type].vec_base[block], &_reg_in[type].vec_base[block+1]);
             }
 
-            if (IS_JCC_INSN(insn->in_code))
+            if (IS_JMP_INSN(insn->in_code))
             {
                 ASSERT(insn->in_op1.op_loc == x86loc_label);
-                j = insn->in_op1.data.label;
+                label = insn->in_op1.data.label;
 
                 for (insn = function->func_binary_code; ; insn = insn->in_next)
                 {
                     ASSERT(insn);
 
-                    if (insn->in_code == x86insn_label && insn->in_op1.data.label == j)
+                    if (insn->in_code == x86insn_label && insn->in_op1.data.label == label)
                     {
                         ASSERT(insn->in_op1.op_loc == x86loc_label);
                         break;
@@ -247,7 +239,7 @@ static void _build_alive_pseudoreg_tables(function_desc *function, x86_operand_t
             set_subtract(&new_in, &def);
             set_unite(&new_in, &use);
 
-            changed = !set_equal(&_reg_in[type].vec_base[block], &new_in);
+            changed |= !set_equal(&_reg_in[type].vec_base[block], &new_in);
             set_assign(&_reg_in[type].vec_base[block], &new_in);
         }
     } while (changed);

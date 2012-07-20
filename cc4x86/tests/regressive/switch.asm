@@ -103,8 +103,6 @@ _test proc
 	mov	ebp,esp
 	sub	esp,36
 	push	edi
-	push	esi
-	push	ebx
 ; start of inline function test_case
 	mov	dword ptr [ebp-4],3
 	mov	edi,[ebp-4]
@@ -116,21 +114,19 @@ _test proc
 	je	label0006
 	jmp	label0007
 label0004:
-	mov	esi,-1
+	mov	edi,-1
 	jmp	label0008
 label0006:
-	mov	esi,0
+	mov	edi,0
 	jmp	label0008
 label0007:
-	mov	esi,1
+	mov	edi,1
 	jmp	label0008
 label0008:
 ; end of inline function test_case
-	cmp	esi,0
+	cmp	edi,0
 	je	label0000
 	mov	eax,1
-	pop	ebx
-	pop	esi
 	pop	edi
 	add	esp,36
 	pop	ebp
@@ -138,32 +134,30 @@ label0008:
 label0000:
 ; start of inline function test_case2
 	mov	dword ptr [ebp-16],3
-	mov	ebx,[ebp-16]
-	cmp	ebx,0
+	mov	edi,[ebp-16]
+	cmp	edi,0
 	je	label000a
-	cmp	ebx,1
+	cmp	edi,1
 	je	label000b
-	cmp	ebx,2
+	cmp	edi,2
 	je	label000b
-	cmp	ebx,3
+	cmp	edi,3
 	je	label000b
 	jmp	label000e
 label000a:
-	mov	edx,-1
+	mov	edi,-1
 	jmp	label000f
 label000b:
-	mov	edx,0
+	mov	edi,0
 	jmp	label000f
 label000e:
-	mov	edx,1
+	mov	edi,1
 	jmp	label000f
 label000f:
 ; end of inline function test_case2
-	cmp	edx,0
+	cmp	edi,0
 	je	label0001
 	mov	eax,1
-	pop	ebx
-	pop	esi
 	pop	edi
 	add	esp,36
 	pop	ebp
@@ -179,26 +173,22 @@ label0001:
 	je	label0011
 	jmp	label0013
 label0011:
-	mov	ecx,-1
+	mov	edi,-1
 	jmp	label0016
 label0013:
-	mov	ecx,0
+	mov	edi,0
 	jmp	label0016
 label0016:
 ; end of inline function test_default
-	cmp	ecx,0
+	cmp	edi,0
 	je	label0002
 	mov	eax,1
-	pop	ebx
-	pop	esi
 	pop	edi
 	add	esp,36
 	pop	ebp
 	ret
 label0002:
 	mov	eax,0
-	pop	ebx
-	pop	esi
 	pop	edi
 	add	esp,36
 	pop	ebp

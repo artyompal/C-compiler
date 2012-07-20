@@ -666,7 +666,7 @@ static void _generate_sse_binary_expr(expression *expr, x86_operand *res, x86_op
         unit_push_binary_instruction(ENCODE_SSE_MOV(op1->op_type), res, op1);
 
         if (op1->op_type != x86op_float) {
-            insn += (x86insn_sse_movsd - x86insn_sse_movss);
+            insn += (x86insn_sse_addsd - x86insn_sse_addss);
         }
 
         unit_push_binary_instruction(insn, res, op2);
@@ -690,7 +690,7 @@ static void _generate_sse_binary_expr(expression *expr, x86_operand *res, x86_op
         unit_push_binary_instruction(x86insn_movzx, res, op2);
     } else {
         if (op1->op_type != x86op_float) {
-            insn += (x86insn_sse_movsd - x86insn_sse_movss);
+            insn += (x86insn_sse_addsd - x86insn_sse_addss);
         }
 
         if (OP_IS_ADDRESS(*op1)) {
