@@ -94,6 +94,7 @@ static void _detect_def(set *def, basic_block *block, function_desc *function, x
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
+            ASSERT(reg < function->func_pseudoregs_count[type]);
 
             // если регистр не использовался ранее, вносим его во множество
             if (!BIT_TEST(used, reg))
@@ -105,6 +106,7 @@ static void _detect_def(set *def, basic_block *block, function_desc *function, x
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
+            ASSERT(reg < function->func_pseudoregs_count[type]);
 
             // помечаем их как использованные
             BIT_RAISE(used, reg);
@@ -135,6 +137,7 @@ static void _detect_use(set *use, basic_block *block, function_desc *function, x
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
+            ASSERT(reg < function->func_pseudoregs_count[type]);
 
             // если регистр не определён в данном блоке, вносим его во множество
             if (!BIT_TEST(defined, reg))
@@ -146,6 +149,7 @@ static void _detect_use(set *use, basic_block *block, function_desc *function, x
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
+            ASSERT(reg < function->func_pseudoregs_count[type]);
 
             // помечаем их как определённые
             BIT_RAISE(defined, reg);
