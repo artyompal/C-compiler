@@ -261,17 +261,19 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function, x86_o
 {
     x86_instruction *insn;
     int max_registers, current_regs_cnt, regs_cnt, i;
-    x86_register regs_arr[MAX_REGISTERS_PER_INSN];
+    int regs[MAX_REGISTERS_PER_INSN];
     x86_pseudoreg_info *reg_info = unit_get_regstat(function, type)->ptr;
 
 
     max_registers = current_regs_cnt = 0;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        bincode_extract_pseudoregs_from_insn_wo_dupes(insn, type, regs_arr, &regs_cnt);
+        bincode_extract_pseudoregs_from_insn_wo_dupes(insn, type, regs, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
-            if (insn == reg_info[regs_arr[i].reg_value].reg_first_write) {
+            ASSERT(reg_info[regs[i]].reg_first_write && reg_info[regs[i]].reg_last_read);
+
+            if (insn == reg_info[regs[i]].reg_first_write) {
                 current_regs_cnt++;
             }
         }
@@ -281,7 +283,7 @@ static int _estimate_num_of_used_pseudo_registers(function_desc *function, x86_o
         }
 
         for (i = 0; i < regs_cnt; i++) {
-            if (insn == reg_info[regs_arr[i].reg_value].reg_last_read) {
+            if (insn == reg_info[regs[i]].reg_last_read) {
                 current_regs_cnt--;
                 ASSERT(current_regs_cnt >= 0);
             }
@@ -315,6 +317,8 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
             bincode_create_operand_from_pseudoreg(&insn->in_op2, type, var_reg);
         }
     }
+
+    // TODO: если переменна€ находитс€ только в регистре, надо не выдел€ть место в стеке дл€ неЄ.
 }
 
 //
@@ -326,29 +330,22 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
     x86_register_var *reg_var;
     register_stat *regstat = unit_get_regstat(function, type);
 
-
-    free_registers =
-        x86_get_max_register_count(type) - _estimate_num_of_used_pseudo_registers(function, type);
-
+    // FIXME: код подсчЄта числа свободных регистров €вл€етс€ deprecated. Ќужно пытатьс€ поместить все переменные в регистры.
+    free_registers = x86_get_max_register_count(type) - _estimate_num_of_used_pseudo_registers(function, type);
     if (free_registers <= 0) {
         // Ќет свободных регистров.
         return;
     }
 
     _choose_possible_register_variables(function, type);
-
     if (!_register_vars_list.first) {
         // Ќет потенциальных регистровых переменных.
         return;
     }
 
-
     last_pseudo_register                    = regstat->count+1;
     function->func_start_of_regvars[type]   = last_pseudo_register;
     reg_var                                 = _register_vars_list.first;
-
-
-    // TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные, если эти регистры используютс€ как специальные.
 
     do {
         // —оздаЄм регистровые переменные, начина€ с более приоритетных.
@@ -369,8 +366,7 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
             return;
         }
 
-        free_registers =
-            x86_get_max_register_count(type) - _estimate_num_of_used_pseudo_registers(function, type);
+        free_registers = x86_get_max_register_count(type) - _estimate_num_of_used_pseudo_registers(function, type);
     } while (free_registers > 0);
 }
 
@@ -381,7 +377,7 @@ void x86_create_register_variables(function_desc *function)
 {
     _create_register_variables_for_type(function, x86op_dword);
 
-    if (option_use_sse2) {
+    if (option_sse2) {
         _create_register_variables_for_type(function, x86op_float);
     }
 }

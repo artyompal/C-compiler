@@ -308,7 +308,14 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
             if (_is_address_using_reg(&usage->in_op1, reg)) {
                 _replace_register_in_address_with_constant(&usage->in_op1, reg, val);
             } else if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, x86op_dword, reg)) {
-                return;
+                ASSERT(!IS_VOLATILE_INSN(usage->in_code, usage->in_op1.op_type));
+
+                // Для некоторых инструкций мы можем заменить первый операнд на константу, для остальных нет.
+                if (usage->in_code == x86insn_set_retval) {
+                    usage->in_op1 = insn->in_op2;
+                } else {
+                    return;
+                }
             }
 
             if (_is_address_using_reg(&usage->in_op2, reg)) {
@@ -658,8 +665,8 @@ static BOOL _try_kill_copies_of_regvar(function_desc *function, x86_instruction 
     // если переменная меняет значение до конца жизни регистра либо туда возможны переходы, то нельзя удалять
     for (insn2 = regstat->ptr[reg].reg_first_write;
         insn2 != regstat->ptr[reg].reg_last_read; insn2 = insn2->in_next)
-            if (IS_MODIFYING_INSN(insn2->in_code) && insn2->in_op1.op_type == type
-                && insn2->in_op1.data.reg == insn->in_op2.data.reg || insn2->in_code == x86insn_label) {
+            if (OP_IS_THIS_PSEUDO_REG(insn2->in_op1, type, insn->in_op2.data.reg) && IS_VOLATILE_INSN(insn2->in_code, type)
+                || insn2->in_code == x86insn_label) {
                     return FALSE;
                 }
 
@@ -751,12 +758,11 @@ static BOOL _try_optimize_regvar_modification(function_desc *function, x86_instr
     }
 
     // если переменная меняет значение до конца жизни регистра либо туда возможны переходы, то нельзя удалять
-    for (insn2 = regstat->ptr[reg].reg_first_write;
-        insn2 != regstat->ptr[reg].reg_last_read; insn2 = insn2->in_next)
-            if (IS_MODIFYING_INSN(insn2->in_code) && (OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, regvar)
-                || OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, regvar)) || insn2->in_code == x86insn_label) {
-                    return FALSE;
-                }
+    for (insn2 = regstat->ptr[reg].reg_first_write; insn2 != regstat->ptr[reg].reg_last_read; insn2 = insn2->in_next)
+        if (OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, regvar) && IS_VOLATILE_INSN(insn->in_code, type)
+            || insn2->in_code == x86insn_label) {
+                return FALSE;
+            }
 
     // последняя инструкция должна записывать значение обратно в регистровую переменную
     if (insn2->in_code != x86insn_int_mov && insn2->in_code != x86insn_sse_movss
@@ -795,13 +801,13 @@ static BOOL _try_optimize_regvars_usage(function_desc *function)
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
 
-        if ((insn->in_code == x86insn_int_mov || insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd)
-            && OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2)) {
-                if (_try_kill_copies_of_regvar(function, insn)
-                    || _try_optimize_regvar_evaluation(function, insn)
-                        || _try_optimize_regvar_modification(function, insn) ) {
-                            was_smth = TRUE;
-                        }
+        if ((insn->in_code == x86insn_int_mov || insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd) &&
+            OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2)) {
+            if (_try_kill_copies_of_regvar(function, insn) ||
+                _try_optimize_regvar_evaluation(function, insn) ||
+                _try_optimize_regvar_modification(function, insn)) {
+                was_smth = TRUE;
+            }
         }
     }
 

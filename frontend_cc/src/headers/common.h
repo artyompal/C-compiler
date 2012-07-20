@@ -112,7 +112,7 @@ extern BOOL option_debug_disable_codegen;
 extern BOOL option_debug_disable_regalloc;
 extern BOOL option_debug_disable_basic_opt;
 extern BOOL option_enable_optimization;
-extern BOOL option_use_sse2;
+extern BOOL option_sse2;
 extern BOOL option_no_inline;
 extern BOOL option_debug_xml_dump;
 extern int  option_max_inline_insn;

@@ -1,12 +1,19 @@
+x86_regalloc.h:     TODO: структура x86_pseudoreg_info является deprecated. Задачи анализа потока данных должны теперь решаться через ои/ио-цепочки.
+x86_regalloc.h:     TODO: OP_IS_REGVAR является хаком, и регистровые переменные сделаны пока что хаком. Нужно сделать нормальное распространение копирований и не использовать этот макрос без необходимости.
 x86_codegen.c:      TODO: поддержать кодогенерацию для long long
 x86_codegen.c:      TODO: поддержать кодогенерацию для операндов типа byte/word
 x86_codegen.c:      TODO: возвращать результат типа QWORD
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD + MOVSB
 x86_opt_basic.c:    FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
-x86_opt_data_flow.c:TODO: leader_index должен использовать индексы из таблицы определений
+x86_opt_data_flow.c:FIXME: квадратичное время от количества базовых блоков
+x86_opt_data_flow.c:FIXME: квадратичное время от количества базовых блоков
+x86_opt_data_flow.c:FIXME: квадратичная сложность от числа инструкций в блоке.
+x86_opt_data_flow.c:FIXME: IS_JMP_INSN???
+x86_opt_data_flow.c:FIXME???
 x86_opt_regvar.c:   TODO: нужно давать больший приоритет переменным, использующимся во внутренних циклах.
-x86_opt_regvar.c:   TODO: надо запрещать выделение регистров EAX/EDX под псевдопеременные, если эти регистры используются как специальные.
+x86_opt_regvar.c:   TODO: если переменная находится только в регистре, надо не выделять место в стеке для неё.
+x86_opt_regvar.c:   FIXME: код подсчёта числа свободных регистров является deprecated. Нужно пытаться поместить все переменные в регистры.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.

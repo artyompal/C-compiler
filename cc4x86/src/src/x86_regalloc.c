@@ -3,6 +3,7 @@
 #include "x86_bincode.h"
 #include "x86_regalloc.h"
 #include "x86_stack_frame.h"
+#include "x86_opt_data_flow.h"
 
 
 typedef struct register_map_decl {
@@ -212,7 +213,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 {
     x86_pseudoreg_info *pseudoregs_map;
     x86_instruction *insn, *last;
-    x86_register registers[MAX_REGISTERS_PER_INSN];
+    int reg_numbers[MAX_REGISTERS_PER_INSN];
     int pseudoregs_cnt, registers_count, i, reg;
 
 
@@ -223,12 +224,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
         if (insn->in_op1.op_loc == x86loc_register) {
             if (x86_equal_types(insn->in_op1.op_type, type) && insn->in_op1.data.reg >= pseudoregs_cnt) {
                 // Новые псевдорегистры могут появляться только как первый операнд инструкции.
-                if (type == x86op_dword) {
-                    ASSERT(IS_DWORD_DEFINING_INSN(insn->in_code));
-                } else {
-                    ASSERT(IS_FLOAT_DEFINING_INSN(insn->in_code));
-                }
-
+                ASSERT(IS_DEFINING_INSN(insn->in_code, type));
                 pseudoregs_cnt = insn->in_op1.data.reg + 1;
             }
         }
@@ -238,8 +234,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
     // Выделяем память под статистику.
     if (!stat->ptr || pseudoregs_cnt > stat->count) {
         if (stat->ptr) {
-            allocator_free(allocator_global_pool, stat->ptr,
-                sizeof(x86_pseudoreg_info) * stat->count);
+            allocator_free(allocator_global_pool, stat->ptr, sizeof(x86_pseudoreg_info) * stat->count);
         }
 
         stat->ptr = allocator_alloc(allocator_global_pool, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
@@ -253,14 +248,10 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
     // Составляем статистику использования псевдорегистров.
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        bincode_extract_pseudoregs_read_by_insn(insn, registers, &registers_count);
+        bincode_extract_pseudoregs_read_by_insn(insn, type, reg_numbers, &registers_count);
 
         for (i = 0; i < registers_count; i++) {
-            if (!x86_equal_types(registers[i].reg_type, type)) {
-                continue;
-            }
-
-            reg = registers[i].reg_value;
+            reg = reg_numbers[i];
             ASSERT(reg < pseudoregs_cnt);
 
             if (OP_IS_REGVAR(reg, type)) {
@@ -272,25 +263,27 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
             }
         }
 
-        bincode_extract_pseudoregs_written_by_insn(insn, registers, &registers_count);
+        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, reg_numbers, &registers_count);
 
         for (i = 0; i < registers_count; i++) {
-            if (!x86_equal_types(registers[i].reg_type, type)) {
-                continue;
-            }
-
-            reg = registers[i].reg_value;
+            reg = reg_numbers[i];
             ASSERT(reg < pseudoregs_cnt);
 
             if (!pseudoregs_map[reg].reg_first_write) {
-                pseudoregs_map[reg].reg_first_write     = insn;
-            } else {
-                pseudoregs_map[reg].reg_changes_value   = TRUE;
+                pseudoregs_map[reg].reg_first_write = insn;
             }
+        }
 
-            if (OP_IS_REGVAR(reg, type)) {
-                pseudoregs_map[reg].reg_last_read = function->func_binary_code_end;
-            } else {
+        bincode_extract_pseudoregs_modified_by_insn(insn, type, reg_numbers, &registers_count);
+
+        for (i = 0; i < registers_count; i++) {
+            reg = reg_numbers[i];
+            ASSERT(reg < pseudoregs_cnt);
+
+            ASSERT(pseudoregs_map[reg].reg_first_write);
+            pseudoregs_map[reg].reg_changes_value = TRUE;
+
+            if (!OP_IS_REGVAR(reg, type)) {
                 pseudoregs_map[reg].reg_last_read = insn;
             }
         }
@@ -303,7 +296,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                 reg = insn->in_op1.data.reg;
                 ASSERT(pseudoregs_map[reg].reg_first_write == insn);
 
-                if (pseudoregs_map[reg].reg_last_read == insn) {
+                if (pseudoregs_map[reg].reg_last_read == NULL) {
                     for (last = insn->in_next; last->in_code != x86insn_int_idiv; last = last->in_next) {}
                     pseudoregs_map[reg].reg_last_read = last;
                 }
@@ -312,7 +305,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                 reg = insn->in_op1.data.reg;
                 ASSERT(pseudoregs_map[reg].reg_first_write == insn);
 
-                if (pseudoregs_map[reg].reg_last_read == insn) {
+                if (pseudoregs_map[reg].reg_last_read == NULL) {
                     for (last = insn->in_next; last->in_code != x86insn_int_div; last = last->in_next) {}
                     pseudoregs_map[reg].reg_last_read = last;
                 }
@@ -325,7 +318,7 @@ void x86_analyze_registers_usage(function_desc *function)
 {
     _analyze_registers_usage(function, &function->func_dword_regstat, x86op_dword);
 
-    if (option_use_sse2) {
+    if (option_sse2) {
         _analyze_registers_usage(function, &function->func_sse_regstat, x86op_float);
     }
 }
@@ -612,11 +605,9 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
     // Если под псевдорегистр не выделен реальный регистр, выделяем.
     // Потом нужно заменить все ссылки на псевдорегистры на соответствующие реальные регистры.
     //
-    // Аллокатор регистров не должен выделять реальные регистры для неиспользуемых псевдорегистров,
-    // которые были удалены оптимизатором после вызова x86_analyze_registers_usage() и перед входом в данную функцию.
-    //
 
     _clear_register_map(regmap);
+    x86_dataflow_prepare_function(function, type);
 
     if (type == x86op_dword) {
         // Обрабатываем инструкции, требующие фиксированных регистров.
@@ -626,6 +617,8 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
 
     for (insn = function->func_binary_code; insn; insn = next_insn) {
         next_insn = insn->in_next;
+
+        x86_dataflow_step_to_instruction(function, type, insn);
 
         if (insn->in_code == x86insn_label || IS_JMP_INSN(insn->in_code)) {
             continue;
@@ -679,9 +672,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         for (i = 0; i < registers_count; i++) {
             reg = pseudoregs[i];
 
-            if (OP_IS_REGVAR(reg, type)) continue;
-
-            if (pseudoregs_map[reg].reg_last_read == insn && pseudoregs_map[reg].reg_status == register_allocated) {
+            if (!x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
                 pseudoregs_map[reg].reg_status = register_free;
                 _free_real_register(regmap, pseudoregs_map[reg].reg_location);
             }
@@ -704,20 +695,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         }
     }
 
-    // В регистрах могут остаться только глобальные регистровые переменные.
-    registers_count = 0;
-
-    for (i = 0; i < X86_MAX_REG; i++) {
-        reg = regmap->real_registers_map[i];
-
-        if (OP_IS_REGVAR(reg, type)) {
-            registers_count++;
-        } else {
-            ASSERT(reg == -1);
-        }
-    }
-
-    ASSERT(regmap->real_registers_cnt == registers_count);
+    ASSERT(regmap->real_registers_cnt == 0);
 }
 
 static void _handle_pseudo_instructions(function_desc *function)
@@ -813,9 +791,9 @@ static void _handle_pseudo_instructions(function_desc *function)
                     bincode_create_operand_from_register(&tmp, insn->in_op1.op_type, x86reg_eax);
                     bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
                 }
-            } else if (!option_use_sse2 && insn->in_op1.op_loc == x86loc_address) {
+            } else if (!option_sse2 && insn->in_op1.op_loc == x86loc_address) {
                 bincode_insert_unary_instruction(function, insn, x86insn_fpu_ld, &insn->in_op1);
-            } else if (!option_use_sse2) {
+            } else if (!option_sse2) {
                 // результат уже находится в st(0)
             } else if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~0) {
                 // результат в xmm0
@@ -829,7 +807,7 @@ static void _handle_pseudo_instructions(function_desc *function)
                     insn->in_code = x86insn_int_mov;
                     bincode_create_operand_from_register(&insn->in_op2, insn->in_op1.op_type, x86reg_eax);
                 }
-            } else if (!option_use_sse2) {
+            } else if (!option_sse2) {
                 // результат уже находится в st(0)
             } else if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~0) {
                 // результат в xmm0
@@ -864,7 +842,7 @@ static void _handle_pseudo_instructions(function_desc *function)
 
 void x86_allocate_registers(function_desc *function)
 {
-    if (!option_use_sse2) {
+    if (!option_sse2) {
         // Обрабатываем FPU-инструкции, работающие со стеком, и валидируем FPU-стек.
         _maintain_fpu_stack(function);
 
@@ -875,7 +853,7 @@ void x86_allocate_registers(function_desc *function)
     // Запускаем аллокатор регистров для 32-битных регистров.
     _allocate_registers(function, &function->func_dword_regstat, x86op_dword);
 
-    if (option_use_sse2) {
+    if (option_sse2) {
         // Запускаем аллокатор регистров для SSE-регистров.
         _allocate_registers(function, &function->func_sse_regstat, x86op_float);
     }

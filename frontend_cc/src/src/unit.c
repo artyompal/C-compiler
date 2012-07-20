@@ -899,7 +899,7 @@ void unit_codegen(void)
         }
     }
 
-    // обновляем статистику вызовов функций
+    // обновляем статистику вызовов функций, чтобы не выводить в листинг неиспользуемые функции
     _reset_function_calling_stat();
 
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {

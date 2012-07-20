@@ -180,8 +180,9 @@ static const char *_x86_instructions[] = {
     "cvttss2si",
     "cvtss2sd",
     "cvtsd2ss",
-
     "movss",
+    "movsd",
+
     "addss",
     "subss",
     "mulss",
@@ -189,7 +190,6 @@ static const char *_x86_instructions[] = {
     "comiss",
     "xorps",
 
-    "movsd",
     "addsd",
     "subsd",
     "mulsd",
@@ -200,7 +200,6 @@ static const char *_x86_instructions[] = {
     // Инструкции для внутреннего пользования.
     // арифметические модифицирующие:
     "imul",  // imul reg, reg/mem, const
-    "xchg",
     "lea",
     "movsx",
     "movzx",
@@ -419,7 +418,7 @@ static void _output_push_unary_instruction(FILE *output, x86_instruction_code co
     if (code == x86insn_label) {
         _print_op(output, op);
         fputc(':', output);
-    } else if (op->op_loc == x86loc_register && OP_IS_FLOAT(*op) && !option_use_sse2) {
+    } else if (op->op_loc == x86loc_register && OP_IS_FLOAT(*op) && !option_sse2) {
         ASSERT(code < x86insn_count);
         fprintf(output, "\t%sp", _x86_instructions[code]);
     } else {
@@ -443,14 +442,14 @@ static void _output_push_binary_instruction(FILE *output, x86_instruction_code c
 
     if (op1->op_loc == x86loc_address && (op2->op_loc == x86loc_int_constant || IS_SHIFT_INSN(code))) {
         fputs("dword ptr ", output);
-    } else if (OP_IS_ADDRESS(*op1) && OP_IS_FLOAT(*op1) && option_use_sse2) {
+    } else if (OP_IS_ADDRESS(*op1) && OP_IS_FLOAT(*op1) && option_sse2) {
         fprintf(output, "%s ptr ", (op1->op_type == x86op_float ? "dword" : "qword"));
     }
 
     _print_op(output, op1);
     fputc(',', output);
 
-    if (OP_IS_ADDRESS(*op2) && (OP_IS_FLOAT(*op1) || OP_IS_FLOAT(*op2)) && option_use_sse2) {
+    if (OP_IS_ADDRESS(*op2) && (OP_IS_FLOAT(*op1) || OP_IS_FLOAT(*op2)) && option_sse2) {
         fprintf(output, "%s ptr ", (op2->op_type == x86op_double ? "qword" : "dword"));
     }
 
