@@ -14,6 +14,7 @@ typedef unsigned int	uint;
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <iterator>
 #include <set>
 #include <string>
 #include <vector>
