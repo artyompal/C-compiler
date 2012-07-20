@@ -309,13 +309,7 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
                 _replace_register_in_address_with_constant(&usage->in_op1, reg, val);
             } else if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, x86op_dword, reg)) {
                 ASSERT(!IS_VOLATILE_INSN(usage->in_code, usage->in_op1.op_type));
-
-                // Для некоторых инструкций мы можем заменить первый операнд на константу, для остальных нет.
-                if (usage->in_code == x86insn_set_retval) {
-                    usage->in_op1 = insn->in_op2;
-                } else {
-                    return;
-                }
+                return;
             }
 
             if (_is_address_using_reg(&usage->in_op2, reg)) {
@@ -515,7 +509,6 @@ static void _try_optimize_add_sub(function_desc *function, x86_instruction *insn
 void x86_optimization_after_codegen(function_desc *function)
 {
     x86_instruction *insn, *next, *prev;
-
 
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;

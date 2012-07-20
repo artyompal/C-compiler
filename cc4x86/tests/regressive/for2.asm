@@ -11,7 +11,6 @@ _test proc
 	sub	esp,16
 	push	edi
 	push	esi
-	push	ebx
 	mov	edi,0
 	mov	esi,0
 label0001:
@@ -30,13 +29,12 @@ label0002:
 	jne	label0004
 	cmp	edi,2
 	jne	label0004
-	mov	ebx,0
+	mov	edi,0
 	jmp	label0005
 label0004:
-	mov	ebx,1
+	mov	edi,1
 label0005:
-	mov	eax,ebx
-	pop	ebx
+	mov	eax,edi
 	pop	esi
 	pop	edi
 	add	esp,16

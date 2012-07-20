@@ -745,3 +745,1398 @@ _rasterizer_set_texture proc
 	pop	ebp
 	ret
 _rasterizer_set_texture endp	
+
+__tex2d proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,12
+	push	edi
+	push	esi
+	mov	eax,dword ptr [__texture_width]
+	dec	eax
+	mov	[ebp-12],eax
+	fild	dword ptr [ebp-12]
+	fmul	dword ptr [ebp+8]
+	fistp	dword ptr [ebp-12]
+	mov	edi,[ebp-12]
+	mov	eax,dword ptr [__texture_height]
+	dec	eax
+	mov	[ebp-12],eax
+	fild	dword ptr [ebp-12]
+	fmul	dword ptr [ebp+12]
+	fistp	dword ptr [ebp-12]
+	mov	esi,[ebp-12]
+	mov	eax,esi
+	imul	eax,dword ptr [__texture_width]
+	add	eax,edi
+	sal	eax,2
+	add	eax,dword ptr [__texture_data]
+	mov	eax,[eax]
+	pop	esi
+	pop	edi
+	add	esp,12
+	pop	ebp
+	ret
+__tex2d endp	
+
+__rasterize_horiz_line proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,48
+	push	edi
+	push	esi
+	push	ebx
+	mov	edi,[ebp+8]
+	mov	esi,dword ptr [__pitch]
+	imul	esi,[ebp+16]
+	add	esi,dword ptr [__videomem]
+	mov	eax,edi
+	sal	eax,2
+	add	esi,eax
+	mov	ebx,[ebp+12]
+	sal	ebx,2
+	add	ebx,esi
+	mov	eax,edi
+	sal	eax,2
+	sub	ebx,eax
+label0000:
+	push	dword ptr [ebp+24]
+	push	dword ptr [ebp+20]
+	call	__tex2d
+	add	esp,8
+	mov	edi,eax
+	mov	eax,edi
+	sar	eax,24
+	and	eax,255
+	mov	[ebp-40],eax
+	cmp	dword ptr [ebp-40],0
+	je	label0003
+	fild	dword ptr [ebp-40]
+	fld	dword ptr [___unnamed_float_3]
+	fdivp
+	fstp	dword ptr [ebp-44]
+	mov	edx,[esi]
+	mov	eax,edx
+	and	eax,65280
+	sar	eax,8
+	mov	[ebp-32],eax
+	mov	eax,edx
+	and	eax,255
+	mov	[ebp-36],eax
+	mov	eax,edi
+	and	eax,65280
+	sar	eax,8
+	mov	[ebp-20],eax
+	mov	eax,edi
+	and	eax,255
+	mov	[ebp-24],eax
+	fild	dword ptr [ebp-20]
+	fmul	dword ptr [ebp-44]
+	fild	dword ptr [ebp-32]
+	fld1
+	fsub	dword ptr [ebp-44]
+	fmulp
+	faddp
+	fistp	dword ptr [ebp-48]
+	mov	eax,[ebp-48]
+	mov	[ebp-20],eax
+	fild	dword ptr [ebp-24]
+	fmul	dword ptr [ebp-44]
+	fild	dword ptr [ebp-36]
+	fld1
+	fsub	dword ptr [ebp-44]
+	fmulp
+	faddp
+	fistp	dword ptr [ebp-48]
+	mov	eax,[ebp-48]
+	mov	[ebp-24],eax
+	mov	edi,[ebp-20]
+	sal	edi,8
+	add	edi,[ebp-24]
+	mov	[esi],edi
+label0003:
+	fld	dword ptr [ebp+20]
+	fadd	dword ptr [ebp+28]
+	fstp	dword ptr [ebp+20]
+	fld	dword ptr [ebp+24]
+	fadd	dword ptr [ebp+32]
+	fstp	dword ptr [ebp+24]
+	add	esi,4
+	cmp	esi,ebx
+	jl	label0000
+	pop	ebx
+	pop	esi
+	pop	edi
+	add	esp,48
+	pop	ebp
+	ret
+__rasterize_horiz_line endp	
+
+__rasterize_horiz_line__unordered proc
+	push	ebp
+	mov	ebp,esp
+	push	edi
+	push	esi
+	push	ebx
+	mov	edi,[ebp+16]
+	mov	esi,[ebp+12]
+	mov	ebx,[ebp+8]
+	cmp	ebx,esi
+	jg	label0000
+	push	dword ptr [ebp+40]
+	push	dword ptr [ebp+36]
+	push	dword ptr [ebp+24]
+	push	dword ptr [ebp+20]
+	push	edi
+	push	esi
+	push	ebx
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label0001
+label0000:
+	push	dword ptr [ebp+40]
+	push	dword ptr [ebp+36]
+	push	dword ptr [ebp+32]
+	push	dword ptr [ebp+28]
+	push	edi
+	push	edi
+	push	edi
+	call	__rasterize_horiz_line
+	add	esp,28
+label0001:
+	pop	ebx
+	pop	esi
+	pop	edi
+	pop	ebp
+	ret
+__rasterize_horiz_line__unordered endp	
+
+__rasterize_triangle_1i proc
+	push	ebp
+	mov	ebp,esp
+	push	edi
+	push	esi
+	push	ebx
+	mov	edi,[ebp+24]
+	mov	esi,[ebp+20]
+	mov	ebx,[ebp+12]
+	mov	edx,[ebp+8]
+	mov	ecx,[ebp+16]
+	cmp	edx,ebx
+	jge	label0000
+	cmp	ecx,ebx
+	jle	label0001
+	push	ecx
+	push	edx
+	push	dword ptr [ebp+40]
+	push	dword ptr [ebp+36]
+	push	dword ptr [edi+4]
+	push	dword ptr [edi]
+	push	esi
+	push	ecx
+	push	edx
+	call	__rasterize_horiz_line
+	add	esp,28
+	pop	edx
+	pop	ecx
+	jmp	label0004
+label0001:
+	cmp	edi,esi
+	jge	label0003
+	push	dword ptr [ebp+40]
+	push	dword ptr [ebp+36]
+	mov	eax,[ebp+32]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp+32]
+	push	dword ptr [eax]
+	push	esi
+	push	esi
+	push	edi
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label0004
+label0003:
+	push	dword ptr [ebp+40]
+	push	dword ptr [ebp+36]
+	push	dword ptr [edi+4]
+	push	dword ptr [edi]
+	push	edi
+	push	edi
+	push	edi
+	call	__rasterize_horiz_line
+	add	esp,28
+label0004:
+	jmp	label0009
+label0000:
+	cmp	edi,esi
+	jge	label0006
+	fld	dword ptr [ebp+40]
+	fldz
+	fsubrp
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	fld	dword ptr [ebp+36]
+	fldz
+	fsubrp
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	mov	eax,[ebp+32]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp+32]
+	push	dword ptr [eax]
+	push	esi
+	push	esi
+	push	edi
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label0009
+label0006:
+	cmp	edi,esi
+	jle	label0008
+	fld	dword ptr [ebp+40]
+	fldz
+	fsubrp
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	fld	dword ptr [ebp+36]
+	fldz
+	fsubrp
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	mov	eax,[ebp+28]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp+28]
+	push	dword ptr [eax]
+	push	esi
+	push	edi
+	push	edi
+	call	__rasterize_horiz_line
+	add	esp,28
+	jmp	label0009
+label0008:
+	fld	dword ptr [ebp+40]
+	fldz
+	fsubrp
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	fld	dword ptr [ebp+36]
+	fldz
+	fsubrp
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	mov	eax,[ebp+28]
+	push	dword ptr [eax+4]
+	mov	eax,[ebp+28]
+	push	dword ptr [eax]
+	push	edi
+	push	edi
+	push	edi
+	call	__rasterize_horiz_line
+	add	esp,28
+label0009:
+	pop	ebx
+	pop	esi
+	pop	edi
+	pop	ebp
+	ret
+__rasterize_triangle_1i endp	
+
+__rasterize_triangle_2i proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,44
+	push	edi
+	push	ebx
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[ebp+12]
+	add	ecx,4
+	mov	edx,[eax]
+	cmp	edx,[ecx]
+	jle	label0000
+	mov	eax,[ebp+8]
+	mov	[ebp-4],eax
+	mov	eax,[ebp+12]
+	mov	[ebp+8],eax
+	mov	eax,[ebp-4]
+	mov	[ebp+12],eax
+label0000:
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[ebp+16]
+	add	ecx,4
+	mov	edx,[eax]
+	cmp	edx,[ecx]
+	jle	label0001
+	mov	eax,[ebp+8]
+	mov	[ebp-4],eax
+	mov	eax,[ebp+16]
+	mov	[ebp+8],eax
+	mov	eax,[ebp-4]
+	mov	[ebp+16],eax
+label0001:
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,[ebp+16]
+	add	ecx,4
+	mov	edx,[eax]
+	cmp	edx,[ecx]
+	jle	label0002
+	mov	eax,[ebp+12]
+	mov	[ebp-4],eax
+	mov	eax,[ebp+16]
+	mov	[ebp+12],eax
+	mov	eax,[ebp-4]
+	mov	[ebp+16],eax
+label0002:
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[ebp+16]
+	add	ecx,4
+	mov	edx,[eax]
+	cmp	edx,[ecx]
+	jne	label0003
+	mov	eax,[ebp+8]
+	add	eax,4
+	cmp	dword ptr [eax],0
+	jl	label0004
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[eax]
+	cmp	ecx,dword ptr [__height]
+	jge	label0004
+	fldz
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	fldz
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	mov	eax,8
+	add	eax,[ebp+16]
+	push	eax
+	mov	eax,8
+	add	eax,[ebp+12]
+	push	eax
+	mov	eax,8
+	add	eax,[ebp+8]
+	push	eax
+	mov	eax,[ebp+8]
+	add	eax,4
+	push	dword ptr [eax]
+	mov	eax,[ebp+16]
+	push	dword ptr [eax]
+	mov	eax,[ebp+12]
+	push	dword ptr [eax]
+	mov	eax,[ebp+8]
+	push	dword ptr [eax]
+	call	__rasterize_triangle_1i
+	add	esp,36
+label0004:
+	pop	ebx
+	pop	edi
+	add	esp,44
+	pop	ebp
+	ret
+label0003:
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[eax]
+	mov	[ebp-16],ecx
+label0006:
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,[eax]
+	cmp	ecx,[ebp-16]
+	jle	label0007
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	edi,eax
+	mov	eax,[ebp-16]
+	sub	eax,[edi]
+	mov	ecx,[ebp+12]
+	mov	edx,[ebp+8]
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	imul	eax,ebx
+	mov	ecx,[ebp+12]
+	add	ecx,4
+	mov	edx,[ebp+8]
+	add	edx,4
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	cdq
+	idiv	ebx
+	mov	ecx,[ebp+8]
+	add	eax,[ecx]
+	mov	[ebp-8],eax
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	edi,eax
+	mov	eax,[ebp-16]
+	sub	eax,[edi]
+	mov	ecx,[ebp+16]
+	mov	edx,[ebp+8]
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	imul	eax,ebx
+	mov	ecx,[ebp+16]
+	add	ecx,4
+	mov	edx,[ebp+8]
+	add	edx,4
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	cdq
+	idiv	ebx
+	mov	ecx,[ebp+8]
+	add	eax,[ecx]
+	mov	[ebp-12],eax
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[ebp-16]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	mov	eax,[ebp+12]
+	mov	ecx,[ebp+8]
+	fld	dword ptr [eax+8]
+	fsub	dword ptr [ecx+8]
+	fmulp
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,[ebp+8]
+	fadd	dword ptr [eax+8]
+	fstp	dword ptr [ebp-20]
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[ebp-16]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	mov	eax,[ebp+16]
+	mov	ecx,[ebp+8]
+	fld	dword ptr [eax+8]
+	fsub	dword ptr [ecx+8]
+	fmulp
+	mov	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,[ebp+8]
+	fadd	dword ptr [eax+8]
+	fstp	dword ptr [ebp-28]
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[ebp-16]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	mov	eax,8
+	add	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,8
+	add	ecx,[ebp+8]
+	add	ecx,4
+	fld	dword ptr [eax]
+	fsub	dword ptr [ecx]
+	fmulp
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,8
+	add	eax,[ebp+8]
+	add	eax,4
+	fadd	dword ptr [eax]
+	fstp	dword ptr [ebp-24]
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[ebp-16]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	mov	eax,8
+	add	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,8
+	add	ecx,[ebp+8]
+	add	ecx,4
+	fld	dword ptr [eax]
+	fsub	dword ptr [ecx]
+	fmulp
+	mov	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,8
+	add	eax,[ebp+8]
+	add	eax,4
+	fadd	dword ptr [eax]
+	fstp	dword ptr [ebp-32]
+	mov	eax,[ebp-12]
+	sub	eax,[ebp-8]
+	mov	[ebp-44],eax
+	fild	dword ptr [ebp-44]
+	fld	dword ptr [ebp-28]
+	fsub	dword ptr [ebp-20]
+	fdivrp
+	fstp	dword ptr [ebp-36]
+	mov	eax,[ebp-12]
+	sub	eax,[ebp-8]
+	mov	[ebp-44],eax
+	fild	dword ptr [ebp-44]
+	fld	dword ptr [ebp-32]
+	fsub	dword ptr [ebp-24]
+	fdivrp
+	fstp	dword ptr [ebp-40]
+	push	dword ptr [ebp-40]
+	push	dword ptr [ebp-36]
+	push	dword ptr [ebp-32]
+	push	dword ptr [ebp-28]
+	push	dword ptr [ebp-24]
+	push	dword ptr [ebp-20]
+	push	dword ptr [ebp-16]
+	push	dword ptr [ebp-12]
+	push	dword ptr [ebp-8]
+	call	__rasterize_horiz_line__unordered
+	add	esp,36
+	inc	dword ptr [ebp-16]
+	jmp	label0006
+label0007:
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edi,eax
+	mov	eax,[edi]
+	sub	eax,[ecx]
+	mov	ecx,[ebp+16]
+	mov	edx,[ebp+8]
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	imul	eax,ebx
+	mov	ecx,[ebp+16]
+	add	ecx,4
+	mov	edx,[ebp+8]
+	add	edx,4
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	cdq
+	idiv	ebx
+	mov	ecx,[ebp+8]
+	add	eax,[ecx]
+	mov	[ebp-12],eax
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	mov	eax,[ebp+16]
+	mov	ecx,[ebp+8]
+	fld	dword ptr [eax+8]
+	fsub	dword ptr [ecx+8]
+	fmulp
+	mov	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,[ebp+8]
+	fadd	dword ptr [eax+8]
+	fstp	dword ptr [ebp-28]
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	mov	eax,8
+	add	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,8
+	add	ecx,[ebp+8]
+	add	ecx,4
+	fld	dword ptr [eax]
+	fsub	dword ptr [ecx]
+	fmulp
+	mov	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,8
+	add	eax,[ebp+8]
+	add	eax,4
+	fadd	dword ptr [eax]
+	fstp	dword ptr [ebp-32]
+	mov	eax,[ebp+12]
+	fld	dword ptr [ebp-28]
+	fsub	dword ptr [eax+8]
+	mov	eax,[ebp+12]
+	mov	ecx,[ebp-12]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	fdivp
+	fstp	dword ptr [ebp-36]
+	mov	eax,8
+	add	eax,[ebp+12]
+	add	eax,4
+	fld	dword ptr [ebp-32]
+	fsub	dword ptr [eax]
+	mov	eax,[ebp+12]
+	mov	ecx,[ebp-12]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	fdivp
+	fstp	dword ptr [ebp-40]
+	push	dword ptr [ebp-40]
+	push	dword ptr [ebp-36]
+	mov	eax,8
+	add	eax,[ebp+12]
+	add	eax,4
+	push	dword ptr [eax]
+	mov	eax,[ebp+12]
+	push	dword ptr [eax+8]
+	push	dword ptr [ebp-32]
+	push	dword ptr [ebp-28]
+	mov	eax,[ebp+12]
+	add	eax,4
+	push	dword ptr [eax]
+	mov	eax,[ebp+12]
+	push	dword ptr [eax]
+	push	dword ptr [ebp-12]
+	call	__rasterize_horiz_line__unordered
+	add	esp,36
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,1
+	add	ecx,[eax]
+	mov	[ebp-16],ecx
+label0009:
+	mov	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,[eax]
+	cmp	ecx,[ebp-16]
+	jle	label000a
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	edi,eax
+	mov	eax,[ebp-16]
+	sub	eax,[edi]
+	mov	ecx,[ebp+16]
+	mov	edx,[ebp+12]
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	imul	eax,ebx
+	mov	ecx,[ebp+16]
+	add	ecx,4
+	mov	edx,[ebp+12]
+	add	edx,4
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	cdq
+	idiv	ebx
+	mov	ecx,[ebp+12]
+	add	eax,[ecx]
+	mov	[ebp-8],eax
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	edi,eax
+	mov	eax,[ebp-16]
+	sub	eax,[edi]
+	mov	ecx,[ebp+16]
+	mov	edx,[ebp+8]
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	imul	eax,ebx
+	mov	ecx,[ebp+16]
+	add	ecx,4
+	mov	edx,[ebp+8]
+	add	edx,4
+	mov	ebx,[ecx]
+	sub	ebx,[edx]
+	cdq
+	idiv	ebx
+	mov	ecx,[ebp+8]
+	add	eax,[ecx]
+	mov	[ebp-12],eax
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,[ebp-16]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	mov	eax,[ebp+16]
+	mov	ecx,[ebp+12]
+	fld	dword ptr [eax+8]
+	fsub	dword ptr [ecx+8]
+	fmulp
+	mov	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,[ebp+12]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,[ebp+12]
+	fadd	dword ptr [eax+8]
+	fstp	dword ptr [ebp-20]
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[ebp-16]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	mov	eax,[ebp+16]
+	mov	ecx,[ebp+8]
+	fld	dword ptr [eax+8]
+	fsub	dword ptr [ecx+8]
+	fmulp
+	mov	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,[ebp+8]
+	fadd	dword ptr [eax+8]
+	fstp	dword ptr [ebp-28]
+	mov	eax,[ebp+12]
+	add	eax,4
+	mov	ecx,[ebp-16]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	mov	eax,8
+	add	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,8
+	add	ecx,[ebp+12]
+	add	ecx,4
+	fld	dword ptr [eax]
+	fsub	dword ptr [ecx]
+	fmulp
+	mov	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,[ebp+12]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,8
+	add	eax,[ebp+12]
+	add	eax,4
+	fadd	dword ptr [eax]
+	fstp	dword ptr [ebp-24]
+	mov	eax,[ebp+8]
+	add	eax,4
+	mov	ecx,[ebp-16]
+	sub	ecx,[eax]
+	mov	[ebp-44],ecx
+	fild	dword ptr [ebp-44]
+	mov	eax,8
+	add	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,8
+	add	ecx,[ebp+8]
+	add	ecx,4
+	fld	dword ptr [eax]
+	fsub	dword ptr [ecx]
+	fmulp
+	mov	eax,[ebp+16]
+	add	eax,4
+	mov	ecx,[ebp+8]
+	add	ecx,4
+	mov	edx,[eax]
+	sub	edx,[ecx]
+	mov	[ebp-44],edx
+	fild	dword ptr [ebp-44]
+	fdivp
+	mov	eax,8
+	add	eax,[ebp+8]
+	add	eax,4
+	fadd	dword ptr [eax]
+	fstp	dword ptr [ebp-32]
+	mov	eax,[ebp-12]
+	sub	eax,[ebp-8]
+	mov	[ebp-44],eax
+	fild	dword ptr [ebp-44]
+	fld	dword ptr [ebp-28]
+	fsub	dword ptr [ebp-20]
+	fdivrp
+	fstp	dword ptr [ebp-36]
+	mov	eax,[ebp-12]
+	sub	eax,[ebp-8]
+	mov	[ebp-44],eax
+	fild	dword ptr [ebp-44]
+	fld	dword ptr [ebp-32]
+	fsub	dword ptr [ebp-24]
+	fdivrp
+	fstp	dword ptr [ebp-40]
+	push	dword ptr [ebp-40]
+	push	dword ptr [ebp-36]
+	push	dword ptr [ebp-32]
+	push	dword ptr [ebp-28]
+	push	dword ptr [ebp-24]
+	push	dword ptr [ebp-20]
+	push	dword ptr [ebp-16]
+	push	dword ptr [ebp-12]
+	push	dword ptr [ebp-8]
+	call	__rasterize_horiz_line__unordered
+	add	esp,36
+	inc	dword ptr [ebp-16]
+	jmp	label0009
+label000a:
+	pop	ebx
+	pop	edi
+	add	esp,44
+	pop	ebp
+	ret
+__rasterize_triangle_2i endp	
+
+__clip_on_plain proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,60
+	push	edi
+	push	esi
+	push	ebx
+	mov	edi,[ebp+8]
+	mov	dword ptr [edi+192],0
+	mov	esi,[ebp+12]
+	mov	ebx,[ebp+12]
+	add	ebx,24
+label0001:
+	mov	eax,[ebp+12]
+	mov	ecx,[eax+192]
+	imul	ecx,24
+	mov	eax,[ebp+12]
+	add	eax,ecx
+	cmp	eax,ebx
+	jle	label0002
+	push	dword ptr [ebp+16]
+	push	esi
+	lea	eax,[ebp-24]
+	push	eax
+	call	_vec4f_subtract
+	add	esp,12
+	push	dword ptr [ebp+20]
+	lea	eax,[ebp-24]
+	push	eax
+	call	_vec4f_dot
+	add	esp,8
+	fstp	dword ptr [ebp-52]
+	push	dword ptr [ebp+16]
+	push	ebx
+	lea	eax,[ebp-24]
+	push	eax
+	call	_vec4f_subtract
+	add	esp,12
+	push	dword ptr [ebp+20]
+	lea	eax,[ebp-24]
+	push	eax
+	call	_vec4f_dot
+	add	esp,8
+	fstp	dword ptr [ebp-56]
+	fldz
+	fld	dword ptr [ebp-52]
+	fucomip	st,st(1)
+	fstp	st
+	jb	label0003
+	mov	eax,[edi+192]
+	inc	dword ptr [edi+192]
+	imul	eax,24
+	mov	ecx,edi
+	add	ecx,eax
+	mov	eax,[esi]
+	mov	edx,[esi+4]
+	mov	[ecx],eax
+	mov	[ecx+4],edx
+	mov	eax,[esi+8]
+	mov	edx,[esi+12]
+	mov	[ecx+8],eax
+	mov	[ecx+12],edx
+	mov	eax,[esi+16]
+	mov	edx,[esi+20]
+	mov	[ecx+16],eax
+	mov	[ecx+20],edx
+label0003:
+	fldz
+	fld	dword ptr [ebp-52]
+	fucomip	st,st(1)
+	fstp	st
+	jbe	label0006
+	fldz
+	fld	dword ptr [ebp-56]
+	fucomip	st,st(1)
+	fstp	st
+	jb	label0005
+label0006:
+	fldz
+	fld	dword ptr [ebp-56]
+	fucomip	st,st(1)
+	fstp	st
+	jb	label0004
+	fldz
+	fld	dword ptr [ebp-52]
+	fucomip	st,st(1)
+	fstp	st
+	jae	label0004
+label0005:
+	push	esi
+	push	dword ptr [ebp+16]
+	lea	eax,[ebp-24]
+	push	eax
+	call	_vec4f_subtract
+	add	esp,12
+	push	esi
+	push	ebx
+	lea	eax,[ebp-40]
+	push	eax
+	call	_vec4f_subtract
+	add	esp,12
+	push	dword ptr [ebp+20]
+	lea	eax,[ebp-24]
+	push	eax
+	call	_vec4f_dot
+	add	esp,8
+	fstp	qword ptr [esp-8]
+	sub	esp,8
+	push	dword ptr [ebp+20]
+	lea	eax,[ebp-40]
+	push	eax
+	call	_vec4f_dot
+	add	esp,8
+	fstp	qword ptr [esp-8]
+	fld	qword ptr [esp]
+	fld	qword ptr [esp-8]
+	add	esp,8
+	fdivp
+	fstp	dword ptr [ebp-60]
+	push	dword ptr [ebp-60]
+	lea	eax,[ebp-40]
+	push	eax
+	call	_vec4f_mul
+	add	esp,8
+	lea	eax,[ebp-40]
+	push	eax
+	push	esi
+	mov	eax,[edi+192]
+	imul	eax,24
+	mov	ecx,edi
+	add	ecx,eax
+	push	ecx
+	call	_vec4f_add
+	add	esp,12
+	mov	eax,16
+	add	eax,esi
+	push	eax
+	mov	eax,16
+	add	eax,ebx
+	push	eax
+	lea	eax,[ebp-48]
+	push	eax
+	call	_vec2f_subtract
+	add	esp,12
+	push	dword ptr [ebp-60]
+	lea	eax,[ebp-48]
+	push	eax
+	call	_vec2f_mul
+	add	esp,8
+	lea	eax,[ebp-48]
+	push	eax
+	mov	eax,16
+	add	eax,esi
+	push	eax
+	mov	eax,[edi+192]
+	imul	eax,24
+	mov	ecx,edi
+	add	ecx,eax
+	add	ecx,16
+	push	ecx
+	call	_vec2f_add
+	add	esp,12
+	inc	dword ptr [edi+192]
+label0004:
+	add	esi,24
+	add	ebx,24
+	jmp	label0001
+label0002:
+	mov	eax,[edi+192]
+	inc	dword ptr [edi+192]
+	imul	eax,24
+	mov	ecx,edi
+	add	ecx,eax
+	mov	eax,[edi]
+	mov	edx,[edi+4]
+	mov	[ecx],eax
+	mov	[ecx+4],edx
+	mov	eax,[edi+8]
+	mov	edx,[edi+12]
+	mov	[ecx+8],eax
+	mov	[ecx+12],edx
+	mov	eax,[edi+16]
+	mov	edx,[edi+20]
+	mov	[ecx+16],eax
+	mov	[ecx+20],edx
+	pop	ebx
+	pop	esi
+	pop	edi
+	add	esp,60
+	pop	ebp
+	ret
+__clip_on_plain endp	
+
+__clip_poligon proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,196
+	push	edi
+	mov	edi,[ebp+8]
+	lea	eax,dword ptr [__clip_z_far_norm]
+	push	eax
+	lea	eax,dword ptr [__clip_z_far_base]
+	push	eax
+	push	edi
+	lea	eax,[ebp-196]
+	push	eax
+	call	__clip_on_plain
+	add	esp,16
+	lea	eax,dword ptr [__clip_z_near_norm]
+	push	eax
+	lea	eax,dword ptr [__clip_z_near_base]
+	push	eax
+	lea	eax,[ebp-196]
+	push	eax
+	push	edi
+	call	__clip_on_plain
+	add	esp,16
+	lea	eax,dword ptr [__clip_plane_left_norm]
+	push	eax
+	lea	eax,dword ptr [__clip_plane_left_base]
+	push	eax
+	push	edi
+	lea	eax,[ebp-196]
+	push	eax
+	call	__clip_on_plain
+	add	esp,16
+	lea	eax,dword ptr [__clip_plane_right_norm]
+	push	eax
+	lea	eax,dword ptr [__clip_plane_right_base]
+	push	eax
+	lea	eax,[ebp-196]
+	push	eax
+	push	edi
+	call	__clip_on_plain
+	add	esp,16
+	lea	eax,dword ptr [__clip_plane_top_norm]
+	push	eax
+	lea	eax,dword ptr [__clip_plane_top_base]
+	push	eax
+	push	edi
+	lea	eax,[ebp-196]
+	push	eax
+	call	__clip_on_plain
+	add	esp,16
+	lea	eax,dword ptr [__clip_plane_bottom_norm]
+	push	eax
+	lea	eax,dword ptr [__clip_plane_bottom_base]
+	push	eax
+	lea	eax,[ebp-196]
+	push	eax
+	push	edi
+	call	__clip_on_plain
+	add	esp,16
+	cmp	dword ptr [edi+192],1
+	setg	al
+	movzx	eax,al
+	pop	edi
+	add	esp,196
+	pop	ebp
+	ret
+__clip_poligon endp	
+
+__transform_to_screen_space proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,24
+	push	edi
+	mov	edi,[ebp+8]
+	lea	eax,dword ptr [__viewport_matrix]
+	push	eax
+	push	dword ptr [ebp+12]
+	lea	eax,[ebp-16]
+	push	eax
+	call	_matrix4f_transform
+	add	esp,12
+	lea	eax,[ebp-16]
+	add	eax,12
+	fld1
+	fdiv	dword ptr [eax]
+	fstp	dword ptr [ebp-20]
+	fld	dword ptr [ebp-16]
+	fmul	dword ptr [ebp-20]
+	fistp	dword ptr [ebp-24]
+	mov	eax,[ebp-24]
+	mov	[edi],eax
+	lea	eax,[ebp-16]
+	add	eax,4
+	fld	dword ptr [eax]
+	fmul	dword ptr [ebp-20]
+	fistp	dword ptr [ebp-24]
+	mov	eax,[ebp-24]
+	mov	[edi+4],eax
+	cmp	dword ptr [edi],0
+	jl	label0001
+	mov	eax,[edi]
+	cmp	eax,dword ptr [__width]
+	jge	label0001
+	cmp	dword ptr [edi+4],0
+	jl	label0001
+	mov	eax,[edi+4]
+	cmp	eax,dword ptr [__height]
+	jl	label0000
+label0001:
+	mov	dword ptr ds:[0],0
+label0000:
+	pop	edi
+	add	esp,24
+	pop	ebp
+	ret
+__transform_to_screen_space endp	
+
+__rasterize_polygon_4f proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,136
+	push	edi
+	push	esi
+	push	ebx
+	mov	edi,[ebp+8]
+	push	edi
+	call	__clip_poligon
+	add	esp,4
+	cmp	eax,0
+	jne	label0000
+	pop	ebx
+	pop	esi
+	pop	edi
+	add	esp,136
+	pop	ebp
+	ret
+label0000:
+	cmp	dword ptr [edi+192],8
+	jle	label0001
+	mov	dword ptr ds:[0],0
+label0001:
+	mov	esi,0
+label0003:
+	mov	eax,[edi+192]
+	cmp	eax,esi
+	jle	label0004
+	mov	eax,edi
+	mov	ecx,esi
+	imul	ecx,24
+	add	eax,ecx
+	push	eax
+	lea	eax,[ebp-132]
+	mov	ecx,esi
+	sal	ecx,4
+	add	eax,ecx
+	push	eax
+	call	__transform_to_screen_space
+	add	esp,8
+	lea	eax,[ebp-132]
+	mov	ecx,esi
+	sal	ecx,4
+	add	eax,ecx
+	add	eax,8
+	mov	ecx,edi
+	mov	edx,esi
+	imul	edx,24
+	add	ecx,edx
+	add	ecx,16
+	mov	edx,[ecx]
+	mov	ebx,[ecx+4]
+	mov	[eax],edx
+	mov	[eax+4],ebx
+	inc	esi
+	jmp	label0003
+label0004:
+	mov	esi,2
+label0006:
+	mov	eax,[edi+192]
+	dec	eax
+	cmp	eax,esi
+	jle	label0007
+	lea	eax,[ebp-132]
+	mov	ecx,esi
+	sal	ecx,4
+	add	eax,ecx
+	push	eax
+	mov	eax,esi
+	dec	eax
+	sal	eax,4
+	lea	ecx,[ebp-132]
+	add	ecx,eax
+	push	ecx
+	lea	eax,[ebp-132]
+	push	eax
+	call	__rasterize_triangle_2i
+	add	esp,12
+	inc	esi
+	jmp	label0006
+label0007:
+	pop	ebx
+	pop	esi
+	pop	edi
+	add	esp,136
+	pop	ebp
+	ret
+__rasterize_polygon_4f endp	
+
+__transform_to_projection_space proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,16
+	push	edi
+	mov	edi,[ebp+12]
+	fld1
+	fstp	dword ptr [esp-4]
+	sub	esp,4
+	push	dword ptr [edi+8]
+	push	dword ptr [edi+4]
+	push	dword ptr [edi]
+	lea	eax,[ebp-16]
+	push	eax
+	call	_vec4f_assign
+	add	esp,20
+	lea	eax,dword ptr [__mvproj_matrix]
+	push	eax
+	lea	eax,[ebp-16]
+	push	eax
+	push	dword ptr [ebp+8]
+	call	_matrix4f_transform
+	add	esp,12
+	pop	edi
+	add	esp,16
+	pop	ebp
+	ret
+__transform_to_projection_space endp	
+
+_rasterizer_triangle3f proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,196
+	push	ebx
+	push	dword ptr [ebp+8]
+	lea	eax,[ebp-196]
+	push	eax
+	call	__transform_to_projection_space
+	add	esp,8
+	lea	eax,[ebp-196]
+	add	eax,16
+	mov	ecx,[ebp+20]
+	mov	edx,[ecx]
+	mov	ebx,[ecx+4]
+	mov	[eax],edx
+	mov	[eax+4],ebx
+	push	dword ptr [ebp+12]
+	lea	eax,[ebp-196]
+	add	eax,24
+	push	eax
+	call	__transform_to_projection_space
+	add	esp,8
+	lea	eax,[ebp-196]
+	add	eax,24
+	add	eax,16
+	mov	ecx,[ebp+24]
+	mov	edx,[ecx]
+	mov	ebx,[ecx+4]
+	mov	[eax],edx
+	mov	[eax+4],ebx
+	push	dword ptr [ebp+16]
+	lea	eax,[ebp-196]
+	add	eax,48
+	push	eax
+	call	__transform_to_projection_space
+	add	esp,8
+	lea	eax,[ebp-196]
+	add	eax,48
+	add	eax,16
+	mov	ecx,[ebp+28]
+	mov	edx,[ecx]
+	mov	ebx,[ecx+4]
+	mov	[eax],edx
+	mov	[eax+4],ebx
+	lea	eax,[ebp-196]
+	add	eax,72
+	mov	ecx,[ebp-196]
+	mov	edx,[ebp-192]
+	mov	[eax],ecx
+	mov	[eax+4],edx
+	mov	ecx,[ebp-188]
+	mov	edx,[ebp-184]
+	mov	[eax+8],ecx
+	mov	[eax+12],edx
+	mov	ecx,[ebp-180]
+	mov	edx,[ebp-176]
+	mov	[eax+16],ecx
+	mov	[eax+20],edx
+	lea	eax,[ebp-196]
+	add	eax,192
+	mov	dword ptr [eax],4
+	lea	eax,[ebp-196]
+	push	eax
+	call	__rasterize_polygon_4f
+	add	esp,4
+	pop	ebx
+	add	esp,196
+	pop	ebp
+	ret
+_rasterizer_triangle3f endp	
+
+end

@@ -271,6 +271,8 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
             if (!pseudoregs_map[reg].reg_first_write) {
                 pseudoregs_map[reg].reg_first_write = insn;
+            } else {
+                pseudoregs_map[reg].reg_changes_value = TRUE;
             }
         }
 
@@ -688,6 +690,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         }
 
         // Ёмулируем псевдоинструкции, дл€ этого вставл€ем реальные инструкции перед ними.
+        // TODO: push_all/pop_all должны сохран€ть только те регистры, которые €вл€ютс€ живыми на момент call-а.
         if (insn->in_code == x86insn_push_all) {
             _emulate_push_all(function, insn, type, regmap, pseudoregs_map, saved_real_registers_map);
         } else if (insn->in_code == x86insn_pop_all) {
@@ -695,7 +698,8 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         }
     }
 
-    ASSERT(regmap->real_registers_cnt == 0);
+    // ≈сли последн€€ инструкци€ - jmp, могут оставатьс€ живые регистры; иначе их не должно быть.
+    ASSERT(regmap->real_registers_cnt == 0 || function->func_binary_code_end->in_code == x86insn_jmp);
 }
 
 static void _handle_pseudo_instructions(function_desc *function)
