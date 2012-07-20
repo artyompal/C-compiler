@@ -669,10 +669,10 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         }
 
         // Освобождаем реальные регистры от псевдорегистров, которые больше не нужны.
-        for (i = 0; i < registers_count; i++) {
-            reg = pseudoregs[i];
+        for (i = 0; i < X86_MAX_REG; i++) {
+            reg = regmap->real_registers_map[i];
 
-            if (!x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
+            if (reg != -1 && !x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
                 pseudoregs_map[reg].reg_status = register_free;
                 _free_real_register(regmap, pseudoregs_map[reg].reg_location);
             }

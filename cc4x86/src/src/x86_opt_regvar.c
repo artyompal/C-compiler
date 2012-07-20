@@ -344,6 +344,7 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
     }
 
     last_pseudo_register                    = regstat->count+1;
+    function->func_pseudoregs_count[type]++;
     function->func_start_of_regvars[type]   = last_pseudo_register;
     reg_var                                 = _register_vars_list.first;
 
@@ -351,6 +352,7 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
         // Создаём регистровые переменные, начиная с более приоритетных.
         for (; reg_var && free_registers; reg_var = reg_var->next, free_registers--) {
             reg_var->pseudo_reg = last_pseudo_register++;
+            function->func_pseudoregs_count[type]++;
             _replace_variable_with_register(function, reg_var, type);
         }
 
