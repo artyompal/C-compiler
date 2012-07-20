@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cc4x86", "cc4x86\src\cc4x86.vcxproj", "{F1E3DDFC-CABE-4114-B0E1-7E32AA9AA5C3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common_codegen", "common_codegen\src\common_codegen.vcxproj", "{0AA734BB-3DC2-4059-9E10-AC18E727F148}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "frontend_cc", "frontend_cc\src\frontend_cc.vcxproj", "{24FAF309-B755-4928-AF48-7D00601E9702}"
 EndProject
 Global
@@ -17,10 +15,6 @@ Global
 		{F1E3DDFC-CABE-4114-B0E1-7E32AA9AA5C3}.Debug|Win32.Build.0 = Debug|Win32
 		{F1E3DDFC-CABE-4114-B0E1-7E32AA9AA5C3}.Release|Win32.ActiveCfg = Release|Win32
 		{F1E3DDFC-CABE-4114-B0E1-7E32AA9AA5C3}.Release|Win32.Build.0 = Release|Win32
-		{0AA734BB-3DC2-4059-9E10-AC18E727F148}.Debug|Win32.ActiveCfg = Debug|Win32
-		{0AA734BB-3DC2-4059-9E10-AC18E727F148}.Debug|Win32.Build.0 = Debug|Win32
-		{0AA734BB-3DC2-4059-9E10-AC18E727F148}.Release|Win32.ActiveCfg = Release|Win32
-		{0AA734BB-3DC2-4059-9E10-AC18E727F148}.Release|Win32.Build.0 = Release|Win32
 		{24FAF309-B755-4928-AF48-7D00601E9702}.Debug|Win32.ActiveCfg = Debug|Win32
 		{24FAF309-B755-4928-AF48-7D00601E9702}.Debug|Win32.Build.0 = Debug|Win32
 		{24FAF309-B755-4928-AF48-7D00601E9702}.Release|Win32.ActiveCfg = Release|Win32

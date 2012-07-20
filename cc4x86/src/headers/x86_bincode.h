@@ -199,8 +199,9 @@ typedef enum x86_instruction_code_decl {
     x86insn_sse_store_int,
     x86insn_sse_float2double,
     x86insn_sse_double2float,
-
     x86insn_sse_movss,
+    x86insn_sse_movsd,
+
     x86insn_sse_addss,
     x86insn_sse_subss,
     x86insn_sse_mulss,
@@ -208,7 +209,6 @@ typedef enum x86_instruction_code_decl {
     x86insn_sse_comiss,
     x86insn_sse_xorps,
 
-    x86insn_sse_movsd,
     x86insn_sse_addsd,
     x86insn_sse_subsd,
     x86insn_sse_mulsd,
@@ -219,7 +219,6 @@ typedef enum x86_instruction_code_decl {
     // Инструкции для внутреннего пользования.
     // арифметические модифицирующие:
     x86insn_imul_const,
-    x86insn_int_xchg,
     x86insn_lea,
     x86insn_movsx,
     x86insn_movzx,
@@ -269,21 +268,25 @@ typedef struct x86_instruction_decl {
                                         || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_pop)
 #define IS_SET_INSN(INSN)               ((INSN) >= x86insn_int_sete && (INSN) <= x86insn_int_seta)
 #define IS_JMP_INSN(INSN)               ((INSN) >= x86insn_jmp && (INSN) <= x86insn_ja)
-#define IS_MODIFYING_INSN(INSN)         ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_seta \
-                                        || (INSN) >= x86insn_sse_load_int && (INSN) <= x86insn_sse_divss \
-                                        || (INSN) >= x86insn_sse_xorps && (INSN) <= x86insn_sse_divsd \
-                                        || (INSN) >= x86insn_sse_xorpd && (INSN) <= x86insn_movzx \
-                                        || (INSN) == x86insn_pop || (INSN) == x86insn_cdq \
-                                        || (INSN) == x86insn_xor_edx_edx || (INSN) == x86insn_read_retval)
-#define IS_DWORD_DEFINING_INSN(INSN)    ((INSN) == x86insn_int_mov || (INSN) == x86insn_lea \
-                                        || (INSN) == x86insn_imul_const || (INSN) == x86insn_movzx \
-                                        || (INSN) == x86insn_movsx || (INSN) == x86insn_fpu_float2int \
-                                        || (INSN) == x86insn_read_retval || IS_SET_INSN((INSN)) \
+#define IS_JCC_INSN(INSN)               ((INSN) > x86insn_jmp && (INSN) <= x86insn_ja)
+
+#define IS_MODIFYING_INSN(INSN)         ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_not \
+                                        || (INSN) >= x86insn_int_add && (INSN) <= x86insn_int_or \
+                                        || (INSN) >= x86insn_sse_addss && (INSN) <= x86insn_sse_xorpd)
+
+#define IS_DWORD_DEFINING_INSN(INSN)    ((INSN) == x86insn_int_mov || IS_SET_INSN((INSN)) \
+                                        || (INSN) == x86insn_fpu_float2int \
+                                        || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \
+                                        || (INSN) == x86insn_pop || (INSN) == x86insn_read_retval \
                                         || (INSN) == x86insn_cdq || (INSN) == x86insn_xor_edx_edx \
+                                        || (INSN) == x86insn_read_retval \
                                         || (INSN) == x86insn_sse_store_int)
-#define IS_FLOAT_DEFINING_INSN(INSN)    ((INSN) == x86insn_sse_movss || (INSN) == x86insn_sse_movsd \
-                                        || (INSN) == x86insn_sse_double2float || (INSN) == x86insn_sse_float2double \
-                                        || (INSN) == x86insn_read_retval || (INSN) == x86insn_sse_load_int)
+#define IS_FLOAT_DEFINING_INSN(INSN)    ((INSN) == x86insn_sse_load_int \
+                                        || (INSN) >= x86insn_sse_float2double && (INSN) <= x86insn_sse_movsd \
+                                        || (INSN) == x86insn_read_retval)
+#define IS_DEFINING_INSN(INSN, TYPE)    ((TYPE) == x86op_dword && IS_DWORD_DEFINING_INSN(INSN) || (TYPE) == x86op_float && IS_FLOAT_DEFINING_INSN(INSN))
+#define IS_VOLATILE_INSN(INSN, TYPE)    (IS_DEFINING_INSN(INSN, TYPE) || IS_MODIFYING_INSN(INSN))
+
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
 
 #define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)
@@ -315,12 +318,14 @@ typedef struct x86_instruction_decl {
 
 void    bincode_extract_pseudoregs_from_operand         (x86_operand *op, x86_operand_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_pseudoregs_from_insn            (x86_instruction *insn, x86_operand_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-void    bincode_extract_pseudoregs_from_insn_wo_dupes   (x86_instruction *insn, x86_operand_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_from_insn_wo_dupes   (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_real_registers_from_insn        (x86_instruction *insn, x86_operand_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 BOOL    bincode_insn_contains_register                  (x86_instruction *insn, x86_operand_type type, int reg);
 BOOL    bincode_operand_contains_register               (x86_operand *op, x86_operand_type type, int reg);
-void    bincode_extract_pseudoregs_read_by_insn         (x86_instruction *insn, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-void    bincode_extract_pseudoregs_written_by_insn      (x86_instruction *insn, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+
+void    bincode_extract_pseudoregs_read_by_insn         (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_modified_by_insn     (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_overwritten_by_insn  (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 
 void    bincode_create_operand_from_int_constant        (x86_operand *op, x86_operand_type type, int constant);
 void    bincode_create_operand_from_register            (x86_operand *op, x86_operand_type type, int reg);

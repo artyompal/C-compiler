@@ -209,7 +209,7 @@ static void _generate_convert_int2float(x86_operand *res, x86_operand *op)
 {
     ASSERT(OP_IS_INT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
-    if (option_use_sse2) {
+    if (option_sse2) {
         bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
         unit_push_binary_instruction(x86insn_sse_load_int, res, op);
     } else {
@@ -231,7 +231,7 @@ static void _generate_convert_float2int(x86_operand *res, x86_operand *op)
     ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
     bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
 
-    if (option_use_sse2) {
+    if (option_sse2) {
         if (OP_IS_ADDRESS(*op)) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_float);
             unit_push_binary_instruction(x86insn_sse_movss, &tmp, op);
@@ -253,7 +253,7 @@ static void _generate_convert_float2double(x86_operand *res, x86_operand *op)
 {
     ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
-    if (option_use_sse2) {
+    if (option_sse2) {
         bincode_create_operand_and_alloc_pseudoreg(res, x86op_double);
         unit_push_binary_instruction(x86insn_sse_float2double, res, op);
     } else {
@@ -272,7 +272,7 @@ static void _generate_convert_double2float(x86_operand *res, x86_operand *op)
 {
     ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
-    if (option_use_sse2) {
+    if (option_sse2) {
         bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
         unit_push_binary_instruction(x86insn_sse_double2float, res, op);
     } else {
@@ -385,7 +385,7 @@ static void _generate_common_unary_arithm_expr(expression *expr, x86_operand *re
     } else {
         ASSERT(expr->data.arithm.opcode == op_neg);
 
-        if (option_use_sse2) {
+        if (option_sse2) {
             if (op->op_loc == x86loc_address) {
                 bincode_create_operand_and_alloc_pseudoreg(res, op->op_type);
                 unit_push_binary_instruction(ENCODE_SSE_MOV(op->op_type), res, op);
@@ -759,7 +759,7 @@ static void _generate_binary_arithm_expr(expression *expr, x86_operand *res)
         x86_intrinsic_static_memcpy(_curr_func, res, &op1, &op2, type_calculate_sizeof(expr->expr_type));
     } else if (is_int_op) {
         _generate_int_binary_expr(expr, res, &op1, &op2);
-    } else if (!option_use_sse2) {
+    } else if (!option_sse2) {
         _generate_fpu_binary_expr(expr, res, &op1, &op2, fpu_invert);
     } else {
         _generate_sse_binary_expr(expr, res, &op1, &op2);
@@ -853,7 +853,7 @@ static void _load_symbol(symbol *sym, data_type *type, x86_operand *res)
 
 static x86_instruction_code _encode_fpu_constant(double val)
 {
-    if (option_use_sse2) {
+    if (option_sse2) {
         return x86insn_count;
     } else {
         return bincode_encode_float_constant(val);
@@ -896,7 +896,7 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res)
         break;
 
     case code_expr_float_constant:
-        if (option_use_sse2) {
+        if (option_sse2) {
             _load_symbol(expr->data.float_const.sym, expr->expr_type, &tmp);
             bincode_create_operand_and_alloc_pseudoreg(res, bincode_encode_type(expr->expr_type));
             unit_push_binary_instruction(ENCODE_SSE_MOV(res->op_type), res, &tmp);
@@ -1018,7 +1018,7 @@ static void _generate_conditional_jump(expression *condition, int destination, B
                 } else {
                     unit_push_binary_instruction(x86insn_int_cmp, &op1, &op2);
                 }
-            } else if (option_use_sse2) {
+            } else if (option_sse2) {
                 if (op1.op_loc == x86loc_address && op2.op_loc == x86loc_address) {
                     bincode_create_operand_and_alloc_pseudoreg(&tmp, op1.op_type);
                     unit_push_binary_instruction(ENCODE_SSE_MOV(op1.op_type), &tmp, &op1);
@@ -1198,7 +1198,7 @@ AUX_CASSERT(sizeof(_curr_func->func_pseudoregs_count)/sizeof(int) == X86_REGISTE
 
 void x86_codegen_do_function(function_desc *function)
 {
-    int type;
+    x86_operand_type type;
 
     _curr_func   = function;
 

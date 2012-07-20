@@ -5,7 +5,7 @@ use warnings;
 
 sub build_sln {
 	my ($solution, $config) = @_;
-	system("c:\\bin\\msvs8\\Common7\\IDE\\devenv $solution /build $config") == 0
+	system("d:\\bin\\msvs10\\Common7\\IDE\\devenv $solution /build $config") == 0
 		or die("build failed");
 }
 
@@ -24,7 +24,7 @@ sub run_test {
 	system("copy current_test.asm ..\\$test_asm_name");
 	system("echo const char *test_name = \"$test_name\"; >test_name.c");
 
-	system("c:\\bin\\msvs8\\VC\\bin\\ml /Fl /nologo /c /Zf current_test.asm");
+	system("d:\\bin\\msvs10\\VC\\bin\\ml /Fl /nologo /c /Zf current_test.asm");
 	build_sln("current_test_cc.sln", "debug");
 	system("current_test_cc.exe >out.txt");
 
@@ -42,11 +42,11 @@ sub run_test2{
 	return
 		run_test($test_name, "debug", "") &&
 		run_test($test_name, "debug", "--optimize") &&
-		run_test($test_name, "debug", "--optimize --use-sse2") &&
+		run_test($test_name, "debug", "--optimize --sse2") &&
 		run_test($test_name, "release", "") &&
 		run_test($test_name, "release", "--optimize --no-inline") &&
 		run_test($test_name, "release", "--optimize") &&
-		run_test($test_name, "release", "--optimize --use-sse2");
+		run_test($test_name, "release", "--optimize --sse2");
 }
 
 

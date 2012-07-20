@@ -7,7 +7,7 @@ sub build_compilers2 {
 	my $config = shift;
 
 	print "building $config configuration...\n";
-	system("c:\\bin\\msvs8\\Common7\\IDE\\devenv compilers2.sln /build $config") == 0
+	system("d:\\bin\\msvs10\\Common7\\IDE\\devenv compilers2.sln /build $config") == 0
 		or die("build failed");
 }
 
