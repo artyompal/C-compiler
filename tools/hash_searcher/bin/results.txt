@@ -13,3 +13,5 @@
 248035457   33  -- 30 matched - never seen (32 total)
 36039211    37  -- 31 matched - never seen (32 total)
 507988306   37  -- ideal match - never seen
+507988306	37	-- ideal match
+507988307	37	-- 4 matched (32 total)
