@@ -1,0 +1,176 @@
+
+=======================================================
+        movss   dword ptr [esp-4],xmm2
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm3
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm4
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm5
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm6
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm7
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm3
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm2
+        sub     esp,4
+        push    dword ptr [ebp-408]
+        push    dword ptr [ebp-412]
+        push    dword ptr [ebp-416]
+        push    dword ptr [ebp-420]
+        push    dword ptr [ebp-424]
+        call    __rasterize_horiz_line
+        add     esp,28
+        movss   xmm7,dword ptr [esp]
+        add     esp,4
+        movss   xmm6,dword ptr [esp]
+        add     esp,4
+        movss   xmm5,dword ptr [esp]
+        add     esp,4
+        movss   xmm4,dword ptr [esp]
+        add     esp,4
+        movss   xmm3,dword ptr [esp]
+        add     esp,4
+        movss   xmm2,dword ptr [esp]
+        add     esp,4
+
+=======================================================
+
+ надо компактифицировать выделенные в стеке переменные.
+
+=======================================================
+ WTF???
+        mov     eax,[ebp+20]
+        mov     [ebp-120],eax
+        lea     eax,[ebp-24]
+        mov     [ebp-124],eax
+        mov     eax,[ebp-124]
+        mov     ecx,[ebp-120]
+        movss   xmm0,dword ptr [eax+4]
+        mulss   xmm0,dword ptr [ecx+4]
+        mov     eax,[ebp-124]
+        mov     ecx,[ebp-120]
+        movss   xmm1,dword ptr [eax]
+        mulss   xmm1,dword ptr [ecx]
+        addss   xmm1,xmm0
+        mov     eax,[ebp-124]
+        mov     ecx,[ebp-120]
+        movss   xmm0,dword ptr [eax+8]
+        mulss   xmm0,dword ptr [ecx+8]
+        addss   xmm1,xmm0
+        mov     eax,[ebp-124]
+        mov     ecx,[ebp-120]
+        movss   xmm0,dword ptr [eax+12]
+        mulss   xmm0,dword ptr [ecx+12]
+=======================================================
+
+
+=======================================================
+__rasterize_horiz_line proc
+        push    ebp
+        mov     ebp,esp
+        sub     esp,64
+        push    edi
+        push    esi
+        push    ebx
+        movss   xmm7,dword ptr [ebp+24]
+        movss   xmm6,dword ptr [ebp+20]
+        mov     edi,dword ptr [__pitch]
+        imul    edi,[ebp+16]
+        add     edi,dword ptr [__videomem]
+        mov     eax,[ebp+8]
+        sal     eax,2
+        add     edi,eax
+        mov     esi,[ebp+12]
+        sal     esi,2
+        add     esi,edi
+        mov     eax,[ebp+8]
+        sal     eax,2
+        sub     esi,eax
+label0000:
+; start of inline function _tex2d
+        movss   xmm5,xmm7                                 ;1 этого вообще не должно быть,xmm4/5 тут не нужны для вычислений
+        movss   xmm4,xmm6                                 ;1 они должны были быть убраны, как неиспользуемые копии.
+        mov     eax,dword ptr [__texture_width]           ;2
+        dec     eax                                       ;2 инвариант цикла
+        cvtsi2ss        xmm0,eax                          ;2
+        mulss   xmm0,xmm4                                 ;
+        cvttss2si       ebx,xmm0                          ;
+        mov     eax,dword ptr [__texture_height]          ;3 инвариант цикла
+        dec     eax                                       ;3
+        cvtsi2ss        xmm0,eax                          ;3
+        mulss   xmm0,xmm5                                 ;
+        cvttss2si       eax,xmm0                          ;
+        mov     [ebp-60],eax                              ;4 это могло быть локальной регистровой переменной
+        mov     eax,[ebp-60]                              ;4 (используется только здесь)
+        imul    eax,dword ptr [__texture_width]           ;
+        add     eax,ebx                                   ;
+        sal     eax,2                                     ;
+        add     eax,dword ptr [__texture_data]            ;
+        mov     ecx,[eax]                                 ;5
+        mov     [ebp-64],ecx                              ;5
+; end of inline function _tex2d                           ;5 аналогично, нужна локальная регистровая переменная
+        mov     edx,[ebp-64]                              ;5
+        mov     eax,edx                                   ;
+        sar     eax,24                                    ;
+        and     eax,255                                   ;
+        mov     [ebp-40],eax                              ;6 аналогично, нужна локальная регистровая переменная
+        cmp     dword ptr [ebp-40],0                      ;7 нужно не делать cmp/test, когда результат уже есть во флагах
+        je      label0003                                 ;
+        cvtsi2ss        xmm3,dword ptr [ebp-40]           ;6
+        divss   xmm3,dword ptr [___unnamed_float_6]       ;8 деление на константу есть инвариант цикла;
+        mov     ecx,[edi]                                 ;  кроме того, в данном случае его можно заменить на умножение.
+        mov     eax,ecx                                   ;
+        and     eax,65280                                 ;
+        sar     eax,8                                     ;
+        mov     [ebp-32],eax                              ;9 (9,a,b,c): могут быть локальными регистровыми переменными;
+        mov     eax,ecx                                   ;кроме того, они могут быть вообще устранены путём
+        and     eax,255                                   ;перестановки инструкций
+        mov     [ebp-36],eax                              ;a
+        mov     eax,edx                                   ;
+        and     eax,65280                                 ;
+        sar     eax,8                                     ;
+        mov     [ebp-20],eax                              ;b
+        mov     eax,edx                                   ;
+        and     eax,255                                   ;
+        mov     [ebp-24],eax                              ;c
+        cvtsi2ss        xmm0,dword ptr [ebp-20]           ;b
+        mulss   xmm0,xmm3                                 ;
+        cvtsi2ss        xmm1,dword ptr [ebp-32]           ;9
+        movss   xmm2,dword ptr [___unnamed_float_1]       ;
+        subss   xmm2,xmm3                                 ;
+        mulss   xmm1,xmm2                                 ;
+        addss   xmm0,xmm1                                 ;
+        cvttss2si       eax,xmm0                          ;
+        mov     [ebp-20],eax                              ;
+        cvtsi2ss        xmm0,dword ptr [ebp-24]           ;c
+        mulss   xmm0,xmm3                                 ;
+        cvtsi2ss        xmm1,dword ptr [ebp-36]           ;a
+        movss   xmm2,dword ptr [___unnamed_float_1]       ;
+        subss   xmm2,xmm3                                 ;
+        mulss   xmm1,xmm2                                 ;
+        addss   xmm0,xmm1                                 ;
+        cvttss2si       eax,xmm0                          ;
+        mov     [ebp-24],eax                              ;
+        mov     eax,[ebp-20]                              ;
+        sal     eax,8                                     ;
+        add     eax,[ebp-24]                              ;
+        mov     [edi],eax                                 ;
+label0003:
+        addss   xmm6,dword ptr [ebp+28]
+        addss   xmm7,dword ptr [ebp+32]
+        add     edi,4
+        cmp     edi,esi
+        jl      label0000
+        pop     ebx
+        pop     esi
+        pop     edi
+        add     esp,64
+        pop     ebp
+        ret
+__rasterize_horiz_line endp
+
+=======================================================
+

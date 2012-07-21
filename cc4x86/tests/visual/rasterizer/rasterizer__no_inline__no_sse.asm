@@ -926,8 +926,6 @@ __rasterize_triangle_1i proc
 	jge	label0000
 	cmp	ecx,ebx
 	jle	label0001
-	push	ecx
-	push	edx
 	push	dword ptr [ebp+40]
 	push	dword ptr [ebp+36]
 	push	dword ptr [edi+4]
@@ -937,8 +935,6 @@ __rasterize_triangle_1i proc
 	push	edx
 	call	__rasterize_horiz_line
 	add	esp,28
-	pop	edx
-	pop	ecx
 	jmp	label0004
 label0001:
 	cmp	edi,esi

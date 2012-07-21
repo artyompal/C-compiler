@@ -526,12 +526,22 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
     register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int saved_real_registers_map[X86_MAX_REG])
 {
     x86_operand op1, op2;
-    int i;
+    int i, insn_counter, reg;
+    x86_instruction *call;
+
+    for (insn_counter = 0, call = insn; call->in_code != x86insn_call; insn_counter++) {
+        call = call->in_next;
+        x86_dataflow_step_insn_forward(function, type, call);
+    }
+
+    // TODO: можно сделать у x86_dataflow_step_insn_forward параметр - число шагов, и вызывать её один раз.
 
     if (type == x86op_dword) {
-        // Нам необходимо сохранять те из регистров EAX/ECX/EDX, которые в данный момент используются.
+        // Нам нужно сохранить те из регистров EAX/ECX/EDX, которые в данный момент используются.
         for (i = 0; i <= x86reg_edx; i++) {
-            if (regmap->real_registers_map[i] != -1) {
+            reg = regmap->real_registers_map[i];
+
+            if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
                 bincode_insert_push_reg(function, insn, type, ~i);
             }
         }
@@ -539,7 +549,9 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         ASSERT(type == x86op_float);
 
         for (i = 0; i < X86_MAX_REG; i++) {
-            if (regmap->real_registers_map[i] != -1) {
+            reg = regmap->real_registers_map[i];
+
+            if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
                 if (!_is_double_register(i, regmap, pseudoregs_map)) {
                     bincode_create_operand_addr_from_esp_offset(&op1, x86op_float, -4);
                     bincode_create_operand_from_register(&op2, x86op_float, i);
@@ -555,18 +567,36 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         }
     }
 
+    for (i = 0; i < insn_counter; i++) {
+        call = call->in_prev;
+        x86_dataflow_step_insn_backward(function, type, call);
+    }
+
+    ASSERT(call->in_code == x86insn_push_all);
     memcpy(saved_real_registers_map, regmap->real_registers_map, sizeof(int)*X86_MAX_REG);
+
+    // FIXME: регистры FPU также необходимо сохранять при вызовах функций.
+    // TODO: лучше сохранять регистры в стековом фрейме, это порождает меньше инструкций.
 }
 
 static void _emulate_pop_all(function_desc *function, x86_instruction *insn, x86_operand_type type,
     register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int saved_real_registers_map[X86_MAX_REG])
 {
     x86_operand op1, op2;
-    int i;
+    int i, insn_counter, reg;
+    x86_instruction *call;
+
+    for (insn_counter = 0, call = insn; call->in_code != x86insn_call; insn_counter++) {
+        call = call->in_prev;
+        x86_dataflow_step_insn_backward(function, type, call);
+    }
 
     if (type == x86op_dword) {
         for (i = x86reg_edx; i >= 0; i--) {
-            if (saved_real_registers_map[i] != -1) {
+            reg = regmap->real_registers_map[i];
+
+            if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
+                insn_counter++;
                 bincode_insert_pop_reg(function, insn, type, ~i);
             }
         }
@@ -574,7 +604,11 @@ static void _emulate_pop_all(function_desc *function, x86_instruction *insn, x86
         ASSERT(type == x86op_float);
 
         for (i = X86_MAX_REG-1; i >= 0; i--) {
-            if (regmap->real_registers_map[i] != -1) {
+            reg = regmap->real_registers_map[i];
+
+            if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
+                insn_counter += 2;
+
                 if (!_is_double_register(i, regmap, pseudoregs_map)) {
                     bincode_create_operand_from_register(&op1, x86op_float, i);
                     bincode_create_operand_addr_from_esp_offset(&op2, x86op_float, 0);
@@ -589,6 +623,13 @@ static void _emulate_pop_all(function_desc *function, x86_instruction *insn, x86
             }
         }
     }
+
+    for (i = 0; i < insn_counter; i++) {
+        call = call->in_next;
+        x86_dataflow_step_insn_forward(function, type, call);
+    }
+
+    ASSERT(call->in_code == x86insn_pop_all);
 }
 
 static void _allocate_registers(function_desc *function, register_stat *stat, x86_operand_type type)
@@ -603,10 +644,8 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
 
 
     //
-    // Проходим по инструкциям функции и заменяем регистры.
+    // Проходим по инструкциям функции и заменяем псевдорегистры на соответствующие реальные регистры.
     // Если под псевдорегистр не выделен реальный регистр, выделяем.
-    // Потом нужно заменить все ссылки на псевдорегистры на соответствующие реальные регистры.
-    //
 
     _clear_register_map(regmap);
     x86_dataflow_prepare_function(function, type);
@@ -620,7 +659,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
     for (insn = function->func_binary_code; insn; insn = next_insn) {
         next_insn = insn->in_next;
 
-        x86_dataflow_step_to_instruction(function, type, insn);
+        x86_dataflow_step_insn_forward(function, type, insn);
 
         if (insn->in_code == x86insn_label || IS_JMP_INSN(insn->in_code)) {
             continue;
@@ -690,7 +729,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
         }
 
         // Эмулируем псевдоинструкции, для этого вставляем реальные инструкции перед ними.
-        // TODO: push_all/pop_all должны сохранять только те регистры, которые являются живыми на момент call-а.
+        // push_all/pop_all сохраняют те регистры, которые являются живыми на момент call-а.
         if (insn->in_code == x86insn_push_all) {
             _emulate_push_all(function, insn, type, regmap, pseudoregs_map, saved_real_registers_map);
         } else if (insn->in_code == x86insn_pop_all) {
@@ -769,6 +808,8 @@ static void _handle_pseudo_instructions(function_desc *function)
                 insn->in_op2.op_loc = x86loc_none;
             } else {
                 sz              = (insn->in_op1.op_type == x86op_float ? 4 : 8);
+                ASSERT(sz == insn->in_op2.data.int_val);
+
                 insn->in_code   = ENCODE_SSE_MOV(insn->in_op1.op_type);
                 insn->in_op2    = insn->in_op1;
                 ASSERT(OP_IS_REGISTER_OR_ADDRESS(insn->in_op2));
