@@ -31,10 +31,10 @@ sub run_test {
 
     open(FILE, "out.txt") or return;
 	while (<FILE>) {
-		return 0 if (/FAILED/);
+		return 1 if (/SUCCEEDED/);
 	}
 
-	return 1;
+	return 0;
 }
 
 sub run_test2{
@@ -42,6 +42,8 @@ sub run_test2{
 	return
 		run_test($test_name, "debug", "") &&
 		run_test($test_name, "debug", "--optimize") &&
+		run_test($test_name, "debug", "--optimize --no-inline") &&
+		run_test($test_name, "debug", "--optimize --sse2 --no-inline") &&
 		run_test($test_name, "debug", "--optimize --sse2") &&
 		run_test($test_name, "release", "") &&
 		run_test($test_name, "release", "--optimize --no-inline") &&

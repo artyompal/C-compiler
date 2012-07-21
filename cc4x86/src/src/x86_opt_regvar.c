@@ -312,9 +312,9 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
 
     for (; insn; insn = insn->in_next) {
         if (OP_IS_SPEC_EBP_OFFSET(insn->in_op1, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&insn->in_op1, type, var_reg);
+            bincode_create_operand_from_pseudoreg(&insn->in_op1, insn->in_op1.op_type, var_reg);
         } else if (OP_IS_SPEC_EBP_OFFSET(insn->in_op2, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&insn->in_op2, type, var_reg);
+            bincode_create_operand_from_pseudoreg(&insn->in_op2, insn->in_op1.op_type, var_reg);
         }
     }
 

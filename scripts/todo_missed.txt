@@ -17,8 +17,10 @@ x86_opt_regvar.c:   FIXME: код подсчёта числа свободных регистров является depre
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
+x86_regalloc.c:     TODO: можно сделать у x86_dataflow_step_insn_forward параметр - число шагов, и вызывать её один раз.
+x86_regalloc.c:     FIXME: регистры FPU также необходимо сохранять при вызовах функций.
+x86_regalloc.c:     TODO: лучше сохранять регистры в стековом фрейме, это порождает меньше инструкций.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
-x86_regalloc.c:     TODO: push_all/pop_all должны сохранять только те регистры, которые являются живыми на момент call-а.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);
 symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов
 expressions.c:      TODO: нужно поддержать вычитание указателей

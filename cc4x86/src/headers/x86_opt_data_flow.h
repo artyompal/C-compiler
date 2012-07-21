@@ -7,10 +7,12 @@
 #endif // _MSC_VER
 
 
-void x86_dataflow_prepare_function(function_desc *function, x86_operand_type type);
+void x86_dataflow_prepare_function          (function_desc *function, x86_operand_type type);
 
-void x86_dataflow_step_to_instruction(function_desc *function, x86_operand_type type, x86_instruction *insn);
-int  x86_dataflow_is_pseudoreg_alive_after(function_desc *function, int pseudoreg);
+void x86_dataflow_step_insn_forward         (function_desc *function, x86_operand_type type, x86_instruction *insn);
+void x86_dataflow_step_insn_backward        (function_desc *function, x86_operand_type type, x86_instruction *insn);
+
+int  x86_dataflow_is_pseudoreg_alive_after  (function_desc *function, int pseudoreg);
 
 
 #else
