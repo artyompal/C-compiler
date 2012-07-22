@@ -170,9 +170,9 @@ static void _build_alive_pseudoreg_tables(function_desc *function, x86_operand_t
     setvec_resize(&_reg_in[type], _basic_blocks.blocks_count, function->func_pseudoregs_count[type]);
     setvec_resize(&_reg_out[type], _basic_blocks.blocks_count, function->func_pseudoregs_count[type]);
 
-    set_alloc(&use, function->func_pseudoregs_count[type]); // TODO: SET_ALLOCA()
-    set_alloc(&def, function->func_pseudoregs_count[type]);
-    set_alloc(&new_in, function->func_pseudoregs_count[type]);
+    SET_ALLOCA(use, function->func_pseudoregs_count[type]);
+    SET_ALLOCA(def, function->func_pseudoregs_count[type]);
+    SET_ALLOCA(new_in, function->func_pseudoregs_count[type]);
 
     // ¬се блоки in делаем пустыми множествами.
     for (block = 0; block < _basic_blocks.blocks_count; block++)

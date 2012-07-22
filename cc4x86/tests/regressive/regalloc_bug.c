@@ -14,6 +14,6 @@ int test()
     else
         res = g(a, b);
 
-    return (res == -1 ? 0 : res);
+    return res + 1;
 }
 
