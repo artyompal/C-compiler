@@ -26,7 +26,7 @@ _g endp
 _test proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,40
+	sub	esp,36
 	push	edi
 	push	esi
 	push	ebx
@@ -41,27 +41,21 @@ _test proc
 	jmp	label0001
 label0000:
 ; start of inline function g
-	mov	dword ptr [ebp-32],3
+	mov	dword ptr [ebp-28],3
 	mov	edi,ebx
 	mov	eax,edi
-	sub	eax,[ebp-32]
-	mov	[ebp-40],eax
+	sub	eax,[ebp-28]
+	mov	[ebp-36],eax
 ; end of inline function g
-	mov	eax,[ebp-40]
+	mov	eax,[ebp-36]
 	mov	esi,eax
 label0001:
-	cmp	esi,-1
-	jne	label0002
-	mov	edi,0
-	jmp	label0003
-label0002:
-	mov	edi,esi
-label0003:
-	mov	eax,edi
+	mov	eax,1
+	add	eax,esi
 	pop	ebx
 	pop	esi
 	pop	edi
-	add	esp,40
+	add	esp,36
 	pop	ebp
 	ret
 _test endp	

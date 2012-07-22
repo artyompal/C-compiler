@@ -6,7 +6,6 @@ x86_codegen.c:      TODO: возвращать результат типа QWORD
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD + MOVSB
 x86_opt_basic.c:    FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
-x86_opt_data_flow.c:TODO: SET_ALLOCA()
 x86_opt_data_flow.c:FIXME: квадратичное время от количества базовых блоков
 x86_opt_data_flow.c:FIXME: квадратичная сложность от числа инструкций в блоке.
 x86_opt_data_flow.c:FIXME: IS_JMP_INSN???
