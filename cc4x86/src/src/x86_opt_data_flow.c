@@ -190,8 +190,7 @@ static void _build_alive_pseudoreg_tables(function_desc *function, x86_operand_t
             set_clear_to_zeros(&_reg_out[type].vec_base[block]);
             insn = _basic_blocks.blocks_base[block].block_last_insn;
 
-            if (insn->in_code != x86insn_ret && insn->in_code != x86insn_jmp)
-            {
+            if (insn->in_code != x86insn_ret && insn->in_code != x86insn_jmp) {
                 ASSERT(insn->in_next);
                 ASSERT(block+1 < _basic_blocks.blocks_count);
                 ASSERT(_basic_blocks.blocks_base[block+1].block_leader == insn->in_next);
@@ -199,33 +198,20 @@ static void _build_alive_pseudoreg_tables(function_desc *function, x86_operand_t
                 set_unite(&_reg_out[type].vec_base[block], &_reg_in[type].vec_base[block+1]);
             }
 
-            if (IS_JMP_INSN(insn->in_code))
-            {
+            if (IS_JMP_INSN(insn->in_code)) {
                 ASSERT(insn->in_op1.op_loc == x86loc_label);
                 label = insn->in_op1.data.label;
 
-                for (insn = function->func_binary_code; ; insn = insn->in_next)
-                {
-                    ASSERT(insn);
+                // Ищем метку, на которую делается переход (поиск insn по номеру метки).
+                for (insn = function->func_binary_code; insn->in_code != x86insn_label || insn->in_op1.data.label != label;)
+                    insn = insn->in_next;
 
-                    if (insn->in_code == x86insn_label && insn->in_op1.data.label == label)
-                    {
-                        ASSERT(insn->in_op1.op_loc == x86loc_label);
-                        break;
-                    }
-                }
-
+                // Ищем соответствующий базовый блок.
                 // FIXME: квадратичное время от количества базовых блоков
-                for (j = 0; ; j++)
-                {
+                for (j = 0; _basic_blocks.blocks_base[j].block_leader != insn; j++)
                     ASSERT(j < _basic_blocks.blocks_count);
 
-                    if (_basic_blocks.blocks_base[j].block_leader == insn)
-                    {
-                        set_unite(&_reg_out[type].vec_base[block], &_reg_in[type].vec_base[j]);
-                        break;
-                    }
-                }
+                set_unite(&_reg_out[type].vec_base[block], &_reg_in[type].vec_base[j]);
             }
 
 
@@ -263,24 +249,26 @@ void x86_dataflow_prepare_function(function_desc *function, x86_operand_type typ
 
 //
 // Пересчитывает _current_alive_registers для данной инструкции.
-// Эта функция требует перемещения по одной инструкции вперёд.
-void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type type, x86_instruction *current_insn)
+// Можно переместиться на несколько инструкций вперёд.
+void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type type, int count)
 {
     x86_instruction *insn;
     int j, regs_cnt, regs[MAX_REGISTERS_PER_INSN];
 
-    ASSERT(_current_insn == current_insn->in_prev);
-    _current_insn = current_insn;
+    for (j = 0; j < count; j++) {
+        _current_insn = (_current_insn ? _current_insn->in_next : function->func_binary_code);
 
-    if (_current_block+1 < _basic_blocks.blocks_count &&
-        current_insn == _basic_blocks.blocks_base[_current_block+1].block_leader)
-            _current_block++;
+        if (_current_block+1 < _basic_blocks.blocks_count &&
+            _current_insn == _basic_blocks.blocks_base[_current_block+1].block_leader) {
+                _current_block++;
+            }
+    }
 
     // Обновляем таблицу _current_alive_registers (множество псевдорегистров, активных после этой инструкции).
     // FIXME: квадратичная сложность от числа инструкций в блоке.
     set_assign(&_current_alive_registers, &_reg_out[type].vec_base[_current_block]);
 
-    for (insn = _basic_blocks.blocks_base[_current_block].block_last_insn; insn != current_insn; insn = insn->in_prev) {
+    for (insn = _basic_blocks.blocks_base[_current_block].block_last_insn; insn != _current_insn; insn = insn->in_prev) {
         // извлекаем все читаемые регистры
         bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
 
@@ -292,24 +280,26 @@ void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type ty
 
 //
 // Пересчитывает _current_alive_registers для данной инструкции.
-// Эта функция обрабатывает перемещение на одну инструкцию назад.
-void x86_dataflow_step_insn_backward(function_desc *function, x86_operand_type type, x86_instruction *current_insn)
+// Можно переместиться на несколько инструкций назад.
+void x86_dataflow_step_insn_backward(function_desc *function, x86_operand_type type, int count)
 {
     int j, regs_cnt, regs[MAX_REGISTERS_PER_INSN];
 
-    ASSERT(current_insn && _current_insn == current_insn->in_next);
-    _current_insn = current_insn;
+    for (j = 0; j < count; j++) {
+        _current_insn = _current_insn->in_prev;
+    }
 
     if (_current_block > _basic_blocks.blocks_count &&
-        current_insn->in_next == _basic_blocks.blocks_base[_current_block].block_leader)
+        _current_insn->in_next == _basic_blocks.blocks_base[_current_block].block_leader) {
             _current_block--;
+        }
 
     // Обновляем таблицу _current_alive_registers (множество псевдорегистров, активных после этой инструкции).
-    if (current_insn == _basic_blocks.blocks_base[_current_block].block_last_insn) {
+    if (_current_insn == _basic_blocks.blocks_base[_current_block].block_last_insn) {
         set_assign(&_current_alive_registers, &_reg_out[type].vec_base[_current_block]);
     } else {
         // извлекаем все читаемые регистры
-        bincode_extract_pseudoregs_read_by_insn(current_insn, type, regs, &regs_cnt);
+        bincode_extract_pseudoregs_read_by_insn(_current_insn, type, regs, &regs_cnt);
 
         // добавляем каждый регистр во множество
         for (j = 0; j < regs_cnt; j++)

@@ -67,7 +67,8 @@ if (
 	run_test2("mul_div.c") and
 	run_test2("shl_shr.c") and
 	run_test2("float.c") and
-	run_test2("float2.c")
+	run_test2("float2.c") and
+    run_test2("regalloc_bug.c")
 #	run_test2("string_literal.c") and
 #	run_test2("byte_word.c")
 ) {

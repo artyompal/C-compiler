@@ -44,18 +44,6 @@ int _get_max_register_count(register_map *regmap)
 }
 
 
-static register_map *_get_register_map(x86_operand_type type)
-{
-    switch (type) {
-    case x86op_dword:
-        return &_dword_register_map;
-    case x86op_float:
-        return &_sse_register_map;
-    default:
-        ASSERT(FALSE);
-    }
-}
-
 x86_operand_type x86_encode_register_type(x86_operand_type type)
 {
     switch (type) {
@@ -488,7 +476,7 @@ static void _reserve_special_registers(function_desc *function, x86_pseudoreg_in
 
 static BOOL _handle_byte_registers(function_desc *function, x86_instruction *insn, x86_pseudoreg_info *pseudoregs_map)
 {
-    register_map *regmap = _get_register_map(x86op_dword);
+    register_map *regmap = &_dword_register_map;
     int reg, real_reg;
 
     // SETcc с байтовым регистром. Мы должны выделить 32-битный регистр EAX/ECX/EDX/EBX,
@@ -527,14 +515,14 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
 {
     x86_operand op1, op2;
     int i, insn_counter, reg;
-    x86_instruction *call;
+    x86_instruction *pop_all;
 
-    for (insn_counter = 0, call = insn; call->in_code != x86insn_call; insn_counter++) {
-        call = call->in_next;
-        x86_dataflow_step_insn_forward(function, type, call);
+    for (insn_counter = 0, pop_all = insn; pop_all->in_code != x86insn_pop_all; insn_counter++) {
+        pop_all = pop_all->in_next;
     }
 
-    // TODO: можно сделать у x86_dataflow_step_insn_forward параметр - число шагов, и вызывать её один раз.
+    x86_dataflow_step_insn_forward(function, type, insn_counter);
+    memset(saved_real_registers_map, 0, sizeof(int)*X86_MAX_REG);
 
     if (type == x86op_dword) {
         // Нам нужно сохранить те из регистров EAX/ECX/EDX, которые в данный момент используются.
@@ -542,6 +530,7 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
             reg = regmap->real_registers_map[i];
 
             if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
+                saved_real_registers_map[i] = TRUE;
                 bincode_insert_push_reg(function, insn, type, ~i);
             }
         }
@@ -553,11 +542,13 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
 
             if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
                 if (!_is_double_register(i, regmap, pseudoregs_map)) {
+                    saved_real_registers_map[i] = 1;
                     bincode_create_operand_addr_from_esp_offset(&op1, x86op_float, -4);
                     bincode_create_operand_from_register(&op2, x86op_float, i);
                     bincode_insert_instruction(function, insn, x86insn_sse_movss, &op1, &op2);
                     bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, 4);
                 } else {
+                    saved_real_registers_map[i] = 2;
                     bincode_create_operand_addr_from_esp_offset(&op1, x86op_double, -8);
                     bincode_create_operand_from_register(&op2, x86op_double, i);
                     bincode_insert_instruction(function, insn, x86insn_sse_movsd, &op1, &op2);
@@ -567,13 +558,7 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         }
     }
 
-    for (i = 0; i < insn_counter; i++) {
-        call = call->in_prev;
-        x86_dataflow_step_insn_backward(function, type, call);
-    }
-
-    ASSERT(call->in_code == x86insn_push_all);
-    memcpy(saved_real_registers_map, regmap->real_registers_map, sizeof(int)*X86_MAX_REG);
+    x86_dataflow_step_insn_backward(function, type, insn_counter);
 
     // FIXME: регистры FPU также необходимо сохранять при вызовах функций.
     // TODO: лучше сохранять регистры в стековом фрейме, это порождает меньше инструкций.
@@ -583,20 +568,11 @@ static void _emulate_pop_all(function_desc *function, x86_instruction *insn, x86
     register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int saved_real_registers_map[X86_MAX_REG])
 {
     x86_operand op1, op2;
-    int i, insn_counter, reg;
-    x86_instruction *call;
-
-    for (insn_counter = 0, call = insn; call->in_code != x86insn_call; insn_counter++) {
-        call = call->in_prev;
-        x86_dataflow_step_insn_backward(function, type, call);
-    }
+    int i;
 
     if (type == x86op_dword) {
         for (i = x86reg_edx; i >= 0; i--) {
-            reg = regmap->real_registers_map[i];
-
-            if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
-                insn_counter++;
+            if (saved_real_registers_map[i]) {
                 bincode_insert_pop_reg(function, insn, type, ~i);
             }
         }
@@ -604,38 +580,24 @@ static void _emulate_pop_all(function_desc *function, x86_instruction *insn, x86
         ASSERT(type == x86op_float);
 
         for (i = X86_MAX_REG-1; i >= 0; i--) {
-            reg = regmap->real_registers_map[i];
-
-            if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
-                insn_counter += 2;
-
-                if (!_is_double_register(i, regmap, pseudoregs_map)) {
-                    bincode_create_operand_from_register(&op1, x86op_float, i);
-                    bincode_create_operand_addr_from_esp_offset(&op2, x86op_float, 0);
-                    bincode_insert_instruction(function, insn, x86insn_sse_movss, &op1, &op2);
-                    bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, 4);
-                } else {
-                    bincode_create_operand_from_register(&op1, x86op_double, i);
-                    bincode_create_operand_addr_from_esp_offset(&op2, x86op_double, 0);
-                    bincode_insert_instruction(function, insn, x86insn_sse_movsd, &op1, &op2);
-                    bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, 8);
-                }
+            if (saved_real_registers_map[i] == 1) {
+                bincode_create_operand_from_register(&op1, x86op_float, i);
+                bincode_create_operand_addr_from_esp_offset(&op2, x86op_float, 0);
+                bincode_insert_instruction(function, insn, x86insn_sse_movss, &op1, &op2);
+                bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, 4);
+            } else if (saved_real_registers_map[i] == 2) {
+                bincode_create_operand_from_register(&op1, x86op_double, i);
+                bincode_create_operand_addr_from_esp_offset(&op2, x86op_double, 0);
+                bincode_insert_instruction(function, insn, x86insn_sse_movsd, &op1, &op2);
+                bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, 8);
             }
         }
     }
-
-    for (i = 0; i < insn_counter; i++) {
-        call = call->in_next;
-        x86_dataflow_step_insn_forward(function, type, call);
-    }
-
-    ASSERT(call->in_code == x86insn_pop_all);
 }
 
-static void _allocate_registers(function_desc *function, register_stat *stat, x86_operand_type type)
+static void _allocate_registers(function_desc *function, register_stat *stat, register_map *regmap, x86_operand_type type)
 {
-    register_map        *regmap                 = _get_register_map(type);
-    x86_pseudoreg_info  *pseudoregs_map         = stat->ptr;
+    x86_pseudoreg_info  *pseudoregs_map = stat->ptr;
     x86_instruction     *insn, *next_insn;
     x86_register_ref    registers[MAX_REGISTERS_PER_INSN];
     int                 pseudoregs[MAX_REGISTERS_PER_INSN];
@@ -659,7 +621,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, x8
     for (insn = function->func_binary_code; insn; insn = next_insn) {
         next_insn = insn->in_next;
 
-        x86_dataflow_step_insn_forward(function, type, insn);
+        x86_dataflow_step_insn_forward(function, type, 1);
 
         if (insn->in_code == x86insn_label || IS_JMP_INSN(insn->in_code)) {
             continue;
@@ -896,11 +858,11 @@ void x86_allocate_registers(function_desc *function)
     }
 
     // Запускаем аллокатор регистров для 32-битных регистров.
-    _allocate_registers(function, &function->func_dword_regstat, x86op_dword);
+    _allocate_registers(function, &function->func_dword_regstat, &_dword_register_map, x86op_dword);
 
     if (option_sse2) {
         // Запускаем аллокатор регистров для SSE-регистров.
-        _allocate_registers(function, &function->func_sse_regstat, x86op_float);
+        _allocate_registers(function, &function->func_sse_regstat, &_sse_register_map, x86op_float);
     }
 
     // Обрабатываем псевдо-инструкции и сохраняем изменённые регистры EBX/ESI/EDI.
