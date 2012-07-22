@@ -3,14 +3,14 @@
 #include "common.h"
 
 
-BOOL option_debug_disable_codegen   = FALSE;
-BOOL option_debug_disable_regalloc  = FALSE;
-BOOL option_debug_disable_basic_opt = FALSE;
-BOOL option_enable_optimization     = FALSE;
-BOOL option_sse2                    = FALSE;
-BOOL option_no_inline               = FALSE;
-BOOL option_debug_xml_dump          = FALSE;
-int  option_max_inline_insn         = 100;
+BOOL option_no_codegen          = FALSE;
+BOOL option_no_regalloc         = FALSE;
+BOOL option_no_basic_opt        = FALSE;
+BOOL option_enable_optimization = FALSE;
+BOOL option_sse2                = FALSE;
+BOOL option_no_inline           = FALSE;
+BOOL option_xml_dump            = FALSE;
+int  option_max_inline_insn     = 100;
 
 char option_output_filename[MAX_PATH];
 
