@@ -877,7 +877,7 @@ void unit_codegen(void)
         _curr_func->func_start_of_regvars[x86op_dword] = INT_MAX;
         _curr_func->func_start_of_regvars[x86op_float] = INT_MAX;
 
-        if (!option_debug_disable_basic_opt) {
+        if (!option_no_basic_opt) {
             x86_analyze_registers_usage(_curr_func);
             x86_optimization_after_codegen(_curr_func);
         }
@@ -914,7 +914,7 @@ void unit_codegen(void)
             continue;
         }
 
-        if (!option_debug_disable_basic_opt) {
+        if (!option_no_basic_opt) {
             x86_optimization_after_inlining(_curr_func);
         }
 
@@ -924,7 +924,7 @@ void unit_codegen(void)
             x86_create_register_variables(_curr_func);
         }
 
-        if (!option_debug_disable_regalloc) {
+        if (!option_no_regalloc) {
             x86_allocate_registers(_curr_func);
         }
 

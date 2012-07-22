@@ -108,13 +108,13 @@ void            aux_extract_file_name       (char *dst, const char *path);
 #endif
 
 
-extern BOOL option_debug_disable_codegen;
-extern BOOL option_debug_disable_regalloc;
-extern BOOL option_debug_disable_basic_opt;
+extern BOOL option_no_codegen;
+extern BOOL option_no_regalloc;
+extern BOOL option_no_basic_opt;
 extern BOOL option_enable_optimization;
 extern BOOL option_sse2;
 extern BOOL option_no_inline;
-extern BOOL option_debug_xml_dump;
+extern BOOL option_xml_dump;
 extern int  option_max_inline_insn;
 
 extern char option_output_filename[];

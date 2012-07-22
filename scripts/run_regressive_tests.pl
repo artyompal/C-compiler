@@ -17,7 +17,7 @@ sub run {
 
 sub run_test {
 	my ($test_name, $config, $option) = @_;
-	run("..\\..\\..\\bin\\$config\\cc4x86.exe $option --output-file-name current_test.asm --debug-xml-dump ..\\$test_name");
+	run("..\\..\\..\\bin\\$config\\cc4x86.exe $option --output-file-name current_test.asm --xmldump ..\\$test_name");
 
 	my $test_asm_name = $test_name;
 	$test_asm_name =~ s/\.c/\.asm/;
@@ -42,11 +42,11 @@ sub run_test2{
 	return
 		run_test($test_name, "debug", "") &&
 		run_test($test_name, "debug", "--optimize") &&
-		run_test($test_name, "debug", "--optimize --no-inline") &&
-		run_test($test_name, "debug", "--optimize --sse2 --no-inline") &&
+		run_test($test_name, "debug", "--optimize --noinline") &&
+		run_test($test_name, "debug", "--optimize --sse2 --noinline") &&
 		run_test($test_name, "debug", "--optimize --sse2") &&
 		run_test($test_name, "release", "") &&
-		run_test($test_name, "release", "--optimize --no-inline") &&
+		run_test($test_name, "release", "--optimize --noinline") &&
 		run_test($test_name, "release", "--optimize") &&
 		run_test($test_name, "release", "--optimize --sse2");
 }

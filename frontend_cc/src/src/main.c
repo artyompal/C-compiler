@@ -14,14 +14,14 @@ struct option_decl {
     BOOL *          flag_address;
     const char *    comment;
 } options[] = {
-    {"debug-disable-codegen",   &option_debug_disable_codegen,      "disable any code generation"},
-    {"debug-disable-regalloc",  &option_debug_disable_regalloc,     "don't replace pseudo-registers with real registers"},
-    {"debug-disable-basic-opt", &option_debug_disable_basic_opt,    "don't optimize well-known sequences after code generation"},
-    {"optimize",                &option_enable_optimization,        "enables code optimization"},
-    {"sse2",                    &option_sse2,                       "enables SSE2 code generation"},
-    {"no-inline",               &option_no_inline,                  "disables functions inlining"},
-    {"debug-xml-dump",          &option_debug_xml_dump,             "dumps XML syntax tree"},
-    {"output-file-name",        0,                                  "lets to specify the name of the output file"},
+    {"nocodegen",           &option_no_codegen,             "disable any code generation"},
+    {"noregalloc",          &option_no_regalloc,            "don't replace pseudo-registers with real registers"},
+    {"nobasicopt",          &option_no_basic_opt,           "don't optimize well-known sequences after code generation"},
+    {"optimize",            &option_enable_optimization,    "enables code optimization"},
+    {"sse2",                &option_sse2,                   "enables SSE2 code generation"},
+    {"noinline",            &option_no_inline,              "disables functions inlining"},
+    {"xmldump",             &option_xml_dump,               "dumps XML syntax tree"},
+    {"output-file-name",    0,                              "lets to specify the name of the output file"},
     {NULL, NULL, NULL},
 };
 
@@ -85,11 +85,11 @@ static void _compile_unit(const char *filename)
         aux_fatal_error("unrecoverable syntax error");
     }
 
-    if (option_debug_xml_dump) {
+    if (option_xml_dump) {
         debug_dump_unit(filename);
     }
 
-    if (!option_debug_disable_codegen && !aux_get_errors_count()) {
+    if (!option_no_codegen && !aux_get_errors_count()) {
         unit_codegen();
     }
 
