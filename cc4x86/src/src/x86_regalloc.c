@@ -168,7 +168,7 @@ static void _commit_register_reservation(function_desc *function, x86_instructio
         int new_reg         = _alloc_real_register_for_regvar(regmap, conflicting_reg);
 
         ASSERT(regmap == &_dword_register_map);
-        bincode_insert_int_reg_reg(function, insn, x86insn_int_mov, x86op_dword, ~new_reg, ~real_reg);
+        bincode_insert_insn_reg_reg(function, insn, x86insn_int_mov, x86op_dword, ~new_reg, ~real_reg);
         pseudoregs_map[conflicting_reg].reg_location = new_reg;
     } else {
         regmap->real_registers_cnt++;
@@ -242,9 +242,9 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
     for (i = 0; i < pseudoregs_cnt; i++)
     {
-        pseudoregs_map[i].reg_changes_value = pseudoregs_map[i].reg_status = 0;
-        pseudoregs_map[i].reg_first_write = pseudoregs_map[i].reg_last_read = NULL;
-        pseudoregs_map[i].reg_location = -1;
+        pseudoregs_map[i].reg_changes_value = pseudoregs_map[i].reg_status          = 0;
+        pseudoregs_map[i].reg_first_write   = pseudoregs_map[i].reg_last_read       = NULL;
+        pseudoregs_map[i].reg_location      = pseudoregs_map[i].reg_stack_location  = -1;
     }
 
 
@@ -354,7 +354,7 @@ static void _maintain_fpu_stack(function_desc *function)
             }
 
             last_pusha_count = fp_registers_cnt;
-            bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, last_pusha_count * 8);
+            bincode_insert_insn_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, last_pusha_count * 8);
         } else if (insn->in_code == x86insn_pop_all && last_pusha_count) {
             // вставляем инструкции после POPA
             ASSERT(last_pusha_count != 0);
@@ -373,7 +373,7 @@ static void _maintain_fpu_stack(function_desc *function)
                 bincode_insert_fp_esp_offset(function, next_insn, x86insn_fpu_ld, x86op_double, 8 * i);
             }
 
-            bincode_insert_int_reg_const(function, next_insn, x86insn_int_add, x86op_dword, ~x86reg_esp, last_pusha_count * 8);
+            bincode_insert_insn_reg_const(function, next_insn, x86insn_int_add, x86op_dword, ~x86reg_esp, last_pusha_count * 8);
             last_pusha_count = 0;
         } else if (insn->in_code == x86insn_fpu_int2float) {
             fp_registers_cnt++;
@@ -386,7 +386,7 @@ static void _maintain_fpu_stack(function_desc *function)
                     tmp = x86_stack_frame_alloc_tmp_var(function, 4);
                 }
 
-                bincode_insert_int_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, tmp, insn->in_op1.data.reg);
+                bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, tmp, insn->in_op1.data.reg);
                 bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_dword, tmp);
             }
         } else if (insn->in_code == x86insn_fpu_float2int) {
@@ -400,7 +400,7 @@ static void _maintain_fpu_stack(function_desc *function)
                     tmp = x86_stack_frame_alloc_tmp_var(function, 4);
                 }
 
-                bincode_insert_int_reg_ebp_offset(function, next_insn, x86insn_int_mov, x86op_dword, insn->in_op1.data.reg, tmp);
+                bincode_insert_insn_reg_ebp_offset(function, next_insn, x86insn_int_mov, x86op_dword, insn->in_op1.data.reg, tmp);
                 bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_float, tmp);
             }
         } else if (insn->in_code == x86insn_push_arg && OP_IS_FLOAT(insn->in_op1)) {
@@ -415,7 +415,7 @@ static void _maintain_fpu_stack(function_desc *function)
 
             if (insn->in_op1.op_loc == x86loc_register) {
                 bincode_insert_fp_esp_offset(function, insn, x86insn_fpu_stp, insn->in_op1.op_type, -sz);
-                bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
+                bincode_insert_insn_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
                 bincode_erase_instruction(function, insn);
             } else if (insn->in_op1.op_loc == x86loc_address) {
                 if (sz == 4) {
@@ -426,7 +426,7 @@ static void _maintain_fpu_stack(function_desc *function)
                     ASSERT(fp_registers_cnt == 1);
 
                     bincode_insert_fp_esp_offset(function, insn, x86insn_fpu_stp, insn->in_op1.op_type, -sz);
-                    bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
+                    bincode_insert_insn_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
                     fp_registers_cnt--;
 
                     bincode_erase_instruction(function, insn);
@@ -527,11 +527,12 @@ static BOOL _is_double_register(int reg, register_map *regmap, x86_pseudoreg_inf
     return (insn->in_op1.op_type == x86op_double);
 }
 
+// TODO: регистры FPU также необходимо сохранять при вызовах функций.
+
 static void _emulate_push_all(function_desc *function, x86_instruction *insn, x86_operand_type type,
     register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int saved_real_registers_map[X86_MAX_REG])
 {
-    x86_operand op1, op2;
-    int i, insn_counter, reg;
+    int i, insn_counter, reg, ofs;
     x86_instruction *pop_all;
 
     for (insn_counter = 0, pop_all = insn; pop_all->in_code != x86insn_pop_all; insn_counter++) {
@@ -548,7 +549,14 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
 
             if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
                 saved_real_registers_map[i] = TRUE;
-                bincode_insert_push_reg(function, insn, type, ~i);
+                ofs = pseudoregs_map[reg].reg_stack_location;
+
+                if (ofs == -1) {
+                    ofs = x86_stack_frame_alloc_tmp_var(function, 4);
+                    pseudoregs_map[reg].reg_stack_location = ofs;
+                }
+
+                bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, type, ofs, ~i);
             }
         }
     } else {
@@ -560,37 +568,44 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
             if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
                 if (!_is_double_register(i, regmap, pseudoregs_map)) {
                     saved_real_registers_map[i] = 1;
-                    bincode_create_operand_addr_from_esp_offset(&op1, x86op_float, -4);
-                    bincode_create_operand_from_register(&op2, x86op_float, i);
-                    bincode_insert_instruction(function, insn, x86insn_sse_movss, &op1, &op2);
-                    bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, 4);
+                    ofs = pseudoregs_map[reg].reg_stack_location;
+
+                    if (ofs == -1) {
+                        ofs = x86_stack_frame_alloc_tmp_var(function, 4);
+                        pseudoregs_map[reg].reg_stack_location = ofs;
+                    }
+
+                    bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movss, x86op_float, ofs, ~i);
                 } else {
                     saved_real_registers_map[i] = 2;
-                    bincode_create_operand_addr_from_esp_offset(&op1, x86op_double, -8);
-                    bincode_create_operand_from_register(&op2, x86op_double, i);
-                    bincode_insert_instruction(function, insn, x86insn_sse_movsd, &op1, &op2);
-                    bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, 8);
+                    ofs = pseudoregs_map[reg].reg_stack_location;
+
+                    if (ofs == -1) {
+                        ofs = x86_stack_frame_alloc_tmp_var(function, 8);
+                        pseudoregs_map[reg].reg_stack_location = ofs;
+                    }
+
+                    bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movsd, x86op_double, ofs, ~i);
                 }
             }
         }
     }
 
     x86_dataflow_step_insn_backward(function, type, insn_counter);
-
-    // FIXME: регистры FPU также необходимо сохранять при вызовах функций.
-    // TODO: лучше сохранять регистры в стековом фрейме, это порождает меньше инструкций.
 }
 
 static void _emulate_pop_all(function_desc *function, x86_instruction *insn, x86_operand_type type,
     register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int saved_real_registers_map[X86_MAX_REG])
 {
-    x86_operand op1, op2;
-    int i;
+    int i, reg, ofs;
 
     if (type == x86op_dword) {
         for (i = x86reg_edx; i >= 0; i--) {
             if (saved_real_registers_map[i]) {
-                bincode_insert_pop_reg(function, insn, type, ~i);
+                reg = regmap->real_registers_map[i];
+                ofs = pseudoregs_map[reg].reg_stack_location;
+
+                bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, type, ~i, ofs);
             }
         }
     } else {
@@ -598,15 +613,15 @@ static void _emulate_pop_all(function_desc *function, x86_instruction *insn, x86
 
         for (i = X86_MAX_REG-1; i >= 0; i--) {
             if (saved_real_registers_map[i] == 1) {
-                bincode_create_operand_from_register(&op1, x86op_float, i);
-                bincode_create_operand_addr_from_esp_offset(&op2, x86op_float, 0);
-                bincode_insert_instruction(function, insn, x86insn_sse_movss, &op1, &op2);
-                bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, 4);
+                reg = regmap->real_registers_map[i];
+                ofs = pseudoregs_map[reg].reg_stack_location;
+
+                bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movss, x86op_float, ~i, ofs);
             } else if (saved_real_registers_map[i] == 2) {
-                bincode_create_operand_from_register(&op1, x86op_double, i);
-                bincode_create_operand_addr_from_esp_offset(&op2, x86op_double, 0);
-                bincode_insert_instruction(function, insn, x86insn_sse_movsd, &op1, &op2);
-                bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, 8);
+                reg = regmap->real_registers_map[i];
+                ofs = pseudoregs_map[reg].reg_stack_location;
+
+                bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~i, ofs);
             }
         }
     }
@@ -759,10 +774,10 @@ static void _handle_pseudo_instructions(function_desc *function)
 
         if (insn->in_code == x86insn_create_stack_frame) {
             bincode_insert_push_reg(function, insn, x86op_dword, ~x86reg_ebp);
-            bincode_insert_int_reg_reg(function, insn, x86insn_int_mov, x86op_dword, ~x86reg_ebp, ~x86reg_esp);
+            bincode_insert_insn_reg_reg(function, insn, x86insn_int_mov, x86op_dword, ~x86reg_ebp, ~x86reg_esp);
 
             if (function->func_local_vars_sz) {
-                bincode_insert_int_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, function->func_local_vars_sz);
+                bincode_insert_insn_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, function->func_local_vars_sz);
             }
 
             if (real_regs_usage[x86reg_edi]) {
@@ -790,7 +805,7 @@ static void _handle_pseudo_instructions(function_desc *function)
             }
 
             if (function->func_local_vars_sz) {
-                bincode_insert_int_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, function->func_local_vars_sz);
+                bincode_insert_insn_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, function->func_local_vars_sz);
             }
 
             bincode_insert_pop_reg(function, insn, x86op_dword, ~x86reg_ebp);
@@ -813,7 +828,7 @@ static void _handle_pseudo_instructions(function_desc *function)
                 }
 
                 bincode_create_operand_addr_from_esp_offset(&insn->in_op1, insn->in_op2.op_type, -sz);
-                bincode_insert_int_reg_const(function, insn->in_next, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
+                bincode_insert_insn_reg_const(function, insn->in_next, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
             }
         } else if (insn->in_code == x86insn_restore_stack) {
             insn->in_code  = x86insn_int_add;

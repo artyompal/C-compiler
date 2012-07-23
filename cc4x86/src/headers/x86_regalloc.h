@@ -14,14 +14,17 @@ typedef enum x86_register_status_decl {
     register_free,
     register_allocated,
     register_reserved,
+    register_swapped,
 } x86_register_status;
 
-// TODO: структура x86_pseudoreg_info €вл€етс€ deprecated. «адачи анализа потока данных должны теперь решатьс€ через ои/ио-цепочки.
 typedef struct x86_pseudoreg_info_decl {
+    x86_register_status     reg_status;             // один из вариантов выше
+    int                     reg_location;           // номер ассоциированного реального регистра или -1
+    int                     reg_stack_location;     // смещение ассоциированной €чейки в стеке
+
+// TODO: параметры reg_first_write/reg_last_read/reg_changes_value €вл€ютс€ deprecated. «адачи анализа потока данных должны теперь решатьс€ через множества in/out.
     x86_instruction *       reg_first_write;
     x86_instruction *       reg_last_read;
-    x86_register_status     reg_status;
-    int                     reg_location;   // номер реального регистра
     BOOL                    reg_changes_value;
 } x86_pseudoreg_info;
 

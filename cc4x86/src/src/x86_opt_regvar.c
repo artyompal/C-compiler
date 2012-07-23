@@ -306,7 +306,7 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
     insn = insn->in_next;
 
     if (var_offset > 0) {
-        bincode_insert_int_reg_ebp_offset(function, insn,
+        bincode_insert_insn_reg_ebp_offset(function, insn,
             (type == x86op_dword ? x86insn_int_mov : ENCODE_SSE_MOV(type)), type, var_reg, var_offset);
     }
 

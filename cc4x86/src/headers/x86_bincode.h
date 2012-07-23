@@ -351,13 +351,13 @@ void    bincode_insert_instruction                      (function_desc *function
                                                             x86_instruction_code code, x86_operand *op1, x86_operand *op2);
 void    bincode_insert_unary_instruction                (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand *op);
-void    bincode_insert_int_reg_reg                      (function_desc *function, x86_instruction *pos,
+void    bincode_insert_insn_reg_reg                      (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int dest_reg, int src_reg);
-void    bincode_insert_int_reg_const                    (function_desc *function, x86_instruction *pos,
+void    bincode_insert_insn_reg_const                    (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int dest_reg, int val);
-void    bincode_insert_int_reg_ebp_offset               (function_desc *function, x86_instruction *pos,
+void    bincode_insert_insn_reg_ebp_offset               (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int dest_reg, int offset);
-void    bincode_insert_int_ebp_offset_reg               (function_desc *function, x86_instruction *pos,
+void    bincode_insert_insn_ebp_offset_reg               (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int offset, int dest_reg);
 void    bincode_insert_push_reg                         (function_desc *function, x86_instruction *pos, x86_operand_type type, int reg);
 void    bincode_insert_pop_reg                          (function_desc *function, x86_instruction *pos, x86_operand_type type, int reg);

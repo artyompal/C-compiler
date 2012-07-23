@@ -80,15 +80,13 @@ _eq endp
 _test proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,20
+	sub	esp,32
 	movss	xmm7,dword ptr [___unnamed_float_3]
 	movsd	xmm6,qword ptr [___unnamed_double_4]
 	cvtss2sd	xmm5,xmm7
 	addsd	xmm5,xmm6
-	movsd	qword ptr [esp-8],xmm6
-	sub	esp,8
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movsd	qword ptr [ebp-28],xmm6
+	movss	dword ptr [ebp-32],xmm7
 	movsd	xmm0,qword ptr [___unnamed_double_5]
 	movsd	qword ptr [esp-8],xmm0
 	sub	esp,8
@@ -96,24 +94,20 @@ _test proc
 	sub	esp,8
 	call	_eq
 	add	esp,16
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
-	movsd	xmm6,qword ptr [esp]
-	add	esp,8
+	movss	xmm7,dword ptr [ebp-32]
+	movsd	xmm6,qword ptr [ebp-28]
 	cmp	eax,0
 	jne	label0000
 	mov	eax,1
-	add	esp,20
+	add	esp,32
 	pop	ebp
 	ret
 label0000:
 	cvtss2sd	xmm0,xmm7
 	subsd	xmm0,xmm6
 	movsd	xmm5,xmm0
-	movsd	qword ptr [esp-8],xmm6
-	sub	esp,8
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movsd	qword ptr [ebp-28],xmm6
+	movss	dword ptr [ebp-32],xmm7
 	movsd	xmm0,qword ptr [___unnamed_double_6]
 	movsd	qword ptr [esp-8],xmm0
 	sub	esp,8
@@ -121,24 +115,20 @@ label0000:
 	sub	esp,8
 	call	_eq
 	add	esp,16
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
-	movsd	xmm6,qword ptr [esp]
-	add	esp,8
+	movss	xmm7,dword ptr [ebp-32]
+	movsd	xmm6,qword ptr [ebp-28]
 	cmp	eax,0
 	jne	label0001
 	mov	eax,2
-	add	esp,20
+	add	esp,32
 	pop	ebp
 	ret
 label0001:
 	cvtss2sd	xmm0,xmm7
 	mulsd	xmm0,xmm6
 	movsd	xmm5,xmm0
-	movsd	qword ptr [esp-8],xmm6
-	sub	esp,8
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movsd	qword ptr [ebp-28],xmm6
+	movss	dword ptr [ebp-32],xmm7
 	movsd	xmm0,qword ptr [___unnamed_double_7]
 	movsd	qword ptr [esp-8],xmm0
 	sub	esp,8
@@ -146,22 +136,19 @@ label0001:
 	sub	esp,8
 	call	_eq
 	add	esp,16
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
-	movsd	xmm6,qword ptr [esp]
-	add	esp,8
+	movss	xmm7,dword ptr [ebp-32]
+	movsd	xmm6,qword ptr [ebp-28]
 	cmp	eax,0
 	jne	label0002
 	mov	eax,3
-	add	esp,20
+	add	esp,32
 	pop	ebp
 	ret
 label0002:
 	cvtss2sd	xmm0,xmm7
 	divsd	xmm0,xmm6
 	movsd	xmm6,xmm0
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movss	dword ptr [ebp-32],xmm7
 	movsd	xmm0,qword ptr [___unnamed_double_8]
 	movsd	qword ptr [esp-8],xmm0
 	sub	esp,8
@@ -169,18 +156,16 @@ label0002:
 	sub	esp,8
 	call	_eq
 	add	esp,16
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
+	movss	xmm7,dword ptr [ebp-32]
 	cmp	eax,0
 	jne	label0003
 	mov	eax,4
-	add	esp,20
+	add	esp,32
 	pop	ebp
 	ret
 label0003:
 	addss	xmm7,dword ptr [___unnamed_float_3]
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movss	dword ptr [ebp-32],xmm7
 	movsd	xmm0,qword ptr [___unnamed_double_9]
 	movsd	qword ptr [esp-8],xmm0
 	sub	esp,8
@@ -189,18 +174,16 @@ label0003:
 	sub	esp,8
 	call	_eq
 	add	esp,16
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
+	movss	xmm7,dword ptr [ebp-32]
 	cmp	eax,0
 	jne	label0004
 	mov	eax,5
-	add	esp,20
+	add	esp,32
 	pop	ebp
 	ret
 label0004:
 	subss	xmm7,dword ptr [___unnamed_float_10]
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movss	dword ptr [ebp-32],xmm7
 	movsd	xmm0,qword ptr [___unnamed_double_11]
 	movsd	qword ptr [esp-8],xmm0
 	sub	esp,8
@@ -209,18 +192,16 @@ label0004:
 	sub	esp,8
 	call	_eq
 	add	esp,16
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
+	movss	xmm7,dword ptr [ebp-32]
 	cmp	eax,0
 	jne	label0005
 	mov	eax,6
-	add	esp,20
+	add	esp,32
 	pop	ebp
 	ret
 label0005:
 	mulss	xmm7,dword ptr [___unnamed_float_3]
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movss	dword ptr [ebp-32],xmm7
 	movsd	xmm0,qword ptr [___unnamed_double_12]
 	movsd	qword ptr [esp-8],xmm0
 	sub	esp,8
@@ -229,12 +210,11 @@ label0005:
 	sub	esp,8
 	call	_eq
 	add	esp,16
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
+	movss	xmm7,dword ptr [ebp-32]
 	cmp	eax,0
 	jne	label0006
 	mov	eax,7
-	add	esp,20
+	add	esp,32
 	pop	ebp
 	ret
 label0006:
@@ -250,12 +230,12 @@ label0006:
 	cmp	eax,0
 	jne	label0007
 	mov	eax,8
-	add	esp,20
+	add	esp,32
 	pop	ebp
 	ret
 label0007:
 	mov	eax,0
-	add	esp,20
+	add	esp,32
 	pop	ebp
 	ret
 _test endp	
