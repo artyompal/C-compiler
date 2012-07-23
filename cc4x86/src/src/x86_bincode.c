@@ -406,7 +406,7 @@ void bincode_insert_unary_instruction(function_desc *function, x86_instruction *
     bincode_insert_instruction(function, pos, code, op, &empty_op);
 }
 
-void bincode_insert_int_reg_reg(function_desc *function, x86_instruction *pos, x86_instruction_code code,
+void bincode_insert_insn_reg_reg(function_desc *function, x86_instruction *pos, x86_instruction_code code,
                                 x86_operand_type type, int dest_reg, int src_reg)
 {
     x86_operand op1, op2;
@@ -416,7 +416,7 @@ void bincode_insert_int_reg_reg(function_desc *function, x86_instruction *pos, x
     bincode_insert_instruction(function, pos, code, &op1, &op2);
 }
 
-void bincode_insert_int_reg_const(function_desc *function, x86_instruction *pos, x86_instruction_code code,
+void bincode_insert_insn_reg_const(function_desc *function, x86_instruction *pos, x86_instruction_code code,
                                   x86_operand_type type, int dest_reg, int val)
 {
     x86_operand op1, op2;
@@ -426,7 +426,7 @@ void bincode_insert_int_reg_const(function_desc *function, x86_instruction *pos,
     bincode_insert_instruction(function, pos, code, &op1, &op2);
 }
 
-void bincode_insert_int_reg_ebp_offset(function_desc *function, x86_instruction *pos, x86_instruction_code code,
+void bincode_insert_insn_reg_ebp_offset(function_desc *function, x86_instruction *pos, x86_instruction_code code,
                                        x86_operand_type type, int dest_reg, int offset)
 {
     x86_operand op1, op2;
@@ -436,7 +436,7 @@ void bincode_insert_int_reg_ebp_offset(function_desc *function, x86_instruction 
     bincode_insert_instruction(function, pos, code, &op1, &op2);
 }
 
-void bincode_insert_int_ebp_offset_reg(function_desc *function, x86_instruction *pos, x86_instruction_code code,
+void bincode_insert_insn_ebp_offset_reg(function_desc *function, x86_instruction *pos, x86_instruction_code code,
                                        x86_operand_type type, int offset, int dest_reg)
 {
     x86_operand op1, op2;

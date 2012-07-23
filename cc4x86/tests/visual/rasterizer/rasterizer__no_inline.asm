@@ -428,7 +428,7 @@ _matrix4f_transform endp
 _rasterizer_init proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,8
+	sub	esp,16
 	movss	xmm7,dword ptr [ebp+28]
 	movss	xmm6,dword ptr [ebp+24]
 	mov	eax,[ebp+8]
@@ -439,10 +439,8 @@ _rasterizer_init proc
 	mov	dword ptr [__height],eax
 	mov	eax,[ebp+20]
 	mov	dword ptr [__pitch],eax
-	movss	dword ptr [esp-4],xmm6
-	sub	esp,4
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movss	dword ptr [ebp-12],xmm6
+	movss	dword ptr [ebp-16],xmm7
 	cvtsi2ss	xmm0,dword ptr [ebp+12]
 	cvtsi2ss	xmm1,dword ptr [ebp+16]
 	divss	xmm0,xmm1
@@ -486,10 +484,8 @@ _rasterizer_init proc
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
-	movss	xmm6,dword ptr [esp]
-	add	esp,4
+	movss	xmm7,dword ptr [ebp-16]
+	movss	xmm6,dword ptr [ebp-12]
 	movss	xmm0,xmm7
 	comiss	xmm0,xmm6
 	jbe	label0000
@@ -498,10 +494,8 @@ _rasterizer_init proc
 label0000:
 	movss	xmm5,dword ptr [___unnamed_float_5]
 label0001:
-	movss	dword ptr [esp-4],xmm6
-	sub	esp,4
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movss	dword ptr [ebp-12],xmm6
+	movss	dword ptr [ebp-16],xmm7
 	movss	xmm0,dword ptr [___unnamed_float_1]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
@@ -532,10 +526,8 @@ label0001:
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
-	movss	xmm6,dword ptr [esp]
-	add	esp,4
+	movss	xmm7,dword ptr [ebp-16]
+	movss	xmm6,dword ptr [ebp-12]
 	movss	xmm0,xmm7
 	comiss	xmm0,xmm6
 	jbe	label0002
@@ -699,7 +691,7 @@ label0003:
 	push	eax
 	call	_vec4f_assign
 	add	esp,20
-	add	esp,8
+	add	esp,16
 	pop	ebp
 	ret
 _rasterizer_init endp	
@@ -807,7 +799,7 @@ __tex2d endp
 __rasterize_horiz_line proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,44
+	sub	esp,52
 	push	edi
 	push	esi
 	push	ebx
@@ -827,20 +819,16 @@ __rasterize_horiz_line proc
 	sal	eax,2
 	sub	ebx,eax
 label0000:
-	movss	dword ptr [esp-4],xmm6
-	sub	esp,4
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movss	dword ptr [ebp-48],xmm6
+	movss	dword ptr [ebp-52],xmm7
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
 	call	__tex2d
 	add	esp,8
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
-	movss	xmm6,dword ptr [esp]
-	add	esp,4
+	movss	xmm7,dword ptr [ebp-52]
+	movss	xmm6,dword ptr [ebp-48]
 	mov	ecx,eax
 	sar	ecx,24
 	and	ecx,255
@@ -895,7 +883,7 @@ label0003:
 	pop	ebx
 	pop	esi
 	pop	edi
-	add	esp,44
+	add	esp,52
 	pop	ebp
 	ret
 __rasterize_horiz_line endp	
@@ -1656,7 +1644,7 @@ __rasterize_triangle_2i endp
 __clip_on_plain proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,60
+	sub	esp,68
 	push	edi
 	push	esi
 	push	ebx
@@ -1685,8 +1673,7 @@ label0001:
 	call	_vec4f_dot
 	add	esp,8
 	movss	xmm7,xmm0
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movss	dword ptr [ebp-64],xmm7
 	push	dword ptr [ebp+16]
 	push	ebx
 	lea	eax,[ebp-24]
@@ -1698,8 +1685,7 @@ label0001:
 	push	eax
 	call	_vec4f_dot
 	add	esp,8
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
+	movss	xmm7,dword ptr [ebp-64]
 	movss	xmm6,xmm0
 	movss	xmm0,dword ptr [___unnamed_float_2]
 	comiss	xmm0,xmm7
@@ -1754,15 +1740,13 @@ label0005:
 	call	_vec4f_dot
 	add	esp,8
 	movss	xmm7,xmm0
-	movss	dword ptr [esp-4],xmm7
-	sub	esp,4
+	movss	dword ptr [ebp-68],xmm7
 	push	dword ptr [ebp+20]
 	lea	eax,[ebp-40]
 	push	eax
 	call	_vec4f_dot
 	add	esp,8
-	movss	xmm7,dword ptr [esp]
-	add	esp,4
+	movss	xmm7,dword ptr [ebp-68]
 	divss	xmm7,xmm0
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
@@ -1835,7 +1819,7 @@ label0002:
 	pop	ebx
 	pop	esi
 	pop	edi
-	add	esp,60
+	add	esp,68
 	pop	ebp
 	ret
 __clip_on_plain endp	
