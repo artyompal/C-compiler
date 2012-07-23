@@ -1391,7 +1391,7 @@ label0007:
 	divss	xmm0,xmm1
 	mov	eax,[ebp+8]
 	addss	xmm0,dword ptr [eax+8]
-	movss	xmm6,xmm0
+	movss	xmm7,xmm0
 	mov	eax,[ebp+12]
 	add	eax,4
 	mov	ecx,[ebp+8]
@@ -1420,30 +1420,30 @@ label0007:
 	add	eax,[ebp+8]
 	add	eax,4
 	addss	xmm0,dword ptr [eax]
-	movss	xmm4,xmm0
+	movss	xmm6,xmm0
 	mov	eax,[ebp+12]
-	movss	xmm0,xmm6
+	movss	xmm0,xmm7
 	subss	xmm0,dword ptr [eax+8]
 	mov	eax,[ebp+12]
 	mov	ecx,[ebp-12]
 	sub	ecx,[eax]
 	cvtsi2ss	xmm1,ecx
 	divss	xmm0,xmm1
-	movss	xmm3,xmm0
+	movss	xmm5,xmm0
 	mov	eax,8
 	add	eax,[ebp+12]
 	add	eax,4
-	movss	xmm0,xmm4
+	movss	xmm0,xmm6
 	subss	xmm0,dword ptr [eax]
 	mov	eax,[ebp+12]
 	mov	ecx,[ebp-12]
 	sub	ecx,[eax]
 	cvtsi2ss	xmm1,ecx
 	divss	xmm0,xmm1
-	movss	xmm2,xmm0
-	movss	dword ptr [esp-4],xmm2
+	movss	xmm4,xmm0
+	movss	dword ptr [esp-4],xmm4
 	sub	esp,4
-	movss	dword ptr [esp-4],xmm3
+	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
 	mov	eax,8
 	add	eax,[ebp+12]
@@ -1451,9 +1451,9 @@ label0007:
 	push	dword ptr [eax]
 	mov	eax,[ebp+12]
 	push	dword ptr [eax+8]
-	movss	dword ptr [esp-4],xmm4
-	sub	esp,4
 	movss	dword ptr [esp-4],xmm6
+	sub	esp,4
+	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	mov	eax,[ebp+12]
 	add	eax,4

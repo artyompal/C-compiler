@@ -33,7 +33,7 @@ typedef struct insn_vector_decl {           // вектор инструкций:
 
 #define BIT_TEST(SET, BIT)		((SET).set_base[(BIT)/32] & (1 << (BIT)%32))
 #define BIT_RAISE(SET, BIT)		((SET).set_base[(BIT)/32] |= (1 << (BIT)%32))
-#define BIT_CLEAR(SET, BIT)		((SET).set_base[(BIT)/32] &= (1 << ~(BIT)%32))
+#define BIT_CLEAR(SET, BIT)		((SET).set_base[(BIT)/32] &= ~(1 << (BIT)%32))
 
 #define SET_ALLOCA(S, N)        do { (S).set_base = alloca(SET_SIZE_IN_BYTES(N)); (S).set_count = (N); } while (0)
 

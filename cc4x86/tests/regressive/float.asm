@@ -65,11 +65,11 @@ _test proc
 label0008:
 	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm5,xmm0
+	movss	xmm6,xmm0
 label0009:
-	movss	xmm6,xmm5
+	movss	xmm5,xmm6
 ; end of inline function fabs
-	movss	xmm0,xmm6
+	movss	xmm0,xmm5
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
@@ -101,11 +101,11 @@ label0000:
 label000c:
 	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm5,xmm0
+	movss	xmm6,xmm0
 label000d:
-	movss	xmm6,xmm5
+	movss	xmm5,xmm6
 ; end of inline function fabs
-	movss	xmm0,xmm6
+	movss	xmm0,xmm5
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
@@ -139,11 +139,11 @@ label0001:
 label0010:
 	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm5,xmm0
+	movss	xmm6,xmm0
 label0011:
-	movss	xmm6,xmm5
+	movss	xmm5,xmm6
 ; end of inline function fabs
-	movss	xmm0,xmm6
+	movss	xmm0,xmm5
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
@@ -177,11 +177,11 @@ label0002:
 label0014:
 	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm5,xmm0
+	movss	xmm6,xmm0
 label0015:
-	movss	xmm6,xmm5
+	movss	xmm5,xmm6
 ; end of inline function fabs
-	movss	xmm0,xmm6
+	movss	xmm0,xmm5
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
@@ -213,11 +213,11 @@ label0003:
 label0018:
 	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm5,xmm0
+	movss	xmm6,xmm0
 label0019:
-	movss	xmm6,xmm5
+	movss	xmm5,xmm6
 ; end of inline function fabs
-	movss	xmm0,xmm6
+	movss	xmm0,xmm5
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
@@ -249,11 +249,11 @@ label0004:
 label001c:
 	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm5,xmm0
+	movss	xmm6,xmm0
 label001d:
-	movss	xmm6,xmm5
+	movss	xmm5,xmm6
 ; end of inline function fabs
-	movss	xmm0,xmm6
+	movss	xmm0,xmm5
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
@@ -285,11 +285,11 @@ label0005:
 label0020:
 	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm5,xmm0
+	movss	xmm6,xmm0
 label0021:
-	movss	xmm6,xmm5
+	movss	xmm5,xmm6
 ; end of inline function fabs
-	movss	xmm0,xmm6
+	movss	xmm0,xmm5
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
@@ -321,11 +321,11 @@ label0006:
 label0024:
 	movss	xmm0,xmm7
 	xorps	xmm0,dword ptr [___unnamed_float_1]
-	movss	xmm6,xmm0
+	movss	xmm7,xmm0
 label0025:
-	movss	xmm7,xmm6
+	movss	xmm6,xmm7
 ; end of inline function fabs
-	movss	xmm0,xmm7
+	movss	xmm0,xmm6
 	comiss	xmm0,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
