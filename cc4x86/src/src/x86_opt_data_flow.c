@@ -271,6 +271,13 @@ void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type ty
     set_assign(&_current_alive_registers, &_reg_out[type].vec_base[_current_block]);
 
     for (insn = _basic_blocks.blocks_base[_current_block].block_last_insn; insn != _current_insn; insn = insn->in_prev) {
+        // извлекаем все переписываемые регистры
+        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
+
+        // вычитаем все эти регистры из множества
+        for (j = 0; j < regs_cnt; j++)
+            BIT_CLEAR(_current_alive_registers, regs[j]);
+
         // извлекаем все читаемые регистры
         bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
 

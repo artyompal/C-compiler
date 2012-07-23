@@ -240,7 +240,12 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
     stat->count     = pseudoregs_cnt;
     pseudoregs_map  = stat->ptr;
 
-    memset(pseudoregs_map, 0, sizeof(x86_pseudoreg_info) * pseudoregs_cnt);
+    for (i = 0; i < pseudoregs_cnt; i++)
+    {
+        pseudoregs_map[i].reg_changes_value = pseudoregs_map[i].reg_status = 0;
+        pseudoregs_map[i].reg_first_write = pseudoregs_map[i].reg_last_read = NULL;
+        pseudoregs_map[i].reg_location = -1;
+    }
 
 
     // —оставл€ем статистику использовани€ псевдорегистров.
@@ -635,6 +640,19 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
         x86_dataflow_step_insn_forward(function, type, 1);
 
+        if (insn->in_code == x86insn_label && insn->in_prev && IS_JMP_INSN(insn->in_prev->in_code)) {
+            // ћы должны зарезервировать все псевдорегистры, которые €вл€ютс€ сейчас живыми,
+            // и которые были освобождены ранее в параллельных блоках.
+
+            for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
+                if (x86_dataflow_is_pseudoreg_alive_after(function, reg) && pseudoregs_map[reg].reg_status == register_free
+                    && pseudoregs_map[reg].reg_location != -1) {
+                        real_reg = pseudoregs_map[reg].reg_location;
+                        _reserve_real_register(pseudoregs_map, reg, real_reg);
+                    }
+            }
+        }
+
         if (insn->in_code == x86insn_label || IS_JMP_INSN(insn->in_code)) {
             continue;
         }
@@ -666,14 +684,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
                 real_reg                        = pseudoregs_map[reg].reg_location;
                 *registers[i].reg_addr          = ~real_reg;
-            } else if (pseudoregs_map[reg].reg_location != 0) {
-                // регистр выдел€лс€ ранее, но освобождЄн в параллельной ветке кода
-                real_reg                            = pseudoregs_map[reg].reg_location;
-                _reassign_real_register(regmap, real_reg, reg);
-
-                pseudoregs_map[reg].reg_status      = register_allocated;
-                pseudoregs_map[reg].reg_location    = real_reg;
-                *registers[i].reg_addr              = ~real_reg;
             } else {
                 // нужен новый регистр
                 ASSERT(pseudoregs_map[reg].reg_status == register_free);
