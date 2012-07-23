@@ -20,8 +20,10 @@ sub run_test {
 	run("..\\..\\..\\bin\\$config\\cc4x86.exe $option --output-file-name current_test.asm --xmldump ..\\$test_name");
 
 	my $test_asm_name = $test_name;
-	$test_asm_name =~ s/\.c/\.asm/;
-	system("copy current_test.asm ..\\$test_asm_name");
+    $option =~ tr/[\-\ ]/_/s;
+	$test_asm_name =~ s/\.c/_$option\.asm/;
+
+	system("copy /Y current_test.asm ..\\asm_listings\\$test_asm_name");
 	system("echo const char *test_name = \"$test_name\"; >test_name.c");
 
 	system("d:\\bin\\msvs10\\VC\\bin\\ml /Fl /nologo /c /Zf current_test.asm");
