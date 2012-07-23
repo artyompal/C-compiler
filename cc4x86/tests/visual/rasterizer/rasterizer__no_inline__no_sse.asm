@@ -804,32 +804,31 @@ label0000:
 	push	dword ptr [ebp+20]
 	call	__tex2d
 	add	esp,8
-	mov	edi,eax
-	mov	eax,edi
-	sar	eax,24
-	and	eax,255
-	mov	[ebp-40],eax
+	mov	ecx,eax
+	sar	ecx,24
+	and	ecx,255
+	mov	[ebp-40],ecx
 	cmp	dword ptr [ebp-40],0
 	je	label0003
 	fild	dword ptr [ebp-40]
 	fld	dword ptr [___unnamed_float_3]
 	fdivp
 	fstp	dword ptr [ebp-44]
-	mov	edx,[esi]
-	mov	eax,edx
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-32],eax
-	mov	eax,edx
-	and	eax,255
-	mov	[ebp-36],eax
-	mov	eax,edi
-	and	eax,65280
-	sar	eax,8
-	mov	[ebp-20],eax
-	mov	eax,edi
-	and	eax,255
-	mov	[ebp-24],eax
+	mov	edi,[esi]
+	mov	ecx,edi
+	and	ecx,65280
+	sar	ecx,8
+	mov	[ebp-32],ecx
+	mov	ecx,edi
+	and	ecx,255
+	mov	[ebp-36],ecx
+	mov	ecx,eax
+	and	ecx,65280
+	sar	ecx,8
+	mov	[ebp-20],ecx
+	mov	ecx,eax
+	and	ecx,255
+	mov	[ebp-24],ecx
 	fild	dword ptr [ebp-20]
 	fmul	dword ptr [ebp-44]
 	fild	dword ptr [ebp-32]
@@ -899,8 +898,8 @@ label0000:
 	push	dword ptr [ebp+32]
 	push	dword ptr [ebp+28]
 	push	edi
-	push	edi
-	push	edi
+	push	ebx
+	push	esi
 	call	__rasterize_horiz_line
 	add	esp,28
 label0001:
@@ -937,7 +936,7 @@ __rasterize_triangle_1i proc
 	add	esp,28
 	jmp	label0004
 label0001:
-	cmp	edi,esi
+	cmp	ecx,edx
 	jge	label0003
 	push	dword ptr [ebp+40]
 	push	dword ptr [ebp+36]
@@ -946,8 +945,8 @@ label0001:
 	mov	eax,[ebp+32]
 	push	dword ptr [eax]
 	push	esi
-	push	esi
-	push	edi
+	push	ebx
+	push	ecx
 	call	__rasterize_horiz_line
 	add	esp,28
 	jmp	label0004
@@ -956,15 +955,15 @@ label0003:
 	push	dword ptr [ebp+36]
 	push	dword ptr [edi+4]
 	push	dword ptr [edi]
-	push	edi
-	push	edi
-	push	edi
+	push	esi
+	push	ebx
+	push	edx
 	call	__rasterize_horiz_line
 	add	esp,28
 label0004:
 	jmp	label0009
 label0000:
-	cmp	edi,esi
+	cmp	ecx,ebx
 	jge	label0006
 	fld	dword ptr [ebp+40]
 	fldz
@@ -981,13 +980,13 @@ label0000:
 	mov	eax,[ebp+32]
 	push	dword ptr [eax]
 	push	esi
-	push	esi
-	push	edi
+	push	edx
+	push	ecx
 	call	__rasterize_horiz_line
 	add	esp,28
 	jmp	label0009
 label0006:
-	cmp	edi,esi
+	cmp	ecx,edx
 	jle	label0008
 	fld	dword ptr [ebp+40]
 	fldz
@@ -1004,8 +1003,8 @@ label0006:
 	mov	eax,[ebp+28]
 	push	dword ptr [eax]
 	push	esi
-	push	edi
-	push	edi
+	push	ecx
+	push	ebx
 	call	__rasterize_horiz_line
 	add	esp,28
 	jmp	label0009
@@ -1024,9 +1023,9 @@ label0008:
 	push	dword ptr [eax+4]
 	mov	eax,[ebp+28]
 	push	dword ptr [eax]
-	push	edi
-	push	edi
-	push	edi
+	push	esi
+	push	edx
+	push	ebx
 	call	__rasterize_horiz_line
 	add	esp,28
 label0009:

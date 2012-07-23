@@ -110,6 +110,15 @@ static int _alloc_real_register(register_map *regmap, int pseudoreg)
     return reg;
 }
 
+static void _reassign_real_register(register_map *regmap, int realreg, int pseudoreg)
+{
+    ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
+    regmap->real_registers_cnt++;
+
+    ASSERT(_is_real_register_free(regmap, realreg));
+    regmap->real_registers_map[realreg] = pseudoreg;
+}
+
 static int _alloc_real_register_for_regvar(register_map *regmap, int pseudoreg)
 {
     int reg;
@@ -470,6 +479,9 @@ static void _reserve_special_registers(function_desc *function, x86_pseudoreg_in
                 _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
         } else if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2)) {
             _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_ecx);
+        } else if (insn->in_code == x86insn_read_retval) { // insn->in_code == x86insn_set_retval???
+            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1));
+            _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
         }
     }
 }
@@ -654,6 +666,14 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
                 real_reg                        = pseudoregs_map[reg].reg_location;
                 *registers[i].reg_addr          = ~real_reg;
+            } else if (pseudoregs_map[reg].reg_location != 0) {
+                // регистр выделялся ранее, но освобождён в параллельной ветке кода
+                real_reg                            = pseudoregs_map[reg].reg_location;
+                _reassign_real_register(regmap, real_reg, reg);
+
+                pseudoregs_map[reg].reg_status      = register_allocated;
+                pseudoregs_map[reg].reg_location    = real_reg;
+                *registers[i].reg_addr              = ~real_reg;
             } else {
                 // нужен новый регистр
                 ASSERT(pseudoregs_map[reg].reg_status == register_free);
