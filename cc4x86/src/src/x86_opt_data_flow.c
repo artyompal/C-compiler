@@ -98,8 +98,9 @@ static void _detect_def(set *def, basic_block *block, function_desc *function, x
             ASSERT(reg < function->func_pseudoregs_count[type]);
 
             // если регистр не использовался ранее, вносим его во множество
-            if (!BIT_TEST(used, reg))
+            if (!BIT_TEST(used, reg)) {
                 BIT_RAISE(*def, reg);
+            }
         }
 
         // извлекаем все читаемые регистры
@@ -141,8 +142,9 @@ static void _detect_use(set *use, basic_block *block, function_desc *function, x
             ASSERT(reg < function->func_pseudoregs_count[type]);
 
             // если регистр не определён в данном блоке, вносим его во множество
-            if (!BIT_TEST(defined, reg))
+            if (!BIT_TEST(defined, reg)) {
                 BIT_RAISE(*use, reg);
+            }
         }
 
         // извлекаем все переписываемые регистры
@@ -182,7 +184,7 @@ static void _build_alive_pseudoreg_tables(function_desc *function, x86_operand_t
     do {
         changed = FALSE;
 
-        for (block = 0; block < _basic_blocks.blocks_count; block++) {
+        for (block = _basic_blocks.blocks_count-1; block >= 0; block--) {
             //
             // 1. out[B] = объединение всех in[последующих B].
             //

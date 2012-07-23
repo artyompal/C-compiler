@@ -1449,7 +1449,7 @@ label001d:
 	jge	label001f
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
-	movss	dword ptr [esp-4],xmm7
+	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
 	mov	eax,[ebp-436]
 	push	dword ptr [eax+4]
@@ -1464,7 +1464,7 @@ label001d:
 label001f:
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
-	movss	dword ptr [esp-4],xmm7
+	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
 	mov	eax,[ebp-444]
 	push	dword ptr [eax+4]
@@ -1485,7 +1485,7 @@ label001c:
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
-	movss	xmm0,xmm7
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
@@ -1507,7 +1507,7 @@ label0022:
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
-	movss	xmm0,xmm7
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
@@ -1526,7 +1526,7 @@ label0024:
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
-	movss	xmm0,xmm7
+	movss	xmm0,xmm6
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
 	sub	esp,4
@@ -1735,9 +1735,9 @@ label000e:
 	add	esp,28
 	jmp	label0014
 label0013:
-	movss	dword ptr [esp-4],xmm7
+	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
-	movss	dword ptr [esp-4],xmm7
+	movss	dword ptr [esp-4],xmm4
 	sub	esp,4
 	push	dword ptr [ebp-400]
 	push	dword ptr [ebp-404]
@@ -1884,9 +1884,9 @@ label000f:
 	add	esp,28
 	jmp	label0017
 label0016:
-	movss	dword ptr [esp-4],xmm7
+	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
-	movss	dword ptr [esp-4],xmm7
+	movss	dword ptr [esp-4],xmm4
 	sub	esp,4
 	push	dword ptr [ebp-400]
 	push	dword ptr [ebp-404]
@@ -2091,9 +2091,9 @@ label0011:
 	add	esp,28
 	jmp	label001a
 label0019:
-	movss	dword ptr [esp-4],xmm7
+	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
-	movss	dword ptr [esp-4],xmm7
+	movss	dword ptr [esp-4],xmm4
 	sub	esp,4
 	push	dword ptr [ebp-400]
 	push	dword ptr [ebp-404]

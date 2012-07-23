@@ -924,6 +924,8 @@ void unit_codegen(void)
             x86_create_register_variables(_curr_func);
         }
 
+//        text_output_debug_print_function_code(_curr_func);
+
         if (!option_no_regalloc) {
             x86_allocate_registers(_curr_func);
         }
