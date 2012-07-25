@@ -83,6 +83,8 @@ int             aux_get_warnings_count      (void);
 void            aux_replace_file_extension  (char *dst, const char *path, const char *extension);
 void            aux_extract_file_name       (char *dst, const char *path);
 
+typedef struct function_desc_decl function_desc;
+void            text_output_debug_print_function_code(function_desc *func);
 
 #define AUX_ARRAY_LENGTH(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 

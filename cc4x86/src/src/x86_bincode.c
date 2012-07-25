@@ -46,7 +46,6 @@ void bincode_extract_pseudoregs_from_operand(x86_operand *op, x86_operand_type t
 void bincode_extract_pseudoregs_from_insn(x86_instruction *insn, x86_operand_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
     *regs_cnt = 0;
-
     _extract_pseudoregs_from_operand(&insn->in_op1, type, regs, regs_cnt);
 
     if (insn->in_code != x86insn_call)
