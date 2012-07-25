@@ -5,8 +5,7 @@ use warnings;
 
 sub build_sln {
 	my ($solution, $config) = @_;
-	system("d:\\bin\\msvs10\\Common7\\IDE\\devenv $solution /build $config") == 0
-		or die("build failed");
+	system("d:\\bin\\msvs10\\Common7\\IDE\\devenv $solution /build $config") == 0 or die("build failed");
 }
 
 sub run {

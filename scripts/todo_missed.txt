@@ -10,14 +10,8 @@ x86_opt_data_flow.c:FIXME: квадратичное время от количества базовых блоков
 x86_opt_data_flow.c:FIXME: квадратичная сложность от числа инструкций в блоке.
 x86_opt_data_flow.c:FIXME: IS_JMP_INSN???
 x86_opt_data_flow.c:FIXME???
-x86_opt_regvar.c:   TODO: нужно давать больший приоритет переменным, использующимся во внутренних циклах.
-x86_opt_regvar.c:   TODO: если переменная находится только в регистре, надо не выделять место в стеке для неё.
-x86_opt_regvar.c:   FIXME: код подсчёта числа свободных регистров является deprecated. Нужно пытаться поместить все переменные в регистры.
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg < X86_MAX_REG);
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(reg >= 0);
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
 x86_regalloc.c:     TODO: регистры FPU также необходимо сохранять при вызовах функций.
-x86_regalloc.c:     UNIMPLEMENTED_ASSERT(regmap->real_registers_cnt < _get_max_register_count(regmap));
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);
 symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов
 expressions.c:      TODO: нужно поддержать вычитание указателей
