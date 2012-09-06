@@ -758,11 +758,10 @@ static BOOL _try_optimize_regvar_modification(function_desc *function, x86_instr
             }
 
     // последняя инструкция должна записывать значение обратно в регистровую переменную
-    if (insn2->in_code != x86insn_int_mov && insn2->in_code != x86insn_sse_movss
-        && insn2->in_code != x86insn_sse_movsd || !OP_IS_THIS_PSEUDO_REG(insn2->in_op1, type, regvar)
-            || !OP_IS_THIS_PSEUDO_REG(insn2->in_op2, type, reg)) {
-                return FALSE;
-            }
+    if (!IS_MOV_INSN(insn2->in_code) || !OP_IS_THIS_PSEUDO_REG(insn2->in_op1, type, regvar)
+        || !OP_IS_THIS_PSEUDO_REG(insn2->in_op2, type, reg)) {
+            return FALSE;
+        }
 
     insn2  = insn->in_next;
     bincode_erase_instruction(function, insn);
@@ -794,8 +793,7 @@ static BOOL _try_optimize_regvars_usage(function_desc *function)
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
 
-        if ((insn->in_code == x86insn_int_mov || insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd) &&
-            OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2)) {
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2)) {
             if (_try_kill_copies_of_regvar(function, insn) ||
                 _try_optimize_regvar_evaluation(function, insn) ||
                 _try_optimize_regvar_modification(function, insn)) {

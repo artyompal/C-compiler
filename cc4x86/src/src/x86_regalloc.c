@@ -170,7 +170,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
             if (regmap == &_dword_register_map) {
                 bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, ofs, ~real_reg);
             } else if (!dbl) {
-                bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_float, ofs, ~real_reg);
+                bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movss, x86op_float, ofs, ~real_reg);
             } else {
                 bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movsd, x86op_double, ofs, ~real_reg);
             }
@@ -808,7 +808,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                         if (type == x86op_dword) {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
                         } else if (!_is_double_register(i, regmap, pseudoregs_map)) {
-                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_float, ~real_reg, ofs);
+                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movss, x86op_float, ~real_reg, ofs);
                         } else {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~real_reg, ofs);
                         }
@@ -823,7 +823,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                         if (type == x86op_dword) {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
                         } else if (!_is_double_register(i, regmap, pseudoregs_map)) {
-                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_float, ~real_reg, ofs);
+                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movss, x86op_float, ~real_reg, ofs);
                         } else {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~real_reg, ofs);
                         }
@@ -857,11 +857,10 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
         }
 
         // Проверяем отсутствие невалидных инструкций.
-        if (insn->in_code == x86insn_int_mov || insn->in_code == x86insn_sse_movss || insn->in_code == x86insn_sse_movsd) {
-            if (OP_IS_REGISTER(insn->in_op1) && OP_IS_REGISTER(insn->in_op2) && insn->in_op1.data.reg == insn->in_op2.data.reg) {
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_REGISTER(insn->in_op1) && OP_IS_REGISTER(insn->in_op2)
+            && insn->in_op1.data.reg == insn->in_op2.data.reg) {
                 bincode_erase_instruction(function, insn);
             }
-        }
 
         // Регистры, ставшие мёртвыми в текущей инструкции и переиспользованные, помечаются как swapped.
         for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
