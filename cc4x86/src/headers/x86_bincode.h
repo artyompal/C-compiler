@@ -287,6 +287,7 @@ typedef struct x86_instruction_decl {
 #define IS_DEFINING_INSN(INSN, TYPE)    ((TYPE) == x86op_dword && IS_DWORD_DEFINING_INSN(INSN) || (TYPE) == x86op_float && IS_FLOAT_DEFINING_INSN(INSN))
 #define IS_VOLATILE_INSN(INSN, TYPE)    (IS_DEFINING_INSN(INSN, TYPE) || IS_MODIFYING_INSN(INSN))
 
+#define IS_MUL_DIV_INSN(INSN)           ((INSN) >= x86insn_int_idiv && (INSN) <= x86insn_int_div)
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
 
 #define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)

@@ -16,8 +16,7 @@ _test proc
 	cdq
 	idiv	edi
 	add	eax,[ebp-12]
-	lea	ecx,[eax-3]
-	mov	eax,ecx
+	lea	eax,[eax-3]
 	pop	edi
 	add	esp,20
 	pop	ebp

@@ -35,8 +35,7 @@ public	___unnamed_double_11
 _test proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,52
-	push	edi
+	sub	esp,80
 	fld	dword ptr [___unnamed_float_1]
 	fstp	dword ptr [ebp-4]
 	fld	qword ptr [___unnamed_double_2]
@@ -80,8 +79,7 @@ label0009:
 	cmp	eax,0
 	jne	label0000
 	mov	eax,1
-	pop	edi
-	add	esp,52
+	add	esp,80
 	pop	ebp
 	ret
 label0000:
@@ -120,13 +118,12 @@ label000d:
 	fstp	st
 	seta	al
 	movzx	eax,al
-	mov	edi,eax
+	mov	[ebp-56],eax
 ; end of inline function eq
-	cmp	edi,0
+	cmp	eax,0
 	jne	label0001
 	mov	eax,2
-	pop	edi
-	add	esp,52
+	add	esp,80
 	pop	ebp
 	ret
 label0001:
@@ -165,13 +162,12 @@ label0011:
 	fstp	st
 	seta	al
 	movzx	eax,al
-	mov	edi,eax
+	mov	[ebp-60],eax
 ; end of inline function eq
-	cmp	edi,0
+	cmp	eax,0
 	jne	label0002
 	mov	eax,3
-	pop	edi
-	add	esp,52
+	add	esp,80
 	pop	ebp
 	ret
 label0002:
@@ -210,13 +206,12 @@ label0015:
 	fstp	st
 	seta	al
 	movzx	eax,al
-	mov	edi,eax
+	mov	[ebp-64],eax
 ; end of inline function eq
-	cmp	edi,0
+	cmp	eax,0
 	jne	label0003
 	mov	eax,4
-	pop	edi
-	add	esp,52
+	add	esp,80
 	pop	ebp
 	ret
 label0003:
@@ -256,13 +251,12 @@ label0019:
 	fstp	st
 	seta	al
 	movzx	eax,al
-	mov	edi,eax
+	mov	[ebp-68],eax
 ; end of inline function eq
-	cmp	edi,0
+	cmp	eax,0
 	jne	label0004
 	mov	eax,5
-	pop	edi
-	add	esp,52
+	add	esp,80
 	pop	ebp
 	ret
 label0004:
@@ -302,13 +296,12 @@ label001d:
 	fstp	st
 	seta	al
 	movzx	eax,al
-	mov	edi,eax
+	mov	[ebp-72],eax
 ; end of inline function eq
-	cmp	edi,0
+	cmp	eax,0
 	jne	label0005
 	mov	eax,6
-	pop	edi
-	add	esp,52
+	add	esp,80
 	pop	ebp
 	ret
 label0005:
@@ -348,13 +341,12 @@ label0021:
 	fstp	st
 	seta	al
 	movzx	eax,al
-	mov	edi,eax
+	mov	[ebp-76],eax
 ; end of inline function eq
-	cmp	edi,0
+	cmp	eax,0
 	jne	label0006
 	mov	eax,7
-	pop	edi
-	add	esp,52
+	add	esp,80
 	pop	ebp
 	ret
 label0006:
@@ -394,19 +386,17 @@ label0025:
 	fstp	st
 	seta	al
 	movzx	eax,al
-	mov	edi,eax
+	mov	[ebp-80],eax
 ; end of inline function eq
-	cmp	edi,0
+	cmp	eax,0
 	jne	label0007
 	mov	eax,8
-	pop	edi
-	add	esp,52
+	add	esp,80
 	pop	ebp
 	ret
 label0007:
 	mov	eax,0
-	pop	edi
-	add	esp,52
+	add	esp,80
 	pop	ebp
 	ret
 _test endp	

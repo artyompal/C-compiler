@@ -33,6 +33,7 @@ sub run_test {
     open(FILE, "out.txt") or return;
 	while (<FILE>) {
 		return 1 if (/SUCCEEDED/);
+        print;
 	}
 
 	return 0;

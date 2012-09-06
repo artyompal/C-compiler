@@ -8,8 +8,14 @@
 _f proc
 	push	ebp
 	mov	ebp,esp
-	mov	eax,[ebp+8]
-	add	eax,[ebp+12]
+	push	edi
+	push	esi
+	mov	edi,[ebp+12]
+	mov	esi,[ebp+8]
+	add	esi,edi
+	mov	eax,esi
+	pop	esi
+	pop	edi
 	pop	ebp
 	ret
 _f endp	
@@ -17,8 +23,14 @@ _f endp
 _g proc
 	push	ebp
 	mov	ebp,esp
-	mov	eax,[ebp+8]
-	sub	eax,[ebp+12]
+	push	edi
+	push	esi
+	mov	edi,[ebp+12]
+	mov	esi,[ebp+8]
+	sub	esi,edi
+	mov	eax,esi
+	pop	esi
+	pop	edi
 	pop	ebp
 	ret
 _g endp	
@@ -26,7 +38,7 @@ _g endp
 _test proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,12
+	sub	esp,16
 	push	edi
 	push	esi
 	mov	edi,2
@@ -43,13 +55,14 @@ label0000:
 	push	edi
 	call	_g
 	add	esp,8
-	mov	edi,eax
+	mov	[ebp-16],eax
 label0001:
-	mov	eax,1
-	add	eax,edi
+	mov	esi,1
+	add	esi,eax
+	mov	eax,esi
 	pop	esi
 	pop	edi
-	add	esp,12
+	add	esp,16
 	pop	ebp
 	ret
 _test endp	

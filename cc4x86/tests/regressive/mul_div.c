@@ -24,6 +24,10 @@ int test()
     a = 0x10000, b = 0x10000;
     if (a*b != 0) return 6;
 
+    a = 2, b = 3, c = 4, d = 5;
+    res = ((b/a) * (c/a));
+    if (res != 2) return 7;
+
     return 0;
 }
 

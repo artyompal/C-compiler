@@ -21,9 +21,7 @@ _test1 proc
 	mov	ebp,esp
 	sub	esp,4
 	movss	xmm7,dword ptr [ebp+8]
-	movss	xmm6,xmm7
-	addss	xmm6,dword ptr [___unnamed_float_0]
-	movss	xmm7,xmm6
+	addss	xmm7,dword ptr [___unnamed_float_0]
 	movss	xmm0,xmm7
 	add	esp,4
 	pop	ebp
@@ -33,8 +31,9 @@ _test1 endp
 _test2 proc
 	push	ebp
 	mov	ebp,esp
-	movss	xmm0,dword ptr [ebp+8]
-	addss	xmm0,dword ptr [___unnamed_float_0]
+	movss	xmm7,dword ptr [ebp+8]
+	addss	xmm7,dword ptr [___unnamed_float_0]
+	movss	xmm0,xmm7
 	pop	ebp
 	ret
 _test2 endp	
