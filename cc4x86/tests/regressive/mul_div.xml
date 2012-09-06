@@ -151,6 +151,45 @@
           <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="6"/>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0005"/>
+        <expression type="unsigned int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="a"/>
+          <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="2"/>
+        </expression>
+        <expression type="unsigned int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="b"/>
+          <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="3"/>
+        </expression>
+        <expression type="unsigned int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="c"/>
+          <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="4"/>
+        </expression>
+        <expression type="unsigned int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="d"/>
+          <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="5"/>
+        </expression>
+        <expression type="unsigned int" lvalue="no" complexity="4" code="assign">
+          <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="res"/>
+          <operand_2 type="unsigned int" lvalue="no" complexity="3" code="mul">
+            <operand_1 type="unsigned int" lvalue="no" complexity="2" code="div">
+              <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="b"/>
+              <operand_2 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="a"/>
+            </operand_1>
+            <operand_2 type="unsigned int" lvalue="no" complexity="2" code="div">
+              <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="c"/>
+              <operand_2 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="a"/>
+            </operand_2>
+          </operand_2>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0006" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="2" code="non_equal">
+            <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="res"/>
+            <operand_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="2"/>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="7"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0006"/>
         <expression type="null" lvalue="no" complexity="0" code="return">
           <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
         </expression>

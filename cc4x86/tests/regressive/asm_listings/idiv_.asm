@@ -8,9 +8,7 @@
 _test proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,20
-	push	edi
-	push	esi
+	sub	esp,36
 	mov	dword ptr [ebp-4],2
 	mov	dword ptr [ebp-8],3
 	mov	dword ptr [ebp-12],4
@@ -18,27 +16,35 @@ _test proc
 	mov	eax,[ebp-8]
 	cdq
 	idiv	dword ptr [ebp-4]
-	mov	edi,eax
+	mov	[ebp-24],eax
 	mov	eax,[ebp-8]
 	cdq
 	idiv	dword ptr [ebp-4]
-	imul	edi,eax
+	mov	[ebp-28],eax
+	mov	eax,[ebp-24]
+	mov	edx,[ebp-28]
+	imul	eax,edx
+	mov	[ebp-24],eax
 	mov	eax,[ebp-16]
 	cdq
 	idiv	dword ptr [ebp-12]
-	mov	esi,eax
+	mov	[ebp-32],eax
 	mov	eax,[ebp-16]
 	cdq
 	idiv	dword ptr [ebp-12]
-	imul	esi,eax
-	add	edi,esi
-	mov	[ebp-20],edi
+	mov	[ebp-36],eax
+	mov	eax,[ebp-32]
+	mov	edx,[ebp-36]
+	imul	eax,edx
+	mov	[ebp-32],eax
+	mov	eax,[ebp-24]
+	mov	ecx,[ebp-32]
+	add	eax,ecx
+	mov	[ebp-20],eax
 	cmp	dword ptr [ebp-20],2
 	je	label0000
 	mov	eax,1
-	pop	esi
-	pop	edi
-	add	esp,20
+	add	esp,36
 	pop	ebp
 	ret
 label0000:
@@ -49,9 +55,7 @@ label0000:
 	cmp	dword ptr [ebp-12],2
 	je	label0001
 	mov	eax,2
-	pop	esi
-	pop	edi
-	add	esp,20
+	add	esp,36
 	pop	ebp
 	ret
 label0001:
@@ -62,16 +66,12 @@ label0001:
 	cmp	dword ptr [ebp-16],2
 	je	label0002
 	mov	eax,3
-	pop	esi
-	pop	edi
-	add	esp,20
+	add	esp,36
 	pop	ebp
 	ret
 label0002:
 	mov	eax,0
-	pop	esi
-	pop	edi
-	add	esp,20
+	add	esp,36
 	pop	ebp
 	ret
 _test endp	

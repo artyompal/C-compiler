@@ -15,6 +15,7 @@ typedef enum x86_register_status_decl {
     register_allocated,
     register_reserved,
     register_swapped,
+    register_delayed_swapped,
 } x86_register_status;
 
 typedef struct x86_pseudoreg_info_decl {

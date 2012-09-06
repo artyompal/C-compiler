@@ -11,7 +11,9 @@ static basic_blocks_vector  _basic_blocks;
 static set_vector           _reg_in[X86_REGISTER_TYPES_COUNT];
 static set_vector           _reg_out[X86_REGISTER_TYPES_COUNT];
 
-static set                  _current_alive_registers;
+static set                  _alive_registers_after_current_insn;
+static set                  _alive_registers_before_current_insn;
+
 static int                  _current_block;
 static x86_instruction *    _current_insn;
 
@@ -243,20 +245,25 @@ void x86_dataflow_prepare_function(function_desc *function, x86_operand_type typ
     _detect_basic_blocks(function);
     _build_alive_pseudoreg_tables(function, type);
 
-    set_alloc(&_current_alive_registers, function->func_pseudoregs_count[type]);
+    set_alloc(&_alive_registers_after_current_insn, function->func_pseudoregs_count[type]);
+    set_alloc(&_alive_registers_before_current_insn, function->func_pseudoregs_count[type]);
 
     _current_block  = -1;
     _current_insn   = NULL;
 }
 
 //
-// Пересчитывает _current_alive_registers для данной инструкции.
+// Пересчитывает _alive_registers_after_current_insn для данной инструкции.
 // Можно переместиться на несколько инструкций вперёд.
 void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type type, int count)
 {
     x86_instruction *insn;
     int j, regs_cnt, regs[MAX_REGISTERS_PER_INSN];
 
+    // Сохраняем текущую таблицу живых регистров как таблицу после предыдущей инструкции.
+    set_swap(&_alive_registers_after_current_insn, &_alive_registers_before_current_insn);
+
+    // Двигаемся на count шагов вперёд.
     for (j = 0; j < count; j++) {
         _current_insn = (_current_insn ? _current_insn->in_next : function->func_binary_code);
 
@@ -266,9 +273,9 @@ void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type ty
             }
     }
 
-    // Обновляем таблицу _current_alive_registers (множество псевдорегистров, активных после этой инструкции).
+    // Обновляем таблицу _alive_registers_after_current_insn (множество псевдорегистров, активных после этой инструкции).
     // FIXME: квадратичная сложность от числа инструкций в блоке.
-    set_assign(&_current_alive_registers, &_reg_out[type].vec_base[_current_block]);
+    set_assign(&_alive_registers_after_current_insn, &_reg_out[type].vec_base[_current_block]);
 
     for (insn = _basic_blocks.blocks_base[_current_block].block_last_insn; insn != _current_insn; insn = insn->in_prev) {
         // извлекаем все переписываемые регистры
@@ -276,19 +283,19 @@ void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type ty
 
         // вычитаем все эти регистры из множества
         for (j = 0; j < regs_cnt; j++)
-            BIT_CLEAR(_current_alive_registers, regs[j]);
+            BIT_CLEAR(_alive_registers_after_current_insn, regs[j]);
 
         // извлекаем все читаемые регистры
         bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
 
         // добавляем каждый регистр во множество
         for (j = 0; j < regs_cnt; j++)
-            BIT_RAISE(_current_alive_registers, regs[j]);
+            BIT_RAISE(_alive_registers_after_current_insn, regs[j]);
     }
 }
 
 //
-// Пересчитывает _current_alive_registers для данной инструкции.
+// Пересчитывает _alive_registers_after_current_insn для данной инструкции.
 // Можно переместиться на несколько инструкций назад.
 void x86_dataflow_step_insn_backward(function_desc *function, x86_operand_type type, int count)
 {
@@ -303,24 +310,31 @@ void x86_dataflow_step_insn_backward(function_desc *function, x86_operand_type t
             _current_block--;
         }
 
-    // Обновляем таблицу _current_alive_registers (множество псевдорегистров, активных после этой инструкции).
+    // Обновляем таблицу _alive_registers_after_current_insn (множество псевдорегистров, активных после этой инструкции).
     if (_current_insn == _basic_blocks.blocks_base[_current_block].block_last_insn) {
-        set_assign(&_current_alive_registers, &_reg_out[type].vec_base[_current_block]);
+        set_assign(&_alive_registers_after_current_insn, &_reg_out[type].vec_base[_current_block]);
     } else {
         // извлекаем все читаемые регистры
         bincode_extract_pseudoregs_read_by_insn(_current_insn, type, regs, &regs_cnt);
 
         // добавляем каждый регистр во множество
         for (j = 0; j < regs_cnt; j++)
-            BIT_RAISE(_current_alive_registers, regs[j]);
+            BIT_RAISE(_alive_registers_after_current_insn, regs[j]);
     }
 }
 
 //
-// Проверяет, можно ли освободить регистр после этой инструкции.
+// Проверяет, можно ли освободить регистр ПОСЛЕ этой инструкции.
 int x86_dataflow_is_pseudoreg_alive_after(function_desc *function, int pseudoreg)
 {
-    return BIT_TEST(_current_alive_registers, pseudoreg);
+    return BIT_TEST(_alive_registers_after_current_insn, pseudoreg);
+}
+
+//
+// Проверяет, можно ли освободить регистр ПЕРЕД этой инструкцией.
+int x86_dataflow_is_pseudoreg_alive_before(function_desc *function, int pseudoreg)
+{
+    return BIT_TEST(_alive_registers_before_current_insn, pseudoreg);
 }
 
 

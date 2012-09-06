@@ -17,8 +17,8 @@ _test proc
 	mov	eax,[ebp-4]
 	cdq
 	idiv	dword ptr [ebp-8]
-	mov	ecx,[ebp-16]
-	add	eax,[ecx]
+	mov	edx,[ebp-16]
+	add	eax,[edx]
 	mov	[ebp-20],eax
 	mov	eax,[ebp-20]
 	sub	eax,3

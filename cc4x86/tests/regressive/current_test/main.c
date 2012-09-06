@@ -10,6 +10,12 @@ int main()
     
     printf("performing regressive test '%s'... ", test_name);
     res = test();
-    printf("%s\n", res == 0 ? "SUCCEEDED" : "FAILED");
+
+    if (res == 0) {
+        printf("SUCCEEDED\n");
+    } else {
+        printf("FAILED, code=%d\n", res);
+    }
+
     return 0;
 }

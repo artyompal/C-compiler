@@ -47,7 +47,6 @@ _fabs proc
 	movss	xmm0,dword ptr [___unnamed_float_0]
 	comiss	xmm0,xmm7
 	ja	label0000
-	movss	xmm6,xmm7
 	jmp	label0001
 label0000:
 	movss	xmm0,xmm7
@@ -63,14 +62,16 @@ _fabs endp
 _eq proc
 	push	ebp
 	mov	ebp,esp
-	movsd	xmm0,qword ptr [ebp+8]
-	subsd	xmm0,qword ptr [ebp+16]
-	cvtsd2ss	xmm1,xmm0
-	movss	dword ptr [esp-4],xmm1
+	movss	xmm7,dword ptr [ebp+16]
+	movss	xmm6,dword ptr [ebp+8]
+	subsd	xmm6,xmm7
+	cvtsd2ss	xmm6,xmm6
+	movss	dword ptr [esp-4],xmm6
 	sub	esp,4
 	call	_fabs
 	add	esp,4
-	comiss	xmm0,dword ptr [___unnamed_float_2]
+	movss	xmm6,xmm0
+	comiss	xmm6,dword ptr [___unnamed_float_2]
 	setb	al
 	movzx	eax,al
 	pop	ebp
@@ -147,12 +148,12 @@ label0001:
 label0002:
 	cvtss2sd	xmm0,xmm7
 	divsd	xmm0,xmm6
-	movsd	xmm6,xmm0
+	movsd	xmm5,xmm0
 	movss	dword ptr [ebp-32],xmm7
 	movsd	xmm0,qword ptr [___unnamed_double_8]
 	movsd	qword ptr [esp-8],xmm0
 	sub	esp,8
-	movsd	qword ptr [esp-8],xmm6
+	movsd	qword ptr [esp-8],xmm5
 	sub	esp,8
 	call	_eq
 	add	esp,16

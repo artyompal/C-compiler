@@ -315,9 +315,8 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
             if (_is_address_using_reg(&usage->in_op2, reg)) {
                 _replace_register_in_address_with_constant(&usage->in_op2, reg, val);
             } else if (OP_IS_THIS_PSEUDO_REG(usage->in_op2, x86op_dword, reg)) {
-                if (usage->in_code == x86insn_int_mul || usage->in_code == x86insn_int_div
-                    || usage->in_code == x86insn_int_idiv) {
-                        return;
+                if (IS_MUL_DIV_INSN(usage->in_code)) {
+                    return;
                 }
 
                 usage->in_op2.op_loc       = x86loc_int_constant;
@@ -358,6 +357,7 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
         // Удаляем MOV и заменяем IMUL на его трёхоперандную форму.
         bincode_erase_instruction(function, insn);
         pattern->in_code    = x86insn_imul_const;
+        pattern->in_op2     = pattern->in_op1;
         pattern->in_op3     = val;
         return;
     }

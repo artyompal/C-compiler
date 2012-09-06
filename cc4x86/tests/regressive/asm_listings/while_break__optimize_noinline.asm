@@ -24,7 +24,8 @@ label0002:
 label0001:
 	cmp	edi,5
 	je	label0003
-	mov	eax,1
+	mov	edi,1
+	mov	eax,edi
 	pop	esi
 	pop	edi
 	add	esp,12
@@ -46,14 +47,16 @@ label0005:
 	jl	label0004
 	cmp	esi,50
 	je	label0008
-	mov	eax,1
+	mov	esi,1
+	mov	eax,esi
 	pop	esi
 	pop	edi
 	add	esp,12
 	pop	ebp
 	ret
 label0008:
-	mov	eax,0
+	mov	esi,0
+	mov	eax,esi
 	pop	esi
 	pop	edi
 	add	esp,12
