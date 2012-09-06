@@ -764,6 +764,7 @@ label0001:
 	mov	edx,[ebp-160]
 	imul	edx,24
 	mov	[ebp-160],edx
+	mov	edx,[ebp-140]
 	mov	ebx,edx
 	mov	[ebp-140],edx
 	mov	edx,[ebp-160]
@@ -901,6 +902,7 @@ label0005:
 	mov	edx,[ebx+192]
 	imul	edx,24
 	mov	[ebp-180],edx
+	mov	edx,[ebp-140]
 	mov	ebx,edx
 	mov	[ebp-140],edx
 	mov	edx,[ebp-180]
@@ -944,6 +946,7 @@ label0005:
 	mov	edx,[ebx+192]
 	imul	edx,24
 	mov	[ebp-184],edx
+	mov	edx,[ebp-140]
 	mov	ebx,edx
 	mov	[ebp-140],edx
 	mov	edx,[ebp-184]
@@ -1124,6 +1127,7 @@ _rasterizer_triangle3f proc
 	lea	eax,[ebp-196]
 	add	eax,48
 	add	eax,16
+	mov	edi,[ebp-720]
 	mov	ecx,[edi]
 	mov	edx,[edi+4]
 	mov	[eax],ecx
@@ -1602,6 +1606,7 @@ label000e:
 	fdivrp
 	fstp	dword ptr [ebp-384]
 	mov	[ebp-736],eax
+	mov	eax,[ebp-740]
 	mov	ecx,eax
 	mov	[ebp-740],eax
 	mov	eax,[ebp-736]
@@ -1627,7 +1632,9 @@ label000e:
 	fstp	dword ptr [ebp-412]
 	mov	esi,edi
 	mov	[ebp-736],eax
+	mov	eax,[ebp-740]
 	mov	ebx,eax
+	mov	eax,[ebp-736]
 	mov	edx,eax
 	cmp	edx,ebx
 	jg	label0013
@@ -1883,6 +1890,7 @@ label0011:
 	fdivrp
 	fstp	dword ptr [ebp-384]
 	mov	[ebp-736],eax
+	mov	eax,[ebp-740]
 	mov	ecx,eax
 	mov	[ebp-740],eax
 	mov	eax,[ebp-736]
@@ -1908,7 +1916,9 @@ label0011:
 	fstp	dword ptr [ebp-412]
 	mov	esi,edi
 	mov	[ebp-736],eax
+	mov	eax,[ebp-740]
 	mov	ebx,eax
+	mov	eax,[ebp-736]
 	mov	edx,eax
 	cmp	edx,ebx
 	jg	label0019

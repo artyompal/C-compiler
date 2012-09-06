@@ -1250,6 +1250,7 @@ label0006:
 	subss	xmm7,xmm0
 	divss	xmm7,xmm4
 	mov	[ebp-44],eax
+	mov	eax,[ebp-48]
 	mov	ecx,eax
 	mov	[ebp-48],eax
 	mov	eax,[ebp-44]
@@ -1466,6 +1467,7 @@ label0009:
 	divss	xmm6,xmm4
 	movss	xmm7,xmm6
 	mov	[ebp-44],eax
+	mov	eax,[ebp-48]
 	mov	ecx,eax
 	mov	[ebp-48],eax
 	mov	eax,[ebp-44]
@@ -1577,6 +1579,7 @@ label0001:
 	mov	edx,[ebp-84]
 	imul	edx,24
 	mov	[ebp-84],edx
+	mov	edx,[ebp-64]
 	mov	ebx,edx
 	mov	[ebp-64],edx
 	mov	edx,[ebp-84]
@@ -1659,6 +1662,7 @@ label0005:
 	mov	edx,[ebx+192]
 	imul	edx,24
 	mov	[ebp-88],edx
+	mov	edx,[ebp-64]
 	mov	ebx,edx
 	mov	[ebp-64],edx
 	mov	edx,[ebp-88]
@@ -1691,6 +1695,7 @@ label0005:
 	mov	edx,[ebx+192]
 	imul	edx,24
 	mov	[ebp-92],edx
+	mov	edx,[ebp-64]
 	mov	ebx,edx
 	mov	[ebp-64],edx
 	mov	edx,[ebp-92]
@@ -2027,6 +2032,7 @@ _rasterizer_triangle3f proc
 	lea	eax,[ebp-196]
 	add	eax,48
 	add	eax,16
+	mov	edi,[ebp-208]
 	mov	ecx,[edi]
 	mov	edx,[edi+4]
 	mov	[eax],ecx
