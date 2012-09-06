@@ -88,9 +88,9 @@ BOOL x86_equal_types(x86_operand_type type1, x86_operand_type type2)
     return (type1 == type2 || type1 == x86op_float && type2 == x86op_double || type1 == x86op_double && type2 == x86op_float);
 }
 
-static BOOL _is_double_register(int reg, register_map *regmap, x86_pseudoreg_info *pseudoregs_map)
+static BOOL _is_double_register(int pseudoreg, x86_pseudoreg_info *pseudoregs_map)
 {
-    x86_instruction *insn = pseudoregs_map[regmap->real_registers_map[reg]].reg_first_write;
+    x86_instruction *insn = pseudoregs_map[pseudoreg].reg_first_write;
     ASSERT(insn->in_op1.op_type == x86op_float || insn->in_op1.op_type == x86op_double);
     return (insn->in_op1.op_type == x86op_double);
 }
@@ -128,7 +128,7 @@ static int _find_register_to_swap(function_desc *function, x86_instruction *insn
 
             for (j = 0; j < regs_cnt; j++) {
                 if (regs[j] == regmap->real_registers_map[i]) {
-                    free_registers_count -= (busy_regs[i] ? 0 : 1);
+                    free_registers_count += (busy_regs[i] - 1);
                     busy_regs[i] = TRUE;
                 }
             }
@@ -160,7 +160,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
     if (conflict_reg > 0) {
         if (x86_dataflow_is_pseudoreg_alive_before(function, conflict_reg)) {
             int ofs = pseudoregs_map[conflict_reg].reg_stack_location;
-            int dbl = (regmap == &_dword_register_map ? FALSE : _is_double_register(real_reg, regmap, pseudoregs_map));
+            int dbl = (regmap == &_dword_register_map ? FALSE : _is_double_register(conflict_reg, pseudoregs_map));
 
             if (ofs == -1) {
                 ofs = x86_stack_frame_alloc_tmp_var(function, (dbl ? 8 : 4));
@@ -176,7 +176,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
             }
         }
 
-        if (IS_DEFINING_INSN(insn->in_code, type) && !OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg)) {
+        if (IS_DEFINING_INSN(insn->in_code, type) && !OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, conflict_reg)) {
             pseudoregs_map[conflict_reg].reg_status = register_delayed_swapped;
         } else {
             pseudoregs_map[conflict_reg].reg_status = register_swapped;
@@ -673,7 +673,7 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
             reg = regmap->real_registers_map[i];
 
             if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
-                if (!_is_double_register(i, regmap, pseudoregs_map)) {
+                if (!_is_double_register(reg, pseudoregs_map)) {
                     saved_real_registers_map[i] = 1;
                     ofs = pseudoregs_map[reg].reg_stack_location;
 
@@ -796,18 +796,17 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
                 if (reg == result || conflict_reg != result) {
                     // Вытесняем конфликтующий регистр в стек и загружаем сохранённое значение из стека.
-                    _swap_register(function, insn, regmap, pseudoregs_map, conflict_reg, real_reg, type);
+                    _swap_register(function, insn, regmap, pseudoregs_map, reg, real_reg, type);
 
                     regmap->real_registers_cnt++;
                     regmap->real_registers_map[real_reg] = reg;
                     pseudoregs_map[reg].reg_status = register_allocated;
 
-                    if (!IS_DEFINING_INSN(insn->in_code, type) && ofs != -1) {
+                    if ((!IS_DEFINING_INSN(insn->in_code, type) || !OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg)) && ofs != -1) {
                         // Загружаем сохранённое значение из стека.
-
                         if (type == x86op_dword) {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
-                        } else if (!_is_double_register(i, regmap, pseudoregs_map)) {
+                        } else if (!_is_double_register(reg, pseudoregs_map)) {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movss, x86op_float, ~real_reg, ofs);
                         } else {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~real_reg, ofs);
@@ -819,10 +818,10 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                     // Копируем сохранённое значение в другой регистр.
                     real_reg = _alloc_real_register(function, insn, regmap, pseudoregs_map, reg, type);
 
-                    if (ofs != -1) {
+                    if (ofs != -1) { // FIXME: не должно ли место в стеке быть гарантировано выделено???
                         if (type == x86op_dword) {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
-                        } else if (!_is_double_register(i, regmap, pseudoregs_map)) {
+                        } else if (!_is_double_register(reg, pseudoregs_map)) {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movss, x86op_float, ~real_reg, ofs);
                         } else {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~real_reg, ofs);
@@ -856,7 +855,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
             _emulate_pop_all(function, insn, type, regmap, pseudoregs_map, saved_real_registers_map);
         }
 
-        // Проверяем отсутствие невалидных инструкций.
+        // Удаляем тривиальные присваивания (тривиальная оптимизация).
         if (IS_MOV_INSN(insn->in_code) && OP_IS_REGISTER(insn->in_op1) && OP_IS_REGISTER(insn->in_op2)
             && insn->in_op1.data.reg == insn->in_op2.data.reg) {
                 bincode_erase_instruction(function, insn);

@@ -202,6 +202,7 @@ label0001:
 	movss	dword ptr [ebp-80],xmm7
 	movss	xmm7,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-84],xmm7
+	movss	xmm7,dword ptr [ebp-80]
 	movss	xmm4,xmm7
 	movss	xmm3,dword ptr [___unnamed_float_2]
 	movss	xmm2,dword ptr [___unnamed_float_2]
@@ -209,6 +210,7 @@ label0001:
 	movss	dword ptr [edi],xmm2
 	movss	dword ptr [edi+4],xmm3
 	movss	dword ptr [edi+8],xmm4
+	movss	xmm7,dword ptr [ebp-84]
 	movss	dword ptr [edi+12],xmm7
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
@@ -234,6 +236,7 @@ label0003:
 	movss	dword ptr [ebp-88],xmm7
 	movss	xmm7,dword ptr [___unnamed_float_1]
 	movss	dword ptr [ebp-84],xmm7
+	movss	xmm7,dword ptr [ebp-88]
 	movss	xmm4,xmm7
 	movss	xmm3,dword ptr [___unnamed_float_2]
 	movss	xmm2,dword ptr [___unnamed_float_2]
@@ -241,6 +244,7 @@ label0003:
 	movss	dword ptr [edi],xmm2
 	movss	dword ptr [edi+4],xmm3
 	movss	dword ptr [edi+8],xmm4
+	movss	xmm7,dword ptr [ebp-84]
 	movss	dword ptr [edi+12],xmm7
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
@@ -646,6 +650,7 @@ label0001:
 	mov	edx,[ebp-160]
 	imul	edx,24
 	mov	[ebp-160],edx
+	mov	edx,[ebp-140]
 	mov	ebx,edx
 	mov	[ebp-140],edx
 	mov	edx,[ebp-160]
@@ -771,6 +776,7 @@ label0005:
 	mov	edx,[ebx+192]
 	imul	edx,24
 	mov	[ebp-180],edx
+	mov	edx,[ebp-140]
 	mov	ebx,edx
 	mov	[ebp-140],edx
 	mov	edx,[ebp-180]
@@ -812,6 +818,7 @@ label0005:
 	mov	edx,[ebx+192]
 	imul	edx,24
 	mov	[ebp-184],edx
+	mov	edx,[ebp-140]
 	mov	ebx,edx
 	mov	[ebp-140],edx
 	mov	edx,[ebp-184]
@@ -984,6 +991,7 @@ _rasterizer_triangle3f proc
 	lea	eax,[ebp-196]
 	add	eax,48
 	add	eax,16
+	mov	edi,[ebp-716]
 	mov	ecx,[edi]
 	mov	edx,[edi+4]
 	mov	[eax],ecx
@@ -1439,6 +1447,7 @@ label000e:
 	subss	xmm7,xmm1
 	divss	xmm7,xmm4
 	mov	[ebp-732],eax
+	mov	eax,[ebp-736]
 	mov	ecx,eax
 	mov	[ebp-736],eax
 	mov	eax,[ebp-732]
@@ -1452,7 +1461,9 @@ label000e:
 	movss	xmm3,xmm0
 	mov	esi,edi
 	mov	[ebp-732],eax
+	mov	eax,[ebp-736]
 	mov	ebx,eax
+	mov	eax,[ebp-732]
 	mov	edx,eax
 	cmp	edx,ebx
 	jg	label0013
@@ -1558,6 +1569,7 @@ label000f:
 	movss	dword ptr [ebp-756],xmm3
 	movss	xmm3,dword ptr [edx+8]
 	movss	dword ptr [ebp-760],xmm3
+	movss	xmm3,dword ptr [ebp-756]
 	movss	xmm2,xmm3
 	movss	xmm1,xmm0
 	mov	ecx,[edx+4]
@@ -1704,6 +1716,7 @@ label0011:
 	divss	xmm2,xmm1
 	movss	xmm7,xmm2
 	mov	[ebp-732],eax
+	mov	eax,[ebp-736]
 	mov	ecx,eax
 	mov	[ebp-736],eax
 	mov	eax,[ebp-732]
@@ -1718,7 +1731,9 @@ label0011:
 	movss	xmm3,xmm0
 	mov	esi,edi
 	mov	[ebp-732],eax
+	mov	eax,[ebp-736]
 	mov	ebx,eax
+	mov	eax,[ebp-732]
 	mov	edx,eax
 	cmp	edx,ebx
 	jg	label0019
