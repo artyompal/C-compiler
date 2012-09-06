@@ -10,8 +10,6 @@ x86_opt_data_flow.c:FIXME: квадратичное время от количества базовых блоков
 x86_opt_data_flow.c:FIXME: квадратичная сложность от числа инструкций в блоке.
 x86_opt_data_flow.c:FIXME: IS_JMP_INSN???
 x86_opt_data_flow.c:FIXME???
-x86_regalloc.c:     FIXME: это нужно?
-x86_regalloc.c:     FIXME: оно тут надо?
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
 x86_regalloc.c:     TODO: регистры FPU также необходимо сохранять при вызовах функций.
 x86_regalloc.c:     TODO: заменять read-only операнд на чтение из памяти

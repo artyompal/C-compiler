@@ -95,22 +95,6 @@ static BOOL _is_double_register(int reg, register_map *regmap, x86_pseudoreg_inf
     return (insn->in_op1.op_type == x86op_double);
 }
 
-static BOOL _is_instruction_result(function_desc *function, x86_instruction *insn, x86_operand_type type, int reg, int real_reg)
-{
-// FIXME: это нужно?
-    //if (type == x86op_dword) {
-    //    if (insn->in_code == x86insn_cdq || insn->in_code == x86insn_xor_edx_edx) {
-    //        return real_reg == x86reg_edx;
-    //    } else if (IS_MUL_DIV_INSN(insn->in_code)) {
-    //        return real_reg == x86reg_eax || real_reg == x86reg_edx;
-    //    } else if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2)) {
-    //        return real_reg == x86reg_ecx;
-    //    }
-    //}
-
-    return OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg);
-}
-
 
 //
 // ’елперы, выполн€ющие фактическую аллокацию реальных регистров.
@@ -192,8 +176,8 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
             }
         }
 
-        if (IS_DEFINING_INSN(insn->in_code, type) && !_is_instruction_result(function, insn, type, reg, real_reg)) {
-            pseudoregs_map[conflict_reg].reg_status = register_delayed_swapped; // FIXME: оно тут надо?
+        if (IS_DEFINING_INSN(insn->in_code, type) && !OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg)) {
+            pseudoregs_map[conflict_reg].reg_status = register_delayed_swapped;
         } else {
             pseudoregs_map[conflict_reg].reg_status = register_swapped;
         }
