@@ -22,6 +22,7 @@ typedef struct x86_pseudoreg_info_decl {
     x86_register_status     reg_status;             // один из вариантов выше
     int                     reg_location;           // номер ассоциированного реального регистра или -1
     int                     reg_stack_location;     // смещение ассоциированной €чейки в стеке
+    BOOL                    reg_saved;              // если регистр был живым на момент, когда его выгрузили, то он был сохранЄн
 
 // TODO: параметры reg_first_write/reg_last_read/reg_changes_value €вл€ютс€ deprecated. «адачи анализа потока данных должны теперь решатьс€ через множества in/out.
     x86_instruction *       reg_first_write;

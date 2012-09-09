@@ -150,7 +150,7 @@ static int _find_register_to_swap(function_desc *function, x86_instruction *insn
 }
 
 static void _swap_register(function_desc *function, x86_instruction *insn, register_map *regmap,
-    x86_pseudoreg_info *pseudoregs_map, int reg, int real_reg, x86_operand_type type)
+    x86_pseudoreg_info *pseudoregs_map, int real_reg, x86_operand_type type)
 {
     int conflict_reg = regmap->real_registers_map[real_reg];
 
@@ -174,6 +174,10 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
             } else {
                 bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movsd, x86op_double, ofs, ~real_reg);
             }
+
+            pseudoregs_map[conflict_reg].reg_saved = TRUE;
+        } else {
+            pseudoregs_map[conflict_reg].reg_saved = FALSE;
         }
 
         if (IS_DEFINING_INSN(insn->in_code, type) && !OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, conflict_reg)) {
@@ -254,7 +258,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
     ASSERT(regmap->real_registers_cnt == _get_max_register_count(regmap));
 
     real_reg = _find_register_to_swap(function, insn, regmap);
-    _swap_register(function, insn, regmap, pseudoregs_map, pseudoreg, real_reg, type);
+    _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type);
 
     regmap->real_registers_cnt++;
     regmap->real_registers_map[real_reg] = pseudoreg;
@@ -292,7 +296,7 @@ static void _commit_register_reservation(function_desc *function, x86_instructio
 
     if (regmap->real_registers_map[real_reg] != -1) {
         // регистр занят, освобождаем
-        _swap_register(function, insn, regmap, pseudoregs_map, pseudoreg, real_reg, type);
+        _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type);
     }
 
     regmap->real_registers_cnt++;
@@ -356,9 +360,12 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
     for (i = 0; i < pseudoregs_cnt; i++)
     {
-        pseudoregs_map[i].reg_changes_value = pseudoregs_map[i].reg_status          = 0;
+        pseudoregs_map[i].reg_changes_value     = pseudoregs_map[i].reg_status      = 0;
+        pseudoregs_map[i].reg_saved             = FALSE;
+        pseudoregs_map[i].reg_stack_location    = -1;
+
         pseudoregs_map[i].reg_first_write   = pseudoregs_map[i].reg_last_read       = NULL;
-        pseudoregs_map[i].reg_location      = pseudoregs_map[i].reg_stack_location  = -1;
+        pseudoregs_map[i].reg_location      = -1;
     }
 
 
@@ -796,13 +803,15 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
                 if (reg == result || conflict_reg != result) {
                     // Вытесняем конфликтующий регистр в стек и загружаем сохранённое значение из стека.
-                    _swap_register(function, insn, regmap, pseudoregs_map, reg, real_reg, type);
+                    _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type);
 
                     regmap->real_registers_cnt++;
                     regmap->real_registers_map[real_reg] = reg;
                     pseudoregs_map[reg].reg_status = register_allocated;
 
-                    if ((!IS_DEFINING_INSN(insn->in_code, type) || !OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg)) && ofs != -1) {
+                    if (x86_dataflow_is_pseudoreg_alive_before(function, reg) && pseudoregs_map[reg].reg_saved) {
+                        ASSERT(ofs != -1);
+
                         // Загружаем сохранённое значение из стека.
                         if (type == x86op_dword) {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
@@ -818,7 +827,9 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                     // Копируем сохранённое значение в другой регистр.
                     real_reg = _alloc_real_register(function, insn, regmap, pseudoregs_map, reg, type);
 
-                    if (ofs != -1) { // FIXME: не должно ли место в стеке быть гарантировано выделено???
+                    if (x86_dataflow_is_pseudoreg_alive_before(function, reg) && pseudoregs_map[reg].reg_saved) {
+                        ASSERT(ofs != -1);
+
                         if (type == x86op_dword) {
                             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
                         } else if (!_is_double_register(reg, pseudoregs_map)) {
