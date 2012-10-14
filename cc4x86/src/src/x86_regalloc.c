@@ -24,11 +24,6 @@ static register_map _sse_register_map;
 //
 // Конфликты регистров.
 //
-// Вытеснение регистров в стек:
-// 1. на момент выхода из базового блока нужно восстановить все сохранённые регистры,
-//    которые были выделены на момент входа в базовый блок, и которые являются живыми
-//    на момент выхода из блока.
-//
 // Если в одной инструкции появляются конфликтующие регистры:
 // 1. регистр результата имеет максимальный приоритет; он должен быть всегда выделен.
 // 2. Зарезервированные регистры являются неприкосновенными.
@@ -124,7 +119,7 @@ static int _find_register_to_swap(function_desc *function, x86_instruction *insn
         bincode_extract_pseudoregs_from_insn_wo_dupes(insn, type, regs, &regs_cnt);
 
         for (i = 0; i < X86_MAX_REG; i++) {
-            if (i == x86reg_ebp || i == x86reg_esp) continue;
+            if (type == x86op_dword && (i == x86reg_ebp || i == x86reg_esp)) continue;
 
             for (j = 0; j < regs_cnt; j++) {
                 if (regs[j] == regmap->real_registers_map[i]) {
@@ -150,7 +145,7 @@ static int _find_register_to_swap(function_desc *function, x86_instruction *insn
 }
 
 static void _swap_register(function_desc *function, x86_instruction *insn, register_map *regmap,
-    x86_pseudoreg_info *pseudoregs_map, int real_reg, x86_operand_type type)
+    x86_pseudoreg_info *pseudoregs_map, int real_reg, x86_operand_type type, BOOL disable_codegen)
 {
     int conflict_reg = regmap->real_registers_map[real_reg];
 
@@ -167,27 +162,43 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
                 pseudoregs_map[conflict_reg].reg_stack_location = ofs;
             }
 
-            if (regmap == &_dword_register_map) {
-                bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, ofs, ~real_reg);
-            } else if (!dbl) {
-                bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movss, x86op_float, ofs, ~real_reg);
-            } else {
-                bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movsd, x86op_double, ofs, ~real_reg);
+            if (!disable_codegen) {
+                if (regmap == &_dword_register_map) {
+                    bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, ofs, ~real_reg);
+                } else if (!dbl) {
+                    bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movss, x86op_float, ofs, ~real_reg);
+                } else {
+                    bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movsd, x86op_double, ofs, ~real_reg);
+                }
             }
 
-            pseudoregs_map[conflict_reg].reg_saved = TRUE;
-        } else {
-            pseudoregs_map[conflict_reg].reg_saved = FALSE;
-        }
-
-        if (IS_DEFINING_INSN(insn->in_code, type) && !OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, conflict_reg)) {
-            pseudoregs_map[conflict_reg].reg_status = register_delayed_swapped;
-        } else {
             pseudoregs_map[conflict_reg].reg_status = register_swapped;
+        } else if (!x86_dataflow_is_pseudoreg_alive_after(function, conflict_reg)) {
+            pseudoregs_map[conflict_reg].reg_status = register_delayed_dead;
+        } else {
+            pseudoregs_map[conflict_reg].reg_status = register_dead;
         }
 
         regmap->real_registers_cnt--;
         regmap->real_registers_map[real_reg] = -1;
+    }
+}
+
+static void _restore_register(function_desc *function, x86_instruction *insn, register_map *regmap,
+    x86_pseudoreg_info *pseudoregs_map, int reg, int real_reg, x86_operand_type type)
+{
+    int ofs = pseudoregs_map[reg].reg_stack_location;
+
+    if (x86_dataflow_is_pseudoreg_alive_before(function, reg)) {
+        ASSERT(ofs != -1);
+
+        if (type == x86op_dword) {
+            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
+        } else if (!_is_double_register(reg, pseudoregs_map)) {
+            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movss, x86op_float, ~real_reg, ofs);
+        } else {
+            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~real_reg, ofs);
+        }
     }
 }
 
@@ -225,7 +236,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
         }
 
         if (!x86_dataflow_is_pseudoreg_alive_after(function, pseudoreg2)) {
-            pseudoregs_map[pseudoreg2].reg_status = register_delayed_swapped;
+            pseudoregs_map[pseudoreg2].reg_status = register_delayed_dead;
             regmap->real_registers_map[real_reg] = pseudoreg;
             return real_reg;
         }
@@ -258,7 +269,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
     ASSERT(regmap->real_registers_cnt == _get_max_register_count(regmap));
 
     real_reg = _find_register_to_swap(function, insn, regmap);
-    _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type);
+    _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, FALSE);
 
     regmap->real_registers_cnt++;
     regmap->real_registers_map[real_reg] = pseudoreg;
@@ -282,7 +293,7 @@ static void _reserve_real_register(x86_pseudoreg_info *pseudoregs_map, int pseud
         pseudoregs_map[pseudoreg].reg_location == real_reg)
             return;
 
-    ASSERT(real_reg >= 0 && real_reg < X86_MAX_REG && pseudoregs_map[pseudoreg].reg_status == register_free);
+    ASSERT(real_reg >= 0 && real_reg < X86_MAX_REG && pseudoregs_map[pseudoreg].reg_status == register_unallocated);
 
     pseudoregs_map[pseudoreg].reg_status    = register_reserved;
     pseudoregs_map[pseudoreg].reg_location  = real_reg;
@@ -294,10 +305,8 @@ static void _commit_register_reservation(function_desc *function, x86_instructio
     int real_reg = pseudoregs_map[pseudoreg].reg_location;
     ASSERT(pseudoregs_map[pseudoreg].reg_status == register_reserved);
 
-    if (regmap->real_registers_map[real_reg] != -1) {
-        // регистр занят, освобождаем
-        _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type);
-    }
+    // если регистр занят, освобождаем
+    _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, FALSE);
 
     regmap->real_registers_cnt++;
     regmap->real_registers_map[real_reg] = pseudoreg;
@@ -332,6 +341,28 @@ static void _free_all_dead_registers(function_desc *function, register_map *regm
     }
 }
 
+static void _detect_all_dead_registers_before(function_desc *function, register_stat *stat)
+{
+    int reg;
+
+    for (reg = 0; reg < stat->count; reg++) {
+        if (stat->ptr[reg].reg_status == register_allocated && !x86_dataflow_is_pseudoreg_alive_before(function, reg)) {
+            stat->ptr[reg].reg_status = register_dead;
+        }
+    }
+}
+
+static void _detect_all_dead_registers_after(function_desc *function, register_stat *stat)
+{
+    int reg;
+
+    for (reg = 0; reg < stat->count; reg++) {
+        if (stat->ptr[reg].reg_status == register_allocated && !x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
+            stat->ptr[reg].reg_status = register_dead;
+        }
+    }
+}
+
 
 //
 // Построение регистровой статистики.
@@ -360,12 +391,13 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
     for (i = 0; i < pseudoregs_cnt; i++)
     {
-        pseudoregs_map[i].reg_changes_value     = pseudoregs_map[i].reg_status      = 0;
-        pseudoregs_map[i].reg_saved             = FALSE;
+        pseudoregs_map[i].reg_changes_value     = 0;
+        pseudoregs_map[i].reg_status            = register_unallocated;
         pseudoregs_map[i].reg_stack_location    = -1;
 
-        pseudoregs_map[i].reg_first_write   = pseudoregs_map[i].reg_last_read       = NULL;
-        pseudoregs_map[i].reg_location      = -1;
+        pseudoregs_map[i].reg_first_write       = NULL;
+        pseudoregs_map[i].reg_last_read         = NULL;
+        pseudoregs_map[i].reg_location          = -1;
     }
 
 
@@ -605,7 +637,7 @@ static void _reserve_special_registers(function_desc *function, x86_pseudoreg_in
             _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
         } else if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2)) {
             _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_ecx);
-        } else if (insn->in_code == x86insn_read_retval) { // insn->in_code == x86insn_set_retval???
+        } else if (insn->in_code == x86insn_read_retval) { // FIXME: insn->in_code == x86insn_set_retval???
             ASSERT(OP_IS_PSEUDO_REG(insn->in_op1));
             _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
         }
@@ -746,8 +778,14 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
     x86_pseudoreg_info  *pseudoregs_map = stat->ptr;
     x86_instruction     *insn, *next_insn;
     x86_register_ref    registers[MAX_REGISTERS_PER_INSN];
-    int                 registers_count, i, reg, real_reg, ofs, conflict_reg, result;
+    int                 registers_count, i, reg, real_reg, conflict_reg, result;
     int                 saved_real_registers_map[X86_MAX_REG];
+    register_stat       saved_regs_state;
+
+
+    // Выделяем память под сохранённое состояние регистров.
+    saved_regs_state.count  = stat->count;
+    saved_regs_state.ptr    = allocator_alloc(allocator_per_function_pool, sizeof(x86_pseudoreg_info) * stat->count);
 
 
     //
@@ -767,6 +805,57 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
         next_insn = insn->in_next;
         x86_dataflow_step_insn_forward(function, type, 1);
 
+        if (!insn->in_prev || insn->in_code == x86insn_label || IS_JMP_INSN(insn->in_prev->in_code)) {
+            // Начало базового блока.
+            // Сохраняем карту псевдо-регистров.
+            _detect_all_dead_registers_before(function, stat);
+            memcpy(saved_regs_state.ptr, stat->ptr, sizeof(x86_pseudoreg_info) * stat->count);
+        }
+
+        if (insn->in_next && insn->in_next->in_code == x86insn_label || IS_JMP_INSN(insn->in_code)) {
+            // Конец базового блока.
+            // Восстанавливаем все вытесненные или восстановленные регистры.
+
+            for (reg = 1; reg < stat->count; reg++) {
+                if (saved_regs_state.ptr[reg].reg_status != stat->ptr[reg].reg_status) {
+                    if (stat->ptr[reg].reg_status == register_swapped && saved_regs_state.ptr[reg].reg_status == register_allocated) {
+                        // регистр был вытеснен, восстанавливаем его
+                        real_reg        = pseudoregs_map[reg].reg_location;
+                        conflict_reg    = regmap->real_registers_map[real_reg];
+
+                        _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, FALSE);
+                        _restore_register(function, insn, regmap, pseudoregs_map, reg, real_reg, type);
+
+                        regmap->real_registers_cnt++;
+                        regmap->real_registers_map[real_reg] = reg;
+
+                        stat->ptr[reg].reg_status = register_allocated;
+                    } else if (stat->ptr[reg].reg_status == register_dead && saved_regs_state.ptr[reg].reg_status == register_allocated) {
+                        // регистр стал мёртвым, а был живым, освобождаем ему соответствующий реальный регистр.
+                        real_reg        = pseudoregs_map[reg].reg_location;
+                        conflict_reg    = regmap->real_registers_map[real_reg];
+
+                        _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, FALSE);
+
+                        regmap->real_registers_cnt++;
+                        regmap->real_registers_map[real_reg] = reg;
+
+                        stat->ptr[reg].reg_status = register_allocated;
+                    } else if (stat->ptr[reg].reg_status == register_allocated && saved_regs_state.ptr[reg].reg_status == register_swapped) {
+                        // регистр был восстановлен, нужно его выгрузить обратно
+                        real_reg        = pseudoregs_map[reg].reg_location;
+
+                        _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, insn->in_code == x86insn_ret);
+
+                        regmap->real_registers_cnt--;
+                        regmap->real_registers_map[real_reg] = -1;
+
+                        stat->ptr[reg].reg_status = register_swapped;
+                    }
+                }
+            }
+        }
+
         if (insn->in_code == x86insn_label || IS_JMP_INSN(insn->in_code)) {
             continue;
         }
@@ -781,11 +870,13 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
         // Извлекаем набор псевдорегистров, который используется инструкцией.
         bincode_extract_pseudoregs_from_insn(insn, type, registers, &registers_count);
 
+        // TODO: нужно здесь, в одном месте, расставить флаги dead/delayed_dead. А result, возможно, должна стать глобальной переменной.
+
         // Заменяем все псевдорегистры на истинные регистры.
         for (i = 0; i < registers_count; i++) {
             reg = *registers[i].reg_addr;
 
-            if (pseudoregs_map[reg].reg_status == register_allocated || pseudoregs_map[reg].reg_status == register_delayed_swapped) {
+            if (pseudoregs_map[reg].reg_status == register_allocated || pseudoregs_map[reg].reg_status == register_delayed_dead) {
                 // под этот псевдорегистр уже выделен истинный регистр, пробиваем его в инструкцию
                 real_reg                        = pseudoregs_map[reg].reg_location;
                 pseudoregs_map[reg].reg_status  = register_allocated;
@@ -795,51 +886,32 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
                 real_reg                        = pseudoregs_map[reg].reg_location;
                 pseudoregs_map[reg].reg_status  = register_allocated;
-            } else if (pseudoregs_map[reg].reg_status == register_swapped) {
+            } else if (pseudoregs_map[reg].reg_status == register_swapped || pseudoregs_map[reg].reg_status == register_dead) {
                 // регистр был вытеснен
-                ofs             = pseudoregs_map[reg].reg_stack_location;
                 real_reg        = pseudoregs_map[reg].reg_location;
                 conflict_reg    = regmap->real_registers_map[real_reg];
 
-                if (reg == result || conflict_reg != result) {
-                    // Вытесняем конфликтующий регистр в стек и загружаем сохранённое значение из стека.
-                    _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type);
+                if (conflict_reg != reg) {
+                    if (reg == result || conflict_reg != result) {
+                        // Вытесняем конфликтующий регистр в стек и загружаем сохранённое значение из стека.
+                        _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, FALSE);
 
-                    regmap->real_registers_cnt++;
-                    regmap->real_registers_map[real_reg] = reg;
-                    pseudoregs_map[reg].reg_status = register_allocated;
+                        regmap->real_registers_cnt++;
+                        regmap->real_registers_map[real_reg] = reg;
 
-                    if (x86_dataflow_is_pseudoreg_alive_before(function, reg) && pseudoregs_map[reg].reg_saved) {
-                        ASSERT(ofs != -1);
-
-                        // Загружаем сохранённое значение из стека.
-                        if (type == x86op_dword) {
-                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
-                        } else if (!_is_double_register(reg, pseudoregs_map)) {
-                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movss, x86op_float, ~real_reg, ofs);
-                        } else {
-                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~real_reg, ofs);
+                        if (pseudoregs_map[reg].reg_status != register_dead) {
+                            _restore_register(function, insn, regmap, pseudoregs_map, reg, real_reg, type);
                         }
+
+                        pseudoregs_map[reg].reg_status = register_allocated;
+                    } else {
+                        ASSERT(pseudoregs_map[reg].reg_status != register_dead);
+
+                        // Копируем сохранённое значение в другой регистр.
+                        real_reg = _alloc_real_register(function, insn, regmap, pseudoregs_map, reg, type);
+                        _restore_register(function, insn, regmap, pseudoregs_map, reg, real_reg, type);
+                        _free_real_register(regmap, real_reg);
                     }
-
-                    pseudoregs_map[reg].reg_status = register_allocated;
-                } else {
-                    // Копируем сохранённое значение в другой регистр.
-                    real_reg = _alloc_real_register(function, insn, regmap, pseudoregs_map, reg, type);
-
-                    if (x86_dataflow_is_pseudoreg_alive_before(function, reg) && pseudoregs_map[reg].reg_saved) {
-                        ASSERT(ofs != -1);
-
-                        if (type == x86op_dword) {
-                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
-                        } else if (!_is_double_register(reg, pseudoregs_map)) {
-                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movss, x86op_float, ~real_reg, ofs);
-                        } else {
-                            bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~real_reg, ofs);
-                        }
-                    }
-
-                    _free_real_register(regmap, real_reg);
                 }
 
                 // TODO: заменять read-only операнд на чтение из памяти
@@ -848,9 +920,9 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 //        // заменить операнд на чтение из памяти
             } else {
                 // нужен новый регистр
-                ASSERT(pseudoregs_map[reg].reg_status == register_free);
-
+                ASSERT(pseudoregs_map[reg].reg_status == register_unallocated);
                 real_reg = _alloc_real_register(function, insn, regmap, pseudoregs_map, reg, type);
+
                 pseudoregs_map[reg].reg_location    = real_reg;
                 pseudoregs_map[reg].reg_status      = register_allocated;
             }
@@ -872,19 +944,25 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 bincode_erase_instruction(function, insn);
             }
 
-        // Регистры, ставшие мёртвыми в текущей инструкции и переиспользованные, помечаются как swapped.
+        // Регистры, ставшие мёртвыми в текущей инструкции и переиспользованные, помечаются как dead.
         for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
-            if (pseudoregs_map[reg].reg_status == register_delayed_swapped) {
-                pseudoregs_map[reg].reg_status = register_swapped;
+            if (pseudoregs_map[reg].reg_status == register_delayed_dead) {
+                pseudoregs_map[reg].reg_status = register_dead;
                 real_reg = pseudoregs_map[reg].reg_location;
                 ASSERT(regmap->real_registers_map[real_reg] != reg);
             }
         }
+
+        // Находим и помечаем все регистры, ставшие мёртвыми.
+        _detect_all_dead_registers_after(function, stat);
     }
 
     // Если последняя инструкция - jmp, могут оставаться живые регистры; иначе их не должно быть.
     _free_all_dead_registers(function, regmap);
     ASSERT(regmap->real_registers_cnt == 0 || function->func_binary_code_end->in_code == x86insn_jmp);
+
+    // Освобождаем память регистрового стейта.
+    allocator_free(allocator_per_function_pool, saved_regs_state.ptr, sizeof(x86_pseudoreg_info) * saved_regs_state.count);
 }
 
 static void _handle_pseudo_instructions(function_desc *function)
