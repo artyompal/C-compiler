@@ -14,7 +14,7 @@ sub run {
 	system $cmd_line;
 }
 
-sub run_test {
+sub compile_test {
 	my ($test_name, $config, $option) = @_;
 	run("..\\..\\..\\bin\\$config\\cc4x86.exe $option --output-file-name current_test.asm --xmldump ..\\$test_name");
 
@@ -23,12 +23,18 @@ sub run_test {
 	$test_asm_name =~ s/\.c/_$option\.asm/;
 
 	system("copy /Y current_test.asm ..\\asm_listings\\$test_asm_name");
-	system("echo const char *test_name = \"$test_name\"; >test_name.c");
+    return 1;
+}
 
+sub run_test {
+	my ($test_name, $config, $option) = @_;
+    compile_test($test_name, $config, $option);
+
+	system("echo const char *test_name = \"$test_name\"; >test_name.c");
 	system("d:\\bin\\msvs10\\VC\\bin\\ml /Fl /nologo /c /Zf current_test.asm");
+
 	build_sln("current_test_cc.sln", "debug");
 	system("current_test_cc.exe >out.txt");
-
 
     open(FILE, "out.txt") or return;
 	while (<FILE>) {
@@ -42,6 +48,8 @@ sub run_test {
 sub run_test2{
 	my $test_name = shift;
 	return
+		compile_test($test_name, "release", "--noregalloc") &&
+		compile_test($test_name, "release", "--optimize --noregalloc") &&
 		run_test($test_name, "debug", "") &&
 		run_test($test_name, "debug", "--optimize") &&
 		run_test($test_name, "debug", "--optimize --noinline") &&
