@@ -692,14 +692,14 @@ static BOOL _handle_byte_registers(function_desc *function, x86_instruction *ins
 static void _emulate_push_all(function_desc *function, x86_instruction *insn, x86_operand_type type,
     register_map *regmap, x86_pseudoreg_info *pseudoregs_map, int saved_real_registers_map[X86_MAX_REG])
 {
-    int i, insn_counter, reg, ofs;
+    int i, reg, ofs;
     x86_instruction *pop_all;
 
-    for (insn_counter = 0, pop_all = insn; pop_all->in_code != x86insn_pop_all; insn_counter++) {
+    for (pop_all = insn; pop_all->in_code != x86insn_pop_all; ) {
         pop_all = pop_all->in_next;
     }
 
-    x86_dataflow_step_insn_forward(function, type, insn_counter);
+    x86_dataflow_step_insn_forward(function, type, pop_all);
     memset(saved_real_registers_map, 0, sizeof(int)*X86_MAX_REG);
 
     if (type == x86op_dword) {
@@ -751,7 +751,7 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         }
     }
 
-    x86_dataflow_step_insn_backward(function, type, insn_counter);
+    x86_dataflow_step_insn_backward(function, type, insn);
 }
 
 static void _emulate_pop_all(function_desc *function, x86_instruction *insn, x86_operand_type type,
@@ -792,7 +792,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
     x86_pseudoreg_info  *pseudoregs_map = stat->ptr;
     x86_instruction     *insn, *next_insn;
     x86_register_ref    registers[MAX_REGISTERS_PER_INSN];
-    int                 registers_count, i, reg, real_reg, conflict_reg, result, added;
+    int                 registers_count, i, reg, real_reg, conflict_reg, result;
     int                 saved_real_registers_map[X86_MAX_REG];
     register_stat       saved_regs_state;
 
@@ -816,8 +816,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
 
     for (insn = function->func_binary_code; insn; insn = next_insn) {
-		added = 0;
-
         if (IS_JMP_INSN(insn->in_code) || insn->in_code == x86insn_label) {
             //  онец базового блока или начало следующего базового блока.
             // ¬се живые регистры должны быть вытеснены в пам€ть;
@@ -829,7 +827,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
 					if (x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
 						_force_swap_register(function, insn, regmap, pseudoregs_map, real_reg, type);
-						added++;
 					} else {
 						stat->ptr[reg].reg_status = register_swapped;
                         regmap->real_registers_cnt--;
@@ -840,7 +837,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
         }
 
         next_insn = insn->in_next;
-        x86_dataflow_step_insn_forward(function, type, added+1);
+        x86_dataflow_step_insn_forward(function, type, insn);
 
         if (insn->in_code == x86insn_label || IS_JMP_INSN(insn->in_code)) {
             continue;
@@ -898,6 +895,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 //        // заменить операнд на чтение из пам€ти
 				// TODO: если второй операнд может находитьс€ в пам€ти, оставить его в пам€ти
 				// TODO: измен€ть пор€док операндов дл€ коммутативных инструкций при выгруженном первом операнде
+                // TODO: в случае конфликта, если результат конфликтует с чем-то, а инструкци€ перезаписывающа€, это можно проигнорировать
             } else {
                 // нужен новый регистр
                 ASSERT(pseudoregs_map[reg].reg_status == register_unallocated);

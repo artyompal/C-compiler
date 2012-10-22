@@ -7,7 +7,6 @@ x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy 
 x86_intrinsics.c:   UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD + MOVSB
 x86_opt_basic.c:    FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
 x86_opt_data_flow.c:FIXME: квадратичное время от количества базовых блоков
-x86_opt_data_flow.c:FIXME: квадратичная сложность от числа инструкций в блоке.
 x86_opt_data_flow.c:FIXME: IS_JMP_INSN???
 x86_opt_data_flow.c:FIXME???
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
@@ -16,6 +15,7 @@ x86_regalloc.c:     TODO: регистры FPU также необходимо сохранять при вызовах фу
 x86_regalloc.c:     TODO: заменять read-only операнд на чтение из памяти
 x86_regalloc.c:     TODO: если второй операнд может находиться в памяти, оставить его в памяти
 x86_regalloc.c:     TODO: изменять порядок операндов для коммутативных инструкций при выгруженном первом операнде
+x86_regalloc.c:     TODO: в случае конфликта, если результат конфликтует с чем-то, а инструкция перезаписывающая, это можно проигнорировать
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);
 symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов
 expressions.c:      TODO: нужно поддержать вычитание указателей

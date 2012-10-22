@@ -963,6 +963,7 @@ __rasterize_horiz_line__unordered proc
 	movss	dword ptr [ebp+36],xmm6
 	movss	dword ptr [ebp+40],xmm7
 	jg	label0000
+	movss	xmm7,dword ptr [ebp+40]
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp+36]
@@ -984,6 +985,7 @@ __rasterize_horiz_line__unordered proc
 	add	esp,28
 	jmp	label0001
 label0000:
+	movss	xmm7,dword ptr [ebp+40]
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp+36]
@@ -1045,6 +1047,7 @@ __rasterize_triangle_1i proc
 	mov	[ebp-12],eax
 	mov	[ebp-16],ecx
 	jle	label0001
+	movss	xmm7,dword ptr [ebp+40]
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp+36]
@@ -1070,6 +1073,7 @@ label0001:
 	mov	[ebp-8],esi
 	mov	[ebp-16],ecx
 	jge	label0003
+	movss	xmm7,dword ptr [ebp+40]
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp+36]
@@ -1089,6 +1093,7 @@ label0001:
 	add	esp,28
 	jmp	label0004
 label0003:
+	movss	xmm7,dword ptr [ebp+40]
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp+36]
@@ -1115,6 +1120,7 @@ label0000:
 	mov	[ebp-12],eax
 	mov	[ebp-16],ecx
 	jge	label0006
+	movss	xmm7,dword ptr [ebp+40]
 	movss	xmm0,xmm7
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
@@ -1144,6 +1150,7 @@ label0006:
 	mov	[ebp-8],esi
 	mov	[ebp-16],ecx
 	jle	label0008
+	movss	xmm7,dword ptr [ebp+40]
 	movss	xmm0,xmm7
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
@@ -1167,6 +1174,7 @@ label0006:
 	add	esp,28
 	jmp	label0009
 label0008:
+	movss	xmm7,dword ptr [ebp+40]
 	movss	xmm0,xmm7
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
