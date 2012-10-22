@@ -1286,7 +1286,7 @@ label000e:
 	imul	dword870,dword194
 	mov	dword201,[dword867+4]
 	sub	dword201,[dword866+4]
-	cdq	dword202
+	cdq	dword202,dword870
 	idiv	dword870,dword201
 	add	dword870,[dword866]
 	mov	dword871,dword872
@@ -1296,7 +1296,7 @@ label000e:
 	imul	dword871,dword215
 	mov	dword222,[dword868+4]
 	sub	dword222,[dword866+4]
-	cdq	dword223
+	cdq	dword223,dword871
 	idiv	dword871,dword222
 	add	dword871,[dword866]
 	mov	dword231,dword872
@@ -1421,7 +1421,7 @@ label000f:
 	imul	dword337,dword342
 	mov	dword349,[dword868+4]
 	sub	dword349,[dword866+4]
-	cdq	dword350
+	cdq	dword350,dword337
 	idiv	dword337,dword349
 	add	dword337,[dword866]
 	mov	dword871,dword337
@@ -1532,7 +1532,7 @@ label0011:
 	imul	dword445,dword450
 	mov	dword457,[dword868+4]
 	sub	dword457,[dword867+4]
-	cdq	dword458
+	cdq	dword458,dword445
 	idiv	dword445,dword457
 	add	dword445,[dword867]
 	mov	dword870,dword445
@@ -1543,7 +1543,7 @@ label0011:
 	imul	dword466,dword471
 	mov	dword478,[dword868+4]
 	sub	dword478,[dword866+4]
-	cdq	dword479
+	cdq	dword479,dword466
 	idiv	dword466,dword478
 	add	dword466,[dword866]
 	mov	dword871,dword466

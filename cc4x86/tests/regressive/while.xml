@@ -70,7 +70,7 @@
           </condition>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="return">
-          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0006"/>
         <expression type="null" lvalue="no" complexity="0" code="return">

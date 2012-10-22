@@ -8,47 +8,48 @@
 _test proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,8
+	sub	esp,16
 	push	edi
 	push	esi
 	mov	edi,-16
 	mov	esi,-16
 	sar	edi,4
 	cmp	edi,-1
+	mov	[ebp-12],esi
 	je	label0000
-	mov	esi,1
-	mov	eax,esi
+	mov	eax,1
 	pop	esi
 	pop	edi
-	add	esp,8
+	add	esp,16
 	pop	ebp
 	ret
 label0000:
-	mov	esi,edi
-	shr	esi,4
-	cmp	esi,268435455
-	je	label0001
-	mov	esi,2
+	mov	esi,[ebp-12]
 	mov	eax,esi
+	shr	eax,4
+	cmp	eax,268435455
+	je	label0001
+	mov	eax,2
 	pop	esi
 	pop	edi
-	add	esp,8
+	add	esp,16
 	pop	ebp
 	ret
 label0001:
 	mov	edi,1073741824
 	mov	esi,1073741824
-	mov	eax,edi
-	sal	eax,1
-	cmp	eax,0
+	sal	edi,1
+	cmp	edi,0
+	mov	[ebp-12],esi
 	jl	label0002
 	mov	eax,3
 	pop	esi
 	pop	edi
-	add	esp,8
+	add	esp,16
 	pop	ebp
 	ret
 label0002:
+	mov	esi,[ebp-12]
 	mov	eax,esi
 	shl	eax,1
 	cmp	eax,-2147483648
@@ -56,7 +57,7 @@ label0002:
 	mov	eax,4
 	pop	esi
 	pop	edi
-	add	esp,8
+	add	esp,16
 	pop	ebp
 	ret
 label0003:
@@ -67,30 +68,34 @@ label0003:
 	mov	eax,edi
 	shl	eax,cl
 	cmp	eax,16
+	mov	[ebp-16],edi
+	mov	[ebp-12],esi
 	je	label0004
 	mov	eax,5
 	pop	esi
 	pop	edi
-	add	esp,8
+	add	esp,16
 	pop	ebp
 	ret
 label0004:
 	mov	ecx,5
+	mov	esi,[ebp-12]
 	add	ecx,esi
+	mov	edi,[ebp-16]
 	sal	edi,cl
 	cmp	edi,64
 	je	label0005
 	mov	eax,6
 	pop	esi
 	pop	edi
-	add	esp,8
+	add	esp,16
 	pop	ebp
 	ret
 label0005:
 	mov	eax,0
 	pop	esi
 	pop	edi
-	add	esp,8
+	add	esp,16
 	pop	ebp
 	ret
 _test endp	

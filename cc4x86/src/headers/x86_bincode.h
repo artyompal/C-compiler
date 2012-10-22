@@ -234,7 +234,7 @@ typedef enum x86_instruction_code_decl {
     x86insn_int_test,
 
     // псевдо-инструкции:
-    x86insn_cdq,                // параметр - псевдорегистр для EDX
+    x86insn_cdq,                // параметры - псевдорегистр для EDX, псевдорегистр для EAX.
     x86insn_xor_edx_edx,        // параметр - псевдорегистр для EDX
     x86insn_fpu_cmp,
     x86insn_cld,

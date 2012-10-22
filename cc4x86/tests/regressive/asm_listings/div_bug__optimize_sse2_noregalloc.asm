@@ -10,7 +10,7 @@ _test proc
 	mov	dword21,2
 	mov	dword ptr [ebp-12],1
 	mov	dword23,4
-	cdq	dword12
+	cdq	dword12,dword23
 	idiv	dword23,dword21
 	add	dword23,[ebp-12]
 	lea	dword18,[dword23-3]

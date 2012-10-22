@@ -35,7 +35,7 @@ label0003:
 	jl	label0003
 	cmp	dword ptr [ebp-12],16
 	je	label0006
-	mov	eax,1
+	mov	eax,2
 	add	esp,12
 	pop	ebp
 	ret

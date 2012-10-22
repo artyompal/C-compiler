@@ -13,7 +13,7 @@ int test()
         j *= 2;
         k++;
     } while (j < 65536);
-    if (k != 16) return 1;
+    if (k != 16) return 2;
 
     return 0;
 }

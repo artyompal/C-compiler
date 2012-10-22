@@ -94,11 +94,7 @@ void bincode_extract_real_registers_from_insn(x86_instruction *insn, x86_operand
                 ++*regs_cnt;
             }
 
-    if (insn->in_code == x86insn_cdq && type != x86op_dword) {
-        regs[*regs_cnt].reg_value   = x86op_dword;
-        regs[*regs_cnt].reg_value   = x86reg_edx;
-        ++*regs_cnt;
-    } else if (IS_SET_INSN(insn->in_code) && type != x86op_dword) {
+    if (IS_SET_INSN(insn->in_code) && type != x86op_dword) {
         regs[*regs_cnt].reg_value   = x86op_dword;
         regs[*regs_cnt].reg_value   = x86reg_eax;
         ++*regs_cnt;

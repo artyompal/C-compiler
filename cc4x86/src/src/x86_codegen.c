@@ -461,11 +461,16 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
         }
 
         bincode_create_operand_and_alloc_pseudoreg(&tmp, res->op_type);     // edx
-        unit_push_unary_instruction(is_unsigned ? x86insn_xor_edx_edx : x86insn_cdq, &tmp);
-        unit_push_binary_instruction(is_unsigned ? x86insn_int_div : x86insn_int_idiv, res, op2);
+
+		if (is_unsigned) {
+			unit_push_unary_instruction(x86insn_xor_edx_edx, &tmp);
+	        unit_push_binary_instruction(x86insn_int_div, res, op2);
+		} else {
+			unit_push_binary_instruction(x86insn_cdq, &tmp, res);
+	        unit_push_binary_instruction(x86insn_int_idiv, res, op2);
+		}
     } else if (opcode == op_mod) {
         bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);      // edx
-        unit_push_unary_instruction(is_unsigned ? x86insn_xor_edx_edx : x86insn_cdq, res);
 
         if (!OP_IS_REGISTER(*op1)) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type); // eax
@@ -474,7 +479,13 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
             tmp = *op1;
         }
 
-        unit_push_binary_instruction(is_unsigned ? x86insn_int_div : x86insn_int_idiv, &tmp, op2);
+		if (is_unsigned) {
+	        unit_push_unary_instruction(x86insn_xor_edx_edx, res);
+	        unit_push_binary_instruction(x86insn_int_div, &tmp, op2);
+		} else {
+	        unit_push_binary_instruction(x86insn_cdq, res, &tmp);
+		    unit_push_binary_instruction(x86insn_int_idiv, &tmp, op2);
+		}
     } else if (IS_SHIFT_OP(opcode)) {
         if (op2->op_loc == x86loc_address) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op2->op_type);
