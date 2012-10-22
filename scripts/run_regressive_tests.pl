@@ -4,86 +4,85 @@ use warnings;
 
 
 sub build_sln {
-	my ($solution, $config) = @_;
-	system("d:\\bin\\msvs10\\Common7\\IDE\\devenv $solution /build $config") == 0 or die("build failed");
+    my ($solution, $config) = @_;
+    system("d:\\bin\\msvs2012\\Common7\\IDE\\devenv.exe $solution /build $config") == 0 or die("build failed");
 }
 
 sub run {
-	my $cmd_line = shift;
-	print "running '$cmd_line'...\n";
-	system $cmd_line;
+    my $cmd_line = shift;
+    print "running '$cmd_line'...\n";
+    system $cmd_line;
 }
 
 sub compile_test {
-	my ($test_name, $config, $option) = @_;
-	run("..\\..\\..\\bin\\$config\\cc4x86.exe $option --output-file-name current_test.asm --xmldump ..\\$test_name");
+    my ($test_name, $config, $option) = @_;
+    run("..\\..\\..\\bin\\$config\\cc4x86.exe $option --output-file-name current_test.asm --xmldump ..\\$test_name");
 
-	my $test_asm_name = $test_name;
+    my $test_asm_name = $test_name;
     $option =~ tr/[\-\ ]/_/s;
-	$test_asm_name =~ s/\.c/_$option\.asm/;
+    $test_asm_name =~ s/\.c/_$option\.asm/;
 
-	system("copy /Y current_test.asm ..\\asm_listings\\$test_asm_name");
+    system("copy /Y current_test.asm ..\\asm_listings\\$test_asm_name");
     return 1;
 }
 
 sub run_test {
-	my ($test_name, $config, $option) = @_;
+    my ($test_name, $config, $option) = @_;
     compile_test($test_name, $config, $option);
 
-	system("echo const char *test_name = \"$test_name\"; >test_name.c");
-	system("d:\\bin\\msvs10\\VC\\bin\\ml /Fl /nologo /c /Zf current_test.asm");
+    system("echo const char *test_name = \"$test_name\"; >test_name.c");
+    system("d:\\bin\\msvs2012\\VC\\bin\\ml /Fl /nologo /c /Zf current_test.asm");
 
-	build_sln("current_test_cc.sln", "debug");
-	system("current_test_cc.exe >out.txt");
+    build_sln("current_test_cc.sln", "debug");
+    system("current_test_cc.exe >out.txt");
 
     open(FILE, "out.txt") or return;
-	while (<FILE>) {
-		return 1 if (/SUCCEEDED/);
+    while (<FILE>) {
+        return 1 if (/SUCCEEDED/);
         print;
-	}
+    }
 
-	return 0;
+    return 0;
 }
 
 sub run_test2{
-	my $test_name = shift;
-	return
-		compile_test($test_name, "release", "--noregalloc") &&
-		compile_test($test_name, "release", "--optimize --noregalloc") &&
-		run_test($test_name, "debug", "") &&
-		run_test($test_name, "debug", "--optimize") &&
-		run_test($test_name, "debug", "--optimize --noinline") &&
-		run_test($test_name, "debug", "--optimize --sse2 --noinline") &&
-		run_test($test_name, "debug", "--optimize --sse2") &&
-		run_test($test_name, "release", "") &&
-		run_test($test_name, "release", "--optimize --noinline") &&
-		run_test($test_name, "release", "--optimize") &&
-		run_test($test_name, "release", "--optimize --sse2");
+    my $test_name = shift;
+    return
+        compile_test($test_name, "release", "--optimize --sse2 --noregalloc") &&
+        run_test($test_name, "debug", "") &&
+        run_test($test_name, "debug", "--optimize") &&
+        run_test($test_name, "debug", "--optimize --noinline") &&
+        run_test($test_name, "debug", "--optimize --sse2 --noinline") &&
+        run_test($test_name, "debug", "--optimize --sse2") &&
+        run_test($test_name, "release", "") &&
+        run_test($test_name, "release", "--optimize --noinline") &&
+        run_test($test_name, "release", "--optimize") &&
+        run_test($test_name, "release", "--optimize --sse2");
 }
 
 
 chdir("../cc4x86/tests/regressive/current_test") or die("chdir: $!");
 
 if (
-	run_test2("simple_test.c") and
-	run_test2("goto.c") and
-	run_test2("while.c") and
-	run_test2("while_break.c") and
-	run_test2("for.c") and
-	run_test2("for2.c") and
-	run_test2("switch.c") and
-	run_test2("div_bug.c") and
-	run_test2("idiv.c") and
-	run_test2("mul_div.c") and
-	run_test2("shl_shr.c") and
-	run_test2("float.c") and
-	run_test2("float2.c") and
+    run_test2("simple_test.c") and
+    run_test2("goto.c") and
+    run_test2("while.c") and
+    run_test2("while_break.c") and
+    run_test2("for.c") and
+    run_test2("for2.c") and
+    run_test2("switch.c") and
+    run_test2("div_bug.c") and
+    run_test2("idiv.c") and
+    run_test2("mul_div.c") and
+    run_test2("shl_shr.c") and
+    run_test2("float.c") and
+    run_test2("float2.c") and
     run_test2("regalloc_bug.c")
-#	run_test2("string_literal.c") and
-#	run_test2("byte_word.c")
+#   run_test2("string_literal.c") and
+#   run_test2("byte_word.c")
 ) {
-	print ("ALL TESTS PASSED\n");
+    print ("ALL TESTS PASSED\n");
 } else {
-	print ("TEST FAILED\n");
+    print ("TEST FAILED\n");
 }
 

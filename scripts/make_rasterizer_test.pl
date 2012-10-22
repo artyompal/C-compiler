@@ -9,7 +9,7 @@ sub run {
 sub assemble {
 	my $filename = shift;
 	chdir("../../tests/visual/rasterizer") or die("chdir: $!");
-	system("d:\\bin\\msvs10\\VC\\bin\\ml /Fl /nologo $filename");
+	system("d:\\bin\\msvs2012\\VC\\bin\\ml /Fl /nologo $filename");
 	chdir("../../../../cc4x86/bin/release/") or die("chdir: $!");
 }
 
