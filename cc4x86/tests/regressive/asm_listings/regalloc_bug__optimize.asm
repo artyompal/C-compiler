@@ -38,25 +38,32 @@ _g endp
 _test proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,40
+	sub	esp,44
 	push	edi
+	push	esi
 	mov	edi,2
 	cmp	edi,3
+	mov	[ebp-40],edi
 	jle	label0000
 ; start of inline function f
+	mov	esi,[ebp-40]
+	mov	edi,esi
 	lea	edi,[edi+3]
 ; end of inline function f
+	mov	[ebp-44],edi
 	jmp	label0001
 label0000:
 ; start of inline function g
-	lea	edi,[edi-3]
+	lea	edi,[esi-3]
 ; end of inline function g
-	mov	[ebp-40],edi
+	mov	edi,[ebp-44]
+	mov	[ebp-44],edi
 label0001:
 	mov	eax,1
 	add	eax,edi
+	pop	esi
 	pop	edi
-	add	esp,40
+	add	esp,44
 	pop	ebp
 	ret
 _test endp	

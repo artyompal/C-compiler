@@ -8,7 +8,7 @@
 _test proc
 	push	ebp
 	mov	ebp,esp
-	sub	esp,40
+	sub	esp,52
 	push	edi
 	push	esi
 	push	ebx
@@ -47,17 +47,21 @@ _test proc
 	mov	ecx,[ebp-36]
 	add	eax,ecx
 	cmp	eax,2
+	mov	[ebp-44],edi
+	mov	[ebp-48],esi
+	mov	[ebp-52],ebx
 	je	label0000
 	mov	eax,1
 	pop	ebx
 	pop	esi
 	pop	edi
-	add	esp,40
+	add	esp,52
 	pop	ebp
 	ret
 label0000:
-	cdq
 	mov	eax,[ebp-24]
+	cdq
+	mov	edi,[ebp-44]
 	idiv	edi
 	cmp	eax,2
 	je	label0001
@@ -65,12 +69,14 @@ label0000:
 	pop	ebx
 	pop	esi
 	pop	edi
-	add	esp,40
+	add	esp,52
 	pop	ebp
 	ret
 label0001:
+	mov	ebx,[ebp-52]
 	mov	eax,ebx
 	cdq
+	mov	esi,[ebp-48]
 	idiv	esi
 	mov	ebx,edx
 	cmp	ebx,2
@@ -79,7 +85,7 @@ label0001:
 	pop	ebx
 	pop	esi
 	pop	edi
-	add	esp,40
+	add	esp,52
 	pop	ebp
 	ret
 label0002:
@@ -87,7 +93,7 @@ label0002:
 	pop	ebx
 	pop	esi
 	pop	edi
-	add	esp,40
+	add	esp,52
 	pop	ebp
 	ret
 _test endp	

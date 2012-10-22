@@ -119,6 +119,8 @@ label000d:
 	seta	al
 	movzx	eax,al
 	mov	[ebp-56],eax
+	mov	ecx,[ebp-56]
+	mov	eax,ecx
 ; end of inline function eq
 	cmp	eax,0
 	jne	label0001
@@ -163,6 +165,8 @@ label0011:
 	seta	al
 	movzx	eax,al
 	mov	[ebp-60],eax
+	mov	ecx,[ebp-60]
+	mov	eax,ecx
 ; end of inline function eq
 	cmp	eax,0
 	jne	label0002
@@ -207,6 +211,8 @@ label0015:
 	seta	al
 	movzx	eax,al
 	mov	[ebp-64],eax
+	mov	ecx,[ebp-64]
+	mov	eax,ecx
 ; end of inline function eq
 	cmp	eax,0
 	jne	label0003
@@ -252,6 +258,8 @@ label0019:
 	seta	al
 	movzx	eax,al
 	mov	[ebp-68],eax
+	mov	ecx,[ebp-68]
+	mov	eax,ecx
 ; end of inline function eq
 	cmp	eax,0
 	jne	label0004
@@ -297,6 +305,8 @@ label001d:
 	seta	al
 	movzx	eax,al
 	mov	[ebp-72],eax
+	mov	ecx,[ebp-72]
+	mov	eax,ecx
 ; end of inline function eq
 	cmp	eax,0
 	jne	label0005
@@ -342,6 +352,8 @@ label0021:
 	seta	al
 	movzx	eax,al
 	mov	[ebp-76],eax
+	mov	ecx,[ebp-76]
+	mov	eax,ecx
 ; end of inline function eq
 	cmp	eax,0
 	jne	label0006
@@ -387,6 +399,8 @@ label0025:
 	seta	al
 	movzx	eax,al
 	mov	[ebp-80],eax
+	mov	ecx,[ebp-80]
+	mov	eax,ecx
 ; end of inline function eq
 	cmp	eax,0
 	jne	label0007

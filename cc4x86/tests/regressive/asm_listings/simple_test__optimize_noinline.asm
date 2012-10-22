@@ -14,15 +14,13 @@ _test proc
 	imul	edi,2
 	cmp	edi,4
 	jne	label0000
-	mov	edi,0
-	mov	eax,edi
+	mov	eax,0
 	pop	edi
 	add	esp,12
 	pop	ebp
 	ret
 label0000:
-	mov	edi,1
-	mov	eax,edi
+	mov	eax,1
 	pop	edi
 	add	esp,12
 	pop	ebp

@@ -278,6 +278,8 @@ void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type ty
     set_assign(&_alive_registers_after_current_insn, &_reg_out[type].vec_base[_current_block]);
 
     for (insn = _basic_blocks.blocks_base[_current_block].block_last_insn; insn != _current_insn; insn = insn->in_prev) {
+		ASSERT(insn);
+
         // извлекаем все переписываемые регистры
         bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
 

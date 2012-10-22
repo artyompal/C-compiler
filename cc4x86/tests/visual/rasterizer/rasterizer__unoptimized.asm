@@ -1131,7 +1131,7 @@ label0006:
 	add	dword106,4
 	mov	dword108,[dword103]
 	sub	dword108,[dword106]
-	cdq	dword109
+	cdq	dword109,dword96
 	idiv	dword96,dword108
 	mov	dword111,[ebp+8]
 	add	dword96,[dword111]
@@ -1151,7 +1151,7 @@ label0006:
 	add	dword127,4
 	mov	dword129,[dword124]
 	sub	dword129,[dword127]
-	cdq	dword130
+	cdq	dword130,dword117
 	idiv	dword117,dword129
 	mov	dword132,[ebp+8]
 	add	dword117,[dword132]
@@ -1299,7 +1299,7 @@ label0007:
 	add	dword254,4
 	mov	dword256,[dword251]
 	sub	dword256,[dword254]
-	cdq	dword257
+	cdq	dword257,dword244
 	idiv	dword244,dword256
 	mov	dword259,[ebp+8]
 	add	dword244,[dword259]
@@ -1422,7 +1422,7 @@ label0009:
 	add	dword362,4
 	mov	dword364,[dword359]
 	sub	dword364,[dword362]
-	cdq	dword365
+	cdq	dword365,dword352
 	idiv	dword352,dword364
 	mov	dword367,[ebp+12]
 	add	dword352,[dword367]
@@ -1442,7 +1442,7 @@ label0009:
 	add	dword383,4
 	mov	dword385,[dword380]
 	sub	dword385,[dword383]
-	cdq	dword386
+	cdq	dword386,dword373
 	idiv	dword373,dword385
 	mov	dword388,[ebp+8]
 	add	dword373,[dword388]
