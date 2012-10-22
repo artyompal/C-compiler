@@ -5,28 +5,6 @@
 
 .code
 
-_f proc
-	create_stack_frame
-	mov	dword6,[ebp+12]
-	mov	dword5,[ebp+8]
-	mov	dword3,dword5
-	add	dword3,dword6
-	set_retval	dword3
-	destroy_stack_frame
-	ret
-_f endp	
-
-_g proc
-	create_stack_frame
-	mov	dword6,[ebp+12]
-	mov	dword5,[ebp+8]
-	mov	dword3,dword5
-	sub	dword3,dword6
-	set_retval	dword3
-	destroy_stack_frame
-	ret
-_g endp	
-
 _test proc
 	create_stack_frame
 	mov	dword31,2

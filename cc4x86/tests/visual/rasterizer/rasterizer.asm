@@ -1428,6 +1428,7 @@ label000a:
 	mov	[ebp-764],edi
 	mov	[ebp-768],ecx
 	jle	label001d
+	movss	xmm7,dword ptr [ebp-824]
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp-820]
@@ -1453,6 +1454,7 @@ label001d:
 	mov	[ebp-760],esi
 	mov	[ebp-768],ecx
 	jge	label001f
+	movss	xmm7,dword ptr [ebp-824]
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp-820]
@@ -1472,6 +1474,7 @@ label001d:
 	add	esp,28
 	jmp	label0020
 label001f:
+	movss	xmm7,dword ptr [ebp-824]
 	movss	dword ptr [esp-4],xmm7
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp-820]
@@ -1498,6 +1501,7 @@ label001c:
 	mov	[ebp-764],edi
 	mov	[ebp-768],ecx
 	jge	label0022
+	movss	xmm7,dword ptr [ebp-824]
 	movss	xmm0,xmm7
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
@@ -1527,6 +1531,7 @@ label0022:
 	mov	[ebp-760],esi
 	mov	[ebp-768],ecx
 	jle	label0024
+	movss	xmm7,dword ptr [ebp-824]
 	movss	xmm0,xmm7
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
@@ -1550,6 +1555,7 @@ label0022:
 	add	esp,28
 	jmp	label0025
 label0024:
+	movss	xmm7,dword ptr [ebp-824]
 	movss	xmm0,xmm7
 	xorps	xmm0,dword ptr [___unnamed_float_4]
 	movss	dword ptr [esp-4],xmm0
@@ -1749,6 +1755,7 @@ label000e:
 	movss	dword ptr [ebp-844],xmm6
 	movss	dword ptr [ebp-848],xmm5
 	jg	label0013
+	movss	xmm5,dword ptr [ebp-848]
 	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp-844]
@@ -1770,6 +1777,7 @@ label000e:
 	add	esp,28
 	jmp	label0014
 label0013:
+	movss	xmm5,dword ptr [ebp-848]
 	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp-844]
@@ -1915,6 +1923,7 @@ label000f:
 	movss	dword ptr [ebp-844],xmm6
 	movss	dword ptr [ebp-848],xmm5
 	jg	label0016
+	movss	xmm5,dword ptr [ebp-848]
 	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp-844]
@@ -1936,6 +1945,7 @@ label000f:
 	add	esp,28
 	jmp	label0017
 label0016:
+	movss	xmm5,dword ptr [ebp-848]
 	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp-844]
@@ -2164,6 +2174,7 @@ label0011:
 	movss	dword ptr [ebp-844],xmm6
 	movss	dword ptr [ebp-848],xmm5
 	jg	label0019
+	movss	xmm5,dword ptr [ebp-848]
 	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp-844]
@@ -2185,6 +2196,7 @@ label0011:
 	add	esp,28
 	jmp	label001a
 label0019:
+	movss	xmm5,dword ptr [ebp-848]
 	movss	dword ptr [esp-4],xmm5
 	sub	esp,4
 	movss	xmm6,dword ptr [ebp-844]

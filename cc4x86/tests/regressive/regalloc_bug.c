@@ -1,7 +1,7 @@
 
 
-int f(int a, int b) { return a + b; }
-int g(int a, int b) { return a - b; }
+static int f(int a, int b) { return a + b; }
+static int g(int a, int b) { return a - b; }
 
 int test()
 {
