@@ -8,7 +8,7 @@
 _test proc
         push    ebp
         mov     ebp,esp
-        sub     esp,64
+        sub     esp,60
         push    edi
         push    esi
         mov     edi,2
@@ -48,7 +48,7 @@ _test proc
         mov     eax,1
         pop     esi
         pop     edi
-        add     esp,64
+        add     esp,60
         pop     ebp
         ret
 label0000:
@@ -60,7 +60,7 @@ label0000:
         mov     eax,2
         pop     esi
         pop     edi
-        add     esp,64
+        add     esp,60
         pop     ebp
         ret
 label0001:
@@ -73,20 +73,18 @@ label0001:
         mov     eax,3
         pop     esi
         pop     edi
-        add     esp,64
+        add     esp,60
         pop     ebp
         ret
 label0002:
         mov     eax,[ebp-48]
         mul     dword ptr [ebp-52]
-        mov     [ebp-56],eax
-        mov     eax,[ebp-56]
         cmp     eax,6
         je      label0003
         mov     eax,4
         pop     esi
         pop     edi
-        add     esp,64
+        add     esp,60
         pop     ebp
         ret
 label0003:
@@ -97,7 +95,7 @@ label0003:
         mov     eax,5
         pop     esi
         pop     edi
-        add     esp,64
+        add     esp,60
         pop     ebp
         ret
 label0004:
@@ -110,7 +108,7 @@ label0004:
         mov     eax,6
         pop     esi
         pop     edi
-        add     esp,64
+        add     esp,60
         pop     ebp
         ret
 label0005:
@@ -122,28 +120,26 @@ label0005:
         mov     eax,esi
         xor     edx,edx
         div     edi
-        mov     [ebp-60],eax
+        mov     [ebp-56],eax
         mov     eax,[ebp-24]
         xor     edx,edx
         div     edi
-        mov     [ebp-64],eax
-        mov     eax,[ebp-60]
-        mul     dword ptr [ebp-64]
         mov     [ebp-60],eax
-        mov     eax,[ebp-60]
+        mov     eax,[ebp-56]
+        mul     dword ptr [ebp-60]
         cmp     eax,2
         je      label0006
         mov     eax,7
         pop     esi
         pop     edi
-        add     esp,64
+        add     esp,60
         pop     ebp
         ret
 label0006:
         mov     eax,0
         pop     esi
         pop     edi
-        add     esp,64
+        add     esp,60
         pop     ebp
         ret
 _test endp      

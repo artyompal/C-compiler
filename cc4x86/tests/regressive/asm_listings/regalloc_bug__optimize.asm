@@ -8,7 +8,7 @@
 _test proc
         push    ebp
         mov     ebp,esp
-        sub     esp,48
+        sub     esp,44
         push    edi
         mov     edi,2
         cmp     edi,3
@@ -25,14 +25,12 @@ label0000:
         mov     edi,[ebp-40]
         lea     edi,[edi-3]
 ; end of inline function g
-        mov     [ebp-48],edi
-        mov     edi,[ebp-48]
         mov     [ebp-44],edi
 label0001:
         mov     eax,1
         add     eax,[ebp-44]
         pop     edi
-        add     esp,48
+        add     esp,44
         pop     ebp
         ret
 _test endp      

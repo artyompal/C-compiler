@@ -72,7 +72,7 @@ public  ___unnamed_float_6
 _rasterizer_init proc
         push    ebp
         mov     ebp,esp
-        sub     esp,104
+        sub     esp,100
         push    edi
         push    esi
         push    ebx
@@ -257,8 +257,6 @@ label0003:
         divss   xmm0,xmm2
         movss   xmm2,dword ptr [___unnamed_float_5]
         addss   xmm2,xmm0
-        movss   dword ptr [ebp-104],xmm2
-        movss   xmm2,dword ptr [ebp-104]
         mov     edi,(offset __clip_plane_left_base)
         movss   dword ptr [edi],xmm2
         movss   dword ptr [edi+4],xmm3
@@ -355,7 +353,7 @@ label0003:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,104
+        add     esp,100
         pop     ebp
         ret
 _rasterizer_init endp   
@@ -446,7 +444,7 @@ _rasterizer_set_texture endp
 __rasterize_horiz_line proc
         push    ebp
         mov     ebp,esp
-        sub     esp,104
+        sub     esp,96
         push    edi
         push    esi
         push    ebx
@@ -470,14 +468,14 @@ __rasterize_horiz_line proc
         sub     edi,ebx
         mov     [ebp-68],edx
         mov     [ebp-72],edi
-        movss   dword ptr [ebp-92],xmm4
-        movss   dword ptr [ebp-96],xmm5
-        movss   dword ptr [ebp-100],xmm6
-        movss   dword ptr [ebp-104],xmm7
+        movss   dword ptr [ebp-84],xmm4
+        movss   dword ptr [ebp-88],xmm5
+        movss   dword ptr [ebp-92],xmm6
+        movss   dword ptr [ebp-96],xmm7
 label0000:
 ; start of inline function _tex2d
-        movss   xmm7,dword ptr [ebp-96]
-        movss   xmm6,dword ptr [ebp-92]
+        movss   xmm7,dword ptr [ebp-88]
+        movss   xmm6,dword ptr [ebp-84]
         mov     eax,dword ptr [__texture_width]
         dec     eax
         cvtsi2ss        xmm0,eax
@@ -522,8 +520,6 @@ label0000:
         mulss   xmm1,xmm2
         addss   xmm0,xmm1
         cvttss2si       ebx,xmm0
-        mov     [ebp-84],ebx
-        mov     ebx,[ebp-84]
         cvtsi2ss        xmm0,ecx
         mulss   xmm0,xmm7
         cvtsi2ss        xmm1,edi
@@ -532,28 +528,26 @@ label0000:
         mulss   xmm1,xmm2
         addss   xmm0,xmm1
         cvttss2si       ecx,xmm0
-        mov     [ebp-88],ecx
-        mov     ecx,[ebp-88]
         mov     edi,ebx
         sal     edi,8
         add     edi,ecx
         mov     [edx],edi
 label0003:
-        movss   xmm4,dword ptr [ebp-92]
-        addss   xmm4,dword ptr [ebp-100]
-        movss   xmm5,dword ptr [ebp-96]
-        addss   xmm5,dword ptr [ebp-104]
+        movss   xmm4,dword ptr [ebp-84]
+        addss   xmm4,dword ptr [ebp-92]
+        movss   xmm5,dword ptr [ebp-88]
+        addss   xmm5,dword ptr [ebp-96]
         mov     edx,[ebp-68]
         add     edx,4
         cmp     edx,[ebp-72]
         mov     [ebp-68],edx
-        movss   dword ptr [ebp-92],xmm4
-        movss   dword ptr [ebp-96],xmm5
+        movss   dword ptr [ebp-84],xmm4
+        movss   dword ptr [ebp-88],xmm5
         jl      label0000
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,104
+        add     esp,96
         pop     ebp
         ret
 __rasterize_horiz_line endp     
@@ -561,7 +555,7 @@ __rasterize_horiz_line endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,184
+        sub     esp,180
         push    edi
         push    esi
         push    ebx
@@ -622,8 +616,6 @@ label0001:
         mov     edi,[ebp-156]
         mov     esi,[ebp-144]
         lea     ebx,[ebp-24]
-        mov     [ebp-164],ebx
-        mov     ebx,[ebp-164]
         movss   xmm0,dword ptr [esi]
         subss   xmm0,dword ptr [edi]
         movss   dword ptr [ebx],xmm0
@@ -652,12 +644,12 @@ label0001:
         movss   xmm0,dword ptr [esi+12]
         mulss   xmm0,dword ptr [edi+12]
         addss   xmm1,xmm0
-        movss   dword ptr [ebp-172],xmm7
+        movss   dword ptr [ebp-168],xmm7
         movss   xmm7,xmm1
 ; end of inline function vec4f_dot
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,dword ptr [ebp-172]
-        movss   dword ptr [ebp-176],xmm7
+        comiss  xmm0,dword ptr [ebp-168]
+        movss   dword ptr [ebp-172],xmm7
         ja      label0003
         mov     edx,[ebp-148]
         mov     eax,[edx+192]
@@ -665,43 +657,43 @@ label0001:
         imul    eax,24
         mov     ecx,edx
         add     ecx,eax
-        mov     [ebp-168],ecx
+        mov     [ebp-164],ecx
         mov     ecx,[ebp-140]
         mov     eax,[ecx]
         mov     ebx,[ecx+4]
         mov     [ebp-140],ecx
-        mov     ecx,[ebp-168]
+        mov     ecx,[ebp-164]
         mov     [ecx],eax
         mov     [ecx+4],ebx
-        mov     [ebp-168],ecx
+        mov     [ebp-164],ecx
         mov     ecx,[ebp-140]
         mov     eax,[ecx+8]
         mov     ebx,[ecx+12]
         mov     [ebp-140],ecx
-        mov     ecx,[ebp-168]
+        mov     ecx,[ebp-164]
         mov     [ecx+8],eax
         mov     [ecx+12],ebx
-        mov     [ebp-168],ecx
+        mov     [ebp-164],ecx
         mov     ecx,[ebp-140]
         mov     eax,[ecx+16]
         mov     ebx,[ecx+20]
         mov     [ebp-140],ecx
-        mov     ecx,[ebp-168]
+        mov     ecx,[ebp-164]
         mov     [ecx+16],eax
         mov     [ecx+20],ebx
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,dword ptr [ebp-172]
+        comiss  xmm0,dword ptr [ebp-168]
         jae     label0006
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,dword ptr [ebp-176]
+        comiss  xmm0,dword ptr [ebp-172]
         ja      label0005
 label0006:
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,dword ptr [ebp-176]
+        comiss  xmm0,dword ptr [ebp-172]
         ja      label0004
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,dword ptr [ebp-172]
+        comiss  xmm0,dword ptr [ebp-168]
         jbe     label0004
 label0005:
 ; start of inline function vec4f_subtract
@@ -772,12 +764,12 @@ label0005:
         movss   xmm0,dword ptr [esi+12]
         mulss   xmm0,dword ptr [edi+12]
         addss   xmm1,xmm0
-        movss   dword ptr [ebp-180],xmm7
+        movss   dword ptr [ebp-176],xmm7
         movss   xmm7,xmm1
 ; end of inline function vec4f_dot
-        movss   dword ptr [ebp-184],xmm7
-        movss   xmm7,dword ptr [ebp-180]
-        divss   xmm7,dword ptr [ebp-184]
+        movss   dword ptr [ebp-180],xmm7
+        movss   xmm7,dword ptr [ebp-176]
+        divss   xmm7,dword ptr [ebp-180]
 ; start of inline function vec4f_mul
         movss   xmm1,xmm7
         movss   xmm0,dword ptr [ebp-40]
@@ -876,7 +868,7 @@ label0002:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,184
+        add     esp,180
         pop     ebp
         ret
 __clip_on_plain endp    
@@ -959,7 +951,7 @@ __transform_to_projection_space endp
 _rasterizer_triangle3f proc
         push    ebp
         mov     ebp,esp
-        sub     esp,880
+        sub     esp,836
         push    edi
         push    esi
         push    ebx
@@ -1256,8 +1248,6 @@ label0008:
         jle     label0009
         mov     edi,[ebp-732]
         mov     eax,[ebp-740]
-        mov     [ebp-744],edi
-        mov     edi,[ebp-744]
         mov     [ebp-732],eax
         mov     [ebp-740],edi
 label0009:
@@ -1268,8 +1258,6 @@ label0009:
         jle     label000a
         mov     edi,[ebp-736]
         mov     esi,[ebp-740]
-        mov     [ebp-744],edi
-        mov     edi,[ebp-744]
         mov     [ebp-736],esi
         mov     [ebp-740],edi
 label000a:
@@ -1293,127 +1281,127 @@ label000a:
         mov     ebx,[ebp-732]
         mov     eax,[ebp-732]
         mov     edx,[eax+4]
-        mov     [ebp-748],edi
+        mov     [ebp-744],edi
         mov     edi,[ebp-740]
         mov     ecx,[edi]
-        mov     [ebp-752],esi
+        mov     [ebp-748],esi
         mov     esi,[ebp-736]
         mov     edi,[esi]
         mov     esi,[eax]
         cmp     esi,edi
-        mov     [ebp-756],esi
-        mov     [ebp-760],edi
-        mov     [ebp-764],ecx
-        mov     [ebp-768],edx
-        mov     [ebp-772],ebx
-        movss   dword ptr [ebp-816],xmm6
-        movss   dword ptr [ebp-820],xmm7
+        mov     [ebp-752],esi
+        mov     [ebp-756],edi
+        mov     [ebp-760],ecx
+        mov     [ebp-764],edx
+        mov     [ebp-768],ebx
+        movss   dword ptr [ebp-804],xmm6
+        movss   dword ptr [ebp-808],xmm7
         jge     label001c
-        mov     ecx,[ebp-764]
-        cmp     ecx,[ebp-760]
+        mov     ecx,[ebp-760]
+        cmp     ecx,[ebp-756]
         jle     label001d
-        push    dword ptr [ebp-820]
-        push    dword ptr [ebp-816]
-        mov     edi,[ebp-772]
+        push    dword ptr [ebp-808]
+        push    dword ptr [ebp-804]
+        mov     edi,[ebp-768]
         push    dword ptr [edi+12]
-        mov     edi,[ebp-772]
+        mov     edi,[ebp-768]
         push    dword ptr [edi+8]
-        push    dword ptr [ebp-768]
         push    dword ptr [ebp-764]
-        push    dword ptr [ebp-756]
+        push    dword ptr [ebp-760]
+        push    dword ptr [ebp-752]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0020
 label001d:
-        mov     ecx,[ebp-764]
-        cmp     ecx,[ebp-756]
+        mov     ecx,[ebp-760]
+        cmp     ecx,[ebp-752]
         jge     label001f
-        push    dword ptr [ebp-820]
-        push    dword ptr [ebp-816]
-        mov     edi,[ebp-748]
+        push    dword ptr [ebp-808]
+        push    dword ptr [ebp-804]
+        mov     edi,[ebp-744]
         push    dword ptr [edi+12]
-        mov     edi,[ebp-748]
+        mov     edi,[ebp-744]
         push    dword ptr [edi+8]
-        push    dword ptr [ebp-768]
-        push    dword ptr [ebp-760]
         push    dword ptr [ebp-764]
+        push    dword ptr [ebp-756]
+        push    dword ptr [ebp-760]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0020
 label001f:
-        push    dword ptr [ebp-820]
-        push    dword ptr [ebp-816]
-        mov     edi,[ebp-772]
+        push    dword ptr [ebp-808]
+        push    dword ptr [ebp-804]
+        mov     edi,[ebp-768]
         push    dword ptr [edi+12]
-        mov     edi,[ebp-772]
+        mov     edi,[ebp-768]
         push    dword ptr [edi+8]
-        push    dword ptr [ebp-768]
-        push    dword ptr [ebp-760]
+        push    dword ptr [ebp-764]
         push    dword ptr [ebp-756]
+        push    dword ptr [ebp-752]
         call    __rasterize_horiz_line
         add     esp,28
 label0020:
         jmp     label0025
 label001c:
-        mov     ecx,[ebp-764]
-        cmp     ecx,[ebp-760]
+        mov     ecx,[ebp-760]
+        cmp     ecx,[ebp-756]
         jge     label0022
-        movss   xmm0,dword ptr [ebp-820]
+        movss   xmm0,dword ptr [ebp-808]
         xorps   xmm0,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        movss   xmm0,dword ptr [ebp-816]
+        movss   xmm0,dword ptr [ebp-804]
         xorps   xmm0,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        mov     edi,[ebp-748]
+        mov     edi,[ebp-744]
         push    dword ptr [edi+12]
-        mov     edi,[ebp-748]
+        mov     edi,[ebp-744]
         push    dword ptr [edi+8]
-        push    dword ptr [ebp-768]
-        push    dword ptr [ebp-756]
         push    dword ptr [ebp-764]
+        push    dword ptr [ebp-752]
+        push    dword ptr [ebp-760]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0025
 label0022:
-        mov     ecx,[ebp-764]
-        cmp     ecx,[ebp-756]
+        mov     ecx,[ebp-760]
+        cmp     ecx,[ebp-752]
         jle     label0024
-        movss   xmm0,dword ptr [ebp-820]
+        movss   xmm0,dword ptr [ebp-808]
         xorps   xmm0,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        movss   xmm0,dword ptr [ebp-816]
+        movss   xmm0,dword ptr [ebp-804]
         xorps   xmm0,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        mov     edi,[ebp-752]
+        mov     edi,[ebp-748]
         push    dword ptr [edi+12]
-        mov     edi,[ebp-752]
+        mov     edi,[ebp-748]
         push    dword ptr [edi+8]
-        push    dword ptr [ebp-768]
         push    dword ptr [ebp-764]
         push    dword ptr [ebp-760]
+        push    dword ptr [ebp-756]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0025
 label0024:
-        movss   xmm0,dword ptr [ebp-820]
+        movss   xmm0,dword ptr [ebp-808]
         xorps   xmm0,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        movss   xmm0,dword ptr [ebp-816]
+        movss   xmm0,dword ptr [ebp-804]
         xorps   xmm0,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        mov     edi,[ebp-752]
+        mov     edi,[ebp-748]
         push    dword ptr [edi+12]
-        mov     edi,[ebp-752]
+        mov     edi,[ebp-748]
         push    dword ptr [edi+8]
-        push    dword ptr [ebp-768]
+        push    dword ptr [ebp-764]
+        push    dword ptr [ebp-752]
         push    dword ptr [ebp-756]
-        push    dword ptr [ebp-760]
         call    __rasterize_horiz_line
         add     esp,28
 label0025:
@@ -1423,57 +1411,57 @@ label000c:
 label000b:
         mov     eax,[ebp-732]
         mov     edi,[eax+4]
-        mov     [ebp-776],edi
+        mov     [ebp-772],edi
 label000e:
         mov     esi,[ebp-736]
         mov     eax,[esi+4]
-        cmp     eax,[ebp-776]
+        cmp     eax,[ebp-772]
         jle     label000f
-        mov     eax,[ebp-776]
+        mov     eax,[ebp-772]
         mov     edi,[ebp-732]
         sub     eax,[edi+4]
         mov     esi,[ebp-736]
         mov     ecx,[esi]
-        mov     [ebp-780],eax
+        mov     [ebp-776],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax]
         mov     [ebp-732],eax
-        mov     eax,[ebp-780]
+        mov     eax,[ebp-776]
         imul    eax,ecx
         mov     ecx,[esi+4]
-        mov     [ebp-780],eax
+        mov     [ebp-776],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax+4]
         mov     [ebp-732],eax
-        mov     eax,[ebp-780]
+        mov     eax,[ebp-776]
         cdq
         idiv    ecx
         mov     edx,[ebp-732]
         add     eax,[edx]
-        mov     [ebp-780],eax
-        mov     eax,[ebp-776]
+        mov     [ebp-776],eax
+        mov     eax,[ebp-772]
         mov     ecx,[ebp-732]
         sub     eax,[ecx+4]
         mov     edi,[ebp-740]
         mov     ecx,[edi]
-        mov     [ebp-784],eax
+        mov     [ebp-780],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax]
         mov     [ebp-732],eax
-        mov     eax,[ebp-784]
+        mov     eax,[ebp-780]
         imul    eax,ecx
         mov     ecx,[edi+4]
-        mov     [ebp-784],eax
+        mov     [ebp-780],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax+4]
         mov     [ebp-732],eax
-        mov     eax,[ebp-784]
+        mov     eax,[ebp-780]
         cdq
         idiv    ecx
         mov     edx,[ebp-732]
         add     eax,[edx]
-        mov     ecx,[ebp-776]
-        mov     [ebp-784],eax
+        mov     ecx,[ebp-772]
+        mov     [ebp-780],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax+4]
         cvtsi2ss        xmm7,ecx
@@ -1485,7 +1473,7 @@ label000e:
         cvtsi2ss        xmm0,ecx
         divss   xmm7,xmm0
         addss   xmm7,dword ptr [eax+8]
-        mov     ecx,[ebp-776]
+        mov     ecx,[ebp-772]
         sub     ecx,[eax+4]
         cvtsi2ss        xmm0,ecx
         movss   xmm1,dword ptr [edi+8]
@@ -1496,7 +1484,7 @@ label000e:
         cvtsi2ss        xmm1,ecx
         divss   xmm0,xmm1
         addss   xmm0,dword ptr [eax+8]
-        mov     ecx,[ebp-776]
+        mov     ecx,[ebp-772]
         sub     ecx,[eax+4]
         cvtsi2ss        xmm1,ecx
         mov     ecx,8
@@ -1516,7 +1504,7 @@ label000e:
         add     ecx,eax
         add     ecx,4
         addss   xmm1,dword ptr [ecx]
-        mov     ecx,[ebp-776]
+        mov     ecx,[ebp-772]
         sub     ecx,[eax+4]
         cvtsi2ss        xmm2,ecx
         mov     ecx,8
@@ -1536,14 +1524,14 @@ label000e:
         add     ecx,eax
         add     ecx,4
         addss   xmm2,dword ptr [ecx]
-        mov     ecx,[ebp-784]
-        sub     ecx,[ebp-780]
+        mov     ecx,[ebp-780]
+        sub     ecx,[ebp-776]
         cvtsi2ss        xmm3,ecx
         movss   xmm6,xmm0
         subss   xmm6,xmm7
         divss   xmm6,xmm3
-        mov     ecx,[ebp-784]
-        sub     ecx,[ebp-780]
+        mov     ecx,[ebp-780]
+        sub     ecx,[ebp-776]
         cvtsi2ss        xmm3,ecx
         movss   xmm5,xmm2
         subss   xmm5,xmm1
@@ -1551,43 +1539,43 @@ label000e:
 ; start of inline function _rasterize_horiz_line__unordered
         movss   xmm3,xmm2
         movss   xmm2,xmm0
-        mov     edx,[ebp-776]
-        mov     ecx,[ebp-784]
-        mov     ebx,[ebp-780]
+        mov     edx,[ebp-772]
+        mov     ecx,[ebp-780]
+        mov     ebx,[ebp-776]
         cmp     ebx,ecx
-        mov     [ebp-788],ebx
-        mov     [ebp-792],ecx
-        mov     [ebp-796],edx
-        movss   dword ptr [ebp-824],xmm7
-        movss   dword ptr [ebp-828],xmm1
-        movss   dword ptr [ebp-832],xmm2
-        movss   dword ptr [ebp-836],xmm3
-        movss   dword ptr [ebp-840],xmm6
-        movss   dword ptr [ebp-844],xmm5
+        mov     [ebp-784],ebx
+        mov     [ebp-788],ecx
+        mov     [ebp-792],edx
+        movss   dword ptr [ebp-812],xmm7
+        movss   dword ptr [ebp-816],xmm1
+        movss   dword ptr [ebp-820],xmm2
+        movss   dword ptr [ebp-824],xmm3
+        movss   dword ptr [ebp-828],xmm6
+        movss   dword ptr [ebp-832],xmm5
         jg      label0013
-        push    dword ptr [ebp-844]
-        push    dword ptr [ebp-840]
+        push    dword ptr [ebp-832]
         push    dword ptr [ebp-828]
-        push    dword ptr [ebp-824]
-        push    dword ptr [ebp-796]
+        push    dword ptr [ebp-816]
+        push    dword ptr [ebp-812]
         push    dword ptr [ebp-792]
         push    dword ptr [ebp-788]
+        push    dword ptr [ebp-784]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0014
 label0013:
-        push    dword ptr [ebp-844]
-        push    dword ptr [ebp-840]
-        push    dword ptr [ebp-836]
         push    dword ptr [ebp-832]
-        push    dword ptr [ebp-796]
-        push    dword ptr [ebp-788]
+        push    dword ptr [ebp-828]
+        push    dword ptr [ebp-824]
+        push    dword ptr [ebp-820]
         push    dword ptr [ebp-792]
+        push    dword ptr [ebp-784]
+        push    dword ptr [ebp-788]
         call    __rasterize_horiz_line
         add     esp,28
 label0014:
 ; end of inline function _rasterize_horiz_line__unordered
-        inc     dword ptr [ebp-776]
+        inc     dword ptr [ebp-772]
         jmp     label000e
 label000f:
         mov     esi,[ebp-736]
@@ -1596,26 +1584,24 @@ label000f:
         sub     eax,[edi+4]
         mov     edi,[ebp-740]
         mov     ecx,[edi]
-        mov     [ebp-800],eax
+        mov     [ebp-796],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax]
         mov     [ebp-732],eax
-        mov     eax,[ebp-800]
+        mov     eax,[ebp-796]
         imul    eax,ecx
         mov     ecx,[edi+4]
-        mov     [ebp-800],eax
+        mov     [ebp-796],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax+4]
         mov     [ebp-732],eax
-        mov     eax,[ebp-800]
+        mov     eax,[ebp-796]
         cdq
         idiv    ecx
         mov     edx,[ebp-732]
         add     eax,[edx]
-        mov     [ebp-800],eax
-        mov     eax,[ebp-800]
         mov     ecx,[esi+4]
-        mov     [ebp-784],eax
+        mov     [ebp-780],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax+4]
         cvtsi2ss        xmm0,ecx
@@ -1627,8 +1613,6 @@ label000f:
         cvtsi2ss        xmm1,ecx
         divss   xmm0,xmm1
         addss   xmm0,dword ptr [eax+8]
-        movss   dword ptr [ebp-848],xmm0
-        movss   xmm0,dword ptr [ebp-848]
         mov     ecx,[esi+4]
         sub     ecx,[eax+4]
         cvtsi2ss        xmm1,ecx
@@ -1652,7 +1636,7 @@ label000f:
         movss   xmm2,xmm1
         movss   xmm1,xmm0
         subss   xmm1,dword ptr [esi+8]
-        mov     ecx,[ebp-784]
+        mov     ecx,[ebp-780]
         sub     ecx,[esi]
         cvtsi2ss        xmm3,ecx
         divss   xmm1,xmm3
@@ -1662,59 +1646,53 @@ label000f:
         add     ecx,4
         movss   xmm1,xmm2
         subss   xmm1,dword ptr [ecx]
-        mov     ecx,[ebp-784]
+        mov     ecx,[ebp-780]
         sub     ecx,[esi]
         cvtsi2ss        xmm3,ecx
         divss   xmm1,xmm3
         movss   xmm5,xmm1
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   dword ptr [ebp-852],xmm5
-        movss   xmm5,dword ptr [ebp-852]
-        movss   dword ptr [ebp-856],xmm6
-        movss   xmm6,dword ptr [ebp-856]
         mov     ecx,8
         add     ecx,esi
         add     ecx,4
         movss   xmm3,dword ptr [ecx]
-        movss   dword ptr [ebp-860],xmm2
+        movss   dword ptr [ebp-836],xmm2
         movss   xmm2,dword ptr [esi+8]
-        movss   xmm1,dword ptr [ebp-860]
+        movss   xmm1,dword ptr [ebp-836]
         movss   xmm7,xmm0
         mov     ecx,[esi+4]
         mov     edx,ecx
         mov     ecx,[esi]
-        mov     [ebp-804],ecx
-        mov     ecx,[ebp-804]
-        mov     ebx,[ebp-784]
+        mov     ebx,[ebp-780]
         cmp     ebx,ecx
-        mov     [ebp-788],ebx
-        mov     [ebp-792],ecx
-        mov     [ebp-796],edx
-        movss   dword ptr [ebp-824],xmm7
-        movss   dword ptr [ebp-828],xmm1
-        movss   dword ptr [ebp-832],xmm2
-        movss   dword ptr [ebp-836],xmm3
-        movss   dword ptr [ebp-840],xmm6
-        movss   dword ptr [ebp-844],xmm5
+        mov     [ebp-784],ebx
+        mov     [ebp-788],ecx
+        mov     [ebp-792],edx
+        movss   dword ptr [ebp-812],xmm7
+        movss   dword ptr [ebp-816],xmm1
+        movss   dword ptr [ebp-820],xmm2
+        movss   dword ptr [ebp-824],xmm3
+        movss   dword ptr [ebp-828],xmm6
+        movss   dword ptr [ebp-832],xmm5
         jg      label0016
-        push    dword ptr [ebp-844]
-        push    dword ptr [ebp-840]
+        push    dword ptr [ebp-832]
         push    dword ptr [ebp-828]
-        push    dword ptr [ebp-824]
-        push    dword ptr [ebp-796]
+        push    dword ptr [ebp-816]
+        push    dword ptr [ebp-812]
         push    dword ptr [ebp-792]
         push    dword ptr [ebp-788]
+        push    dword ptr [ebp-784]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0017
 label0016:
-        push    dword ptr [ebp-844]
-        push    dword ptr [ebp-840]
-        push    dword ptr [ebp-836]
         push    dword ptr [ebp-832]
-        push    dword ptr [ebp-796]
-        push    dword ptr [ebp-788]
+        push    dword ptr [ebp-828]
+        push    dword ptr [ebp-824]
+        push    dword ptr [ebp-820]
         push    dword ptr [ebp-792]
+        push    dword ptr [ebp-784]
+        push    dword ptr [ebp-788]
         call    __rasterize_horiz_line
         add     esp,28
 label0017:
@@ -1723,13 +1701,13 @@ label0017:
         mov     esi,[ebp-736]
         add     eax,[esi+4]
         mov     edi,eax
-        mov     [ebp-776],edi
+        mov     [ebp-772],edi
 label0011:
         mov     edi,[ebp-740]
         mov     eax,[edi+4]
-        cmp     eax,[ebp-776]
+        cmp     eax,[ebp-772]
         jle     label0012
-        mov     eax,[ebp-776]
+        mov     eax,[ebp-772]
         mov     esi,[ebp-736]
         sub     eax,[esi+4]
         mov     edi,[ebp-740]
@@ -1741,32 +1719,28 @@ label0011:
         cdq
         idiv    ecx
         add     eax,[esi]
-        mov     [ebp-808],eax
-        mov     eax,[ebp-808]
-        mov     [ebp-780],eax
-        mov     eax,[ebp-776]
+        mov     [ebp-776],eax
+        mov     eax,[ebp-772]
         mov     edx,[ebp-732]
         sub     eax,[edx+4]
         mov     ecx,[edi]
-        mov     [ebp-812],eax
+        mov     [ebp-800],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax]
         mov     [ebp-732],eax
-        mov     eax,[ebp-812]
+        mov     eax,[ebp-800]
         imul    eax,ecx
         mov     ecx,[edi+4]
-        mov     [ebp-812],eax
+        mov     [ebp-800],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax+4]
         mov     [ebp-732],eax
-        mov     eax,[ebp-812]
+        mov     eax,[ebp-800]
         cdq
         idiv    ecx
         mov     edx,[ebp-732]
         add     eax,[edx]
-        mov     [ebp-812],eax
-        mov     eax,[ebp-812]
-        mov     ecx,[ebp-776]
+        mov     ecx,[ebp-772]
         sub     ecx,[esi+4]
         cvtsi2ss        xmm0,ecx
         movss   xmm1,dword ptr [edi+8]
@@ -1778,8 +1752,8 @@ label0011:
         divss   xmm0,xmm1
         addss   xmm0,dword ptr [esi+8]
         movss   xmm7,xmm0
-        mov     ecx,[ebp-776]
-        mov     [ebp-784],eax
+        mov     ecx,[ebp-772]
+        mov     [ebp-780],eax
         mov     eax,[ebp-732]
         sub     ecx,[eax+4]
         cvtsi2ss        xmm0,ecx
@@ -1791,9 +1765,7 @@ label0011:
         cvtsi2ss        xmm1,ecx
         divss   xmm0,xmm1
         addss   xmm0,dword ptr [eax+8]
-        movss   dword ptr [ebp-864],xmm0
-        movss   xmm0,dword ptr [ebp-864]
-        mov     ecx,[ebp-776]
+        mov     ecx,[ebp-772]
         sub     ecx,[esi+4]
         cvtsi2ss        xmm1,ecx
         mov     ecx,8
@@ -1813,9 +1785,7 @@ label0011:
         add     ecx,esi
         add     ecx,4
         addss   xmm1,dword ptr [ecx]
-        movss   dword ptr [ebp-868],xmm1
-        movss   xmm1,dword ptr [ebp-868]
-        mov     ecx,[ebp-776]
+        mov     ecx,[ebp-772]
         sub     ecx,[eax+4]
         cvtsi2ss        xmm2,ecx
         mov     ecx,8
@@ -1835,70 +1805,60 @@ label0011:
         add     ecx,eax
         add     ecx,4
         addss   xmm2,dword ptr [ecx]
-        movss   dword ptr [ebp-872],xmm2
-        movss   xmm2,dword ptr [ebp-872]
-        mov     ecx,[ebp-784]
-        sub     ecx,[ebp-780]
+        mov     ecx,[ebp-780]
+        sub     ecx,[ebp-776]
         cvtsi2ss        xmm3,ecx
         movss   xmm4,xmm0
         subss   xmm4,xmm7
         divss   xmm4,xmm3
         movss   xmm6,xmm4
-        mov     ecx,[ebp-784]
-        sub     ecx,[ebp-780]
+        mov     ecx,[ebp-780]
+        sub     ecx,[ebp-776]
         cvtsi2ss        xmm3,ecx
         movss   xmm4,xmm2
         subss   xmm4,xmm1
         divss   xmm4,xmm3
         movss   xmm5,xmm4
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   dword ptr [ebp-852],xmm5
-        movss   xmm5,dword ptr [ebp-852]
-        movss   dword ptr [ebp-856],xmm6
-        movss   xmm6,dword ptr [ebp-856]
         movss   xmm3,xmm2
         movss   xmm2,xmm0
-        movss   dword ptr [ebp-876],xmm1
-        movss   xmm1,dword ptr [ebp-876]
-        movss   dword ptr [ebp-880],xmm7
-        movss   xmm7,dword ptr [ebp-880]
-        mov     edx,[ebp-776]
-        mov     ecx,[ebp-784]
-        mov     ebx,[ebp-780]
+        mov     edx,[ebp-772]
+        mov     ecx,[ebp-780]
+        mov     ebx,[ebp-776]
         cmp     ebx,ecx
-        mov     [ebp-788],ebx
-        mov     [ebp-792],ecx
-        mov     [ebp-796],edx
-        movss   dword ptr [ebp-824],xmm7
-        movss   dword ptr [ebp-828],xmm1
-        movss   dword ptr [ebp-832],xmm2
-        movss   dword ptr [ebp-836],xmm3
-        movss   dword ptr [ebp-840],xmm6
-        movss   dword ptr [ebp-844],xmm5
+        mov     [ebp-784],ebx
+        mov     [ebp-788],ecx
+        mov     [ebp-792],edx
+        movss   dword ptr [ebp-812],xmm7
+        movss   dword ptr [ebp-816],xmm1
+        movss   dword ptr [ebp-820],xmm2
+        movss   dword ptr [ebp-824],xmm3
+        movss   dword ptr [ebp-828],xmm6
+        movss   dword ptr [ebp-832],xmm5
         jg      label0019
-        push    dword ptr [ebp-844]
-        push    dword ptr [ebp-840]
+        push    dword ptr [ebp-832]
         push    dword ptr [ebp-828]
-        push    dword ptr [ebp-824]
-        push    dword ptr [ebp-796]
+        push    dword ptr [ebp-816]
+        push    dword ptr [ebp-812]
         push    dword ptr [ebp-792]
         push    dword ptr [ebp-788]
+        push    dword ptr [ebp-784]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label001a
 label0019:
-        push    dword ptr [ebp-844]
-        push    dword ptr [ebp-840]
-        push    dword ptr [ebp-836]
         push    dword ptr [ebp-832]
-        push    dword ptr [ebp-796]
-        push    dword ptr [ebp-788]
+        push    dword ptr [ebp-828]
+        push    dword ptr [ebp-824]
+        push    dword ptr [ebp-820]
         push    dword ptr [ebp-792]
+        push    dword ptr [ebp-784]
+        push    dword ptr [ebp-788]
         call    __rasterize_horiz_line
         add     esp,28
 label001a:
 ; end of inline function _rasterize_horiz_line__unordered
-        inc     dword ptr [ebp-776]
+        inc     dword ptr [ebp-772]
         jmp     label0011
 label0012:
 ; end of inline function _rasterize_triangle_2i
@@ -1909,7 +1869,7 @@ label0007:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,880
+        add     esp,836
         pop     ebp
         ret
 _rasterizer_triangle3f endp     
