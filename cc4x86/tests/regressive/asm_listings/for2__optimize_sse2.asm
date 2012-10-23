@@ -18,11 +18,9 @@ _test proc
 label0001:
         mov     esi,[ebp-20]
         cmp     esi,8
-        mov     [ebp-20],esi
         jge     label0002
         mov     esi,[ebp-20]
         cmp     esi,4
-        mov     [ebp-20],esi
         jne     label0003
         jmp     label0002
 label0003:

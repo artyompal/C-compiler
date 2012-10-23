@@ -184,7 +184,7 @@ static void _force_swap_register(function_desc *function, x86_instruction *insn,
     ASSERT(real_reg < bincode_get_max_register(type));
     ASSERT(reg > 0);
 
-	if (x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
+	if (x86_dataflow_is_pseudoreg_alive_after(function, reg) && pseudoregs_map[reg].reg_dirty) {
         int ofs = pseudoregs_map[reg].reg_stack_location;
         int dbl = (regmap == &_dword_register_map ? FALSE : _is_double_register(reg, pseudoregs_map));
 
@@ -223,6 +223,8 @@ static void _restore_register(function_desc *function, x86_instruction *insn, re
         } else {
             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~real_reg, ofs);
         }
+
+        pseudoregs_map[reg].reg_dirty = FALSE;
     }
 }
 
@@ -388,6 +390,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
         pseudoregs_map[i].reg_changes_value     = 0;
         pseudoregs_map[i].reg_status            = register_unallocated;
         pseudoregs_map[i].reg_stack_location    = -1;
+        pseudoregs_map[i].reg_dirty             = FALSE;
 
         pseudoregs_map[i].reg_first_write       = NULL;
         pseudoregs_map[i].reg_last_read         = NULL;
@@ -899,6 +902,11 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
             _emulate_push_all(function, insn, type, regmap, pseudoregs_map, saved_real_registers_map);
         } else if (insn->in_code == x86insn_pop_all) {
             _emulate_pop_all(function, insn, type, regmap, pseudoregs_map, saved_real_registers_map);
+        }
+
+        // Если регистр изменён, запоминаем этот факт для случая, когда регистр придётся выгружать.
+        if (IS_VOLATILE_INSN(insn->in_code, type) && result > 0 && OP_IS_REGISTER(insn->in_op1)) {
+            pseudoregs_map[result].reg_dirty = TRUE;
         }
 
         // Удаляем тривиальные присваивания (тривиальная оптимизация).

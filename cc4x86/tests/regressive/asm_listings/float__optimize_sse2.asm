@@ -95,7 +95,6 @@ label0000:
         movss   xmm5,xmm4
         movss   xmm4,dword ptr [___unnamed_float_0]
         comiss  xmm4,xmm5
-        movsd   qword ptr [ebp-92],xmm6
         movss   dword ptr [ebp-96],xmm5
         ja      label000c
         movss   xmm7,dword ptr [ebp-96]
@@ -137,7 +136,6 @@ label0001:
         movss   xmm5,xmm4
         movss   xmm4,dword ptr [___unnamed_float_0]
         comiss  xmm4,xmm5
-        movsd   qword ptr [ebp-92],xmm6
         movss   dword ptr [ebp-96],xmm5
         ja      label0010
         movss   xmm7,dword ptr [ebp-96]
