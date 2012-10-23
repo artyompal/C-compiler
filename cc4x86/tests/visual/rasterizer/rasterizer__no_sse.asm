@@ -1456,12 +1456,9 @@ label000a:
         push    dword ptr [edi+12]
         mov     edi,[ebp-776]
         push    dword ptr [edi+8]
-        mov     edx,[ebp-772]
-        push    edx
-        mov     ecx,[ebp-768]
-        push    ecx
-        mov     esi,[ebp-760]
-        push    esi
+        push    dword ptr [ebp-772]
+        push    dword ptr [ebp-768]
+        push    dword ptr [ebp-760]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0020
@@ -1476,12 +1473,9 @@ label001d:
         push    dword ptr [edi+12]
         mov     edi,[ebp-752]
         push    dword ptr [edi+8]
-        mov     edx,[ebp-772]
-        push    edx
-        mov     edi,[ebp-764]
-        push    edi
-        mov     ecx,[ebp-768]
-        push    ecx
+        push    dword ptr [ebp-772]
+        push    dword ptr [ebp-764]
+        push    dword ptr [ebp-768]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0020
@@ -1492,12 +1486,9 @@ label001f:
         push    dword ptr [edi+12]
         mov     edi,[ebp-776]
         push    dword ptr [edi+8]
-        mov     edx,[ebp-772]
-        push    edx
-        mov     edi,[ebp-764]
-        push    edi
-        mov     esi,[ebp-760]
-        push    esi
+        push    dword ptr [ebp-772]
+        push    dword ptr [ebp-764]
+        push    dword ptr [ebp-760]
         call    __rasterize_horiz_line
         add     esp,28
 label0020:
@@ -1521,12 +1512,9 @@ label001c:
         push    dword ptr [edi+12]
         mov     edi,[ebp-752]
         push    dword ptr [edi+8]
-        mov     edx,[ebp-772]
-        push    edx
-        mov     esi,[ebp-760]
-        push    esi
-        mov     ecx,[ebp-768]
-        push    ecx
+        push    dword ptr [ebp-772]
+        push    dword ptr [ebp-760]
+        push    dword ptr [ebp-768]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0025
@@ -1549,12 +1537,9 @@ label0022:
         push    dword ptr [edi+12]
         mov     edi,[ebp-756]
         push    dword ptr [edi+8]
-        mov     edx,[ebp-772]
-        push    edx
-        mov     ecx,[ebp-768]
-        push    ecx
-        mov     edi,[ebp-764]
-        push    edi
+        push    dword ptr [ebp-772]
+        push    dword ptr [ebp-768]
+        push    dword ptr [ebp-764]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0025
@@ -1573,12 +1558,9 @@ label0024:
         push    dword ptr [edi+12]
         mov     edi,[ebp-756]
         push    dword ptr [edi+8]
-        mov     edx,[ebp-772]
-        push    edx
-        mov     esi,[ebp-760]
-        push    esi
-        mov     edi,[ebp-764]
-        push    edi
+        push    dword ptr [ebp-772]
+        push    dword ptr [ebp-760]
+        push    dword ptr [ebp-764]
         call    __rasterize_horiz_line
         add     esp,28
 label0025:
@@ -1759,12 +1741,9 @@ label000e:
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-408]
         push    dword ptr [ebp-412]
-        mov     edx,[ebp-800]
-        push    edx
-        mov     ecx,[ebp-796]
-        push    ecx
-        mov     ebx,[ebp-792]
-        push    ebx
+        push    dword ptr [ebp-800]
+        push    dword ptr [ebp-796]
+        push    dword ptr [ebp-792]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0014
@@ -1773,12 +1752,9 @@ label0013:
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-400]
         push    dword ptr [ebp-404]
-        mov     edx,[ebp-800]
-        push    edx
-        mov     ebx,[ebp-792]
-        push    ebx
-        mov     ecx,[ebp-796]
-        push    ecx
+        push    dword ptr [ebp-800]
+        push    dword ptr [ebp-792]
+        push    dword ptr [ebp-796]
         call    __rasterize_horiz_line
         add     esp,28
 label0014:
@@ -1902,12 +1878,9 @@ label000f:
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-408]
         push    dword ptr [ebp-412]
-        mov     edx,[ebp-800]
-        push    edx
-        mov     ecx,[ebp-796]
-        push    ecx
-        mov     ebx,[ebp-792]
-        push    ebx
+        push    dword ptr [ebp-800]
+        push    dword ptr [ebp-796]
+        push    dword ptr [ebp-792]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0017
@@ -1916,12 +1889,9 @@ label0016:
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-400]
         push    dword ptr [ebp-404]
-        mov     edx,[ebp-800]
-        push    edx
-        mov     ebx,[ebp-792]
-        push    ebx
-        mov     ecx,[ebp-796]
-        push    ecx
+        push    dword ptr [ebp-800]
+        push    dword ptr [ebp-792]
+        push    dword ptr [ebp-796]
         call    __rasterize_horiz_line
         add     esp,28
 label0017:
@@ -2095,12 +2065,9 @@ label0011:
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-408]
         push    dword ptr [ebp-412]
-        mov     edx,[ebp-800]
-        push    edx
-        mov     ecx,[ebp-796]
-        push    ecx
-        mov     ebx,[ebp-792]
-        push    ebx
+        push    dword ptr [ebp-800]
+        push    dword ptr [ebp-796]
+        push    dword ptr [ebp-792]
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label001a
@@ -2109,12 +2076,9 @@ label0019:
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-400]
         push    dword ptr [ebp-404]
-        mov     edx,[ebp-800]
-        push    edx
-        mov     ebx,[ebp-792]
-        push    ebx
-        mov     ecx,[ebp-796]
-        push    ecx
+        push    dword ptr [ebp-800]
+        push    dword ptr [ebp-792]
+        push    dword ptr [ebp-796]
         call    __rasterize_horiz_line
         add     esp,28
 label001a:

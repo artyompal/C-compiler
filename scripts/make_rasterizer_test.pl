@@ -28,7 +28,7 @@ run("cc4x86.exe --sse2 --noregalloc --output-file-name ..\\..\\tests\\visual\\ra
 # generate optimized listing with pseudo-registers
 run("cc4x86.exe --sse2 --optimize --noregalloc --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__pseudo_registers.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 
-# generate non-SSE noinline optimized listing with pseudo-registers
+# generate non-SSE noinline optimized listing
 run("cc4x86.exe --optimize --noinline --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__no_inline__no_sse.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 assemble("rasterizer__no_inline__no_sse.asm");
 
