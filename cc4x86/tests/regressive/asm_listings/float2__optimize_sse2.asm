@@ -19,17 +19,15 @@ public  ___unnamed_float_3
 _test proc
         push    ebp
         mov     ebp,esp
-        sub     esp,24
+        sub     esp,20
 ; start of inline function test1
         movss   xmm7,dword ptr [___unnamed_float_1]
         addss   xmm7,dword ptr [___unnamed_float_0]
-        movss   dword ptr [ebp-24],xmm7
-        movss   xmm7,dword ptr [ebp-24]
 ; end of inline function test1
         comiss  xmm7,dword ptr [___unnamed_float_2]
         je      label0000
         mov     eax,1
-        add     esp,24
+        add     esp,20
         pop     ebp
         ret
 label0000:
@@ -40,12 +38,12 @@ label0000:
         comiss  xmm7,dword ptr [___unnamed_float_3]
         je      label0001
         mov     eax,2
-        add     esp,24
+        add     esp,20
         pop     ebp
         ret
 label0001:
         mov     eax,0
-        add     esp,24
+        add     esp,20
         pop     ebp
         ret
 _test endp      

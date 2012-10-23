@@ -141,7 +141,6 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
     x86_pseudoreg_info *pseudoregs_map, int real_reg, x86_operand_type type, BOOL disable_codegen)
 {
     int conflict_reg = regmap->real_registers_map[real_reg];
-
     ASSERT(real_reg < bincode_get_max_register(type));
 
     if (conflict_reg > 0) {
@@ -865,6 +864,14 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                             bincode_create_operand_addr_from_reg_offset(&insn->in_op1, insn->in_op1.op_type, ~x86reg_ebp,
                                 pseudoregs_map[reg].reg_stack_location);
                             continue;
+                    } else if (reg == result && OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, conflict_reg) && IS_MOV_INSN(insn->in_code)) {
+                        // Если два операнда MOV претендуют на один регистр, присваиваем регистр и удаляем инструкцию.
+                        regmap->real_registers_map[real_reg] = reg;
+                        insn->in_op1.data.reg = insn->in_op2.data.reg = ~real_reg;
+
+                        pseudoregs_map[reg].reg_status          = register_allocated;
+                        pseudoregs_map[conflict_reg].reg_status = register_swapped;
+                        break;
                     } else if (reg == result || conflict_reg != result) {
                         // Вытесняем конфликтующий регистр в стек и загружаем сохранённое значение из стека.
                         _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, FALSE);
@@ -883,7 +890,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 }
 
 				// TODO: изменять порядок операндов для коммутативных инструкций при выгруженном первом операнде
-                // TODO: в случае конфликта, если результат конфликтует с чем-то, а инструкция перезаписывающая, это можно проигнорировать
             } else {
                 // нужен новый регистр
                 ASSERT(pseudoregs_map[reg].reg_status == register_unallocated);

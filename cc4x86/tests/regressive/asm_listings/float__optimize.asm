@@ -35,7 +35,7 @@ public  ___unnamed_double_11
 _test proc
         push    ebp
         mov     ebp,esp
-        sub     esp,80
+        sub     esp,52
         fld     dword ptr [___unnamed_float_1]
         fstp    dword ptr [ebp-4]
         fld     qword ptr [___unnamed_double_2]
@@ -79,7 +79,7 @@ label0009:
         cmp     eax,0
         jne     label0000
         mov     eax,1
-        add     esp,80
+        add     esp,52
         pop     ebp
         ret
 label0000:
@@ -118,13 +118,11 @@ label000d:
         fstp    st
         seta    al
         movzx   eax,al
-        mov     [ebp-56],eax
-        mov     eax,[ebp-56]
 ; end of inline function eq
         cmp     eax,0
         jne     label0001
         mov     eax,2
-        add     esp,80
+        add     esp,52
         pop     ebp
         ret
 label0001:
@@ -163,13 +161,11 @@ label0011:
         fstp    st
         seta    al
         movzx   eax,al
-        mov     [ebp-60],eax
-        mov     eax,[ebp-60]
 ; end of inline function eq
         cmp     eax,0
         jne     label0002
         mov     eax,3
-        add     esp,80
+        add     esp,52
         pop     ebp
         ret
 label0002:
@@ -208,13 +204,11 @@ label0015:
         fstp    st
         seta    al
         movzx   eax,al
-        mov     [ebp-64],eax
-        mov     eax,[ebp-64]
 ; end of inline function eq
         cmp     eax,0
         jne     label0003
         mov     eax,4
-        add     esp,80
+        add     esp,52
         pop     ebp
         ret
 label0003:
@@ -254,13 +248,11 @@ label0019:
         fstp    st
         seta    al
         movzx   eax,al
-        mov     [ebp-68],eax
-        mov     eax,[ebp-68]
 ; end of inline function eq
         cmp     eax,0
         jne     label0004
         mov     eax,5
-        add     esp,80
+        add     esp,52
         pop     ebp
         ret
 label0004:
@@ -300,13 +292,11 @@ label001d:
         fstp    st
         seta    al
         movzx   eax,al
-        mov     [ebp-72],eax
-        mov     eax,[ebp-72]
 ; end of inline function eq
         cmp     eax,0
         jne     label0005
         mov     eax,6
-        add     esp,80
+        add     esp,52
         pop     ebp
         ret
 label0005:
@@ -346,13 +336,11 @@ label0021:
         fstp    st
         seta    al
         movzx   eax,al
-        mov     [ebp-76],eax
-        mov     eax,[ebp-76]
 ; end of inline function eq
         cmp     eax,0
         jne     label0006
         mov     eax,7
-        add     esp,80
+        add     esp,52
         pop     ebp
         ret
 label0006:
@@ -392,18 +380,16 @@ label0025:
         fstp    st
         seta    al
         movzx   eax,al
-        mov     [ebp-80],eax
-        mov     eax,[ebp-80]
 ; end of inline function eq
         cmp     eax,0
         jne     label0007
         mov     eax,8
-        add     esp,80
+        add     esp,52
         pop     ebp
         ret
 label0007:
         mov     eax,0
-        add     esp,80
+        add     esp,52
         pop     ebp
         ret
 _test endp      

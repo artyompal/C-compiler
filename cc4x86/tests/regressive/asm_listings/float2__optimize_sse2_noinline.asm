@@ -19,13 +19,11 @@ public  ___unnamed_float_3
 _test1 proc
         push    ebp
         mov     ebp,esp
-        sub     esp,8
+        sub     esp,4
         movss   xmm7,dword ptr [ebp+8]
         addss   xmm7,dword ptr [___unnamed_float_0]
-        movss   dword ptr [ebp-8],xmm7
-        movss   xmm7,dword ptr [ebp-8]
         movss   xmm0,xmm7
-        add     esp,8
+        add     esp,4
         pop     ebp
         ret
 _test1 endp     
