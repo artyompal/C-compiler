@@ -55,10 +55,11 @@ static void _search_for_addressing_or_int2float(expression *expr, void *result)
 {
     address_lookup_result *res = result;
 
-    if ((expr->data.arithm.opcode == op_get_address || expr->data.arithm.opcode == op_convert_int2float)
-        && expr->data.arithm.operand1->expr_code == code_expr_symbol && expr->data.arithm.operand1->data.sym == res->sym) {
-            res->res = TRUE;
-        }
+    if ((expr->data.arithm.opcode == op_get_address ||
+        expr->data.arithm.opcode == op_convert_int2float && !option_sse2)
+            && expr->data.arithm.operand1->expr_code == code_expr_symbol && expr->data.arithm.operand1->data.sym == res->sym) {
+                res->res = TRUE;
+            }
 }
 
 // Добавляет переменную в список, если нигде не берётся её адрес.
@@ -123,9 +124,9 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
 
     for (; insn; insn = insn->in_next) {
         if (OP_IS_SPEC_EBP_OFFSET(insn->in_op1, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&insn->in_op1, insn->in_op1.op_type, var_reg);
+            bincode_create_operand_from_pseudoreg(&insn->in_op1, bincode_encode_type(reg_var->sym->sym_type), var_reg);
         } else if (OP_IS_SPEC_EBP_OFFSET(insn->in_op2, var_offset)) {
-            bincode_create_operand_from_pseudoreg(&insn->in_op2, insn->in_op1.op_type, var_reg);
+            bincode_create_operand_from_pseudoreg(&insn->in_op2, bincode_encode_type(reg_var->sym->sym_type), var_reg);
         }
     }
 }
