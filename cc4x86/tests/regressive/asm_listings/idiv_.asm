@@ -22,8 +22,7 @@ _test proc
         idiv    dword ptr [ebp-4]
         mov     [ebp-28],eax
         mov     eax,[ebp-24]
-        mov     edx,[ebp-28]
-        imul    eax,edx
+        imul    eax,[ebp-28]
         mov     [ebp-24],eax
         mov     eax,[ebp-16]
         cdq
@@ -34,12 +33,10 @@ _test proc
         idiv    dword ptr [ebp-12]
         mov     [ebp-36],eax
         mov     eax,[ebp-32]
-        mov     edx,[ebp-36]
-        imul    eax,edx
+        imul    eax,[ebp-36]
         mov     [ebp-32],eax
         mov     eax,[ebp-24]
-        mov     ecx,[ebp-32]
-        add     eax,ecx
+        add     eax,[ebp-32]
         mov     [ebp-20],eax
         cmp     dword ptr [ebp-20],2
         je      label0000

@@ -847,7 +847,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 conflict_reg    = regmap->real_registers_map[real_reg];
 
                 if (conflict_reg != reg) {
-                    if (OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, reg) && OP_IS_PSEUDO_REG(insn->in_op1)) {
+                    if (OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, reg) && OP_IS_REGISTER(insn->in_op1) && insn->in_code != x86insn_cdq) {
                         // ≈сли второй операнд €вл€етс€ выгруженным регистром, оставить его в пам€ти.
                         ASSERT(pseudoregs_map[reg].reg_stack_location != -1);
                         bincode_create_operand_addr_from_reg_offset(&insn->in_op2, insn->in_op2.op_type, ~x86reg_ebp,

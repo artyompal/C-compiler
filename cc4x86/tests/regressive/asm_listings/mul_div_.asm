@@ -22,8 +22,7 @@ _test proc
         div     dword ptr [ebp-4]
         mov     [ebp-28],eax
         mov     eax,[ebp-24]
-        mov     ecx,[ebp-28]
-        mul     ecx
+        mul     dword ptr [ebp-28]
         mov     [ebp-24],eax
         mov     eax,[ebp-16]
         xor     edx,edx
@@ -34,12 +33,10 @@ _test proc
         div     dword ptr [ebp-12]
         mov     [ebp-36],eax
         mov     eax,[ebp-32]
-        mov     ecx,[ebp-36]
-        mul     ecx
+        mul     dword ptr [ebp-36]
         mov     [ebp-32],eax
         mov     eax,[ebp-24]
-        mov     edx,[ebp-32]
-        add     eax,edx
+        add     eax,[ebp-32]
         mov     [ebp-20],eax
         cmp     dword ptr [ebp-20],2
         je      label0000
@@ -116,8 +113,7 @@ label0005:
         div     dword ptr [ebp-4]
         mov     [ebp-44],eax
         mov     eax,[ebp-40]
-        mov     ecx,[ebp-44]
-        mul     ecx
+        mul     dword ptr [ebp-44]
         mov     [ebp-20],eax
         cmp     dword ptr [ebp-20],2
         je      label0006

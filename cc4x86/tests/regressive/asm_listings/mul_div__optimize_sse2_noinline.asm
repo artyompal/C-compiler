@@ -11,7 +11,6 @@ _test proc
         sub     esp,64
         push    edi
         push    esi
-        push    ebx
         mov     edi,2
         mov     esi,3
         mov     eax,4
@@ -27,34 +26,26 @@ _test proc
         div     edi
         mov     [ebp-36],eax
         mov     eax,[ebp-32]
-        mov     ecx,[ebp-36]
-        mul     ecx
+        mul     dword ptr [ebp-36]
         mov     [ebp-32],eax
-        mov     edx,[ebp-28]
-        mov     eax,edx
+        mov     eax,[ebp-28]
         xor     edx,edx
-        mov     ebx,[ebp-24]
-        div     ebx
+        div     dword ptr [ebp-24]
         mov     [ebp-40],eax
-        mov     edx,[ebp-28]
-        mov     eax,edx
+        mov     eax,[ebp-28]
         xor     edx,edx
-        mov     ebx,[ebp-24]
-        div     ebx
+        div     dword ptr [ebp-24]
         mov     [ebp-44],eax
         mov     eax,[ebp-40]
-        mov     ecx,[ebp-44]
-        mul     ecx
+        mul     dword ptr [ebp-44]
         mov     [ebp-40],eax
         mov     eax,[ebp-32]
-        mov     edx,[ebp-40]
-        add     eax,edx
+        add     eax,[ebp-40]
         cmp     eax,2
         mov     [ebp-48],edi
         mov     [ebp-52],esi
         je      label0000
         mov     eax,1
-        pop     ebx
         pop     esi
         pop     edi
         add     esp,64
@@ -63,63 +54,47 @@ _test proc
 label0000:
         xor     edx,edx
         mov     eax,[ebp-24]
-        mov     edi,[ebp-48]
-        div     edi
+        div     dword ptr [ebp-48]
         cmp     eax,2
-        mov     [ebp-48],edi
         je      label0001
         mov     eax,2
-        pop     ebx
         pop     esi
         pop     edi
         add     esp,64
         pop     ebp
         ret
 label0001:
-        mov     edi,[ebp-28]
-        mov     eax,edi
+        mov     eax,[ebp-28]
         xor     edx,edx
-        mov     esi,[ebp-52]
-        div     esi
+        div     dword ptr [ebp-52]
         mov     eax,edx
         cmp     eax,2
-        mov     [ebp-52],esi
         je      label0002
         mov     eax,3
-        pop     ebx
         pop     esi
         pop     edi
         add     esp,64
         pop     ebp
         ret
 label0002:
-        mov     edi,[ebp-48]
-        mov     eax,edi
-        mov     esi,[ebp-52]
-        mul     esi
+        mov     eax,[ebp-48]
+        mul     dword ptr [ebp-52]
         mov     [ebp-56],eax
-        mov     ecx,[ebp-56]
-        mov     eax,ecx
+        mov     eax,[ebp-56]
         cmp     eax,6
-        mov     [ebp-48],edi
-        mov     [ebp-52],esi
         je      label0003
         mov     eax,4
-        pop     ebx
         pop     esi
         pop     edi
         add     esp,64
         pop     ebp
         ret
 label0003:
-        mov     edi,[ebp-48]
-        mov     eax,edi
-        mov     esi,[ebp-52]
-        mul     esi
+        mov     eax,[ebp-48]
+        mul     dword ptr [ebp-52]
         cmp     eax,6
         je      label0004
         mov     eax,5
-        pop     ebx
         pop     esi
         pop     edi
         add     esp,64
@@ -133,7 +108,6 @@ label0004:
         cmp     eax,0
         je      label0005
         mov     eax,6
-        pop     ebx
         pop     esi
         pop     edi
         add     esp,64
@@ -149,21 +123,17 @@ label0005:
         xor     edx,edx
         div     edi
         mov     [ebp-60],eax
-        mov     esi,[ebp-24]
-        mov     eax,esi
+        mov     eax,[ebp-24]
         xor     edx,edx
         div     edi
         mov     [ebp-64],eax
         mov     eax,[ebp-60]
-        mov     edi,[ebp-64]
-        mul     edi
+        mul     dword ptr [ebp-64]
         mov     [ebp-60],eax
-        mov     edx,[ebp-60]
-        mov     eax,edx
+        mov     eax,[ebp-60]
         cmp     eax,2
         je      label0006
         mov     eax,7
-        pop     ebx
         pop     esi
         pop     edi
         add     esp,64
@@ -171,7 +141,6 @@ label0005:
         ret
 label0006:
         mov     eax,0
-        pop     ebx
         pop     esi
         pop     edi
         add     esp,64
