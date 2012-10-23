@@ -118,9 +118,7 @@ static int _find_register_to_swap(function_desc *function, x86_instruction *insn
     for (; insn && free_registers_count > 1; insn = insn->in_next) {
         bincode_extract_pseudoregs_from_insn_wo_dupes(insn, type, regs, &regs_cnt);
 
-        for (i = 0; i < X86_MAX_REG; i++) {
-            if (type == x86op_dword && (i == x86reg_ebp || i == x86reg_esp)) continue;
-
+        for (i = 0; i < bincode_get_max_register(type); i++) {
             for (j = 0; j < regs_cnt; j++) {
                 if (regs[j] == regmap->real_registers_map[i]) {
                     free_registers_count += (busy_regs[i] - 1);
@@ -129,15 +127,10 @@ static int _find_register_to_swap(function_desc *function, x86_instruction *insn
             }
         }
 
-        for (i = 0; ; i++) {
-            if (type == x86op_dword && (i == x86reg_esp || i == x86reg_ebp)) {
-                continue;
-            } else if (!busy_regs[i]) {
-                break;
-            }
+        for (i = 0; busy_regs[i]; i++) {
+            ASSERT(i < bincode_get_max_register(type));
         }
 
-        ASSERT(i < X86_MAX_REG);
         last_free_register = i;
     }
 
@@ -149,8 +142,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
 {
     int conflict_reg = regmap->real_registers_map[real_reg];
 
-    ASSERT(real_reg < X86_MAX_REG);
-    if (regmap == &_dword_register_map) ASSERT(real_reg != x86reg_esp && real_reg != x86reg_ebp);
+    ASSERT(real_reg < bincode_get_max_register(type));
 
     if (conflict_reg > 0) {
         if (x86_dataflow_is_pseudoreg_alive_before(function, conflict_reg)) {
@@ -185,35 +177,34 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
 }
 
 static void _force_swap_register(function_desc *function, x86_instruction *insn, register_map *regmap,
-    x86_pseudoreg_info *pseudoregs_map, int real_reg, x86_operand_type type)
+    x86_pseudoreg_info *pseudoregs_map, int reg, x86_operand_type type)
 {
-    int conflict_reg = regmap->real_registers_map[real_reg];
+	int real_reg = pseudoregs_map[reg].reg_location;
 
-    ASSERT(real_reg < X86_MAX_REG);
-    if (regmap == &_dword_register_map) ASSERT(real_reg != x86reg_esp && real_reg != x86reg_ebp);
+    ASSERT(real_reg < bincode_get_max_register(type));
+    ASSERT(reg > 0);
 
-    if (conflict_reg > 0) {
-        int ofs = pseudoregs_map[conflict_reg].reg_stack_location;
-        int dbl = (regmap == &_dword_register_map ? FALSE : _is_double_register(conflict_reg, pseudoregs_map));
+	if (x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
+        int ofs = pseudoregs_map[reg].reg_stack_location;
+        int dbl = (regmap == &_dword_register_map ? FALSE : _is_double_register(reg, pseudoregs_map));
 
         if (ofs == -1) {
             ofs = x86_stack_frame_alloc_tmp_var(function, (dbl ? 8 : 4));
-            pseudoregs_map[conflict_reg].reg_stack_location = ofs;
+            pseudoregs_map[reg].reg_stack_location = ofs;
         }
 
         if (regmap == &_dword_register_map) {
-			bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, ofs, ~real_reg);
+		    bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, ofs, ~real_reg);
         } else if (!dbl) {
             bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movss, x86op_float, ofs, ~real_reg);
         } else {
             bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movsd, x86op_double, ofs, ~real_reg);
         }
-
-        pseudoregs_map[conflict_reg].reg_status = register_swapped;
-
-        regmap->real_registers_cnt--;
-        regmap->real_registers_map[real_reg] = -1;
     }
+
+    pseudoregs_map[reg].reg_status = register_swapped;
+    regmap->real_registers_cnt--;
+    regmap->real_registers_map[real_reg] = -1;
 }
 
 
@@ -250,10 +241,6 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
 
     // »щем вышедшие из употреблени€ регистры, чтобы их переиспользовать.
     for (real_reg = start_reg; real_reg != last_reg; real_reg += reg_step) {
-        if (regmap == &_dword_register_map && (real_reg == x86reg_ebp || real_reg == x86reg_esp)) {
-            continue;
-        }
-
         if (IS_MUL_DIV_INSN(insn->in_code) && real_reg == x86reg_edx) {
             continue;
         }
@@ -278,10 +265,6 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
 
     // »щем просто свободный регистр.
     for (real_reg = start_reg; real_reg != last_reg; real_reg += reg_step) {
-        if (regmap == &_dword_register_map && (real_reg == x86reg_ebp || real_reg == x86reg_esp)) {
-            continue;
-        }
-
         if (IS_MUL_DIV_INSN(insn->in_code) && real_reg == x86reg_edx) {
             continue;
         }
@@ -312,8 +295,8 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
 static int _alloc_real_register(function_desc *function, x86_instruction *insn, register_map *regmap,
     x86_pseudoreg_info *pseudoregs_map, int pseudoreg, x86_operand_type type)
 {
-    int start_reg   = (OP_IS_REGVAR(pseudoreg, type) ? X86_MAX_REG - 1 : 0);
-    int last_reg    = (OP_IS_REGVAR(pseudoreg, type) ? -1 : X86_MAX_REG);
+    int start_reg   = (OP_IS_REGVAR(pseudoreg, type) ? bincode_get_max_register(type) - 1 : 0);
+    int last_reg    = (OP_IS_REGVAR(pseudoreg, type) ? -1 : bincode_get_max_register(type));
     int reg_step    = (OP_IS_REGVAR(pseudoreg, type) ? -1 : 1);
 
     return _alloc_real_register_from_range(function, insn, regmap, pseudoregs_map, pseudoreg, type,
@@ -349,7 +332,7 @@ static void _commit_register_reservation(function_desc *function, x86_instructio
 static int _alloc_byte_register(function_desc *function, x86_instruction *insn, x86_pseudoreg_info *pseudoregs_map, int pseudoreg)
 {
     register_map *regmap = &_dword_register_map;
-    return _alloc_real_register_from_range(function, insn, regmap, pseudoregs_map, pseudoreg, x86op_dword, x86reg_eax, x86reg_esp, 1);
+    return _alloc_real_register_from_range(function, insn, regmap, pseudoregs_map, pseudoreg, x86op_dword, x86reg_eax, x86reg_esi, 1);
 }
 
 static void _free_real_register(register_map *regmap, int real_reg)
@@ -823,15 +806,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
             for (reg = 1; reg < stat->count; reg++) {
 				if (stat->ptr[reg].reg_status == register_allocated) {
-	                real_reg = pseudoregs_map[reg].reg_location;
-
-					if (x86_dataflow_is_pseudoreg_alive_after(function, reg)) {
-						_force_swap_register(function, insn, regmap, pseudoregs_map, real_reg, type);
-					} else {
-						stat->ptr[reg].reg_status = register_swapped;
-                        regmap->real_registers_cnt--;
-                        regmap->real_registers_map[real_reg] = -1;
-					}
+					_force_swap_register(function, insn, regmap, pseudoregs_map, reg, type);
                 }
             }
         }

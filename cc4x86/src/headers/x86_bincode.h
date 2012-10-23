@@ -41,10 +41,10 @@ typedef enum x86_dword_register_decl {
     x86reg_ecx,
     x86reg_edx,
     x86reg_ebx,
-    x86reg_esp,
-    x86reg_ebp,
     x86reg_esi,
     x86reg_edi,
+    x86reg_ebp,
+    x86reg_esp,
 
     x86_dword_reg_count,
 } x86_dword_register;
@@ -353,13 +353,13 @@ void    bincode_insert_instruction                      (function_desc *function
                                                             x86_instruction_code code, x86_operand *op1, x86_operand *op2);
 void    bincode_insert_unary_instruction                (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand *op);
-void    bincode_insert_insn_reg_reg                      (function_desc *function, x86_instruction *pos,
+void    bincode_insert_insn_reg_reg                     (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int dest_reg, int src_reg);
-void    bincode_insert_insn_reg_const                    (function_desc *function, x86_instruction *pos,
+void    bincode_insert_insn_reg_const                   (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int dest_reg, int val);
-void    bincode_insert_insn_reg_ebp_offset               (function_desc *function, x86_instruction *pos,
+void    bincode_insert_insn_reg_ebp_offset              (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int dest_reg, int offset);
-void    bincode_insert_insn_ebp_offset_reg               (function_desc *function, x86_instruction *pos,
+void    bincode_insert_insn_ebp_offset_reg              (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand_type type, int offset, int dest_reg);
 void    bincode_insert_push_reg                         (function_desc *function, x86_instruction *pos, x86_operand_type type, int reg);
 void    bincode_insert_pop_reg                          (function_desc *function, x86_instruction *pos, x86_operand_type type, int reg);
@@ -368,6 +368,8 @@ void    bincode_insert_fp_esp_offset                    (function_desc *function
 void    bincode_insert_comment                          (function_desc *function, x86_instruction *pos, const char *s1, const char *s2);
 
 void    bincode_erase_instruction                       (function_desc *function, x86_instruction *insn);
+
+int     bincode_get_max_register                        (x86_operand_type type);
 
 
 #else

@@ -285,12 +285,12 @@ static const char *_x86_byte_registers[] = {
 AUX_CASSERT(AUX_ARRAY_LENGTH(_x86_byte_registers) == x86_byte_reg_count)
 
 static const char *_x86_word_registers[] = {
-    "ax", "cx", "dx", "bx", "sp", "bp", "si", "di",
+    "ax", "cx", "dx", "bx", "si", "di", "bp", "sp",
 };
 AUX_CASSERT(AUX_ARRAY_LENGTH(_x86_word_registers) == x86_word_reg_count)
 
 static const char *_x86_dword_registers[] = {
-    "eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi",
+    "eax", "ecx", "edx", "ebx", "esi", "edi", "ebp", "esp",
 };
 AUX_CASSERT(AUX_ARRAY_LENGTH(_x86_dword_registers) == x86_dword_reg_count)
 
