@@ -26,13 +26,9 @@ label0001:
         jne     label0003
         jmp     label0002
 label0003:
-        mov     esi,[ebp-20]
-        inc     esi
-        inc     esi
-        mov     edi,[ebp-24]
-        inc     edi
-        mov     [ebp-20],esi
-        mov     [ebp-24],edi
+        inc     dword ptr [ebp-20]
+        inc     dword ptr [ebp-20]
+        inc     dword ptr [ebp-24]
         jmp     label0001
 label0002:
         mov     esi,[ebp-20]
@@ -48,8 +44,7 @@ label0004:
         mov     edi,1
         mov     [ebp-28],edi
 label0005:
-        mov     edi,[ebp-28]
-        mov     eax,edi
+        mov     eax,[ebp-28]
         pop     esi
         pop     edi
         add     esp,28

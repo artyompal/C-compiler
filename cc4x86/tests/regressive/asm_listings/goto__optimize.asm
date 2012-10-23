@@ -25,9 +25,7 @@ label0001:
         pop     ebp
         ret
 label0002:
-        mov     edi,[ebp-8]
-        inc     edi
-        mov     [ebp-8],edi
+        inc     dword ptr [ebp-8]
         jmp     label0000
 _test endp      
 
