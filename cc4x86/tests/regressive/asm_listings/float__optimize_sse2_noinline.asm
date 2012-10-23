@@ -124,7 +124,6 @@ label0000:
         add     esp,16
         movsd   xmm6,qword ptr [ebp-28]
         cmp     eax,0
-        movsd   qword ptr [ebp-28],xmm6
         jne     label0001
         mov     eax,2
         add     esp,32
@@ -145,7 +144,6 @@ label0001:
         add     esp,16
         movsd   xmm6,qword ptr [ebp-28]
         cmp     eax,0
-        movsd   qword ptr [ebp-28],xmm6
         jne     label0002
         mov     eax,3
         add     esp,32

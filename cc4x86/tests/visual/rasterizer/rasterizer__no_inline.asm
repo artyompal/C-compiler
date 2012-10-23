@@ -895,7 +895,6 @@ label0000:
         sal     edi,8
         add     edi,ecx
         mov     [edx],edi
-        mov     [ebp-48],edx
 label0003:
         movss   xmm4,dword ptr [ebp-72]
         addss   xmm4,dword ptr [ebp-80]
@@ -1001,7 +1000,6 @@ __rasterize_triangle_1i proc
         jge     label0000
         mov     ecx,[ebp-16]
         cmp     ecx,[ebp-12]
-        mov     [ebp-16],ecx
         jle     label0001
         push    dword ptr [ebp+40]
         push    dword ptr [ebp+36]
@@ -1018,7 +1016,6 @@ __rasterize_triangle_1i proc
 label0001:
         mov     ecx,[ebp-16]
         cmp     ecx,[ebp-8]
-        mov     [ebp-16],ecx
         jge     label0003
         push    dword ptr [ebp+40]
         push    dword ptr [ebp+36]
@@ -1049,7 +1046,6 @@ label0004:
 label0000:
         mov     ecx,[ebp-16]
         cmp     ecx,[ebp-12]
-        mov     [ebp-16],ecx
         jge     label0006
         movss   xmm0,dword ptr [ebp+40]
         xorps   xmm0,dword ptr [___unnamed_float_4]
@@ -1072,7 +1068,6 @@ label0000:
 label0006:
         mov     ecx,[ebp-16]
         cmp     ecx,[ebp-8]
-        mov     [ebp-16],ecx
         jle     label0008
         movss   xmm0,dword ptr [ebp+40]
         xorps   xmm0,dword ptr [___unnamed_float_4]
@@ -1145,8 +1140,6 @@ label0000:
         mov     eax,[ebx+4]
         mov     edi,[ebp-52]
         cmp     eax,[edi+4]
-        mov     [ebp-44],ebx
-        mov     [ebp-52],edi
         jle     label0001
         mov     edi,[ebp-44]
         mov     ebx,[ebp-52]
@@ -1159,8 +1152,6 @@ label0001:
         mov     eax,[esi+4]
         mov     edi,[ebp-52]
         cmp     eax,[edi+4]
-        mov     [ebp-48],esi
-        mov     [ebp-52],edi
         jle     label0002
         mov     edi,[ebp-48]
         mov     esi,[ebp-52]
@@ -1173,8 +1164,6 @@ label0002:
         mov     eax,[ebx+4]
         mov     edi,[ebp-52]
         cmp     eax,[edi+4]
-        mov     [ebp-44],ebx
-        mov     [ebp-52],edi
         jne     label0003
         mov     edi,[ebp-44]
         cmp     dword ptr [edi+4],0
@@ -1182,7 +1171,6 @@ label0002:
         mov     ebx,[ebp-44]
         mov     eax,[ebx+4]
         cmp     eax,dword ptr [__height]
-        mov     [ebp-44],ebx
         jge     label0004
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-4],xmm0
@@ -1220,12 +1208,10 @@ label0003:
         mov     ebx,[ebp-44]
         mov     edi,[ebx+4]
         mov     [ebp-60],edi
-        mov     [ebp-44],ebx
 label0006:
         mov     esi,[ebp-48]
         mov     eax,[esi+4]
         cmp     eax,[ebp-60]
-        mov     [ebp-48],esi
         jle     label0007
         mov     eax,[ebp-60]
         mov     ebx,[ebp-44]
@@ -1343,9 +1329,6 @@ label0006:
         call    __rasterize_horiz_line__unordered
         add     esp,36
         inc     dword ptr [ebp-60]
-        mov     [ebp-44],ebx
-        mov     [ebp-48],esi
-        mov     [ebp-52],edi
         jmp     label0006
 label0007:
         mov     esi,[ebp-48]
@@ -1437,13 +1420,10 @@ label0007:
         mov     [ebp-52],edi
         mov     edi,eax
         mov     [ebp-60],edi
-        mov     [ebp-44],ebx
-        mov     [ebp-48],esi
 label0009:
         mov     edi,[ebp-52]
         mov     eax,[edi+4]
         cmp     eax,[ebp-60]
-        mov     [ebp-52],edi
         jle     label000a
         mov     eax,[ebp-60]
         mov     esi,[ebp-48]
@@ -1574,9 +1554,6 @@ label0009:
         call    __rasterize_horiz_line__unordered
         add     esp,36
         inc     dword ptr [ebp-60]
-        mov     [ebp-44],ebx
-        mov     [ebp-48],esi
-        mov     [ebp-52],edi
         jmp     label0009
 label000a:
         pop     ebx
@@ -1614,7 +1591,6 @@ label0001:
         mov     ecx,ebx
         add     ecx,eax
         cmp     ecx,[ebp-68]
-        mov     [ebp-76],ebx
         jle     label0002
         push    dword ptr [ebp-80]
         push    dword ptr [ebp-64]
@@ -1677,7 +1653,6 @@ label0001:
         mov     ecx,[ebp-88]
         mov     [ecx+16],eax
         mov     [ecx+20],ebx
-        mov     [ebp-72],edx
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         comiss  xmm0,dword ptr [ebp-92]
@@ -1766,7 +1741,6 @@ label0005:
         call    _vec2f_add
         add     esp,12
         inc     dword ptr [edx+192]
-        mov     [ebp-72],edx
 label0004:
         mov     ecx,[ebp-64]
         add     ecx,24
@@ -1906,7 +1880,6 @@ __transform_to_screen_space proc
         mov     esi,[ebp-24]
         mov     eax,[esi]
         cmp     eax,dword ptr [__width]
-        mov     [ebp-24],esi
         jge     label0001
         mov     edi,[ebp-24]
         cmp     dword ptr [edi+4],0
@@ -1953,7 +1926,6 @@ label0003:
         mov     edi,[ebp-140]
         mov     eax,[edi+192]
         cmp     eax,[ebp-144]
-        mov     [ebp-140],edi
         jle     label0004
         mov     eax,[ebp-140]
         mov     ecx,[ebp-144]
@@ -1991,7 +1963,6 @@ label0006:
         mov     eax,[edi+192]
         dec     eax
         cmp     eax,[ebp-144]
-        mov     [ebp-140],edi
         jle     label0007
         lea     eax,[ebp-132]
         mov     ecx,[ebp-144]

@@ -16,7 +16,6 @@ _test_case proc
         je      label0001
         mov     edi,[ebp-12]
         cmp     edi,2
-        mov     [ebp-12],edi
         je      label0001
         mov     edi,[ebp-12]
         cmp     edi,3
@@ -53,11 +52,9 @@ _test_case2 proc
         je      label0001
         mov     edi,[ebp-12]
         cmp     edi,1
-        mov     [ebp-12],edi
         je      label0002
         mov     edi,[ebp-12]
         cmp     edi,2
-        mov     [ebp-12],edi
         je      label0002
         mov     edi,[ebp-12]
         cmp     edi,3

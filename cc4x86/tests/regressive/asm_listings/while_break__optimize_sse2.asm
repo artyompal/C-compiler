@@ -16,11 +16,9 @@ _test proc
 label0000:
         mov     edi,[ebp-16]
         cmp     edi,10
-        mov     [ebp-16],edi
         jge     label0001
         mov     edi,[ebp-16]
         cmp     edi,5
-        mov     [ebp-16],edi
         jne     label0002
         jmp     label0001
 label0002:
@@ -44,7 +42,6 @@ label0003:
 label0004:
         mov     edi,[ebp-20]
         cmp     edi,50
-        mov     [ebp-20],edi
         jne     label0007
         mov     edi,[ebp-20]
         add     edi,50
@@ -56,7 +53,6 @@ label0007:
 label0005:
         mov     edi,[ebp-20]
         cmp     edi,100
-        mov     [ebp-20],edi
         jl      label0004
         mov     esi,[ebp-24]
         cmp     esi,50

@@ -538,7 +538,6 @@ label0000:
         sal     edi,8
         add     edi,ecx
         mov     [edx],edi
-        mov     [ebp-68],edx
 label0003:
         movss   xmm4,dword ptr [ebp-92]
         addss   xmm4,dword ptr [ebp-100]
@@ -586,7 +585,6 @@ label0001:
         mov     ecx,ebx
         add     ecx,eax
         cmp     ecx,[ebp-144]
-        mov     [ebp-152],ebx
         jle     label0002
 ; start of inline function vec4f_subtract
         mov     edi,[ebp-156]
@@ -691,7 +689,6 @@ label0001:
         mov     ecx,[ebp-168]
         mov     [ecx+16],eax
         mov     [ecx+20],ebx
-        mov     [ebp-148],edx
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         comiss  xmm0,dword ptr [ebp-172]
@@ -849,7 +846,6 @@ label0005:
         movss   dword ptr [esi+4],xmm0
 ; end of inline function vec2f_add
         inc     dword ptr [edx+192]
-        mov     [ebp-148],edx
 label0004:
         mov     ecx,[ebp-140]
         add     ecx,24
@@ -1113,7 +1109,6 @@ label0003:
         mov     edi,[ebp-720]
         mov     eax,[edi+192]
         cmp     eax,[ebp-724]
-        mov     [ebp-720],edi
         jle     label0004
 ; start of inline function _transform_to_screen_space
         mov     edi,[ebp-720]
@@ -1230,7 +1225,6 @@ label0006:
         mov     eax,[edi+192]
         dec     eax
         cmp     eax,[ebp-724]
-        mov     [ebp-720],edi
         jle     label0007
 ; start of inline function _rasterize_triangle_2i
         lea     edi,[ebp-332]
@@ -1259,7 +1253,6 @@ label0008:
         mov     eax,[edi+4]
         mov     edi,[ebp-740]
         cmp     eax,[edi+4]
-        mov     [ebp-740],edi
         jle     label0009
         mov     edi,[ebp-732]
         mov     eax,[ebp-740]
@@ -1272,8 +1265,6 @@ label0009:
         mov     eax,[esi+4]
         mov     edi,[ebp-740]
         cmp     eax,[edi+4]
-        mov     [ebp-736],esi
-        mov     [ebp-740],edi
         jle     label000a
         mov     edi,[ebp-736]
         mov     esi,[ebp-740]
@@ -1286,7 +1277,6 @@ label000a:
         mov     eax,[edi+4]
         mov     edi,[ebp-740]
         cmp     eax,[edi+4]
-        mov     [ebp-740],edi
         jne     label000b
         mov     edi,[ebp-732]
         cmp     dword ptr [edi+4],0
@@ -1321,7 +1311,6 @@ label000a:
         jge     label001c
         mov     ecx,[ebp-764]
         cmp     ecx,[ebp-760]
-        mov     [ebp-764],ecx
         jle     label001d
         push    dword ptr [ebp-820]
         push    dword ptr [ebp-816]
@@ -1338,7 +1327,6 @@ label000a:
 label001d:
         mov     ecx,[ebp-764]
         cmp     ecx,[ebp-756]
-        mov     [ebp-764],ecx
         jge     label001f
         push    dword ptr [ebp-820]
         push    dword ptr [ebp-816]
@@ -1369,7 +1357,6 @@ label0020:
 label001c:
         mov     ecx,[ebp-764]
         cmp     ecx,[ebp-760]
-        mov     [ebp-764],ecx
         jge     label0022
         movss   xmm0,dword ptr [ebp-820]
         xorps   xmm0,dword ptr [___unnamed_float_4]
@@ -1392,7 +1379,6 @@ label001c:
 label0022:
         mov     ecx,[ebp-764]
         cmp     ecx,[ebp-756]
-        mov     [ebp-764],ecx
         jle     label0024
         movss   xmm0,dword ptr [ebp-820]
         xorps   xmm0,dword ptr [___unnamed_float_4]
@@ -1437,13 +1423,11 @@ label000c:
 label000b:
         mov     eax,[ebp-732]
         mov     edi,[eax+4]
-        mov     [ebp-732],eax
         mov     [ebp-776],edi
 label000e:
         mov     esi,[ebp-736]
         mov     eax,[esi+4]
         cmp     eax,[ebp-776]
-        mov     [ebp-736],esi
         jle     label000f
         mov     eax,[ebp-776]
         mov     edi,[ebp-732]
@@ -1571,9 +1555,6 @@ label000e:
         mov     ecx,[ebp-784]
         mov     ebx,[ebp-780]
         cmp     ebx,ecx
-        mov     [ebp-732],eax
-        mov     [ebp-736],esi
-        mov     [ebp-740],edi
         mov     [ebp-788],ebx
         mov     [ebp-792],ecx
         mov     [ebp-796],edx
@@ -1706,9 +1687,6 @@ label000f:
         mov     ecx,[ebp-804]
         mov     ebx,[ebp-784]
         cmp     ebx,ecx
-        mov     [ebp-732],eax
-        mov     [ebp-736],esi
-        mov     [ebp-740],edi
         mov     [ebp-788],ebx
         mov     [ebp-792],ecx
         mov     [ebp-796],edx
@@ -1745,13 +1723,11 @@ label0017:
         mov     esi,[ebp-736]
         add     eax,[esi+4]
         mov     edi,eax
-        mov     [ebp-736],esi
         mov     [ebp-776],edi
 label0011:
         mov     edi,[ebp-740]
         mov     eax,[edi+4]
         cmp     eax,[ebp-776]
-        mov     [ebp-740],edi
         jle     label0012
         mov     eax,[ebp-776]
         mov     esi,[ebp-736]
@@ -1890,9 +1866,6 @@ label0011:
         mov     ecx,[ebp-784]
         mov     ebx,[ebp-780]
         cmp     ebx,ecx
-        mov     [ebp-732],eax
-        mov     [ebp-736],esi
-        mov     [ebp-740],edi
         mov     [ebp-788],ebx
         mov     [ebp-792],ecx
         mov     [ebp-796],edx
