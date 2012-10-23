@@ -24,8 +24,7 @@ _test proc
         movss   xmm7,dword ptr [___unnamed_float_1]
         addss   xmm7,dword ptr [___unnamed_float_0]
         movss   dword ptr [ebp-24],xmm7
-        movss   xmm6,dword ptr [ebp-24]
-        movss   xmm7,xmm6
+        movss   xmm7,dword ptr [ebp-24]
 ; end of inline function test1
         comiss  xmm7,dword ptr [___unnamed_float_2]
         je      label0000

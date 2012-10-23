@@ -14,11 +14,9 @@ _test proc
         mov     edi,0
         mov     [ebp-16],edi
 label0000:
-        mov     edi,[ebp-16]
-        mov     eax,edi
-        inc     edi
+        mov     eax,[ebp-16]
+        inc     dword ptr [ebp-16]
         cmp     eax,10
-        mov     [ebp-16],edi
         jge     label0001
         jmp     label0000
 label0001:

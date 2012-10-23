@@ -48,13 +48,11 @@ _fabs proc
         comiss  xmm0,xmm7
         movss   dword ptr [ebp-8],xmm7
         ja      label0000
-        movss   xmm6,dword ptr [ebp-8]
-        movss   xmm7,xmm6
+        movss   xmm7,dword ptr [ebp-8]
         movss   dword ptr [ebp-12],xmm7
         jmp     label0001
 label0000:
-        movss   xmm7,dword ptr [ebp-8]
-        movss   xmm0,xmm7
+        movss   xmm0,dword ptr [ebp-8]
         xorps   xmm0,dword ptr [___unnamed_float_1]
         movss   xmm7,xmm0
         movss   dword ptr [ebp-12],xmm7
@@ -112,13 +110,11 @@ _test proc
         pop     ebp
         ret
 label0000:
-        movss   xmm7,dword ptr [ebp-32]
-        cvtss2sd        xmm0,xmm7
+        cvtss2sd        xmm0,dword ptr [ebp-32]
         movsd   xmm6,qword ptr [ebp-28]
         subsd   xmm0,xmm6
         movsd   xmm5,xmm0
         movsd   qword ptr [ebp-28],xmm6
-        movss   dword ptr [ebp-32],xmm7
         movsd   xmm0,qword ptr [___unnamed_double_6]
         movsd   qword ptr [esp-8],xmm0
         sub     esp,8
@@ -126,10 +122,8 @@ label0000:
         sub     esp,8
         call    _eq
         add     esp,16
-        movss   xmm7,dword ptr [ebp-32]
         movsd   xmm6,qword ptr [ebp-28]
         cmp     eax,0
-        movss   dword ptr [ebp-32],xmm7
         movsd   qword ptr [ebp-28],xmm6
         jne     label0001
         mov     eax,2
@@ -137,13 +131,11 @@ label0000:
         pop     ebp
         ret
 label0001:
-        movss   xmm7,dword ptr [ebp-32]
-        cvtss2sd        xmm0,xmm7
+        cvtss2sd        xmm0,dword ptr [ebp-32]
         movsd   xmm6,qword ptr [ebp-28]
         mulsd   xmm0,xmm6
         movsd   xmm5,xmm0
         movsd   qword ptr [ebp-28],xmm6
-        movss   dword ptr [ebp-32],xmm7
         movsd   xmm0,qword ptr [___unnamed_double_7]
         movsd   qword ptr [esp-8],xmm0
         sub     esp,8
@@ -151,10 +143,8 @@ label0001:
         sub     esp,8
         call    _eq
         add     esp,16
-        movss   xmm7,dword ptr [ebp-32]
         movsd   xmm6,qword ptr [ebp-28]
         cmp     eax,0
-        movss   dword ptr [ebp-32],xmm7
         movsd   qword ptr [ebp-28],xmm6
         jne     label0002
         mov     eax,3
@@ -162,12 +152,10 @@ label0001:
         pop     ebp
         ret
 label0002:
-        movss   xmm7,dword ptr [ebp-32]
-        cvtss2sd        xmm0,xmm7
+        cvtss2sd        xmm0,dword ptr [ebp-32]
         movsd   xmm6,qword ptr [ebp-28]
         divsd   xmm0,xmm6
         movsd   xmm5,xmm0
-        movss   dword ptr [ebp-32],xmm7
         movsd   xmm0,qword ptr [___unnamed_double_8]
         movsd   qword ptr [esp-8],xmm0
         sub     esp,8
@@ -175,9 +163,7 @@ label0002:
         sub     esp,8
         call    _eq
         add     esp,16
-        movss   xmm7,dword ptr [ebp-32]
         cmp     eax,0
-        movss   dword ptr [ebp-32],xmm7
         jne     label0003
         mov     eax,4
         add     esp,32
