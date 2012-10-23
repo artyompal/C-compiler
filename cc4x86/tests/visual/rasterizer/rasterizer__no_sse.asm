@@ -1891,9 +1891,7 @@ label0013:
         add     esp,28
 label0014:
 ; end of inline function _rasterize_horiz_line__unordered
-        mov     edi,[ebp-784]
-        inc     edi
-        mov     [ebp-784],edi
+        inc     dword ptr [ebp-784]
         jmp     label000e
 label000f:
         mov     esi,[ebp-748]
@@ -2272,15 +2270,11 @@ label0019:
         add     esp,28
 label001a:
 ; end of inline function _rasterize_horiz_line__unordered
-        mov     edi,[ebp-784]
-        inc     edi
-        mov     [ebp-784],edi
+        inc     dword ptr [ebp-784]
         jmp     label0011
 label0012:
 ; end of inline function _rasterize_triangle_2i
-        mov     edi,[ebp-728]
-        inc     edi
-        mov     [ebp-728],edi
+        inc     dword ptr [ebp-728]
         jmp     label0006
 label0007:
 ; end of inline function _rasterize_polygon_4f

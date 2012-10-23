@@ -574,8 +574,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        mov     ebx,[ebp-12]
-        cvtsi2ss        xmm0,ebx
+        cvtsi2ss        xmm0,dword ptr [ebp-12]
         movss   xmm7,dword ptr [___unnamed_float_1]
         divss   xmm7,xmm0
         movss   xmm0,dword ptr [___unnamed_float_5]
@@ -611,7 +610,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        cvtsi2ss        xmm0,ebx
+        cvtsi2ss        xmm0,dword ptr [ebp-12]
         movss   xmm7,dword ptr [___unnamed_float_1]
         divss   xmm7,xmm0
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -644,8 +643,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        mov     esi,[ebp-16]
-        cvtsi2ss        xmm0,esi
+        cvtsi2ss        xmm0,dword ptr [ebp-16]
         movss   xmm7,dword ptr [___unnamed_float_1]
         divss   xmm7,xmm0
         movss   xmm0,dword ptr [___unnamed_float_5]
@@ -873,8 +871,7 @@ label0000:
         movss   dword ptr [ebp-72],xmm4
         movss   dword ptr [ebp-76],xmm5
         je      label0003
-        mov     edi,[ebp-60]
-        cvtsi2ss        xmm7,edi
+        cvtsi2ss        xmm7,dword ptr [ebp-60]
         divss   xmm7,dword ptr [___unnamed_float_6]
         mov     edx,[ebp-48]
         mov     edi,[edx]

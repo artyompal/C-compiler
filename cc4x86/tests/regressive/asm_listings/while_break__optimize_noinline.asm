@@ -24,9 +24,7 @@ label0000:
         jne     label0002
         jmp     label0001
 label0002:
-        mov     edi,[ebp-16]
-        inc     edi
-        mov     [ebp-16],edi
+        inc     dword ptr [ebp-16]
         jmp     label0000
 label0001:
         mov     edi,[ebp-16]
@@ -53,12 +51,8 @@ label0004:
         mov     [ebp-20],edi
         jmp     label0005
 label0007:
-        mov     edi,[ebp-20]
-        inc     edi
-        mov     esi,[ebp-24]
-        inc     esi
-        mov     [ebp-20],edi
-        mov     [ebp-24],esi
+        inc     dword ptr [ebp-20]
+        inc     dword ptr [ebp-24]
 label0005:
         mov     edi,[ebp-20]
         cmp     edi,100

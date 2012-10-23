@@ -59,8 +59,7 @@ label0000:
         movss   xmm7,xmm0
         movss   dword ptr [ebp-12],xmm7
 label0001:
-        movss   xmm7,dword ptr [ebp-12]
-        movss   xmm0,xmm7
+        movss   xmm0,dword ptr [ebp-12]
         add     esp,12
         pop     ebp
         ret

@@ -872,7 +872,20 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 conflict_reg    = regmap->real_registers_map[real_reg];
 
                 if (conflict_reg != reg) {
-                    if (reg == result || conflict_reg != result) {
+                    if (OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, reg) && OP_IS_PSEUDO_REG(insn->in_op1)) {
+                        // Если второй операнд является выгруженным регистром, оставить его в памяти.
+                        ASSERT(pseudoregs_map[reg].reg_stack_location != -1);
+                        bincode_create_operand_addr_from_reg_offset(&insn->in_op2, insn->in_op2.op_type, ~x86reg_ebp,
+                            pseudoregs_map[reg].reg_stack_location);
+                        continue;
+                    } else if (OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg) && insn->in_op2.op_loc == x86loc_none) {
+                        // Для однооперандной инструкции, если первый операнд является выгруженным регистром,
+                        // его можно оставить в памяти.
+                        ASSERT(pseudoregs_map[reg].reg_stack_location != -1);
+                        bincode_create_operand_addr_from_reg_offset(&insn->in_op1, insn->in_op1.op_type, ~x86reg_ebp,
+                            pseudoregs_map[reg].reg_stack_location);
+                        continue;
+                    } else if (reg == result || conflict_reg != result) {
                         // Вытесняем конфликтующий регистр в стек и загружаем сохранённое значение из стека.
                         _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, FALSE);
 
@@ -889,11 +902,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                     }
                 }
 
-                // TODO: заменять read-only операнд на чтение из памяти
-                //else if (OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, reg) ||
-                //    OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg) && insn->in_op2.op_loc == x86loc_none) {
-                //        // заменить операнд на чтение из памяти
-				// TODO: если второй операнд может находиться в памяти, оставить его в памяти
 				// TODO: изменять порядок операндов для коммутативных инструкций при выгруженном первом операнде
                 // TODO: в случае конфликта, если результат конфликтует с чем-то, а инструкция перезаписывающая, это можно проигнорировать
             } else {

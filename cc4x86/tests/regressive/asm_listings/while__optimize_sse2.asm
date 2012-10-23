@@ -39,11 +39,9 @@ label0002:
 label0003:
         mov     edi,[ebp-20]
         sal     edi,1
-        mov     esi,[ebp-24]
-        inc     esi
+        inc     dword ptr [ebp-24]
         cmp     edi,65536
         mov     [ebp-20],edi
-        mov     [ebp-24],esi
         jl      label0003
         mov     esi,[ebp-24]
         cmp     esi,16
