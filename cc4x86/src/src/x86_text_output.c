@@ -500,6 +500,10 @@ static void _output_function_code(FILE *output, function_desc *func)
 void text_output_push_function_code(function_desc *func)
 {
     _output_function_code(asm_file, func);
+
+#if DEBUG
+    fflush(asm_file);
+#endif
 }
 
 void text_output_debug_print_function_code(function_desc *func)

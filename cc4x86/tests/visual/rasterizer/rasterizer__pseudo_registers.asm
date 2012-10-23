@@ -74,17 +74,17 @@ _rasterizer_init proc
 	movss	sse191,dword ptr [ebp+32]
 	movss	sse190,dword ptr [ebp+28]
 	movss	sse189,dword ptr [ebp+24]
-	mov	dword379,[ebp+20]
+	mov	dword381,[ebp+20]
+	mov	dword380,[ebp+16]
+	mov	dword379,[ebp+12]
 	mov	dword378,[ebp+8]
 	mov	dword ptr [__dbgprintf],dword378
-	mov	dword6,[ebp+12]
-	mov	dword ptr [__width],dword6
-	mov	dword9,[ebp+16]
-	mov	dword ptr [__height],dword9
-	mov	dword ptr [__pitch],dword379
+	mov	dword ptr [__width],dword379
+	mov	dword ptr [__height],dword380
+	mov	dword ptr [__pitch],dword381
 ; start of inline function matrix4f_make_perspective
-	cvtsi2ss	sse182,dword ptr [ebp+12]
-	cvtsi2ss	sse2,dword ptr [ebp+16]
+	cvtsi2ss	sse182,dword379
+	cvtsi2ss	sse2,dword380
 	divss	sse182,sse2
 	movss	sse181,sse191
 	movss	sse180,sse190
@@ -138,8 +138,8 @@ _rasterizer_init proc
 ; start of inline function matrix4f_make_viewport
 	movss	sse188,sse190
 	movss	sse187,sse189
-	cvtsi2ss	sse186,dword ptr [ebp+16]
-	cvtsi2ss	sse185,dword ptr [ebp+12]
+	cvtsi2ss	sse186,dword380
+	cvtsi2ss	sse185,dword379
 	movss	sse153,sse185
 	divss	sse153,dword ptr [___unnamed_float_3]
 	movss	dword ptr [__viewport_matrix],sse153
@@ -242,7 +242,7 @@ label0003:
 	movss	sse178,dword ptr [___unnamed_float_1]
 	movss	sse177,dword ptr [___unnamed_float_2]
 	movss	sse176,dword ptr [___unnamed_float_2]
-	cvtsi2ss	sse26,dword ptr [ebp+12]
+	cvtsi2ss	sse26,dword379
 	movss	sse27,dword ptr [___unnamed_float_1]
 	divss	sse27,sse26
 	movss	sse28,dword ptr [___unnamed_float_5]
@@ -269,7 +269,7 @@ label0003:
 	movss	sse178,dword ptr [___unnamed_float_1]
 	movss	sse177,dword ptr [___unnamed_float_2]
 	movss	sse176,dword ptr [___unnamed_float_2]
-	cvtsi2ss	sse36,dword ptr [ebp+12]
+	cvtsi2ss	sse36,dword379
 	movss	sse37,dword ptr [___unnamed_float_1]
 	divss	sse37,sse36
 	movss	sse38,dword ptr [___unnamed_float_1]
@@ -295,7 +295,7 @@ label0003:
 ; start of inline function vec4f_assign
 	movss	sse178,dword ptr [___unnamed_float_1]
 	movss	sse177,dword ptr [___unnamed_float_2]
-	cvtsi2ss	sse45,dword ptr [ebp+16]
+	cvtsi2ss	sse45,dword380
 	movss	sse46,dword ptr [___unnamed_float_1]
 	divss	sse46,sse45
 	movss	sse47,dword ptr [___unnamed_float_5]
@@ -418,19 +418,19 @@ __rasterize_horiz_line proc
 	movss	sse22,dword ptr [ebp+28]
 	movss	sse21,dword ptr [ebp+24]
 	movss	sse20,dword ptr [ebp+20]
-	mov	dword113,[ebp+16]
-	mov	dword112,[ebp+12]
-	mov	dword111,[ebp+8]
+	mov	dword118,[ebp+16]
+	mov	dword117,[ebp+12]
+	mov	dword116,[ebp+8]
 	mov	dword103,dword ptr [__pitch]
-	imul	dword103,dword113
+	imul	dword103,dword118
 	add	dword103,dword ptr [__videomem]
-	mov	dword7,dword111
+	mov	dword7,dword116
 	sal	dword7,2
 	add	dword103,dword7
-	mov	dword104,dword112
+	mov	dword104,dword117
 	sal	dword104,2
 	add	dword104,dword103
-	mov	dword15,dword111
+	mov	dword15,dword116
 	sal	dword15,2
 	sub	dword104,dword15
 label0000:
@@ -441,64 +441,59 @@ label0000:
 	dec	dword85
 	cvtsi2ss	sse14,dword85
 	mulss	sse14,sse18
-	cvttss2si	dword108,sse14
+	cvttss2si	dword113,sse14
 	mov	dword91,dword ptr [__texture_height]
 	dec	dword91
 	cvtsi2ss	sse15,dword91
 	mulss	sse15,sse19
-	cvttss2si	dword109,sse15
-	mov	dword97,dword109
+	cvttss2si	dword114,sse15
+	mov	dword97,dword114
 	imul	dword97,dword ptr [__texture_width]
-	add	dword97,dword108
+	add	dword97,dword113
 	sal	dword97,2
 	add	dword97,dword ptr [__texture_data]
-	mov	dword110,[dword97]
+	mov	dword115,[dword97]
 ; end of inline function _tex2d
-	mov	dword105,dword110
-	mov	dword23,dword105
-	sar	dword23,24
-	and	dword23,255
-	mov	[ebp-40],dword23
-	cmp	dword ptr [ebp-40],0
+	mov	dword105,dword115
+	mov	dword112,dword105
+	sar	dword112,24
+	and	dword112,255
+	cmp	dword112,0
 	je	label0003
-	cvtsi2ss	sse17,dword ptr [ebp-40]
+	cvtsi2ss	sse17,dword112
 	divss	sse17,dword ptr [___unnamed_float_6]
-	mov	dword107,[dword103]
-	mov	dword36,dword107
-	and	dword36,65280
-	sar	dword36,8
-	mov	[ebp-32],dword36
-	mov	dword41,dword107
-	and	dword41,255
-	mov	[ebp-36],dword41
-	mov	dword45,dword105
-	and	dword45,65280
-	sar	dword45,8
-	mov	[ebp-20],dword45
-	mov	dword50,dword105
-	and	dword50,255
-	mov	[ebp-24],dword50
-	cvtsi2ss	sse3,dword ptr [ebp-20]
+	mov	dword109,[dword103]
+	mov	dword110,dword109
+	and	dword110,65280
+	sar	dword110,8
+	mov	dword111,dword109
+	and	dword111,255
+	mov	dword107,dword105
+	and	dword107,65280
+	sar	dword107,8
+	mov	dword108,dword105
+	and	dword108,255
+	cvtsi2ss	sse3,dword107
 	mulss	sse3,sse17
-	cvtsi2ss	sse4,dword ptr [ebp-32]
+	cvtsi2ss	sse4,dword110
 	movss	sse5,dword ptr [___unnamed_float_1]
 	subss	sse5,sse17
 	mulss	sse4,sse5
 	addss	sse3,sse4
 	cvttss2si	dword57,sse3
-	mov	[ebp-20],dword57
-	cvtsi2ss	sse6,dword ptr [ebp-24]
+	mov	dword107,dword57
+	cvtsi2ss	sse6,dword108
 	mulss	sse6,sse17
-	cvtsi2ss	sse7,dword ptr [ebp-36]
+	cvtsi2ss	sse7,dword111
 	movss	sse8,dword ptr [___unnamed_float_1]
 	subss	sse8,sse17
 	mulss	sse7,sse8
 	addss	sse6,sse7
 	cvttss2si	dword64,sse6
-	mov	[ebp-24],dword64
-	mov	dword106,[ebp-20]
+	mov	dword108,dword64
+	mov	dword106,dword107
 	sal	dword106,8
-	add	dword106,[ebp-24]
+	add	dword106,dword108
 	mov	[dword103],dword106
 label0003:
 	addss	sse20,sse22
