@@ -941,6 +941,8 @@ _rasterizer_triangle3f proc
         push_arg        dword729,4
         call    __clip_on_plain
         restore_stack   16
+        pop_all
+        push_all
         lea     dword730,dword ptr [__clip_z_near_norm]
         push_arg        dword730,4
         lea     dword731,dword ptr [__clip_z_near_base]
@@ -950,6 +952,8 @@ _rasterizer_triangle3f proc
         push_arg        dword883,4
         call    __clip_on_plain
         restore_stack   16
+        pop_all
+        push_all
         lea     dword734,dword ptr [__clip_plane_left_norm]
         push_arg        dword734,4
         lea     dword735,dword ptr [__clip_plane_left_base]
@@ -959,6 +963,8 @@ _rasterizer_triangle3f proc
         push_arg        dword737,4
         call    __clip_on_plain
         restore_stack   16
+        pop_all
+        push_all
         lea     dword738,dword ptr [__clip_plane_right_norm]
         push_arg        dword738,4
         lea     dword739,dword ptr [__clip_plane_right_base]
@@ -968,6 +974,8 @@ _rasterizer_triangle3f proc
         push_arg        dword883,4
         call    __clip_on_plain
         restore_stack   16
+        pop_all
+        push_all
         lea     dword742,dword ptr [__clip_plane_top_norm]
         push_arg        dword742,4
         lea     dword743,dword ptr [__clip_plane_top_base]
@@ -977,6 +985,8 @@ _rasterizer_triangle3f proc
         push_arg        dword745,4
         call    __clip_on_plain
         restore_stack   16
+        pop_all
+        push_all
         lea     dword746,dword ptr [__clip_plane_bottom_norm]
         push_arg        dword746,4
         lea     dword747,dword ptr [__clip_plane_bottom_base]

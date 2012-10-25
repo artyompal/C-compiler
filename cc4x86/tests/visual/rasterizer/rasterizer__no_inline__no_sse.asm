@@ -1686,6 +1686,7 @@ label0005:
         mov     eax,16
         add     eax,[ebp-4]
         push    eax
+        mov     edx,[ebp+8]
         mov     eax,[edx+192]
         imul    eax,24
         mov     ecx,edx
@@ -1988,30 +1989,23 @@ _rasterizer_triangle3f proc
         mov     edx,[ebp+16]
         mov     ecx,[ebp+12]
         mov     eax,[ebp+8]
-        mov     [ebp+12],ecx
-        mov     [ebp+16],edx
         push    eax
         lea     eax,[ebp-196]
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     edx,[ebp+16]
-        mov     ecx,[ebp+12]
         lea     eax,[ebp-196]
         add     eax,16
-        mov     [ebp+28],edi
-        mov     edi,[ebx]
+        mov     ecx,[ebx]
         mov     ebx,[ebx+4]
-        mov     [eax],edi
+        mov     [eax],ecx
         mov     [eax+4],ebx
-        mov     [ebp+16],edx
-        push    ecx
+        push    dword ptr [ebp+12]
         lea     eax,[ebp-196]
         add     eax,24
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     edx,[ebp+16]
         lea     eax,[ebp-196]
         add     eax,24
         add     eax,16
@@ -2019,7 +2013,7 @@ _rasterizer_triangle3f proc
         mov     ebx,[esi+4]
         mov     [eax],ecx
         mov     [eax+4],ebx
-        push    edx
+        push    dword ptr [ebp+16]
         lea     eax,[ebp-196]
         add     eax,48
         push    eax
@@ -2028,25 +2022,24 @@ _rasterizer_triangle3f proc
         lea     eax,[ebp-196]
         add     eax,48
         add     eax,16
-        mov     edi,[ebp+28]
         mov     ecx,[edi]
-        mov     edx,[edi+4]
+        mov     ebx,[edi+4]
         mov     [eax],ecx
-        mov     [eax+4],edx
+        mov     [eax+4],ebx
         lea     eax,[ebp-196]
         add     eax,72
         mov     ecx,[ebp-196]
-        mov     edx,[ebp-192]
+        mov     ebx,[ebp-192]
         mov     [eax],ecx
-        mov     [eax+4],edx
+        mov     [eax+4],ebx
         mov     ecx,[ebp-188]
-        mov     edx,[ebp-184]
+        mov     ebx,[ebp-184]
         mov     [eax+8],ecx
-        mov     [eax+12],edx
+        mov     [eax+12],ebx
         mov     ecx,[ebp-180]
-        mov     edx,[ebp-176]
+        mov     ebx,[ebp-176]
         mov     [eax+16],ecx
-        mov     [eax+20],edx
+        mov     [eax+20],ebx
         lea     eax,[ebp-196]
         add     eax,192
         mov     dword ptr [eax],4

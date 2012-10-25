@@ -597,27 +597,6 @@ static void _kill_duplicated_labels(function_desc *function)
     }
 }
 
-// Устраняет лишние push_all/pop_all.
-static void _kill_extra_push_all_pop_all(function_desc *function)
-{
-    x86_instruction *insn, *next, *prev;
-
-    for (insn = function->func_binary_code; insn; insn = next) {
-        next = insn->in_next;
-        prev = insn->in_prev;
-
-        switch (insn->in_code) {
-        case x86insn_push_all:
-            if (prev && prev->in_code == x86insn_pop_all) {
-                bincode_erase_instruction(function, insn);
-                bincode_erase_instruction(function, prev);
-                continue;
-            }
-            break;
-        }
-    }
-}
-
 
 //
 // Этап оптимизации, который выполняется после инлайнинга и до введения регистровых переменных.
@@ -629,7 +608,6 @@ void x86_optimization_after_inlining(function_desc *function)
 {
     _optimize_labels(function);
     _kill_duplicated_labels(function);
-    _kill_extra_push_all_pop_all(function);
 }
 
 
