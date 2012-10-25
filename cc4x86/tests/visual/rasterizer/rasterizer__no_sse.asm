@@ -674,10 +674,6 @@ __clip_on_plain proc
         lea     eax,[ebx+24]
         mov     [ebp-4],ecx
         mov     [ebp-8],eax
-        mov     [ebp+8],edx
-        mov     [ebp+12],ebx
-        mov     [ebp+16],esi
-        mov     [ebp+20],edi
 label0001:
         mov     ebx,[ebp+12]
         mov     eax,[ebx+192]

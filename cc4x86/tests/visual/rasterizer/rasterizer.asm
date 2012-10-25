@@ -193,10 +193,6 @@ _rasterizer_init proc
 ; end of inline function vec4f_assign
         movss   xmm0,xmm6
         comiss  xmm0,xmm5
-        mov     [ebp+12],ebx
-        mov     [ebp+16],esi
-        movss   dword ptr [ebp+24],xmm5
-        movss   dword ptr [ebp+28],xmm6
         jbe     label0000
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   dword ptr [ebp-4],xmm7
@@ -468,10 +464,6 @@ __rasterize_horiz_line proc
         sub     edi,ebx
         mov     [ebp-4],edx
         mov     [ebp-8],edi
-        movss   dword ptr [ebp+20],xmm4
-        movss   dword ptr [ebp+24],xmm5
-        movss   dword ptr [ebp+28],xmm6
-        movss   dword ptr [ebp+32],xmm7
 label0000:
 ; start of inline function _tex2d
         movss   xmm7,dword ptr [ebp+24]
@@ -568,10 +560,6 @@ __clip_on_plain proc
         lea     eax,[ebx+24]
         mov     [ebp-4],ecx
         mov     [ebp-8],eax
-        mov     [ebp+8],edx
-        mov     [ebp+12],ebx
-        mov     [ebp+16],esi
-        mov     [ebp+20],edi
 label0001:
         mov     ebx,[ebp+12]
         mov     eax,[ebx+192]

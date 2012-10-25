@@ -899,9 +899,6 @@ __rasterize_horiz_line__unordered proc
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
         cmp     ebx,esi
-        mov     [ebp+8],ebx
-        mov     [ebp+12],esi
-        mov     [ebp+16],edi
         jg      label0000
         push    dword ptr [ebp+40]
         push    dword ptr [ebp+36]
@@ -946,12 +943,6 @@ __rasterize_triangle_1i proc
         mov     [ebp+28],esi
         mov     esi,[ebp+8]
         cmp     esi,eax
-        mov     [ebp+8],esi
-        mov     [ebp+12],eax
-        mov     [ebp+16],ecx
-        mov     [ebp+20],edx
-        mov     [ebp+24],ebx
-        mov     [ebp+32],edi
         jge     label0000
         mov     ecx,[ebp+16]
         cmp     ecx,[ebp+12]
@@ -1086,9 +1077,6 @@ __rasterize_triangle_2i proc
         mov     ebx,[ebp+8]
         mov     eax,[ebx+4]
         cmp     eax,[esi+4]
-        mov     [ebp+8],ebx
-        mov     [ebp+12],esi
-        mov     [ebp+16],edi
         jle     label0000
         mov     edi,[ebp+8]
         mov     ebx,[ebp+12]
@@ -1542,10 +1530,6 @@ __clip_on_plain proc
         lea     eax,[ebx+24]
         mov     [ebp-4],ecx
         mov     [ebp-8],eax
-        mov     [ebp+8],edx
-        mov     [ebp+12],ebx
-        mov     [ebp+16],esi
-        mov     [ebp+20],edi
 label0001:
         mov     ebx,[ebp+12]
         mov     eax,[ebx+192]
@@ -1848,7 +1832,6 @@ __transform_to_screen_space proc
         mov     eax,[ebp-24]
         mov     [esi+4],eax
         cmp     dword ptr [esi],0
-        mov     [ebp+8],esi
         jl      label0001
         mov     esi,[ebp+8]
         mov     eax,[esi]
@@ -1881,7 +1864,6 @@ __rasterize_polygon_4f proc
         call    __clip_poligon
         add     esp,4
         cmp     eax,0
-        mov     [ebp+8],edi
         jne     label0000
         pop     edi
         add     esp,136

@@ -46,7 +46,6 @@ _fabs proc
         movss   xmm7,dword ptr [ebp+8]
         movss   xmm0,dword ptr [___unnamed_float_0]
         comiss  xmm0,xmm7
-        movss   dword ptr [ebp+8],xmm7
         ja      label0000
         movss   xmm7,dword ptr [ebp+8]
         movss   dword ptr [ebp-4],xmm7
