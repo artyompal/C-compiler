@@ -444,8 +444,6 @@ _rasterizer_init proc
         mov     dword ptr [__width],ebx
         mov     dword ptr [__height],esi
         mov     dword ptr [__pitch],edi
-        movss   dword ptr [ebp+24],xmm5
-        movss   dword ptr [ebp+28],xmm6
         cvtsi2ss        xmm0,ebx
         cvtsi2ss        xmm1,esi
         divss   xmm0,xmm1
@@ -453,18 +451,14 @@ _rasterizer_init proc
         sub     esp,4
         movss   dword ptr [esp-4],xmm7
         sub     esp,4
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
+        push    dword ptr [ebp+28]
+        push    dword ptr [ebp+24]
         lea     edx,dword ptr [__mvproj_matrix]
         push    edx
         call    _matrix4f_make_perspective
         add     esp,20
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
+        push    dword ptr [ebp+28]
+        push    dword ptr [ebp+24]
         cvtsi2ss        xmm0,esi
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
@@ -478,8 +472,7 @@ _rasterizer_init proc
         movss   xmm0,dword ptr [___unnamed_float_1]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
+        push    dword ptr [ebp+24]
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
@@ -490,10 +483,8 @@ _rasterizer_init proc
         push    edx
         call    _vec4f_assign
         add     esp,20
-        movss   xmm6,dword ptr [ebp+28]
-        movss   xmm5,dword ptr [ebp+24]
-        movss   xmm0,xmm6
-        comiss  xmm0,xmm5
+        movss   xmm0,dword ptr [ebp+28]
+        comiss  xmm0,dword ptr [ebp+24]
         jbe     label0000
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   dword ptr [ebp-4],xmm7
@@ -1558,12 +1549,10 @@ label0001:
         push    eax
         call    _vec4f_dot
         add     esp,8
-        movss   xmm7,dword ptr [ebp-52]
-        movss   xmm6,xmm0
+        movss   xmm7,xmm0
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm7
-        movss   dword ptr [ebp-52],xmm7
-        movss   dword ptr [ebp-56],xmm6
+        comiss  xmm0,dword ptr [ebp-52]
+        movss   dword ptr [ebp-56],xmm7
         ja      label0003
         mov     edx,[ebp+8]
         mov     eax,[edx+192]
@@ -1636,8 +1625,8 @@ label0005:
         add     esp,8
         movss   xmm7,dword ptr [ebp-60]
         divss   xmm7,xmm0
-        movss   dword ptr [esp-4],xmm7
-        sub     esp,4
+        movss   dword ptr [ebp-60],xmm7
+        push    dword ptr [ebp-60]
         lea     eax,[ebp-40]
         push    eax
         call    _vec4f_mul
@@ -1663,8 +1652,7 @@ label0005:
         push    eax
         call    _vec2f_subtract
         add     esp,12
-        movss   dword ptr [esp-4],xmm7
-        sub     esp,4
+        push    dword ptr [ebp-60]
         lea     eax,[ebp-48]
         push    eax
         call    _vec2f_mul
@@ -1674,6 +1662,7 @@ label0005:
         mov     eax,16
         add     eax,[ebp-4]
         push    eax
+        mov     edx,[ebp+8]
         mov     eax,[edx+192]
         imul    eax,24
         mov     ecx,edx
@@ -1973,30 +1962,23 @@ _rasterizer_triangle3f proc
         mov     edx,[ebp+16]
         mov     ecx,[ebp+12]
         mov     eax,[ebp+8]
-        mov     [ebp+12],ecx
-        mov     [ebp+16],edx
         push    eax
         lea     eax,[ebp-196]
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     edx,[ebp+16]
-        mov     ecx,[ebp+12]
         lea     eax,[ebp-196]
         add     eax,16
-        mov     [ebp+28],edi
-        mov     edi,[ebx]
+        mov     ecx,[ebx]
         mov     ebx,[ebx+4]
-        mov     [eax],edi
+        mov     [eax],ecx
         mov     [eax+4],ebx
-        mov     [ebp+16],edx
-        push    ecx
+        push    dword ptr [ebp+12]
         lea     eax,[ebp-196]
         add     eax,24
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     edx,[ebp+16]
         lea     eax,[ebp-196]
         add     eax,24
         add     eax,16
@@ -2004,7 +1986,7 @@ _rasterizer_triangle3f proc
         mov     ebx,[esi+4]
         mov     [eax],ecx
         mov     [eax+4],ebx
-        push    edx
+        push    dword ptr [ebp+16]
         lea     eax,[ebp-196]
         add     eax,48
         push    eax
@@ -2013,25 +1995,24 @@ _rasterizer_triangle3f proc
         lea     eax,[ebp-196]
         add     eax,48
         add     eax,16
-        mov     edi,[ebp+28]
         mov     ecx,[edi]
-        mov     edx,[edi+4]
+        mov     ebx,[edi+4]
         mov     [eax],ecx
-        mov     [eax+4],edx
+        mov     [eax+4],ebx
         lea     eax,[ebp-196]
         add     eax,72
         mov     ecx,[ebp-196]
-        mov     edx,[ebp-192]
+        mov     ebx,[ebp-192]
         mov     [eax],ecx
-        mov     [eax+4],edx
+        mov     [eax+4],ebx
         mov     ecx,[ebp-188]
-        mov     edx,[ebp-184]
+        mov     ebx,[ebp-184]
         mov     [eax+8],ecx
-        mov     [eax+12],edx
+        mov     [eax+12],ebx
         mov     ecx,[ebp-180]
-        mov     edx,[ebp-176]
+        mov     ebx,[ebp-176]
         mov     [eax+16],ecx
-        mov     [eax+20],edx
+        mov     [eax+20],ebx
         lea     eax,[ebp-196]
         add     eax,192
         mov     dword ptr [eax],4
