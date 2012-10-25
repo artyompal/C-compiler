@@ -30,7 +30,7 @@ const char *next_option;
 
 static void _print_version(void)
 {
-    puts("cc4x86 version 0.07");
+    puts("cc4x86 version 0.08");
 }
 
 static void _print_help(const char *program_name)
