@@ -813,28 +813,27 @@ void x86_optimization_after_regvar_allocation(function_desc *function)
 {
     int orig_insn_count, insn_count;
 
-    for (;;) {
-        // Итерация оптимизации.
-        if (!_try_optimize_regvars_usage(function))
-            return;
+    // Устраняем лишние копирования.
+    if (!_try_optimize_regvars_usage(function))
+        return;
+
+    // Считаем число инструкций в функции.
+    insn_count = unit_get_instruction_count(function);
+
+    // Пока оптимизация даёт результаты, её можно повторять.
+    do {
+        // Регистровая статистика стала невалидной, поэтому мы обязаны её перестроить.
+        x86_analyze_registers_usage(function);
+        orig_insn_count = insn_count;
+
+        // Выполняем итерацию оптимизации.
+        x86_optimization_after_codegen(function);
 
         // Считаем число инструкций в функции.
         insn_count = unit_get_instruction_count(function);
 
-        // Пока оптимизация даёт результаты, её можно повторять.
-        do {
-            // Регистровая статистика стала невалидной, поэтому мы обязаны её перестроить.
-            x86_analyze_registers_usage(function);
-            orig_insn_count = insn_count;
-
-            // Выполняем итерацию оптимизации.
-            x86_optimization_after_codegen(function);
-
-            // Считаем число инструкций в функции.
-            insn_count = unit_get_instruction_count(function);
-
-            // Лишние инструкции появиться не должны.
-            ASSERT(insn_count <= orig_insn_count);
-        } while (insn_count != orig_insn_count);
-    }
+        // Лишние инструкции появиться не должны.
+        ASSERT(insn_count <= orig_insn_count);
+    } while (insn_count != orig_insn_count);
 }
+
