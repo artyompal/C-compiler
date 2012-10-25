@@ -914,6 +914,8 @@ void unit_codegen(void)
             continue;
         }
 
+        x86_init_register_variables();
+
         if (!option_no_basic_opt) {
             x86_optimization_after_inlining(_curr_func);
         }

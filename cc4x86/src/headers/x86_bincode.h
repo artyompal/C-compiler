@@ -294,6 +294,11 @@ typedef struct x86_instruction_decl {
 #define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)
 #define IS_FLOAT_BINARY_ARITHM_INSN(INSN) ((INSN) >= x86insn_fpu_add && (INSN) <= x86insn_fpu_divr)
 
+#define IS_SYMMETRIC_INSN(INSN)         ((INSN) == x86insn_int_add || (INSN) == x86insn_int_mul || (INSN) == x86insn_int_imul || \
+                                        (INSN) >= x86insn_int_and && (INSN) <= x86insn_int_or || (INSN) == x86insn_int_cmp || \
+                                        (INSN) == x86insn_sse_addss || (INSN) == x86insn_sse_mulss || (INSN) == x86insn_sse_comiss || \
+                                        (INSN) == x86insn_sse_addsd || (INSN) == x86insn_sse_mulsd || (INSN) == x86insn_sse_comisd)
+
 #define MAX_REGISTERS_PER_INSN          (3)
 
 #define OP_IS_INT(OP)                   ((OP).op_type >= x86op_byte && (OP).op_type <= x86op_qword)

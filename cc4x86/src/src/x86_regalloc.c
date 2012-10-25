@@ -4,6 +4,7 @@
 #include "x86_regalloc.h"
 #include "x86_stack_frame.h"
 #include "x86_opt_data_flow.h"
+#include "x86_optimizer.h"
 
 
 typedef struct register_map_decl {
@@ -395,6 +396,10 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
         pseudoregs_map[i].reg_last_read         = NULL;
         pseudoregs_map[i].reg_location          = -1;
     }
+
+
+    // Инициализируем reg_stack_location для регистровых переменных.
+    x86_setup_offset_for_register_variables(function, type);
 
 
     // Составляем статистику использования псевдорегистров.
@@ -888,8 +893,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                         _free_real_register(regmap, real_reg);
                     }
                 }
-
-				// TODO: изменять порядок операндов для коммутативных инструкций при выгруженном первом операнде
             } else {
                 // нужен новый регистр
                 ASSERT(pseudoregs_map[reg].reg_status == register_unallocated);

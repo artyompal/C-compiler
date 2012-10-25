@@ -8,35 +8,35 @@
 _test_case proc
         push    ebp
         mov     ebp,esp
-        sub     esp,12
+        sub     esp,8
         push    edi
         mov     edi,3
         cmp     edi,1
-        mov     [ebp-12],edi
+        mov     [ebp-8],edi
         je      label0001
-        mov     edi,[ebp-12]
+        mov     edi,[ebp-8]
         cmp     edi,2
         je      label0001
-        mov     edi,[ebp-12]
+        mov     edi,[ebp-8]
         cmp     edi,3
         je      label0003
         jmp     label0004
 label0001:
         mov     eax,-1
         pop     edi
-        add     esp,12
+        add     esp,8
         pop     ebp
         ret
 label0003:
         mov     eax,0
         pop     edi
-        add     esp,12
+        add     esp,8
         pop     ebp
         ret
 label0004:
         mov     eax,1
         pop     edi
-        add     esp,12
+        add     esp,8
         pop     ebp
         ret
 _test_case endp 
@@ -44,38 +44,38 @@ _test_case endp
 _test_case2 proc
         push    ebp
         mov     ebp,esp
-        sub     esp,12
+        sub     esp,8
         push    edi
         mov     edi,3
         cmp     edi,0
-        mov     [ebp-12],edi
+        mov     [ebp-8],edi
         je      label0001
-        mov     edi,[ebp-12]
+        mov     edi,[ebp-8]
         cmp     edi,1
         je      label0002
-        mov     edi,[ebp-12]
+        mov     edi,[ebp-8]
         cmp     edi,2
         je      label0002
-        mov     edi,[ebp-12]
+        mov     edi,[ebp-8]
         cmp     edi,3
         je      label0002
         jmp     label0005
 label0001:
         mov     eax,-1
         pop     edi
-        add     esp,12
+        add     esp,8
         pop     ebp
         ret
 label0002:
         mov     eax,0
         pop     edi
-        add     esp,12
+        add     esp,8
         pop     ebp
         ret
 label0005:
         mov     eax,1
         pop     edi
-        add     esp,12
+        add     esp,8
         pop     ebp
         ret
 _test_case2 endp        
@@ -83,26 +83,26 @@ _test_case2 endp
 _test_default proc
         push    ebp
         mov     ebp,esp
-        sub     esp,12
+        sub     esp,8
         push    edi
         mov     edi,100
         cmp     edi,1
-        mov     [ebp-12],edi
+        mov     [ebp-8],edi
         je      label0001
-        mov     edi,[ebp-12]
+        mov     edi,[ebp-8]
         cmp     edi,2
         je      label0001
         jmp     label0003
 label0001:
         mov     eax,-1
         pop     edi
-        add     esp,12
+        add     esp,8
         pop     ebp
         ret
 label0003:
         mov     eax,0
         pop     edi
-        add     esp,12
+        add     esp,8
         pop     ebp
         ret
 _test_default endp      
@@ -110,112 +110,112 @@ _test_default endp
 _test proc
         push    ebp
         mov     ebp,esp
-        sub     esp,60
+        sub     esp,36
         push    edi
 ; start of inline function test_case
         mov     edi,3
         cmp     edi,1
-        mov     [ebp-40],edi
+        mov     [ebp-8],edi
         je      label0004
-        mov     edi,[ebp-40]
+        mov     edi,[ebp-8]
         cmp     edi,2
         je      label0004
-        mov     edi,[ebp-40]
+        mov     edi,[ebp-8]
         cmp     edi,3
         je      label0006
         jmp     label0007
 label0004:
         mov     edi,-1
-        mov     [ebp-44],edi
+        mov     [ebp-12],edi
         jmp     label0008
 label0006:
         mov     edi,0
-        mov     [ebp-44],edi
+        mov     [ebp-12],edi
         jmp     label0008
 label0007:
         mov     edi,1
-        mov     [ebp-44],edi
+        mov     [ebp-12],edi
         jmp     label0008
 label0008:
 ; end of inline function test_case
-        mov     edi,[ebp-44]
+        mov     edi,[ebp-12]
         cmp     edi,0
         je      label0000
         mov     eax,1
         pop     edi
-        add     esp,60
+        add     esp,36
         pop     ebp
         ret
 label0000:
 ; start of inline function test_case2
         mov     edi,3
         cmp     edi,0
-        mov     [ebp-48],edi
+        mov     [ebp-20],edi
         je      label000a
-        mov     edi,[ebp-48]
+        mov     edi,[ebp-20]
         cmp     edi,1
         je      label000b
-        mov     edi,[ebp-48]
+        mov     edi,[ebp-20]
         cmp     edi,2
         je      label000b
-        mov     edi,[ebp-48]
+        mov     edi,[ebp-20]
         cmp     edi,3
         je      label000b
         jmp     label000e
 label000a:
         mov     edi,-1
-        mov     [ebp-52],edi
+        mov     [ebp-24],edi
         jmp     label000f
 label000b:
         mov     edi,0
-        mov     [ebp-52],edi
+        mov     [ebp-24],edi
         jmp     label000f
 label000e:
         mov     edi,1
-        mov     [ebp-52],edi
+        mov     [ebp-24],edi
         jmp     label000f
 label000f:
 ; end of inline function test_case2
-        mov     edi,[ebp-52]
+        mov     edi,[ebp-24]
         cmp     edi,0
         je      label0001
         mov     eax,1
         pop     edi
-        add     esp,60
+        add     esp,36
         pop     ebp
         ret
 label0001:
 ; start of inline function test_default
         mov     edi,100
         cmp     edi,1
-        mov     [ebp-56],edi
+        mov     [ebp-32],edi
         je      label0011
-        mov     edi,[ebp-56]
+        mov     edi,[ebp-32]
         cmp     edi,2
         je      label0011
         jmp     label0013
 label0011:
         mov     edi,-1
-        mov     [ebp-60],edi
+        mov     [ebp-36],edi
         jmp     label0016
 label0013:
         mov     edi,0
-        mov     [ebp-60],edi
+        mov     [ebp-36],edi
         jmp     label0016
 label0016:
 ; end of inline function test_default
-        mov     edi,[ebp-60]
+        mov     edi,[ebp-36]
         cmp     edi,0
         je      label0002
         mov     eax,1
         pop     edi
-        add     esp,60
+        add     esp,36
         pop     ebp
         ret
 label0002:
         mov     eax,0
         pop     edi
-        add     esp,60
+        add     esp,36
         pop     ebp
         ret
 _test endp      
