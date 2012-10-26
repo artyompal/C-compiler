@@ -47,16 +47,14 @@ _fabs proc
         movss   xmm0,dword ptr [___unnamed_float_0]
         comiss  xmm0,xmm7
         ja      label0000
-        movss   xmm7,dword ptr [ebp+8]
-        movss   dword ptr [ebp-4],xmm7
         jmp     label0001
+        movss   xmm7,dword ptr [ebp+8]
 label0000:
-        movss   xmm0,dword ptr [ebp+8]
+        movss   xmm0,xmm7
         xorps   xmm0,dword ptr [___unnamed_float_1]
         movss   xmm7,xmm0
-        movss   dword ptr [ebp-4],xmm7
 label0001:
-        movss   xmm0,dword ptr [ebp-4]
+        movss   xmm0,xmm7
         add     esp,4
         pop     ebp
         ret
