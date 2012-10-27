@@ -1,7 +1,11 @@
 
 
 sub run {
-	my $cmd_line = shift;
+	my $options = shift;
+    my $filename = $options;
+    $filename =~ tr/[\-\ ]/_/s;
+
+    $cmd_line = "cc4x86.exe $options --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer_$filename.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c";
 	print "running '$cmd_line'...\n";
 	system $cmd_line;
 }
@@ -16,31 +20,20 @@ sub assemble {
 
 chdir("../cc4x86/bin/release/") or die("chdir: $!");
 
-# generate XML
-run("cc4x86.exe --sse2 --xmldump --nocodegen ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
+run("--sse2 --xmldump --nocodegen");            # generate XML
+run("--sse2 --nobasicopt --noregalloc");        # generate very unoptimized listing
+run("--sse2 --noregalloc");                     # generate unoptimized listing
+run("--sse2 --optimize --noregalloc");          # generate optimized listing with pseudo-registers
 
-# generate very unoptimized listing
-run("cc4x86.exe --sse2 --nobasicopt --noregalloc --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__raw.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
+run("--optimize");                              # generate non-SSE optimized listing
+run("--optimize --noinline");                   # generate non-SSE noinline optimized listing
+run("--sse2 --optimize --noinline");            # generate noinline optimized listing
+run("--sse2 --optimize");                       # generate finally optimized listing
 
-# generate unoptimized listing
-run("cc4x86.exe --sse2 --noregalloc --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__unoptimized.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
+system("del ..\\..\\tests\\visual\\rasterizer\\rasterizer.asm");
+system("rename ..\\..\\tests\\visual\\rasterizer\\rasterizer__sse2_optimize.asm rasterizer.asm");
 
-# generate optimized listing with pseudo-registers
-run("cc4x86.exe --sse2 --optimize --noregalloc --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__pseudo_registers.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
-
-# generate non-SSE noinline optimized listing
-run("cc4x86.exe --optimize --noinline --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__no_inline__no_sse.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
-assemble("rasterizer__no_inline__no_sse.asm");
-
-# generate non-SSE optimized listing
-run("cc4x86.exe --optimize --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__no_sse.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
-assemble("rasterizer__no_sse.asm");
-
-# generate noinline optimized listing with pseudo-registers
-run("cc4x86.exe --sse2 --optimize --noinline --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer__no_inline.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
-assemble("rasterizer__no_inline.asm");
-
-# generate finally optimized listing
-run("cc4x86.exe --sse2 --optimize ..\\..\\tests\\visual\\rasterizer\\rasterizer.c");
 assemble("rasterizer.asm");
-
+assemble("rasterizer__optimize.asm");
+assemble("rasterizer__optimize_noinline.asm");
+assemble("rasterizer__sse2_optimize_noinline.asm");
