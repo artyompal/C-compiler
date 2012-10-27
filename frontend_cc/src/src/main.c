@@ -79,7 +79,9 @@ static void _compile_unit(const char *filename)
     if (option_output_filename[0] == '\0')
         aux_replace_file_extension(option_output_filename, filename, ".asm");
 
-    text_output_begin_unit();
+    if (!option_no_codegen) {
+        text_output_begin_unit();
+    }
 
     if (yyparse() != 0) {
         aux_fatal_error("unrecoverable syntax error");

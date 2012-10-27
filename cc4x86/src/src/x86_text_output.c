@@ -17,6 +17,10 @@ static void out_ch(char c)
 {
     int i;
 
+    if (!_asm_file) {
+        return;
+    }
+
     if (c == '\t') {
         for (i = 8; i > cursor_pos % TAB_SIZE; i--) {
             fputc('\x20', _asm_file);
@@ -68,10 +72,11 @@ void text_output_begin_unit(void)
 
 void text_output_end_unit(void)
 {
-    out_str("\nend\n");
-
-    fclose(_asm_file);
-    _asm_file = NULL;
+    if (_asm_file) {
+        out_str("\nend\n");
+        fclose(_asm_file);
+        _asm_file = NULL;
+    }
 }
 
 void text_output_begin_data_section(void)
