@@ -108,7 +108,8 @@ label0007:
         jmp     label0008
 label0008:
 ; end of inline function test_case
-        cmp     dword63,0
+        mov     dword1,dword63
+        cmp     dword1,0
         je      label0000
         mov     dword3,1
         set_retval      dword3
@@ -139,7 +140,8 @@ label000e:
         jmp     label000f
 label000f:
 ; end of inline function test_case2
-        cmp     dword66,0
+        mov     dword4,dword66
+        cmp     dword4,0
         je      label0001
         mov     dword6,1
         set_retval      dword6
@@ -162,7 +164,8 @@ label0013:
         jmp     label0016
 label0016:
 ; end of inline function test_default
-        cmp     dword69,0
+        mov     dword7,dword69
+        cmp     dword7,0
         je      label0002
         mov     dword9,1
         set_retval      dword9

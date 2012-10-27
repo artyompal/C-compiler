@@ -384,14 +384,14 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
     for (i = 0; i < pseudoregs_cnt; i++)
     {
-        pseudoregs_map[i].reg_changes_value     = 0;
         pseudoregs_map[i].reg_status            = register_unallocated;
         pseudoregs_map[i].reg_stack_location    = -1;
         pseudoregs_map[i].reg_dirty             = FALSE;
+        pseudoregs_map[i].reg_location          = -1;
 
         pseudoregs_map[i].reg_first_write       = NULL;
         pseudoregs_map[i].reg_last_read         = NULL;
-        pseudoregs_map[i].reg_location          = -1;
+        pseudoregs_map[i].reg_changes_value     = 0;
     }
 
 

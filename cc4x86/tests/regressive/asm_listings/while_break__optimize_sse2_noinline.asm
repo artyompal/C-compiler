@@ -37,7 +37,7 @@ label0003:
 label0004:
         cmp     edi,50
         jne     label0007
-        add     edi,50
+        lea     edi,[edi+50]
         jmp     label0005
 label0007:
         inc     edi

@@ -62,7 +62,9 @@ label0003:
 label0004:
         mov     dword40,5
         add     dword40,dword49
-        sal     dword48,dword40
+        mov     dword42,dword48
+        sal     dword42,dword40
+        mov     dword48,dword42
         cmp     dword48,64
         je      label0005
         mov     dword45,6

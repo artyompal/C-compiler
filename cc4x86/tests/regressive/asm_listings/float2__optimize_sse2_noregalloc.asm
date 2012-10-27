@@ -21,7 +21,9 @@ _test proc
 ; start of inline function test1
         movss   sse17,dword ptr [___unnamed_float_1]
         movss   sse18,sse17
-        addss   sse18,dword ptr [___unnamed_float_0]
+        movss   sse10,sse18
+        addss   sse10,dword ptr [___unnamed_float_0]
+        movss   sse18,sse10
         movss   sse17,sse18
         movss   sse19,sse17
 ; end of inline function test1
@@ -35,8 +37,9 @@ _test proc
 label0000:
 ; start of inline function test2
         movss   sse20,dword ptr [___unnamed_float_0]
-        movss   sse21,sse20
-        addss   sse21,dword ptr [___unnamed_float_0]
+        movss   sse15,sse20
+        addss   sse15,dword ptr [___unnamed_float_0]
+        movss   sse21,sse15
 ; end of inline function test2
         movss   sse5,sse21
         comiss  sse5,dword ptr [___unnamed_float_3]

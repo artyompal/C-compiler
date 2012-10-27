@@ -7,8 +7,9 @@
 
 _test proc
         create_stack_frame
-        mov     dword16,2
-        imul    dword16,2
+        mov     dword7,2
+        imul    dword7,2
+        mov     dword16,dword7
         cmp     dword16,4
         jne     label0000
         mov     dword11,0

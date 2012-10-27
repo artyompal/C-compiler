@@ -9,23 +9,23 @@ _test proc
         push    ebp
         mov     ebp,esp
         sub     esp,36
-        push    edi
-        mov     edi,2
-        cmp     edi,3
+        mov     eax,2
+        cmp     eax,3
         jle     label0000
 ; start of inline function f
-        lea     edi,[edi+3]
+        mov     eax,2
+        add     eax,3
 ; end of inline function f
         jmp     label0001
-        mov     edi,[ebp-4]
 label0000:
 ; start of inline function g
-        lea     edi,[edi-3]
+        mov     eax,2
+        sub     eax,3
 ; end of inline function g
 label0001:
-        mov     eax,1
-        add     eax,edi
-        pop     edi
+        mov     ecx,1
+        add     ecx,eax
+        mov     eax,ecx
         add     esp,36
         pop     ebp
         ret

@@ -84,112 +84,162 @@ _rasterizer_init proc
         mov     ebx,[ebp+12]
         mov     edx,[ebp+8]
         mov     dword ptr [__dbgprintf],edx
-        mov     dword ptr [__width],ebx
-        mov     dword ptr [__height],esi
-        mov     dword ptr [__pitch],edi
+        mov     edx,ebx
+        mov     dword ptr [__width],edx
+        mov     edx,esi
+        mov     dword ptr [__height],edx
+        mov     edx,edi
+        mov     dword ptr [__pitch],edx
 ; start of inline function matrix4f_make_perspective
-        cvtsi2ss        xmm4,ebx
-        cvtsi2ss        xmm0,esi
-        divss   xmm4,xmm0
+        cvtsi2ss        xmm0,ebx
+        cvtsi2ss        xmm1,esi
+        divss   xmm0,xmm1
+        movss   xmm1,xmm0
         movss   xmm0,xmm6
-        movss   xmm3,xmm5
-        mulss   xmm7,xmm3
+        movss   xmm4,xmm5
+        mov     edi,(offset __mvproj_matrix)
+        mulss   xmm7,xmm4
         movss   xmm2,xmm7
-        mulss   xmm2,xmm4
-        movss   xmm4,xmm3
-        divss   xmm4,xmm2
-        movss   dword ptr [__mvproj_matrix],xmm4
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+4],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+8],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+12],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+16],xmm2
-        movss   xmm2,xmm3
-        divss   xmm2,xmm7
-        movss   dword ptr [__mvproj_matrix+20],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+24],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+28],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+32],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+36],xmm2
+        mulss   xmm2,xmm1
+        mov     edx,edi
+        movss   xmm1,xmm4
+        divss   xmm1,xmm2
+        movss   dword ptr [edx],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+4],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+8],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+12],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+16],xmm1
+        mov     edx,edi
+        movss   xmm1,xmm4
+        divss   xmm1,xmm7
+        movss   dword ptr [edx+20],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+24],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+28],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+32],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+36],xmm1
+        mov     edx,edi
+        movss   xmm1,xmm0
+        subss   xmm1,xmm4
         movss   xmm2,xmm0
-        subss   xmm2,xmm3
-        movss   xmm4,xmm0
-        divss   xmm4,xmm2
-        movss   dword ptr [__mvproj_matrix+40],xmm4
-        movss   xmm2,dword ptr [___unnamed_float_1]
-        movss   dword ptr [__mvproj_matrix+44],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+48],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+52],xmm2
-        movss   xmm2,xmm3
-        mulss   xmm2,xmm0
-        subss   xmm3,xmm0
-        divss   xmm2,xmm3
-        movss   dword ptr [__mvproj_matrix+56],xmm2
+        divss   xmm2,xmm1
+        movss   dword ptr [edx+40],xmm2
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_1]
+        movss   dword ptr [edx+44],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+48],xmm1
+        mov     edx,edi
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        movss   dword ptr [edx+52],xmm1
+        mov     edx,edi
+        movss   xmm1,xmm4
+        mulss   xmm1,xmm0
+        movss   xmm2,xmm4
+        subss   xmm2,xmm0
+        divss   xmm1,xmm2
+        movss   dword ptr [edx+56],xmm1
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__mvproj_matrix+60],xmm0
+        movss   dword ptr [edx+60],xmm0
 ; end of inline function matrix4f_make_perspective
 ; start of inline function matrix4f_make_viewport
         movss   xmm7,xmm6
         movss   xmm4,xmm5
-        cvtsi2ss        xmm3,esi
-        cvtsi2ss        xmm2,ebx
-        movss   xmm0,xmm2
+        cvtsi2ss        xmm0,esi
+        movss   xmm2,xmm0
+        cvtsi2ss        xmm0,ebx
+        movss   xmm1,xmm0
+        mov     edi,(offset __viewport_matrix)
+        mov     edx,edi
+        movss   xmm0,xmm1
         divss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [__viewport_matrix],xmm0
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__viewport_matrix+4],xmm0
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__viewport_matrix+8],xmm0
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__viewport_matrix+12],xmm0
+        movss   dword ptr [edx+12],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__viewport_matrix+16],xmm0
-        movss   xmm0,xmm3
+        movss   dword ptr [edx+16],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
         xorps   xmm0,dword ptr [___unnamed_float_4]
         divss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [__viewport_matrix+20],xmm0
+        movss   dword ptr [edx+20],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__viewport_matrix+24],xmm0
+        movss   dword ptr [edx+24],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__viewport_matrix+28],xmm0
+        movss   dword ptr [edx+28],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__viewport_matrix+32],xmm0
+        movss   dword ptr [edx+32],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__viewport_matrix+36],xmm0
+        movss   dword ptr [edx+36],xmm0
+        mov     edx,edi
         movss   xmm0,xmm7
         subss   xmm0,xmm4
-        movss   dword ptr [__viewport_matrix+40],xmm0
+        movss   dword ptr [edx+40],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [__viewport_matrix+44],xmm0
+        movss   dword ptr [edx+44],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm1
+        divss   xmm0,dword ptr [___unnamed_float_3]
+        movss   dword ptr [edx+48],xmm0
+        mov     edx,edi
         movss   xmm0,xmm2
         divss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [__viewport_matrix+48],xmm0
-        movss   xmm0,xmm3
-        divss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [__viewport_matrix+52],xmm0
-        movss   dword ptr [__viewport_matrix+56],xmm4
+        movss   dword ptr [edx+52],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+56],xmm0
+        mov     edx,edi
         movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   dword ptr [__viewport_matrix+60],xmm0
+        movss   dword ptr [edx+60],xmm0
 ; end of inline function matrix4f_make_viewport
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,xmm5
-        movss   xmm3,dword ptr [___unnamed_float_2]
         movss   xmm2,dword ptr [___unnamed_float_2]
-        lea     edi,dword ptr [__clip_z_near_base]
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        mov     edi,(offset __clip_z_near_base)
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
         movss   xmm0,xmm6
         comiss  xmm0,xmm5
@@ -203,24 +253,40 @@ label0001:
         movss   dword ptr [ebp-4],xmm7
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [ebp-4]
-        movss   xmm3,dword ptr [___unnamed_float_2]
         movss   xmm2,dword ptr [___unnamed_float_2]
+        movss   xmm1,dword ptr [___unnamed_float_2]
         mov     edi,(offset __clip_z_near_norm)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,xmm6
-        movss   xmm3,dword ptr [___unnamed_float_2]
         movss   xmm2,dword ptr [___unnamed_float_2]
+        movss   xmm1,dword ptr [___unnamed_float_2]
         mov     edi,(offset __clip_z_far_base)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
         movss   xmm0,xmm6
         comiss  xmm0,xmm5
@@ -234,116 +300,188 @@ label0003:
         movss   dword ptr [ebp-8],xmm7
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [ebp-8]
-        movss   xmm3,dword ptr [___unnamed_float_2]
         movss   xmm2,dword ptr [___unnamed_float_2]
+        movss   xmm1,dword ptr [___unnamed_float_2]
         mov     edi,(offset __clip_z_far_norm)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm3,dword ptr [___unnamed_float_2]
+        movss   xmm2,dword ptr [___unnamed_float_2]
         cvtsi2ss        xmm0,ebx
-        movss   xmm2,dword ptr [___unnamed_float_1]
-        divss   xmm2,xmm0
+        movss   xmm1,dword ptr [___unnamed_float_1]
+        divss   xmm1,xmm0
         movss   xmm0,dword ptr [___unnamed_float_5]
-        addss   xmm0,xmm2
-        movss   xmm2,xmm0
+        addss   xmm0,xmm1
+        movss   xmm1,xmm0
         mov     edi,(offset __clip_plane_left_base)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm3,dword ptr [___unnamed_float_2]
-        movss   xmm2,dword ptr [___unnamed_float_1]
+        movss   xmm2,dword ptr [___unnamed_float_2]
+        movss   xmm1,dword ptr [___unnamed_float_1]
         mov     edi,(offset __clip_plane_left_norm)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm3,dword ptr [___unnamed_float_2]
+        movss   xmm2,dword ptr [___unnamed_float_2]
         cvtsi2ss        xmm0,ebx
-        movss   xmm2,dword ptr [___unnamed_float_1]
-        divss   xmm2,xmm0
+        movss   xmm1,dword ptr [___unnamed_float_1]
+        divss   xmm1,xmm0
         movss   xmm0,dword ptr [___unnamed_float_1]
-        subss   xmm0,xmm2
-        movss   xmm2,xmm0
+        subss   xmm0,xmm1
+        movss   xmm1,xmm0
         mov     edi,(offset __clip_plane_right_base)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm3,dword ptr [___unnamed_float_2]
-        movss   xmm2,dword ptr [___unnamed_float_5]
+        movss   xmm2,dword ptr [___unnamed_float_2]
+        movss   xmm1,dword ptr [___unnamed_float_5]
         mov     edi,(offset __clip_plane_right_norm)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [___unnamed_float_2]
         cvtsi2ss        xmm0,esi
-        movss   xmm2,dword ptr [___unnamed_float_1]
-        divss   xmm2,xmm0
+        movss   xmm1,dword ptr [___unnamed_float_1]
+        divss   xmm1,xmm0
         movss   xmm0,dword ptr [___unnamed_float_5]
-        addss   xmm0,xmm2
-        movss   xmm3,xmm0
-        movss   xmm2,dword ptr [___unnamed_float_2]
+        addss   xmm0,xmm1
+        movss   xmm2,xmm0
+        movss   xmm1,dword ptr [___unnamed_float_2]
         mov     edi,(offset __clip_plane_top_base)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm3,dword ptr [___unnamed_float_1]
-        movss   xmm2,dword ptr [___unnamed_float_2]
+        movss   xmm2,dword ptr [___unnamed_float_1]
+        movss   xmm1,dword ptr [___unnamed_float_2]
         mov     edi,(offset __clip_plane_top_norm)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm3,dword ptr [___unnamed_float_1]
-        movss   xmm2,dword ptr [___unnamed_float_2]
+        movss   xmm2,dword ptr [___unnamed_float_1]
+        movss   xmm1,dword ptr [___unnamed_float_2]
         mov     edi,(offset __clip_plane_bottom_base)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
         movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm3,dword ptr [___unnamed_float_5]
-        movss   xmm2,dword ptr [___unnamed_float_2]
+        movss   xmm2,dword ptr [___unnamed_float_5]
+        movss   xmm1,dword ptr [___unnamed_float_2]
         mov     edi,(offset __clip_plane_bottom_norm)
-        movss   dword ptr [edi],xmm2
-        movss   dword ptr [edi+4],xmm3
-        movss   dword ptr [edi+8],xmm4
-        movss   dword ptr [edi+12],xmm7
+        mov     edx,edi
+        movss   xmm0,xmm1
+        movss   dword ptr [edx],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm2
+        movss   dword ptr [edx+4],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm4
+        movss   dword ptr [edx+8],xmm0
+        mov     edx,edi
+        movss   xmm0,xmm7
+        movss   dword ptr [edx+12],xmm0
 ; end of inline function vec4f_assign
         pop     ebx
         pop     esi
@@ -427,8 +565,10 @@ _rasterizer_set_texture proc
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
         mov     dword ptr [__texture_data],ebx
-        mov     dword ptr [__texture_width],esi
-        mov     dword ptr [__texture_height],edi
+        mov     ebx,esi
+        mov     dword ptr [__texture_width],ebx
+        mov     ebx,edi
+        mov     dword ptr [__texture_height],ebx
         pop     ebx
         pop     esi
         pop     edi
@@ -450,79 +590,96 @@ __rasterize_horiz_line proc
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
-        mov     edx,dword ptr [__pitch]
-        imul    edx,edi
-        add     edx,dword ptr [__videomem]
+        mov     eax,dword ptr [__pitch]
+        imul    eax,edi
+        add     eax,dword ptr [__videomem]
         mov     edi,ebx
         sal     edi,2
-        add     edx,edi
-        mov     edi,esi
-        sal     edi,2
-        add     edi,edx
+        add     eax,edi
+        mov     edi,eax
+        mov     eax,esi
+        sal     eax,2
+        add     eax,edi
         sal     ebx,2
-        sub     edi,ebx
+        sub     eax,ebx
+        mov     esi,eax
 label0000:
 ; start of inline function _tex2d
         movss   xmm3,xmm5
         movss   xmm2,xmm4
-        mov     ebx,dword ptr [__texture_width]
-        dec     ebx
-        cvtsi2ss        xmm0,ebx
+        mov     eax,dword ptr [__texture_width]
+        dec     eax
+        cvtsi2ss        xmm0,eax
         mulss   xmm0,xmm2
-        cvttss2si       esi,xmm0
-        mov     ebx,dword ptr [__texture_height]
-        dec     ebx
-        cvtsi2ss        xmm0,ebx
+        cvttss2si       eax,xmm0
+        mov     ebx,eax
+        mov     eax,dword ptr [__texture_height]
+        dec     eax
+        cvtsi2ss        xmm0,eax
         mulss   xmm0,xmm3
-        cvttss2si       ebx,xmm0
-        imul    ebx,dword ptr [__texture_width]
-        add     ebx,esi
-        sal     ebx,2
-        add     ebx,dword ptr [__texture_data]
-        mov     esi,[ebx]
+        cvttss2si       eax,xmm0
+        imul    eax,dword ptr [__texture_width]
+        add     eax,ebx
+        sal     eax,2
+        add     eax,dword ptr [__texture_data]
+        mov     eax,[eax]
+        mov     ebx,eax
 ; end of inline function _tex2d
-        mov     ebx,esi
-        sar     ebx,24
-        and     ebx,255
-        cmp     ebx,0
+        mov     eax,ebx
+        mov     ebx,eax
+        mov     eax,ebx
+        sar     eax,24
+        and     eax,255
+        cmp     eax,0
         je      label0003
-        cvtsi2ss        xmm3,ebx
-        divss   xmm3,dword ptr [___unnamed_float_6]
-        mov     ebx,[edx]
-        mov     ecx,ebx
+        cvtsi2ss        xmm0,eax
+        divss   xmm0,dword ptr [___unnamed_float_6]
+        movss   xmm3,xmm0
+        mov     eax,edi
+        mov     eax,[eax]
+        mov     ecx,eax
         and     ecx,65280
         sar     ecx,8
+        and     eax,255
+        mov     edx,ebx
+        and     edx,65280
+        sar     edx,8
         and     ebx,255
-        mov     eax,esi
-        and     eax,65280
-        sar     eax,8
-        and     esi,255
-        cvtsi2ss        xmm0,eax
+        cvtsi2ss        xmm0,edx
         mulss   xmm0,xmm3
         cvtsi2ss        xmm2,ecx
         movss   xmm1,dword ptr [___unnamed_float_1]
         subss   xmm1,xmm3
         mulss   xmm2,xmm1
         addss   xmm0,xmm2
-        cvttss2si       eax,xmm0
-        cvtsi2ss        xmm0,esi
+        cvttss2si       ecx,xmm0
+        mov     edx,ecx
+        cvtsi2ss        xmm0,ebx
         mulss   xmm0,xmm3
-        cvtsi2ss        xmm1,ebx
+        cvtsi2ss        xmm1,eax
         movss   xmm2,dword ptr [___unnamed_float_1]
         subss   xmm2,xmm3
         mulss   xmm1,xmm2
         addss   xmm0,xmm1
-        cvttss2si       ecx,xmm0
-        mov     esi,ecx
+        cvttss2si       eax,xmm0
         mov     ebx,eax
-        sal     ebx,8
-        add     ebx,esi
-        mov     [edx],ebx
+        mov     eax,edx
+        sal     eax,8
+        add     eax,ebx
+        mov     ebx,eax
+        mov     eax,edi
+        mov     ecx,ebx
+        mov     [eax],ecx
 label0003:
-        addss   xmm4,xmm6
-        addss   xmm5,xmm7
-        add     edx,4
-        cmp     edx,edi
+        movss   xmm0,xmm4
+        addss   xmm0,xmm6
+        movss   xmm4,xmm0
+        movss   xmm0,xmm5
+        addss   xmm0,xmm7
+        movss   xmm5,xmm0
+        add     edi,4
+        mov     eax,edi
+        cmp     eax,esi
         jl      label0000
         pop     ebx
         pop     esi
@@ -535,7 +692,7 @@ __rasterize_horiz_line endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,140
+        sub     esp,136
         push    edi
         push    esi
         push    ebx
@@ -543,300 +700,446 @@ __clip_on_plain proc
         mov     esi,[ebp+16]
         mov     ebx,[ebp+12]
         mov     edx,[ebp+8]
-        mov     dword ptr [edx+192],0
-        mov     ecx,ebx
-        lea     eax,[ebx+24]
+        mov     eax,edx
+        mov     dword ptr [eax+192],0
+        mov     eax,ebx
+        lea     ecx,[ebx+24]
 label0001:
         mov     [ebp+8],edx
-        mov     edx,[ebx+192]
+        mov     edx,ebx
+        mov     edx,[edx+192]
         imul    edx,24
         mov     [ebp+20],edi
         mov     edi,ebx
         add     edi,edx
-        cmp     edi,eax
+        cmp     edi,ecx
         jle     label0002
 ; start of inline function vec4f_subtract
-        mov     edi,esi
-        mov     edx,ecx
+        mov     edx,esi
+        mov     edi,edx
+        mov     edx,eax
         mov     [ebp+12],ebx
         lea     ebx,[ebp-24]
-        movss   xmm0,dword ptr [edx]
-        subss   xmm0,dword ptr [edi]
-        movss   dword ptr [ebx],xmm0
-        movss   xmm0,dword ptr [edx+4]
-        subss   xmm0,dword ptr [edi+4]
-        movss   dword ptr [ebx+4],xmm0
-        movss   xmm0,dword ptr [edx+8]
-        subss   xmm0,dword ptr [edi+8]
-        movss   dword ptr [ebx+8],xmm0
-        movss   xmm0,dword ptr [edx+12]
-        subss   xmm0,dword ptr [edi+12]
-        movss   dword ptr [ebx+12],xmm0
+        mov     [ebp-4],eax
+        mov     eax,edx
+        mov     [ebp-8],ecx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax]
+        subss   xmm0,dword ptr [ecx]
+        mov     eax,ebx
+        movss   dword ptr [eax],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        subss   xmm0,dword ptr [ecx+4]
+        mov     eax,ebx
+        movss   dword ptr [eax+4],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+8]
+        subss   xmm0,dword ptr [ecx+8]
+        mov     eax,ebx
+        movss   dword ptr [eax+8],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+12]
+        subss   xmm0,dword ptr [ecx+12]
+        mov     eax,ebx
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        mov     edi,[ebp+20]
-        lea     ebx,[ebp-24]
-        movss   xmm0,dword ptr [ebx+4]
-        mulss   xmm0,dword ptr [edi+4]
-        movss   xmm7,dword ptr [ebx]
-        mulss   xmm7,dword ptr [edi]
-        addss   xmm7,xmm0
-        movss   xmm0,dword ptr [ebx+8]
-        mulss   xmm0,dword ptr [edi+8]
-        addss   xmm7,xmm0
-        movss   xmm0,dword ptr [ebx+12]
-        mulss   xmm0,dword ptr [edi+12]
-        addss   xmm7,xmm0
+        mov     eax,[ebp+20]
+        mov     edi,eax
+        lea     eax,[ebp-24]
+        mov     ebx,eax
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        mulss   xmm0,dword ptr [ecx+4]
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm1,dword ptr [eax]
+        mulss   xmm1,dword ptr [ecx]
+        addss   xmm1,xmm0
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+8]
+        mulss   xmm0,dword ptr [ecx+8]
+        addss   xmm1,xmm0
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+12]
+        mulss   xmm0,dword ptr [ecx+12]
+        addss   xmm1,xmm0
 ; end of inline function vec4f_dot
 ; start of inline function vec4f_subtract
-        mov     edi,esi
+        mov     eax,esi
+        mov     edi,eax
+        mov     eax,[ebp-8]
         mov     edx,eax
-        lea     ebx,[ebp-24]
-        movss   xmm0,dword ptr [edx]
-        subss   xmm0,dword ptr [edi]
-        movss   dword ptr [ebx],xmm0
-        movss   xmm0,dword ptr [edx+4]
-        subss   xmm0,dword ptr [edi+4]
-        movss   dword ptr [ebx+4],xmm0
-        movss   xmm0,dword ptr [edx+8]
-        subss   xmm0,dword ptr [edi+8]
-        movss   dword ptr [ebx+8],xmm0
-        movss   xmm0,dword ptr [edx+12]
-        subss   xmm0,dword ptr [edi+12]
-        movss   dword ptr [ebx+12],xmm0
+        lea     eax,[ebp-24]
+        mov     ebx,eax
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax]
+        subss   xmm0,dword ptr [ecx]
+        mov     eax,ebx
+        movss   dword ptr [eax],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        subss   xmm0,dword ptr [ecx+4]
+        mov     eax,ebx
+        movss   dword ptr [eax+4],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+8]
+        subss   xmm0,dword ptr [ecx+8]
+        mov     eax,ebx
+        movss   dword ptr [eax+8],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+12]
+        subss   xmm0,dword ptr [ecx+12]
+        mov     eax,ebx
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        mov     edi,[ebp+20]
-        lea     edx,[ebp-24]
-        mov     ebx,edx
-        movss   xmm0,dword ptr [ebx+4]
-        mulss   xmm0,dword ptr [edi+4]
-        movss   xmm1,dword ptr [ebx]
-        mulss   xmm1,dword ptr [edi]
-        addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebx+8]
-        mulss   xmm0,dword ptr [edi+8]
-        addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebx+12]
-        mulss   xmm0,dword ptr [edi+12]
-        addss   xmm1,xmm0
-        movss   dword ptr [ebp-52],xmm7
-        movss   xmm7,xmm1
+        mov     eax,[ebp+20]
+        mov     edi,eax
+        lea     eax,[ebp-24]
+        mov     ebx,eax
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        mulss   xmm0,dword ptr [ecx+4]
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm2,dword ptr [eax]
+        mulss   xmm2,dword ptr [ecx]
+        addss   xmm2,xmm0
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+8]
+        mulss   xmm0,dword ptr [ecx+8]
+        addss   xmm2,xmm0
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+12]
+        mulss   xmm0,dword ptr [ecx+12]
+        addss   xmm2,xmm0
+        movss   dword ptr [ebp-52],xmm1
+        movss   xmm1,xmm2
 ; end of inline function vec4f_dot
+        movss   xmm2,xmm1
         movss   xmm0,dword ptr [___unnamed_float_2]
         comiss  xmm0,dword ptr [ebp-52]
         ja      label0003
-        mov     edi,[ebp+8]
-        mov     edx,[edi+192]
-        mov     [ebp-140],edx
-        mov     edx,[ebp+8]
-        inc     dword ptr [edx+192]
-        mov     [ebp+8],edx
-        mov     edx,[ebp-140]
-        imul    edx,24
-        mov     ebx,[ebp+8]
-        add     ebx,edx
+        mov     eax,[ebp+8]
+        mov     ecx,[eax+192]
+        inc     dword ptr [eax+192]
+        imul    ecx,24
+        mov     eax,[ebp+8]
+        add     eax,ecx
+        mov     ecx,[ebp-4]
         mov     edx,[ecx]
-        mov     edi,[ecx+4]
-        mov     [ebx],edx
-        mov     [ebx+4],edi
+        mov     ebx,[ecx+4]
+        mov     [eax],edx
+        mov     [eax+4],ebx
         mov     edx,[ecx+8]
-        mov     edi,[ecx+12]
-        mov     [ebx+8],edx
-        mov     [ebx+12],edi
+        mov     ebx,[ecx+12]
+        mov     [eax+8],edx
+        mov     [eax+12],ebx
         mov     edx,[ecx+16]
-        mov     edi,[ecx+20]
-        mov     [ebx+16],edx
-        mov     [ebx+20],edi
+        mov     ebx,[ecx+20]
+        mov     [eax+16],edx
+        mov     [eax+20],ebx
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         comiss  xmm0,dword ptr [ebp-52]
         jae     label0006
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm7
+        comiss  xmm0,xmm2
         ja      label0005
 label0006:
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm7
+        comiss  xmm0,xmm2
         ja      label0004
         movss   xmm0,dword ptr [___unnamed_float_2]
         comiss  xmm0,dword ptr [ebp-52]
         jbe     label0004
 label0005:
 ; start of inline function vec4f_subtract
-        mov     edi,ecx
-        mov     edx,esi
-        lea     ebx,[ebp-24]
-        movss   xmm0,dword ptr [edx]
-        subss   xmm0,dword ptr [edi]
-        movss   dword ptr [ebx],xmm0
-        movss   xmm0,dword ptr [edx+4]
-        subss   xmm0,dword ptr [edi+4]
-        movss   dword ptr [ebx+4],xmm0
-        movss   xmm0,dword ptr [edx+8]
-        subss   xmm0,dword ptr [edi+8]
-        movss   dword ptr [ebx+8],xmm0
-        movss   xmm0,dword ptr [edx+12]
-        subss   xmm0,dword ptr [edi+12]
-        movss   dword ptr [ebx+12],xmm0
+        mov     eax,[ebp-4]
+        mov     edi,eax
+        mov     eax,esi
+        mov     edx,eax
+        lea     eax,[ebp-24]
+        mov     ebx,eax
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax]
+        subss   xmm0,dword ptr [ecx]
+        mov     eax,ebx
+        movss   dword ptr [eax],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        subss   xmm0,dword ptr [ecx+4]
+        mov     eax,ebx
+        movss   dword ptr [eax+4],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+8]
+        subss   xmm0,dword ptr [ecx+8]
+        mov     eax,ebx
+        movss   dword ptr [eax+8],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+12]
+        subss   xmm0,dword ptr [ecx+12]
+        mov     eax,ebx
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_subtract
-        mov     edi,ecx
+        mov     eax,[ebp-4]
+        mov     edi,eax
+        mov     eax,[ebp-8]
         mov     edx,eax
-        lea     ebx,[ebp-40]
-        movss   xmm0,dword ptr [edx]
-        subss   xmm0,dword ptr [edi]
-        movss   dword ptr [ebx],xmm0
-        movss   xmm0,dword ptr [edx+4]
-        subss   xmm0,dword ptr [edi+4]
-        movss   dword ptr [ebx+4],xmm0
-        movss   xmm0,dword ptr [edx+8]
-        subss   xmm0,dword ptr [edi+8]
-        movss   dword ptr [ebx+8],xmm0
-        movss   xmm0,dword ptr [edx+12]
-        subss   xmm0,dword ptr [edi+12]
-        movss   dword ptr [ebx+12],xmm0
+        lea     eax,[ebp-40]
+        mov     ebx,eax
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax]
+        subss   xmm0,dword ptr [ecx]
+        mov     eax,ebx
+        movss   dword ptr [eax],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        subss   xmm0,dword ptr [ecx+4]
+        mov     eax,ebx
+        movss   dword ptr [eax+4],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+8]
+        subss   xmm0,dword ptr [ecx+8]
+        mov     eax,ebx
+        movss   dword ptr [eax+8],xmm0
+        mov     eax,edx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+12]
+        subss   xmm0,dword ptr [ecx+12]
+        mov     eax,ebx
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        mov     edi,[ebp+20]
-        lea     edx,[ebp-24]
-        mov     ebx,edx
-        movss   xmm0,dword ptr [ebx+4]
-        mulss   xmm0,dword ptr [edi+4]
-        movss   xmm1,dword ptr [ebx]
-        mulss   xmm1,dword ptr [edi]
+        mov     eax,[ebp+20]
+        mov     edi,eax
+        lea     eax,[ebp-24]
+        mov     ebx,eax
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        mulss   xmm0,dword ptr [ecx+4]
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm1,dword ptr [eax]
+        mulss   xmm1,dword ptr [ecx]
         addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebx+8]
-        mulss   xmm0,dword ptr [edi+8]
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+8]
+        mulss   xmm0,dword ptr [ecx+8]
         addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebx+12]
-        mulss   xmm0,dword ptr [edi+12]
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+12]
+        mulss   xmm0,dword ptr [ecx+12]
         addss   xmm1,xmm0
-        movss   xmm7,xmm1
 ; end of inline function vec4f_dot
+        movss   xmm0,xmm1
 ; start of inline function vec4f_dot
-        mov     edi,[ebp+20]
-        lea     edx,[ebp-40]
-        mov     ebx,edx
-        movss   xmm0,dword ptr [ebx+4]
-        mulss   xmm0,dword ptr [edi+4]
-        movss   xmm1,dword ptr [ebx]
-        mulss   xmm1,dword ptr [edi]
-        addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebx+8]
-        mulss   xmm0,dword ptr [edi+8]
-        addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebx+12]
-        mulss   xmm0,dword ptr [edi+12]
-        addss   xmm1,xmm0
-        movss   dword ptr [ebp-60],xmm7
-        movss   xmm7,xmm1
+        mov     eax,[ebp+20]
+        mov     edi,eax
+        lea     eax,[ebp-40]
+        mov     ebx,eax
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm1,dword ptr [eax+4]
+        mulss   xmm1,dword ptr [ecx+4]
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm2,dword ptr [eax]
+        mulss   xmm2,dword ptr [ecx]
+        addss   xmm2,xmm1
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm1,dword ptr [eax+8]
+        mulss   xmm1,dword ptr [ecx+8]
+        addss   xmm2,xmm1
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm1,dword ptr [eax+12]
+        mulss   xmm1,dword ptr [ecx+12]
+        addss   xmm2,xmm1
+        movss   xmm1,xmm2
 ; end of inline function vec4f_dot
-        movss   dword ptr [ebp-128],xmm7
-        movss   xmm7,dword ptr [ebp-60]
-        divss   xmm7,dword ptr [ebp-128]
+        divss   xmm0,xmm1
+        movss   xmm2,xmm0
 ; start of inline function vec4f_mul
-        movss   xmm1,xmm7
-        movss   xmm0,dword ptr [ebp-40]
+        movss   xmm1,xmm2
+        lea     eax,[ebp-40]
+        mov     edi,eax
+        mov     eax,edi
+        movss   xmm0,dword ptr [eax]
         mulss   xmm0,xmm1
-        movss   dword ptr [ebp-40],xmm0
-        movss   xmm0,dword ptr [ebp-36]
+        movss   dword ptr [eax],xmm0
+        mov     eax,edi
+        movss   xmm0,dword ptr [eax+4]
         mulss   xmm0,xmm1
-        movss   dword ptr [ebp-36],xmm0
-        movss   xmm0,dword ptr [ebp-32]
+        movss   dword ptr [eax+4],xmm0
+        mov     eax,edi
+        movss   xmm0,dword ptr [eax+8]
         mulss   xmm0,xmm1
-        movss   dword ptr [ebp-32],xmm0
-        movss   xmm0,dword ptr [ebp-28]
+        movss   dword ptr [eax+8],xmm0
+        mov     eax,edi
+        movss   xmm0,dword ptr [eax+12]
         mulss   xmm0,xmm1
-        movss   dword ptr [ebp-28],xmm0
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_mul
 ; start of inline function vec4f_add
-        mov     edi,ecx
-        mov     ebx,[ebp+8]
-        mov     edx,[ebx+192]
-        imul    edx,24
-        mov     ebx,[ebp+8]
-        add     ebx,edx
-        movss   xmm0,dword ptr [edi]
-        addss   xmm0,dword ptr [ebp-40]
-        movss   dword ptr [ebx],xmm0
-        movss   xmm0,dword ptr [edi+4]
-        addss   xmm0,dword ptr [ebp-36]
-        movss   dword ptr [ebx+4],xmm0
-        movss   xmm0,dword ptr [edi+8]
-        addss   xmm0,dword ptr [ebp-32]
-        movss   dword ptr [ebx+8],xmm0
-        movss   xmm0,dword ptr [edi+12]
-        addss   xmm0,dword ptr [ebp-28]
-        movss   dword ptr [ebx+12],xmm0
+        lea     eax,[ebp-40]
+        mov     edi,eax
+        mov     eax,[ebp-4]
+        mov     ebx,eax
+        mov     eax,[ebp+8]
+        mov     eax,[eax+192]
+        imul    eax,24
+        mov     ecx,[ebp+8]
+        add     ecx,eax
+        mov     edx,ecx
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax]
+        addss   xmm0,dword ptr [ecx]
+        mov     eax,edx
+        movss   dword ptr [eax],xmm0
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        addss   xmm0,dword ptr [ecx+4]
+        mov     eax,edx
+        movss   dword ptr [eax+4],xmm0
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+8]
+        addss   xmm0,dword ptr [ecx+8]
+        mov     eax,edx
+        movss   dword ptr [eax+8],xmm0
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+12]
+        addss   xmm0,dword ptr [ecx+12]
+        mov     eax,edx
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_add
 ; start of inline function vec2f_subtract
-        mov     edi,ecx
+        mov     eax,16
+        add     eax,[ebp-4]
+        mov     edi,eax
+        mov     eax,16
+        add     eax,[ebp-8]
         mov     ebx,eax
-        movss   xmm0,dword ptr [ebx+16]
-        subss   xmm0,dword ptr [edi+16]
-        movss   dword ptr [ebp-48],xmm0
-        movss   xmm0,dword ptr [ebx+20]
-        subss   xmm0,dword ptr [edi+20]
-        movss   dword ptr [ebp-44],xmm0
+        lea     eax,[ebp-48]
+        mov     edx,eax
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax]
+        subss   xmm0,dword ptr [ecx]
+        mov     eax,edx
+        movss   dword ptr [eax],xmm0
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        subss   xmm0,dword ptr [ecx+4]
+        mov     eax,edx
+        movss   dword ptr [eax+4],xmm0
 ; end of inline function vec2f_subtract
 ; start of inline function vec2f_mul
-        movss   xmm0,dword ptr [ebp-48]
-        mulss   xmm0,xmm7
-        movss   dword ptr [ebp-48],xmm0
-        movss   xmm0,dword ptr [ebp-44]
-        mulss   xmm0,xmm7
-        movss   dword ptr [ebp-44],xmm0
+        lea     eax,[ebp-48]
+        mov     edi,eax
+        mov     eax,edi
+        movss   xmm0,dword ptr [eax]
+        mulss   xmm0,xmm2
+        movss   dword ptr [eax],xmm0
+        mov     eax,edi
+        movss   xmm0,dword ptr [eax+4]
+        mulss   xmm0,xmm2
+        movss   dword ptr [eax+4],xmm0
 ; end of inline function vec2f_mul
 ; start of inline function vec2f_add
-        mov     edi,ecx
-        mov     ebx,[ebp+8]
-        mov     edx,[ebx+192]
-        imul    edx,24
-        mov     ebx,[ebp+8]
-        add     ebx,edx
-        add     ebx,16
-        movss   xmm0,dword ptr [edi+16]
-        addss   xmm0,dword ptr [ebp-48]
-        movss   dword ptr [ebx],xmm0
-        movss   xmm0,dword ptr [edi+20]
-        addss   xmm0,dword ptr [ebp-44]
-        movss   dword ptr [ebx+4],xmm0
+        lea     eax,[ebp-48]
+        mov     edi,eax
+        mov     eax,16
+        add     eax,[ebp-4]
+        mov     ebx,eax
+        mov     eax,[ebp+8]
+        mov     eax,[eax+192]
+        imul    eax,24
+        mov     ecx,[ebp+8]
+        add     ecx,eax
+        add     ecx,16
+        mov     edx,ecx
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax]
+        addss   xmm0,dword ptr [ecx]
+        mov     eax,edx
+        movss   dword ptr [eax],xmm0
+        mov     eax,ebx
+        mov     ecx,edi
+        movss   xmm0,dword ptr [eax+4]
+        addss   xmm0,dword ptr [ecx+4]
+        mov     eax,edx
+        movss   dword ptr [eax+4],xmm0
 ; end of inline function vec2f_add
-        mov     edx,[ebp+8]
-        inc     dword ptr [edx+192]
-        mov     [ebp+8],edx
+        mov     eax,[ebp+8]
+        inc     dword ptr [eax+192]
 label0004:
-        add     ecx,24
+        mov     eax,[ebp-4]
         add     eax,24
+        mov     ecx,[ebp-8]
+        add     ecx,24
         mov     edx,[ebp+8]
         mov     ebx,[ebp+12]
         mov     edi,[ebp+20]
         jmp     label0001
         mov     [ebp+8],edx
 label0002:
-        mov     edx,[ebp+8]
-        mov     eax,[edx+192]
-        inc     dword ptr [edx+192]
-        imul    eax,24
-        mov     ecx,edx
-        add     ecx,eax
-        mov     eax,[edx]
-        mov     ebx,[edx+4]
-        mov     [ecx],eax
-        mov     [ecx+4],ebx
-        mov     eax,[edx+8]
-        mov     ebx,[edx+12]
-        mov     [ecx+8],eax
-        mov     [ecx+12],ebx
-        mov     eax,[edx+16]
-        mov     ebx,[edx+20]
-        mov     [ecx+16],eax
-        mov     [ecx+20],ebx
+        mov     eax,[ebp+8]
+        mov     ecx,[eax+192]
+        inc     dword ptr [eax+192]
+        imul    ecx,24
+        mov     eax,[ebp+8]
+        add     eax,ecx
+        mov     ecx,[ebp+8]
+        mov     edx,[ecx]
+        mov     ebx,[ecx+4]
+        mov     [eax],edx
+        mov     [eax+4],ebx
+        mov     edx,[ecx+8]
+        mov     ebx,[ecx+12]
+        mov     [eax+8],edx
+        mov     [eax+12],ebx
+        mov     edx,[ecx+16]
+        mov     ebx,[ecx+20]
+        mov     [eax+16],edx
+        mov     [eax+20],ebx
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,140
+        add     esp,136
         pop     ebp
         ret
 __clip_on_plain endp    
@@ -851,63 +1154,112 @@ __transform_to_projection_space proc
         mov     esi,[ebp+8]
 ; start of inline function vec4f_assign
         movss   xmm7,dword ptr [___unnamed_float_1]
-        movss   xmm6,dword ptr [edi+8]
-        movss   xmm5,dword ptr [edi+4]
-        movss   xmm4,dword ptr [edi]
-        movss   dword ptr [ebp-16],xmm4
-        movss   dword ptr [ebp-12],xmm5
-        movss   dword ptr [ebp-8],xmm6
-        movss   dword ptr [ebp-4],xmm7
+        mov     eax,edi
+        movss   xmm6,dword ptr [eax+8]
+        mov     eax,edi
+        movss   xmm5,dword ptr [eax+4]
+        mov     eax,edi
+        movss   xmm4,dword ptr [eax]
+        lea     eax,[ebp-16]
+        mov     edi,eax
+        mov     eax,edi
+        movss   dword ptr [eax],xmm4
+        mov     eax,edi
+        movss   xmm4,xmm5
+        movss   dword ptr [eax+4],xmm4
+        mov     eax,edi
+        movss   xmm4,xmm6
+        movss   dword ptr [eax+8],xmm4
+        mov     eax,edi
+        movss   xmm4,xmm7
+        movss   dword ptr [eax+12],xmm4
 ; end of inline function vec4f_assign
 ; start of inline function matrix4f_transform
-        movss   xmm4,dword ptr [ebp-12]
-        mulss   xmm4,dword ptr [__mvproj_matrix+16]
-        movss   xmm5,dword ptr [ebp-16]
-        mulss   xmm5,dword ptr [__mvproj_matrix]
+        mov     edi,(offset __mvproj_matrix)
+        lea     eax,[ebp-16]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm4,dword ptr [ecx+4]
+        mulss   xmm4,dword ptr [edx+16]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm5,dword ptr [ecx]
+        mulss   xmm5,dword ptr [edx]
         addss   xmm5,xmm4
-        movss   xmm4,dword ptr [ebp-8]
-        mulss   xmm4,dword ptr [__mvproj_matrix+32]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm4,dword ptr [ecx+8]
+        mulss   xmm4,dword ptr [edx+32]
         addss   xmm5,xmm4
-        movss   xmm4,dword ptr [ebp-4]
-        mulss   xmm4,dword ptr [__mvproj_matrix+48]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm4,dword ptr [ecx+12]
+        mulss   xmm4,dword ptr [edx+48]
         addss   xmm5,xmm4
-        movss   dword ptr [esi],xmm5
-        movss   xmm4,dword ptr [ebp-16]
-        mulss   xmm4,dword ptr [__mvproj_matrix+4]
-        movss   xmm5,dword ptr [ebp-12]
-        mulss   xmm5,dword ptr [__mvproj_matrix+20]
+        mov     ecx,esi
+        movss   dword ptr [ecx],xmm5
+        mov     ecx,edi
+        mov     edx,eax
+        movss   xmm4,dword ptr [edx]
+        mulss   xmm4,dword ptr [ecx+4]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm5,dword ptr [ecx+4]
+        mulss   xmm5,dword ptr [edx+20]
         addss   xmm4,xmm5
-        movss   xmm5,dword ptr [ebp-8]
-        mulss   xmm5,dword ptr [__mvproj_matrix+36]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm5,dword ptr [ecx+8]
+        mulss   xmm5,dword ptr [edx+36]
         addss   xmm4,xmm5
-        movss   xmm5,dword ptr [ebp-4]
-        mulss   xmm5,dword ptr [__mvproj_matrix+52]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm5,dword ptr [ecx+12]
+        mulss   xmm5,dword ptr [edx+52]
         addss   xmm4,xmm5
-        movss   dword ptr [esi+4],xmm4
-        movss   xmm4,dword ptr [ebp-16]
-        mulss   xmm4,dword ptr [__mvproj_matrix+8]
-        movss   xmm5,dword ptr [ebp-12]
-        mulss   xmm5,dword ptr [__mvproj_matrix+24]
+        mov     ecx,esi
+        movss   dword ptr [ecx+4],xmm4
+        mov     ecx,edi
+        mov     edx,eax
+        movss   xmm4,dword ptr [edx]
+        mulss   xmm4,dword ptr [ecx+8]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm5,dword ptr [ecx+4]
+        mulss   xmm5,dword ptr [edx+24]
         addss   xmm4,xmm5
-        movss   xmm5,dword ptr [ebp-8]
-        mulss   xmm5,dword ptr [__mvproj_matrix+40]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm5,dword ptr [ecx+8]
+        mulss   xmm5,dword ptr [edx+40]
         addss   xmm4,xmm5
-        movss   xmm5,dword ptr [ebp-4]
-        mulss   xmm5,dword ptr [__mvproj_matrix+56]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm5,dword ptr [ecx+12]
+        mulss   xmm5,dword ptr [edx+56]
         addss   xmm4,xmm5
-        movss   dword ptr [esi+8],xmm4
-        movss   xmm4,dword ptr [ebp-16]
-        mulss   xmm4,dword ptr [__mvproj_matrix+12]
-        movss   xmm5,dword ptr [ebp-12]
-        mulss   xmm5,dword ptr [__mvproj_matrix+28]
+        mov     ecx,esi
+        movss   dword ptr [ecx+8],xmm4
+        mov     ecx,edi
+        mov     edx,eax
+        movss   xmm4,dword ptr [edx]
+        mulss   xmm4,dword ptr [ecx+12]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm5,dword ptr [ecx+4]
+        mulss   xmm5,dword ptr [edx+28]
         addss   xmm4,xmm5
-        movss   xmm5,dword ptr [ebp-8]
-        mulss   xmm5,dword ptr [__mvproj_matrix+44]
+        mov     ecx,eax
+        mov     edx,edi
+        movss   xmm5,dword ptr [ecx+8]
+        mulss   xmm5,dword ptr [edx+44]
         addss   xmm4,xmm5
-        movss   xmm5,dword ptr [ebp-4]
-        mulss   xmm5,dword ptr [__mvproj_matrix+60]
+        mov     ecx,edi
+        movss   xmm5,dword ptr [eax+12]
+        mulss   xmm5,dword ptr [ecx+60]
         addss   xmm4,xmm5
-        movss   dword ptr [esi+12],xmm4
+        mov     eax,esi
+        movss   dword ptr [eax+12],xmm4
 ; end of inline function matrix4f_transform
         pop     esi
         pop     edi
@@ -919,7 +1271,7 @@ __transform_to_projection_space endp
 _rasterizer_triangle3f proc
         push    ebp
         mov     ebp,esp
-        sub     esp,724
+        sub     esp,792
         push    edi
         push    esi
         push    ebx
@@ -949,10 +1301,11 @@ _rasterizer_triangle3f proc
         lea     eax,[ebp-196]
         add     eax,24
         add     eax,16
-        mov     ecx,[esi]
-        mov     ebx,[esi+4]
-        mov     [eax],ecx
-        mov     [eax+4],ebx
+        mov     ecx,esi
+        mov     ebx,[ecx]
+        mov     ecx,[ecx+4]
+        mov     [eax],ebx
+        mov     [eax+4],ecx
         push    dword ptr [ebp+16]
         lea     eax,[ebp-196]
         add     eax,48
@@ -962,10 +1315,11 @@ _rasterizer_triangle3f proc
         lea     eax,[ebp-196]
         add     eax,48
         add     eax,16
-        mov     ecx,[edi]
-        mov     ebx,[edi+4]
-        mov     [eax],ecx
-        mov     [eax+4],ebx
+        mov     ecx,edi
+        mov     ebx,[ecx]
+        mov     ecx,[ecx+4]
+        mov     [eax],ebx
+        mov     [eax+4],ecx
         lea     eax,[ebp-196]
         add     eax,72
         mov     ecx,[ebp-196]
@@ -984,9 +1338,11 @@ _rasterizer_triangle3f proc
         add     eax,192
         mov     dword ptr [eax],4
 ; start of inline function _rasterize_polygon_4f
-        lea     edi,[ebp-196]
+        lea     eax,[ebp-196]
+        mov     edi,eax
 ; start of inline function _clip_poligon
-        mov     esi,edi
+        mov     eax,edi
+        mov     esi,eax
         lea     eax,dword ptr [__clip_z_far_norm]
         push    eax
         lea     eax,dword ptr [__clip_z_far_base]
@@ -1041,104 +1397,156 @@ _rasterizer_triangle3f proc
         push    esi
         call    __clip_on_plain
         add     esp,16
-        cmp     dword ptr [esi+192],1
+        mov     eax,esi
+        cmp     dword ptr [eax+192],1
         setg    al
         movzx   eax,al
+        mov     esi,eax
 ; end of inline function _clip_poligon
+        mov     eax,esi
         cmp     eax,0
         jne     label0000
         jmp     label002d
 label0000:
-        cmp     dword ptr [edi+192],8
+        mov     eax,edi
+        cmp     dword ptr [eax+192],8
         jle     label0001
         mov     dword ptr ds:[0],0
 label0001:
         mov     esi,0
 label0003:
-        mov     eax,[edi+192]
+        mov     eax,edi
+        mov     eax,[eax+192]
         cmp     eax,esi
         jle     label0004
 ; start of inline function _transform_to_screen_space
-        mov     ebx,edi
-        mov     eax,esi
-        imul    eax,24
-        add     ebx,eax
-        lea     ecx,[ebp-332]
-        mov     eax,esi
-        sal     eax,4
-        add     ecx,eax
+        mov     eax,edi
+        mov     ecx,esi
+        imul    ecx,24
+        add     eax,ecx
+        mov     ebx,eax
+        lea     eax,[ebp-332]
+        mov     ecx,esi
+        sal     ecx,4
+        add     eax,ecx
+        mov     ecx,eax
 ; start of inline function matrix4f_transform
-        movss   xmm0,dword ptr [ebx+4]
-        mulss   xmm0,dword ptr [__viewport_matrix+16]
-        movss   xmm1,dword ptr [ebx]
-        mulss   xmm1,dword ptr [__viewport_matrix]
+        mov     eax,(offset __viewport_matrix)
+        lea     edx,[ebp-688]
+        mov     [ebp-200],edi
+        mov     edi,ebx
+        mov     [ebp-336],esi
+        mov     esi,eax
+        movss   xmm0,dword ptr [edi+4]
+        mulss   xmm0,dword ptr [esi+16]
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm1,dword ptr [esi]
+        mulss   xmm1,dword ptr [edi]
         addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebx+8]
-        mulss   xmm0,dword ptr [__viewport_matrix+32]
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm0,dword ptr [esi+8]
+        mulss   xmm0,dword ptr [edi+32]
         addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebx+12]
-        mulss   xmm0,dword ptr [__viewport_matrix+48]
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm0,dword ptr [esi+12]
+        mulss   xmm0,dword ptr [edi+48]
         addss   xmm1,xmm0
-        movss   dword ptr [ebp-688],xmm1
-        movss   xmm0,dword ptr [ebx]
-        mulss   xmm0,dword ptr [__viewport_matrix+4]
-        movss   xmm1,dword ptr [ebx+4]
-        mulss   xmm1,dword ptr [__viewport_matrix+20]
+        mov     esi,edx
+        movss   dword ptr [esi],xmm1
+        mov     esi,eax
+        mov     edi,ebx
+        movss   xmm0,dword ptr [edi]
+        mulss   xmm0,dword ptr [esi+4]
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm1,dword ptr [esi+4]
+        mulss   xmm1,dword ptr [edi+20]
         addss   xmm0,xmm1
-        movss   xmm1,dword ptr [ebx+8]
-        mulss   xmm1,dword ptr [__viewport_matrix+36]
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm1,dword ptr [esi+8]
+        mulss   xmm1,dword ptr [edi+36]
+        addss   xmm0,xmm1
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm1,dword ptr [esi+12]
+        mulss   xmm1,dword ptr [edi+52]
+        addss   xmm0,xmm1
+        mov     esi,edx
+        movss   dword ptr [esi+4],xmm0
+        mov     esi,eax
+        mov     edi,ebx
+        movss   xmm0,dword ptr [edi]
+        mulss   xmm0,dword ptr [esi+8]
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm1,dword ptr [esi+4]
+        mulss   xmm1,dword ptr [edi+24]
+        addss   xmm0,xmm1
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm1,dword ptr [esi+8]
+        mulss   xmm1,dword ptr [edi+40]
+        addss   xmm0,xmm1
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm1,dword ptr [esi+12]
+        mulss   xmm1,dword ptr [edi+56]
+        addss   xmm0,xmm1
+        mov     esi,edx
+        movss   dword ptr [esi+8],xmm0
+        mov     esi,eax
+        mov     edi,ebx
+        movss   xmm0,dword ptr [edi]
+        mulss   xmm0,dword ptr [esi+12]
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm1,dword ptr [esi+4]
+        mulss   xmm1,dword ptr [edi+28]
+        addss   xmm0,xmm1
+        mov     esi,ebx
+        mov     edi,eax
+        movss   xmm1,dword ptr [esi+8]
+        mulss   xmm1,dword ptr [edi+44]
         addss   xmm0,xmm1
         movss   xmm1,dword ptr [ebx+12]
-        mulss   xmm1,dword ptr [__viewport_matrix+52]
+        mulss   xmm1,dword ptr [eax+60]
         addss   xmm0,xmm1
-        movss   dword ptr [ebp-684],xmm0
-        movss   xmm0,dword ptr [ebx]
-        mulss   xmm0,dword ptr [__viewport_matrix+8]
-        movss   xmm1,dword ptr [ebx+4]
-        mulss   xmm1,dword ptr [__viewport_matrix+24]
-        addss   xmm0,xmm1
-        movss   xmm1,dword ptr [ebx+8]
-        mulss   xmm1,dword ptr [__viewport_matrix+40]
-        addss   xmm0,xmm1
-        movss   xmm1,dword ptr [ebx+12]
-        mulss   xmm1,dword ptr [__viewport_matrix+56]
-        addss   xmm0,xmm1
-        movss   dword ptr [ebp-680],xmm0
-        movss   xmm0,dword ptr [ebx]
-        mulss   xmm0,dword ptr [__viewport_matrix+12]
-        movss   xmm1,dword ptr [ebx+4]
-        mulss   xmm1,dword ptr [__viewport_matrix+28]
-        addss   xmm0,xmm1
-        movss   xmm1,dword ptr [ebx+8]
-        mulss   xmm1,dword ptr [__viewport_matrix+44]
-        addss   xmm0,xmm1
-        movss   xmm1,dword ptr [ebx+12]
-        mulss   xmm1,dword ptr [__viewport_matrix+60]
-        addss   xmm0,xmm1
-        movss   dword ptr [ebp-676],xmm0
+        mov     eax,edx
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function matrix4f_transform
         lea     eax,[ebp-688]
         add     eax,12
-        movss   xmm1,dword ptr [___unnamed_float_1]
-        divss   xmm1,dword ptr [eax]
+        movss   xmm0,dword ptr [___unnamed_float_1]
+        divss   xmm0,dword ptr [eax]
+        movss   xmm1,xmm0
         movss   xmm0,dword ptr [ebp-688]
         mulss   xmm0,xmm1
         cvttss2si       eax,xmm0
-        mov     [ecx],eax
+        mov     edx,ecx
+        mov     [edx],eax
         lea     eax,[ebp-688]
         add     eax,4
         movss   xmm0,dword ptr [eax]
         mulss   xmm0,xmm1
         cvttss2si       eax,xmm0
-        mov     [ecx+4],eax
-        cmp     dword ptr [ecx],0
+        mov     edx,ecx
+        mov     [edx+4],eax
+        mov     eax,ecx
+        cmp     dword ptr [eax],0
         jl      label002a
-        mov     eax,[ecx]
+        mov     eax,ecx
+        mov     eax,[eax]
         cmp     eax,dword ptr [__width]
         jge     label002a
-        cmp     dword ptr [ecx+4],0
+        mov     eax,ecx
+        cmp     dword ptr [eax+4],0
         jl      label002a
-        mov     eax,[ecx+4]
+        mov     eax,ecx
+        mov     eax,[eax+4]
         cmp     eax,dword ptr [__height]
         jl      label0029
 label002a:
@@ -1146,120 +1554,153 @@ label002a:
 label0029:
 ; end of inline function _transform_to_screen_space
         lea     eax,[ebp-332]
-        mov     ecx,esi
+        mov     ecx,[ebp-336]
         sal     ecx,4
         add     eax,ecx
         add     eax,8
-        mov     ecx,edi
-        mov     ebx,esi
-        imul    ebx,24
-        add     ecx,ebx
+        mov     ecx,[ebp-200]
+        mov     edx,[ebp-336]
+        imul    edx,24
+        add     ecx,edx
         add     ecx,16
-        mov     ebx,[ecx]
+        mov     edx,[ecx]
         mov     ecx,[ecx+4]
-        mov     [eax],ebx
+        mov     [eax],edx
         mov     [eax+4],ecx
-        inc     esi
+        inc     dword ptr [ebp-336]
+        mov     esi,[ebp-336]
+        mov     edi,[ebp-200]
         jmp     label0003
 label0004:
         mov     esi,2
 label0006:
-        mov     eax,[edi+192]
+        mov     eax,edi
+        mov     eax,[eax+192]
         dec     eax
         cmp     eax,esi
         jle     label0007
 ; start of inline function _rasterize_triangle_2i
-        lea     ebx,[ebp-332]
-        mov     eax,esi
-        sal     eax,4
-        add     ebx,eax
+        lea     eax,[ebp-332]
+        mov     ecx,esi
+        sal     ecx,4
+        add     eax,ecx
+        mov     ebx,eax
         mov     eax,esi
         dec     eax
         sal     eax,4
         lea     ecx,[ebp-332]
         add     ecx,eax
         lea     eax,[ebp-332]
-        mov     edx,[eax+4]
-        cmp     edx,[ecx+4]
+        lea     edx,[eax+4]
+        mov     [ebp-200],edi
+        lea     edi,[ecx+4]
+        mov     edx,[edx]
+        cmp     edx,[edi]
         jle     label0008
-        mov     edx,eax
+        mov     edi,eax
         mov     eax,ecx
-        mov     ecx,edx
+        mov     ecx,edi
 label0008:
-        mov     edx,[eax+4]
-        cmp     edx,[ebx+4]
+        lea     edx,[eax+4]
+        lea     edi,[ebx+4]
+        mov     edx,[edx]
+        cmp     edx,[edi]
         jle     label0009
-        mov     edx,eax
+        mov     edi,eax
         mov     eax,ebx
+        mov     edx,edi
         mov     ebx,edx
 label0009:
-        mov     edx,[ecx+4]
-        cmp     edx,[ebx+4]
+        lea     edx,[ecx+4]
+        lea     edi,[ebx+4]
+        mov     edx,[edx]
+        cmp     edx,[edi]
         jle     label000a
-        mov     edx,ecx
+        mov     edi,ecx
         mov     ecx,ebx
+        mov     edx,edi
         mov     ebx,edx
 label000a:
-        mov     edx,[eax+4]
-        cmp     edx,[ebx+4]
+        lea     edx,[eax+4]
+        lea     edi,[ebx+4]
+        mov     edx,[edx]
+        cmp     edx,[edi]
         jne     label000b
-        cmp     dword ptr [eax+4],0
+        lea     edx,[eax+4]
+        cmp     dword ptr [edx],0
         jl      label000c
-        mov     edx,[eax+4]
+        lea     edx,[eax+4]
+        mov     edx,[edx]
         cmp     edx,dword ptr [__height]
         jge     label000c
 ; start of inline function _rasterize_triangle_1i
         movss   xmm7,dword ptr [___unnamed_float_2]
         movss   xmm6,dword ptr [___unnamed_float_2]
-        mov     edx,ebx
-        mov     [ebp-200],edi
-        mov     edi,ecx
+        mov     edx,8
+        add     edx,ebx
+        mov     edi,edx
+        mov     edx,8
+        add     edx,ecx
         mov     [ebp-336],esi
-        mov     esi,eax
-        mov     [ebp-440],edi
-        mov     edi,[eax+4]
+        mov     esi,8
+        add     esi,eax
+        mov     [ebp-440],edx
+        lea     edx,[eax+4]
+        mov     edx,[edx]
         mov     ebx,[ebx]
         mov     ecx,[ecx]
         mov     eax,[eax]
-        cmp     eax,ecx
+        mov     [ebp-436],edi
+        mov     edi,eax
+        cmp     edi,ecx
         jge     label001c
-        cmp     ebx,ecx
+        mov     edi,ebx
+        cmp     edi,ecx
         jle     label001d
         movss   dword ptr [esp-4],xmm7
         sub     esp,4
         movss   dword ptr [esp-4],xmm6
         sub     esp,4
-        push    dword ptr [esi+12]
-        push    dword ptr [esi+8]
-        push    edi
+        mov     ecx,esi
+        push    dword ptr [ecx+4]
+        mov     ecx,esi
+        push    dword ptr [ecx]
+        push    edx
         push    ebx
         push    eax
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label001e
+        mov     ecx,[ebp-456]
 label001d:
-        cmp     ebx,eax
+        mov     edi,ebx
+        cmp     edi,eax
         jge     label001f
         movss   dword ptr [esp-4],xmm7
         sub     esp,4
         movss   dword ptr [esp-4],xmm6
         sub     esp,4
-        push    dword ptr [edx+12]
-        push    dword ptr [edx+8]
-        push    edi
+        mov     eax,[ebp-436]
+        push    dword ptr [eax+4]
+        mov     eax,[ebp-436]
+        push    dword ptr [eax]
+        push    edx
         push    ecx
         push    ebx
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0020
+        mov     eax,[ebp-460]
 label001f:
         movss   dword ptr [esp-4],xmm7
         sub     esp,4
         movss   dword ptr [esp-4],xmm6
         sub     esp,4
-        push    dword ptr [esi+12]
-        push    dword ptr [esi+8]
-        push    edi
+        mov     ebx,esi
+        push    dword ptr [ebx+4]
+        mov     ebx,esi
+        push    dword ptr [ebx]
+        push    edx
         push    ecx
         push    eax
         call    __rasterize_horiz_line
@@ -1267,8 +1708,10 @@ label001f:
 label0020:
 label001e:
         jmp     label0021
+        mov     ecx,[ebp-456]
 label001c:
-        cmp     ebx,ecx
+        mov     esi,ebx
+        cmp     esi,ecx
         jge     label0022
         xorps   xmm7,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm7
@@ -1276,18 +1719,22 @@ label001c:
         xorps   xmm6,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm6
         sub     esp,4
-        push    dword ptr [edx+12]
-        push    dword ptr [edx+8]
-        push    edi
+        mov     ecx,[ebp-436]
+        push    dword ptr [ecx+4]
+        mov     ecx,[ebp-436]
+        push    dword ptr [ecx]
+        push    edx
         push    eax
         push    ebx
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0023
+        mov     ecx,[ebp-456]
         movss   xmm6,dword ptr [ebp-432]
         movss   xmm7,dword ptr [ebp-428]
 label0022:
-        cmp     ebx,eax
+        mov     esi,ebx
+        cmp     esi,eax
         jle     label0024
         xorps   xmm7,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm7
@@ -1295,18 +1742,17 @@ label0022:
         xorps   xmm6,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm6
         sub     esp,4
-        mov     [ebp-448],edi
-        mov     edi,[ebp-440]
-        push    dword ptr [edi+12]
-        push    dword ptr [edi+8]
-        push    dword ptr [ebp-448]
+        mov     eax,[ebp-440]
+        push    dword ptr [eax+4]
+        mov     eax,[ebp-440]
+        push    dword ptr [eax]
+        push    edx
         push    ebx
         push    ecx
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0025
-        mov     [ebp-440],edi
-        mov     edi,[ebp-448]
+        mov     eax,[ebp-460]
         movss   xmm6,dword ptr [ebp-432]
         movss   xmm7,dword ptr [ebp-428]
 label0024:
@@ -1316,11 +1762,11 @@ label0024:
         xorps   xmm6,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm6
         sub     esp,4
-        mov     [ebp-448],edi
-        mov     edi,[ebp-440]
-        push    dword ptr [edi+12]
-        push    dword ptr [edi+8]
-        push    dword ptr [ebp-448]
+        mov     ebx,[ebp-440]
+        push    dword ptr [ebx+4]
+        mov     ebx,[ebp-440]
+        push    dword ptr [ebx]
+        push    edx
         push    eax
         push    ecx
         call    __rasterize_horiz_line
@@ -1330,484 +1776,606 @@ label0023:
 label0021:
 ; end of inline function _rasterize_triangle_1i
         mov     esi,[ebp-336]
-        mov     edi,[ebp-200]
 label000c:
         jmp     label0027
 label000b:
-        mov     edx,[eax+4]
-label000e:
-        mov     [ebp-200],edi
-        mov     edi,[ecx+4]
-        cmp     edi,edx
-        jle     label000f
-        mov     [ebp-348],eax
-        mov     eax,edx
-        mov     edi,[ebp-348]
-        sub     eax,[edi+4]
-        mov     edi,[ecx]
-        mov     [ebp-356],eax
-        mov     eax,[ebp-348]
-        sub     edi,[eax]
-        mov     [ebp-348],eax
-        mov     eax,[ebp-356]
-        imul    eax,edi
-        mov     edi,[ecx+4]
-        mov     [ebp-356],eax
-        mov     eax,[ebp-348]
-        sub     edi,[eax+4]
-        mov     [ebp-364],edx
-        mov     [ebp-348],eax
-        mov     eax,[ebp-356]
-        cdq
-        idiv    edi
-        mov     edi,[ebp-348]
-        add     eax,[edi]
-        mov     [ebp-356],eax
-        mov     eax,[ebp-364]
-        mov     edx,[ebp-348]
-        sub     eax,[edx+4]
-        mov     edx,[ebx]
-        mov     [ebp-360],eax
-        mov     eax,[ebp-348]
-        sub     edx,[eax]
-        mov     [ebp-348],eax
-        mov     eax,[ebp-360]
-        imul    eax,edx
-        mov     edx,[ebx+4]
-        mov     [ebp-360],eax
-        mov     eax,[ebp-348]
-        sub     edx,[eax+4]
-        mov     [ebp-708],edx
-        mov     [ebp-348],eax
-        mov     eax,[ebp-360]
-        cdq
-        idiv    dword ptr [ebp-708]
-        mov     edx,[ebp-348]
-        add     eax,[edx]
-        mov     edx,[ebp-364]
-        mov     [ebp-360],eax
-        mov     eax,[ebp-348]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm7,edx
-        movss   xmm0,dword ptr [ecx+8]
-        subss   xmm0,dword ptr [eax+8]
-        mulss   xmm7,xmm0
-        mov     edx,[ecx+4]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm0,edx
-        divss   xmm7,xmm0
-        addss   xmm7,dword ptr [eax+8]
-        mov     edx,[ebp-364]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm0,edx
-        movss   xmm1,dword ptr [ebx+8]
-        subss   xmm1,dword ptr [eax+8]
-        mulss   xmm0,xmm1
-        mov     edx,[ebx+4]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm1,edx
-        divss   xmm0,xmm1
-        addss   xmm0,dword ptr [eax+8]
-        mov     edx,[ebp-364]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm1,edx
-        mov     edx,8
-        add     edx,ecx
-        add     edx,4
-        mov     edi,8
-        add     edi,eax
-        add     edi,4
-        movss   xmm2,dword ptr [edx]
-        subss   xmm2,dword ptr [edi]
-        mulss   xmm1,xmm2
-        mov     edx,[ecx+4]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm2,edx
-        divss   xmm1,xmm2
-        mov     edx,8
-        add     edx,eax
-        add     edx,4
-        addss   xmm1,dword ptr [edx]
-        mov     edx,[ebp-364]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm2,edx
-        mov     edx,8
-        add     edx,ebx
-        add     edx,4
-        mov     edi,8
-        add     edi,eax
-        add     edi,4
-        movss   xmm3,dword ptr [edx]
-        subss   xmm3,dword ptr [edi]
-        mulss   xmm2,xmm3
-        mov     edx,[ebx+4]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm3,edx
-        divss   xmm2,xmm3
-        mov     edx,8
-        add     edx,eax
-        add     edx,4
-        addss   xmm2,dword ptr [edx]
-        mov     edx,[ebp-360]
-        sub     edx,[ebp-356]
-        cvtsi2ss        xmm3,edx
-        movss   xmm6,xmm0
-        subss   xmm6,xmm7
-        divss   xmm6,xmm3
-        mov     edx,[ebp-360]
-        sub     edx,[ebp-356]
-        cvtsi2ss        xmm3,edx
-        movss   xmm5,xmm2
-        subss   xmm5,xmm1
-        divss   xmm5,xmm3
-; start of inline function _rasterize_horiz_line__unordered
-        movss   xmm3,xmm2
-        movss   xmm2,xmm0
-        mov     edi,[ebp-364]
-        mov     edx,[ebp-360]
-        mov     [ebp-336],esi
-        mov     esi,[ebp-356]
-        cmp     esi,edx
-        jg      label0013
-        mov     [ebp-344],ecx
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm1
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm7
-        sub     esp,4
-        push    edi
-        push    edx
-        push    esi
-        call    __rasterize_horiz_line
-        add     esp,28
-        jmp     label0014
-        mov     eax,[ebp-348]
-        mov     ecx,[ebp-344]
-label0013:
-        mov     [ebp-348],eax
-        mov     [ebp-344],ecx
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm3
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm2
-        sub     esp,4
-        push    edi
-        push    esi
-        push    edx
-        call    __rasterize_horiz_line
-        add     esp,28
-label0014:
-; end of inline function _rasterize_horiz_line__unordered
-        inc     dword ptr [ebp-364]
-        mov     eax,[ebp-348]
-        mov     ecx,[ebp-344]
-        mov     edx,[ebp-364]
-        mov     esi,[ebp-336]
-        mov     edi,[ebp-200]
-        jmp     label000e
-        mov     [ebp-200],edi
-label000f:
-        mov     [ebp-348],eax
-        mov     eax,[ecx+4]
-        mov     edi,[ebp-348]
-        sub     eax,[edi+4]
-        mov     edx,[ebx]
-        mov     [ebp-712],eax
-        mov     eax,[ebp-348]
-        sub     edx,[eax]
-        mov     [ebp-348],eax
-        mov     eax,[ebp-712]
-        imul    eax,edx
-        mov     edx,[ebx+4]
-        mov     [ebp-712],eax
-        mov     eax,[ebp-348]
-        sub     edx,[eax+4]
-        mov     [ebp-716],edx
-        mov     [ebp-348],eax
-        mov     eax,[ebp-712]
-        cdq
-        idiv    dword ptr [ebp-716]
-        mov     edx,[ebp-348]
-        add     eax,[edx]
-        mov     edx,[ecx+4]
-        mov     [ebp-360],eax
-        mov     eax,[ebp-348]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm0,edx
-        movss   xmm1,dword ptr [ebx+8]
-        subss   xmm1,dword ptr [eax+8]
-        mulss   xmm0,xmm1
-        mov     edx,[ebx+4]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm1,edx
-        divss   xmm0,xmm1
-        addss   xmm0,dword ptr [eax+8]
-        mov     edx,[ecx+4]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm1,edx
-        mov     edx,8
-        add     edx,ebx
-        add     edx,4
-        mov     edi,8
-        add     edi,eax
-        add     edi,4
-        movss   xmm2,dword ptr [edx]
-        subss   xmm2,dword ptr [edi]
-        mulss   xmm1,xmm2
-        mov     edx,[ebx+4]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm2,edx
-        divss   xmm1,xmm2
-        mov     edx,8
-        add     edx,eax
-        add     edx,4
-        addss   xmm1,dword ptr [edx]
-        movss   xmm2,xmm1
-        movss   xmm1,xmm0
-        subss   xmm1,dword ptr [ecx+8]
-        mov     edx,[ebp-360]
-        sub     edx,[ecx]
-        cvtsi2ss        xmm3,edx
-        divss   xmm1,xmm3
-        movss   xmm6,xmm1
-        mov     edx,8
-        add     edx,ecx
-        add     edx,4
-        movss   xmm1,xmm2
-        subss   xmm1,dword ptr [edx]
-        mov     edx,[ebp-360]
-        sub     edx,[ecx]
-        cvtsi2ss        xmm3,edx
-        divss   xmm1,xmm3
-        movss   xmm5,xmm1
-; start of inline function _rasterize_horiz_line__unordered
-        mov     edx,8
-        add     edx,ecx
-        add     edx,4
-        movss   xmm3,dword ptr [edx]
-        movss   dword ptr [ebp-380],xmm2
-        movss   xmm2,dword ptr [ecx+8]
-        movss   xmm1,dword ptr [ebp-380]
-        movss   xmm7,xmm0
-        mov     edx,[ecx+4]
+        lea     edx,[eax+4]
+        mov     edx,[edx]
         mov     edi,edx
-        mov     edx,[ecx]
+label000e:
+        lea     edx,[ecx+4]
+        mov     edx,[edx]
+        cmp     edx,edi
+        jle     label000f
+        lea     edx,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,edi
+        sub     eax,[edx]
+        mov     edx,ecx
         mov     [ebp-336],esi
-        mov     esi,[ebp-360]
-        cmp     esi,edx
-        jg      label0016
-        mov     [ebp-344],ecx
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm1
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm7
-        sub     esp,4
-        push    edi
-        push    edx
-        push    esi
-        call    __rasterize_horiz_line
-        add     esp,28
-        jmp     label0017
-        mov     eax,[ebp-348]
-        mov     ecx,[ebp-344]
-label0016:
-        mov     [ebp-348],eax
-        mov     [ebp-344],ecx
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm3
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm2
-        sub     esp,4
-        push    edi
-        push    esi
-        push    edx
-        call    __rasterize_horiz_line
-        add     esp,28
-label0017:
-; end of inline function _rasterize_horiz_line__unordered
-        mov     edx,1
-        mov     ecx,[ebp-344]
-        add     edx,[ecx+4]
-label0011:
-        mov     esi,[ebx+4]
-        cmp     esi,edx
-        jle     label0012
-        mov     eax,edx
-        sub     eax,[ecx+4]
-        mov     esi,[ebx]
-        sub     esi,[ecx]
-        imul    eax,esi
-        mov     esi,[ebx+4]
-        sub     esi,[ecx+4]
-        mov     [ebp-364],edx
-        cdq
-        idiv    esi
-        add     eax,[ecx]
-        mov     [ebp-356],eax
-        mov     eax,[ebp-364]
-        mov     edi,[ebp-348]
-        sub     eax,[edi+4]
-        mov     edx,[ebx]
-        mov     [ebp-720],eax
-        mov     eax,[ebp-348]
-        sub     edx,[eax]
-        mov     [ebp-348],eax
-        mov     eax,[ebp-720]
+        mov     esi,[ebp-348]
+        mov     edx,[edx]
+        sub     edx,[esi]
         imul    eax,edx
-        mov     edx,[ebx+4]
+        lea     edx,[ecx+4]
+        mov     [ebp-708],eax
+        mov     eax,[ebp-348]
+        lea     esi,[eax+4]
+        mov     edx,[edx]
+        sub     edx,[esi]
+        mov     [ebp-712],edx
+        mov     [ebp-348],eax
+        mov     eax,[ebp-708]
+        cdq
+        idiv    dword ptr [ebp-712]
+        mov     edx,[ebp-348]
+        add     eax,[edx]
+        mov     esi,eax
+        mov     edx,[ebp-348]
+        lea     eax,[edx+4]
+        mov     [ebp-716],eax
+        mov     eax,edi
+        mov     edx,[ebp-716]
+        sub     eax,[edx]
+        mov     edx,ebx
+        mov     [ebp-356],esi
+        mov     esi,[ebp-348]
+        mov     edx,[edx]
+        sub     edx,[esi]
+        imul    eax,edx
+        lea     edx,[ebx+4]
         mov     [ebp-720],eax
         mov     eax,[ebp-348]
-        sub     edx,[eax+4]
+        lea     esi,[eax+4]
+        mov     edx,[edx]
+        sub     edx,[esi]
         mov     [ebp-724],edx
         mov     [ebp-348],eax
         mov     eax,[ebp-720]
         cdq
         idiv    dword ptr [ebp-724]
-        mov     esi,[ebp-348]
-        add     eax,[esi]
-        mov     edx,[ebp-364]
-        sub     edx,[ecx+4]
+        mov     edx,[ebp-348]
+        add     eax,[edx]
+        mov     esi,eax
+        mov     edx,[ebp-348]
+        lea     eax,[edx+4]
+        mov     edx,edi
+        sub     edx,[eax]
         cvtsi2ss        xmm0,edx
-        movss   xmm1,dword ptr [ebx+8]
-        subss   xmm1,dword ptr [ecx+8]
+        mov     eax,ecx
+        mov     edx,[ebp-348]
+        movss   xmm1,dword ptr [eax+8]
+        subss   xmm1,dword ptr [edx+8]
         mulss   xmm0,xmm1
-        mov     edx,[ebx+4]
-        sub     edx,[ecx+4]
-        cvtsi2ss        xmm1,edx
-        divss   xmm0,xmm1
-        addss   xmm0,dword ptr [ecx+8]
-        movss   xmm7,xmm0
-        mov     edx,[ebp-364]
-        mov     [ebp-360],eax
+        lea     eax,[ecx+4]
+        mov     [ebp-728],eax
         mov     eax,[ebp-348]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm0,edx
-        movss   xmm1,dword ptr [ebx+8]
-        subss   xmm1,dword ptr [eax+8]
-        mulss   xmm0,xmm1
-        mov     edx,[ebx+4]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm1,edx
+        lea     edx,[eax+4]
+        mov     [ebp-360],esi
+        mov     [ebp-348],eax
+        mov     eax,[ebp-728]
+        mov     esi,[eax]
+        sub     esi,[edx]
+        cvtsi2ss        xmm1,esi
         divss   xmm0,xmm1
+        mov     eax,[ebp-348]
         addss   xmm0,dword ptr [eax+8]
-        mov     edx,[ebp-364]
-        sub     edx,[ecx+4]
-        cvtsi2ss        xmm1,edx
+        movss   xmm1,xmm0
+        mov     esi,[ebp-348]
+        lea     eax,[esi+4]
+        mov     edx,edi
+        sub     edx,[eax]
+        cvtsi2ss        xmm0,edx
+        mov     eax,ebx
+        mov     edx,[ebp-348]
+        movss   xmm2,dword ptr [eax+8]
+        subss   xmm2,dword ptr [edx+8]
+        mulss   xmm0,xmm2
+        lea     eax,[ebx+4]
+        mov     [ebp-732],eax
+        mov     eax,[ebp-348]
+        lea     edx,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,[ebp-732]
+        mov     esi,[eax]
+        sub     esi,[edx]
+        cvtsi2ss        xmm2,esi
+        divss   xmm0,xmm2
+        mov     eax,[ebp-348]
+        addss   xmm0,dword ptr [eax+8]
+        movss   xmm2,xmm0
+        mov     esi,[ebp-348]
+        lea     eax,[esi+4]
+        mov     edx,edi
+        sub     edx,[eax]
+        cvtsi2ss        xmm0,edx
+        mov     eax,8
+        add     eax,ecx
+        add     eax,4
         mov     edx,8
-        add     edx,ebx
+        add     edx,[ebp-348]
         add     edx,4
-        mov     esi,8
-        add     esi,ecx
-        add     esi,4
-        movss   xmm2,dword ptr [edx]
-        subss   xmm2,dword ptr [esi]
-        mulss   xmm1,xmm2
-        mov     edx,[ebx+4]
-        sub     edx,[ecx+4]
-        cvtsi2ss        xmm2,edx
-        divss   xmm1,xmm2
+        movss   xmm3,dword ptr [eax]
+        subss   xmm3,dword ptr [edx]
+        mulss   xmm0,xmm3
+        lea     eax,[ecx+4]
+        mov     [ebp-736],eax
+        mov     eax,[ebp-348]
+        lea     edx,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,[ebp-736]
+        mov     esi,[eax]
+        sub     esi,[edx]
+        cvtsi2ss        xmm3,esi
+        divss   xmm0,xmm3
+        mov     eax,8
+        add     eax,[ebp-348]
+        add     eax,4
+        addss   xmm0,dword ptr [eax]
+        movss   xmm3,xmm0
+        mov     esi,[ebp-348]
+        lea     eax,[esi+4]
+        mov     edx,edi
+        sub     edx,[eax]
+        cvtsi2ss        xmm0,edx
+        mov     eax,8
+        add     eax,ebx
+        add     eax,4
         mov     edx,8
-        add     edx,ecx
+        add     edx,[ebp-348]
         add     edx,4
-        addss   xmm1,dword ptr [edx]
-        mov     edx,[ebp-364]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm2,edx
-        mov     edx,8
-        add     edx,ebx
-        add     edx,4
-        mov     esi,8
-        add     esi,eax
-        add     esi,4
-        movss   xmm3,dword ptr [edx]
-        subss   xmm3,dword ptr [esi]
-        mulss   xmm2,xmm3
-        mov     edx,[ebx+4]
-        sub     edx,[eax+4]
-        cvtsi2ss        xmm3,edx
-        divss   xmm2,xmm3
-        mov     edx,8
-        add     edx,eax
-        add     edx,4
-        addss   xmm2,dword ptr [edx]
-        mov     edx,[ebp-360]
-        sub     edx,[ebp-356]
-        cvtsi2ss        xmm3,edx
-        movss   xmm5,xmm0
-        subss   xmm5,xmm7
-        divss   xmm5,xmm3
-        movss   xmm6,xmm5
-        mov     edx,[ebp-360]
-        sub     edx,[ebp-356]
-        cvtsi2ss        xmm3,edx
+        movss   xmm4,dword ptr [eax]
+        subss   xmm4,dword ptr [edx]
+        mulss   xmm0,xmm4
+        lea     eax,[ebx+4]
+        mov     [ebp-740],eax
+        mov     eax,[ebp-348]
+        lea     edx,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,[ebp-740]
+        mov     esi,[eax]
+        sub     esi,[edx]
+        cvtsi2ss        xmm4,esi
+        divss   xmm0,xmm4
+        mov     eax,8
+        add     eax,[ebp-348]
+        add     eax,4
+        addss   xmm0,dword ptr [eax]
+        movss   xmm4,xmm0
+        mov     eax,[ebp-360]
+        sub     eax,[ebp-356]
+        cvtsi2ss        xmm0,eax
         movss   xmm5,xmm2
         subss   xmm5,xmm1
-        divss   xmm5,xmm3
+        divss   xmm5,xmm0
+        mov     eax,[ebp-360]
+        sub     eax,[ebp-356]
+        cvtsi2ss        xmm0,eax
+        movss   xmm6,xmm4
+        subss   xmm6,xmm3
+        divss   xmm6,xmm0
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   xmm3,xmm2
-        movss   xmm2,xmm0
-        mov     edi,[ebp-364]
-        mov     edx,[ebp-360]
-        mov     esi,[ebp-356]
-        cmp     esi,edx
-        jg      label0019
+        mov     eax,edi
+        mov     esi,eax
+        mov     eax,[ebp-360]
+        mov     edx,eax
+        mov     eax,[ebp-356]
+        mov     [ebp-340],ebx
+        mov     ebx,eax
+        cmp     ebx,edx
+        jg      label0013
         mov     [ebp-344],ecx
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
         movss   dword ptr [esp-4],xmm6
         sub     esp,4
-        movss   dword ptr [esp-4],xmm1
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm7
-        sub     esp,4
-        push    edi
-        push    edx
-        push    esi
-        call    __rasterize_horiz_line
-        add     esp,28
-        jmp     label001a
-        mov     eax,[ebp-348]
-        mov     ecx,[ebp-344]
-label0019:
-        mov     [ebp-348],eax
-        mov     [ebp-344],ecx
         movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm6
         sub     esp,4
         movss   dword ptr [esp-4],xmm3
         sub     esp,4
+        movss   dword ptr [esp-4],xmm1
+        sub     esp,4
+        push    esi
+        push    edx
+        push    eax
+        call    __rasterize_horiz_line
+        add     esp,28
+        jmp     label0014
+        mov     ecx,[ebp-344]
+label0013:
+        mov     [ebp-344],ecx
+        movss   dword ptr [esp-4],xmm6
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm5
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm4
+        sub     esp,4
         movss   dword ptr [esp-4],xmm2
         sub     esp,4
-        push    edi
         push    esi
+        push    eax
+        push    edx
+        call    __rasterize_horiz_line
+        add     esp,28
+label0014:
+; end of inline function _rasterize_horiz_line__unordered
+        inc     edi
+        mov     eax,[ebp-348]
+        mov     ecx,[ebp-344]
+        mov     ebx,[ebp-340]
+        mov     esi,[ebp-336]
+        jmp     label000e
+label000f:
+        lea     edx,[ecx+4]
+        lea     edi,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,[edx]
+        sub     eax,[edi]
+        mov     edx,ebx
+        mov     edi,[ebp-348]
+        mov     edx,[edx]
+        sub     edx,[edi]
+        imul    eax,edx
+        lea     edx,[ebx+4]
+        mov     [ebp-744],eax
+        mov     eax,[ebp-348]
+        lea     edi,[eax+4]
+        mov     edx,[edx]
+        sub     edx,[edi]
+        mov     [ebp-748],edx
+        mov     [ebp-348],eax
+        mov     eax,[ebp-744]
+        cdq
+        idiv    dword ptr [ebp-748]
+        mov     edx,[ebp-348]
+        add     eax,[edx]
+        mov     [ebp-336],esi
+        mov     esi,eax
+        lea     eax,[ecx+4]
+        mov     [ebp-752],eax
+        mov     eax,[ebp-348]
+        lea     edx,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,[ebp-752]
+        mov     edi,[eax]
+        sub     edi,[edx]
+        cvtsi2ss        xmm0,edi
+        mov     eax,ebx
+        mov     edx,[ebp-348]
+        movss   xmm1,dword ptr [eax+8]
+        subss   xmm1,dword ptr [edx+8]
+        mulss   xmm0,xmm1
+        lea     eax,[ebx+4]
+        mov     [ebp-756],eax
+        mov     eax,[ebp-348]
+        lea     edx,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,[ebp-756]
+        mov     edi,[eax]
+        sub     edi,[edx]
+        cvtsi2ss        xmm1,edi
+        divss   xmm0,xmm1
+        mov     eax,[ebp-348]
+        addss   xmm0,dword ptr [eax+8]
+        movss   xmm2,xmm0
+        lea     eax,[ecx+4]
+        mov     [ebp-760],eax
+        mov     eax,[ebp-348]
+        lea     edx,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,[ebp-760]
+        mov     edi,[eax]
+        sub     edi,[edx]
+        cvtsi2ss        xmm0,edi
+        mov     eax,8
+        add     eax,ebx
+        add     eax,4
+        mov     edx,8
+        add     edx,[ebp-348]
+        add     edx,4
+        movss   xmm1,dword ptr [eax]
+        subss   xmm1,dword ptr [edx]
+        mulss   xmm0,xmm1
+        lea     eax,[ebx+4]
+        mov     [ebp-764],eax
+        mov     eax,[ebp-348]
+        lea     edx,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,[ebp-764]
+        mov     edi,[eax]
+        sub     edi,[edx]
+        cvtsi2ss        xmm1,edi
+        divss   xmm0,xmm1
+        mov     eax,8
+        add     eax,[ebp-348]
+        add     eax,4
+        addss   xmm0,dword ptr [eax]
+        movss   xmm4,xmm0
+        mov     eax,ecx
+        movss   xmm0,xmm2
+        subss   xmm0,dword ptr [eax+8]
+        mov     eax,ecx
+        mov     edx,esi
+        sub     edx,[eax]
+        cvtsi2ss        xmm1,edx
+        divss   xmm0,xmm1
+        movss   xmm5,xmm0
+        mov     eax,8
+        add     eax,ecx
+        add     eax,4
+        movss   xmm0,xmm4
+        subss   xmm0,dword ptr [eax]
+        mov     eax,ecx
+        mov     edx,esi
+        sub     edx,[eax]
+        cvtsi2ss        xmm1,edx
+        divss   xmm0,xmm1
+        movss   xmm6,xmm0
+; start of inline function _rasterize_horiz_line__unordered
+        mov     eax,8
+        add     eax,ecx
+        add     eax,4
+        movss   dword ptr [ebp-380],xmm4
+        movss   xmm4,dword ptr [eax]
+        mov     eax,ecx
+        movss   dword ptr [ebp-376],xmm2
+        movss   xmm2,dword ptr [eax+8]
+        movss   xmm3,dword ptr [ebp-380]
+        movss   xmm1,dword ptr [ebp-376]
+        lea     eax,[ecx+4]
+        mov     eax,[eax]
+        mov     [ebp-360],esi
+        mov     esi,eax
+        mov     eax,ecx
+        mov     eax,[eax]
+        mov     edx,eax
+        mov     eax,[ebp-360]
+        mov     edi,eax
+        cmp     edi,edx
+        jg      label0016
+        mov     [ebp-344],ecx
+        movss   dword ptr [esp-4],xmm6
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm5
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm3
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm1
+        sub     esp,4
+        push    esi
+        push    edx
+        push    eax
+        call    __rasterize_horiz_line
+        add     esp,28
+        jmp     label0017
+        mov     ecx,[ebp-344]
+label0016:
+        mov     [ebp-344],ecx
+        movss   dword ptr [esp-4],xmm6
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm5
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm4
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm2
+        sub     esp,4
+        push    esi
+        push    eax
+        push    edx
+        call    __rasterize_horiz_line
+        add     esp,28
+label0017:
+; end of inline function _rasterize_horiz_line__unordered
+        mov     ecx,[ebp-344]
+        lea     eax,[ecx+4]
+        mov     edx,1
+        add     edx,[eax]
+        mov     edi,edx
+label0011:
+        lea     eax,[ebx+4]
+        mov     eax,[eax]
+        cmp     eax,edi
+        jle     label0012
+        lea     eax,[ecx+4]
+        mov     [ebp-768],eax
+        mov     eax,edi
+        mov     edx,[ebp-768]
+        sub     eax,[edx]
+        mov     esi,ebx
+        mov     edx,ecx
+        mov     esi,[esi]
+        sub     esi,[edx]
+        imul    eax,esi
+        lea     edx,[ebx+4]
+        lea     esi,[ecx+4]
+        mov     edx,[edx]
+        sub     edx,[esi]
+        mov     [ebp-772],edx
+        cdq
+        idiv    dword ptr [ebp-772]
+        mov     edx,ecx
+        add     eax,[edx]
+        mov     esi,eax
+        mov     edx,[ebp-348]
+        lea     eax,[edx+4]
+        mov     [ebp-776],eax
+        mov     eax,edi
+        mov     edx,[ebp-776]
+        sub     eax,[edx]
+        mov     edx,ebx
+        mov     [ebp-356],esi
+        mov     esi,[ebp-348]
+        mov     edx,[edx]
+        sub     edx,[esi]
+        imul    eax,edx
+        lea     edx,[ebx+4]
+        mov     [ebp-780],eax
+        mov     eax,[ebp-348]
+        lea     esi,[eax+4]
+        mov     edx,[edx]
+        sub     edx,[esi]
+        mov     [ebp-784],edx
+        mov     [ebp-348],eax
+        mov     eax,[ebp-780]
+        cdq
+        idiv    dword ptr [ebp-784]
+        mov     edx,[ebp-348]
+        add     eax,[edx]
+        mov     esi,eax
+        lea     eax,[ecx+4]
+        mov     edx,edi
+        sub     edx,[eax]
+        cvtsi2ss        xmm0,edx
+        mov     eax,ebx
+        mov     edx,ecx
+        movss   xmm1,dword ptr [eax+8]
+        subss   xmm1,dword ptr [edx+8]
+        mulss   xmm0,xmm1
+        lea     eax,[ebx+4]
+        lea     edx,[ecx+4]
+        mov     eax,[eax]
+        sub     eax,[edx]
+        cvtsi2ss        xmm1,eax
+        divss   xmm0,xmm1
+        mov     eax,ecx
+        addss   xmm0,dword ptr [eax+8]
+        movss   xmm1,xmm0
+        mov     edx,[ebp-348]
+        lea     eax,[edx+4]
+        mov     edx,edi
+        sub     edx,[eax]
+        cvtsi2ss        xmm0,edx
+        mov     eax,ebx
+        mov     edx,[ebp-348]
+        movss   xmm2,dword ptr [eax+8]
+        subss   xmm2,dword ptr [edx+8]
+        mulss   xmm0,xmm2
+        lea     eax,[ebx+4]
+        mov     [ebp-788],eax
+        mov     eax,[ebp-348]
+        lea     edx,[eax+4]
+        mov     [ebp-360],esi
+        mov     [ebp-348],eax
+        mov     eax,[ebp-788]
+        mov     esi,[eax]
+        sub     esi,[edx]
+        cvtsi2ss        xmm2,esi
+        divss   xmm0,xmm2
+        mov     eax,[ebp-348]
+        addss   xmm0,dword ptr [eax+8]
+        movss   xmm2,xmm0
+        lea     eax,[ecx+4]
+        mov     edx,edi
+        sub     edx,[eax]
+        cvtsi2ss        xmm0,edx
+        mov     eax,8
+        add     eax,ebx
+        add     eax,4
+        mov     edx,8
+        add     edx,ecx
+        add     edx,4
+        movss   xmm3,dword ptr [eax]
+        subss   xmm3,dword ptr [edx]
+        mulss   xmm0,xmm3
+        lea     eax,[ebx+4]
+        lea     edx,[ecx+4]
+        mov     eax,[eax]
+        sub     eax,[edx]
+        cvtsi2ss        xmm3,eax
+        divss   xmm0,xmm3
+        mov     eax,8
+        add     eax,ecx
+        add     eax,4
+        addss   xmm0,dword ptr [eax]
+        movss   xmm3,xmm0
+        mov     esi,[ebp-348]
+        lea     eax,[esi+4]
+        mov     edx,edi
+        sub     edx,[eax]
+        cvtsi2ss        xmm0,edx
+        mov     eax,8
+        add     eax,ebx
+        add     eax,4
+        mov     edx,8
+        add     edx,[ebp-348]
+        add     edx,4
+        movss   xmm4,dword ptr [eax]
+        subss   xmm4,dword ptr [edx]
+        mulss   xmm0,xmm4
+        lea     eax,[ebx+4]
+        mov     [ebp-792],eax
+        mov     eax,[ebp-348]
+        lea     edx,[eax+4]
+        mov     [ebp-348],eax
+        mov     eax,[ebp-792]
+        mov     esi,[eax]
+        sub     esi,[edx]
+        cvtsi2ss        xmm4,esi
+        divss   xmm0,xmm4
+        mov     eax,8
+        add     eax,[ebp-348]
+        add     eax,4
+        addss   xmm0,dword ptr [eax]
+        movss   xmm4,xmm0
+        mov     eax,[ebp-360]
+        sub     eax,[ebp-356]
+        cvtsi2ss        xmm0,eax
+        movss   xmm5,xmm2
+        subss   xmm5,xmm1
+        divss   xmm5,xmm0
+        mov     eax,[ebp-360]
+        sub     eax,[ebp-356]
+        cvtsi2ss        xmm0,eax
+        movss   xmm6,xmm4
+        subss   xmm6,xmm3
+        divss   xmm6,xmm0
+; start of inline function _rasterize_horiz_line__unordered
+        mov     eax,edi
+        mov     esi,eax
+        mov     eax,[ebp-360]
+        mov     edx,eax
+        mov     eax,[ebp-356]
+        mov     [ebp-344],ecx
+        mov     ecx,eax
+        cmp     ecx,edx
+        jg      label0019
+        movss   dword ptr [esp-4],xmm6
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm5
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm3
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm1
+        sub     esp,4
+        push    esi
+        push    edx
+        push    eax
+        call    __rasterize_horiz_line
+        add     esp,28
+        jmp     label001a
+label0019:
+        movss   dword ptr [esp-4],xmm6
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm5
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm4
+        sub     esp,4
+        movss   dword ptr [esp-4],xmm2
+        sub     esp,4
+        push    esi
+        push    eax
         push    edx
         call    __rasterize_horiz_line
         add     esp,28
 label001a:
 ; end of inline function _rasterize_horiz_line__unordered
-        inc     dword ptr [ebp-364]
+        inc     edi
         mov     ecx,[ebp-344]
-        mov     edx,[ebp-364]
         jmp     label0011
 label0012:
         mov     esi,[ebp-336]
-        mov     edi,[ebp-200]
 label0027:
 ; end of inline function _rasterize_triangle_2i
         inc     esi
+        mov     edi,[ebp-200]
         jmp     label0006
 label0007:
 label002d:
@@ -1815,7 +2383,7 @@ label002d:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,724
+        add     esp,792
         pop     ebp
         ret
 _rasterizer_triangle3f endp     

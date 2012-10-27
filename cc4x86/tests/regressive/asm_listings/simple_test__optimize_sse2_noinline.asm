@@ -9,21 +9,16 @@ _test proc
         push    ebp
         mov     ebp,esp
         sub     esp,12
-        push    edi
-        mov     edi,2
-        imul    edi,2
-        cmp     edi,4
+        mov     eax,2
+        imul    eax,2
+        cmp     eax,4
         jne     label0000
-        mov     edi,0
-        mov     eax,edi
-        pop     edi
+        mov     eax,0
         add     esp,12
         pop     ebp
         ret
 label0000:
-        mov     edi,1
-        mov     eax,edi
-        pop     edi
+        mov     eax,1
         add     esp,12
         pop     ebp
         ret
