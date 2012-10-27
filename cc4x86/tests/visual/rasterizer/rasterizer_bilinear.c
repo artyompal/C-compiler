@@ -359,7 +359,7 @@ void rasterizer_set_texture(void *texture_data, int texture_width, int texture_h
 static void _rasterize_horiz_line(int x1, int x2, int y, float u, float v, float dudx, float dvdx)
 {
     char *pixel, *line_end;
-    byte blue, green, red, alpha;
+    byte blue, green, alpha;
     byte dst_green, dst_blue;
     float float_alpha;
 

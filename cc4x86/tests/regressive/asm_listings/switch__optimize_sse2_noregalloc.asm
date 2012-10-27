@@ -11,11 +11,12 @@ _test_case proc
         cmp     dword17,1
         je      label0001
         cmp     dword17,2
-        je      label0001
+        je      label0002
         cmp     dword17,3
         je      label0003
         jmp     label0004
 label0001:
+label0002:
         mov     dword12,-1
         set_retval      dword12
         destroy_stack_frame
@@ -40,9 +41,9 @@ _test_case2 proc
         cmp     dword19,1
         je      label0002
         cmp     dword19,2
-        je      label0002
+        je      label0003
         cmp     dword19,3
-        je      label0002
+        je      label0004
         jmp     label0005
 label0001:
         mov     dword14,-1
@@ -50,6 +51,8 @@ label0001:
         destroy_stack_frame
         ret
 label0002:
+label0003:
+label0004:
         mov     dword15,0
         set_retval      dword15
         destroy_stack_frame
@@ -67,9 +70,10 @@ _test_default proc
         cmp     dword19,1
         je      label0001
         cmp     dword19,2
-        je      label0001
+        je      label0002
         jmp     label0003
 label0001:
+label0002:
         mov     dword14,-1
         set_retval      dword14
         destroy_stack_frame
@@ -88,11 +92,12 @@ _test proc
         cmp     dword62,1
         je      label0004
         cmp     dword62,2
-        je      label0004
+        je      label0005
         cmp     dword62,3
         je      label0006
         jmp     label0007
 label0004:
+label0005:
         mov     dword63,-1
         jmp     label0008
 label0006:
@@ -117,14 +122,16 @@ label0000:
         cmp     dword65,1
         je      label000b
         cmp     dword65,2
-        je      label000b
+        je      label000c
         cmp     dword65,3
-        je      label000b
+        je      label000d
         jmp     label000e
 label000a:
         mov     dword66,-1
         jmp     label000f
 label000b:
+label000c:
+label000d:
         mov     dword66,0
         jmp     label000f
 label000e:
@@ -144,9 +151,10 @@ label0001:
         cmp     dword68,1
         je      label0011
         cmp     dword68,2
-        je      label0011
+        je      label0012
         jmp     label0013
 label0011:
+label0012:
         mov     dword69,-1
         jmp     label0016
 label0013:
