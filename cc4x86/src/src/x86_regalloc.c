@@ -106,10 +106,9 @@ static void _clear_register_map(register_map *regmap)
     }
 }
 
-static int _find_register_to_swap(function_desc *function, x86_instruction *insn, register_map *regmap)
+static int _find_register_to_swap(function_desc *function, x86_instruction *insn, register_map *regmap, x86_operand_type type)
 {
     int i, j, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
-    x86_operand_type type       = (regmap == &_dword_register_map ? x86op_dword : x86op_float);
     int busy_regs[X86_MAX_REG]  = {0};
     int free_registers_count    = x86_get_max_register_count(type);
     int last_free_register      = 0;
@@ -147,14 +146,14 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
     if (conflict_reg > 0) {
         if (x86_dataflow_is_pseudoreg_alive_before(function, conflict_reg)) {
             int ofs = pseudoregs_map[conflict_reg].reg_stack_location;
-            int dbl = (regmap == &_dword_register_map ? FALSE : _is_double_register(conflict_reg, pseudoregs_map));
+            int dbl = (type == x86op_dword ? FALSE : _is_double_register(conflict_reg, pseudoregs_map));
 
             if (ofs == -1) {
                 ofs = x86_stack_frame_alloc_tmp_var(function, (dbl ? 8 : 4));
                 pseudoregs_map[conflict_reg].reg_stack_location = ofs;
             }
 
-            if (regmap == &_dword_register_map) {
+            if (type == x86op_dword) {
                 bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, ofs, ~real_reg);
             } else if (!dbl) {
                 bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movss, x86op_float, ofs, ~real_reg);
@@ -184,14 +183,14 @@ static void _force_swap_register(function_desc *function, x86_instruction *insn,
 
 	if (x86_dataflow_is_pseudoreg_alive_after(function, reg) && pseudoregs_map[reg].reg_dirty) {
         int ofs = pseudoregs_map[reg].reg_stack_location;
-        int dbl = (regmap == &_dword_register_map ? FALSE : _is_double_register(reg, pseudoregs_map));
+        int dbl = (type == x86op_dword ? FALSE : _is_double_register(reg, pseudoregs_map));
 
         if (ofs == -1) {
             ofs = x86_stack_frame_alloc_tmp_var(function, (dbl ? 8 : 4));
             pseudoregs_map[reg].reg_stack_location = ofs;
         }
 
-        if (regmap == &_dword_register_map) {
+        if (type == x86op_dword) {
 		    bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, ofs, ~real_reg);
         } else if (!dbl) {
             bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_sse_movss, x86op_float, ofs, ~real_reg);
@@ -284,7 +283,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
     // Ќет свободных регистров, ищем наименее нужный регистр и вытесн€ем его.
     ASSERT(regmap->real_registers_cnt == _get_max_register_count(regmap));
 
-    real_reg = _find_register_to_swap(function, insn, regmap);
+    real_reg = _find_register_to_swap(function, insn, regmap, type);
     _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type);
 
     regmap->real_registers_cnt++;
@@ -737,12 +736,6 @@ static void _merge_register_states(function_desc *function, x86_instruction *ins
 
 static void _allocate_registers(function_desc *function, register_stat *stat, register_map *regmap, x86_operand_type type)
 {
-    //typedef struct jump_desc_decl {
-    //    x86_instruction *jmp_insn;
-    //    register_map    jmp_state;
-    //} jump_desc;
-    //jump_desc           *jumps_register_state;
-
     x86_pseudoreg_info  *pseudoregs_map = stat->ptr;
     x86_instruction     *insn, *next_insn;
     x86_register_ref    registers[MAX_REGISTERS_PER_INSN];
@@ -755,27 +748,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
     // Ќа каждую метку должно быть не более одного перехода вперЄд (назад - сколько угодно).
     labels_register_state   = allocator_alloc(allocator_per_function_pool, sizeof(register_map) * function->func_labels_count);
     memset(labels_register_state, -1, sizeof(register_map) * function->func_labels_count);
-
-    //jumps_register_state    = allocator_alloc(allocator_per_function_pool, sizeof(register_map) * function->func_labels_count);
-
-    //for (i = 0; i < function->func_labels_count; i++) {
-    //    labels_register_state[i].real_registers_cnt = -1;
-    //}
-
-    //for (i = 0; i < function->func_labels_count; i++) {
-    //    jumps_register_state[i].jmp_insn = NULL;
-    //    jumps_register_state[i].real_registers_cnt = -1;
-    //}
-
-    //for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-    //    if (insn->in_code == x86insn_label) {
-    //        ASSERT(insn->in_op1.op_loc == x86loc_label && insn->in_op1.data.label < function->func_labels_count);
-    //        label = insn->in_op1.data.label;
-
-    //        ASSERT(!jumps_register_state[label].jmp_insn);
-    //        jumps_register_state[label].jmp_insn = insn;
-    //    }
-    //}
 
 
     //
@@ -920,7 +892,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
     _free_all_dead_registers(function, regmap);
     ASSERT(regmap->real_registers_cnt == 0 || function->func_binary_code_end->in_code == x86insn_jmp);
 
-    //allocator_free(allocator_per_function_pool, jumps_register_state, sizeof(register_map) * function->func_labels_count);
     allocator_free(allocator_per_function_pool, labels_register_state, sizeof(register_map) * function->func_labels_count);
 }
 
