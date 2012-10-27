@@ -1487,6 +1487,8 @@ label000e:
         mov     eax,[ebp-348]
         mov     ecx,[ebp-344]
 label0013:
+        mov     [ebp-348],eax
+        mov     [ebp-344],ecx
         movss   dword ptr [esp-4],xmm5
         sub     esp,4
         movss   dword ptr [esp-4],xmm6
@@ -1600,6 +1602,7 @@ label000f:
         mov     esi,[ebp-360]
         cmp     esi,edx
         jg      label0016
+        mov     [ebp-344],ecx
         movss   dword ptr [esp-4],xmm5
         sub     esp,4
         movss   dword ptr [esp-4],xmm6
@@ -1617,6 +1620,8 @@ label000f:
         mov     eax,[ebp-348]
         mov     ecx,[ebp-344]
 label0016:
+        mov     [ebp-348],eax
+        mov     [ebp-344],ecx
         movss   dword ptr [esp-4],xmm5
         sub     esp,4
         movss   dword ptr [esp-4],xmm6
@@ -1758,6 +1763,7 @@ label0011:
         mov     esi,[ebp-356]
         cmp     esi,edx
         jg      label0019
+        mov     [ebp-344],ecx
         movss   dword ptr [esp-4],xmm5
         sub     esp,4
         movss   dword ptr [esp-4],xmm6
@@ -1775,6 +1781,8 @@ label0011:
         mov     eax,[ebp-348]
         mov     ecx,[ebp-344]
 label0019:
+        mov     [ebp-348],eax
+        mov     [ebp-344],ecx
         movss   dword ptr [esp-4],xmm5
         sub     esp,4
         movss   dword ptr [esp-4],xmm6

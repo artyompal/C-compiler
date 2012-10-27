@@ -827,6 +827,10 @@ __rasterize_horiz_line proc
         sub     edi,ebx
 label0000:
         mov     [ebp-4],edx
+        movss   dword ptr [ebp+20],xmm4
+        movss   dword ptr [ebp+24],xmm5
+        movss   dword ptr [ebp+28],xmm6
+        movss   dword ptr [ebp+32],xmm7
         push    dword ptr [ebp+24]
         push    dword ptr [ebp+20]
         call    __tex2d

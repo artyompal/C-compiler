@@ -780,6 +780,18 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
             }
         }
 
+        // Если мы переходим метку, мы вынуждены считать, что все выделенные регистры могли быть изменены.
+        // TODO: более точный анализ того, были ли какие-либо регистры изменены.
+        if (insn->in_code == x86insn_label) {
+            for (i = 0; i < bincode_get_max_register(type); i++) {
+                reg = regmap->real_registers_map[i];
+
+                if (reg != -1) {
+                    pseudoregs_map[reg].reg_dirty = TRUE;
+                }
+            }
+        }
+
 		// Обрабатываем инструкции, использующие байтовые регистры.
         if (type == x86op_dword && _handle_byte_registers(function, insn, pseudoregs_map)) {
             continue;

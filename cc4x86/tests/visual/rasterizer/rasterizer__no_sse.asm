@@ -1661,6 +1661,8 @@ label000e:
         mov     eax,[ebp-348]
         mov     ecx,[ebp-344]
 label0013:
+        mov     [ebp-348],eax
+        mov     [ebp-344],ecx
         push    dword ptr [ebp-392]
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-400]
@@ -1784,6 +1786,7 @@ label000f:
         mov     esi,[ebp-360]
         cmp     esi,edx
         jg      label0016
+        mov     [ebp-344],ecx
         push    dword ptr [ebp-392]
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-408]
@@ -1797,6 +1800,8 @@ label000f:
         mov     eax,[ebp-348]
         mov     ecx,[ebp-344]
 label0016:
+        mov     [ebp-348],eax
+        mov     [ebp-344],ecx
         push    dword ptr [ebp-392]
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-400]
@@ -1958,6 +1963,7 @@ label0011:
         mov     esi,[ebp-356]
         cmp     esi,edx
         jg      label0019
+        mov     [ebp-344],ecx
         push    dword ptr [ebp-392]
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-408]
@@ -1971,6 +1977,8 @@ label0011:
         mov     eax,[ebp-348]
         mov     ecx,[ebp-344]
 label0019:
+        mov     [ebp-348],eax
+        mov     [ebp-344],ecx
         push    dword ptr [ebp-392]
         push    dword ptr [ebp-396]
         push    dword ptr [ebp-400]
