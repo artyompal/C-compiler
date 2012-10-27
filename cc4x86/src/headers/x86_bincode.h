@@ -284,7 +284,7 @@ typedef struct x86_instruction_decl {
 #define IS_FLOAT_DEFINING_INSN(INSN)    ((INSN) == x86insn_sse_load_int \
                                         || (INSN) >= x86insn_sse_float2double && (INSN) <= x86insn_sse_movsd \
                                         || (INSN) == x86insn_read_retval)
-#define IS_DEFINING_INSN(INSN, TYPE)    ((TYPE) == x86op_dword && IS_DWORD_DEFINING_INSN(INSN) || (TYPE) == x86op_float && IS_FLOAT_DEFINING_INSN(INSN))
+#define IS_DEFINING_INSN(INSN, TYPE)    ((TYPE) == x86op_dword && IS_DWORD_DEFINING_INSN(INSN) || x86_equal_types((TYPE), x86op_float) && IS_FLOAT_DEFINING_INSN(INSN))
 #define IS_VOLATILE_INSN(INSN, TYPE)    (IS_DEFINING_INSN(INSN, TYPE) || IS_MODIFYING_INSN(INSN))
 
 #define IS_MUL_DIV_INSN(INSN)           ((INSN) >= x86insn_int_idiv && (INSN) <= x86insn_int_div)
@@ -310,10 +310,10 @@ typedef struct x86_instruction_decl {
 #define OP_IS_REGISTER_OR_ADDRESS(OP)   ((OP).op_loc == x86loc_register || (OP).op_loc == x86loc_address)
 #define OP_IS_REAL_REG(OP)              (OP_IS_REGISTER(OP) && (OP).data.reg < 0)
 #define OP_IS_REAL_DWORD_REG(OP)        (OP_IS_DWORD(OP) && OP_IS_REGISTER(OP) && (OP).data.reg < 0)
-#define OP_IS_THIS_REAL_REG(OP, T, REG) (OP_IS_REGISTER(OP) && (OP).op_type == (T) && (OP).data.reg == ~(REG))
+#define OP_IS_THIS_REAL_REG(OP, T, REG) (OP_IS_REGISTER(OP) && x86_equal_types((OP).op_type, (T)) && (OP).data.reg == ~(REG))
 #define OP_IS_PSEUDO_REG(OP)            (OP_IS_REGISTER(OP) && (OP).data.reg > 0)
 #define OP_IS_PSEUDO_DWORD_REG(OP)      (OP_IS_DWORD(OP) && OP_IS_REGISTER(OP) && (OP).data.reg > 0)
-#define OP_IS_THIS_PSEUDO_REG(OP,T,REG) (OP_IS_REGISTER(OP) && (OP).op_type == (T) && (OP).data.reg == (REG))
+#define OP_IS_THIS_PSEUDO_REG(OP,T,REG) (OP_IS_REGISTER(OP) && x86_equal_types((OP).op_type, (T)) && (OP).data.reg == (REG))
 #define OP_IS_CONSTANT(OP)              ((OP).op_loc == x86loc_int_constant)
 #define OP_IS_SPEC_EBP_OFFSET(OP, OFS)  ((OP).op_loc == x86loc_address && (OP).data.address.base == ~x86reg_ebp \
                                         && (OP).data.address.index == 0 && (OP).data.address.offset == (OFS))

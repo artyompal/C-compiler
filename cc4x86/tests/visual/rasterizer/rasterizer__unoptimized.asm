@@ -936,7 +936,7 @@ __rasterize_triangle_1i proc
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
-        jmp     label0004
+        jmp     label0002
 label0001:
         mov     dword18,[ebp+16]
         cmp     dword18,[ebp+8]
@@ -970,7 +970,8 @@ label0003:
         restore_stack   28
         pop_all
 label0004:
-        jmp     label0009
+label0002:
+        jmp     label0005
 label0000:
         mov     dword39,[ebp+16]
         cmp     dword39,[ebp+12]
@@ -992,7 +993,7 @@ label0000:
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
-        jmp     label0009
+        jmp     label0007
 label0006:
         mov     dword51,[ebp+16]
         cmp     dword51,[ebp+8]
@@ -1034,6 +1035,8 @@ label0008:
         restore_stack   28
         pop_all
 label0009:
+label0007:
+label0005:
         destroy_stack_frame
         ret
 __rasterize_triangle_1i endp    

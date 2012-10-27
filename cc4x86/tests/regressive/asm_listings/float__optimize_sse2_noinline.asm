@@ -47,16 +47,14 @@ _fabs proc
         movss   xmm0,dword ptr [___unnamed_float_0]
         comiss  xmm0,xmm7
         ja      label0000
-        movss   xmm7,dword ptr [ebp+8]
-        movss   dword ptr [ebp-4],xmm7
         jmp     label0001
+        movss   xmm7,dword ptr [ebp+8]
 label0000:
-        movss   xmm0,dword ptr [ebp+8]
+        movss   xmm0,xmm7
         xorps   xmm0,dword ptr [___unnamed_float_1]
         movss   xmm7,xmm0
-        movss   dword ptr [ebp-4],xmm7
 label0001:
-        movss   xmm0,dword ptr [ebp-4]
+        movss   xmm0,xmm7
         add     esp,4
         pop     ebp
         ret
@@ -106,8 +104,7 @@ _test proc
         ret
 label0000:
         cvtss2sd        xmm0,dword ptr [ebp-4]
-        movsd   xmm6,qword ptr [ebp-12]
-        subsd   xmm0,xmm6
+        subsd   xmm0,qword ptr [ebp-12]
         movsd   xmm5,xmm0
         movsd   xmm0,qword ptr [___unnamed_double_6]
         movsd   qword ptr [esp-8],xmm0
@@ -124,8 +121,7 @@ label0000:
         ret
 label0001:
         cvtss2sd        xmm0,dword ptr [ebp-4]
-        movsd   xmm6,qword ptr [ebp-12]
-        mulsd   xmm0,xmm6
+        mulsd   xmm0,qword ptr [ebp-12]
         movsd   xmm5,xmm0
         movsd   xmm0,qword ptr [___unnamed_double_7]
         movsd   qword ptr [esp-8],xmm0
@@ -142,8 +138,7 @@ label0001:
         ret
 label0002:
         cvtss2sd        xmm0,dword ptr [ebp-4]
-        movsd   xmm6,qword ptr [ebp-12]
-        divsd   xmm0,xmm6
+        divsd   xmm0,qword ptr [ebp-12]
         movsd   xmm5,xmm0
         movsd   xmm0,qword ptr [___unnamed_double_8]
         movsd   qword ptr [esp-8],xmm0

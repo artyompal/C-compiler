@@ -15,11 +15,12 @@ _test_case proc
         cmp     dword ptr [ebp-8],1
         je      label0001
         cmp     dword ptr [ebp-8],2
-        je      label0001
+        je      label0002
         cmp     dword ptr [ebp-8],3
         je      label0003
         jmp     label0004
 label0001:
+label0002:
         mov     eax,-1
         add     esp,8
         pop     ebp
@@ -51,9 +52,9 @@ _test_case2 proc
         cmp     dword ptr [ebp-8],1
         je      label0002
         cmp     dword ptr [ebp-8],2
-        je      label0002
+        je      label0003
         cmp     dword ptr [ebp-8],3
-        je      label0002
+        je      label0004
         jmp     label0005
 label0001:
         mov     eax,-1
@@ -61,6 +62,8 @@ label0001:
         pop     ebp
         ret
 label0002:
+label0003:
+label0004:
         mov     eax,0
         add     esp,8
         pop     ebp
@@ -85,9 +88,10 @@ _test_default proc
         cmp     dword ptr [ebp-8],1
         je      label0001
         cmp     dword ptr [ebp-8],2
-        je      label0001
+        je      label0002
         jmp     label0003
 label0001:
+label0002:
         mov     eax,-1
         add     esp,8
         pop     ebp

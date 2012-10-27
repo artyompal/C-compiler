@@ -1003,7 +1003,7 @@ _rasterizer_triangle3f proc
 ; end of inline function _clip_poligon
         cmp     dword884,0
         jne     label0000
-        jmp     label0007
+        jmp     label002d
 label0000:
         cmp     dword ptr [dword864+192],8
         jle     label0001
@@ -1190,7 +1190,7 @@ label000a:
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
-        jmp     label0020
+        jmp     label001e
 label001d:
         cmp     dword878,dword876
         jge     label001f
@@ -1219,7 +1219,8 @@ label001f:
         restore_stack   28
         pop_all
 label0020:
-        jmp     label0025
+label001e:
+        jmp     label0021
 label001c:
         cmp     dword878,dword877
         jge     label0022
@@ -1238,7 +1239,7 @@ label001c:
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
-        jmp     label0025
+        jmp     label0023
 label0022:
         cmp     dword878,dword876
         jle     label0024
@@ -1275,9 +1276,11 @@ label0024:
         restore_stack   28
         pop_all
 label0025:
+label0023:
+label0021:
 ; end of inline function _rasterize_triangle_1i
 label000c:
-        jmp     label0012
+        jmp     label0027
 label000b:
         mov     dword872,[dword866+4]
 label000e:
@@ -1673,10 +1676,12 @@ label001a:
         inc     dword872
         jmp     label0011
 label0012:
+label0027:
 ; end of inline function _rasterize_triangle_2i
         inc     dword865
         jmp     label0006
 label0007:
+label002d:
 ; end of inline function _rasterize_polygon_4f
         destroy_stack_frame
         ret
