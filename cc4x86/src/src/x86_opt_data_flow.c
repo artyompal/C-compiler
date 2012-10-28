@@ -218,7 +218,7 @@ static void _build_alivereg_inout(function_desc *function, x86_operand_type type
                 for (j = 0; ; j++) {
                     ASSERT(j < _basic_blocks.blocks_count);
 
-                    if (_basic_blocks.blocks_base[j].block_leader->in_code == x86insn_label && 
+                    if (_basic_blocks.blocks_base[j].block_leader->in_code == x86insn_label &&
                         _basic_blocks.blocks_base[j].block_leader->in_op1.data.label == label) {
                             break;
                         }
@@ -570,9 +570,4 @@ int x86_dataflow_is_pseudoreg_alive_before(function_desc *function, int pseudore
 {
     return BIT_TEST(_alivereg_before_current_insn, pseudoreg);
 }
-
-
-//void x86_dataflow_detect_cycle_invariants(function_desc *function, x86_operand_type type)
-//{
-//}
 

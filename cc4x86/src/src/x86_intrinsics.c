@@ -42,72 +42,105 @@ static void _memcpy_via_dword_mov(x86_operand *dst, x86_operand *src, int size_i
     }
 }
 
-static void _memcpy_via_dword_movs_loop(function_desc *func, x86_operand *dst, x86_operand *src, int size_in_dwords)
+static void _static_memcpy(function_desc *func, x86_operand *dst, x86_operand *src, int size)
 {
-    UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD
+//  mov eax, ecx
+//  shr ecx, 02
+//  repz movsd
+//  mov ecx, eax
+//  and ecx, 3
+//  repz movsb
 
+    x86_operand edi, esi, ecx, num;
 
-    //x86_operand dst_reg, src_reg, count, dst_addr, src_addr, label, tmp;
+    // lea edi, ...
+    bincode_create_operand_and_alloc_pseudoreg(&edi, x86op_dword);
+    unit_push_binary_instruction(x86insn_lea, &edi, dst);
 
+    // lea esi, ...
+    bincode_create_operand_and_alloc_pseudoreg(&esi, x86op_dword);
+    unit_push_binary_instruction(x86insn_lea, &esi, src);
 
-    //bincode_create_operand_and_alloc_pseudoreg(&src_reg, x86op_dword);
-    //unit_push_binary_instruction(x86insn_lea, &src_reg, src);
-    //bincode_create_operand_and_alloc_pseudoreg(&dst_reg, x86op_dword);
-    //unit_push_binary_instruction(x86insn_lea, &dst_reg, dst);
+    // mov ecx, size
+    bincode_create_operand_and_alloc_pseudoreg(&ecx, x86op_dword);
+    bincode_create_operand_from_int_constant(&num, x86op_dword, size / 4);
+    unit_push_binary_instruction(x86insn_int_mov, &ecx, &num);
 
-    //bincode_create_operand_and_alloc_pseudoreg(&count, x86op_dword);
-    //bincode_create_operand_from_int_constant(&tmp, size_in_dwords);
-    //unit_push_binary_instruction(x86insn_int_mov, &count, &tmp);
+    // rep movsd
+    unit_push_binary_instruction(x86insn_rep_movsd, &edi, &esi);
 
-    //bincode_create_operand_from_label(&label, unit_create_label(func));
-    //unit_push_unary_instruction(x86insn_label, &label);
+    if (size % 4 != 0) {
+        // mov ecx, size
+        bincode_create_operand_and_alloc_pseudoreg(&ecx, x86op_dword);
+        bincode_create_operand_from_int_constant(&num, x86op_dword, size % 4);
+        unit_push_binary_instruction(x86insn_int_mov, &ecx, &num);
 
-    //bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_dword);
-    //bincode_create_operand_addr_from_reg(&src_addr, src_reg.data.reg);
-    //unit_push_binary_instruction(x86insn_int_mov, &tmp, &src_addr);
-    //bincode_create_operand_addr_from_reg(&dst_addr, dst_reg.data.reg);
-    //unit_push_binary_instruction(x86insn_int_mov, &dst_addr, &tmp);
-
-    //unit_push_unary_instruction(x86insn_int_dec, &count);
-
-    //bincode_create_operand_addr_from_reg_offset(&src_addr, src_reg.data.reg, 4);
-    //unit_push_binary_instruction(x86insn_lea, &src_reg, &src_addr);
-    //bincode_create_operand_addr_from_reg_offset(&dst_addr, dst_reg.data.reg, 4);
-    //unit_push_binary_instruction(x86insn_lea, &dst_reg, &dst_addr);
-
-    //unit_push_unary_instruction(x86insn_jne, &label);
-}
-
-static void _memcpy_via_byte_movs_loop(x86_operand *dst, x86_operand *src, x86_operand *size)
-{
-    UNIMPLEMENTED_ASSERT(FALSE);    // TODO: реализовать memcpy через MOVSD + MOVSB
+        // rep movsb
+        unit_push_binary_instruction(x86insn_rep_movsb, &edi, &esi);
+    }
 }
 
 
 void x86_intrinsic_static_memcpy(function_desc *func, x86_operand *res, x86_operand *dst, x86_operand *src, int size)
 {
-    x86_operand sz;
-
     ASSERT(dst->op_loc == x86loc_address && src->op_loc == x86loc_address);
 
-    if (size % 4 == 0) {
-        if (size <= 64) {
-            _memcpy_via_dword_mov(dst, src, size / 4);
-        } else {
-            _memcpy_via_dword_movs_loop(func, dst, src, size / 4);
-        }
+    if (size % 4 == 0 && size <= 64) {
+        _memcpy_via_dword_mov(dst, src, size / 4);
     } else {
-        bincode_create_operand_from_int_constant(&sz, x86op_dword, size);
-        _memcpy_via_byte_movs_loop(dst, src, &sz);
+        _static_memcpy(func, dst, src, size);
     }
 
     *res = *dst;
 }
 
-void x86_intrinsic_dynamic_memcpy(function_desc *func, x86_operand *res, x86_operand *dst, x86_operand *src,
-    x86_operand *size)
+void x86_intrinsic_dynamic_memcpy(function_desc *func, x86_operand *res, x86_operand *dst, x86_operand *src, x86_operand *size)
 {
-    _memcpy_via_byte_movs_loop(dst, src, size);
+//  Подразумеваем, что CLD делать не надо.
+
+//  mov eax, ecx
+//  shr ecx, 2
+//  rep movsd
+//  mov ecx, eax
+//  and ecx, 3
+//  rep movsb
+
+    x86_operand edi, esi, ecx, eax, num;
+    ASSERT(dst->op_loc == x86loc_address && src->op_loc == x86loc_address);
+
+    // lea edi, ...
+    bincode_create_operand_and_alloc_pseudoreg(&edi, x86op_dword);
+    unit_push_binary_instruction(x86insn_lea, &edi, dst);
+
+    // lea esi, ...
+    bincode_create_operand_and_alloc_pseudoreg(&esi, x86op_dword);
+    unit_push_binary_instruction(x86insn_lea, &esi, src);
+
+    // mov ecx, size
+    bincode_create_operand_and_alloc_pseudoreg(&ecx, x86op_dword);
+    unit_push_binary_instruction(x86insn_int_mov, &ecx, size);
+
+    // mov eax, size
+    bincode_create_operand_and_alloc_pseudoreg(&eax, x86op_dword);
+    unit_push_binary_instruction(x86insn_int_mov, &eax, &ecx);
+
+    // shr ecx, 2
+    bincode_create_operand_from_int_constant(&num, x86op_dword, 2);
+    unit_push_binary_instruction(x86insn_int_shr, &ecx, &num);
+
+    // rep movsd
+    unit_push_binary_instruction(x86insn_rep_movsd, &edi, &esi);
+
+    // mov ecx, eax
+    unit_push_binary_instruction(x86insn_int_mov, &ecx, &eax);
+
+    // and ecx, 3
+    bincode_create_operand_from_int_constant(&num, x86op_dword, 3);
+    unit_push_binary_instruction(x86insn_int_and, &ecx, &num);
+
+    // rep movsb
+    unit_push_binary_instruction(x86insn_rep_movsb, &edi, &esi);
+
     *res = *dst;
 }
 

@@ -311,7 +311,7 @@ static const char *_encode_hw_type(x86_operand_type hw_type)
 
     case x86op_double:  return "qword ptr";
 
-    default:            ASSERT(FALSE);
+    default:            return "";
     }
 }
 

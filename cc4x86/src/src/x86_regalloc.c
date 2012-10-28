@@ -391,7 +391,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 
         pseudoregs_map[i].reg_first_write       = NULL;
         pseudoregs_map[i].reg_last_read         = NULL;
-        pseudoregs_map[i].reg_changes_value     = 0;
+        pseudoregs_map[i].reg_changes_value     = FALSE;
     }
 
 
@@ -464,6 +464,17 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                     for (last = insn->in_next; last->in_code != x86insn_int_div; last = last->in_next) {}
                     pseudoregs_map[reg].reg_last_read = last;
                 }
+            } else if(insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd) {
+                // Для инструкций REP MOVSB/MOVSD: ставим область использования ECX до этой инструкции,
+                // если он не используется после; ставим также флаг модификации, чтобы защитить регистр от оптимизации.
+                ASSERT(OP_IS_REGISTER(insn->in_prev->in_op1));
+                reg = insn->in_prev->in_op1.data.reg;
+
+                if (pseudoregs_map[reg].reg_last_read == NULL) {
+                    pseudoregs_map[reg].reg_last_read = insn;
+                }
+
+                pseudoregs_map[reg].reg_changes_value = TRUE;
             }
         }
     }
@@ -641,6 +652,13 @@ static void _reserve_special_registers(function_desc *function, x86_pseudoreg_in
         } else if (insn->in_code == x86insn_read_retval) { // FIXME: insn->in_code == x86insn_set_retval???
             ASSERT(OP_IS_PSEUDO_REG(insn->in_op1));
             _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
+        } else if (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd) {
+            ASSERT(insn->in_prev && OP_IS_PSEUDO_REG(insn->in_prev->in_op1));
+            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2));
+
+            _reserve_real_register(pseudoregs_map, insn->in_prev->in_op1.data.reg, x86reg_ecx);
+            _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_edi);
+            _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_esi);
         }
     }
 }
@@ -1035,7 +1053,7 @@ static void _handle_pseudo_instructions(function_desc *function)
             || insn->in_code == x86insn_create_stack_frame || insn->in_code == x86insn_destroy_stack_frame
             || insn->in_code == x86insn_set_retval || insn->in_code == x86insn_read_retval) {
                 bincode_erase_instruction(function, insn);
-        } else if (insn->in_code == x86insn_cdq) {
+        } else if (insn->in_code == x86insn_cdq || insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd) {
             insn->in_op1.op_loc = x86loc_none;
             insn->in_op2.op_loc = x86loc_none;
         } else if (insn->in_code == x86insn_xor_edx_edx) {
