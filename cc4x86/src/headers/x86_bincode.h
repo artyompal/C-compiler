@@ -305,6 +305,7 @@ typedef struct x86_instruction_decl {
 #define OP_IS_DWORD(OP)                 ((OP).op_type == x86op_dword)
 #define OP_IS_FLOAT(OP)                 ((OP).op_type == x86op_float || (OP).op_type == x86op_double)
 #define OP_IS_REGISTER(OP)              ((OP).op_loc == x86loc_register)
+#define OP_IS_TYPED_REGISTER(OP, T)     ((OP).op_loc == x86loc_register && x86_equal_types((OP).op_type, (T)))
 #define OP_IS_ADDRESS(OP)               ((OP).op_loc == x86loc_address)
 #define OP_IS_ADDRESS_OR_SYMBOL(OP)     ((OP).op_loc == x86loc_address || (OP).op_loc == x86loc_symbol)
 #define OP_IS_REGISTER_OR_ADDRESS(OP)   ((OP).op_loc == x86loc_register || (OP).op_loc == x86loc_address)
