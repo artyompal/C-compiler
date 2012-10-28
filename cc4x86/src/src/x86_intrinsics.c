@@ -85,7 +85,7 @@ void x86_intrinsic_static_memcpy(function_desc *func, x86_operand *res, x86_oper
 {
     ASSERT(dst->op_loc == x86loc_address && src->op_loc == x86loc_address);
 
-    if (size % 4 == 0 && size <= 64) {
+    if (size % 4 == 0 && size <= 8) {
         _memcpy_via_dword_mov(dst, src, size / 4);
     } else {
         _static_memcpy(func, dst, src, size);

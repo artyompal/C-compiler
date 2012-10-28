@@ -553,39 +553,13 @@ _rasterizer_set_mvproj proc
         push    ebp
         mov     ebp,esp
         push    edi
+        push    esi
         mov     edi,[ebp+8]
-        mov     eax,[edi]
-        mov     ecx,[edi+4]
-        mov     dword ptr [__mvproj_matrix],eax
-        mov     dword ptr [__mvproj_matrix+4],ecx
-        mov     eax,[edi+8]
-        mov     ecx,[edi+12]
-        mov     dword ptr [__mvproj_matrix+8],eax
-        mov     dword ptr [__mvproj_matrix+12],ecx
-        mov     eax,[edi+16]
-        mov     ecx,[edi+20]
-        mov     dword ptr [__mvproj_matrix+16],eax
-        mov     dword ptr [__mvproj_matrix+20],ecx
-        mov     eax,[edi+24]
-        mov     ecx,[edi+28]
-        mov     dword ptr [__mvproj_matrix+24],eax
-        mov     dword ptr [__mvproj_matrix+28],ecx
-        mov     eax,[edi+32]
-        mov     ecx,[edi+36]
-        mov     dword ptr [__mvproj_matrix+32],eax
-        mov     dword ptr [__mvproj_matrix+36],ecx
-        mov     eax,[edi+40]
-        mov     ecx,[edi+44]
-        mov     dword ptr [__mvproj_matrix+40],eax
-        mov     dword ptr [__mvproj_matrix+44],ecx
-        mov     eax,[edi+48]
-        mov     ecx,[edi+52]
-        mov     dword ptr [__mvproj_matrix+48],eax
-        mov     dword ptr [__mvproj_matrix+52],ecx
-        mov     eax,[edi+56]
-        mov     ecx,[edi+60]
-        mov     dword ptr [__mvproj_matrix+56],eax
-        mov     dword ptr [__mvproj_matrix+60],ecx
+        mov     esi,edi
+        lea     edi, [__mvproj_matrix]
+        mov     ecx,16
+        rep     movsd
+        pop     esi
         pop     edi
         pop     ebp
         ret
@@ -902,21 +876,13 @@ label0001:
         mov     ecx,[eax+192]
         inc     dword ptr [eax+192]
         imul    ecx,24
-        mov     eax,[ebp+8]
-        add     eax,ecx
-        mov     ecx,[ebp-4]
-        mov     edx,[ecx]
-        mov     ebx,[ecx+4]
-        mov     [eax],edx
-        mov     [eax+4],ebx
-        mov     edx,[ecx+8]
-        mov     ebx,[ecx+12]
-        mov     [eax+8],edx
-        mov     [eax+12],ebx
-        mov     edx,[ecx+16]
-        mov     ebx,[ecx+20]
-        mov     [eax+16],edx
-        mov     [eax+20],ebx
+        mov     edi,[ebp+8]
+        add     edi,ecx
+        mov     [ebp+16],esi
+        mov     esi,[ebp-4]
+        mov     ecx,6
+        rep     movsd
+        mov     esi,[ebp+16]
 label0003:
         fldz
         fld     dword ptr [ebp-52]
@@ -1197,21 +1163,11 @@ label0002:
         mov     ecx,[eax+192]
         inc     dword ptr [eax+192]
         imul    ecx,24
-        mov     eax,[ebp+8]
-        add     eax,ecx
-        mov     ecx,[ebp+8]
-        mov     edx,[ecx]
-        mov     ebx,[ecx+4]
-        mov     [eax],edx
-        mov     [eax+4],ebx
-        mov     edx,[ecx+8]
-        mov     ebx,[ecx+12]
-        mov     [eax+8],edx
-        mov     [eax+12],ebx
-        mov     edx,[ecx+16]
-        mov     ebx,[ecx+20]
-        mov     [eax+16],edx
-        mov     [eax+20],ebx
+        mov     edi,[ebp+8]
+        add     edi,ecx
+        mov     esi,[ebp+8]
+        mov     ecx,6
+        rep     movsd
         pop     ebx
         pop     esi
         pop     edi
@@ -1401,20 +1357,11 @@ _rasterizer_triangle3f proc
         mov     ecx,[ecx+4]
         mov     [eax],ebx
         mov     [eax+4],ecx
-        lea     eax,[ebp-196]
-        add     eax,72
-        mov     ecx,[ebp-196]
-        mov     ebx,[ebp-192]
-        mov     [eax],ecx
-        mov     [eax+4],ebx
-        mov     ecx,[ebp-188]
-        mov     ebx,[ebp-184]
-        mov     [eax+8],ecx
-        mov     [eax+12],ebx
-        mov     ecx,[ebp-180]
-        mov     ebx,[ebp-176]
-        mov     [eax+16],ecx
-        mov     [eax+20],ebx
+        lea     edi,[ebp-196]
+        add     edi,72
+        lea     esi,[ebp-196]
+        mov     ecx,6
+        rep     movsd
         lea     eax,[ebp-196]
         add     eax,192
         mov     dword ptr [eax],4

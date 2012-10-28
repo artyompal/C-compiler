@@ -518,7 +518,6 @@ void x86_dataflow_prepare_function(function_desc *function, x86_operand_type typ
     _current_block  = -1;
     _current_insn   = NULL;
 
-
     // Инициализируем структуры для анализа достигающих определений.
     _build_reachingdef_table(function, type);
     _build_reachingdef_inout(function, type);
