@@ -38,11 +38,11 @@ function_desc * unit_get_current_function(void)
 
 function_desc * unit_find_function(symbol *name)
 {
-    function_desc *func = NULL;
+    function_desc *function = NULL;
 
-    for (func = _first_function; func; func = func->func_next) {
-        if (symbol_equal(func->func_sym, name)) {
-            return func;
+    for (function = _first_function; function; function = function->func_next) {
+        if (symbol_equal(function->func_sym, name)) {
+            return function;
         }
     }
 

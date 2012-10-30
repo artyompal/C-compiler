@@ -163,3 +163,72 @@ void aux_replace_file_extension(char *dst, const char *path, const char *extensi
     strcat(dst, extension);
 }
 
+
+void aux_sort_int(int *arr, int count)
+{
+    int *l = arr, *r = arr+count-1;
+    int k, tmp;
+
+    if (count < 2) {
+        return;
+    }
+
+    k = arr[count/2];
+
+    while (l < r) {
+        while (*l < k) l++;
+        while (*r > k) r--;
+
+        tmp = *l, *l = *r, *r = tmp;
+    }
+
+    aux_sort_int(arr, l-arr);
+    aux_sort_int(r, count-(r-arr));
+}
+
+int aux_unique_int(int *arr, int count)
+{
+    int *dst, *src;
+
+    for (dst = arr, src = arr; src < arr + count; src++, dst++) {
+        if (src[0] == src[1]) {
+            src++;
+            break;
+        }
+    }
+
+    for (; src < arr + count; src++, dst++) {
+        *dst = *src;
+
+        while (src[0] == src[1] && src < arr + count) {
+            src++;
+        }
+    }
+
+    return (src - arr);
+}
+
+int aux_binary_search(const int *arr, int count, int key)
+{
+    int base = 0, m;
+
+    if (count == 0) {
+        return -1;
+    }
+
+    while (count > 1) {
+        m = count/2;
+
+        if (arr[base + m] == key) {
+            return m;
+        } else if (arr[base + m] < key) {
+            count = m;
+        } else {
+            count -= m, base += m;
+        }
+    }
+
+    ASSERT(count == 1);
+    return (arr[base] == key ? base : -1);
+}
+

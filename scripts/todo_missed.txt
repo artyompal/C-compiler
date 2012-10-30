@@ -1,5 +1,6 @@
 x86_regalloc.h:     TODO: параметры reg_first_write/reg_last_read/reg_changes_value являются deprecated. Задачи анализа потока данных должны теперь решаться через множества in/out.
 x86_regalloc.h:     TODO: OP_IS_REGVAR является хаком, и регистровые переменные сделаны пока что хаком. Нужно сделать нормальное распространение копирований и не использовать этот макрос без необходимости.
+x86_bincode.c:      FIXME: IS_CONSTANT_INSN???
 x86_codegen.c:      TODO: поддержать кодогенерацию для long long
 x86_codegen.c:      TODO: поддержать кодогенерацию для операндов типа byte/word
 x86_codegen.c:      TODO: возвращать результат типа QWORD

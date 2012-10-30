@@ -238,8 +238,8 @@ typedef enum x86_instruction_code_decl {
     x86insn_xor_edx_edx,        // параметр - псевдорегистр для EDX
     x86insn_fpu_cmp,
     x86insn_cld,
-    x86insn_rep_movsb,
-    x86insn_rep_movsd,
+    x86insn_rep_movsb,          // параметры - псевдорегистры для EDI и ESI, оба меняются
+    x86insn_rep_movsd,          // параметры - псевдорегистры для EDI и ESI, оба меняются
     x86insn_push_arg,           // 1ый параметр может быть любого типа (эмулируется); 2ой параметр - размер
     x86insn_restore_stack,      // параметр - суммарный размер всех операндов
     x86insn_set_retval,         // параметр - возвращаемое значение (любого размера)
@@ -286,6 +286,8 @@ typedef struct x86_instruction_decl {
                                         || (INSN) == x86insn_read_retval)
 #define IS_DEFINING_INSN(INSN, TYPE)    ((TYPE) == x86op_dword && IS_DWORD_DEFINING_INSN(INSN) || x86_equal_types((TYPE), x86op_float) && IS_FLOAT_DEFINING_INSN(INSN))
 #define IS_VOLATILE_INSN(INSN, TYPE)    (IS_DEFINING_INSN(INSN, TYPE) || IS_MODIFYING_INSN(INSN))
+#define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_sse_comiss || (INSN) == x86insn_sse_comisd || (INSN) == x86insn_push \
+                                        || (INSN) == x86insn_push_arg || (INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
 
 #define IS_MUL_DIV_INSN(INSN)           ((INSN) >= x86insn_int_idiv && (INSN) <= x86insn_int_div)
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
@@ -338,7 +340,7 @@ void    bincode_create_operand_from_int_constant        (x86_operand *op, x86_op
 void    bincode_create_operand_from_register            (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_create_operand_from_pseudoreg           (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_create_operand_and_alloc_pseudoreg      (x86_operand *op, x86_operand_type type);
-void    bincode_create_operand_and_alloc_pseudoreg_in_function(function_desc *func, x86_operand *op, x86_operand_type type);
+void    bincode_create_operand_and_alloc_pseudoreg_in_function(function_desc *function, x86_operand *op, x86_operand_type type);
 void    bincode_create_operand_addr_from_reg            (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_create_operand_addr_from_reg_offset     (x86_operand *op, x86_operand_type type, int reg, int offset);
 void    bincode_create_operand_addr_from_reg_reg        (x86_operand *op, x86_operand_type type, int reg1, int reg2);

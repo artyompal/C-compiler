@@ -153,7 +153,7 @@ void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_operand_
                 ++*regs_cnt;
             }
         }
-    } else if (OP_IS_REGISTER(insn->in_op1) && !IS_DEFINING_INSN(insn->in_code, type)) {
+    } else if (OP_IS_REGISTER(insn->in_op1) && !IS_DEFINING_INSN(insn->in_code, type)) { // FIXME: IS_CONSTANT_INSN???
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
         if (insn->in_op1.data.reg > 0 && x86_equal_types(type, insn->in_op1.op_type))
@@ -247,11 +247,11 @@ void bincode_create_operand_and_alloc_pseudoreg(x86_operand *op, x86_operand_typ
     op->data.reg            = x86_codegen_alloc_pseudoreg(type);
 }
 
-void bincode_create_operand_and_alloc_pseudoreg_in_function(function_desc *func, x86_operand *op, x86_operand_type type)
+void bincode_create_operand_and_alloc_pseudoreg_in_function(function_desc *function, x86_operand *op, x86_operand_type type)
 {
     op->op_loc              = x86loc_register;
     op->op_type             = type;
-    op->data.reg            = func->func_pseudoregs_count[x86_encode_register_type(type)]++;
+    op->data.reg            = function->func_pseudoregs_count[x86_encode_register_type(type)]++;
 }
 
 void bincode_create_operand_addr_from_reg(x86_operand *op, x86_operand_type type, int reg)

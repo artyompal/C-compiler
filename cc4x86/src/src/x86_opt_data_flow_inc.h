@@ -29,6 +29,11 @@ typedef struct insn_vector_decl {           // вектор инструкций:
     int                 insn_count;         // количество инструкций
 } insn_vector;
 
+typedef struct int_vector_decl {            // вектор int:
+    int                 *int_base;          // адрес начала
+    int                 int_count;          // количество
+} int_vector;
+
 
 #define SET_SIZE_IN_BYTES(X)	((((X)+7)/8+3)&~3)
 #define SET_SIZE_IN_DWORDS(X)	((((X)+7)/8+3)/4)
