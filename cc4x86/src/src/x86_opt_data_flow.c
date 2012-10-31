@@ -749,8 +749,36 @@ static void _reachingdef_build_inout(function_desc *function, x86_operand_type t
     } while (change);
 }
 
-static BOOL _reachingdef_test(x86_instruction *def, x86_instruction *point)
+//
+// Проверяет, доступно ли определение def в месте инструкции insn.
+static BOOL _reachingdef_test(x86_instruction *def, x86_instruction *insn, x86_operand_type type)
 {
+    basic_block *def_block  = def->in_block;
+    basic_block *insn_block = insn->in_block;
+    int reg                 = def->in_op1.data.reg;
+    x86_instruction *test;
+    int def_idx;
+
+    ASSERT(OP_IS_TYPED_PSEUDO_REG(def->in_op1, type));
+
+    // находим индекс инструкции def в таблице определений
+    for (def_idx = def_block->block_first_def; _definitions_table.insn_base[def_idx] != insn; def_idx++) {
+        ASSERT(def_idx < def_block->block_last_def);
+    }
+
+    // тест на вхождение в соответствующее множество in (в смысле достигающих определений)
+    if (!BIT_TEST(_reachingdef_in.vec_base[insn_block-_basic_blocks.blocks_base], def_idx)) {
+        return FALSE;
+    }
+
+    // если от начала блока до интересующей инструкции нет определений reg, то результат положительный
+    for (test = insn_block->block_leader; test != insn; test = test->in_next) {
+        if (IS_VOLATILE_INSN(test->in_code, type) && OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg)) {
+            return FALSE;
+        }
+    }
+
+    return TRUE;
 }
 
 
@@ -1057,7 +1085,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 block = usage->in_block;
 
                 // проверяем достижимость этого использования этой инструкцией копирования
-                if (!_reachingdef_test(mov, usage)) {
+                if (!_reachingdef_test(mov, usage, type)) {
                     continue;
                 }
 
