@@ -180,6 +180,7 @@ void aux_sort_int(int *arr, int count)
         while (*r > k) r--;
 
         tmp = *l, *l = *r, *r = tmp;
+        l++, r--;
     }
 
     aux_sort_int(arr, l-arr);
@@ -192,7 +193,6 @@ int aux_unique_int(int *arr, int count)
 
     for (dst = arr, src = arr; src < arr + count; src++, dst++) {
         if (src[0] == src[1]) {
-            src++;
             break;
         }
     }
@@ -208,13 +208,9 @@ int aux_unique_int(int *arr, int count)
     return (src - arr);
 }
 
-int aux_binary_search(const int *arr, int count, int key)
+int _binary_search(const int *arr, int count, int key)
 {
     int base = 0, m;
-
-    if (count == 0) {
-        return -1;
-    }
 
     while (count > 1) {
         m = count/2;
@@ -228,7 +224,17 @@ int aux_binary_search(const int *arr, int count, int key)
         }
     }
 
-    ASSERT(count == 1);
-    return (arr[base] == key ? base : -1);
+    return base;
+}
+
+int aux_binary_search(const int *arr, int count, int key)
+{
+    int pos = _binary_search(arr, count, key);
+
+    if (count == 0) {
+        return -1;
+    } else {
+        return (arr[pos] == key ? pos : -1);
+    }
 }
 

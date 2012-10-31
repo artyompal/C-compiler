@@ -15,6 +15,8 @@ void x86_dataflow_step_insn_backward        (function_desc *function, x86_operan
 int  x86_dataflow_is_pseudoreg_alive_after  (function_desc *function, int pseudoreg);
 int  x86_dataflow_is_pseudoreg_alive_before (function_desc *function, int pseudoreg);
 
+void x86_dataflow_optimize_redundant_copies (function_desc *function, x86_operand_type type);
+
 
 #else
 #error Header x86_opt_data_flow.h duplicated.

@@ -3,7 +3,8 @@
 typedef struct basic_block_decl {           // структура базового блока:
     x86_instruction     *block_leader;      // первая инструкция блока, чаще всего метка
     int                 block_length;       // число инструкций в блоке
-    x86_instruction     *block_last_insn;   // кешированный указатель на последнюю инструкцию
+    x86_instruction     *block_last_insn;   // указатель на последнюю инструкцию
+    int                 block_idx;          // индекс блока
 
     int                 block_first_def;    // первое определение
     int                 block_last_def;     // определение, последующее последнему
@@ -121,6 +122,18 @@ static void set_subtract(set *a, set *b)
     for (i = 0; i < SET_SIZE_IN_DWORDS(a->set_count); i++) {
         a->set_base[i] &= ~b->set_base[i];
     }
+}
+
+static void set_invert(set *a)
+{
+    int i;
+
+    for (i = 0; i < SET_SIZE_IN_DWORDS(a->set_count); i++) {
+        a->set_base[i] = ~a->set_base[i];
+    }
+
+    if (s->set_count % 32 != 0)
+        s->set_base[s->set_count/32] = (1 << (s->set_count % 32)) - 1;
 }
 
 static BOOL set_equal(set *a, set *b)

@@ -254,11 +254,14 @@ typedef enum x86_instruction_code_decl {
     x86insn_count,
 } x86_instruction_code;
 
+typedef struct basic_block_decl basic_block;
+
 typedef struct x86_instruction_decl {
     x86_instruction_code        in_code;
     x86_operand                 in_op1;
     x86_operand                 in_op2;
     int                         in_op3;
+    basic_block                 *in_block;
     struct x86_instruction_decl *in_next;
     struct x86_instruction_decl *in_prev;
 } x86_instruction;
@@ -308,6 +311,7 @@ typedef struct x86_instruction_decl {
 #define OP_IS_FLOAT(OP)                 ((OP).op_type == x86op_float || (OP).op_type == x86op_double)
 #define OP_IS_REGISTER(OP)              ((OP).op_loc == x86loc_register)
 #define OP_IS_TYPED_REGISTER(OP, T)     ((OP).op_loc == x86loc_register && x86_equal_types((OP).op_type, (T)))
+#define OP_IS_TYPED_PSEUDO_REG(OP, T)   ((OP).op_loc == x86loc_register && x86_equal_types((OP).op_type, (T)) && (OP).data.reg > 0)
 #define OP_IS_ADDRESS(OP)               ((OP).op_loc == x86loc_address)
 #define OP_IS_ADDRESS_OR_SYMBOL(OP)     ((OP).op_loc == x86loc_address || (OP).op_loc == x86loc_symbol)
 #define OP_IS_REGISTER_OR_ADDRESS(OP)   ((OP).op_loc == x86loc_register || (OP).op_loc == x86loc_address)
