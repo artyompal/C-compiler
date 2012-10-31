@@ -7,6 +7,7 @@
 #include "x86_stack_frame.h"
 #include "x86_text_output.h"
 #include "x86_inlining.h"
+#include "x86_opt_data_flow.h"
 
 
 static function_desc *_first_function       = NULL;
@@ -924,6 +925,7 @@ void unit_codegen(void)
 
         if (option_enable_optimization) {
             x86_create_register_variables(_curr_func);
+            x86_dataflow_optimize_redundant_copies(_curr_func);
         }
 
 //        text_output_debug_print_function_code(_curr_func);

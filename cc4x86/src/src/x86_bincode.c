@@ -153,7 +153,7 @@ void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_operand_
                 ++*regs_cnt;
             }
         }
-    } else if (OP_IS_REGISTER(insn->in_op1) && !IS_DEFINING_INSN(insn->in_code, type)) { // FIXME: IS_CONSTANT_INSN???
+    } else if (OP_IS_REGISTER(insn->in_op1) && !IS_DEFINING_INSN(insn->in_code, type)) {
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
         if (insn->in_op1.data.reg > 0 && x86_equal_types(type, insn->in_op1.op_type))

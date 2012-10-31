@@ -87,7 +87,6 @@ static void _detect_basic_blocks(function_desc *function)
         _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_leader      = block_leader;
         _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_length      = current_index - leader_index;
         _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_last_insn   = prev_insn;
-        _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_idx         = _basic_blocks.blocks_count;
         _basic_blocks.blocks_count++;
         ASSERT(_basic_blocks.blocks_count <= estimated_count);
     }
@@ -536,14 +535,9 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
     } while (changed);
 }
 
-static void _exposeduses_get_data_for_insn(function_desc *function, x86_operand_type type, x86_instruction *insn,
-                                           x86_instruction ***res_arr, int *res_count)
+static void _exposeduses_get_usage_of_register(int reg, x86_instruction ***res_arr, int *res_count)
 {
-    int reg, idx;
-
-    ASSERT(OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type));
-    reg = insn->in_op1.data.reg;
-    idx = _exposeduse_reg2idx.int_base[reg];
+    int idx = _exposeduse_reg2idx.int_base[reg];
 
     *res_arr    = _exposeduse_table.insn_base + idx;
     *res_count  = _exposeduse_reg2idx.int_base[reg + 1] - idx;
@@ -552,9 +546,12 @@ static void _exposeduses_get_data_for_insn(function_desc *function, x86_operand_
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// јнализ достигающих определений. ѕримен€етс€ дл€ того, чтобы найти все определени€ данного регистра.
+// јнализ достигающих определений. ѕримен€етс€ дл€ того, чтобы найти все модифицирующие инструкции,
+// вли€ющие на значение регистра в данной точке.
 //
 // ћы считаем определени€ми любые изменен€ющие инструкции (и перезаписывающие, и модифицирующие).
+// ћы говорим, что определение d достигает точки p, если имеетс€ путь от точки, непосредственно следующей за d, к p,
+// такой, что d не уничтожаетс€ вдоль этого пути.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -579,7 +576,7 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
         }
 
         // добавл€ем найденные определени€ в таблицу
-        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_TYPED_REGISTER(insn->in_op1, type)) {
+        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type)) {
             _definitions_table.insn_base[count++] = insn;
         }
     }
@@ -752,6 +749,10 @@ static void _reachingdef_build_inout(function_desc *function, x86_operand_type t
     } while (change);
 }
 
+static BOOL _reachingdef_test(x86_instruction *def, x86_instruction *point)
+{
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -835,20 +836,22 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
 
     // проходим все инструкции этой функции, кроме этого блока
     for (insn = function->func_binary_code; insn != block->block_leader; insn = insn->in_next) {
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)) {
-            idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
-            ASSERT(idx >= 0);
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)
+            && (BIT_TEST(modified_regs, insn->in_op1.data.reg) || BIT_TEST(modified_regs, insn->in_op2.data.reg))) {
+                idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
+                ASSERT(idx >= 0);
 
-            BIT_RAISE(*kill, idx);
+                BIT_RAISE(*kill, idx);
         }
     }
 
     for (insn = block->block_last_insn->in_next; insn; insn = insn->in_next) {
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)) {
-            idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
-            ASSERT(idx >= 0);
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)
+            && (BIT_TEST(modified_regs, insn->in_op1.data.reg) || BIT_TEST(modified_regs, insn->in_op2.data.reg))) {
+                idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
+                ASSERT(idx >= 0);
 
-            BIT_RAISE(*kill, idx);
+                BIT_RAISE(*kill, idx);
         }
     }
 }
@@ -935,12 +938,12 @@ static void _redundantcopies_build_inout(function_desc *function, x86_operand_ty
 
 //
 // “ест инструкции на вхождение во множество in указанного блока.
-static BOOL _redundantcopies_test_insn(x86_instruction *insn)
+static BOOL _redundantcopies_test_insn(x86_instruction *insn, basic_block *block)
 {
     int idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
     ASSERT(idx >= 0);
 
-    return BIT_TEST(_redundantcopies_in.vec_base[insn->in_block->block_idx], idx);
+    return BIT_TEST(_redundantcopies_in.vec_base[block - _basic_blocks.blocks_base], idx);
 }
 
 
@@ -963,10 +966,6 @@ void x86_dataflow_prepare_function(function_desc *function, x86_operand_type typ
 
     _current_block  = -1;
     _current_insn   = NULL;
-
-    // »нициализируем структуры дл€ анализа достигающих определений.
-    _reachingdef_build_table(function, type);
-    _reachingdef_build_inout(function, type);
 }
 
 //
@@ -1019,14 +1018,93 @@ int x86_dataflow_is_pseudoreg_alive_before(function_desc *function, int pseudore
 
 //
 // ƒелает оптимизацию распространени€ копирований (ƒракон, алгоритм 10.6).
-void x86_dataflow_optimize_redundant_copies(function_desc *function, x86_operand_type type)
+void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 {
-    // строим таблицы импортирующих использований
+    basic_block *block;
+    x86_instruction *mov, *usage, *next, *test;
+    x86_instruction **usage_arr;
+    int usage_count, i, j, x, y, regs_cnt;
+    x86_register_ref regs[MAX_REGISTERS_PER_INSN];
+    BOOL replace_allowed;
+
+
+    // генерируем таблицы достигающих определений
+    _reachingdef_build_table(function, type);
+    _reachingdef_build_inout(function, type);
+
+    // генерируем таблицы импортирующих использований
     _exposeduses_build_table(function, type);
     _exposeduses_build_inout(function, type);
 
-    // строим таблицы избыточных копирований
+    // генерируем таблицы избыточных копирований
     _redundantcopies_build_table(function, type);
     _redundantcopies_build_inout(function, type);
+
+    for (mov = function->func_binary_code; mov; mov = next) {
+        next = mov->in_next;
+
+        // дл€ каждой инструкции копировани€
+        if (IS_MOV_INSN(mov->in_code) && OP_IS_TYPED_PSEUDO_REG(mov->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(mov->in_op2, type)) {
+            x               = mov->in_op1.data.reg;
+            y               = mov->in_op2.data.reg;
+            replace_allowed = TRUE;
+
+            // находим все использовани€ x
+            _exposeduses_get_usage_of_register(x, &usage_arr, &usage_count);
+
+            for (i = 0; i < usage_count && replace_allowed; i++) {
+                usage = usage_arr[usage_count];
+                block = usage->in_block;
+
+                // провер€ем достижимость этого использовани€ этой инструкцией копировани€
+                if (!_reachingdef_test(mov, usage)) {
+                    continue;
+                }
+
+                // провер€ем дл€ этого использовани€ x, входит ли mov в c_in[block]
+                if (!_redundantcopies_test_insn(mov, block)) {
+                    replace_allowed = FALSE;
+                    break;
+                }
+
+                // провер€ем, что нет изменений x или y в текущем блоке и до mov
+                for (test = block->block_leader; test != mov && test != usage; test = test->in_next) {
+                    ASSERT(test != block->block_last_insn);
+
+                    if ((OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x) || OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x))
+                        && IS_VOLATILE_INSN(test->in_code, type)) {
+                            replace_allowed = FALSE;
+                            break;
+                        }
+                }
+            }
+
+            // если все проверки закончились положительно, удал€ем инструкцию и замен€ем все вхождени€ x на y.
+            if (replace_allowed) {
+                bincode_erase_instruction(function, mov);
+
+                for (i = 0; i < usage_count; i++) {
+                    usage = usage_arr[usage_count];
+                    bincode_extract_pseudoregs_from_insn(usage, type, regs, &regs_cnt);
+
+                    for (j = 0; j < regs_cnt; j++) {
+                        if (*regs[j].reg_addr == x && regs[j].reg_type == type) {
+                            *regs[j].reg_addr = y;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
+//
+// ¬нешний интерфейс дл€ функции распространени€ копирований.
+void x86_dataflow_optimize_redundant_copies(function_desc *function)
+{
+    _optimize_redundant_copies(function, x86op_dword);
+
+    if (option_sse2) {
+        _optimize_redundant_copies(function, x86op_float);
+    }
+}
