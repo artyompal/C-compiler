@@ -1049,6 +1049,45 @@ int x86_dataflow_is_pseudoreg_alive_before(function_desc *function, int pseudore
 
 
 //
+// Удаляет инструкцию из функции и изо всех таблиц.
+void _erase_instruction(function_desc *function, x86_instruction *insn)
+{
+    basic_block *block;
+    int i;
+
+    for (block = _basic_blocks.blocks_base; block < _basic_blocks.blocks_base + _basic_blocks.blocks_count; block++) {
+        if (block->block_leader == insn) {
+            block->block_leader = block->block_leader->in_next;
+        }
+
+        if (block->block_last_insn == insn) {
+            ASSERT(!_is_leader(insn));
+            block->block_last_insn = block->block_last_insn->in_prev;
+        }
+    }
+
+    bincode_erase_instruction(function, insn);
+
+    for (i = 0; i < _definitions_table.insn_count; i++) {
+        if (_definitions_table.insn_base[i] == insn) {
+            _definitions_table.insn_base[i] = NULL;
+        }
+    }
+
+    for (i = 0; i < _exposeduse_table.insn_count; i++) {
+        if (_exposeduse_table.insn_base[i] == insn) {
+            _exposeduse_table.insn_base[i] = NULL;
+        }
+    }
+
+    for (i = 0; i < _redundantcopies_table.insn_count; i++) {
+        if (_redundantcopies_table.insn_base[i] == insn) {
+            _redundantcopies_table.insn_base[i] = NULL;
+        }
+    }
+}
+
+//
 // Делает оптимизацию распространения копирований (Дракон, алгоритм 10.6).
 void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 {
@@ -1086,7 +1125,9 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 
             for (i = 0; i < usage_count && replace_allowed; i++) {
                 usage = usage_arr[usage_count];
-                block = usage->in_block;
+                if (!usage) {
+                    continue;
+                }
 
                 // проверяем достижимость этого использования этой инструкцией копирования
                 if (!_reachingdef_test(mov, usage, type)) {
@@ -1094,6 +1135,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 }
 
                 // проверяем для этого использования x, входит ли mov в c_in[block]
+                block = usage->in_block;
                 if (!_redundantcopies_test_insn(mov, block)) {
                     replace_allowed = FALSE;
                     break;
@@ -1113,10 +1155,14 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 
             // если все проверки закончились положительно, удаляем инструкцию и заменяем все вхождения x на y.
             if (replace_allowed) {
-                bincode_erase_instruction(function, mov);
+                _erase_instruction(function, mov);
 
                 for (i = 0; i < usage_count; i++) {
                     usage = usage_arr[usage_count];
+                    if (!usage) {
+                        continue;
+                    }
+
                     bincode_extract_pseudoregs_from_insn(usage, type, regs, &regs_cnt);
 
                     for (j = 0; j < regs_cnt; j++) {

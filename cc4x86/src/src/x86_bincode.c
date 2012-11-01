@@ -487,6 +487,8 @@ void bincode_erase_instruction(function_desc *function, x86_instruction *insn)
     } else {
         function->func_binary_code      = insn->in_next;
     }
+
+    memset(insn, 0xee, sizeof(x86_instruction));
 }
 
 
