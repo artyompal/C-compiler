@@ -183,8 +183,8 @@ void aux_sort_int(int *arr, int count)
         l++, r--;
     }
 
-    aux_sort_int(arr, l-arr);
-    aux_sort_int(r, count-(r-arr));
+    aux_sort_int(arr, count/2);
+    aux_sort_int(r, count-count/2);
 }
 
 int aux_unique_int(int *arr, int count)
@@ -205,7 +205,7 @@ int aux_unique_int(int *arr, int count)
         }
     }
 
-    return (src - arr);
+    return (dst - arr);
 }
 
 int _binary_search(const int *arr, int count, int key)

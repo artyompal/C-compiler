@@ -524,10 +524,10 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
             set_swap(&old_in, &_exposeduses_in.vec_base[block]);
             set_assign(&_exposeduses_in.vec_base[block], &_exposeduses_out.vec_base[block]);
 
-            _alivereg_build_def(&tmp, &_basic_blocks.blocks_base[block], function, type);
+            _exposeduses_build_def(&tmp, &_basic_blocks.blocks_base[block], function, type);
             set_subtract(&_exposeduses_in.vec_base[block], &tmp);
 
-            _alivereg_build_use(&tmp, &_basic_blocks.blocks_base[block], function, type);
+            _exposeduses_build_use(&tmp, &_basic_blocks.blocks_base[block], function, type);
             set_unite(&_exposeduses_in.vec_base[block], &tmp);
 
             changed |= !set_equal(&_exposeduses_in.vec_base[block], &old_in);
@@ -1130,6 +1130,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 // Внешний интерфейс для функции распространения копирований.
 void x86_dataflow_optimize_redundant_copies(function_desc *function)
 {
+    _detect_basic_blocks(function);
     _optimize_redundant_copies(function, x86op_dword);
 
     if (option_sse2) {
