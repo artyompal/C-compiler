@@ -216,8 +216,8 @@ int _binary_search(const int *arr, int count, int key)
         m = count/2;
 
         if (arr[base + m] == key) {
-            return m;
-        } else if (arr[base + m] < key) {
+            return base + m;
+        } else if (arr[base + m] > key) {
             count = m;
         } else {
             count -= m, base += m;

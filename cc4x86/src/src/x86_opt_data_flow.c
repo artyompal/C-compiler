@@ -322,7 +322,7 @@ static void _alivereg_update_tables(function_desc *function, x86_operand_type ty
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //
-// Строит список из всех экспортирующих определений.
+// Строит список из всех импортирующих использований.
 static void _exposeduses_build_table(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -382,7 +382,7 @@ static void _exposeduses_build_table(function_desc *function, x86_operand_type t
 }
 
 //
-// Вычисляет множество use для данного блока (множество импортирующих определений),
+// Вычисляет множество use для данного блока (множество импортирующих использований),
 // т.е. множество пар (s,x) : s - инструкция, использующая регистр x, причём предшествующих определений x в данном блоке нет.
 static void _exposeduses_build_use(set *use, basic_block *block, function_desc *function, x86_operand_type type)
 {
@@ -400,11 +400,13 @@ static void _exposeduses_build_use(set *use, basic_block *block, function_desc *
             reg = regs[j];
 
             // Находим индекс этой инструкции в таблице _exposeduse_table.
-            for (idx = _exposeduse_reg2idx.int_base[reg]; _exposeduse_table.insn_base[idx] != insn; idx++) {
-                ASSERT(idx < _exposeduse_reg2idx.int_base[reg+1]);
+            for (idx = _exposeduse_reg2idx.int_base[reg]; idx < _exposeduse_reg2idx.int_base[reg+1]; idx++) {
+                if (_exposeduse_table.insn_base[idx] == insn) {
+                    BIT_RAISE(*use, idx);
+                    break;
+                }
             }
 
-            BIT_RAISE(*use, idx);
         }
     }
 }
@@ -535,6 +537,8 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
     } while (changed);
 }
 
+//
+// Возвращает все импортирующие использования данного регистра в функции.
 static void _exposeduses_get_usage_of_register(int reg, x86_instruction ***res_arr, int *res_count)
 {
     int idx = _exposeduse_reg2idx.int_base[reg];
@@ -762,7 +766,7 @@ static BOOL _reachingdef_test(x86_instruction *def, x86_instruction *insn, x86_o
     ASSERT(OP_IS_TYPED_PSEUDO_REG(def->in_op1, type));
 
     // находим индекс инструкции def в таблице определений
-    for (def_idx = def_block->block_first_def; _definitions_table.insn_base[def_idx] != insn; def_idx++) {
+    for (def_idx = def_block->block_first_def; _definitions_table.insn_base[def_idx] != def; def_idx++) {
         ASSERT(def_idx < def_block->block_last_def);
     }
 
