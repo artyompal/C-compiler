@@ -6,6 +6,7 @@
 
 
 // FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
+// FIXME: убрать хардкод func_dword_regstat в этом модуле (ломает поддержку SSE).
 
 
 #define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base > 0 && (OP).data.address.index == 0 \
@@ -482,7 +483,10 @@ static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 // Оптимизирует конструкции с MOV.
 static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
 {
-    if (OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_CONSTANT(insn->in_op2)) {
+    if (OP_IS_PSEUDO_REG(insn->in_op1) && !function->func_dword_regstat.ptr[insn->in_op1.data.reg].reg_last_read) {
+        aux_warning("variable is never used");
+        bincode_erase_instruction(function, insn);
+    } else if (OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_CONSTANT(insn->in_op2)) {
         _try_optimize_mov_reg_const(function, insn);
     }
 }
