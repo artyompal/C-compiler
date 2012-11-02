@@ -117,6 +117,7 @@ void            text_output_debug_print_function_code(function_desc *function);
 
 extern BOOL option_no_codegen;
 extern BOOL option_no_regalloc;
+extern BOOL option_no_copy_opt;
 extern BOOL option_no_basic_opt;
 extern BOOL option_enable_optimization;
 extern BOOL option_sse2;

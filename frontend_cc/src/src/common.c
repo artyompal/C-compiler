@@ -5,6 +5,7 @@
 
 BOOL option_no_codegen          = FALSE;
 BOOL option_no_regalloc         = FALSE;
+BOOL option_no_copy_opt         = FALSE;
 BOOL option_no_basic_opt        = FALSE;
 BOOL option_enable_optimization = FALSE;
 BOOL option_sse2                = FALSE;

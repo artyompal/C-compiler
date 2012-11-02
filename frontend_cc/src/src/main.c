@@ -16,6 +16,7 @@ struct option_decl {
 } options[] = {
     {"nocodegen",           &option_no_codegen,             "disable any code generation"},
     {"noregalloc",          &option_no_regalloc,            "don't replace pseudo-registers with real registers"},
+    {"nocopyopt",           &option_no_copy_opt,            "don't do copy propagation"},
     {"nobasicopt",          &option_no_basic_opt,           "don't optimize well-known sequences after code generation"},
     {"optimize",            &option_enable_optimization,    "enables code optimization"},
     {"sse2",                &option_sse2,                   "enables SSE2 code generation"},

@@ -925,7 +925,10 @@ void unit_codegen(void)
 
         if (option_enable_optimization) {
             x86_create_register_variables(_curr_func);
-            x86_dataflow_optimize_redundant_copies(_curr_func);
+
+            if (!option_no_copy_opt) {
+                x86_dataflow_optimize_redundant_copies(_curr_func);
+            }
         }
 
 //        text_output_debug_print_function_code(_curr_func);
