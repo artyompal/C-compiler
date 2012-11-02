@@ -166,25 +166,29 @@ void aux_replace_file_extension(char *dst, const char *path, const char *extensi
 
 void aux_sort_int(int *arr, int count)
 {
-    int *l = arr, *r = arr+count-1;
-    int k, tmp;
+    int i, j, m, k, tmp;
 
     if (count < 2) {
         return;
     }
 
-    k = arr[count/2];
+    i = 0;
+    j = count - 1;
+    m = count / 2;
+    k = arr[m];
 
-    while (l < r) {
-        while (*l < k) l++;
-        while (*r > k) r--;
+    do {
+        while (arr[i] < k) i++;
+        while (arr[j] > k) j--;
 
-        tmp = *l, *l = *r, *r = tmp;
-        l++, r--;
-    }
+        if (i <= j) {
+            tmp = arr[i], arr[i] = arr[j], arr[j] = tmp;
+            i++, j--;
+        }
+    } while (i <= j);
 
-    aux_sort_int(arr, count/2);
-    aux_sort_int(r, count-count/2);
+    aux_sort_int(arr, j + 1);
+    aux_sort_int(arr + i, count - i);
 }
 
 int aux_unique_int(int *arr, int count)
