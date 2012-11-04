@@ -1176,8 +1176,13 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 test = (usage->in_block == mov->in_block ? mov->in_next : usage->in_block->block_leader);
 
                 for (; test != usage; test = test->in_next) {
-                    ASSERT(test != usage->in_block->block_last_insn);
+                    // если мы достигли конца, вероятно, имеется цикл; не поддерживаем этот случай и выходим
+                    if (test == usage->in_block->block_last_insn) {
+                        replace_allowed = FALSE;
+                        break;
+                    }
 
+                    // если x или y изменяются, выходим
                     if ((OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x) || OP_IS_THIS_PSEUDO_REG(test->in_op1, type, y))
                         && IS_VOLATILE_INSN(test->in_code, type)) {
                             replace_allowed = FALSE;
