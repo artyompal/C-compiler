@@ -56,13 +56,13 @@ static void _fixup_instruction(x86_instruction *inserted, int regs_ofs[X86_REGIS
     int params_ofs, int locals_ofs)
 {
     int i, type, regs_cnt;
-    x86_register_ref regs[MAX_REGISTERS_PER_INSN];
+    int *regs[MAX_REGISTERS_PER_INSN];
 
     for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
         bincode_extract_pseudoregs_from_insn(inserted, type, regs, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
-            *regs[i].reg_addr += regs_ofs[type];
+            *regs[i] += regs_ofs[type];
         }
     }
 

@@ -756,7 +756,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 {
     x86_pseudoreg_info  *pseudoregs_map = stat->ptr;
     x86_instruction     *insn, *next_insn;
-    x86_register_ref    registers[MAX_REGISTERS_PER_INSN];
+    int                 *registers[MAX_REGISTERS_PER_INSN];
     int                 registers_count, i, reg, real_reg, conflict_reg, result, label;
     register_map        *labels_register_state;
 
@@ -822,7 +822,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
         // Заменяем все псевдорегистры на истинные регистры.
         for (i = 0; i < registers_count; i++) {
-            reg = *registers[i].reg_addr;
+            reg = *registers[i];
 
             if (pseudoregs_map[reg].reg_status == register_allocated || pseudoregs_map[reg].reg_status == register_delayed_swapped) {
                 // под этот псевдорегистр уже выделен истинный регистр, пробиваем его в инструкцию
@@ -887,7 +887,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 pseudoregs_map[reg].reg_status      = register_allocated;
             }
 
-            *registers[i].reg_addr          = ~real_reg;
+            *registers[i] = ~real_reg;
         }
 
         // Эмулируем псевдоинструкции, для этого вставляем реальные инструкции перед ними.
@@ -928,7 +928,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 static void _handle_pseudo_instructions(function_desc *function)
 {
     x86_instruction *insn, *next_insn;
-    x86_register real_regs[MAX_REGISTERS_PER_INSN];
+    int real_regs[MAX_REGISTERS_PER_INSN];
     int i, registers_count, sz;
     x86_operand tmp;
 
@@ -941,7 +941,7 @@ static void _handle_pseudo_instructions(function_desc *function)
         bincode_extract_real_registers_from_insn(insn, x86op_dword, real_regs, &registers_count);
 
         for (i = 0; i < registers_count; i++) {
-            real_regs_usage[real_regs[i].reg_value] = TRUE;
+            real_regs_usage[real_regs[i]] = TRUE;
         }
     }
 

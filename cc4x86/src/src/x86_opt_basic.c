@@ -64,14 +64,14 @@ static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg,
 // «амен€ет регистр другим регистром. »спользуетс€ дл€ устранени€ лишних копирований регистров.
 static void _replace_register_in_instruction(x86_instruction *insn, int reg, int reg2)
 {
-    x86_register_ref regs[MAX_REGISTERS_PER_INSN];
+    int *regs[MAX_REGISTERS_PER_INSN];
     int regs_cnt, i;
 
     bincode_extract_pseudoregs_from_insn(insn, x86op_dword, regs, &regs_cnt);
 
     for (i = 0; i < regs_cnt; i++) {
-        if (*regs[i].reg_addr == reg) {
-            *regs[i].reg_addr = reg2;
+        if (*regs[i] == reg) {
+            *regs[i] = reg2;
         }
     }
 }

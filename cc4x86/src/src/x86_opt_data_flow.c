@@ -1092,10 +1092,8 @@ void _erase_instruction(function_desc *function, x86_instruction *insn)
 void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 {
     basic_block *block;
-    x86_instruction *mov, *usage, *next, *test;
-    x86_instruction **usage_arr;
-    int usage_count, i, j, x, y, regs_cnt;
-    x86_register_ref regs[MAX_REGISTERS_PER_INSN];
+    x86_instruction *mov, *usage, *next, *test, **usage_arr;
+    int usage_count, i, j, x, y, regs_cnt, *regs[MAX_REGISTERS_PER_INSN];
     BOOL replace_allowed;
 
 
@@ -1121,6 +1119,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
             replace_allowed = TRUE;
 
             // находим все использования x
+            // FIXME: ио-цепочки должны строится относительно текущего блока, а не абстрактно в вакууме.
             _exposeduses_get_usage_of_register(x, &usage_arr, &usage_count);
 
             for (i = 0; i < usage_count && replace_allowed; i++) {
@@ -1166,8 +1165,8 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                     bincode_extract_pseudoregs_from_insn(usage, type, regs, &regs_cnt);
 
                     for (j = 0; j < regs_cnt; j++) {
-                        if (*regs[j].reg_addr == x && regs[j].reg_type == type) {
-                            *regs[j].reg_addr = y;
+                        if (*regs[j] == x) {
+                            *regs[j] = y;
                         }
                     }
                 }
