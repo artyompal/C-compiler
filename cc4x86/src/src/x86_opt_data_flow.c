@@ -536,31 +536,31 @@ static void _exposeduses_get_usage_of_definition(int reg, x86_instruction *def, 
 {
     x86_instruction *test;
     int i, block;
+    BOOL reached_def = FALSE;
 
     block = def->in_block - _basic_blocks.blocks_base;
     *res_count = 0;
 
     // добавляем все использования в пределах данного блока
     for (test = def->in_next; test != def->in_block->block_last_insn->in_next; test = test->in_next) {
-        if (bincode_insn_contains_register(test, type, reg)) {
+        if (OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg) && IS_DEFINING_INSN(test->in_code, type)) {
+            reached_def = TRUE;
+            break;
+        } else if (bincode_insn_contains_register(test, type, reg)) {
             res_arr[*res_count] = test;
             ++*res_count;
             ASSERT(*res_count < res_max_count);
         }
-
-        if (OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg) && IS_DEFINING_INSN(test->in_code, type)) {
-            aux_sort_int((int*)res_arr, *res_count);
-            *res_count = aux_unique_int((int*)res_arr, *res_count);
-            return;
-        }
     }
 
-    // добавляем использования из множества out данного блока
-    for (i = _exposeduse_reg2idx.int_base[reg]; i < _exposeduse_reg2idx.int_base[reg + 1]; i++) {
-        if (BIT_TEST(_exposeduses_out.vec_base[block], i)) {
-            res_arr[*res_count] = _exposeduse_table.insn_base[i];
-            ++*res_count;
-            ASSERT(*res_count < res_max_count);
+    if (!reached_def) {
+        // добавляем использования из множества out данного блока
+        for (i = _exposeduse_reg2idx.int_base[reg]; i < _exposeduse_reg2idx.int_base[reg + 1]; i++) {
+            if (BIT_TEST(_exposeduses_out.vec_base[block], i)) {
+                res_arr[*res_count] = _exposeduse_table.insn_base[i];
+                ++*res_count;
+                ASSERT(*res_count < res_max_count);
+            }
         }
     }
 
