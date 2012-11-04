@@ -35,6 +35,7 @@ label0001:
         mov     dword105,444
         mov     dword103,222
         mov     dword106,0
+        mov     dword106,dword103
         cmp     dword105,0
         jle     label0007
         mov     dword103,111
@@ -42,11 +43,12 @@ label0001:
 label0007:
         mov     dword106,dword105
 label0008:
-        add     dword103,dword103
-        add     dword103,111
-        sub     dword103,dword105
+        mov     dword59,dword106
+        add     dword59,dword103
+        add     dword59,111
+        sub     dword59,dword105
 ; end of inline function test3
-        cmp     dword103,0
+        cmp     dword59,0
         je      label0002
         mov     dword15,3
         set_retval      dword15
@@ -91,6 +93,6 @@ label0004:
         set_retval      dword26
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

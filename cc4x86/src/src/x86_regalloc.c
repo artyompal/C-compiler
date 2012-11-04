@@ -703,7 +703,7 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         pop_all = pop_all->in_next;
     }
 
-    x86_dataflow_step_insn_forward(function, type, pop_all);
+    x86_dataflow_set_current_insn(function, type, pop_all);
 
     if (type == x86op_dword) {
         // Нам нужно сохранить те из регистров EAX/ECX/EDX, которые используются на момент x86insn_pop_all.
@@ -726,7 +726,7 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         }
     }
 
-    x86_dataflow_step_insn_backward(function, type, insn);
+    x86_dataflow_set_current_insn(function, type, insn);
 }
 
 static void _merge_register_states(function_desc *function, x86_instruction *insn, register_map *new_regmap, register_map *old_regmap,
@@ -784,7 +784,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
     for (insn = function->func_binary_code; insn; insn = next_insn) {
         next_insn = insn->in_next;
-        x86_dataflow_step_insn_forward(function, type, insn);
+        x86_dataflow_set_current_insn(function, type, insn);
 
         // Обрабатываем метки и переходы: мы должны смержить стейты.
         if (insn->in_code == x86insn_label || IS_JMP_INSN(insn->in_code)) {

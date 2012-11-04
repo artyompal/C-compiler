@@ -8,9 +8,7 @@
 
 
 void x86_dataflow_prepare_function          (function_desc *function, x86_operand_type type);
-
-void x86_dataflow_step_insn_forward         (function_desc *function, x86_operand_type type, x86_instruction *pos);
-void x86_dataflow_step_insn_backward        (function_desc *function, x86_operand_type type, x86_instruction *pos);
+void x86_dataflow_set_current_insn          (function_desc *function, x86_operand_type type, x86_instruction *pos);
 
 int  x86_dataflow_is_pseudoreg_alive_after  (int pseudoreg);
 int  x86_dataflow_is_pseudoreg_alive_before (int pseudoreg);

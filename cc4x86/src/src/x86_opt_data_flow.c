@@ -1051,33 +1051,10 @@ void x86_dataflow_prepare_function(function_desc *function, x86_operand_type typ
 
 //
 // Пересчитывает таблицы для данной инструкции.
-// Можно переместиться на несколько инструкций вперёд.
-void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type type, x86_instruction *pos)
+void x86_dataflow_set_current_insn(function_desc *function, x86_operand_type type, x86_instruction *insn)
 {
-    while (_current_insn != pos) {
-        _current_insn = (_current_insn ? _current_insn->in_next : function->func_binary_code);
-
-        if (_current_block+1 < _basic_blocks.blocks_count &&
-            _current_insn == _basic_blocks.blocks_base[_current_block+1].block_leader) {
-                _current_block++;
-            }
-    }
-
-    _alivereg_update_tables(type);
-}
-
-//
-// Пересчитывает таблицы для данной инструкции.
-// Можно переместиться на несколько инструкций назад.
-void x86_dataflow_step_insn_backward(function_desc *function, x86_operand_type type, x86_instruction *pos)
-{
-    while (_current_insn != pos) {
-        _current_insn = _current_insn->in_prev;
-
-        if (_current_block > 0 && _current_insn == _basic_blocks.blocks_base[_current_block-1].block_last_insn) {
-            _current_block--;
-        }
-    }
+    _current_block  = insn->in_block - _basic_blocks.blocks_base;
+    _current_insn   = insn;
 
     _alivereg_update_tables(type);
 }

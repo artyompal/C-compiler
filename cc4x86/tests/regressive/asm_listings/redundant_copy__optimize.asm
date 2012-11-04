@@ -43,6 +43,7 @@ label0001:
         mov     eax,444
         mov     edi,222
         mov     esi,0
+        mov     esi,edi
         cmp     eax,0
         jle     label0007
         mov     edi,111
@@ -50,11 +51,11 @@ label0001:
 label0007:
         mov     esi,eax
 label0008:
-        add     edi,edi
-        add     edi,111
-        sub     edi,eax
+        add     esi,edi
+        add     esi,111
+        sub     esi,eax
 ; end of inline function test3
-        cmp     edi,0
+        cmp     esi,0
         je      label0002
         mov     eax,3
         pop     esi
@@ -107,6 +108,6 @@ label0004:
         add     esp,104
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end
