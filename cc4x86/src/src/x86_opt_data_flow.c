@@ -1015,8 +1015,12 @@ static void _redundantcopies_build_inout(function_desc *function, x86_operand_ty
 // Является аналогом проверки ои-цепочки для уравнений копирования.
 static BOOL _redundantcopies_is_insn_available(x86_instruction *insn, basic_block *block)
 {
-    int idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
-    ASSERT(idx >= 0);
+    int idx;
+
+    // бинарный поиск не получается сделать, так как при удалении инструкций нарушается сортировка
+    for (idx = 0; _redundantcopies_table.insn_base[idx] != insn; idx++) {
+        ASSERT(idx < _redundantcopies_table.insn_count);
+    }
 
     return BIT_TEST(_redundantcopies_in.vec_base[block - _basic_blocks.blocks_base], idx);
 }

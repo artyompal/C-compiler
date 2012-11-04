@@ -94,7 +94,7 @@ _vec2f_add proc
         movss   dword ptr [dword12],sse2
         destroy_stack_frame
         ret
-_vec2f_add endp 
+_vec2f_add endp
 
 _vec2f_subtract proc
         create_stack_frame
@@ -121,7 +121,7 @@ _vec2f_subtract proc
         movss   dword ptr [dword12],sse2
         destroy_stack_frame
         ret
-_vec2f_subtract endp    
+_vec2f_subtract endp
 
 _vec2f_mul proc
         create_stack_frame
@@ -140,7 +140,7 @@ _vec2f_mul proc
         movss   dword ptr [dword5],sse2
         destroy_stack_frame
         ret
-_vec2f_mul endp 
+_vec2f_mul endp
 
 _vec4f_assign proc
         create_stack_frame
@@ -169,7 +169,7 @@ _vec4f_assign proc
         movss   dword ptr [dword11],sse4
         destroy_stack_frame
         ret
-_vec4f_assign endp      
+_vec4f_assign endp
 
 _vec4f_add proc
         create_stack_frame
@@ -220,7 +220,7 @@ _vec4f_add proc
         movss   dword ptr [dword24],sse4
         destroy_stack_frame
         ret
-_vec4f_add endp 
+_vec4f_add endp
 
 _vec4f_subtract proc
         create_stack_frame
@@ -271,7 +271,7 @@ _vec4f_subtract proc
         movss   dword ptr [dword24],sse4
         destroy_stack_frame
         ret
-_vec4f_subtract endp    
+_vec4f_subtract endp
 
 _vec4f_dot proc
         create_stack_frame
@@ -311,7 +311,7 @@ _vec4f_dot proc
         set_retval      sse2
         destroy_stack_frame
         ret
-_vec4f_dot endp 
+_vec4f_dot endp
 
 _vec4f_mul proc
         create_stack_frame
@@ -344,7 +344,7 @@ _vec4f_mul proc
         movss   dword ptr [dword11],sse4
         destroy_stack_frame
         ret
-_vec4f_mul endp 
+_vec4f_mul endp
 
 _matrix4f_make_perspective proc
         create_stack_frame
@@ -473,7 +473,7 @@ _matrix4f_make_perspective proc
         movss   dword ptr [dword60],sse20
         destroy_stack_frame
         ret
-_matrix4f_make_perspective endp 
+_matrix4f_make_perspective endp
 
 _matrix4f_make_viewport proc
         create_stack_frame
@@ -589,7 +589,7 @@ _matrix4f_make_viewport proc
         movss   dword ptr [dword52],sse20
         destroy_stack_frame
         ret
-_matrix4f_make_viewport endp    
+_matrix4f_make_viewport endp
 
 _matrix4f_transform proc
         create_stack_frame
@@ -745,7 +745,7 @@ _matrix4f_transform proc
         movss   dword ptr [dword72],sse13
         destroy_stack_frame
         ret
-_matrix4f_transform endp        
+_matrix4f_transform endp
 
 _rasterizer_init proc
         create_stack_frame
@@ -1063,7 +1063,7 @@ label0003:
         pop_all
         destroy_stack_frame
         ret
-_rasterizer_init endp   
+_rasterizer_init endp
 
 _rasterizer_begin_frame proc
         create_stack_frame
@@ -1073,7 +1073,7 @@ _rasterizer_begin_frame proc
         mov     [dword1],dword3
         destroy_stack_frame
         ret
-_rasterizer_begin_frame endp    
+_rasterizer_begin_frame endp
 
 _rasterizer_set_mvproj proc
         create_stack_frame
@@ -1086,7 +1086,7 @@ _rasterizer_set_mvproj proc
         rep     movsd   dword4,dword5
         destroy_stack_frame
         ret
-_rasterizer_set_mvproj endp     
+_rasterizer_set_mvproj endp
 
 _rasterizer_set_color proc
         create_stack_frame
@@ -1096,7 +1096,7 @@ _rasterizer_set_color proc
         mov     [dword1],dword3
         destroy_stack_frame
         ret
-_rasterizer_set_color endp      
+_rasterizer_set_color endp
 
 _rasterizer_set_texture proc
         create_stack_frame
@@ -1114,7 +1114,7 @@ _rasterizer_set_texture proc
         mov     [dword7],dword9
         destroy_stack_frame
         ret
-_rasterizer_set_texture endp    
+_rasterizer_set_texture endp
 
 __tex2d proc
         create_stack_frame
@@ -1151,7 +1151,7 @@ __tex2d proc
         set_retval      dword ptr [dword15]
         destroy_stack_frame
         ret
-__tex2d endp    
+__tex2d endp
 
 __rasterize_horiz_line proc
         create_stack_frame
@@ -1308,7 +1308,7 @@ label0001:
 label0002:
         destroy_stack_frame
         ret
-__rasterize_horiz_line endp     
+__rasterize_horiz_line endp
 
 __rasterize_horiz_line__unordered proc
         create_stack_frame
@@ -1358,7 +1358,7 @@ label0000:
 label0001:
         destroy_stack_frame
         ret
-__rasterize_horiz_line__unordered endp  
+__rasterize_horiz_line__unordered endp
 
 __rasterize_triangle_1i proc
         create_stack_frame
@@ -1542,7 +1542,7 @@ label0007:
 label0005:
         destroy_stack_frame
         ret
-__rasterize_triangle_1i endp    
+__rasterize_triangle_1i endp
 
 __rasterize_triangle_2i proc
         create_stack_frame
@@ -2429,7 +2429,7 @@ label0009:
 label000a:
         destroy_stack_frame
         ret
-__rasterize_triangle_2i endp    
+__rasterize_triangle_2i endp
 
 __clip_on_plain proc
         create_stack_frame
@@ -2694,7 +2694,7 @@ label0002:
         rep     movsd   dword107,dword108
         destroy_stack_frame
         ret
-__clip_on_plain endp    
+__clip_on_plain endp
 
 __clip_poligon proc
         create_stack_frame
@@ -2780,7 +2780,7 @@ __clip_poligon proc
         set_retval      dword28
         destroy_stack_frame
         ret
-__clip_poligon endp     
+__clip_poligon endp
 
 __transform_to_screen_space proc
         create_stack_frame
@@ -2852,7 +2852,7 @@ label0001:
 label0000:
         destroy_stack_frame
         ret
-__transform_to_screen_space endp        
+__transform_to_screen_space endp
 
 __rasterize_polygon_4f proc
         create_stack_frame
@@ -2976,7 +2976,7 @@ label0006:
 label0007:
         destroy_stack_frame
         ret
-__rasterize_polygon_4f endp     
+__rasterize_polygon_4f endp
 
 __transform_to_projection_space proc
         create_stack_frame
@@ -3012,7 +3012,7 @@ __transform_to_projection_space proc
         pop_all
         destroy_stack_frame
         ret
-__transform_to_projection_space endp    
+__transform_to_projection_space endp
 
 _rasterizer_triangle3f proc
         create_stack_frame
@@ -3096,6 +3096,6 @@ _rasterizer_triangle3f proc
         pop_all
         destroy_stack_frame
         ret
-_rasterizer_triangle3f endp     
+_rasterizer_triangle3f endp
 
 end
