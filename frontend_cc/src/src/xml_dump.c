@@ -1,6 +1,4 @@
 
-#include <stdarg.h>
-
 #include "common.h"
 #include "xml_dump.h"
 #include "unit.h"

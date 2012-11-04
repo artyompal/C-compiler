@@ -411,7 +411,7 @@ static BOOL _try_optimize_reg_add_sub_const_into_lea(function_desc *function, x8
 
 //
 // ѕытаетс€ преобразовать ADD reg,const в INC/DEC.
-static void _try_optimize_add_sub_const(function_desc *function, x86_instruction *insn)
+static void _try_optimize_add_sub_const(x86_instruction *insn)
 {
     int val = insn->in_op2.data.int_val;
 
@@ -497,7 +497,7 @@ static void _try_optimize_add_sub(function_desc *function, x86_instruction *insn
 {
     if (OP_IS_CONSTANT(insn->in_op2)) {
         if (!_try_optimize_reg_add_sub_const_into_lea(function, insn)) {
-            _try_optimize_add_sub_const(function, insn);
+            _try_optimize_add_sub_const(insn);
         }
     }
 }

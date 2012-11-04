@@ -767,7 +767,7 @@ static void _generate_binary_arithm_expr(expression *expr, x86_operand *res)
 
     if (is_structure_op) {
         ASSERT(expr->data.arithm.opcode == op_assign);
-        x86_intrinsic_static_memcpy(_curr_func, res, &op1, &op2, type_calculate_sizeof(expr->expr_type));
+        x86_intrinsic_static_memcpy(res, &op1, &op2, type_calculate_sizeof(expr->expr_type));
     } else if (is_int_op) {
         _generate_int_binary_expr(expr, res, &op1, &op2);
     } else if (!option_sse2) {

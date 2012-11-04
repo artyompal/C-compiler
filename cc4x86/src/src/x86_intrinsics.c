@@ -42,7 +42,7 @@ static void _memcpy_via_dword_mov(x86_operand *dst, x86_operand *src, int size_i
     }
 }
 
-static void _static_memcpy(function_desc *function, x86_operand *dst, x86_operand *src, int size)
+static void _static_memcpy(x86_operand *dst, x86_operand *src, int size)
 {
 //  mov eax, ecx
 //  shr ecx, 02
@@ -81,20 +81,20 @@ static void _static_memcpy(function_desc *function, x86_operand *dst, x86_operan
 }
 
 
-void x86_intrinsic_static_memcpy(function_desc *function, x86_operand *res, x86_operand *dst, x86_operand *src, int size)
+void x86_intrinsic_static_memcpy(x86_operand *res, x86_operand *dst, x86_operand *src, int size)
 {
     ASSERT(dst->op_loc == x86loc_address && src->op_loc == x86loc_address);
 
     if (size % 4 == 0 && size <= 8) {
         _memcpy_via_dword_mov(dst, src, size / 4);
     } else {
-        _static_memcpy(function, dst, src, size);
+        _static_memcpy(dst, src, size);
     }
 
     *res = *dst;
 }
 
-void x86_intrinsic_dynamic_memcpy(function_desc *function, x86_operand *res, x86_operand *dst, x86_operand *src, x86_operand *size)
+void x86_intrinsic_dynamic_memcpy(x86_operand *res, x86_operand *dst, x86_operand *src, x86_operand *size)
 {
 //  Подразумеваем, что CLD делать не надо.
 

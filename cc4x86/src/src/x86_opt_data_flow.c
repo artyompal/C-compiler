@@ -264,7 +264,7 @@ static void _alivereg_build_inout(function_desc *function, x86_operand_type type
 
 //
 // Пересчитывает таблицы для данной инструкции.
-static void _alivereg_update_tables(function_desc *function, x86_operand_type type)
+static void _alivereg_update_tables(x86_operand_type type)
 {
     x86_instruction *insn;
     int j, regs_cnt, regs[MAX_REGISTERS_PER_INSN];
@@ -384,7 +384,7 @@ static void _exposeduses_build_table(function_desc *function, x86_operand_type t
 //
 // Вычисляет множество use для данного блока (множество импортирующих использований),
 // т.е. множество пар (s,x) : s - инструкция, использующая регистр x, причём предшествующих определений x в данном блоке нет.
-static void _exposeduses_build_use(set *use, basic_block *block, function_desc *function, x86_operand_type type)
+static void _exposeduses_build_use(set *use, basic_block *block, x86_operand_type type)
 {
     x86_instruction *insn;
     int j, reg, idx, regs_cnt, regs[MAX_REGISTERS_PER_INSN];
@@ -529,7 +529,7 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
             _exposeduses_build_def(&tmp, &_basic_blocks.blocks_base[block], function, type);
             set_subtract(&_exposeduses_in.vec_base[block], &tmp);
 
-            _exposeduses_build_use(&tmp, &_basic_blocks.blocks_base[block], function, type);
+            _exposeduses_build_use(&tmp, &_basic_blocks.blocks_base[block], type);
             set_unite(&_exposeduses_in.vec_base[block], &tmp);
 
             changed |= !set_equal(&_exposeduses_in.vec_base[block], &old_in);
@@ -538,14 +538,48 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
 }
 
 //
-// Возвращает все импортирующие использования данного регистра в функции.
-static void _exposeduses_get_usage_of_register(int reg, x86_instruction ***res_arr, int *res_count)
+// Возвращает все использования данного определения в данной функции (ио-цепочку данного определения).
+//
+// Проходит в обратном порядке от конца блока до интересующего определения.
+// Если других определений нет, то цепочка состоит из множества out плюс использования в данном блоке.
+// Если встречаются другие определения, то цепочка состоит из использований, находящихся между
+// рассматриваемым определением и следующим определением.
+//
+static void _exposeduses_get_usage_of_definition(int reg, x86_instruction *def, x86_operand_type type,
+                                                 x86_instruction **res_arr, int *res_count, int res_max_count)
 {
-    int idx = _exposeduse_reg2idx.int_base[reg];
+    x86_instruction *test;
+    int i, block;
 
-    *res_arr    = _exposeduse_table.insn_base + idx;
-    *res_count  = _exposeduse_reg2idx.int_base[reg + 1] - idx;
- }
+    block = def->in_block - _basic_blocks.blocks_base;
+    *res_count = 0;
+
+    // добавляем все использования в пределах данного блока
+    for (test = def->in_next; test != def->in_block->block_last_insn->in_next; test = test->in_next) {
+        if (OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg) && IS_VOLATILE_INSN(test->in_code, type)) {
+            aux_sort_int((int*)res_arr, *res_count);
+            *res_count = aux_unique_int((int*)res_arr, *res_count);
+            return;
+        } else if (bincode_insn_contains_register(test, type, reg)) {
+            res_arr[*res_count] = test;
+            ++*res_count;
+            ASSERT(*res_count < res_max_count);
+        }
+    }
+
+    // добавляем использования из множества out данного блока
+    for (i = _exposeduse_reg2idx.int_base[reg]; i < _exposeduse_reg2idx.int_base[reg + 1]; i++) {
+        if (BIT_TEST(_exposeduses_out.vec_base[block], i)) {
+            res_arr[*res_count] = _exposeduse_table.insn_base[i];
+            ++*res_count;
+            ASSERT(*res_count < res_max_count);
+        }
+    }
+
+    // обеспечиваем уникальность
+    aux_sort_int((int*)res_arr, *res_count);
+    *res_count = aux_unique_int((int*)res_arr, *res_count);
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -754,8 +788,9 @@ static void _reachingdef_build_inout(function_desc *function, x86_operand_type t
 }
 
 //
-// Проверяет, доступно ли определение def в месте инструкции insn.
-static BOOL _reachingdef_test(x86_instruction *def, x86_instruction *insn, x86_operand_type type)
+// Проверяет, доступно ли определение def для инструкции insn
+// (проверка на вхождение инструкции insn в ои-цепочку данного определения).
+static BOOL _reachingdef_is_definition_available(x86_instruction *def, x86_instruction *insn, x86_operand_type type)
 {
     basic_block *def_block  = def->in_block;
     basic_block *insn_block = insn->in_block;
@@ -764,6 +799,23 @@ static BOOL _reachingdef_test(x86_instruction *def, x86_instruction *insn, x86_o
     int def_idx;
 
     ASSERT(OP_IS_TYPED_PSEUDO_REG(def->in_op1, type));
+
+    // если инструкции находятся в одном блоке, и определение предшествует использованию,
+    // то нужно всего лишь проверить, что между ними нет других определений того же регистра
+    if (def_block == insn_block) {
+        for (test = def_block->block_leader; test != def && test != insn; test = test->in_next) {
+        }
+
+        if (test == def) {
+            for (test = def; test != insn && test != def_block->block_last_insn->in_next; test = test->in_next) {
+                if (IS_VOLATILE_INSN(test->in_code, type) && OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg)) {
+                    return FALSE;
+                }
+            }
+
+            return TRUE;
+        }
+    }
 
     // находим индекс инструкции def в таблице определений
     for (def_idx = def_block->block_first_def; _definitions_table.insn_base[def_idx] != def; def_idx++) {
@@ -970,7 +1022,8 @@ static void _redundantcopies_build_inout(function_desc *function, x86_operand_ty
 
 //
 // Тест инструкции на вхождение во множество in указанного блока.
-static BOOL _redundantcopies_test_insn(x86_instruction *insn, basic_block *block)
+// Является аналогом проверки ои-цепочки для уравнений копирования.
+static BOOL _redundantcopies_is_insn_available(x86_instruction *insn, basic_block *block)
 {
     int idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
     ASSERT(idx >= 0);
@@ -1014,7 +1067,7 @@ void x86_dataflow_step_insn_forward(function_desc *function, x86_operand_type ty
             }
     }
 
-    _alivereg_update_tables(function, type);
+    _alivereg_update_tables(type);
 }
 
 //
@@ -1030,19 +1083,19 @@ void x86_dataflow_step_insn_backward(function_desc *function, x86_operand_type t
         }
     }
 
-    _alivereg_update_tables(function, type);
+    _alivereg_update_tables(type);
 }
 
 //
 // Проверяет, можно ли освободить регистр ПОСЛЕ этой инструкции.
-int x86_dataflow_is_pseudoreg_alive_after(function_desc *function, int pseudoreg)
+int x86_dataflow_is_pseudoreg_alive_after(int pseudoreg)
 {
     return BIT_TEST(_alivereg_after_current_insn, pseudoreg);
 }
 
 //
 // Проверяет, можно ли освободить регистр ПЕРЕД этой инструкцией.
-int x86_dataflow_is_pseudoreg_alive_before(function_desc *function, int pseudoreg)
+int x86_dataflow_is_pseudoreg_alive_before(int pseudoreg)
 {
     return BIT_TEST(_alivereg_before_current_insn, pseudoreg);
 }
@@ -1097,6 +1150,8 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
     BOOL replace_allowed;
 
 
+    usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
+
     // генерируем таблицы достигающих определений
     _reachingdef_build_table(function, type);
     _reachingdef_build_inout(function, type);
@@ -1119,30 +1174,30 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
             replace_allowed = TRUE;
 
             // находим все использования x
-            // FIXME: ио-цепочки должны строится относительно текущего блока, а не абстрактно в вакууме.
-            _exposeduses_get_usage_of_register(x, &usage_arr, &usage_count);
+            _exposeduses_get_usage_of_definition(x, mov, type, usage_arr, &usage_count, function->func_insn_count);
 
             for (i = 0; i < usage_count && replace_allowed; i++) {
-                usage = usage_arr[usage_count];
+                usage = usage_arr[i];
                 if (!usage) {
                     continue;
                 }
 
                 // проверяем достижимость этого использования этой инструкцией копирования
-                if (!_reachingdef_test(mov, usage, type)) {
+                if (!_reachingdef_is_definition_available(mov, usage, type)) {
                     continue;
                 }
 
                 // проверяем для этого использования x, входит ли mov в c_in[block]
                 block = usage->in_block;
-                if (!_redundantcopies_test_insn(mov, block)) {
+                if (!_redundantcopies_is_insn_available(mov, block)) {
                     replace_allowed = FALSE;
                     break;
                 }
 
                 // проверяем, что нет изменений x или y в текущем блоке и до mov
-                for (test = block->block_leader; test != mov && test != usage; test = test->in_next) {
+                for (test = block->block_leader; test != mov; test = test->in_next) {
                     ASSERT(test != block->block_last_insn);
+                    ASSERT(test != usage);
 
                     if ((OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x) || OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x))
                         && IS_VOLATILE_INSN(test->in_code, type)) {
@@ -1157,7 +1212,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 _erase_instruction(function, mov);
 
                 for (i = 0; i < usage_count; i++) {
-                    usage = usage_arr[usage_count];
+                    usage = usage_arr[i];
                     if (!usage) {
                         continue;
                     }

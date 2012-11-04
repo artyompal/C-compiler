@@ -1,5 +1,4 @@
 
-#include <stdarg.h>
 #include "common.h"
 
 
@@ -197,15 +196,9 @@ int aux_unique_int(int *arr, int count)
     int *dst, *src;
 
     for (dst = arr, src = arr; src < arr + count; src++, dst++) {
-        if (src[0] == src[1]) {
-            break;
-        }
-    }
-
-    for (; src < arr + count; src++, dst++) {
         *dst = *src;
 
-        while (src[0] == src[1] && src < arr + count) {
+        while (src + 1 < arr + count && src[0] == src[1]) {
             src++;
         }
     }

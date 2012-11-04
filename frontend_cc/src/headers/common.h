@@ -28,7 +28,6 @@
 #pragma warning(disable:4244)   // conversion from 'int' to 'BOOL', possible loss of data
 #pragma warning(disable:4127)   // conditional expression is constant
 #pragma warning(disable:4996)   // 'strcpy' was declared deprecated
-#pragma warning(disable:4711)   // function '_alloc_fragment' selected for automatic inline expansion
 
 #endif // _MSC_VER
 
