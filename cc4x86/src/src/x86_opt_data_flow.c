@@ -1156,7 +1156,8 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 
                 // проверяем достижимость этого использования этой инструкцией копирования
                 if (!_reachingdef_is_definition_available(mov, usage, type)) {
-                    continue;
+                    replace_allowed = FALSE;
+                    break;
                 }
 
                 // x должно использоваться только в read-only контекстах
@@ -1171,7 +1172,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                     break;
                 }
 
-                // проверяем, что нет изменений x или y в текущем блоке и до mov
+                // проверяем, что нет изменений x или y в текущем блоке и до использования
                 test = (usage->in_block == mov->in_block ? mov->in_next : usage->in_block->block_leader);
 
                 for (; test != usage; test = test->in_next) {

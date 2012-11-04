@@ -22,7 +22,7 @@ _test1 proc
         pop     edi
         pop     ebp
         ret
-_test1 endp     
+_test1 endp
 
 _test2 proc
         push    ebp
@@ -43,7 +43,7 @@ _test2 proc
         add     esp,8
         pop     ebp
         ret
-_test2 endp     
+_test2 endp
 
 _test3 proc
         push    ebp
@@ -56,23 +56,25 @@ _test3 proc
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
         mov     edx,0
+        mov     edx,ebx
         cmp     edi,0
         jle     label0000
         mov     ebx,esi
         jmp     label0001
 label0000:
+        mov     edx,edi
 label0001:
-        add     ebx,ebx
-        add     ebx,esi
-        sub     ebx,edi
-        mov     eax,ebx
+        add     edx,ebx
+        add     edx,esi
+        sub     edx,edi
+        mov     eax,edx
         pop     ebx
         pop     esi
         pop     edi
         add     esp,4
         pop     ebp
         ret
-_test3 endp     
+_test3 endp
 
 _test4 proc
         push    ebp
@@ -94,7 +96,7 @@ _test4 proc
         add     esp,8
         pop     ebp
         ret
-_test4 endp     
+_test4 endp
 
 _test5 proc
         push    ebp
@@ -107,21 +109,24 @@ _test5 proc
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
         mov     edx,0
+        mov     edx,ebx
         cmp     edi,0
         jle     label0000
+        mov     edx,esi
         jmp     label0001
 label0000:
+        mov     edx,ebx
 label0001:
-        add     ebx,esi
-        sub     ebx,edi
-        mov     eax,ebx
+        add     edx,esi
+        sub     edx,edi
+        mov     eax,edx
         pop     ebx
         pop     esi
         pop     edi
         add     esp,4
         pop     ebp
         ret
-_test5 endp     
+_test5 endp
 
 _test proc
         push    ebp
@@ -199,6 +204,6 @@ label0004:
         mov     eax,0
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end
