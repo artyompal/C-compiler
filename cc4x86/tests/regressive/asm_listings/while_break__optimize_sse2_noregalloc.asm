@@ -50,6 +50,6 @@ label0008:
         set_retval      dword27
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

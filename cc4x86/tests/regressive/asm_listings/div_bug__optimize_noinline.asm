@@ -25,6 +25,6 @@ _test proc
         add     esp,20
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end

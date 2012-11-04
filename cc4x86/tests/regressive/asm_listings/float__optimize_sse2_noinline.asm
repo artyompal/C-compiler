@@ -58,7 +58,7 @@ label0001:
         add     esp,4
         pop     ebp
         ret
-_fabs endp      
+_fabs endp
 
 _eq proc
         push    ebp
@@ -77,7 +77,7 @@ _eq proc
         movzx   eax,al
         pop     ebp
         ret
-_eq endp        
+_eq endp
 
 _test proc
         push    ebp
@@ -230,6 +230,6 @@ label0007:
         add     esp,20
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end

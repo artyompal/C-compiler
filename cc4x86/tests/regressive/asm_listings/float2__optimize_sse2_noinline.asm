@@ -26,7 +26,7 @@ _test1 proc
         add     esp,4
         pop     ebp
         ret
-_test1 endp     
+_test1 endp
 
 _test2 proc
         push    ebp
@@ -36,7 +36,7 @@ _test2 proc
         movss   xmm0,xmm7
         pop     ebp
         ret
-_test2 endp     
+_test2 endp
 
 _test proc
         push    ebp
@@ -66,6 +66,6 @@ label0001:
         mov     eax,0
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end

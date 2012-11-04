@@ -349,6 +349,6 @@ label0007:
         set_retval      dword57
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

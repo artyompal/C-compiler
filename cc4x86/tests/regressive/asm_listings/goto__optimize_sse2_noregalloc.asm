@@ -21,6 +21,6 @@ label0001:
 label0002:
         inc     dword8
         jmp     label0000
-_test endp      
+_test endp
 
 end

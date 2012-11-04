@@ -305,6 +305,6 @@ label0007:
         add     esp,52
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end

@@ -21,6 +21,6 @@ _test proc
         set_retval      dword18
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end
