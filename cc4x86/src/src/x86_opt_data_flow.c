@@ -795,7 +795,7 @@ static BOOL _reachingdef_is_definition_available(x86_instruction *def, x86_instr
         }
 
         if (test == def) {
-            for (test = def; test != insn && test != def_block->block_last_insn->in_next; test = test->in_next) {
+            for (test = def->in_next; test != insn && test != def_block->block_last_insn->in_next; test = test->in_next) {
                 if (IS_VOLATILE_INSN(test->in_code, type) && OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg)) {
                     return FALSE;
                 }
@@ -1173,12 +1173,6 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 // проверяем достижимость этого использования этой инструкцией копирования
                 if (!_reachingdef_is_definition_available(mov, usage, type)) {
                     continue;
-                }
-
-                // x не должно нигде модифицироваться
-                if (IS_MODIFYING_INSN(usage->in_code)) {
-                    replace_allowed = FALSE;
-                    break;
                 }
 
                 // проверяем для этого использования x, входит ли mov в c_in[block]
