@@ -205,7 +205,7 @@ static void _force_swap_register(function_desc *function, x86_instruction *insn,
 }
 
 
-static void _restore_register(function_desc *function, x86_instruction *insn, 
+static void _restore_register(function_desc *function, x86_instruction *insn,
     x86_pseudoreg_info *pseudoregs_map, int reg, int real_reg, x86_operand_type type)
 {
     int ofs = pseudoregs_map[reg].reg_stack_location;

@@ -326,7 +326,7 @@ static void _alivereg_update_tables(x86_operand_type type)
 static void _exposeduses_build_table(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
-    int approx_count, reg, j, regs_cnt, seen_modification, regs[MAX_REGISTERS_PER_INSN];
+    int approx_count, reg, j, regs_cnt, regs[MAX_REGISTERS_PER_INSN];
 
 
     // Считаем максимальное число элементов.
@@ -349,29 +349,15 @@ static void _exposeduses_build_table(function_desc *function, x86_operand_type t
 
     // Проходим по всем регистрам, и для каждого находим все интересующие нас использования и вносим их в таблицу.
     for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
-        seen_modification                   = FALSE;
         _exposeduse_reg2idx.int_base[reg]   = _exposeduse_table.insn_count;
 
         for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-            // Сканируем блок. Пока мы не дошли до перезаписывающей инструкции с данным регистром,
-            // вносим все инструкции, содержащие данный регистр, в массив.
+            bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
 
-            if (_is_leader(insn)) {
-                seen_modification = FALSE;
-            }
-
-            if (OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg) && IS_DEFINING_INSN(insn->in_code, type)) {
-                seen_modification = TRUE;
-            }
-
-            if (!seen_modification) {
-                bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
-
-                for (j = 0; j < regs_cnt; j++) {
-                    if (reg == regs[j]) {
-                        _exposeduse_table.insn_base[_exposeduse_table.insn_count++] = insn;
-                        ASSERT(_exposeduse_table.insn_count <= approx_count);
-                    }
+            for (j = 0; j < regs_cnt; j++) {
+                if (reg == regs[j]) {
+                    _exposeduse_table.insn_base[_exposeduse_table.insn_count++] = insn;
+                    ASSERT(_exposeduse_table.insn_count <= approx_count);
                 }
             }
         }
@@ -556,14 +542,16 @@ static void _exposeduses_get_usage_of_definition(int reg, x86_instruction *def, 
 
     // добавляем все использования в пределах данного блока
     for (test = def->in_next; test != def->in_block->block_last_insn->in_next; test = test->in_next) {
-        if (OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg) && IS_VOLATILE_INSN(test->in_code, type)) {
-            aux_sort_int((int*)res_arr, *res_count);
-            *res_count = aux_unique_int((int*)res_arr, *res_count);
-            return;
-        } else if (bincode_insn_contains_register(test, type, reg)) {
+        if (bincode_insn_contains_register(test, type, reg)) {
             res_arr[*res_count] = test;
             ++*res_count;
             ASSERT(*res_count < res_max_count);
+        }
+
+        if (OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg) && IS_DEFINING_INSN(test->in_code, type)) {
+            aux_sort_int((int*)res_arr, *res_count);
+            *res_count = aux_unique_int((int*)res_arr, *res_count);
+            return;
         }
     }
 
@@ -1187,19 +1175,27 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                     continue;
                 }
 
+                // x не должно нигде модифицироваться
+                if (IS_MODIFYING_INSN(usage->in_code)) {
+                    replace_allowed = FALSE;
+                    break;
+                }
+
                 // проверяем для этого использования x, входит ли mov в c_in[block]
                 block = usage->in_block;
+
                 if (!_redundantcopies_is_insn_available(mov, block)) {
                     replace_allowed = FALSE;
                     break;
                 }
 
                 // проверяем, что нет изменений x или y в текущем блоке и до mov
-                for (test = block->block_leader; test != mov; test = test->in_next) {
-                    ASSERT(test != block->block_last_insn);
-                    ASSERT(test != usage);
+                test = (block == mov->in_block ? mov->in_next : block->block_leader);
 
-                    if ((OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x) || OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x))
+                for (; test != usage; test = test->in_next) {
+                    ASSERT(test != block->block_last_insn);
+
+                    if ((OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x) || OP_IS_THIS_PSEUDO_REG(test->in_op1, type, y))
                         && IS_VOLATILE_INSN(test->in_code, type)) {
                             replace_allowed = FALSE;
                             break;
