@@ -1015,12 +1015,8 @@ static void _redundantcopies_build_inout(function_desc *function, x86_operand_ty
 // Является аналогом проверки ои-цепочки для уравнений копирования.
 static BOOL _redundantcopies_is_insn_available(x86_instruction *insn, basic_block *block)
 {
-    int idx;
-
-    // бинарный поиск не получается сделать, так как при удалении инструкций нарушается сортировка
-    for (idx = 0; _redundantcopies_table.insn_base[idx] != insn; idx++) {
-        ASSERT(idx < _redundantcopies_table.insn_count);
-    }
+    int idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
+    ASSERT(idx >= 0);
 
     return BIT_TEST(_redundantcopies_in.vec_base[block - _basic_blocks.blocks_base], idx);
 }
@@ -1104,11 +1100,8 @@ void _erase_instruction(function_desc *function, x86_instruction *insn)
         }
     }
 
-    for (i = 0; i < _redundantcopies_table.insn_count; i++) {
-        if (_redundantcopies_table.insn_base[i] == insn) {
-            _redundantcopies_table.insn_base[i] = NULL;
-        }
-    }
+    // Мы не можем удалять инструкции из _redundantcopies_table, так как она отсортирована,
+    // а индексы в ней задают биты в множестве c_in[block].
 }
 
 //
