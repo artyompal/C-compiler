@@ -1140,7 +1140,6 @@ void _erase_instruction(function_desc *function, x86_instruction *insn)
 // Делает оптимизацию распространения копирований (Дракон, алгоритм 10.6).
 void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 {
-    basic_block *block;
     x86_instruction *mov, *usage, *next, *test, **usage_arr;
     int usage_count, i, j, x, y, regs_cnt, *regs[MAX_REGISTERS_PER_INSN];
     BOOL replace_allowed;
@@ -1183,19 +1182,23 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                     continue;
                 }
 
-                // проверяем для этого использования x, входит ли mov в c_in[block]
-                block = usage->in_block;
+                // x должно использоваться только в read-only контекстах
+                if (IS_MODIFYING_INSN(usage->in_code) && OP_IS_THIS_PSEUDO_REG(usage->in_op1, type, x)) {
+                    replace_allowed = FALSE;
+                    break;
+                }
 
-                if (!_redundantcopies_is_insn_available(mov, block)) {
+                // проверяем для этого использования x, входит ли mov в c_in[block]
+                if (usage->in_block != mov->in_block && !_redundantcopies_is_insn_available(mov, usage->in_block)) {
                     replace_allowed = FALSE;
                     break;
                 }
 
                 // проверяем, что нет изменений x или y в текущем блоке и до mov
-                test = (block == mov->in_block ? mov->in_next : block->block_leader);
+                test = (usage->in_block == mov->in_block ? mov->in_next : usage->in_block->block_leader);
 
                 for (; test != usage; test = test->in_next) {
-                    ASSERT(test != block->block_last_insn);
+                    ASSERT(test != usage->in_block->block_last_insn);
 
                     if ((OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x) || OP_IS_THIS_PSEUDO_REG(test->in_op1, type, y))
                         && IS_VOLATILE_INSN(test->in_code, type)) {
