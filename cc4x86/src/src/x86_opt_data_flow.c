@@ -330,13 +330,7 @@ static void _exposeduses_build_table(function_desc *function, x86_operand_type t
 
 
     // Считаем максимальное число элементов.
-    approx_count = function->func_pseudoregs_count[type];
-
-    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        if (IS_CONSTANT_INSN(insn->in_code)) {
-            approx_count++;
-        }
-    }
+    approx_count = function->func_pseudoregs_count[type] * MAX_REGISTERS_PER_INSN;
 
 
     // Выделяем память.

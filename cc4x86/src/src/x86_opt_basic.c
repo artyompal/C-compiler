@@ -161,20 +161,22 @@ static void _try_optimize_lea_reg_address(function_desc *function, x86_instructi
     // Если инструкция - тривиальный LEA вроде LEA EAX,[EDX] или  LEA EAX,[EDX*1], то просто устраняем её.
     if (ADDRESS_IS_BASE(insn->in_op2)) {
         reg2 = insn->in_op2.data.address.base;
-        bincode_erase_instruction(function, insn);
 
         for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
             ASSERT(usage);
             _replace_register_in_instruction(usage, reg, reg2);
         }
+
+        bincode_erase_instruction(function, insn);
     } else if (ADDRESS_IS_UNSCALED_INDEX(insn->in_op2)) {
         reg2 = insn->in_op2.data.address.index;
-        bincode_erase_instruction(function, insn);
 
         for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
             ASSERT(usage);
             _replace_register_in_instruction(usage, reg, reg2);
         }
+
+        bincode_erase_instruction(function, insn);
     } else {
         // Иначе исследуем её использование и пытаемся объединить адреса в одной инструкции.
         // Если не получается, то прекращаем; иначе удаляем исходную инструкцию.
