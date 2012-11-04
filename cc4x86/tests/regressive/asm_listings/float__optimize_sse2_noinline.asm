@@ -210,11 +210,10 @@ label0005:
 label0006:
         movss   xmm0,dword ptr [ebp-4]
         divss   xmm0,dword ptr [___unnamed_float_13]
-        movss   xmm7,xmm0
-        movsd   xmm0,qword ptr [___unnamed_double_14]
-        movsd   qword ptr [esp-8],xmm0
+        movsd   xmm1,qword ptr [___unnamed_double_14]
+        movsd   qword ptr [esp-8],xmm1
         sub     esp,8
-        cvtss2sd        xmm0,xmm7
+        cvtss2sd        xmm0,xmm0
         movsd   qword ptr [esp-8],xmm0
         sub     esp,8
         call    _eq

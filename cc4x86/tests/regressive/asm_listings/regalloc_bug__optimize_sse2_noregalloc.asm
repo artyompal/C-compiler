@@ -13,19 +13,15 @@ _test proc
 ; start of inline function f
         mov     dword23,2
         add     dword23,3
-        mov     dword36,dword23
 ; end of inline function f
-        mov     dword10,dword36
-        mov     dword33,dword10
+        mov     dword33,dword23
         jmp     label0001
 label0000:
 ; start of inline function g
         mov     dword29,2
         sub     dword29,3
-        mov     dword39,dword29
 ; end of inline function g
-        mov     dword14,dword39
-        mov     dword33,dword14
+        mov     dword33,dword29
 label0001:
         mov     dword17,1
         add     dword17,dword33

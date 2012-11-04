@@ -72,8 +72,7 @@ label0009:
         movzx   dword62,byte2
         mov     dword163,dword62
 ; end of inline function eq
-        mov     dword10,dword163
-        cmp     dword10,0
+        cmp     dword163,0
         jne     label0000
         mov     dword11,1
         set_retval      dword11
@@ -109,8 +108,7 @@ label000d:
         movzx   dword75,byte5
         mov     dword163,dword75
 ; end of inline function eq
-        mov     dword17,dword163
-        cmp     dword17,0
+        cmp     dword163,0
         jne     label0001
         mov     dword18,2
         set_retval      dword18
@@ -122,8 +120,7 @@ label0001:
         movsd   sse114,sse7
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_7]
-        movsd   sse49,sse114
-        movsd   sse115,sse49
+        movsd   sse115,sse114
 ; start of inline function fabs
         movsd   sse51,sse115
         subsd   sse51,sse116
@@ -147,8 +144,7 @@ label0011:
         movzx   dword88,byte8
         mov     dword163,dword88
 ; end of inline function eq
-        mov     dword24,dword163
-        cmp     dword24,0
+        cmp     dword163,0
         jne     label0002
         mov     dword25,3
         set_retval      dword25
@@ -157,11 +153,9 @@ label0011:
 label0002:
         cvtss2sd        sse9,sse112
         divsd   sse9,sse113
-        movsd   sse114,sse9
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_8]
-        movsd   sse60,sse114
-        movsd   sse115,sse60
+        movsd   sse115,sse9
 ; start of inline function fabs
         movsd   sse62,sse115
         subsd   sse62,sse116
@@ -185,8 +179,7 @@ label0015:
         movzx   dword101,byte11
         mov     dword163,dword101
 ; end of inline function eq
-        mov     dword31,dword163
-        cmp     dword31,0
+        cmp     dword163,0
         jne     label0003
         mov     dword32,4
         set_retval      dword32
@@ -223,8 +216,7 @@ label0019:
         movzx   dword114,byte14
         mov     dword163,dword114
 ; end of inline function eq
-        mov     dword37,dword163
-        cmp     dword37,0
+        cmp     dword163,0
         jne     label0004
         mov     dword38,5
         set_retval      dword38
@@ -261,8 +253,7 @@ label001d:
         movzx   dword127,byte17
         mov     dword163,dword127
 ; end of inline function eq
-        mov     dword43,dword163
-        cmp     dword43,0
+        cmp     dword163,0
         jne     label0005
         mov     dword44,6
         set_retval      dword44
@@ -299,8 +290,7 @@ label0021:
         movzx   dword140,byte20
         mov     dword163,dword140
 ; end of inline function eq
-        mov     dword49,dword163
-        cmp     dword49,0
+        cmp     dword163,0
         jne     label0006
         mov     dword50,7
         set_retval      dword50
@@ -309,13 +299,11 @@ label0021:
 label0006:
         movss   sse24,sse112
         divss   sse24,dword ptr [___unnamed_float_13]
-        movss   sse112,sse24
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_14]
-        cvtss2sd        sse26,sse112
-        movsd   sse115,sse26
+        cvtss2sd        sse26,sse24
 ; start of inline function fabs
-        movsd   sse102,sse115
+        movsd   sse102,sse26
         subsd   sse102,sse116
         cvtsd2ss        sse103,sse102
         movss   sse117,sse103
@@ -329,16 +317,13 @@ label0024:
         xorps   sse109,dword ptr [___unnamed_float_1]
         movss   sse118,sse109
 label0025:
-        movss   sse119,sse118
 ; end of inline function fabs
-        movss   sse104,sse119
+        movss   sse104,sse118
         comiss  sse104,dword ptr [___unnamed_float_2]
         setb    byte23
         movzx   dword153,byte23
-        mov     dword163,dword153
 ; end of inline function eq
-        mov     dword55,dword163
-        cmp     dword55,0
+        cmp     dword153,0
         jne     label0007
         mov     dword56,8
         set_retval      dword56

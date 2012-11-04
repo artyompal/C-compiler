@@ -80,8 +80,7 @@ label0004:
         add     ecx,esi
         mov     eax,edi
         sal     eax,cl
-        mov     edi,eax
-        cmp     edi,64
+        cmp     eax,64
         je      label0005
         mov     eax,6
         pop     esi

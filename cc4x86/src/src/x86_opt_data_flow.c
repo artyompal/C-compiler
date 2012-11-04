@@ -961,7 +961,7 @@ static void _redundantcopies_build_inout(function_desc *function, x86_operand_ty
         change = FALSE;
 
         // цикл по всем блокам
-        for (block = _basic_blocks.blocks_count-1; block >= 0; block--) {
+        for (block = _basic_blocks.blocks_count-1; block > 0; block--) {
             set_clear_to_ones(&_redundantcopies_in.vec_base[block]);
 
             // если блок начинается с метки

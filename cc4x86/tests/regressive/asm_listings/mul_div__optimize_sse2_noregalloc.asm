@@ -66,12 +66,9 @@ label0002:
         destroy_stack_frame
         ret
 label0003:
-        mov     dword52,dword90
-        mov     dword93,dword52
-        mov     dword55,dword93
+        mov     dword55,dword90
         mul     dword55,dword91
-        mov     dword93,dword55
-        cmp     dword93,6
+        cmp     dword55,6
         je      label0004
         mov     dword58,5
         set_retval      dword58
@@ -100,8 +97,7 @@ label0005:
         xor_edx_edx     dword83
         div     dword82,dword90
         mul     dword78,dword82
-        mov     dword94,dword78
-        cmp     dword94,2
+        cmp     dword78,2
         je      label0006
         mov     dword87,7
         set_retval      dword87

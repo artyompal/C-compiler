@@ -20,14 +20,10 @@ _test proc
         create_stack_frame
 ; start of inline function test1
         movss   sse17,dword ptr [___unnamed_float_1]
-        movss   sse18,sse17
-        movss   sse10,sse18
+        movss   sse10,sse17
         addss   sse10,dword ptr [___unnamed_float_0]
-        movss   sse18,sse10
-        movss   sse17,sse18
-        movss   sse19,sse17
 ; end of inline function test1
-        movss   sse2,sse19
+        movss   sse2,sse10
         comiss  sse2,dword ptr [___unnamed_float_2]
         je      label0000
         mov     dword3,1
@@ -39,9 +35,8 @@ label0000:
         movss   sse20,dword ptr [___unnamed_float_0]
         movss   sse15,sse20
         addss   sse15,dword ptr [___unnamed_float_0]
-        movss   sse21,sse15
 ; end of inline function test2
-        movss   sse5,sse21
+        movss   sse5,sse15
         comiss  sse5,dword ptr [___unnamed_float_3]
         je      label0001
         mov     dword6,2

@@ -64,8 +64,7 @@ label0004:
         add     dword40,dword49
         mov     dword42,dword48
         sal     dword42,dword40
-        mov     dword48,dword42
-        cmp     dword48,64
+        cmp     dword42,64
         je      label0005
         mov     dword45,6
         set_retval      dword45

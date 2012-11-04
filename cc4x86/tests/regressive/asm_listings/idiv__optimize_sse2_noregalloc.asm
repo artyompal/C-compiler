@@ -26,8 +26,7 @@ _test proc
         idiv    dword23,dword47
         imul    dword19,dword23
         add     dword11,dword19
-        mov     dword49,dword11
-        cmp     dword49,2
+        cmp     dword11,2
         je      label0000
         mov     dword28,1
         set_retval      dword28
@@ -37,8 +36,7 @@ label0000:
         mov     dword31,dword47
         cdq     dword32,dword31
         idiv    dword31,dword45
-        mov     dword47,dword31
-        cmp     dword47,2
+        cmp     dword31,2
         je      label0001
         mov     dword35,2
         set_retval      dword35
@@ -48,8 +46,7 @@ label0001:
         mov     dword38,dword48
         cdq     dword39,dword38
         idiv    dword38,dword46
-        mov     dword48,dword39
-        cmp     dword48,2
+        cmp     dword39,2
         je      label0002
         mov     dword42,3
         set_retval      dword42
