@@ -670,31 +670,33 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
     set_clear_to_zeros(kill);
     memset(reg_definitions_table, -1, sizeof(int)*function->func_pseudoregs_count[type]);
 
-    // Ќаходим дл€ каждого регистра последнее однозначное определение, записывающее в него.
+    // Ќаходим дл€ каждого регистра последнее определение, записывающее в него.
     for (def = block->block_first_def; def < block->block_last_def; def++) {
         insn = _definitions_table.insn_base[def];
 
-        if (IS_DEFINING_INSN(insn->in_code, type)) {
+        if (IS_VOLATILE_INSN(insn->in_code, type)) {
             reg_definitions_table[insn->in_op1.data.reg] = def;
         }
     }
 
-    // ƒл€ каждого регистра: во всЄм коде функции, кроме данного блока, находим все определени€ данного регистра
-    // (однозначные и неоднозначные), и вносим их в множество.
-    for (reg = 0; reg < function->func_pseudoregs_count[type]; reg++) {
-        for (def = 0; def < block->block_first_def; def++) {
-            insn = _definitions_table.insn_base[def];
+    // ƒл€ каждого изменЄнного регистра: во всЄм коде функции, кроме данного блока,
+    // находим все определени€ данного регистра и вносим их в множество.
+    for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
+        if (reg_definitions_table[reg] != -1) {
+            for (def = 0; def < block->block_first_def; def++) {
+                insn = _definitions_table.insn_base[def];
 
-            if (insn->in_op1.data.reg == reg) {
-                BIT_RAISE(*kill, def);
+                if (insn->in_op1.data.reg == reg) {
+                    BIT_RAISE(*kill, def);
+                }
             }
-        }
 
-        for (def = block->block_last_def; def < _definitions_table.insn_count; def++) {
-            insn = _definitions_table.insn_base[def];
+            for (def = block->block_last_def; def < _definitions_table.insn_count; def++) {
+                insn = _definitions_table.insn_base[def];
 
-            if (insn->in_op1.data.reg == reg) {
-                BIT_RAISE(*kill, def);
+                if (insn->in_op1.data.reg == reg) {
+                    BIT_RAISE(*kill, def);
+                }
             }
         }
     }
@@ -873,6 +875,9 @@ static void _redundantcopies_build_gen(set *gen, function_desc *function, basic_
     SET_ALLOCA(modified_regs, function->func_pseudoregs_count[type]);
     set_clear_to_zeros(&modified_regs);
 
+    ASSERT(gen->set_count == _redundantcopies_table.insn_count);
+    set_clear_to_zeros(gen);
+
     for (insn = block->block_last_insn; insn != block->block_leader->in_prev; insn = insn->in_prev) {
         if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)
             && !BIT_TEST(modified_regs, insn->in_op2.data.reg)) {
@@ -898,6 +903,9 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
 
     SET_ALLOCA(modified_regs, function->func_pseudoregs_count[type]);
     set_clear_to_zeros(&modified_regs);
+
+    ASSERT(kill->set_count == _redundantcopies_table.insn_count);
+    set_clear_to_zeros(kill);
 
     // помечаем все модифицированные в этом блоке регистры
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {

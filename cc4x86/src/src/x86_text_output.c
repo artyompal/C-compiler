@@ -542,7 +542,7 @@ static void _output_function_code(function_desc *function)
         _output_push_instruction(insn);
     }
 
-    out_fmt("_%s endp\t\n", function->func_sym->sym_name);
+    out_fmt("_%s endp\n", function->func_sym->sym_name);
     fflush(_asm_file);
 }
 
