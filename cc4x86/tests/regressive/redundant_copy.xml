@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unit>
+  <general>
+    <source_module>..\redundant_copy.c</source_module>
+  </general>
+  <functions_list>
+    <function>
+      <name>test1</name>
+      <parameters>
+        <parameter name="a" type="int"/>
+        <parameter name="b" type="int"/>
+        <parameter name="c" type="int"/>
+      </parameters>
+      <body>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="3" code="sub">
+            <operand_1 type="int" lvalue="no" complexity="2" code="mul">
+              <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+              <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+            </operand_1>
+            <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+          </retvalue>
+        </expression>
+      </body>
+    </function>
+    <function>
+      <name>test2</name>
+      <parameters>
+        <parameter name="a" type="int"/>
+        <parameter name="b" type="int"/>
+        <parameter name="c" type="int"/>
+      </parameters>
+      <local_variables>
+        <variable name="x" type="int"/>
+        <variable name="y" type="int"/>
+      </local_variables>
+      <body>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="3" code="sub">
+            <operand_1 type="int" lvalue="no" complexity="2" code="add">
+              <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+              <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
+            </operand_1>
+            <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+          </retvalue>
+        </expression>
+      </body>
+    </function>
+    <function>
+      <name>test3</name>
+      <parameters>
+        <parameter name="a" type="int"/>
+        <parameter name="b" type="int"/>
+        <parameter name="c" type="int"/>
+      </parameters>
+      <local_variables>
+        <variable name="x" type="int"/>
+      </local_variables>
+      <body>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0000" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="2" code="greater_then">
+            <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
+          </condition>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="4" code="sub">
+            <operand_1 type="int" lvalue="no" complexity="3" code="add">
+              <operand_1 type="int" lvalue="no" complexity="2" code="add">
+                <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+                <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+              </operand_1>
+              <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+            </operand_1>
+            <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+          </retvalue>
+        </expression>
+      </body>
+    </function>
+    <function>
+      <name>test4</name>
+      <parameters>
+        <parameter name="a" type="int"/>
+        <parameter name="b" type="int"/>
+        <parameter name="c" type="int"/>
+      </parameters>
+      <local_variables>
+        <variable name="x" type="int"/>
+        <variable name="y" type="int"/>
+      </local_variables>
+      <body>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="post_increment" step="1">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="3" code="sub">
+            <operand_1 type="int" lvalue="no" complexity="2" code="add">
+              <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+              <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="y"/>
+            </operand_1>
+            <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+          </retvalue>
+        </expression>
+      </body>
+    </function>
+    <function>
+      <name>test5</name>
+      <parameters>
+        <parameter name="a" type="int"/>
+        <parameter name="b" type="int"/>
+        <parameter name="c" type="int"/>
+      </parameters>
+      <local_variables>
+        <variable name="x" type="int"/>
+      </local_variables>
+      <body>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0000" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="2" code="greater_then">
+            <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+            <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
+          </condition>
+        </expression>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
+        <expression type="int" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+          <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="a"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="3" code="sub">
+            <operand_1 type="int" lvalue="no" complexity="2" code="add">
+              <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="x"/>
+              <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="b"/>
+            </operand_1>
+            <operand_2 type="int" lvalue="yes" complexity="1" code="variable" name="c"/>
+          </retvalue>
+        </expression>
+      </body>
+    </function>
+    <function>
+      <name>test</name>
+      <parameters>
+      </parameters>
+      <body>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0000" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="19" code="function call">
+            <func_address type="int (int, int, int)" lvalue="yes" complexity="1" code="variable" name="test1"/>
+            <func_argument_0 type="int" lvalue="no" complexity="1" code="integer literal" value="256"/>
+            <func_argument_1 type="int" lvalue="no" complexity="1" code="integer literal" value="512"/>
+            <func_argument_2 type="int" lvalue="no" complexity="1" code="integer literal" value="131072"/>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0001" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="19" code="function call">
+            <func_address type="int (int, int, int)" lvalue="yes" complexity="1" code="variable" name="test2"/>
+            <func_argument_0 type="int" lvalue="no" complexity="1" code="integer literal" value="555"/>
+            <func_argument_1 type="int" lvalue="no" complexity="1" code="integer literal" value="666"/>
+            <func_argument_2 type="int" lvalue="no" complexity="1" code="integer literal" value="1221"/>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0002" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="19" code="function call">
+            <func_address type="int (int, int, int)" lvalue="yes" complexity="1" code="variable" name="test3"/>
+            <func_argument_0 type="int" lvalue="no" complexity="1" code="integer literal" value="222"/>
+            <func_argument_1 type="int" lvalue="no" complexity="1" code="integer literal" value="111"/>
+            <func_argument_2 type="int" lvalue="no" complexity="1" code="integer literal" value="444"/>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="3"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0002"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0003" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="19" code="function call">
+            <func_address type="int (int, int, int)" lvalue="yes" complexity="1" code="variable" name="test4"/>
+            <func_argument_0 type="int" lvalue="no" complexity="1" code="integer literal" value="5"/>
+            <func_argument_1 type="int" lvalue="no" complexity="1" code="integer literal" value="4"/>
+            <func_argument_2 type="int" lvalue="no" complexity="1" code="integer literal" value="10"/>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="4"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0003"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0004" invert_condition="yes">
+          <condition type="int" lvalue="no" complexity="19" code="function call">
+            <func_address type="int (int, int, int)" lvalue="yes" complexity="1" code="variable" name="test5"/>
+            <func_argument_0 type="int" lvalue="no" complexity="1" code="integer literal" value="222"/>
+            <func_argument_1 type="int" lvalue="no" complexity="1" code="integer literal" value="444"/>
+            <func_argument_2 type="int" lvalue="no" complexity="1" code="integer literal" value="888"/>
+          </condition>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="3"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0004"/>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
+        </expression>
+      </body>
+    </function>
+  </functions_list>
+</unit>

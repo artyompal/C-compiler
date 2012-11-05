@@ -101,7 +101,10 @@ void common_force_exit()
 void common_assert(const char *file, int line, const char *message)
 {
     LOG("assertion failed: '%s' in %s:%d\n", message, file, line);
+
+#ifndef X64
     __asm int 3;
+#endif
 }
 
 const char *get_log_filename()

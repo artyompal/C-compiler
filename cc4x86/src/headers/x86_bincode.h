@@ -76,16 +76,6 @@ typedef enum x86_operand_type_decl {
 
 #define X86_REGISTER_TYPES_COUNT ((int)x86op_float+1)
 
-typedef struct x86_register_decl {
-    x86_operand_type        reg_type;
-    int                     reg_value;
-} x86_register;
-
-typedef struct x86_register_ref_decl {
-    x86_operand_type        reg_type;
-    int                     *reg_addr;
-} x86_register_ref;
-
 typedef struct x86_operand_decl {
     x86_operand_location    op_loc;
     x86_operand_type        op_type;
@@ -238,8 +228,8 @@ typedef enum x86_instruction_code_decl {
     x86insn_xor_edx_edx,        // параметр - псевдорегистр для EDX
     x86insn_fpu_cmp,
     x86insn_cld,
-    x86insn_rep_movsb,
-    x86insn_rep_movsd,
+    x86insn_rep_movsb,          // параметры - псевдорегистры для EDI и ESI, оба меняются
+    x86insn_rep_movsd,          // параметры - псевдорегистры для EDI и ESI, оба меняются
     x86insn_push_arg,           // 1ый параметр может быть любого типа (эмулируется); 2ой параметр - размер
     x86insn_restore_stack,      // параметр - суммарный размер всех операндов
     x86insn_set_retval,         // параметр - возвращаемое значение (любого размера)
@@ -254,11 +244,14 @@ typedef enum x86_instruction_code_decl {
     x86insn_count,
 } x86_instruction_code;
 
+typedef struct basic_block_decl basic_block;
+
 typedef struct x86_instruction_decl {
     x86_instruction_code        in_code;
     x86_operand                 in_op1;
     x86_operand                 in_op2;
     int                         in_op3;
+    basic_block                 *in_block;
     struct x86_instruction_decl *in_next;
     struct x86_instruction_decl *in_prev;
 } x86_instruction;
@@ -286,6 +279,8 @@ typedef struct x86_instruction_decl {
                                         || (INSN) == x86insn_read_retval)
 #define IS_DEFINING_INSN(INSN, TYPE)    ((TYPE) == x86op_dword && IS_DWORD_DEFINING_INSN(INSN) || x86_equal_types((TYPE), x86op_float) && IS_FLOAT_DEFINING_INSN(INSN))
 #define IS_VOLATILE_INSN(INSN, TYPE)    (IS_DEFINING_INSN(INSN, TYPE) || IS_MODIFYING_INSN(INSN))
+#define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_sse_comiss || (INSN) == x86insn_sse_comisd || (INSN) == x86insn_push \
+                                        || (INSN) == x86insn_push_arg || (INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
 
 #define IS_MUL_DIV_INSN(INSN)           ((INSN) >= x86insn_int_idiv && (INSN) <= x86insn_int_div)
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
@@ -305,6 +300,8 @@ typedef struct x86_instruction_decl {
 #define OP_IS_DWORD(OP)                 ((OP).op_type == x86op_dword)
 #define OP_IS_FLOAT(OP)                 ((OP).op_type == x86op_float || (OP).op_type == x86op_double)
 #define OP_IS_REGISTER(OP)              ((OP).op_loc == x86loc_register)
+#define OP_IS_TYPED_REGISTER(OP, T)     ((OP).op_loc == x86loc_register && x86_equal_types((OP).op_type, (T)))
+#define OP_IS_TYPED_PSEUDO_REG(OP, T)   ((OP).op_loc == x86loc_register && x86_equal_types((OP).op_type, (T)) && (OP).data.reg > 0)
 #define OP_IS_ADDRESS(OP)               ((OP).op_loc == x86loc_address)
 #define OP_IS_ADDRESS_OR_SYMBOL(OP)     ((OP).op_loc == x86loc_address || (OP).op_loc == x86loc_symbol)
 #define OP_IS_REGISTER_OR_ADDRESS(OP)   ((OP).op_loc == x86loc_register || (OP).op_loc == x86loc_address)
@@ -322,10 +319,10 @@ typedef struct x86_instruction_decl {
 #define ENCODE_SSE_COMPARE(TYPE)        ((TYPE) == x86op_float ? x86insn_sse_comiss : x86insn_sse_comisd)
 
 
-void    bincode_extract_pseudoregs_from_operand         (x86_operand *op, x86_operand_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-void    bincode_extract_pseudoregs_from_insn            (x86_instruction *insn, x86_operand_type type, x86_register_ref regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_from_operand         (x86_operand *op, x86_operand_type type, int *regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_from_insn            (x86_instruction *insn, x86_operand_type type, int *regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_pseudoregs_from_insn_wo_dupes   (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-void    bincode_extract_real_registers_from_insn        (x86_instruction *insn, x86_operand_type type, x86_register regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_real_registers_from_insn        (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 BOOL    bincode_insn_contains_register                  (x86_instruction *insn, x86_operand_type type, int reg);
 BOOL    bincode_operand_contains_register               (x86_operand *op, x86_operand_type type, int reg);
 
@@ -337,7 +334,7 @@ void    bincode_create_operand_from_int_constant        (x86_operand *op, x86_op
 void    bincode_create_operand_from_register            (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_create_operand_from_pseudoreg           (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_create_operand_and_alloc_pseudoreg      (x86_operand *op, x86_operand_type type);
-void    bincode_create_operand_and_alloc_pseudoreg_in_function(function_desc *func, x86_operand *op, x86_operand_type type);
+void    bincode_create_operand_and_alloc_pseudoreg_in_function(function_desc *function, x86_operand *op, x86_operand_type type);
 void    bincode_create_operand_addr_from_reg            (x86_operand *op, x86_operand_type type, int reg);
 void    bincode_create_operand_addr_from_reg_offset     (x86_operand *op, x86_operand_type type, int reg, int offset);
 void    bincode_create_operand_addr_from_reg_reg        (x86_operand *op, x86_operand_type type, int reg1, int reg2);

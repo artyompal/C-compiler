@@ -7,6 +7,7 @@
 #include "x86_stack_frame.h"
 #include "x86_text_output.h"
 #include "x86_inlining.h"
+#include "x86_opt_data_flow.h"
 
 
 static function_desc *_first_function       = NULL;
@@ -38,11 +39,11 @@ function_desc * unit_get_current_function(void)
 
 function_desc * unit_find_function(symbol *name)
 {
-    function_desc *func = NULL;
+    function_desc *function = NULL;
 
-    for (func = _first_function; func; func = func->func_next) {
-        if (symbol_equal(func->func_sym, name)) {
-            return func;
+    for (function = _first_function; function; function = function->func_next) {
+        if (symbol_equal(function->func_sym, name)) {
+            return function;
         }
     }
 
@@ -924,9 +925,12 @@ void unit_codegen(void)
 
         if (option_enable_optimization) {
             x86_create_register_variables(_curr_func);
-        }
 
-//        text_output_debug_print_function_code(_curr_func);
+            if (!option_no_copy_opt) {
+                x86_dataflow_optimize_redundant_copies(_curr_func);
+                x86_optimization_after_codegen(_curr_func);
+            }
+        }
 
         if (!option_no_regalloc) {
             x86_allocate_registers(_curr_func);

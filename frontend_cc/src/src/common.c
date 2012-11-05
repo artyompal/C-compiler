@@ -1,10 +1,10 @@
 
-#include <stdarg.h>
 #include "common.h"
 
 
 BOOL option_no_codegen          = FALSE;
 BOOL option_no_regalloc         = FALSE;
+BOOL option_no_copy_opt         = FALSE;
 BOOL option_no_basic_opt        = FALSE;
 BOOL option_enable_optimization = FALSE;
 BOOL option_sse2                = FALSE;
@@ -161,5 +161,78 @@ void aux_replace_file_extension(char *dst, const char *path, const char *extensi
     if (dot) *dot = '\0';
 
     strcat(dst, extension);
+}
+
+
+void aux_sort_int(int *arr, int count)
+{
+    int i, j, m, k, tmp;
+
+    if (count < 2) {
+        return;
+    }
+
+    i = 0;
+    j = count - 1;
+    m = count / 2;
+    k = arr[m];
+
+    do {
+        while (arr[i] < k) i++;
+        while (arr[j] > k) j--;
+
+        if (i <= j) {
+            tmp = arr[i], arr[i] = arr[j], arr[j] = tmp;
+            i++, j--;
+        }
+    } while (i <= j);
+
+    aux_sort_int(arr, j + 1);
+    aux_sort_int(arr + i, count - i);
+}
+
+int aux_unique_int(int *arr, int count)
+{
+    int *dst, *src;
+
+    for (dst = arr, src = arr; src < arr + count; src++, dst++) {
+        *dst = *src;
+
+        while (src + 1 < arr + count && src[0] == src[1]) {
+            src++;
+        }
+    }
+
+    return (dst - arr);
+}
+
+int _binary_search(const int *arr, int count, int key)
+{
+    int base = 0, m;
+
+    while (count > 1) {
+        m = count/2;
+
+        if (arr[base + m] == key) {
+            return base + m;
+        } else if (arr[base + m] > key) {
+            count = m;
+        } else {
+            count -= m, base += m;
+        }
+    }
+
+    return base;
+}
+
+int aux_binary_search(const int *arr, int count, int key)
+{
+    int pos = _binary_search(arr, count, key);
+
+    if (count == 0) {
+        return -1;
+    } else {
+        return (arr[pos] == key ? pos : -1);
+    }
 }
 

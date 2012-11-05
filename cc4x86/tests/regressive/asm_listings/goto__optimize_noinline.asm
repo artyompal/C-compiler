@@ -25,6 +25,6 @@ label0001:
 label0002:
         inc     edi
         jmp     label0000
-_test endp      
+_test endp
 
 end

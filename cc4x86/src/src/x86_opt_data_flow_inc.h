@@ -3,8 +3,10 @@
 typedef struct basic_block_decl {           // структура базового блока:
     x86_instruction     *block_leader;      // первая инструкция блока, чаще всего метка
     int                 block_length;       // число инструкций в блоке
-//    int                 block_base_index;   // номер первой инструкции блока
-    x86_instruction     *block_last_insn;   // кешированный указатель на последнюю инструкцию
+    x86_instruction     *block_last_insn;   // указатель на последнюю инструкцию
+
+    int                 block_first_def;    // первое определение
+    int                 block_last_def;     // определение, последующее последнему
 } basic_block;
 
 typedef struct basic_blocks_vector_decl {   // вектор базовых блоков:
@@ -26,6 +28,11 @@ typedef struct insn_vector_decl {           // вектор инструкций:
     x86_instruction     **insn_base;        // адрес начала
     int                 insn_count;         // количество инструкций
 } insn_vector;
+
+typedef struct int_vector_decl {            // вектор int:
+    int                 *int_base;          // адрес начала
+    int                 int_count;          // количество
+} int_vector;
 
 
 #define SET_SIZE_IN_BYTES(X)	((((X)+7)/8+3)&~3)
@@ -114,6 +121,18 @@ static void set_subtract(set *a, set *b)
     for (i = 0; i < SET_SIZE_IN_DWORDS(a->set_count); i++) {
         a->set_base[i] &= ~b->set_base[i];
     }
+}
+
+static void set_invert(set *a)
+{
+    int i;
+
+    for (i = 0; i < SET_SIZE_IN_DWORDS(a->set_count); i++) {
+        a->set_base[i] = ~a->set_base[i];
+    }
+
+    if (a->set_count % 32 != 0)
+        a->set_base[a->set_count/32] = (1 << (a->set_count % 32)) - 1;
 }
 
 static BOOL set_equal(set *a, set *b)

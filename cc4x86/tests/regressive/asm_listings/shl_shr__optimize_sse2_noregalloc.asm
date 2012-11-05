@@ -62,8 +62,9 @@ label0003:
 label0004:
         mov     dword40,5
         add     dword40,dword49
-        sal     dword48,dword40
-        cmp     dword48,64
+        mov     dword42,dword48
+        sal     dword42,dword40
+        cmp     dword42,64
         je      label0005
         mov     dword45,6
         set_retval      dword45
@@ -74,6 +75,6 @@ label0005:
         set_retval      dword46
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

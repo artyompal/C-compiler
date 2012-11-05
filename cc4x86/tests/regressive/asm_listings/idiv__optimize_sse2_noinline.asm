@@ -8,50 +8,48 @@
 _test proc
         push    ebp
         mov     ebp,esp
-        sub     esp,32
+        sub     esp,36
         push    edi
         push    esi
         push    ebx
         mov     edi,2
         mov     esi,3
-        mov     eax,4
-        mov     ebx,5
-        mov     [ebp-12],eax
-        mov     eax,3
-        cdq
-        idiv    edi
-        mov     [ebp-20],eax
+        mov     ebx,4
         mov     eax,3
         cdq
         idiv    edi
         mov     [ebp-24],eax
-        mov     eax,[ebp-20]
-        imul    eax,[ebp-24]
-        mov     [ebp-20],eax
-        mov     eax,ebx
+        mov     eax,3
         cdq
-        idiv    dword ptr [ebp-12]
+        idiv    edi
         mov     [ebp-28],eax
-        mov     eax,ebx
+        mov     eax,[ebp-24]
+        imul    eax,[ebp-28]
+        mov     [ebp-24],eax
+        mov     eax,5
         cdq
-        idiv    dword ptr [ebp-12]
+        idiv    ebx
         mov     [ebp-32],eax
-        mov     eax,[ebp-28]
-        imul    eax,[ebp-32]
-        mov     [ebp-28],eax
-        mov     eax,[ebp-20]
-        add     eax,[ebp-28]
+        mov     eax,5
+        cdq
+        idiv    ebx
+        mov     [ebp-36],eax
+        mov     eax,[ebp-32]
+        imul    eax,[ebp-36]
+        mov     [ebp-32],eax
+        mov     eax,[ebp-24]
+        add     eax,[ebp-32]
         cmp     eax,2
         je      label0000
         mov     eax,1
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,32
+        add     esp,36
         pop     ebp
         ret
 label0000:
-        mov     eax,[ebp-12]
+        mov     eax,ebx
         cdq
         idiv    edi
         cmp     eax,2
@@ -60,21 +58,20 @@ label0000:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,32
+        add     esp,36
         pop     ebp
         ret
 label0001:
-        mov     eax,ebx
+        mov     eax,5
         cdq
         idiv    esi
-        mov     ebx,edx
-        cmp     ebx,2
+        cmp     edx,2
         je      label0002
         mov     eax,3
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,32
+        add     esp,36
         pop     ebp
         ret
 label0002:
@@ -82,9 +79,9 @@ label0002:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,32
+        add     esp,36
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end

@@ -78,8 +78,9 @@ label0003:
 label0004:
         mov     ecx,5
         add     ecx,esi
-        sal     edi,cl
-        cmp     edi,64
+        mov     eax,edi
+        sal     eax,cl
+        cmp     eax,64
         je      label0005
         mov     eax,6
         pop     esi
@@ -94,6 +95,6 @@ label0005:
         add     esp,8
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end

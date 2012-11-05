@@ -24,6 +24,6 @@ label0002:
         set_retval      dword10
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

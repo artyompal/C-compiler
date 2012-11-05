@@ -9,8 +9,8 @@
 
 typedef struct x86_operand_decl x86_operand;
 
-void x86_intrinsic_static_memcpy    (function_desc *func, x86_operand *res, x86_operand *dst, x86_operand *src, int size);
-void x86_intrinsic_dynamic_memcpy   (function_desc *func, x86_operand *res, x86_operand *dst, x86_operand *src, x86_operand *size);
+void x86_intrinsic_static_memcpy    (x86_operand *res, x86_operand *dst, x86_operand *src, int size);
+void x86_intrinsic_dynamic_memcpy   (x86_operand *res, x86_operand *dst, x86_operand *src, x86_operand *size);
 
 
 #else
