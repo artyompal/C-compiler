@@ -10,7 +10,6 @@ _test proc
         mov     dword45,2
         mov     dword46,3
         mov     dword47,4
-        mov     dword48,5
         mov     dword11,3
         cdq     dword12,dword11
         idiv    dword11,dword45
@@ -18,10 +17,10 @@ _test proc
         cdq     dword16,dword15
         idiv    dword15,dword45
         imul    dword11,dword15
-        mov     dword19,dword48
+        mov     dword19,5
         cdq     dword20,dword19
         idiv    dword19,dword47
-        mov     dword23,dword48
+        mov     dword23,5
         cdq     dword24,dword23
         idiv    dword23,dword47
         imul    dword19,dword23
@@ -43,7 +42,7 @@ label0000:
         destroy_stack_frame
         ret
 label0001:
-        mov     dword38,dword48
+        mov     dword38,5
         cdq     dword39,dword38
         idiv    dword38,dword46
         cmp     dword39,2

@@ -632,6 +632,7 @@ static void _maintain_fpu_stack(function_desc *function)
 // MUL reg/mem (затрагивает EAX, EDX)
 // XOR EDX,EDX; DIV reg/mem (затрагивает EAX, EDX)
 // SHL reg,cl (затрагивает ECX)
+// MOVSB/MOVSD (затрагивают ECX, ESI, EDI)
 
 static void _reserve_special_registers(function_desc *function, x86_pseudoreg_info *pseudoregs_map)
 {

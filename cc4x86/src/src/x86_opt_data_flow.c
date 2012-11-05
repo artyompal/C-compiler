@@ -1215,4 +1215,6 @@ void x86_dataflow_optimize_redundant_copies(function_desc *function)
     if (option_sse2) {
         _optimize_redundant_copies(function, x86op_float);
     }
+
+    x86_analyze_registers_usage(function);
 }

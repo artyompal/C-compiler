@@ -928,6 +928,7 @@ void unit_codegen(void)
 
             if (!option_no_copy_opt) {
                 x86_dataflow_optimize_redundant_copies(_curr_func);
+                x86_optimization_after_codegen(_curr_func);
             }
         }
 
