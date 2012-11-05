@@ -349,8 +349,9 @@ _rasterizer_set_mvproj proc
         create_stack_frame
         mov     dword8,[ebp+8]
         lea     dword4, [__mvproj_matrix]
+        lea     dword5,[dword8]
         mov     dword6,16
-        rep     movsd   dword4,dword8
+        rep     movsd   dword4,dword5
         destroy_stack_frame
         ret
 _rasterizer_set_mvproj endp
@@ -561,8 +562,10 @@ label0001:
         imul    dword36,24
         mov     dword39,dword375
         add     dword39,dword36
+        lea     dword42,[dword39]
+        lea     dword43,[dword357]
         mov     dword44,6
-        rep     movsd   dword39,dword357
+        rep     movsd   dword42,dword43
 label0003:
         movss   sse4,dword ptr [___unnamed_float_2]
         comiss  sse4,sse72
@@ -722,8 +725,10 @@ label0002:
         imul    dword101,24
         mov     dword104,dword375
         add     dword104,dword101
+        lea     dword107,[dword104]
+        lea     dword108,[dword375]
         mov     dword109,6
-        rep     movsd   dword104,dword375
+        rep     movsd   dword107,dword108
         destroy_stack_frame
         ret
 __clip_on_plain endp
@@ -852,9 +857,10 @@ _rasterizer_triangle3f proc
         mov     [dword22+4],dword28
         lea     dword29,[ebp-196]
         add     dword29,72
+        lea     dword32,[dword29]
         lea     dword33,[ebp-196]
         mov     dword34,6
-        rep     movsd   dword29,dword33
+        rep     movsd   dword32,dword33
         lea     dword35,[ebp-196]
         add     dword35,192
         mov     dword ptr [dword35],4

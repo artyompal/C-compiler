@@ -193,6 +193,13 @@ void bincode_extract_pseudoregs_modified_by_insn(x86_instruction *insn, x86_oper
             regs[*regs_cnt] = insn->in_op1.data.reg;
             ++*regs_cnt;
         }
+
+    if (type == x86op_dword && (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd)) {
+        ASSERT(OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2));
+        regs[0] = insn->in_op1.data.reg;
+        regs[1] = insn->in_op2.data.reg;
+        *regs_cnt = 2;
+    }
 }
 
 void bincode_extract_pseudoregs_overwritten_by_insn(x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
