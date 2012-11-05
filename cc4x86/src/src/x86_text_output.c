@@ -311,7 +311,7 @@ static const char *_encode_hw_type(x86_operand_type hw_type)
 
     case x86op_double:  return "qword ptr";
 
-    default:            ASSERT(FALSE);
+    default:            return "";
     }
 }
 
@@ -532,32 +532,32 @@ static void _output_push_instruction(x86_instruction *insn)
     }
 }
 
-static void _output_function_code(function_desc *func)
+static void _output_function_code(function_desc *function)
 {
     x86_instruction *insn;
 
-    out_fmt("\n_%s proc\n", func->func_sym->sym_name);
+    out_fmt("\n_%s proc\n", function->func_sym->sym_name);
 
-    for (insn = func->func_binary_code; insn; insn = insn->in_next) {
+    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         _output_push_instruction(insn);
     }
 
-    out_fmt("_%s endp\t\n", func->func_sym->sym_name);
+    out_fmt("_%s endp\n", function->func_sym->sym_name);
     fflush(_asm_file);
 }
 
 
-void text_output_push_function_code(function_desc *func)
+void text_output_push_function_code(function_desc *function)
 {
-    _output_function_code(func);
+    _output_function_code(function);
 }
 
-void text_output_debug_print_function_code(function_desc *func)
+void text_output_debug_print_function_code(function_desc *function)
 {
     FILE *old = _asm_file;
 
     _asm_file = stdout;
-    _output_function_code(func);
+    _output_function_code(function);
     _asm_file = old;
 }
 

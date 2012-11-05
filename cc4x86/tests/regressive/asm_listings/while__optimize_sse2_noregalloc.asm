@@ -25,7 +25,9 @@ label0002:
         mov     dword25,1
         mov     dword26,0
 label0003:
-        sal     dword25,1
+        mov     dword15,dword25
+        sal     dword15,1
+        mov     dword25,dword15
         inc     dword26
         cmp     dword25,65536
         jl      label0003
@@ -40,6 +42,6 @@ label0006:
         set_retval      dword22
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

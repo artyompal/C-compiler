@@ -30,7 +30,8 @@ label0003:
 label0004:
         cmp     dword30,50
         jne     label0007
-        add     dword30,50
+        lea     dword19,[dword30+50]
+        mov     dword30,dword19
         jmp     label0005
 label0007:
         inc     dword30
@@ -49,6 +50,6 @@ label0008:
         set_retval      dword27
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

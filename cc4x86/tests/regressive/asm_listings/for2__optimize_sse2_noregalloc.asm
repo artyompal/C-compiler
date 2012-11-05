@@ -33,6 +33,6 @@ label0005:
         set_retval      dword25
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

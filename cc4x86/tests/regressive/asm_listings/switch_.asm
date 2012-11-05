@@ -38,7 +38,7 @@ label0004:
         add     esp,8
         pop     ebp
         ret
-_test_case endp 
+_test_case endp
 
 _test_case2 proc
         push    ebp
@@ -76,7 +76,7 @@ label0005:
         add     esp,8
         pop     ebp
         ret
-_test_case2 endp        
+_test_case2 endp
 
 _test_default proc
         push    ebp
@@ -108,7 +108,7 @@ label0003:
         add     esp,8
         pop     ebp
         ret
-_test_default endp      
+_test_default endp
 
 _test proc
         push    ebp
@@ -137,6 +137,6 @@ label0002:
         mov     eax,0
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end

@@ -1,6 +1,4 @@
 
-#include <stdarg.h>
-
 #include "common.h"
 #include "xml_dump.h"
 #include "unit.h"
@@ -351,14 +349,14 @@ static void _dump_variable(FILE *file, symbol *var)
     _xml_tag_early_end_complex_open(file);
 }
 
-static void _dump_parameters(FILE *file, function_desc *func)
+static void _dump_parameters(FILE *file, function_desc *function)
 {
     char type[256];
     parameter *p;
 
     _xml_tag_simple_open(file, 6, "parameters");
 
-    for (p = func->func_params->param_first; p; p = p->param_next) {
+    for (p = function->func_params->param_first; p; p = p->param_next) {
         _xml_tag_begin_complex_open(file, 8, "parameter");
 
         switch (p->param_code) {
@@ -383,14 +381,14 @@ static void _dump_parameters(FILE *file, function_desc *func)
     _xml_tag_close(file, 6, "parameters");
 }
 
-static void _dump_locals(FILE *file, function_desc *func)
+static void _dump_locals(FILE *file, function_desc *function)
 {
     symbol *var;
 
-    if (func->func_locals.list_first) {
+    if (function->func_locals.list_first) {
         _xml_tag_simple_open(file, 6, "local_variables");
 
-        for (var = func->func_locals.list_first; var; var = var->sym_next) {
+        for (var = function->func_locals.list_first; var; var = var->sym_next) {
             _dump_variable(file, var);
         }
 
@@ -400,19 +398,19 @@ static void _dump_locals(FILE *file, function_desc *func)
 
 static void _dump_functions(FILE *file)
 {
-    function_desc *func;
+    function_desc *function;
     expression *expr;
 
-    for (func = unit_get_functions_list(); func; func = func->func_next) {
+    for (function = unit_get_functions_list(); function; function = function->func_next) {
         _xml_tag_simple_open(file, 4, "function");
-        _xml_tag_one_line(file, 6, "name", func->func_sym->sym_name);
+        _xml_tag_one_line(file, 6, "name", function->func_sym->sym_name);
 
-        _dump_parameters(file, func);
-        _dump_locals(file, func);
+        _dump_parameters(file, function);
+        _dump_locals(file, function);
 
         _xml_tag_simple_open(file, 6, "body");
 
-        for (expr = func->func_body; expr; expr = expr = expr->expr_next) {
+        for (expr = function->func_body; expr; expr = expr = expr->expr_next) {
             VALIDATE_LINKED_EXPR(expr, NULL);
             _dump_expression(file, 8, "expression", expr);
         }

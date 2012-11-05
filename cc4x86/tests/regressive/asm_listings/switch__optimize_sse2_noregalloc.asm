@@ -31,7 +31,7 @@ label0004:
         set_retval      dword14
         destroy_stack_frame
         ret
-_test_case endp 
+_test_case endp
 
 _test_case2 proc
         create_stack_frame
@@ -62,7 +62,7 @@ label0005:
         set_retval      dword16
         destroy_stack_frame
         ret
-_test_case2 endp        
+_test_case2 endp
 
 _test_default proc
         create_stack_frame
@@ -83,7 +83,7 @@ label0003:
         set_retval      dword15
         destroy_stack_frame
         ret
-_test_default endp      
+_test_default endp
 
 _test proc
         create_stack_frame
@@ -173,6 +173,6 @@ label0002:
         set_retval      dword10
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

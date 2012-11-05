@@ -28,7 +28,6 @@
 #pragma warning(disable:4244)   // conversion from 'int' to 'BOOL', possible loss of data
 #pragma warning(disable:4127)   // conditional expression is constant
 #pragma warning(disable:4996)   // 'strcpy' was declared deprecated
-#pragma warning(disable:4711)   // function '_alloc_fragment' selected for automatic inline expansion
 
 #endif // _MSC_VER
 
@@ -84,8 +83,12 @@ int             aux_get_warnings_count      (void);
 void            aux_replace_file_extension  (char *dst, const char *path, const char *extension);
 void            aux_extract_file_name       (char *dst, const char *path);
 
+void            aux_sort_int(int *arr, int count);
+int             aux_unique_int(int *arr, int count);
+int             aux_binary_search(const int *arr, int count, int key); // возращает индекс или -1
+
 typedef struct function_desc_decl function_desc;
-void            text_output_debug_print_function_code(function_desc *func);
+void            text_output_debug_print_function_code(function_desc *function);
 
 #define AUX_ARRAY_LENGTH(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
@@ -113,6 +116,7 @@ void            text_output_debug_print_function_code(function_desc *func);
 
 extern BOOL option_no_codegen;
 extern BOOL option_no_regalloc;
+extern BOOL option_no_copy_opt;
 extern BOOL option_no_basic_opt;
 extern BOOL option_enable_optimization;
 extern BOOL option_sse2;

@@ -82,7 +82,7 @@ _vec2f_add proc
         pop     edi
         pop     ebp
         ret
-_vec2f_add endp 
+_vec2f_add endp
 
 _vec2f_subtract proc
         push    ebp
@@ -104,7 +104,7 @@ _vec2f_subtract proc
         pop     edi
         pop     ebp
         ret
-_vec2f_subtract endp    
+_vec2f_subtract endp
 
 _vec2f_mul proc
         push    ebp
@@ -120,7 +120,7 @@ _vec2f_mul proc
         pop     edi
         pop     ebp
         ret
-_vec2f_mul endp 
+_vec2f_mul endp
 
 _vec4f_assign proc
         push    ebp
@@ -138,7 +138,7 @@ _vec4f_assign proc
         pop     edi
         pop     ebp
         ret
-_vec4f_assign endp      
+_vec4f_assign endp
 
 _vec4f_add proc
         push    ebp
@@ -166,7 +166,7 @@ _vec4f_add proc
         pop     edi
         pop     ebp
         ret
-_vec4f_add endp 
+_vec4f_add endp
 
 _vec4f_subtract proc
         push    ebp
@@ -194,7 +194,7 @@ _vec4f_subtract proc
         pop     edi
         pop     ebp
         ret
-_vec4f_subtract endp    
+_vec4f_subtract endp
 
 _vec4f_dot proc
         push    ebp
@@ -218,7 +218,7 @@ _vec4f_dot proc
         pop     edi
         pop     ebp
         ret
-_vec4f_dot endp 
+_vec4f_dot endp
 
 _vec4f_mul proc
         push    ebp
@@ -240,7 +240,7 @@ _vec4f_mul proc
         pop     edi
         pop     ebp
         ret
-_vec4f_mul endp 
+_vec4f_mul endp
 
 _matrix4f_make_perspective proc
         push    ebp
@@ -298,7 +298,7 @@ _matrix4f_make_perspective proc
         add     esp,8
         pop     ebp
         ret
-_matrix4f_make_perspective endp 
+_matrix4f_make_perspective endp
 
 _matrix4f_make_viewport proc
         push    ebp
@@ -348,7 +348,7 @@ _matrix4f_make_viewport proc
         pop     edi
         pop     ebp
         ret
-_matrix4f_make_viewport endp    
+_matrix4f_make_viewport endp
 
 _matrix4f_transform proc
         push    ebp
@@ -412,7 +412,7 @@ _matrix4f_transform proc
         pop     edi
         pop     ebp
         ret
-_matrix4f_transform endp        
+_matrix4f_transform endp
 
 _rasterizer_init proc
         push    ebp
@@ -677,7 +677,7 @@ label0003:
         add     esp,8
         pop     ebp
         ret
-_rasterizer_init endp   
+_rasterizer_init endp
 
 _rasterizer_begin_frame proc
         push    ebp
@@ -688,49 +688,29 @@ _rasterizer_begin_frame proc
         pop     edi
         pop     ebp
         ret
-_rasterizer_begin_frame endp    
+_rasterizer_begin_frame endp
 
 _rasterizer_set_mvproj proc
         push    ebp
         mov     ebp,esp
+        sub     esp,4
         push    edi
+        push    esi
         mov     edi,[ebp+8]
-        mov     eax,[edi]
-        mov     ecx,[edi+4]
-        mov     dword ptr [__mvproj_matrix],eax
-        mov     dword ptr [__mvproj_matrix+4],ecx
-        mov     eax,[edi+8]
-        mov     ecx,[edi+12]
-        mov     dword ptr [__mvproj_matrix+8],eax
-        mov     dword ptr [__mvproj_matrix+12],ecx
-        mov     eax,[edi+16]
-        mov     ecx,[edi+20]
-        mov     dword ptr [__mvproj_matrix+16],eax
-        mov     dword ptr [__mvproj_matrix+20],ecx
-        mov     eax,[edi+24]
-        mov     ecx,[edi+28]
-        mov     dword ptr [__mvproj_matrix+24],eax
-        mov     dword ptr [__mvproj_matrix+28],ecx
-        mov     eax,[edi+32]
-        mov     ecx,[edi+36]
-        mov     dword ptr [__mvproj_matrix+32],eax
-        mov     dword ptr [__mvproj_matrix+36],ecx
-        mov     eax,[edi+40]
-        mov     ecx,[edi+44]
-        mov     dword ptr [__mvproj_matrix+40],eax
-        mov     dword ptr [__mvproj_matrix+44],ecx
-        mov     eax,[edi+48]
-        mov     ecx,[edi+52]
-        mov     dword ptr [__mvproj_matrix+48],eax
-        mov     dword ptr [__mvproj_matrix+52],ecx
-        mov     eax,[edi+56]
-        mov     ecx,[edi+60]
-        mov     dword ptr [__mvproj_matrix+56],eax
-        mov     dword ptr [__mvproj_matrix+60],ecx
+        mov     [ebp+8],edi
+        lea     edi, [__mvproj_matrix]
+        mov     [ebp-4],edi
+        mov     edi,[ebp+8]
+        lea     esi,[edi]
+        mov     ecx,16
+        mov     edi,[ebp-4]
+        rep     movsd
+        pop     esi
         pop     edi
+        add     esp,4
         pop     ebp
         ret
-_rasterizer_set_mvproj endp     
+_rasterizer_set_mvproj endp
 
 _rasterizer_set_color proc
         push    ebp
@@ -741,7 +721,7 @@ _rasterizer_set_color proc
         pop     edi
         pop     ebp
         ret
-_rasterizer_set_color endp      
+_rasterizer_set_color endp
 
 _rasterizer_set_texture proc
         push    ebp
@@ -760,7 +740,7 @@ _rasterizer_set_texture proc
         pop     edi
         pop     ebp
         ret
-_rasterizer_set_texture endp    
+_rasterizer_set_texture endp
 
 __tex2d proc
         push    ebp
@@ -788,31 +768,32 @@ __tex2d proc
         add     esp,12
         pop     ebp
         ret
-__tex2d endp    
+__tex2d endp
 
 __rasterize_horiz_line proc
         push    ebp
         mov     ebp,esp
-        sub     esp,48
+        sub     esp,52
         push    edi
         push    esi
         push    ebx
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
-        mov     edx,dword ptr [__pitch]
-        imul    edx,edi
-        add     edx,dword ptr [__videomem]
+        mov     eax,dword ptr [__pitch]
+        imul    eax,edi
+        add     eax,dword ptr [__videomem]
         mov     edi,ebx
         sal     edi,2
-        add     edx,edi
-        mov     edi,esi
-        sal     edi,2
-        add     edi,edx
+        add     eax,edi
+        mov     edi,eax
+        mov     eax,esi
+        sal     eax,2
+        add     eax,edi
         sal     ebx,2
-        sub     edi,ebx
+        sub     eax,ebx
 label0000:
-        mov     [ebp-4],edx
+        mov     [ebp-52],eax
         push    dword ptr [ebp+24]
         push    dword ptr [ebp+20]
         call    __tex2d
@@ -827,13 +808,11 @@ label0000:
         fld     dword ptr [___unnamed_float_3]
         fdivp
         fstp    dword ptr [ebp-44]
-        mov     edx,[ebp-4]
-        mov     esi,[edx]
-        mov     ebx,esi
-        and     ebx,65280
-        sar     ebx,8
-        mov     [ebp-32],ebx
-        mov     ebx,esi
+        mov     ebx,[edi]
+        mov     esi,ebx
+        and     esi,65280
+        sar     esi,8
+        mov     [ebp-32],esi
         and     ebx,255
         mov     [ebp-36],ebx
         mov     ebx,eax
@@ -862,11 +841,10 @@ label0000:
         fistp   dword ptr [ebp-48]
         mov     eax,[ebp-48]
         mov     [ebp-24],eax
-        mov     esi,[ebp-20]
-        sal     esi,8
-        add     esi,[ebp-24]
-        mov     [edx],esi
-        mov     [ebp-4],edx
+        mov     eax,[ebp-20]
+        sal     eax,8
+        add     eax,[ebp-24]
+        mov     [edi],eax
 label0003:
         fld     dword ptr [ebp+20]
         fadd    dword ptr [ebp+28]
@@ -874,17 +852,17 @@ label0003:
         fld     dword ptr [ebp+24]
         fadd    dword ptr [ebp+32]
         fstp    dword ptr [ebp+24]
-        mov     edx,[ebp-4]
-        add     edx,4
-        cmp     edx,edi
+        add     edi,4
+        cmp     edi,[ebp-52]
+        mov     eax,[ebp-52]
         jl      label0000
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,48
+        add     esp,52
         pop     ebp
         ret
-__rasterize_horiz_line endp     
+__rasterize_horiz_line endp
 
 __rasterize_horiz_line__unordered proc
         push    ebp
@@ -923,7 +901,7 @@ label0001:
         pop     edi
         pop     ebp
         ret
-__rasterize_horiz_line__unordered endp  
+__rasterize_horiz_line__unordered endp
 
 __rasterize_triangle_1i proc
         push    ebp
@@ -1052,12 +1030,12 @@ label0005:
         pop     edi
         pop     ebp
         ret
-__rasterize_triangle_1i endp    
+__rasterize_triangle_1i endp
 
 __rasterize_triangle_2i proc
         push    ebp
         mov     ebp,esp
-        sub     esp,44
+        sub     esp,48
         push    edi
         push    esi
         push    ebx
@@ -1120,7 +1098,7 @@ label0004:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,44
+        add     esp,48
         pop     ebp
         ret
 label0003:
@@ -1140,7 +1118,7 @@ label0006:
         cdq
         idiv    ecx
         add     eax,[ebx]
-        mov     [ebp-8],eax
+        mov     edx,eax
         mov     eax,[ebp-16]
         sub     eax,[ebx+4]
         mov     ecx,[edi]
@@ -1148,94 +1126,96 @@ label0006:
         imul    eax,ecx
         mov     ecx,[edi+4]
         sub     ecx,[ebx+4]
+        mov     [ebp-8],edx
         cdq
         idiv    ecx
         add     eax,[ebx]
-        mov     ecx,[ebp-16]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
+        mov     edx,eax
+        mov     eax,[ebp-16]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fld     dword ptr [esi+8]
         fsub    dword ptr [ebx+8]
         fmulp
-        mov     ecx,[esi+4]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
+        mov     eax,[esi+4]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fdivp
         fadd    dword ptr [ebx+8]
         fstp    dword ptr [ebp-20]
-        mov     ecx,[ebp-16]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
+        mov     eax,[ebp-16]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fld     dword ptr [edi+8]
         fsub    dword ptr [ebx+8]
         fmulp
-        mov     ecx,[edi+4]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
+        mov     eax,[edi+4]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fdivp
         fadd    dword ptr [ebx+8]
         fstp    dword ptr [ebp-28]
-        mov     ecx,[ebp-16]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
+        mov     eax,[ebp-16]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
-        mov     ecx,8
-        add     ecx,esi
-        add     ecx,4
-        mov     edx,8
-        add     edx,ebx
-        add     edx,4
-        fld     dword ptr [ecx]
-        fsub    dword ptr [edx]
-        fmulp
-        mov     ecx,[esi+4]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
-        fild    dword ptr [ebp-44]
-        fdivp
+        mov     eax,8
+        add     eax,esi
+        add     eax,4
         mov     ecx,8
         add     ecx,ebx
         add     ecx,4
-        fadd    dword ptr [ecx]
+        fld     dword ptr [eax]
+        fsub    dword ptr [ecx]
+        fmulp
+        mov     eax,[esi+4]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
+        fild    dword ptr [ebp-44]
+        fdivp
+        mov     eax,8
+        add     eax,ebx
+        add     eax,4
+        fadd    dword ptr [eax]
         fstp    dword ptr [ebp-24]
-        mov     ecx,[ebp-16]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
+        mov     eax,[ebp-16]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
-        mov     ecx,8
-        add     ecx,edi
-        add     ecx,4
-        mov     edx,8
-        add     edx,ebx
-        add     edx,4
-        fld     dword ptr [ecx]
-        fsub    dword ptr [edx]
-        fmulp
-        mov     ecx,[edi+4]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
-        fild    dword ptr [ebp-44]
-        fdivp
+        mov     eax,8
+        add     eax,edi
+        add     eax,4
         mov     ecx,8
         add     ecx,ebx
         add     ecx,4
-        fadd    dword ptr [ecx]
+        fld     dword ptr [eax]
+        fsub    dword ptr [ecx]
+        fmulp
+        mov     eax,[edi+4]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
+        fild    dword ptr [ebp-44]
+        fdivp
+        mov     eax,8
+        add     eax,ebx
+        add     eax,4
+        fadd    dword ptr [eax]
         fstp    dword ptr [ebp-32]
-        mov     ecx,eax
-        sub     ecx,[ebp-8]
-        mov     [ebp-44],ecx
+        mov     eax,edx
+        sub     eax,[ebp-8]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fld     dword ptr [ebp-28]
         fsub    dword ptr [ebp-20]
         fdivrp
         fstp    dword ptr [ebp-36]
-        mov     ecx,eax
-        sub     ecx,[ebp-8]
-        mov     [ebp-44],ecx
+        mov     eax,edx
+        sub     eax,[ebp-8]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fld     dword ptr [ebp-32]
         fsub    dword ptr [ebp-24]
@@ -1248,7 +1228,7 @@ label0006:
         push    dword ptr [ebp-24]
         push    dword ptr [ebp-20]
         push    dword ptr [ebp-16]
-        push    eax
+        push    edx
         push    dword ptr [ebp-8]
         call    __rasterize_horiz_line__unordered
         add     esp,36
@@ -1266,74 +1246,75 @@ label0007:
         cdq
         idiv    ecx
         add     eax,[ebx]
-        mov     ecx,[esi+4]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
+        mov     edx,eax
+        mov     eax,[esi+4]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fld     dword ptr [edi+8]
         fsub    dword ptr [ebx+8]
         fmulp
-        mov     ecx,[edi+4]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
+        mov     eax,[edi+4]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fdivp
         fadd    dword ptr [ebx+8]
         fstp    dword ptr [ebp-28]
-        mov     ecx,[esi+4]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
+        mov     eax,[esi+4]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
-        mov     ecx,8
-        add     ecx,edi
-        add     ecx,4
-        mov     edx,8
-        add     edx,ebx
-        add     edx,4
-        fld     dword ptr [ecx]
-        fsub    dword ptr [edx]
-        fmulp
-        mov     ecx,[edi+4]
-        sub     ecx,[ebx+4]
-        mov     [ebp-44],ecx
-        fild    dword ptr [ebp-44]
-        fdivp
+        mov     eax,8
+        add     eax,edi
+        add     eax,4
         mov     ecx,8
         add     ecx,ebx
         add     ecx,4
-        fadd    dword ptr [ecx]
+        fld     dword ptr [eax]
+        fsub    dword ptr [ecx]
+        fmulp
+        mov     eax,[edi+4]
+        sub     eax,[ebx+4]
+        mov     [ebp-44],eax
+        fild    dword ptr [ebp-44]
+        fdivp
+        mov     eax,8
+        add     eax,ebx
+        add     eax,4
+        fadd    dword ptr [eax]
         fstp    dword ptr [ebp-32]
         fld     dword ptr [ebp-28]
         fsub    dword ptr [esi+8]
-        mov     ecx,eax
-        sub     ecx,[esi]
-        mov     [ebp-44],ecx
+        mov     eax,edx
+        sub     eax,[esi]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fdivp
         fstp    dword ptr [ebp-36]
-        mov     ecx,8
-        add     ecx,esi
-        add     ecx,4
+        mov     eax,8
+        add     eax,esi
+        add     eax,4
         fld     dword ptr [ebp-32]
-        fsub    dword ptr [ecx]
-        mov     ecx,eax
-        sub     ecx,[esi]
-        mov     [ebp-44],ecx
+        fsub    dword ptr [eax]
+        mov     eax,edx
+        sub     eax,[esi]
+        mov     [ebp-44],eax
         fild    dword ptr [ebp-44]
         fdivp
         fstp    dword ptr [ebp-40]
         push    dword ptr [ebp-40]
         push    dword ptr [ebp-36]
-        mov     ecx,8
-        add     ecx,esi
-        add     ecx,4
-        push    dword ptr [ecx]
+        mov     eax,8
+        add     eax,esi
+        add     eax,4
+        push    dword ptr [eax]
         push    dword ptr [esi+8]
         push    dword ptr [ebp-32]
         push    dword ptr [ebp-28]
         push    dword ptr [esi+4]
         push    dword ptr [esi]
-        push    eax
+        push    edx
         call    __rasterize_horiz_line__unordered
         add     esp,36
         mov     eax,1
@@ -1353,7 +1334,7 @@ label0009:
         cdq
         idiv    ecx
         add     eax,[esi]
-        mov     [ebp-8],eax
+        mov     [ebp-48],eax
         mov     eax,[ebp-16]
         sub     eax,[ebx+4]
         mov     ecx,[edi]
@@ -1439,7 +1420,7 @@ label0009:
         fadd    dword ptr [ecx]
         fstp    dword ptr [ebp-32]
         mov     ecx,eax
-        sub     ecx,[ebp-8]
+        sub     ecx,[ebp-48]
         mov     [ebp-44],ecx
         fild    dword ptr [ebp-44]
         fld     dword ptr [ebp-28]
@@ -1447,7 +1428,7 @@ label0009:
         fdivrp
         fstp    dword ptr [ebp-36]
         mov     ecx,eax
-        sub     ecx,[ebp-8]
+        sub     ecx,[ebp-48]
         mov     [ebp-44],ecx
         fild    dword ptr [ebp-44]
         fld     dword ptr [ebp-32]
@@ -1462,7 +1443,7 @@ label0009:
         push    dword ptr [ebp-20]
         push    dword ptr [ebp-16]
         push    eax
-        push    dword ptr [ebp-8]
+        push    dword ptr [ebp-48]
         call    __rasterize_horiz_line__unordered
         add     esp,36
         inc     dword ptr [ebp-16]
@@ -1472,10 +1453,10 @@ label000a:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,44
+        add     esp,48
         pop     ebp
         ret
-__rasterize_triangle_2i endp    
+__rasterize_triangle_2i endp
 
 __clip_on_plain proc
         push    ebp
@@ -1541,20 +1522,14 @@ label0001:
         imul    edx,24
         mov     eax,[ebp+8]
         add     eax,edx
+        lea     edi,[eax]
+        mov     [ebp+16],esi
         mov     ecx,[ebp-4]
-        mov     edx,[ecx]
-        mov     edi,[ecx+4]
-        mov     [eax],edx
-        mov     [eax+4],edi
-        mov     edx,[ecx+8]
-        mov     edi,[ecx+12]
-        mov     [eax+8],edx
-        mov     [eax+12],edi
-        mov     edx,[ecx+16]
-        mov     edi,[ecx+20]
-        mov     [eax+16],edx
-        mov     [eax+20],edi
+        lea     esi,[ecx]
         mov     [ebp-4],ecx
+        mov     ecx,6
+        rep     movsd
+        mov     esi,[ebp+16]
 label0003:
         fldz
         fld     dword ptr [ebp-52]
@@ -1671,25 +1646,17 @@ label0002:
         imul    eax,24
         mov     ecx,edx
         add     ecx,eax
-        mov     eax,[edx]
-        mov     ebx,[edx+4]
-        mov     [ecx],eax
-        mov     [ecx+4],ebx
-        mov     eax,[edx+8]
-        mov     ebx,[edx+12]
-        mov     [ecx+8],eax
-        mov     [ecx+12],ebx
-        mov     eax,[edx+16]
-        mov     ebx,[edx+20]
-        mov     [ecx+16],eax
-        mov     [ecx+20],ebx
+        lea     edi,[ecx]
+        lea     esi,[edx]
+        mov     ecx,6
+        rep     movsd
         pop     ebx
         pop     esi
         pop     edi
         add     esp,64
         pop     ebp
         ret
-__clip_on_plain endp    
+__clip_on_plain endp
 
 __clip_poligon proc
         push    ebp
@@ -1758,7 +1725,7 @@ __clip_poligon proc
         add     esp,196
         pop     ebp
         ret
-__clip_poligon endp     
+__clip_poligon endp
 
 __transform_to_screen_space proc
         push    ebp
@@ -1810,7 +1777,7 @@ label0000:
         add     esp,24
         pop     ebp
         ret
-__transform_to_screen_space endp        
+__transform_to_screen_space endp
 
 __rasterize_polygon_4f proc
         push    ebp
@@ -1898,7 +1865,7 @@ label0007:
         add     esp,136
         pop     ebp
         ret
-__rasterize_polygon_4f endp     
+__rasterize_polygon_4f endp
 
 __transform_to_projection_space proc
         push    ebp
@@ -1930,7 +1897,7 @@ __transform_to_projection_space proc
         add     esp,16
         pop     ebp
         ret
-__transform_to_projection_space endp    
+__transform_to_projection_space endp
 
 _rasterizer_triangle3f proc
         push    ebp
@@ -1984,18 +1951,10 @@ _rasterizer_triangle3f proc
         mov     [eax+4],ebx
         lea     eax,[ebp-196]
         add     eax,72
-        mov     ecx,[ebp-196]
-        mov     ebx,[ebp-192]
-        mov     [eax],ecx
-        mov     [eax+4],ebx
-        mov     ecx,[ebp-188]
-        mov     ebx,[ebp-184]
-        mov     [eax+8],ecx
-        mov     [eax+12],ebx
-        mov     ecx,[ebp-180]
-        mov     ebx,[ebp-176]
-        mov     [eax+16],ecx
-        mov     [eax+20],ebx
+        lea     edi,[eax]
+        lea     esi,[ebp-196]
+        mov     ecx,6
+        rep     movsd
         lea     eax,[ebp-196]
         add     eax,192
         mov     dword ptr [eax],4
@@ -2009,6 +1968,6 @@ _rasterizer_triangle3f proc
         add     esp,196
         pop     ebp
         ret
-_rasterizer_triangle3f endp     
+_rasterizer_triangle3f endp
 
 end

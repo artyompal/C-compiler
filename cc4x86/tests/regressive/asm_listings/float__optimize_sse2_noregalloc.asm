@@ -43,15 +43,17 @@ _test proc
         create_stack_frame
         movss   sse112,dword ptr [___unnamed_float_3]
         movsd   sse113,qword ptr [___unnamed_double_4]
-        cvtss2sd        sse114,sse112
-        addsd   sse114,sse113
+        cvtss2sd        sse3,sse112
+        addsd   sse3,sse113
+        movsd   sse114,sse3
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_5]
         movsd   sse115,sse114
 ; start of inline function fabs
         movsd   sse29,sse115
         subsd   sse29,sse116
-        cvtsd2ss        sse117,sse29
+        cvtsd2ss        sse30,sse29
+        movss   sse117,sse30
         movss   sse34,dword ptr [___unnamed_float_0]
         comiss  sse34,sse117
         ja      label0008
@@ -67,7 +69,8 @@ label0009:
         movss   sse31,sse119
         comiss  sse31,dword ptr [___unnamed_float_2]
         setb    byte2
-        movzx   dword163,byte2
+        movzx   dword62,byte2
+        mov     dword163,dword62
 ; end of inline function eq
         cmp     dword163,0
         jne     label0000
@@ -150,10 +153,9 @@ label0011:
 label0002:
         cvtss2sd        sse9,sse112
         divsd   sse9,sse113
-        movsd   sse114,sse9
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_8]
-        movsd   sse115,sse114
+        movsd   sse115,sse9
 ; start of inline function fabs
         movsd   sse62,sse115
         subsd   sse62,sse116
@@ -184,7 +186,9 @@ label0015:
         destroy_stack_frame
         ret
 label0003:
-        addss   sse112,dword ptr [___unnamed_float_3]
+        movss   sse12,sse112
+        addss   sse12,dword ptr [___unnamed_float_3]
+        movss   sse112,sse12
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_9]
         cvtss2sd        sse14,sse112
@@ -219,7 +223,9 @@ label0019:
         destroy_stack_frame
         ret
 label0004:
-        subss   sse112,dword ptr [___unnamed_float_10]
+        movss   sse16,sse112
+        subss   sse16,dword ptr [___unnamed_float_10]
+        movss   sse112,sse16
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_11]
         cvtss2sd        sse18,sse112
@@ -254,7 +260,9 @@ label001d:
         destroy_stack_frame
         ret
 label0005:
-        mulss   sse112,dword ptr [___unnamed_float_3]
+        movss   sse20,sse112
+        mulss   sse20,dword ptr [___unnamed_float_3]
+        movss   sse112,sse20
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_12]
         cvtss2sd        sse22,sse112
@@ -289,13 +297,13 @@ label0021:
         destroy_stack_frame
         ret
 label0006:
-        divss   sse112,dword ptr [___unnamed_float_13]
+        movss   sse24,sse112
+        divss   sse24,dword ptr [___unnamed_float_13]
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_14]
-        cvtss2sd        sse26,sse112
-        movsd   sse115,sse26
+        cvtss2sd        sse26,sse24
 ; start of inline function fabs
-        movsd   sse102,sse115
+        movsd   sse102,sse26
         subsd   sse102,sse116
         cvtsd2ss        sse103,sse102
         movss   sse117,sse103
@@ -309,15 +317,13 @@ label0024:
         xorps   sse109,dword ptr [___unnamed_float_1]
         movss   sse118,sse109
 label0025:
-        movss   sse119,sse118
 ; end of inline function fabs
-        movss   sse104,sse119
+        movss   sse104,sse118
         comiss  sse104,dword ptr [___unnamed_float_2]
         setb    byte23
         movzx   dword153,byte23
-        mov     dword163,dword153
 ; end of inline function eq
-        cmp     dword163,0
+        cmp     dword153,0
         jne     label0007
         mov     dword56,8
         set_retval      dword56
@@ -328,6 +334,6 @@ label0007:
         set_retval      dword57
         destroy_stack_frame
         ret
-_test endp      
+_test endp
 
 end

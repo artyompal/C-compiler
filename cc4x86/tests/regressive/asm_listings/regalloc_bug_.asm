@@ -12,7 +12,7 @@ _f proc
         add     eax,[ebp+12]
         pop     ebp
         ret
-_f endp 
+_f endp
 
 _g proc
         push    ebp
@@ -21,7 +21,7 @@ _g proc
         sub     eax,[ebp+12]
         pop     ebp
         ret
-_g endp 
+_g endp
 
 _test proc
         push    ebp
@@ -50,6 +50,6 @@ label0001:
         add     esp,12
         pop     ebp
         ret
-_test endp      
+_test endp
 
 end
