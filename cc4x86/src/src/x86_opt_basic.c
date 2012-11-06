@@ -234,12 +234,12 @@ static x86_instruction *_is_constant_used_only_for_addition_in_address(function_
     for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
         if (bincode_operand_contains_register(&usage->in_op1, x86op_dword, reg)) {
             if (addition) {
-                if (OP_IS_PSEUDO_REG(usage->in_op1)) {
+                if (OP_IS_PSEUDO_REG(usage->in_op1, x86op_dword)) {
                     // Неподдерживаемый случай: регистр повторно модифицируется.
                     return NULL;
                 }
             } else {
-                if (usage->in_code != x86insn_int_add || !OP_IS_PSEUDO_REG(usage->in_op1)
+                if (usage->in_code != x86insn_int_add || !OP_IS_PSEUDO_REG(usage->in_op1, x86op_dword)
                     || bincode_operand_contains_register(&usage->in_op2, x86op_dword, reg)) {
                         // Неподдерживаемый случай: регистр используется до модификации
                         // или модифицируется с зависимостью от собственного значения.
@@ -250,7 +250,7 @@ static x86_instruction *_is_constant_used_only_for_addition_in_address(function_
             }
         } else if (bincode_operand_contains_register(&usage->in_op2, x86op_dword, reg)) {
             if (addition) {
-                if (OP_IS_PSEUDO_REG(usage->in_op2)) {
+                if (OP_IS_PSEUDO_REG(usage->in_op2, x86op_dword)) {
                     // Неподдерживаемый случай: регистр используется вне адреса.
                     return NULL;
                 }
@@ -378,7 +378,7 @@ static BOOL _try_optimize_reg_add_sub_const_into_lea(function_desc *function, x8
 
 
     // Проверяем соответствие кода паттерну.
-    if (!OP_IS_PSEUDO_REG(insn->in_op1)) {
+    if (!OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword)) {
         return FALSE;
     }
 
@@ -430,7 +430,7 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *insn)
     int reg                             = insn->in_op1.data.reg;
     x86_pseudoreg_info *pseudoreg_info  = &function->func_sse_regstat.ptr[reg];
 
-    if (!OP_IS_PSEUDO_REG(insn->in_op1) || OP_IS_REGVAR(insn->in_op1.data.reg, insn->in_op1.op_type)) {
+    if (!OP_IS_PSEUDO_REG(insn->in_op1, x86op_float) || OP_IS_REGVAR(insn->in_op1.data.reg, insn->in_op1.op_type)) {
         return;
     }
 
@@ -444,7 +444,7 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *insn)
             }
 
             if (OP_IS_THIS_PSEUDO_REG(usage->in_op2, insn->in_op2.op_type, reg)) {
-                if (!OP_IS_PSEUDO_REG(usage->in_op1)) {
+                if (!OP_IS_PSEUDO_REG(usage->in_op1, x86op_float)) {
                     return;
                 }
 
@@ -484,10 +484,10 @@ static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 // Оптимизирует конструкции с MOV.
 static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
 {
-    if (OP_IS_PSEUDO_REG(insn->in_op1) && !function->func_dword_regstat.ptr[insn->in_op1.data.reg].reg_last_read) {
+    if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && !function->func_dword_regstat.ptr[insn->in_op1.data.reg].reg_last_read) {
         aux_warning("variable is never used");
         bincode_erase_instruction(function, insn);
-    } else if (OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_CONSTANT(insn->in_op2)) {
+    } else if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT(insn->in_op2)) {
         _try_optimize_mov_reg_const(function, insn);
     }
 }

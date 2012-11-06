@@ -222,8 +222,7 @@ static void _generate_convert_double2float(x86_operand *res, x86_operand *op)
 
 static void _generate_dereference(x86_operand *res, x86_operand *op, data_type *type)
 {
-    ASSERT(OP_IS_ADDRESS(*op) || OP_IS_REGISTER(*op) && op->op_type == x86op_dword
-        || op->op_loc == x86loc_symbol_offset);
+    ASSERT(OP_IS_ADDRESS(*op) || OP_IS_REGISTER(*op, x86op_dword) || op->op_loc == x86loc_symbol_offset);
 
     if (op->op_loc == x86loc_register) {
         bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), op->data.reg);
@@ -370,14 +369,14 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
         bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
         unit_push_binary_instruction(x86insn_movzx, res, &tmp);
     } else if (opcode == op_mul) {
-        if (!OP_IS_REGISTER(*op1)) {
+        if (!OP_IS_REGISTER(*op1, x86op_dword)) {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
             unit_push_binary_instruction(x86insn_int_mov, res, op1);
         }
 
         unit_push_binary_instruction(is_unsigned ? x86insn_int_mul : x86insn_int_imul, res, op2);
     } else if (opcode == op_div) {
-        if (!OP_IS_REGISTER(*op1)) {
+        if (!OP_IS_REGISTER(*op1, x86op_dword)) {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
             unit_push_binary_instruction(x86insn_int_mov, res, op1);
         }
@@ -394,7 +393,7 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
     } else if (opcode == op_mod) {
         bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);      // edx
 
-        if (!OP_IS_REGISTER(*op1)) {
+        if (!OP_IS_REGISTER(*op1, x86op_dword)) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type); // eax
             unit_push_binary_instruction(x86insn_int_mov, &tmp, op1);
         } else {
@@ -469,11 +468,11 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
             unit_push_binary_instruction(x86insn_int_mov, &tmp, op1);
 
             _generate_int_simple_expr(opcode, &expr->data.arithm, res, &tmp, op2);
-            ASSERT(OP_IS_REGISTER(*res));
+            ASSERT(OP_IS_REGISTER(*res, x86op_dword));
             unit_push_binary_instruction(x86insn_int_mov, op1, res);
         } else {
             _generate_int_simple_expr(opcode, &expr->data.arithm, res, op1, op2);
-            ASSERT(OP_IS_REGISTER(*res));
+            ASSERT(OP_IS_REGISTER(*res, x86op_dword));
             unit_push_binary_instruction(x86insn_int_mov, op1, res);
         }
     } else {
