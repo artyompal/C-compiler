@@ -1210,11 +1210,9 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 void x86_dataflow_optimize_redundant_copies(function_desc *function)
 {
     _detect_basic_blocks(function);
-    _optimize_redundant_copies(function, x86op_dword);
 
-    if (option_sse2) {
-        _optimize_redundant_copies(function, x86op_float);
-    }
+    _optimize_redundant_copies(function, x86op_dword);
+    _optimize_redundant_copies(function, x86op_float);
 
     x86_analyze_registers_usage(function);
 }

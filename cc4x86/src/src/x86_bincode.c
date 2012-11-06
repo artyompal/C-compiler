@@ -327,24 +327,6 @@ void bincode_create_operand_from_label(x86_operand *op, int label)
 
 
 //
-// ќбработка вещественных констант.
-//
-
-x86_instruction_code bincode_encode_float_constant(double val)
-{
-    if (val == 0.0) {
-        return x86insn_fpu_zero;
-    } else if (val == 1.0) {
-        return x86insn_fpu_identity;
-    } else if (val == 3.14159265358979323846) {
-        return x86insn_fpu_pi;
-    } else {
-        return x86insn_count;
-    }
-}
-
-
-//
 // ќбслуживание бинарного кода, представленного двусв€зным списком.
 //
 

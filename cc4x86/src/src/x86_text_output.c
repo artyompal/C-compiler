@@ -201,30 +201,6 @@ static const char *_x86_instructions[] = {
     "setae",
     "seta",
 
-    // FPU арифметика:
-    "fld",
-    "fild",
-    "fst",
-    "fstp",
-    "fistp",
-    "fadd",
-    "fsub",
-    "fmul",
-    "fdiv",
-    "fsubr",
-    "fdivr",
-
-    "fld1",
-    "fldz",
-    "fld2t",
-    "fld2e",
-    "fldpi",
-    "fldlg2",
-    "fldln2",
-
-    "int2float",
-    "float2int",
-
     // SSE2 арифметика:
     "cvtsi2ss",
     "cvttss2si",
@@ -267,8 +243,6 @@ static const char *_x86_instructions[] = {
     // псевдо-инструкции:
     "cdq",
     "xor_edx_edx",
-    "fucomip\tst,st(1)\n\tfstp\tst",
-    "cld",
     "rep\tmovsb",
     "rep\tmovsd",
     "push_arg",
@@ -468,9 +442,6 @@ static void _output_push_unary_instruction(x86_instruction_code code, x86_operan
     if (code == x86insn_label) {
         _print_op(op);
         out_ch(':');
-    } else if (op->op_loc == x86loc_register && OP_IS_FLOAT(*op) && !option_sse2) {
-        ASSERT(code < x86insn_count);
-        out_fmt("\t%sp", _x86_instructions[code]);
     } else {
         _print_insn(code);
         out_ch('\t');
@@ -492,14 +463,14 @@ static void _output_push_binary_instruction(x86_instruction_code code, x86_opera
 
     if (op1->op_loc == x86loc_address && (op2->op_loc == x86loc_int_constant || IS_SHIFT_INSN(code))) {
         out_str("dword ptr ");
-    } else if (OP_IS_ADDRESS(*op1) && OP_IS_FLOAT(*op1) && option_sse2) {
+    } else if (OP_IS_ADDRESS(*op1) && OP_IS_FLOAT(*op1)) {
         out_fmt("%s ptr ", (op1->op_type == x86op_float ? "dword" : "qword"));
     }
 
     _print_op(op1);
     out_ch(',');
 
-    if (OP_IS_ADDRESS(*op2) && (OP_IS_FLOAT(*op1) || OP_IS_FLOAT(*op2)) && option_sse2) {
+    if (OP_IS_ADDRESS(*op2) && (OP_IS_FLOAT(*op1) || OP_IS_FLOAT(*op2))) {
         out_fmt("%s ptr ", (op2->op_type == x86op_double ? "qword" : "dword"));
     }
 

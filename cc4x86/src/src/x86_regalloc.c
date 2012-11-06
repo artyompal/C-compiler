@@ -467,148 +467,8 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
 void x86_analyze_registers_usage(function_desc *function)
 {
     _analyze_registers_usage(function, &function->func_dword_regstat, x86op_dword);
-
-    if (option_sse2) {
-        _analyze_registers_usage(function, &function->func_sse_regstat, x86op_float);
-    }
+    _analyze_registers_usage(function, &function->func_sse_regstat, x86op_float);
 }
-
-
-//
-// Обслуживание FPU-стека.
-
-static BOOL _type_is_func_returning_float(data_type *type)
-{
-    ASSERT(type->type_code == code_type_function);
-    return (type->data.function.result_type->type_code == code_type_float);
-}
-
-static void _maintain_fpu_stack(function_desc *function)
-{
-    x86_instruction *insn, *next_insn;
-    int fp_registers_cnt = 0, i, last_pusha_count = 0, num, sz, tmp = 0;
-    BOOL has_float_res = _type_is_func_returning_float(function->func_sym->sym_type);
-
-    for (insn = function->func_binary_code; insn; insn = next_insn) {
-        next_insn = insn->in_next;
-
-        // Порядок сохранения floating-point регистров: по младшим адресам идут младшие регистры.
-
-        if (insn->in_code == x86insn_push_all && fp_registers_cnt) {
-            // вставляем инструкции перед PUSHA
-            for (i = fp_registers_cnt; i > 0; i--) {
-                bincode_insert_fp_esp_offset(function, insn, x86insn_fpu_stp, x86op_double, -8 * i);
-            }
-
-            last_pusha_count = fp_registers_cnt;
-            bincode_insert_insn_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, last_pusha_count * 8);
-        } else if (insn->in_code == x86insn_pop_all && last_pusha_count) {
-            // вставляем инструкции после POPA
-            ASSERT(last_pusha_count != 0);
-
-            // Если функция возвращает float, мы кладём его в стек по адресу [esp-4],
-            // а потом восстанавливаем все FP-регистры из стека. Это обеспечивает правильный порядок FP-стека.
-            if (last_pusha_count != fp_registers_cnt) {
-                ASSERT(last_pusha_count + 1 == fp_registers_cnt);
-                num = last_pusha_count + 1;
-                bincode_insert_fp_esp_offset(function, next_insn, x86insn_fpu_stp, x86op_double, -8);
-            } else {
-                num = last_pusha_count;
-            }
-
-            for (i = last_pusha_count - 1; i >= last_pusha_count - num; i--) {
-                bincode_insert_fp_esp_offset(function, next_insn, x86insn_fpu_ld, x86op_double, 8 * i);
-            }
-
-            bincode_insert_insn_reg_const(function, next_insn, x86insn_int_add, x86op_dword, ~x86reg_esp, last_pusha_count * 8);
-            last_pusha_count = 0;
-        } else if (insn->in_code == x86insn_fpu_int2float) {
-            fp_registers_cnt++;
-
-            ASSERT(OP_IS_REGISTER_OR_ADDRESS(insn->in_op1));
-            insn->in_code = x86insn_fpu_ld_int;
-
-            if (OP_IS_REGISTER(insn->in_op1)) {
-                if (tmp == 0) {
-                    tmp = x86_stack_frame_alloc_tmp_var(function, 4);
-                }
-
-                bincode_insert_insn_ebp_offset_reg(function, insn, x86insn_int_mov, x86op_dword, tmp, insn->in_op1.data.reg);
-                bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_dword, tmp);
-            }
-        } else if (insn->in_code == x86insn_fpu_float2int) {
-            fp_registers_cnt--;
-
-            ASSERT(OP_IS_REGISTER_OR_ADDRESS(insn->in_op1));
-            insn->in_code = x86insn_fpu_stp_int;
-
-            if (OP_IS_REGISTER(insn->in_op1)) {
-                if (tmp == 0) {
-                    tmp = x86_stack_frame_alloc_tmp_var(function, 4);
-                }
-
-                bincode_insert_insn_reg_ebp_offset(function, next_insn, x86insn_int_mov, x86op_dword, insn->in_op1.data.reg, tmp);
-                bincode_create_operand_addr_from_ebp_offset(&insn->in_op1, x86op_float, tmp);
-            }
-        } else if (insn->in_code == x86insn_push_arg && OP_IS_FLOAT(insn->in_op1)) {
-            insn->in_op2.op_loc = x86loc_none;
-
-            if (OP_IS_REGISTER(insn->in_op1)) {
-                fp_registers_cnt--;
-            }
-
-            ASSERT(insn->in_op1.op_type == x86op_float || insn->in_op1.op_type == x86op_double)
-            sz = (insn->in_op1.op_type == x86op_float ? 4 : 8);
-
-            if (insn->in_op1.op_loc == x86loc_register) {
-                bincode_insert_fp_esp_offset(function, insn, x86insn_fpu_stp, insn->in_op1.op_type, -sz);
-                bincode_insert_insn_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
-                bincode_erase_instruction(function, insn);
-            } else if (insn->in_op1.op_loc == x86loc_address) {
-                if (sz == 4) {
-                    insn->in_code  = x86insn_push;
-                } else {
-                    bincode_insert_unary_instruction(function, insn, x86insn_fpu_ld, &insn->in_op1);
-                    fp_registers_cnt++;
-                    ASSERT(fp_registers_cnt == 1);
-
-                    bincode_insert_fp_esp_offset(function, insn, x86insn_fpu_stp, insn->in_op1.op_type, -sz);
-                    bincode_insert_insn_reg_const(function, insn, x86insn_int_sub, x86op_dword, ~x86reg_esp, sz);
-                    fp_registers_cnt--;
-
-                    bincode_erase_instruction(function, insn);
-                }
-            } else {
-                ASSERT(FALSE);
-            }
-        } else {
-            // вычисляем вершину FP-стека после текущей инструкции
-            if (insn->in_code == x86insn_fpu_ld || insn->in_code == x86insn_fpu_ld_int
-                || IS_FLOAT_UNARY_ARITHM_INSN(insn->in_code)
-                || insn->in_code == x86insn_set_retval && has_float_res && OP_IS_ADDRESS(insn->in_op1)) {
-                    fp_registers_cnt++;
-            } else if (insn->in_code == x86insn_fpu_stp || insn->in_code == x86insn_fpu_stp_int
-                || IS_FLOAT_BINARY_ARITHM_INSN(insn->in_code) && insn->in_op1.op_loc == x86loc_register) {
-                    fp_registers_cnt--;
-            } else if (insn->in_code == x86insn_fpu_cmp) {
-                fp_registers_cnt -= 2;
-            } else if (insn->in_code == x86insn_call && OP_IS_FLOAT(insn->in_op2)) {
-                fp_registers_cnt++;
-            }
-        }
-
-        ASSERT(fp_registers_cnt < 4); // так как все операции бинарные, в стеке не может быть больше трёх регистров
-    }
-
-    ASSERT(last_pusha_count == 0);
-
-    if (has_float_res) {
-        ASSERT(fp_registers_cnt == 1 || fp_registers_cnt == 0);
-    } else {
-        ASSERT(fp_registers_cnt == 0);
-    }
-}
-
 
 //
 // Обрабатывает инструкции, требующие конкретных регистров:
@@ -617,7 +477,6 @@ static void _maintain_fpu_stack(function_desc *function)
 // XOR EDX,EDX; DIV reg/mem (затрагивает EAX, EDX)
 // SHL reg,cl (затрагивает ECX)
 // MOVSB/MOVSD (затрагивают ECX, ESI, EDI)
-
 static void _reserve_special_registers(function_desc *function, x86_pseudoreg_info *pseudoregs_map)
 {
     x86_instruction *insn;
@@ -677,7 +536,6 @@ static BOOL _handle_byte_registers(function_desc *function, x86_instruction *ins
     return FALSE;
 }
 
-// TODO: регистры FPU также необходимо сохранять при вызовах функций.
 static void _emulate_push_all(function_desc *function, x86_instruction *insn, x86_operand_type type, register_map *regmap,
     x86_pseudoreg_info *pseudoregs_map)
 {
@@ -1005,10 +863,6 @@ static void _handle_pseudo_instructions(function_desc *function)
                     bincode_create_operand_from_register(&tmp, insn->in_op1.op_type, x86reg_eax);
                     bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
                 }
-            } else if (!option_sse2 && insn->in_op1.op_loc == x86loc_address) {
-                bincode_insert_unary_instruction(function, insn, x86insn_fpu_ld, &insn->in_op1);
-            } else if (!option_sse2) {
-                // результат уже находится в st(0)
             } else if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~0) {
                 // результат в xmm0
                 bincode_create_operand_from_register(&tmp, insn->in_op1.op_type, 0);
@@ -1021,8 +875,6 @@ static void _handle_pseudo_instructions(function_desc *function)
                     insn->in_code = x86insn_int_mov;
                     bincode_create_operand_from_register(&insn->in_op2, insn->in_op1.op_type, x86reg_eax);
                 }
-            } else if (!option_sse2) {
-                // результат уже находится в st(0)
             } else if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~0) {
                 // результат в xmm0
                 insn->in_code = ENCODE_SSE_MOV(insn->in_op1.op_type);
@@ -1056,21 +908,11 @@ static void _handle_pseudo_instructions(function_desc *function)
 
 void x86_allocate_registers(function_desc *function)
 {
-    if (!option_sse2) {
-        // Обрабатываем FPU-инструкции, работающие со стеком, и валидируем FPU-стек.
-        _maintain_fpu_stack(function);
-
-        // Замена псевдоинструкций FPU может изменить регионы использования адресных регистров.
-        x86_analyze_registers_usage(function);
-    }
-
     // Запускаем аллокатор регистров для 32-битных регистров.
     _allocate_registers(function, &function->func_dword_regstat, &_dword_register_map, x86op_dword);
 
-    if (option_sse2) {
-        // Запускаем аллокатор регистров для SSE-регистров.
-        _allocate_registers(function, &function->func_sse_regstat, &_sse_register_map, x86op_float);
-    }
+    // Запускаем аллокатор регистров для SSE-регистров.
+    _allocate_registers(function, &function->func_sse_regstat, &_sse_register_map, x86op_float);
 
     // Обрабатываем псевдо-инструкции и сохраняем изменённые регистры EBX/ESI/EDI.
     _handle_pseudo_instructions(function);

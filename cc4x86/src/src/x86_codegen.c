@@ -85,31 +85,6 @@ static x86_instruction_code _opcode_to_unsigned(x86_instruction_code opcode)
     }
 }
 
-static x86_instruction_code _opcode_to_fpu_instruction(arithmetic_opcode opcode)
-{
-    switch (opcode) {
-    case op_add:            return x86insn_fpu_add;
-    case op_sub:            return x86insn_fpu_sub;
-    case op_mul:            return x86insn_fpu_mul;
-    case op_div:            return x86insn_fpu_div;
-
-    case op_assign:         return x86insn_fpu_ld;
-    case op_add_assign:     return x86insn_fpu_add;
-    case op_sub_assign:     return x86insn_fpu_sub;
-    case op_mul_assign:     return x86insn_fpu_mul;
-    case op_div_assign:     return x86insn_fpu_div;
-
-    case op_equal:          return x86insn_int_sete;
-    case op_non_equal:      return x86insn_int_setne;
-    case op_less_equal:     return x86insn_int_setbe;
-    case op_less_then:      return x86insn_int_setb;
-    case op_greater_equal:  return x86insn_int_setae;
-    case op_greater_then:   return x86insn_int_seta;
-
-    default:                ASSERT(FALSE);
-    }
-}
-
 static x86_instruction_code _opcode_to_sse_instruction(arithmetic_opcode opcode)
 {
     switch (opcode) {
@@ -209,19 +184,8 @@ static void _generate_convert_int2float(x86_operand *res, x86_operand *op)
 {
     ASSERT(OP_IS_INT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
-    if (option_sse2) {
-        bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
-        unit_push_binary_instruction(x86insn_sse_load_int, res, op);
-    } else {
-        if (OP_IS_REGISTER(*op)) {
-            unit_push_unary_instruction(x86insn_fpu_int2float, op);
-        } else {
-            unit_push_unary_instruction(x86insn_fpu_ld_int, op);
-        }
-
-        res->op_loc     = x86loc_register;
-        res->op_type    = x86op_float;
-    }
+    bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
+    unit_push_binary_instruction(x86insn_sse_load_int, res, op);
 }
 
 static void _generate_convert_float2int(x86_operand *res, x86_operand *op)
@@ -231,21 +195,12 @@ static void _generate_convert_float2int(x86_operand *res, x86_operand *op)
     ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
     bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
 
-    if (option_sse2) {
-        if (OP_IS_ADDRESS(*op)) {
-            bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_float);
-            unit_push_binary_instruction(x86insn_sse_movss, &tmp, op);
-            unit_push_binary_instruction(x86insn_sse_store_int, res, &tmp);
-        } else {
-            unit_push_binary_instruction(x86insn_sse_store_int, res, op);
-        }
+    if (OP_IS_ADDRESS(*op)) {
+        bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_float);
+        unit_push_binary_instruction(x86insn_sse_movss, &tmp, op);
+        unit_push_binary_instruction(x86insn_sse_store_int, res, &tmp);
     } else {
-        if (OP_IS_ADDRESS(*op)) {
-            bincode_create_operand_and_alloc_pseudoreg(&tmp, x86op_float);
-            unit_push_binary_instruction(x86insn_fpu_ld, &tmp, op);
-        }
-
-        unit_push_unary_instruction(x86insn_fpu_float2int, res);
+        unit_push_binary_instruction(x86insn_sse_store_int, res, op);
     }
 }
 
@@ -253,38 +208,16 @@ static void _generate_convert_float2double(x86_operand *res, x86_operand *op)
 {
     ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
-    if (option_sse2) {
-        bincode_create_operand_and_alloc_pseudoreg(res, x86op_double);
-        unit_push_binary_instruction(x86insn_sse_float2double, res, op);
-    } else {
-        if (OP_IS_ADDRESS(*op)) {
-            bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
-            unit_push_unary_instruction(x86insn_fpu_ld, op);
-        } else {
-            *res = *op;
-        }
-
-        res->op_type = x86op_double;
-    }
+    bincode_create_operand_and_alloc_pseudoreg(res, x86op_double);
+    unit_push_binary_instruction(x86insn_sse_float2double, res, op);
 }
 
 static void _generate_convert_double2float(x86_operand *res, x86_operand *op)
 {
     ASSERT(OP_IS_FLOAT(*op) && OP_IS_REGISTER_OR_ADDRESS(*op));
 
-    if (option_sse2) {
-        bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
-        unit_push_binary_instruction(x86insn_sse_double2float, res, op);
-    } else {
-        if (OP_IS_ADDRESS(*op)) {
-            bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
-            unit_push_unary_instruction(x86insn_fpu_ld, op);
-        } else {
-            *res = *op;
-        }
-
-        res->op_type = x86op_float;
-    }
+    bincode_create_operand_and_alloc_pseudoreg(res, x86op_float);
+    unit_push_binary_instruction(x86insn_sse_double2float, res, op);
 }
 
 static void _generate_dereference(x86_operand *res, x86_operand *op, data_type *type)
@@ -385,26 +318,15 @@ static void _generate_common_unary_arithm_expr(expression *expr, x86_operand *re
     } else {
         ASSERT(expr->data.arithm.opcode == op_neg);
 
-        if (option_sse2) {
-            if (op->op_loc == x86loc_address) {
-                bincode_create_operand_and_alloc_pseudoreg(res, op->op_type);
-                unit_push_binary_instruction(ENCODE_SSE_MOV(op->op_type), res, op);
-            }
-
-            constant = x86data_insert_float4_constant(_negate_float, 0, 0, 0);
-            bincode_create_operand_from_symbol(&tmp, constant);
-            unit_push_binary_instruction(
-                (op->op_type == x86op_float ? x86insn_sse_xorps : x86insn_sse_xorpd), res, &tmp);
-        } else {
-            if (op->op_loc == x86loc_address) {
-                unit_push_unary_instruction(x86insn_fpu_ld, op);
-            }
-
-            unit_push_nullary_instruction(x86insn_fpu_zero);
-
+        if (op->op_loc == x86loc_address) {
             bincode_create_operand_and_alloc_pseudoreg(res, op->op_type);
-            unit_push_unary_instruction(x86insn_fpu_subr, res);
+            unit_push_binary_instruction(ENCODE_SSE_MOV(op->op_type), res, op);
         }
+
+        constant = x86data_insert_float4_constant(_negate_float, 0, 0, 0);
+        bincode_create_operand_from_symbol(&tmp, constant);
+        unit_push_binary_instruction(
+            (op->op_type == x86op_float ? x86insn_sse_xorps : x86insn_sse_xorpd), res, &tmp);
     }
 }
 
@@ -559,101 +481,6 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
     }
 }
 
-static x86_instruction_code _negate_fpu_insn(x86_instruction_code insn)
-{
-    if (insn == x86insn_fpu_sub) {
-        return x86insn_fpu_subr;
-    } else if (insn == x86insn_fpu_div) {
-        return x86insn_fpu_divr;
-    } else {
-        return insn;
-    }
-}
-
-static void _generate_fpu_binary_expr(expression *expr, x86_operand *res, x86_operand *op1,
-    x86_operand *op2, BOOL fpu_invert)
-{
-    x86_instruction_code insn = _opcode_to_fpu_instruction(expr->data.arithm.opcode);
-
-    ASSERT(OP_IS_FLOAT(*op1) && OP_IS_REGISTER_OR_ADDRESS(*op1));
-    ASSERT(OP_IS_FLOAT(*op2) && OP_IS_REGISTER_OR_ADDRESS(*op2));
-
-    *res = *op1;
-
-    if (IS_ASSIGN_OP(expr->data.arithm.opcode)) {
-        ASSERT(op1->op_loc == x86loc_address);
-
-        if (expr->data.arithm.opcode == op_assign) {
-            if (op2->op_loc == x86loc_address) {
-                unit_push_unary_instruction(x86insn_fpu_ld, op2);
-            }
-
-            unit_push_unary_instruction((expr->expr_parent ? x86insn_fpu_st : x86insn_fpu_stp), op1);
-        } else {
-            fpu_invert = !fpu_invert;
-
-            if (fpu_invert) {
-                insn = _negate_fpu_insn(insn);
-            }
-
-            if (op1->op_loc == x86loc_address) {
-                unit_push_unary_instruction(x86insn_fpu_ld, op1);
-            }
-
-            unit_push_unary_instruction(insn, op2);
-            unit_push_unary_instruction((expr->expr_parent ? x86insn_fpu_st : x86insn_fpu_stp), op1);
-        }
-
-        if (!expr->expr_parent) {
-            res->op_loc = x86loc_none;
-        }
-    } else if (IS_COMPARE_OP(expr->data.arithm.opcode)) {
-        fpu_invert = !fpu_invert;
-
-        if (op2->op_loc == x86loc_address) {
-            unit_push_unary_instruction(x86insn_fpu_ld, op2);
-        }
-
-        if (op1->op_loc == x86loc_address) {
-            unit_push_unary_instruction(x86insn_fpu_ld, op1);
-        }
-
-        if (fpu_invert) {
-            insn = _invert_comparison_operands(insn);
-        }
-
-        if (op1->op_loc != x86loc_address && op2->op_loc == x86loc_address) {
-            insn = _invert_comparison_operands(insn);
-        }
-
-        unit_push_nullary_instruction(x86insn_fpu_cmp);
-
-        bincode_create_operand_and_alloc_pseudoreg(op2, x86op_byte);
-        unit_push_unary_instruction(insn, op2);
-
-        bincode_create_operand_and_alloc_pseudoreg(res, x86op_dword);
-        unit_push_binary_instruction(x86insn_movzx, res, op2);
-    } else {
-        if (fpu_invert) {
-            insn = _negate_fpu_insn(insn);
-        }
-
-        if (op1->op_loc == x86loc_address) {
-            if (op2->op_loc == x86loc_register) {
-                insn = _negate_fpu_insn(insn);
-                unit_push_unary_instruction(insn, op1);
-            } else {
-                unit_push_unary_instruction(x86insn_fpu_ld, op1);
-                unit_push_unary_instruction(insn, op2);
-            }
-        } else {
-            unit_push_unary_instruction(insn, op2);
-        }
-
-        bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
-    }
-}
-
 static void _generate_sse_binary_expr(expression *expr, x86_operand *res, x86_operand *op1, x86_operand *op2)
 {
     x86_instruction_code insn = _opcode_to_sse_instruction(expr->data.arithm.opcode);
@@ -751,16 +578,13 @@ static void _generate_binary_arithm_expr(expression *expr, x86_operand *res)
     x86_operand op1, op2;
     BOOL is_structure_op    = TYPE_IS_STRUCTURE_UNION(expr->expr_type);
     BOOL is_int_op          = TYPE_IS_INTEGRAL_OR_POINTER(expr->data.arithm.operand1->expr_type);
-    BOOL fpu_invert;
 
     if (expr->data.arithm.operand1->expr_complexity < expr->data.arithm.operand2->expr_complexity) {
         _evaluate_nested_expression(expr->data.arithm.operand2, &op2);
         _evaluate_nested_expression(expr->data.arithm.operand1, &op1);
-        fpu_invert = (op1.op_loc == x86loc_register && op2.op_loc == x86loc_register);
     } else {
         _evaluate_nested_expression(expr->data.arithm.operand1, &op1);
         _evaluate_nested_expression(expr->data.arithm.operand2, &op2);
-        fpu_invert = FALSE;
     }
 
     ASSERT(op1.op_type == op2.op_type);
@@ -770,8 +594,6 @@ static void _generate_binary_arithm_expr(expression *expr, x86_operand *res)
         x86_intrinsic_static_memcpy(res, &op1, &op2, type_calculate_sizeof(expr->expr_type));
     } else if (is_int_op) {
         _generate_int_binary_expr(expr, res, &op1, &op2);
-    } else if (!option_sse2) {
-        _generate_fpu_binary_expr(expr, res, &op1, &op2, fpu_invert);
     } else {
         _generate_sse_binary_expr(expr, res, &op1, &op2);
     }
@@ -862,19 +684,9 @@ static void _load_symbol(symbol *sym, data_type *type, x86_operand *res)
     bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), res->data.reg);
 }
 
-static x86_instruction_code _encode_fpu_constant(double val)
-{
-    if (option_sse2) {
-        return x86insn_count;
-    } else {
-        return bincode_encode_float_constant(val);
-    }
-}
-
 static void _evaluate_nested_expression(expression *expr, x86_operand *res)
 {
     x86_operand tmp;
-    x86_instruction_code val;
     symbol *sym;
 
     switch (expr->expr_code) {
@@ -907,23 +719,9 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res)
         break;
 
     case code_expr_float_constant:
-        if (option_sse2) {
-            _load_symbol(expr->data.float_const.sym, expr->expr_type, &tmp);
-            bincode_create_operand_and_alloc_pseudoreg(res, bincode_encode_type(expr->expr_type));
-            unit_push_binary_instruction(ENCODE_SSE_MOV(res->op_type), res, &tmp);
-        } else {
-            val = bincode_encode_float_constant(expr->data.float_const.val);
-
-            if (val != x86insn_count) {
-                unit_push_nullary_instruction(val);
-            } else {
-                _load_symbol(expr->data.float_const.sym, expr->expr_type, res);
-                unit_push_unary_instruction(x86insn_fpu_ld, res);
-            }
-
-            bincode_create_operand_and_alloc_pseudoreg(res, bincode_encode_type(expr->expr_type));
-        }
-
+        _load_symbol(expr->data.float_const.sym, expr->expr_type, &tmp);
+        bincode_create_operand_and_alloc_pseudoreg(res, bincode_encode_type(expr->expr_type));
+        unit_push_binary_instruction(ENCODE_SSE_MOV(res->op_type), res, &tmp);
         break;
 
     default:
@@ -1029,7 +827,7 @@ static void _generate_conditional_jump(expression *condition, int destination, B
                 } else {
                     unit_push_binary_instruction(x86insn_int_cmp, &op1, &op2);
                 }
-            } else if (option_sse2) {
+            } else {
                 if (op1.op_loc == x86loc_address && op2.op_loc == x86loc_address) {
                     bincode_create_operand_and_alloc_pseudoreg(&tmp, op1.op_type);
                     unit_push_binary_instruction(ENCODE_SSE_MOV(op1.op_type), &tmp, &op1);
@@ -1040,20 +838,6 @@ static void _generate_conditional_jump(expression *condition, int destination, B
                 } else {
                     unit_push_binary_instruction(ENCODE_SSE_COMPARE(op1.op_type), &op1, &op2);
                 }
-            } else {
-                if (op2.op_loc == x86loc_address) {
-                    unit_push_unary_instruction(x86insn_fpu_ld, &op2);
-                }
-
-                if (op1.op_loc == x86loc_address) {
-                    unit_push_unary_instruction(x86insn_fpu_ld, &op1);
-                }
-
-                if (op1.op_loc != x86loc_address && op2.op_loc == x86loc_address) {
-                    invert_operands = !invert_operands;
-                }
-
-                unit_push_nullary_instruction(x86insn_fpu_cmp);
             }
 
             insn = _condition_to_jump(arithm->opcode, TYPE_IS_FLOATING(type));
@@ -1178,14 +962,8 @@ static void _walk_through_expressions(void)
 
 // Эти функции извлекают вещественные константы из кода функции и размещают их в секции .data.
 
-static void _extract_fpu_constants(expression *expr, void *unused)
+static void _extract_float_constants(expression *expr, void *unused)
 {
-    x86_instruction_code c = _encode_fpu_constant(expr->data.float_const.val);
-
-    if (c != x86insn_count) {
-        return;
-    }
-
     if (expr->expr_type->type_code == code_type_float) {
         float c = expr->data.float_const.val;
         expr->data.float_const.sym = x86data_insert_float_constant(*(long*)&c);
@@ -1196,10 +974,10 @@ static void _extract_fpu_constants(expression *expr, void *unused)
     }
 }
 
-static void _place_fpu_constants_into_data_section(void)
+static void _place_float_constants_into_data_section(void)
 {
     expr_iterate_through_subexpressions(_curr_func->func_body, code_expr_float_constant, EXPR_IT_APPLY_FILTER,
-        _extract_fpu_constants, NULL);
+        _extract_float_constants, NULL);
 }
 
 
@@ -1217,7 +995,7 @@ void x86_codegen_do_function(function_desc *function)
         _curr_func->func_pseudoregs_count[type] = 1;
     }
 
-    _place_fpu_constants_into_data_section();
+    _place_float_constants_into_data_section();
     _generate_prolog();
     _walk_through_expressions();
 
