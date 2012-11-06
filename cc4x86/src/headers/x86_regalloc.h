@@ -41,7 +41,7 @@ BOOL                        x86_equal_types                 (x86_operand_type ty
 void                        x86_analyze_registers_usage     (function_desc *function);
 void                        x86_allocate_registers          (function_desc *function);
 
-int                         x86_get_max_register_count      (x86_operand_type type);
+int                         x86_get_registers_count         (x86_operand_type type);
 
 
 #else

@@ -25,7 +25,7 @@ static register_map _sse_register_map;
 //
 // ¬спомогательные функции аллокатора регистров.
 
-int x86_get_max_register_count(x86_operand_type type)
+int x86_get_registers_count(x86_operand_type type)
 {
     if (type == x86op_dword) {
         return X86_DWORD_REGISTERS_COUNT;
@@ -90,7 +90,7 @@ static int _find_register_to_swap(x86_instruction *insn, register_map *regmap, x
 {
     int i, j, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
     int busy_regs[X86_MAX_REG]  = {0};
-    int free_registers_count    = x86_get_max_register_count(type);
+    int free_registers_count    = x86_get_registers_count(type);
     int last_free_register      = 0;
 
     // ƒвигаемс€ вниз по коду функции и вычисл€ем регистр, который наиболее долго не потребуетс€.
@@ -98,7 +98,7 @@ static int _find_register_to_swap(x86_instruction *insn, register_map *regmap, x
     for (; insn && free_registers_count > 1; insn = insn->in_next) {
         bincode_extract_pseudoregs_from_insn_wo_dupes(insn, type, regs, &regs_cnt);
 
-        for (i = 0; i < bincode_get_max_register(type); i++) {
+        for (i = 0; i < x86_get_registers_count(type); i++) {
             for (j = 0; j < regs_cnt; j++) {
                 if (regs[j] == regmap->real_registers_map[i]) {
                     free_registers_count += (busy_regs[i] - 1);
@@ -108,7 +108,7 @@ static int _find_register_to_swap(x86_instruction *insn, register_map *regmap, x
         }
 
         for (i = 0; busy_regs[i]; i++) {
-            ASSERT(i < bincode_get_max_register(type));
+            ASSERT(i < x86_get_registers_count(type));
         }
 
         last_free_register = i;
@@ -121,7 +121,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
     x86_pseudoreg_info *pseudoregs_map, int real_reg, x86_operand_type type)
 {
     int conflict_reg = regmap->real_registers_map[real_reg];
-    ASSERT(real_reg < bincode_get_max_register(type));
+    ASSERT(real_reg < x86_get_registers_count(type));
 
     if (conflict_reg > 0) {
         if (x86_dataflow_is_pseudoreg_alive_before(conflict_reg)) {
@@ -158,7 +158,7 @@ static void _force_swap_register(function_desc *function, x86_instruction *insn,
 {
 	int real_reg = pseudoregs_map[reg].reg_location;
 
-    ASSERT(real_reg < bincode_get_max_register(type));
+    ASSERT(real_reg < x86_get_registers_count(type));
     ASSERT(reg > 0);
 
 	if (x86_dataflow_is_pseudoreg_alive_after(reg) && pseudoregs_map[reg].reg_dirty) {
@@ -274,8 +274,8 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
 static int _alloc_real_register(function_desc *function, x86_instruction *insn, register_map *regmap,
     x86_pseudoreg_info *pseudoregs_map, int pseudoreg, x86_operand_type type)
 {
-    int start_reg   = (OP_IS_REGVAR(pseudoreg, type) ? bincode_get_max_register(type) - 1 : 0);
-    int last_reg    = (OP_IS_REGVAR(pseudoreg, type) ? -1 : bincode_get_max_register(type));
+    int start_reg   = (OP_IS_REGVAR(pseudoreg, type) ? x86_get_registers_count(type) - 1 : 0);
+    int last_reg    = (OP_IS_REGVAR(pseudoreg, type) ? -1 : x86_get_registers_count(type));
     int reg_step    = (OP_IS_REGVAR(pseudoreg, type) ? -1 : 1);
 
     return _alloc_real_register_from_range(function, insn, regmap, pseudoregs_map, pseudoreg, type,
@@ -719,7 +719,7 @@ static void _merge_register_states(function_desc *function, x86_instruction *ins
 {
     int real_reg, reg;
 
-    for (real_reg = 0; real_reg < bincode_get_max_register(type); real_reg++) {
+    for (real_reg = 0; real_reg < x86_get_registers_count(type); real_reg++) {
         if (new_regmap->real_registers_map[real_reg] != old_regmap->real_registers_map[real_reg]) {
             _swap_register(function, insn, new_regmap, pseudoregs_map, real_reg, type);
 
@@ -786,7 +786,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
         // ≈сли мы проходим через метку, мы вынуждены считать, что все выделенные регистры могли быть изменены.
         // TODO: более точный анализ того, были ли какие-либо регистры изменены.
         if (insn->in_code == x86insn_label) {
-            for (i = 0; i < bincode_get_max_register(type); i++) {
+            for (i = 0; i < x86_get_registers_count(type); i++) {
                 reg = regmap->real_registers_map[i];
 
                 if (reg != -1) {
