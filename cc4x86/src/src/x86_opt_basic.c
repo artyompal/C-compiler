@@ -6,7 +6,6 @@
 
 
 // FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
-// FIXME: убрать хардкод func_dword_regstat в этом модуле (ломает поддержку SSE).
 
 
 #define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base > 0 && (OP).data.address.index == 0 \
@@ -583,13 +582,3 @@ void x86_optimization_after_inlining(function_desc *function)
 {
     _optimize_labels(function);
 }
-
-//
-// Этап оптимизации, который выполняется после введения регистровых переменных.
-// Работает итеративно, пока ему удаётся уменьшить число инструкций.
-void x86_optimization_after_regvar_allocation(function_desc *function)
-{
-    // Выполняем итерацию оптимизации.
-    x86_optimization_after_codegen(function);
-}
-

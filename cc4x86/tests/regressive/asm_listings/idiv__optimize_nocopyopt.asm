@@ -15,7 +15,9 @@ _test proc
         mov     edi,2
         mov     esi,3
         mov     ebx,4
+        mov     edx,5
         mov     eax,3
+        mov     [ebp-16],edx
         cdq
         idiv    edi
         mov     [ebp-24],eax
@@ -26,11 +28,11 @@ _test proc
         mov     eax,[ebp-24]
         imul    eax,[ebp-28]
         mov     [ebp-24],eax
-        mov     eax,5
+        mov     eax,[ebp-16]
         cdq
         idiv    ebx
         mov     [ebp-32],eax
-        mov     eax,5
+        mov     eax,[ebp-16]
         cdq
         idiv    ebx
         mov     [ebp-36],eax
@@ -39,7 +41,8 @@ _test proc
         mov     [ebp-32],eax
         mov     eax,[ebp-24]
         add     eax,[ebp-32]
-        cmp     eax,2
+        mov     edx,eax
+        cmp     edx,2
         je      label0000
         mov     eax,1
         pop     ebx
@@ -52,7 +55,8 @@ label0000:
         mov     eax,ebx
         cdq
         idiv    edi
-        cmp     eax,2
+        mov     ebx,eax
+        cmp     ebx,2
         je      label0001
         mov     eax,2
         pop     ebx
@@ -62,7 +66,7 @@ label0000:
         pop     ebp
         ret
 label0001:
-        mov     eax,5
+        mov     eax,[ebp-16]
         cdq
         idiv    esi
         cmp     edx,2

@@ -270,9 +270,10 @@ label0021:
 label0006:
         movss   xmm0,xmm7
         divss   xmm0,dword ptr [___unnamed_float_13]
+        movss   xmm7,xmm0
 ; start of inline function eq
         movsd   xmm5,qword ptr [___unnamed_double_14]
-        cvtss2sd        xmm0,xmm0
+        cvtss2sd        xmm0,xmm7
 ; start of inline function fabs
         subsd   xmm0,xmm5
         cvtsd2ss        xmm0,xmm0

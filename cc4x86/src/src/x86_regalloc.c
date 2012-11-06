@@ -23,19 +23,6 @@ static register_map _sse_register_map;
 
 
 //
-// Конфликты регистров.
-//
-// Если в одной инструкции появляются конфликтующие регистры:
-// 1. регистр результата имеет максимальный приоритет; он должен быть всегда выделен.
-// 2. Зарезервированные регистры являются неприкосновенными.
-// 3. read-only регистры из остальных операндов можно скопировать в другие регистры.
-// 4. если регистр является read-only операндом, его можно заменить сохранённым значением из памяти
-// 5. если инструкция коммутативная, а оба операнда являются регистрами, то в случае их конфликта
-//    можно любой из них оставить в памяти.
-//
-
-
-//
 // Вспомогательные функции аллокатора регистров.
 
 int x86_get_max_register_count(x86_operand_type type)
@@ -82,13 +69,6 @@ x86_operand_type x86_encode_register_type(x86_operand_type type)
 BOOL x86_equal_types(x86_operand_type type1, x86_operand_type type2)
 {
     return (type1 == type2 || type1 == x86op_float && type2 == x86op_double || type1 == x86op_double && type2 == x86op_float);
-}
-
-static BOOL _is_double_register(int pseudoreg, x86_pseudoreg_info *pseudoregs_map)
-{
-    x86_instruction *insn = pseudoregs_map[pseudoreg].reg_first_write;
-    ASSERT(insn->in_op1.op_type == x86op_float || insn->in_op1.op_type == x86op_double);
-    return (insn->in_op1.op_type == x86op_double);
 }
 
 
@@ -146,7 +126,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
     if (conflict_reg > 0) {
         if (x86_dataflow_is_pseudoreg_alive_before(conflict_reg)) {
             int ofs = pseudoregs_map[conflict_reg].reg_stack_location;
-            int dbl = (type == x86op_dword ? FALSE : _is_double_register(conflict_reg, pseudoregs_map));
+            int dbl = (pseudoregs_map[conflict_reg].reg_content_type == x86op_double);
 
             if (ofs == -1) {
                 ofs = x86_stack_frame_alloc_tmp_var(function, (dbl ? 8 : 4));
@@ -183,7 +163,7 @@ static void _force_swap_register(function_desc *function, x86_instruction *insn,
 
 	if (x86_dataflow_is_pseudoreg_alive_after(reg) && pseudoregs_map[reg].reg_dirty) {
         int ofs = pseudoregs_map[reg].reg_stack_location;
-        int dbl = (type == x86op_dword ? FALSE : _is_double_register(reg, pseudoregs_map));
+        int dbl = (pseudoregs_map[reg].reg_content_type == x86op_double);
 
         if (ofs == -1) {
             ofs = x86_stack_frame_alloc_tmp_var(function, (dbl ? 8 : 4));
@@ -215,7 +195,7 @@ static void _restore_register(function_desc *function, x86_instruction *insn,
 
         if (type == x86op_dword) {
             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
-        } else if (!_is_double_register(reg, pseudoregs_map)) {
+        } else if (pseudoregs_map[reg].reg_content_type != x86op_double) {
             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movss, x86op_float, ~real_reg, ofs);
         } else {
             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_sse_movsd, x86op_double, ~real_reg, ofs);
@@ -254,7 +234,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
             continue;
         }
 
-        if (!x86_dataflow_is_pseudoreg_alive_after(pseudoreg2)) {
+        if (!x86_dataflow_is_pseudoreg_alive_after(pseudoreg2)) { // FIXME: тут не хватает x86_dataflow_is_pseudoreg_alive_before
             pseudoregs_map[pseudoreg2].reg_status = register_delayed_swapped;
             regmap->real_registers_map[real_reg] = pseudoreg;
             return real_reg;
@@ -388,6 +368,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
         pseudoregs_map[i].reg_stack_location    = -1;
         pseudoregs_map[i].reg_dirty             = FALSE;
         pseudoregs_map[i].reg_location          = -1;
+        pseudoregs_map[i].reg_content_type      = x86op_none;
 
         pseudoregs_map[i].reg_first_write       = NULL;
         pseudoregs_map[i].reg_last_read         = NULL;
@@ -421,6 +402,9 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
         for (i = 0; i < registers_count; i++) {
             reg = reg_numbers[i];
             ASSERT(reg < pseudoregs_cnt);
+
+            ASSERT(OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && reg == insn->in_op1.data.reg);
+            pseudoregs_map[reg].reg_content_type = insn->in_op1.op_type;
 
             if (!pseudoregs_map[reg].reg_first_write) {
                 pseudoregs_map[reg].reg_first_write = insn;
@@ -650,7 +634,7 @@ static void _reserve_special_registers(function_desc *function, x86_pseudoreg_in
             _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
         } else if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2)) {
             _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_ecx);
-        } else if (insn->in_code == x86insn_read_retval) { // FIXME: insn->in_code == x86insn_set_retval???
+        } else if (insn->in_code == x86insn_read_retval) {
             ASSERT(OP_IS_PSEUDO_REG(insn->in_op1));
             _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
         } else if (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd) {

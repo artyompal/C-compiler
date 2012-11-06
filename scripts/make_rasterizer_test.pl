@@ -20,20 +20,24 @@ sub assemble {
 
 chdir("../cc4x86/bin/release/") or die("chdir: $!");
 
-run("--sse2 --xmldump --nocodegen");            # generate XML
-run("--sse2 --nobasicopt --noregalloc");        # generate very unoptimized listing
-run("--sse2 --noregalloc");                     # generate unoptimized listing
-run("--sse2 --optimize --noregalloc");          # generate optimized listing with pseudo-registers
+run("--xmldump --nocodegen");
 
-run("--optimize");                              # generate non-SSE optimized listing
-run("--optimize --noinline");                   # generate non-SSE noinline optimized listing
-run("--sse2 --optimize --noinline");            # generate noinline optimized listing
-run("--sse2 --optimize");                       # generate finally optimized listing
+run("--noregalloc");
+run("--noregalloc --optimize");
+run("--noregalloc --optimize --noinline");
+run("--noregalloc --optimize --nocopyopt");
 
-system("del ..\\..\\tests\\visual\\rasterizer\\rasterizer.asm");
-system("rename ..\\..\\tests\\visual\\rasterizer\\rasterizer__sse2_optimize.asm rasterizer.asm");
+run("");
+run("--optimize");
+run("--optimize --noinline");
+run("--optimize --nocopyopt");
 
-assemble("rasterizer.asm");
+assemble("rasterizer_.asm");
 assemble("rasterizer__optimize.asm");
 assemble("rasterizer__optimize_noinline.asm");
-assemble("rasterizer__sse2_optimize_noinline.asm");
+assemble("rasterizer__optimize_nocopyopt.asm");
+
+chdir("../../tests/visual/rasterizer") or die("chdir: $!");
+system("del *.lst");
+system("del *.obj");
+chdir("../../../../cc4x86/bin/release/") or die("chdir: $!");

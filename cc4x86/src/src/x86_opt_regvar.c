@@ -190,11 +190,10 @@ void x86_create_register_variables(function_desc *function)
         _create_register_variables_for_type(function, x86op_float);
     }
 
-    // мы создали новые псевдо-регистры, поэтому мы должны перестроить регистровую статистику
-    x86_analyze_registers_usage(function);
-
     // делаем оптимизации, ставшие теперь возможными
-    x86_optimization_after_regvar_allocation(function);
+    x86_analyze_registers_usage(function);
+    x86_optimization_after_codegen(function);
+    x86_analyze_registers_usage(function);
 }
 
 //

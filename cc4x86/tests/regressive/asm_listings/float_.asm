@@ -5,30 +5,37 @@
 
 .data
 
-___unnamed_float_0      dd      03a83126fh
+___unnamed_float_0      dd      00h
 public  ___unnamed_float_0
-___unnamed_float_1      dd      040000000h
+align 16
+___unnamed_float_1      dd      080000000h, 00h, 00h, 00h
 public  ___unnamed_float_1
-___unnamed_double_2     dq      04008000000000000h
-public  ___unnamed_double_2
-___unnamed_double_3     dq      04014000000000000h
-public  ___unnamed_double_3
-___unnamed_double_4     dq      0bff0000000000000h
+___unnamed_float_2      dd      03a83126fh
+public  ___unnamed_float_2
+___unnamed_float_3      dd      040000000h
+public  ___unnamed_float_3
+___unnamed_double_4     dq      04008000000000000h
 public  ___unnamed_double_4
-___unnamed_double_5     dq      04018000000000000h
+___unnamed_double_5     dq      04014000000000000h
 public  ___unnamed_double_5
-___unnamed_double_6     dq      03fe54fdf3b645a1dh
+___unnamed_double_6     dq      0bff0000000000000h
 public  ___unnamed_double_6
-___unnamed_double_7     dq      04010000000000000h
+___unnamed_double_7     dq      04018000000000000h
 public  ___unnamed_double_7
-___unnamed_double_8     dq      04008000000000000h
+___unnamed_double_8     dq      03fe54fdf3b645a1dh
 public  ___unnamed_double_8
-___unnamed_double_9     dq      04018000000000000h
+___unnamed_double_9     dq      04010000000000000h
 public  ___unnamed_double_9
-___unnamed_float_10     dd      040400000h
+___unnamed_float_10     dd      03f800000h
 public  ___unnamed_float_10
-___unnamed_double_11    dq      04000000000000000h
+___unnamed_double_11    dq      04008000000000000h
 public  ___unnamed_double_11
+___unnamed_double_12    dq      04018000000000000h
+public  ___unnamed_double_12
+___unnamed_float_13     dd      040400000h
+public  ___unnamed_float_13
+___unnamed_double_14    dq      04000000000000000h
+public  ___unnamed_double_14
 
 .code
 
@@ -36,21 +43,18 @@ _fabs proc
         push    ebp
         mov     ebp,esp
         sub     esp,4
-        fldz
-        fld     dword ptr [ebp+8]
-        fucomip st,st(1)
-        fstp    st
-        jb      label0000
-        fld     dword ptr [ebp+8]
-        fstp    dword ptr [ebp-4]
+        movss   xmm0,dword ptr [___unnamed_float_0]
+        comiss  xmm0,dword ptr [ebp+8]
+        ja      label0000
+        movss   xmm0,dword ptr [ebp+8]
+        movss   dword ptr [ebp-4],xmm0
         jmp     label0001
 label0000:
-        fld     dword ptr [ebp+8]
-        fldz
-        fsubrp
-        fstp    dword ptr [ebp-4]
+        movss   xmm0,dword ptr [ebp+8]
+        xorps   xmm0,dword ptr [___unnamed_float_1]
+        movss   dword ptr [ebp-4],xmm0
 label0001:
-        fld     dword ptr [ebp-4]
+        movss   xmm0,dword ptr [ebp-4]
         add     esp,4
         pop     ebp
         ret
@@ -59,16 +63,15 @@ _fabs endp
 _eq proc
         push    ebp
         mov     ebp,esp
-        fld     qword ptr [ebp+8]
-        fsub    qword ptr [ebp+16]
-        fstp    dword ptr [esp-4]
+        movsd   xmm0,qword ptr [ebp+8]
+        subsd   xmm0,qword ptr [ebp+16]
+        cvtsd2ss        xmm0,xmm0
+        movss   dword ptr [esp-4],xmm0
         sub     esp,4
         call    _fabs
         add     esp,4
-        fld     dword ptr [___unnamed_float_0]
-        fucomip st,st(1)
-        fstp    st
-        seta    al
+        comiss  xmm0,dword ptr [___unnamed_float_2]
+        setb    al
         movzx   eax,al
         pop     ebp
         ret
@@ -78,18 +81,18 @@ _test proc
         push    ebp
         mov     ebp,esp
         sub     esp,20
-        fld     dword ptr [___unnamed_float_1]
-        fstp    dword ptr [ebp-4]
-        fld     qword ptr [___unnamed_double_2]
-        fstp    qword ptr [ebp-12]
-        fld     dword ptr [ebp-4]
-        fadd    qword ptr [ebp-12]
-        fstp    qword ptr [ebp-20]
-        fld     qword ptr [___unnamed_double_3]
-        fstp    qword ptr [esp-8]
+        movss   xmm0,dword ptr [___unnamed_float_3]
+        movss   dword ptr [ebp-4],xmm0
+        movsd   xmm0,qword ptr [___unnamed_double_4]
+        movsd   qword ptr [ebp-12],xmm0
+        cvtss2sd        xmm0,dword ptr [ebp-4]
+        addsd   xmm0,qword ptr [ebp-12]
+        movsd   qword ptr [ebp-20],xmm0
+        movsd   xmm0,qword ptr [___unnamed_double_5]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
-        fld     qword ptr [ebp-20]
-        fstp    qword ptr [esp-8]
+        movsd   xmm0,qword ptr [ebp-20]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
         call    _eq
         add     esp,16
@@ -100,14 +103,14 @@ _test proc
         pop     ebp
         ret
 label0000:
-        fld     dword ptr [ebp-4]
-        fsub    qword ptr [ebp-12]
-        fstp    qword ptr [ebp-20]
-        fld     qword ptr [___unnamed_double_4]
-        fstp    qword ptr [esp-8]
+        cvtss2sd        xmm0,dword ptr [ebp-4]
+        subsd   xmm0,qword ptr [ebp-12]
+        movsd   qword ptr [ebp-20],xmm0
+        movsd   xmm0,qword ptr [___unnamed_double_6]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
-        fld     qword ptr [ebp-20]
-        fstp    qword ptr [esp-8]
+        movsd   xmm0,qword ptr [ebp-20]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
         call    _eq
         add     esp,16
@@ -118,14 +121,14 @@ label0000:
         pop     ebp
         ret
 label0001:
-        fld     dword ptr [ebp-4]
-        fmul    qword ptr [ebp-12]
-        fstp    qword ptr [ebp-20]
-        fld     qword ptr [___unnamed_double_5]
-        fstp    qword ptr [esp-8]
+        cvtss2sd        xmm0,dword ptr [ebp-4]
+        mulsd   xmm0,qword ptr [ebp-12]
+        movsd   qword ptr [ebp-20],xmm0
+        movsd   xmm0,qword ptr [___unnamed_double_7]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
-        fld     qword ptr [ebp-20]
-        fstp    qword ptr [esp-8]
+        movsd   xmm0,qword ptr [ebp-20]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
         call    _eq
         add     esp,16
@@ -136,14 +139,14 @@ label0001:
         pop     ebp
         ret
 label0002:
-        fld     dword ptr [ebp-4]
-        fdiv    qword ptr [ebp-12]
-        fstp    qword ptr [ebp-20]
-        fld     qword ptr [___unnamed_double_6]
-        fstp    qword ptr [esp-8]
+        cvtss2sd        xmm0,dword ptr [ebp-4]
+        divsd   xmm0,qword ptr [ebp-12]
+        movsd   qword ptr [ebp-20],xmm0
+        movsd   xmm0,qword ptr [___unnamed_double_8]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
-        fld     qword ptr [ebp-20]
-        fstp    qword ptr [esp-8]
+        movsd   xmm0,qword ptr [ebp-20]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
         call    _eq
         add     esp,16
@@ -154,15 +157,14 @@ label0002:
         pop     ebp
         ret
 label0003:
-        fld     dword ptr [___unnamed_float_1]
-        fld     dword ptr [ebp-4]
-        faddp
-        fstp    dword ptr [ebp-4]
-        fld     qword ptr [___unnamed_double_7]
-        fstp    qword ptr [esp-8]
+        movss   xmm0,dword ptr [ebp-4]
+        addss   xmm0,dword ptr [___unnamed_float_3]
+        movss   dword ptr [ebp-4],xmm0
+        movsd   xmm0,qword ptr [___unnamed_double_9]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
-        fld     dword ptr [ebp-4]
-        fstp    qword ptr [esp-8]
+        cvtss2sd        xmm0,dword ptr [ebp-4]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
         call    _eq
         add     esp,16
@@ -173,15 +175,14 @@ label0003:
         pop     ebp
         ret
 label0004:
-        fld1
-        fld     dword ptr [ebp-4]
-        fsubrp
-        fstp    dword ptr [ebp-4]
-        fld     qword ptr [___unnamed_double_8]
-        fstp    qword ptr [esp-8]
+        movss   xmm0,dword ptr [ebp-4]
+        subss   xmm0,dword ptr [___unnamed_float_10]
+        movss   dword ptr [ebp-4],xmm0
+        movsd   xmm0,qword ptr [___unnamed_double_11]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
-        fld     dword ptr [ebp-4]
-        fstp    qword ptr [esp-8]
+        cvtss2sd        xmm0,dword ptr [ebp-4]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
         call    _eq
         add     esp,16
@@ -192,15 +193,14 @@ label0004:
         pop     ebp
         ret
 label0005:
-        fld     dword ptr [___unnamed_float_1]
-        fld     dword ptr [ebp-4]
-        fmulp
-        fstp    dword ptr [ebp-4]
-        fld     qword ptr [___unnamed_double_9]
-        fstp    qword ptr [esp-8]
+        movss   xmm0,dword ptr [ebp-4]
+        mulss   xmm0,dword ptr [___unnamed_float_3]
+        movss   dword ptr [ebp-4],xmm0
+        movsd   xmm0,qword ptr [___unnamed_double_12]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
-        fld     dword ptr [ebp-4]
-        fstp    qword ptr [esp-8]
+        cvtss2sd        xmm0,dword ptr [ebp-4]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
         call    _eq
         add     esp,16
@@ -211,15 +211,14 @@ label0005:
         pop     ebp
         ret
 label0006:
-        fld     dword ptr [___unnamed_float_10]
-        fld     dword ptr [ebp-4]
-        fdivrp
-        fstp    dword ptr [ebp-4]
-        fld     qword ptr [___unnamed_double_11]
-        fstp    qword ptr [esp-8]
+        movss   xmm0,dword ptr [ebp-4]
+        divss   xmm0,dword ptr [___unnamed_float_13]
+        movss   dword ptr [ebp-4],xmm0
+        movsd   xmm0,qword ptr [___unnamed_double_14]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
-        fld     dword ptr [ebp-4]
-        fstp    qword ptr [esp-8]
+        cvtss2sd        xmm0,dword ptr [ebp-4]
+        movsd   qword ptr [esp-8],xmm0
         sub     esp,8
         call    _eq
         add     esp,16

@@ -1,12 +1,12 @@
 x86_regalloc.h:     TODO: параметры reg_first_write/reg_last_read/reg_changes_value являются deprecated. Задачи анализа потока данных должны теперь решаться через множества in/out.
 x86_regalloc.h:     TODO: OP_IS_REGVAR является хаком, и регистровые переменные сделаны пока что хаком. Нужно сделать нормальное распространение копирований и не использовать этот макрос без необходимости.
+x86_bincode.c:      TODO: убрать bincode_get_max_register, т.к. она дублирует x86_get_max_register_count
 x86_codegen.c:      TODO: поддержать кодогенерацию для long long
 x86_codegen.c:      TODO: поддержать кодогенерацию для операндов типа byte/word
 x86_codegen.c:      TODO: возвращать результат типа QWORD
 x86_opt_basic.c:    FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
-x86_opt_basic.c:    FIXME: убрать хардкод func_dword_regstat в этом модуле (ломает поддержку SSE).
+x86_regalloc.c:     FIXME: тут не хватает x86_dataflow_is_pseudoreg_alive_before
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
-x86_regalloc.c:     FIXME: insn->in_code == x86insn_set_retval???
 x86_regalloc.c:     TODO: регистры FPU также необходимо сохранять при вызовах функций.
 x86_regalloc.c:     TODO: более точный анализ того, были ли какие-либо регистры изменены.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);

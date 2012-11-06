@@ -135,12 +135,12 @@
     <ClInclude Include="texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="rasterizer.asm">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ml /Fl /c rasterizer.asm
+    <CustomBuild Include="rasterizer__optimize.asm">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ml /Fl /c rasterizer__optimize.asm
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">rasterizer.obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ml /Fl /c rasterizer.asm</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">rasterizer.obj;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">rasterizer__optimize.obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ml /Fl /c rasterizer__optimize.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">rasterizer__optimize.obj;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

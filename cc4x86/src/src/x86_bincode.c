@@ -537,7 +537,7 @@ x86_operand_type bincode_encode_type(data_type *type)
     }
 }
 
-int bincode_get_max_register(x86_operand_type type)
+int bincode_get_max_register(x86_operand_type type) // TODO: убрать bincode_get_max_register, т.к. она дублирует x86_get_max_register_count
 {
     return (type == x86op_dword ? x86reg_ebp : X86_MAX_REG);
 }

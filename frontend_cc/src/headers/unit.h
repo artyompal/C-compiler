@@ -39,7 +39,7 @@ typedef struct function_desc_decl {
 
     // информаци€ аллокатора регистров:
     register_stat               func_dword_regstat;         // регистровые статистики дл€ соответствующих наборов регистров;
-    register_stat               func_sse_regstat;           // мы не выдел€ем 8-битные, 16-битные и FPU-регистры
+    register_stat               func_sse_regstat;
     int                         func_start_of_regvars[6];   // перва€ регистрова€ переменна€ (номер псевдорегистра)
     int                         func_labels_count;          // последн€€ аллоцированна€ метка в функции
     int                         func_pseudoregs_count[6];   // X86_REGISTER_TYPES_COUNT
