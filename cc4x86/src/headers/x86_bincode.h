@@ -291,6 +291,7 @@ void    bincode_extract_pseudoregs_from_insn_wo_dupes   (x86_instruction *insn, 
 void    bincode_extract_real_registers_from_insn        (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 BOOL    bincode_insn_contains_register                  (x86_instruction *insn, x86_operand_type type, int reg);
 BOOL    bincode_operand_contains_register               (x86_operand *op, x86_operand_type type, int reg);
+BOOL    bincode_is_pseudoreg_modified_by_insn           (x86_instruction *insn, x86_operand_type type, int reg);
 
 void    bincode_extract_pseudoregs_read_by_insn         (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_pseudoregs_modified_by_insn     (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);

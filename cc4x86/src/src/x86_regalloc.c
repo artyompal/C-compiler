@@ -509,7 +509,7 @@ static void _reserve_special_registers(function_desc *function, x86_operand_type
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         // инструкции для всех регистров
         if (insn->in_code == x86insn_read_retval && x86_equal_types(insn->in_op1.op_type, type)) {
-            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, insn->in_op1.op_type));
+            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type));
             _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
         }
 

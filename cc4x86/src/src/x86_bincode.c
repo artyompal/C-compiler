@@ -196,6 +196,21 @@ void bincode_extract_pseudoregs_overwritten_by_insn(x86_instruction *insn, x86_o
     }
 }
 
+BOOL bincode_is_pseudoreg_modified_by_insn(x86_instruction *insn, x86_operand_type type, int reg)
+{
+    int i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
+
+    bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
+
+    for (i = 0; i < regs_cnt; i++) {
+        if (regs[i] == reg) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
 
 //
 // Создание различных операндов инструкций.
