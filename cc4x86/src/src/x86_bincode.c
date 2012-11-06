@@ -72,19 +72,17 @@ void bincode_extract_real_registers_from_insn(x86_instruction *insn, x86_operand
 {
     *regs_cnt = 0;
 
-    if (OP_IS_REAL_REG(insn->in_op1) &&
-        (insn->in_op1.op_type != x86op_dword || insn->in_op1.data.reg != ~x86reg_esp) &&
-            x86_equal_types(insn->in_op1.op_type, type)) {
-                regs[*regs_cnt] = ~insn->in_op1.data.reg;
-                ++*regs_cnt;
-            }
+    if (OP_IS_REAL_REG(insn->in_op1, type) &&
+        (insn->in_op1.op_type != x86op_dword || insn->in_op1.data.reg != ~x86reg_esp)) {
+            regs[*regs_cnt] = ~insn->in_op1.data.reg;
+            ++*regs_cnt;
+        }
 
-    if (OP_IS_REAL_REG(insn->in_op2) && insn->in_code != x86insn_call &&
-        (insn->in_op2.op_type != x86op_dword || insn->in_op2.data.reg != ~x86reg_esp) &&
-            x86_equal_types(insn->in_op2.op_type, type)) {
-                regs[*regs_cnt] = ~insn->in_op2.data.reg;
-                ++*regs_cnt;
-            }
+    if (OP_IS_REAL_REG(insn->in_op2, type) && insn->in_code != x86insn_call &&
+        (insn->in_op2.op_type != x86op_dword || insn->in_op2.data.reg != ~x86reg_esp)) {
+            regs[*regs_cnt] = ~insn->in_op2.data.reg;
+            ++*regs_cnt;
+        }
 
     if (IS_SET_INSN(insn->in_code) && type != x86op_dword) {
         regs[*regs_cnt] = x86reg_eax;
