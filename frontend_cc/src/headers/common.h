@@ -119,7 +119,6 @@ extern BOOL option_no_regalloc;
 extern BOOL option_no_copy_opt;
 extern BOOL option_no_basic_opt;
 extern BOOL option_enable_optimization;
-extern BOOL option_sse2;
 extern BOOL option_no_inline;
 extern BOOL option_xml_dump;
 extern int  option_max_inline_insn;

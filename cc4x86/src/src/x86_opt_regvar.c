@@ -55,11 +55,10 @@ static void _search_for_addressing_or_int2float(expression *expr, void *result)
 {
     address_lookup_result *res = result;
 
-    if ((expr->data.arithm.opcode == op_get_address ||
-        expr->data.arithm.opcode == op_convert_int2float && !option_sse2)
-            && expr->data.arithm.operand1->expr_code == code_expr_symbol && expr->data.arithm.operand1->data.sym == res->sym) {
-                res->res = TRUE;
-            }
+    if (expr->data.arithm.opcode == op_get_address
+        && expr->data.arithm.operand1->expr_code == code_expr_symbol && expr->data.arithm.operand1->data.sym == res->sym) {
+            res->res = TRUE;
+        }
 }
 
 // Добавляет переменную в список, если нигде не берётся её адрес.
@@ -185,10 +184,7 @@ void x86_init_register_variables()
 void x86_create_register_variables(function_desc *function)
 {
     _create_register_variables_for_type(function, x86op_dword);
-
-    if (option_sse2) {
-        _create_register_variables_for_type(function, x86op_float);
-    }
+    _create_register_variables_for_type(function, x86op_float);
 
     // делаем оптимизации, ставшие теперь возможными
     x86_analyze_registers_usage(function);

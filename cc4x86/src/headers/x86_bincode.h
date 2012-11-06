@@ -70,7 +70,7 @@ typedef enum x86_operand_type_decl {
     x86op_dword,
     x86op_qword,    // не €вл€етс€ аппаратным типом на x86, эмулируетс€ кодогенератором
     x86op_float,
-    x86op_double,   // дл€ регистров FPU эквивалентно float
+    x86op_double,
     x86op_unused,
 } x86_operand_type;
 
@@ -160,30 +160,6 @@ typedef enum x86_instruction_code_decl {
     x86insn_int_setae,
     x86insn_int_seta,
 
-    // FPU арифметика:
-    x86insn_fpu_ld,
-    x86insn_fpu_ld_int,
-    x86insn_fpu_st,
-    x86insn_fpu_stp,
-    x86insn_fpu_stp_int,
-    x86insn_fpu_add,
-    x86insn_fpu_sub,
-    x86insn_fpu_mul,
-    x86insn_fpu_div,
-    x86insn_fpu_subr,
-    x86insn_fpu_divr,
-
-    x86insn_fpu_identity,
-    x86insn_fpu_zero,
-    x86insn_fpu_log2_10,
-    x86insn_fpu_log2_e,
-    x86insn_fpu_pi,
-    x86insn_fpu_lg_2,
-    x86insn_fpu_ln_2,
-
-    x86insn_fpu_int2float,
-    x86insn_fpu_float2int,
-
     // SSE2 арифметика:
     x86insn_sse_load_int,
     x86insn_sse_store_int,
@@ -226,8 +202,6 @@ typedef enum x86_instruction_code_decl {
     // псевдо-инструкции:
     x86insn_cdq,                // параметры - псевдорегистр дл€ EDX, псевдорегистр дл€ EAX.
     x86insn_xor_edx_edx,        // параметр - псевдорегистр дл€ EDX
-    x86insn_fpu_cmp,
-    x86insn_cld,
     x86insn_rep_movsb,          // параметры - псевдорегистры дл€ EDI и ESI, оба мен€ютс€
     x86insn_rep_movsd,          // параметры - псевдорегистры дл€ EDI и ESI, оба мен€ютс€
     x86insn_push_arg,           // 1ый параметр может быть любого типа (эмулируетс€); 2ой параметр - размер
@@ -268,7 +242,6 @@ typedef struct x86_instruction_decl {
                                         || (INSN) >= x86insn_sse_addss && (INSN) <= x86insn_sse_xorpd)
 
 #define IS_DWORD_DEFINING_INSN(INSN)    ((INSN) == x86insn_int_mov || IS_SET_INSN((INSN)) \
-                                        || (INSN) == x86insn_fpu_float2int \
                                         || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \
                                         || (INSN) == x86insn_pop || (INSN) == x86insn_read_retval \
                                         || (INSN) == x86insn_cdq || (INSN) == x86insn_xor_edx_edx \
@@ -285,9 +258,6 @@ typedef struct x86_instruction_decl {
 #define IS_MUL_DIV_INSN(INSN)           ((INSN) >= x86insn_int_idiv && (INSN) <= x86insn_int_div)
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
 #define IS_MOV_INSN(INSN)               ((INSN) == x86insn_int_mov || (INSN) == x86insn_sse_movss || (INSN) == x86insn_sse_movsd)
-
-#define IS_FLOAT_UNARY_ARITHM_INSN(INSN)  ((INSN) >= x86insn_fpu_identity && (INSN) <= x86insn_fpu_ln_2)
-#define IS_FLOAT_BINARY_ARITHM_INSN(INSN) ((INSN) >= x86insn_fpu_add && (INSN) <= x86insn_fpu_divr)
 
 #define IS_SYMMETRIC_INSN(INSN)         ((INSN) == x86insn_int_add || (INSN) == x86insn_int_mul || (INSN) == x86insn_int_imul || \
                                         (INSN) >= x86insn_int_and && (INSN) <= x86insn_int_or || (INSN) == x86insn_int_cmp || \
@@ -344,7 +314,6 @@ void    bincode_create_operand_addr_from_esp_offset     (x86_operand *op, x86_op
 void    bincode_create_operand_from_symbol              (x86_operand *op, symbol *sym);
 void    bincode_create_operand_from_label               (x86_operand *op, int label);
 
-x86_instruction_code    bincode_encode_float_constant   (double constant);
 x86_instruction *       bincode_create_instruction      (x86_instruction_code code, x86_operand *op1, x86_operand *op2);
 
 x86_operand_type        bincode_encode_type             (data_type *type);
