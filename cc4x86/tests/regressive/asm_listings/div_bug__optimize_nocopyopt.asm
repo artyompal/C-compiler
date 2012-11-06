@@ -19,8 +19,7 @@ _test proc
         idiv    edi
         mov     edx,[ebp-16]
         add     eax,[edx]
-        mov     edi,eax
-        lea     eax,[edi-3]
+        lea     eax,[eax-3]
         pop     edi
         add     esp,20
         pop     ebp

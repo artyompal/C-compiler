@@ -50,18 +50,16 @@ _test proc
         push    edi
         call    _f
         add     esp,8
-        mov     edi,eax
         jmp     label0001
-        mov     edi,[ebp-4]
 label0000:
         push    esi
         push    edi
         call    _g
         add     esp,8
-        mov     edi,eax
 label0001:
-        mov     eax,1
-        add     eax,edi
+        mov     esi,1
+        add     esi,eax
+        mov     eax,esi
         pop     esi
         pop     edi
         add     esp,12
