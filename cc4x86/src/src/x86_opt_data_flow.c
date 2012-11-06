@@ -1152,7 +1152,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 }
 
                 // x должно использоваться только в read-only контекстах
-                if (IS_MODIFYING_INSN(usage->in_code) && OP_IS_THIS_PSEUDO_REG(usage->in_op1, type, x)) {
+                if (bincode_is_pseudoreg_modified_by_insn(usage, type, x)) {
                     replace_allowed = FALSE;
                     break;
                 }

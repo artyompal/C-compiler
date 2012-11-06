@@ -433,21 +433,18 @@ _rasterizer_begin_frame endp
 _rasterizer_set_mvproj proc
         push    ebp
         mov     ebp,esp
-        sub     esp,8
+        sub     esp,4
         push    edi
         push    esi
         mov     edi,[ebp+8]
         mov     [ebp-4],edi
-        lea     edi, [__mvproj_matrix]
-        mov     [ebp-8],edi
-        mov     edi,[ebp-4]
-        lea     esi,[edi]
+        mov     edi,(offset __mvproj_matrix)
+        mov     esi,[ebp-4]
         mov     ecx,16
-        mov     edi,[ebp-8]
         rep     movsd
         pop     esi
         pop     edi
-        add     esp,8
+        add     esp,4
         pop     ebp
         ret
 _rasterizer_set_mvproj endp
@@ -717,9 +714,9 @@ label0001:
         mov     eax,[ebp+8]
         add     eax,ecx
         mov     ecx,[ebp-4]
-        lea     edi,[eax]
+        mov     edi,eax
         mov     [ebp+16],esi
-        lea     esi,[ecx]
+        mov     esi,ecx
         mov     ecx,6
         rep     movsd
         mov     esi,[ebp+16]
@@ -958,8 +955,8 @@ label0002:
         mov     eax,[ebp+8]
         add     eax,ecx
         mov     ecx,[ebp+8]
-        lea     edi,[eax]
-        lea     esi,[ecx]
+        mov     edi,eax
+        mov     esi,ecx
         mov     ecx,6
         rep     movsd
         pop     ebx
@@ -1138,8 +1135,9 @@ _rasterizer_triangle3f proc
         mov     [eax+4],edi
         lea     eax,[ebp-196]
         add     eax,72
-        lea     edi,[eax]
-        lea     esi,[ebp-196]
+        lea     ecx,[ebp-196]
+        mov     edi,eax
+        mov     esi,ecx
         mov     ecx,6
         rep     movsd
         lea     eax,[ebp-196]

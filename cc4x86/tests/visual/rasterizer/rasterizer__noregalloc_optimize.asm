@@ -348,8 +348,8 @@ _rasterizer_begin_frame endp
 _rasterizer_set_mvproj proc
         create_stack_frame
         mov     dword8,[ebp+8]
-        lea     dword4, [__mvproj_matrix]
-        lea     dword5,[dword8]
+        mov     dword4,(offset __mvproj_matrix)
+        mov     dword5,dword8
         mov     dword6,16
         rep     movsd   dword4,dword5
         destroy_stack_frame
@@ -560,8 +560,8 @@ label0001:
         imul    dword36,24
         mov     dword39,dword375
         add     dword39,dword36
-        lea     dword42,[dword39]
-        lea     dword43,[dword357]
+        mov     dword42,dword39
+        mov     dword43,dword357
         mov     dword44,6
         rep     movsd   dword42,dword43
 label0003:
@@ -711,8 +711,8 @@ label0002:
         imul    dword101,24
         mov     dword104,dword375
         add     dword104,dword101
-        lea     dword107,[dword104]
-        lea     dword108,[dword375]
+        mov     dword107,dword104
+        mov     dword108,dword375
         mov     dword109,6
         rep     movsd   dword107,dword108
         destroy_stack_frame
@@ -841,8 +841,9 @@ _rasterizer_triangle3f proc
         mov     [dword22+4],dword28
         lea     dword29,[ebp-196]
         add     dword29,72
-        lea     dword32,[dword29]
-        lea     dword33,[ebp-196]
+        lea     dword31,[ebp-196]
+        mov     dword32,dword29
+        mov     dword33,dword31
         mov     dword34,6
         rep     movsd   dword32,dword33
         lea     dword35,[ebp-196]
@@ -1106,11 +1107,10 @@ label000a:
         mov     dword653,[dword869]
         mov     dword879,dword653
         mov     dword652,[dword868]
-        mov     dword878,dword652
         mov     dword651,[dword867]
-        cmp     dword651,dword878
+        cmp     dword651,dword652
         jge     label001c
-        cmp     dword879,dword878
+        cmp     dword879,dword652
         jle     label001d
         push_all
         push_arg        sse111,4
@@ -1133,7 +1133,7 @@ label001d:
         push_arg        dword ptr [dword883+4],4
         push_arg        dword ptr [dword883],4
         push_arg        dword880,4
-        push_arg        dword878,4
+        push_arg        dword652,4
         push_arg        dword879,4
         call    __rasterize_horiz_line
         restore_stack   28
@@ -1146,7 +1146,7 @@ label001f:
         push_arg        dword ptr [dword881+4],4
         push_arg        dword ptr [dword881],4
         push_arg        dword880,4
-        push_arg        dword878,4
+        push_arg        dword652,4
         push_arg        dword651,4
         call    __rasterize_horiz_line
         restore_stack   28
@@ -1155,7 +1155,7 @@ label0020:
 label001e:
         jmp     label0021
 label001c:
-        cmp     dword879,dword878
+        cmp     dword879,dword652
         jge     label0022
         push_all
         movss   sse69,sse111
@@ -1187,7 +1187,7 @@ label0022:
         push_arg        dword ptr [dword882],4
         push_arg        dword880,4
         push_arg        dword879,4
-        push_arg        dword878,4
+        push_arg        dword652,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
@@ -1204,7 +1204,7 @@ label0024:
         push_arg        dword ptr [dword882],4
         push_arg        dword880,4
         push_arg        dword651,4
-        push_arg        dword878,4
+        push_arg        dword652,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all

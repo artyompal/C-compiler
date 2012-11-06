@@ -42,6 +42,20 @@ static void _memcpy_via_dword_mov(x86_operand *dst, x86_operand *src, int size_i
     }
 }
 
+static void _load_address(x86_operand *reg, x86_operand *addr)
+{
+    x86_operand tmp;
+
+    if (addr->data.address.base > 0 && addr->data.address.index == 0 && addr->data.address.offset == 0) {
+        bincode_create_operand_and_alloc_pseudoreg(reg, x86op_dword);
+        bincode_create_operand_from_pseudoreg(&tmp, x86op_dword, addr->data.address.base);
+        unit_push_binary_instruction(x86insn_int_mov, reg, &tmp);
+    } else {
+        bincode_create_operand_and_alloc_pseudoreg(reg, x86op_dword);
+        unit_push_binary_instruction(x86insn_lea, reg, addr);
+    }
+}
+
 static void _static_memcpy(x86_operand *dst, x86_operand *src, int size)
 {
 //  mov eax, ecx
@@ -54,12 +68,10 @@ static void _static_memcpy(x86_operand *dst, x86_operand *src, int size)
     x86_operand edi, esi, ecx, num;
 
     // lea edi, ...
-    bincode_create_operand_and_alloc_pseudoreg(&edi, x86op_dword);
-    unit_push_binary_instruction(x86insn_lea, &edi, dst);
+    _load_address(&edi, dst);
 
     // lea esi, ...
-    bincode_create_operand_and_alloc_pseudoreg(&esi, x86op_dword);
-    unit_push_binary_instruction(x86insn_lea, &esi, src);
+    _load_address(&esi, src);
 
     // mov ecx, size
     bincode_create_operand_and_alloc_pseudoreg(&ecx, x86op_dword);
@@ -109,12 +121,10 @@ void x86_intrinsic_dynamic_memcpy(x86_operand *res, x86_operand *dst, x86_operan
     ASSERT(dst->op_loc == x86loc_address && src->op_loc == x86loc_address);
 
     // lea edi, ...
-    bincode_create_operand_and_alloc_pseudoreg(&edi, x86op_dword);
-    unit_push_binary_instruction(x86insn_lea, &edi, dst);
+    _load_address(&edi, dst);
 
     // lea esi, ...
-    bincode_create_operand_and_alloc_pseudoreg(&esi, x86op_dword);
-    unit_push_binary_instruction(x86insn_lea, &esi, src);
+    _load_address(&esi, src);
 
     // mov ecx, size
     bincode_create_operand_and_alloc_pseudoreg(&ecx, x86op_dword);
