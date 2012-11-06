@@ -13,7 +13,6 @@ typedef enum x86_operand_type_decl x86_operand_type;
 
 void    x86_optimization_after_codegen              (function_desc *function);
 void    x86_optimization_after_inlining             (function_desc *function);
-void    x86_optimization_after_regvar_allocation    (function_desc *function);
 
 void    x86_init_register_variables                 ();
 void    x86_create_register_variables               (function_desc *function);

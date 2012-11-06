@@ -19,7 +19,6 @@ struct option_decl {
     {"nocopyopt",           &option_no_copy_opt,            "don't do copy propagation"},
     {"nobasicopt",          &option_no_basic_opt,           "don't optimize well-known sequences after code generation"},
     {"optimize",            &option_enable_optimization,    "enables code optimization"},
-    {"sse2",                &option_sse2,                   "enables SSE2 code generation"},
     {"noinline",            &option_no_inline,              "disables functions inlining"},
     {"xmldump",             &option_xml_dump,               "dumps XML syntax tree"},
     {"output-file-name",    0,                              "lets to specify the name of the output file"},

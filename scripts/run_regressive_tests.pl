@@ -48,16 +48,15 @@ sub run_test {
 sub run_test2{
     my $test_name = shift;
     return
-        compile_test($test_name, "release", "--optimize --sse2 --noregalloc") &&
-        run_test($test_name, "debug", "") &&
-        run_test($test_name, "debug", "--optimize") &&
-        run_test($test_name, "debug", "--optimize --noinline") &&
-        run_test($test_name, "debug", "--optimize --sse2 --noinline") &&
-        run_test($test_name, "debug", "--optimize --sse2") &&
+        compile_test($test_name, "release", "--optimize --noregalloc") &&
+        compile_test($test_name, "debug", "") &&
+        compile_test($test_name, "debug", "--optimize") &&
+        compile_test($test_name, "debug", "--optimize --noinline") &&
+        compile_test($test_name, "debug", "--optimize --nocopyopt") &&
         run_test($test_name, "release", "") &&
-        run_test($test_name, "release", "--optimize --noinline") &&
         run_test($test_name, "release", "--optimize") &&
-        run_test($test_name, "release", "--optimize --sse2");
+        run_test($test_name, "release", "--optimize --noinline") &&
+        run_test($test_name, "release", "--optimize --nocopyopt");
 }
 
 

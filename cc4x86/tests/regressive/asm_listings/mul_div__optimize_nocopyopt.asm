@@ -93,8 +93,11 @@ label0002:
         ret
 label0003:
         mov     eax,edi
+        mov     edx,eax
+        mov     eax,edx
         mul     esi
-        cmp     eax,6
+        mov     edx,eax
+        cmp     edx,6
         je      label0004
         mov     eax,5
         pop     ebx
@@ -132,7 +135,8 @@ label0005:
         mov     [ebp-44],eax
         mov     eax,[ebp-40]
         mul     dword ptr [ebp-44]
-        cmp     eax,2
+        mov     edx,eax
+        cmp     edx,2
         je      label0006
         mov     eax,7
         pop     ebx
