@@ -370,8 +370,6 @@ void    bincode_insert_comment                          (function_desc *function
 
 void    bincode_erase_instruction                       (function_desc *function, x86_instruction *insn);
 
-int     bincode_get_max_register                        (x86_operand_type type);
-
 
 #else
 #error Header x86_bincode.h duplicated.
