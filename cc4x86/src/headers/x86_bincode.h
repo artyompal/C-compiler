@@ -274,7 +274,7 @@ typedef struct x86_instruction_decl {
 #define OP_IS_ADDRESS(OP)               ((OP).op_loc == x86loc_address)
 #define OP_IS_ADDRESS_OR_SYMBOL(OP)     ((OP).op_loc == x86loc_address || (OP).op_loc == x86loc_symbol)
 #define OP_IS_REGISTER_OR_ADDRESS(OP)   ((OP).op_loc == x86loc_register || (OP).op_loc == x86loc_address)
-#define OP_IS_REAL_REG(OP)              ((OP).op_loc == x86loc_register && (OP).data.reg < 0)
+#define OP_IS_REAL_REG(OP, T)           (OP_IS_REGISTER(OP, T) && (OP).data.reg < 0)
 #define OP_IS_THIS_REAL_REG(OP, T, REG) (OP_IS_REGISTER(OP, T) && (OP).data.reg == ~(REG))
 #define OP_IS_THIS_PSEUDO_REG(OP,T,REG) (OP_IS_REGISTER(OP, T) && (OP).data.reg == (REG))
 #define OP_IS_CONSTANT(OP)              ((OP).op_loc == x86loc_int_constant)
