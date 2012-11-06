@@ -218,6 +218,30 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
     int real_reg, pseudoreg2;
 
 
+    // Сначала пытаемся переиспользовать регистры, ставшие мёртвыми непосредственно после текущей инструкции.
+    for (real_reg = start_reg; real_reg != last_reg; real_reg += reg_step) {
+        if (IS_MUL_DIV_INSN(insn->in_code) && real_reg == x86reg_edx) {
+            continue;
+        }
+
+        if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2, type) && real_reg == x86reg_ecx) {
+            continue;
+        }
+
+        pseudoreg2 = regmap->real_registers_map[real_reg];
+
+        if (pseudoreg2 == -1) {
+            continue;
+        }
+
+        if (!x86_dataflow_is_pseudoreg_alive_after(pseudoreg2) && x86_dataflow_is_pseudoreg_alive_before(pseudoreg2)) {
+            pseudoregs_map[pseudoreg2].reg_status = register_delayed_swapped;
+            regmap->real_registers_map[real_reg] = pseudoreg;
+            return real_reg;
+        }
+    }
+
+
     // Ищем вышедшие из употребления регистры, чтобы их переиспользовать.
     for (real_reg = start_reg; real_reg != last_reg; real_reg += reg_step) {
         if (IS_MUL_DIV_INSN(insn->in_code) && real_reg == x86reg_edx) {
@@ -234,7 +258,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
             continue;
         }
 
-        if (!x86_dataflow_is_pseudoreg_alive_after(pseudoreg2)) { // FIXME: тут не хватает x86_dataflow_is_pseudoreg_alive_before
+        if (!x86_dataflow_is_pseudoreg_alive_after(pseudoreg2)) {
             pseudoregs_map[pseudoreg2].reg_status = register_delayed_swapped;
             regmap->real_registers_map[real_reg] = pseudoreg;
             return real_reg;

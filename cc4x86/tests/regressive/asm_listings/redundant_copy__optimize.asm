@@ -67,10 +67,10 @@ label0002:
 ; start of inline function test4
         mov     edi,5
         inc     edi
-        lea     eax,[edi+4]
-        sub     eax,10
+        lea     edi,[edi+4]
+        sub     edi,10
 ; end of inline function test4
-        cmp     eax,0
+        cmp     edi,0
         je      label0003
         mov     eax,4
         pop     esi
@@ -90,10 +90,10 @@ label0003:
 label000b:
         mov     esi,222
 label000c:
-        lea     eax,[esi+444]
-        sub     eax,edi
+        lea     esi,[esi+444]
+        sub     esi,edi
 ; end of inline function test5
-        cmp     eax,0
+        cmp     esi,0
         je      label0004
         mov     eax,3
         pop     esi
