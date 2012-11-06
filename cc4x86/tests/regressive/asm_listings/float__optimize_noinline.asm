@@ -71,8 +71,7 @@ _eq proc
         sub     esp,4
         call    _fabs
         add     esp,4
-        movss   xmm6,xmm0
-        comiss  xmm6,dword ptr [___unnamed_float_2]
+        comiss  xmm0,dword ptr [___unnamed_float_2]
         setb    al
         movzx   eax,al
         pop     ebp

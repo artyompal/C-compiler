@@ -31,7 +31,7 @@ typedef struct x86_pseudoreg_info_decl {
     BOOL                    reg_changes_value;
 } x86_pseudoreg_info;
 
-// TODO: OP_IS_REGVAR является хаком, и регистровые переменные сделаны пока что хаком. Нужно сделать нормальное распространение копирований и не использовать этот макрос без необходимости.
+// TODO: OP_IS_REGVAR является хаком, нужно не использовать этот макрос без необходимости.
 #define OP_IS_REGVAR(REG, TYPE) ((REG) >= function->func_start_of_regvars[(TYPE)])
 
 

@@ -224,7 +224,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
             continue;
         }
 
-        if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2) && real_reg == x86reg_ecx) {
+        if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2, type) && real_reg == x86reg_ecx) {
             continue;
         }
 
@@ -248,7 +248,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
             continue;
         }
 
-        if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2) && real_reg == x86reg_ecx) {
+        if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2, type) && real_reg == x86reg_ecx) {
             continue;
         }
 
@@ -403,7 +403,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
             reg = reg_numbers[i];
             ASSERT(reg < pseudoregs_cnt);
 
-            ASSERT(OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && reg == insn->in_op1.data.reg);
+            ASSERT(OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg));
             pseudoregs_map[reg].reg_content_type = insn->in_op1.op_type;
 
             if (!pseudoregs_map[reg].reg_first_write) {
@@ -431,7 +431,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
             // Для инструкций CDQ, XOR EDX,EDX: если остаток от деления (EDX) не используется,
             // ставим область использования EDX - до следующего DIV/IDIV.
             if (insn->in_code == x86insn_cdq) {
-                ASSERT(OP_IS_REGISTER(insn->in_op1));
+                ASSERT(OP_IS_REGISTER(insn->in_op1, type));
                 reg = insn->in_op1.data.reg;
                 ASSERT(pseudoregs_map[reg].reg_first_write == insn);
 
@@ -440,7 +440,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                     pseudoregs_map[reg].reg_last_read = last;
                 }
             } else if (insn->in_code == x86insn_xor_edx_edx) {
-                ASSERT(OP_IS_REGISTER(insn->in_op1));
+                ASSERT(OP_IS_REGISTER(insn->in_op1, type));
                 reg = insn->in_op1.data.reg;
                 ASSERT(pseudoregs_map[reg].reg_first_write == insn);
 
@@ -451,7 +451,7 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
             } else if(insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd) {
                 // Для инструкций REP MOVSB/MOVSD: ставим область использования ECX до этой инструкции,
                 // если он не используется после; ставим также флаг модификации, чтобы защитить регистр от оптимизации.
-                ASSERT(OP_IS_REGISTER(insn->in_prev->in_op1));
+                ASSERT(OP_IS_REGISTER(insn->in_prev->in_op1, type));
                 reg = insn->in_prev->in_op1.data.reg;
 
                 if (pseudoregs_map[reg].reg_last_read == NULL) {
@@ -477,32 +477,39 @@ void x86_analyze_registers_usage(function_desc *function)
 // XOR EDX,EDX; DIV reg/mem (затрагивает EAX, EDX)
 // SHL reg,cl (затрагивает ECX)
 // MOVSB/MOVSD (затрагивают ECX, ESI, EDI)
-static void _reserve_special_registers(function_desc *function, x86_pseudoreg_info *pseudoregs_map)
+static void _reserve_special_registers(function_desc *function, x86_operand_type type)
 {
+    x86_pseudoreg_info  *pseudoregs_map = unit_get_regstat(function, type)->ptr;
     x86_instruction *insn;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        if (insn->in_code == x86insn_cdq) {
-            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2));
-            _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_edx);
-		} else if (insn->in_code == x86insn_xor_edx_edx) {
-            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1) && insn->in_op2.op_loc == x86loc_none);
-            _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_edx);
-        } else if (IS_MUL_DIV_INSN(insn->in_code)) {
-            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1) && insn->in_op2.op_loc != x86loc_none);
+        // инструкции для всех регистров
+        if (insn->in_code == x86insn_read_retval && x86_equal_types(insn->in_op1.op_type, type)) {
+            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, insn->in_op1.op_type));
             _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
-        } else if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2)) {
-            _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_ecx);
-        } else if (insn->in_code == x86insn_read_retval) {
-            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1));
-            _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
-        } else if (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd) {
-            ASSERT(insn->in_prev && OP_IS_PSEUDO_REG(insn->in_prev->in_op1));
-            ASSERT(OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2));
+        }
 
-            _reserve_real_register(pseudoregs_map, insn->in_prev->in_op1.data.reg, x86reg_ecx);
-            _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_edi);
-            _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_esi);
+        // специфичные инструкции для 32-битных регистров
+        if (type == x86op_dword) {
+            if (insn->in_code == x86insn_cdq) {
+                ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type));
+                _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_edx);
+		    } else if (insn->in_code == x86insn_xor_edx_edx) {
+                ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && insn->in_op2.op_loc == x86loc_none);
+                _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_edx);
+            } else if (IS_MUL_DIV_INSN(insn->in_code)) {
+                ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && insn->in_op2.op_loc != x86loc_none);
+                _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
+            } else if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2, type)) {
+                _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_ecx);
+            } else if (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd) {
+                ASSERT(insn->in_prev && OP_IS_PSEUDO_REG(insn->in_prev->in_op1, type));
+                ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type));
+
+                _reserve_real_register(pseudoregs_map, insn->in_prev->in_op1.data.reg, x86reg_ecx);
+                _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_edi);
+                _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_esi);
+            }
         }
     }
 }
@@ -612,13 +619,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
 
     //
-    // Обрабатываем инструкции, требующие фиксированных регистров.
-    if (type == x86op_dword) {
-        _reserve_special_registers(function, pseudoregs_map);
-    }
-
-
-    //
     // Проходим по инструкциям функции и заменяем псевдорегистры на соответствующие реальные регистры.
     // Если под псевдорегистр не выделен реальный регистр, выделяем.
 
@@ -658,7 +658,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
             continue;
         }
 
-        result = (OP_IS_REGISTER(insn->in_op1) ? insn->in_op1.data.reg : -1);
+        result = (OP_IS_REGISTER(insn->in_op1, type) ? insn->in_op1.data.reg : -1);
 
         // Извлекаем набор псевдорегистров, который используется инструкцией.
         bincode_extract_pseudoregs_from_insn(insn, type, registers, &registers_count);
@@ -682,7 +682,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 conflict_reg    = regmap->real_registers_map[real_reg];
 
                 if (conflict_reg != reg) {
-                    if (OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, reg) && OP_IS_REGISTER(insn->in_op1) &&
+                    if (OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, reg) && OP_IS_REGISTER(insn->in_op1, type) &&
                         insn->in_code != x86insn_cdq) {
                             // Если второй операнд является выгруженным регистром, оставить его в памяти.
                             ASSERT(pseudoregs_map[reg].reg_stack_location != -1);
@@ -740,13 +740,13 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
         }
 
         // Если регистр изменён, запоминаем этот факт для случая, когда регистр придётся выгружать.
-        if (IS_VOLATILE_INSN(insn->in_code, type) && result > 0 && OP_IS_REGISTER(insn->in_op1) &&
+        if (IS_VOLATILE_INSN(insn->in_code, type) && result > 0 && OP_IS_REGISTER(insn->in_op1, type) &&
             !(IS_MOV_INSN(insn->in_code) && OP_IS_SPEC_EBP_OFFSET(insn->in_op2, pseudoregs_map[result].reg_stack_location))) {
                 pseudoregs_map[result].reg_dirty = TRUE;
             }
 
         // Удаляем тривиальные присваивания (тривиальная оптимизация).
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_REGISTER(insn->in_op1) && OP_IS_REGISTER(insn->in_op2)
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_REGISTER(insn->in_op1, type) && OP_IS_REGISTER(insn->in_op2, type)
             && insn->in_op1.data.reg == insn->in_op2.data.reg) {
                 bincode_erase_instruction(function, insn);
             }
@@ -908,6 +908,10 @@ static void _handle_pseudo_instructions(function_desc *function)
 
 void x86_allocate_registers(function_desc *function)
 {
+    // Обрабатываем инструкции, требующие фиксированных регистров.
+    _reserve_special_registers(function, x86op_dword);
+    _reserve_special_registers(function, x86op_float);
+
     // Запускаем аллокатор регистров для 32-битных регистров.
     _allocate_registers(function, &function->func_dword_regstat, &_dword_register_map, x86op_dword);
 

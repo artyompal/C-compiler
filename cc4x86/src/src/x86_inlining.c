@@ -168,7 +168,8 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 {
     x86_instruction *insn, *next_insn, *prev_insn;
     BOOL was = FALSE;
-    int params_total_sz = 0, params_ofs = 0, locals_ofs = 0, ofs, sz, type, labels_ofs, res_ofs = 0;
+    x86_operand_type type;
+    int params_total_sz = 0, params_ofs = 0, locals_ofs = 0, ofs, sz, labels_ofs, res_ofs = 0;
     int regs_ofs[X86_REGISTER_TYPES_COUNT];
     x86_operand tmp;
     symbol *sym, *sym_copy;
@@ -313,9 +314,11 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
         if (res_ofs != 0) {
             // Патчим последующее чтение результата (максимум, одну инструкцию).
             for (; insn && insn->in_code != x86insn_call; insn = insn->in_next) {
-                if (insn->in_code != x86insn_read_retval) continue;
+                if (insn->in_code != x86insn_read_retval) {
+                    continue;
+                }
 
-                ASSERT(OP_IS_REGISTER(insn->in_op1));
+                ASSERT(OP_IS_REGISTER(insn->in_op1, insn->in_op1.op_type));
 
                 if (!OP_IS_FLOAT(insn->in_op1)) {
                     insn->in_code = x86insn_int_mov;

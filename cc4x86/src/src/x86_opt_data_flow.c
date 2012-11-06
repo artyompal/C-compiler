@@ -596,7 +596,7 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
         }
 
         // добавляем найденные определения в таблицу
-        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type)) {
+        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_PSEUDO_REG(insn->in_op1, type)) {
             _definitions_table.insn_base[count++] = insn;
         }
     }
@@ -782,7 +782,7 @@ static BOOL _reachingdef_is_definition_available(x86_instruction *def, x86_instr
     x86_instruction *test;
     int def_idx;
 
-    ASSERT(OP_IS_TYPED_PSEUDO_REG(def->in_op1, type));
+    ASSERT(OP_IS_PSEUDO_REG(def->in_op1, type));
 
     // если инструкции находятся в одном блоке, и определение предшествует использованию,
     // то нужно всего лишь проверить, что между ними нет других определений того же регистра
@@ -840,7 +840,7 @@ static void _redundantcopies_build_table(function_desc *function, x86_operand_ty
 
     // составляем таблицу всех копирований
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)) {
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)) {
             count++;
         }
     }
@@ -849,7 +849,7 @@ static void _redundantcopies_build_table(function_desc *function, x86_operand_ty
     _redundantcopies_table.insn_count   = 0;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)) {
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)) {
             _redundantcopies_table.insn_base[_redundantcopies_table.insn_count++] = insn;
         }
     }
@@ -873,7 +873,7 @@ static void _redundantcopies_build_gen(set *gen, function_desc *function, basic_
     set_clear_to_zeros(gen);
 
     for (insn = block->block_last_insn; insn != block->block_leader->in_prev; insn = insn->in_prev) {
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)
             && !BIT_TEST(modified_regs, insn->in_op2.data.reg)) {
                 idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
                 ASSERT(idx >= 0);
@@ -881,7 +881,7 @@ static void _redundantcopies_build_gen(set *gen, function_desc *function, basic_
                 BIT_RAISE(*gen, idx);
             }
 
-        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type)) {
+        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_PSEUDO_REG(insn->in_op1, type)) {
             BIT_RAISE(modified_regs, insn->in_op1.data.reg);
         }
     }
@@ -903,14 +903,14 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
 
     // помечаем все модифицированные в этом блоке регистры
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
-        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type)) {
+        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_PSEUDO_REG(insn->in_op1, type)) {
             BIT_RAISE(modified_regs, insn->in_op1.data.reg);
         }
     }
 
     // проходим все инструкции этой функции, кроме этого блока
     for (insn = function->func_binary_code; insn != block->block_leader; insn = insn->in_next) {
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)
             && (BIT_TEST(modified_regs, insn->in_op1.data.reg) || BIT_TEST(modified_regs, insn->in_op2.data.reg))) {
                 idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
                 ASSERT(idx >= 0);
@@ -920,7 +920,7 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
     }
 
     for (insn = block->block_last_insn->in_next; insn; insn = insn->in_next) {
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_TYPED_PSEUDO_REG(insn->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(insn->in_op2, type)
+        if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)
             && (BIT_TEST(modified_regs, insn->in_op1.data.reg) || BIT_TEST(modified_regs, insn->in_op2.data.reg))) {
                 idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
                 ASSERT(idx >= 0);
@@ -1131,7 +1131,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
         next = mov->in_next;
 
         // для каждой инструкции копирования
-        if (IS_MOV_INSN(mov->in_code) && OP_IS_TYPED_PSEUDO_REG(mov->in_op1, type) && OP_IS_TYPED_PSEUDO_REG(mov->in_op2, type)) {
+        if (IS_MOV_INSN(mov->in_code) && OP_IS_PSEUDO_REG(mov->in_op1, type) && OP_IS_PSEUDO_REG(mov->in_op2, type)) {
             x               = mov->in_op1.data.reg;
             y               = mov->in_op2.data.reg;
             replace_allowed = TRUE;

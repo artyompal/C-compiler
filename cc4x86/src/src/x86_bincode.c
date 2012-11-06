@@ -12,13 +12,11 @@
 
 static void _extract_pseudoregs_from_operand(x86_operand *op, x86_operand_type type, int *regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
-    if (OP_IS_REGISTER(*op)) {
+    if (OP_IS_PSEUDO_REG(*op, type)) {
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
 
-        if (op->data.reg > 0 && x86_equal_types(op->op_type, type)) {
-            regs[*regs_cnt] = &op->data.reg;
-            ++*regs_cnt;
-        }
+        regs[*regs_cnt] = &op->data.reg;
+        ++*regs_cnt;
     } else if (OP_IS_ADDRESS(*op) && type == x86op_dword) {
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 2);
 
@@ -146,39 +144,29 @@ void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_operand_
                 ++*regs_cnt;
             }
         }
-    } else if (OP_IS_REGISTER(insn->in_op1) && !IS_DEFINING_INSN(insn->in_code, type)) {
+    } else if (OP_IS_PSEUDO_REG(insn->in_op1, type) && !IS_DEFINING_INSN(insn->in_code, type)) {
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
-
-        if (insn->in_op1.data.reg > 0 && x86_equal_types(type, insn->in_op1.op_type))
-        {
-            regs[*regs_cnt] = insn->in_op1.data.reg;
-            ++*regs_cnt;
-        }
+        regs[*regs_cnt] = insn->in_op1.data.reg;
+        ++*regs_cnt;
     }
 
-    if (OP_IS_REGISTER(insn->in_op2)) {
+    if (OP_IS_REGISTER(insn->in_op2, type)) {
         ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
+        regs[*regs_cnt] = insn->in_op2.data.reg;
+        ++*regs_cnt;
+    } else if (OP_IS_ADDRESS(insn->in_op2) && type == x86op_dword) {
+        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 2);
 
-        if (insn->in_op2.data.reg > 0 && x86_equal_types(type, insn->in_op2.op_type))
+        if (insn->in_op2.data.address.base > 0)
         {
-            regs[*regs_cnt] = insn->in_op2.data.reg;
+            regs[*regs_cnt] = insn->in_op2.data.address.base;
             ++*regs_cnt;
         }
-    } else if (OP_IS_ADDRESS(insn->in_op2)) {
-        if (type == x86op_dword) {
-            ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 2);
 
-            if (insn->in_op2.data.address.base > 0)
-            {
-                regs[*regs_cnt] = insn->in_op2.data.address.base;
-                ++*regs_cnt;
-            }
-
-            if (insn->in_op2.data.address.index > 0)
-            {
-                regs[*regs_cnt] = insn->in_op2.data.address.index;
-                ++*regs_cnt;
-            }
+        if (insn->in_op2.data.address.index > 0)
+        {
+            regs[*regs_cnt] = insn->in_op2.data.address.index;
+            ++*regs_cnt;
         }
     }
 }
@@ -187,15 +175,13 @@ void bincode_extract_pseudoregs_modified_by_insn(x86_instruction *insn, x86_oper
 {
     *regs_cnt = 0;
 
-    if (OP_IS_REGISTER(insn->in_op1) && x86_equal_types(type, insn->in_op1.op_type) && IS_MODIFYING_INSN(insn->in_code))
-        if (insn->in_op1.data.reg > 0)
-        {
-            regs[*regs_cnt] = insn->in_op1.data.reg;
-            ++*regs_cnt;
-        }
+    if (OP_IS_PSEUDO_REG(insn->in_op1, type) && IS_MODIFYING_INSN(insn->in_code)) {
+        regs[*regs_cnt] = insn->in_op1.data.reg;
+        ++*regs_cnt;
+    }
 
     if (type == x86op_dword && (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd)) {
-        ASSERT(OP_IS_PSEUDO_REG(insn->in_op1) && OP_IS_PSEUDO_REG(insn->in_op2));
+        ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type));
         regs[0] = insn->in_op1.data.reg;
         regs[1] = insn->in_op2.data.reg;
         *regs_cnt = 2;
@@ -206,12 +192,10 @@ void bincode_extract_pseudoregs_overwritten_by_insn(x86_instruction *insn, x86_o
 {
     *regs_cnt = 0;
 
-    if (OP_IS_REGISTER(insn->in_op1) && x86_equal_types(type, insn->in_op1.op_type) && IS_DEFINING_INSN(insn->in_code, type))
-        if (insn->in_op1.data.reg > 0)
-        {
-            regs[*regs_cnt] = insn->in_op1.data.reg;
-            ++*regs_cnt;
-        }
+    if (OP_IS_PSEUDO_REG(insn->in_op1, type) && IS_DEFINING_INSN(insn->in_code, type)) {
+        regs[*regs_cnt] = insn->in_op1.data.reg;
+        ++*regs_cnt;
+    }
 }
 
 
