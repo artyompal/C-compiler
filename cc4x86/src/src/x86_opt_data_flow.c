@@ -1168,8 +1168,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 
                 // проверяем достижимость этого использования этой инструкцией копирования
                 if (!_reachingdef_is_definition_available(mov, usage, type)) {
-                    replace_allowed = FALSE;
-                    break;
+                    continue;
                 }
 
                 // x должно использоваться только в read-only контекстах
@@ -1205,11 +1204,13 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 
             // если все проверки закончились положительно, удаляем инструкцию и заменяем все вхождения x на y.
             if (replace_allowed) {
-                x86_dataflow_erase_instruction(function, mov);
-
                 for (i = 0; i < usage_count; i++) {
                     usage = usage_arr[i];
                     if (!usage) {
+                        continue;
+                    }
+
+                    if (!_reachingdef_is_definition_available(mov, usage, type)) {
                         continue;
                     }
 
@@ -1221,6 +1222,8 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                         }
                     }
                 }
+
+                x86_dataflow_erase_instruction(function, mov);
             }
         }
     }

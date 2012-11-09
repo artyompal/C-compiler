@@ -26,8 +26,7 @@ _test proc
         div     dword23,dword92
         mul     dword19,dword23
         add     dword11,dword19
-        mov     dword94,dword11
-        cmp     dword94,2
+        cmp     dword11,2
         je      label0000
         mov     dword28,1
         set_retval      dword28
@@ -37,8 +36,7 @@ label0000:
         mov     dword31,dword92
         xor_edx_edx     dword32
         div     dword31,dword90
-        mov     dword92,dword31
-        cmp     dword92,2
+        cmp     dword31,2
         je      label0001
         mov     dword35,2
         set_retval      dword35
@@ -48,8 +46,7 @@ label0001:
         mov     dword38,dword93
         xor_edx_edx     dword39
         div     dword38,dword91
-        mov     dword93,dword39
-        cmp     dword93,2
+        cmp     dword39,2
         je      label0002
         mov     dword42,3
         set_retval      dword42
@@ -58,8 +55,7 @@ label0001:
 label0002:
         mov     dword45,dword90
         mul     dword45,dword91
-        mov     dword92,dword45
-        cmp     dword92,6
+        cmp     dword45,6
         je      label0003
         mov     dword49,4
         set_retval      dword49

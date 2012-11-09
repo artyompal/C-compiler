@@ -109,7 +109,6 @@ _test5 proc
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
         mov     edx,0
-        mov     edx,ebx
         cmp     edi,0
         jle     label0000
         mov     edx,esi
