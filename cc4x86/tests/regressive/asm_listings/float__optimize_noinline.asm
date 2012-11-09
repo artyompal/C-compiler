@@ -48,7 +48,6 @@ _fabs proc
         comiss  xmm0,xmm7
         ja      label0000
         jmp     label0001
-        movss   xmm7,dword ptr [ebp+8]
 label0000:
         xorps   xmm7,dword ptr [___unnamed_float_1]
 label0001:

@@ -946,7 +946,6 @@ label0004:
         mov     ebx,[ebp+12]
         mov     edi,[ebp+20]
         jmp     label0001
-        mov     [ebp+8],edx
 label0002:
         mov     eax,[ebp+8]
         mov     ecx,[eax+192]
@@ -1465,8 +1464,6 @@ label000a:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label001e
-        mov     eax,[ebp-456]
-        mov     edi,[ebp-444]
 label001d:
         mov     ecx,ebx
         cmp     ecx,esi
@@ -1501,7 +1498,6 @@ label001f:
 label0020:
 label001e:
         jmp     label0021
-        mov     eax,[ebp-456]
 label001c:
         mov     ecx,ebx
         cmp     ecx,eax
@@ -1522,9 +1518,6 @@ label001c:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0023
-        mov     eax,[ebp-456]
-        movss   xmm6,dword ptr [ebp-432]
-        movss   xmm7,dword ptr [ebp-428]
 label0022:
         mov     ecx,ebx
         cmp     ecx,esi
@@ -1545,8 +1538,6 @@ label0022:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0025
-        movss   xmm6,dword ptr [ebp-432]
-        movss   xmm7,dword ptr [ebp-428]
 label0024:
         xorps   xmm7,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm7
@@ -1737,8 +1728,6 @@ label000e:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0014
-        mov     eax,[ebp-344]
-        mov     ecx,[ebp-364]
 label0013:
         mov     [ebp-344],eax
         mov     [ebp-364],ecx
@@ -1887,7 +1876,6 @@ label000f:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0017
-        mov     eax,[ebp-344]
 label0016:
         mov     [ebp-344],eax
         movss   dword ptr [esp-4],xmm6
@@ -2077,7 +2065,6 @@ label0011:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label001a
-        mov     ecx,[ebp-364]
 label0019:
         mov     [ebp-364],ecx
         movss   dword ptr [esp-4],xmm6

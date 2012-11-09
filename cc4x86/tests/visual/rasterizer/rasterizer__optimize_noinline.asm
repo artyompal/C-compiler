@@ -998,8 +998,6 @@ label0000:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0007
-        movss   xmm6,dword ptr [ebp+36]
-        movss   xmm7,dword ptr [ebp+40]
 label0006:
         cmp     ecx,esi
         jle     label0008
@@ -1018,10 +1016,6 @@ label0006:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0009
-        mov     [ebp+28],esi
-        mov     esi,[ebp+8]
-        movss   xmm6,dword ptr [ebp+36]
-        movss   xmm7,dword ptr [ebp+40]
 label0008:
         xorps   xmm7,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm7
@@ -1613,7 +1607,6 @@ label0004:
         mov     edx,[ebp+8]
         mov     edi,[ebp+20]
         jmp     label0001
-        mov     [ebp+8],edx
 label0002:
         mov     edx,[ebp+8]
         mov     eax,[edx+192]
