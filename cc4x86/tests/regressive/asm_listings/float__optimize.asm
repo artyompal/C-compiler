@@ -56,7 +56,6 @@ _test proc
         comiss  xmm5,xmm0
         ja      label0008
         jmp     label0009
-        movss   xmm0,dword ptr [ebp-40]
 label0008:
         xorps   xmm0,dword ptr [___unnamed_float_1]
 label0009:
@@ -83,7 +82,6 @@ label0000:
         comiss  xmm5,xmm0
         ja      label000c
         jmp     label000d
-        movss   xmm0,dword ptr [ebp-40]
 label000c:
         xorps   xmm0,dword ptr [___unnamed_float_1]
 label000d:
@@ -110,7 +108,6 @@ label0001:
         comiss  xmm5,xmm0
         ja      label0010
         jmp     label0011
-        movss   xmm0,dword ptr [ebp-40]
 label0010:
         xorps   xmm0,dword ptr [___unnamed_float_1]
 label0011:
@@ -137,7 +134,6 @@ label0002:
         comiss  xmm5,xmm0
         ja      label0014
         jmp     label0015
-        movss   xmm0,dword ptr [ebp-40]
 label0014:
         xorps   xmm0,dword ptr [___unnamed_float_1]
 label0015:
@@ -164,7 +160,6 @@ label0003:
         comiss  xmm5,xmm0
         ja      label0018
         jmp     label0019
-        movss   xmm0,dword ptr [ebp-40]
 label0018:
         xorps   xmm0,dword ptr [___unnamed_float_1]
 label0019:
@@ -191,7 +186,6 @@ label0004:
         comiss  xmm5,xmm0
         ja      label001c
         jmp     label001d
-        movss   xmm0,dword ptr [ebp-40]
 label001c:
         xorps   xmm0,dword ptr [___unnamed_float_1]
 label001d:
@@ -218,7 +212,6 @@ label0005:
         comiss  xmm5,xmm0
         ja      label0020
         jmp     label0021
-        movss   xmm0,dword ptr [ebp-40]
 label0020:
         xorps   xmm0,dword ptr [___unnamed_float_1]
 label0021:
@@ -246,7 +239,6 @@ label0006:
         comiss  xmm5,xmm0
         ja      label0024
         jmp     label0025
-        movss   xmm0,dword ptr [ebp-40]
 label0024:
         xorps   xmm0,dword ptr [___unnamed_float_1]
 label0025:

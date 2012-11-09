@@ -757,7 +757,6 @@ label0004:
         mov     edx,[ebp+8]
         mov     ebx,[ebp+12]
         jmp     label0001
-        mov     [ebp+8],edx
 label0002:
         mov     edx,[ebp+8]
         mov     eax,[edx+192]
@@ -1096,7 +1095,6 @@ label0029:
         inc     edi
         mov     [ebp-708],eax
         jmp     label0003
-        mov     eax,[ebp-708]
 label0004:
         mov     edi,2
 label0006:
@@ -1225,8 +1223,6 @@ label001c:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0023
-        movss   xmm6,dword ptr [ebp-432]
-        movss   xmm7,dword ptr [ebp-428]
 label0022:
         cmp     esi,ecx
         jle     label0024
@@ -1246,10 +1242,6 @@ label0022:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0025
-        mov     [ebp-440],eax
-        mov     eax,[ebp-448]
-        movss   xmm6,dword ptr [ebp-432]
-        movss   xmm7,dword ptr [ebp-428]
 label0024:
         xorps   xmm7,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm7
@@ -1403,8 +1395,6 @@ label000e:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0014
-        mov     ecx,[ebp-348]
-        mov     edx,[ebp-344]
 label0013:
         mov     [ebp-348],ecx
         mov     [ebp-344],edx
@@ -1430,7 +1420,6 @@ label0014:
         mov     esi,[ebp-340]
         mov     edi,[ebp-336]
         jmp     label000e
-        mov     [ebp-708],eax
 label000f:
         mov     eax,[edx+4]
         sub     eax,[ecx+4]
@@ -1531,8 +1520,6 @@ label000f:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0017
-        mov     ecx,[ebp-348]
-        mov     edx,[ebp-344]
 label0016:
         mov     [ebp-348],ecx
         mov     [ebp-344],edx
@@ -1685,8 +1672,6 @@ label0011:
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label001a
-        mov     ecx,[ebp-348]
-        mov     edx,[ebp-344]
 label0019:
         mov     [ebp-348],ecx
         mov     [ebp-344],edx

@@ -23,7 +23,6 @@ _test proc
         add     esp,8
         pop     ebp
         ret
-        mov     esi,[ebp-8]
 label0000:
         shr     esi,4
         cmp     esi,268435455
@@ -48,7 +47,6 @@ label0001:
         add     esp,8
         pop     ebp
         ret
-        mov     esi,[ebp-8]
 label0002:
         shl     esi,1
         cmp     esi,-2147483648

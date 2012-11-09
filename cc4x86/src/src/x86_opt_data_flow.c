@@ -1029,10 +1029,9 @@ static BOOL _redundantcopies_is_insn_available(x86_instruction *insn, basic_bloc
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //
-// Инициализация всех таблиц для одной функции.
-void x86_dataflow_prepare_function(function_desc *function, x86_operand_type type)
+// Инициализация структур для анализа живых регистров.
+void x86_dataflow_init_alive_reg_tables(function_desc *function, x86_operand_type type)
 {
-    // Инициализируем структуры для анализа живых регистров.
     _detect_basic_blocks(function);
     _alivereg_build_inout(function, type);
 
@@ -1067,10 +1066,39 @@ int x86_dataflow_is_pseudoreg_alive_before(int pseudoreg)
     return BIT_TEST(_alivereg_before_current_insn, pseudoreg);
 }
 
+//
+// Инициализация ои/ио-цепочек.
+void x86_dataflow_init_use_def_tables(function_desc *function, x86_operand_type type)
+{
+    _detect_basic_blocks(function);
+
+    // генерируем таблицы достигающих определений
+    _reachingdef_build_table(function, type);
+    _reachingdef_build_inout(function, type);
+
+    // генерируем таблицы импортирующих использований
+    _exposeduses_build_table(function, type);
+    _exposeduses_build_inout(function, type);
+}
+
+//
+// Тест ои-цепочки.
+BOOL x86_dataflow_is_definition_available(x86_instruction *def, x86_instruction *insn, x86_operand_type type)
+{
+    return _reachingdef_is_definition_available(def, insn, type);
+}
+
+//
+// Извлечение данных ио-цепочки.
+void x86_dataflow_get_usage_of_definition(int reg, x86_instruction *def, x86_operand_type type,
+                                          x86_instruction **res_arr, int *res_count, int res_max_count)
+{
+    _exposeduses_get_usage_of_definition(reg, def, type, res_arr, res_count, res_max_count);
+}
 
 //
 // Удаляет инструкцию из функции и изо всех таблиц.
-void _erase_instruction(function_desc *function, x86_instruction *insn)
+void x86_dataflow_erase_instruction(function_desc *function, x86_instruction *insn)
 {
     basic_block *block;
     int i;
@@ -1104,6 +1132,7 @@ void _erase_instruction(function_desc *function, x86_instruction *insn)
     // а индексы в ней задают биты в множестве c_in[block].
 }
 
+
 //
 // Делает оптимизацию распространения копирований (Дракон, алгоритм 10.6).
 void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
@@ -1112,16 +1141,8 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
     int usage_count, i, j, x, y, regs_cnt, *regs[MAX_REGISTERS_PER_INSN];
     BOOL replace_allowed;
 
-
     usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
-
-    // генерируем таблицы достигающих определений
-    _reachingdef_build_table(function, type);
-    _reachingdef_build_inout(function, type);
-
-    // генерируем таблицы импортирующих использований
-    _exposeduses_build_table(function, type);
-    _exposeduses_build_inout(function, type);
+    x86_dataflow_init_use_def_tables(function, type);
 
     // генерируем таблицы избыточных копирований
     _redundantcopies_build_table(function, type);
@@ -1184,7 +1205,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 
             // если все проверки закончились положительно, удаляем инструкцию и заменяем все вхождения x на y.
             if (replace_allowed) {
-                _erase_instruction(function, mov);
+                x86_dataflow_erase_instruction(function, mov);
 
                 for (i = 0; i < usage_count; i++) {
                     usage = usage_arr[i];
