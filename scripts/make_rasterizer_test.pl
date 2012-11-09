@@ -26,11 +26,13 @@ run("--noregalloc");
 run("--noregalloc --optimize");
 run("--noregalloc --optimize --noinline");
 run("--noregalloc --optimize --nocopyopt");
+run("--noregalloc --nobasicopt");
 
 run("");
 run("--optimize");
 run("--optimize --noinline");
 run("--optimize --nocopyopt");
+run("--nobasicopt");
 
 assemble("rasterizer_.asm");
 assemble("rasterizer__optimize.asm");

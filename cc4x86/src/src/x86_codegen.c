@@ -355,7 +355,7 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
     *res = *op1;
 
     if (IS_COMPARE_OP(opcode)) {
-        if (op1->op_loc == x86loc_address && op2->op_loc == x86loc_address) {
+        if (op1->op_loc != x86loc_register && op2->op_loc != x86loc_register) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, op1);
             unit_push_binary_instruction(x86insn_int_cmp, &tmp, op2);
@@ -408,21 +408,21 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
 		    unit_push_binary_instruction(x86insn_int_idiv, &tmp, op2);
 		}
     } else if (IS_SHIFT_OP(opcode)) {
-        if (op2->op_loc == x86loc_address) {
+        if (op2->op_loc != x86loc_register) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op2->op_type);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, op2);
         } else {
             tmp = *op2;
         }
 
-        if (op1->op_loc == x86loc_address) {
+        if (op1->op_loc != x86loc_register) {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
             unit_push_binary_instruction(x86insn_int_mov, res, op1);
             unit_push_binary_instruction(insn, res, &tmp);
         } else {
             unit_push_binary_instruction(insn, op1, &tmp);
         }
-    } else if (op1->op_loc == x86loc_address) {
+    } else if (op1->op_loc != x86loc_register) {
         if (op2->op_loc == x86loc_register && (insn == x86insn_int_add || insn == x86insn_int_imul)) {
             unit_push_binary_instruction(insn, op2, res);
             *res = *op2;
@@ -452,7 +452,7 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
     if (opcode == op_assign) {
         ASSERT(op1->op_loc == x86loc_address);
 
-        if (op2->op_loc == x86loc_address) {
+        if (op2->op_loc != x86loc_register) {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);
             unit_push_binary_instruction(x86insn_int_mov, res, op2);
             unit_push_binary_instruction(x86insn_int_mov, op1, res);
@@ -463,7 +463,7 @@ static void _generate_int_binary_expr(expression *expr, x86_operand *res, x86_op
     } else if (IS_ASSIGN_OP(opcode)) {
         opcode = _convert_assign_opcode_to_simple(opcode);
 
-        if (op1->op_loc == x86loc_address) {
+        if (op1->op_loc != x86loc_register) {
             bincode_create_operand_and_alloc_pseudoreg(&tmp, op1->op_type);
             unit_push_binary_instruction(x86insn_int_mov, &tmp, op1);
 
