@@ -208,12 +208,6 @@ BOOL bincode_is_pseudoreg_modified_by_insn(x86_instruction *insn, x86_operand_ty
         }
     }
 
-    if (OP_IS_PSEUDO_REG(insn->in_op1, type) && IS_DEFINING_INSN(insn->in_code, type)) {
-        if (insn->in_op1.data.reg == reg) {
-            return TRUE;
-        }
-    }
-
     return FALSE;
 }
 
