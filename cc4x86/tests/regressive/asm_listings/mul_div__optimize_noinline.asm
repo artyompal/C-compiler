@@ -54,8 +54,7 @@ label0000:
         mov     eax,ebx
         xor     edx,edx
         div     edi
-        mov     ebx,eax
-        cmp     ebx,2
+        cmp     eax,2
         je      label0001
         mov     eax,2
         pop     ebx
@@ -80,8 +79,7 @@ label0001:
 label0002:
         mov     eax,edi
         mul     esi
-        mov     ebx,eax
-        cmp     ebx,6
+        cmp     eax,6
         je      label0003
         mov     eax,4
         pop     ebx
