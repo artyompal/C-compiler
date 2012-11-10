@@ -675,38 +675,35 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
 // даже если достигают его начала."
 static void _reachingdef_build_kill(set *kill, function_desc *function, basic_block *block, x86_operand_type type)
 {
-    int *reg_definitions_table = alloca(sizeof(int)*function->func_pseudoregs_count[type]);
     x86_instruction *insn;
+    set modified_regs;
     int def, reg;
 
     ASSERT(kill->set_count == _definitions_table.insn_count);
     set_clear_to_zeros(kill);
-    memset(reg_definitions_table, -1, sizeof(int)*function->func_pseudoregs_count[type]);
-    // TODO: заменить массив на set
+
+    SET_ALLOCA(modified_regs, function->func_pseudoregs_count[type]);
+    set_clear_to_zeros(&modified_regs);
 
     // Находим для каждого регистра последнее определение, записывающее в него.
     for (def = block->block_first_def; def < block->block_last_def; def++) {
         insn = _definitions_table.insn_base[def];
 
         if (IS_VOLATILE_INSN(insn->in_code, type)) {
-            reg_definitions_table[insn->in_op1.data.reg] = def;
+            BIT_RAISE(modified_regs, insn->in_op1.data.reg);
         }
     }
 
     // Для каждого изменённого регистра: во всём коде функции, кроме данного блока,
     // находим все определения данного регистра и вносим их в множество.
     for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
-        if (reg_definitions_table[reg] != -1) {
-            // TODO: устранить копи-паст
-            for (def = 0; def < block->block_first_def; def++) {
-                insn = _definitions_table.insn_base[def];
-
-                if (insn->in_op1.data.reg == reg) {
-                    BIT_RAISE(*kill, def);
+        if (BIT_TEST(modified_regs, reg)) {
+            for (def = 0; def < _definitions_table.insn_count; def++) {
+                if (def == block->block_first_def) {
+                    def = block->block_last_def - 1;
+                    continue;
                 }
-            }
 
-            for (def = block->block_last_def; def < _definitions_table.insn_count; def++) {
                 insn = _definitions_table.insn_base[def];
 
                 if (insn->in_op1.data.reg == reg) {
@@ -930,18 +927,12 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
     }
 
     // проходим все инструкции этой функции, кроме этого блока
-    // TODO: устранить копи-паст
-    for (insn = function->func_binary_code; insn != block->block_leader; insn = insn->in_next) {
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)
-            && (BIT_TEST(modified_regs, insn->in_op1.data.reg) || BIT_TEST(modified_regs, insn->in_op2.data.reg))) {
-                idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
-                ASSERT(idx >= 0);
-
-                BIT_RAISE(*kill, idx);
+    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
+        if (insn == block->block_leader) {
+            insn = block->block_last_insn;
+            continue;
         }
-    }
 
-    for (insn = block->block_last_insn->in_next; insn; insn = insn->in_next) {
         if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)
             && (BIT_TEST(modified_regs, insn->in_op1.data.reg) || BIT_TEST(modified_regs, insn->in_op2.data.reg))) {
                 idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
