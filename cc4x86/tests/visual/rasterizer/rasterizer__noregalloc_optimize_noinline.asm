@@ -724,7 +724,6 @@ label0000:
         mulss   sse4,sse5
         addss   sse3,sse4
         cvttss2si       dword57,sse3
-        mov     dword87,dword57
         cvtsi2ss        sse6,dword50
         mulss   sse6,sse1
         cvtsi2ss        sse7,dword41
@@ -733,10 +732,9 @@ label0000:
         mulss   sse7,sse8
         addss   sse6,sse7
         cvttss2si       dword64,sse6
-        mov     dword88,dword64
-        mov     dword68,dword87
+        mov     dword68,dword57
         sal     dword68,8
-        add     dword68,dword88
+        add     dword68,dword64
         mov     [dword83],dword68
 label0003:
         movss   sse9,sse13

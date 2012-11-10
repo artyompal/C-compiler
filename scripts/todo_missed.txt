@@ -3,6 +3,9 @@ x86_codegen.c:      TODO: поддержать кодогенерацию для long long
 x86_codegen.c:      TODO: поддержать кодогенерацию для операндов типа byte/word
 x86_codegen.c:      TODO: возвращать результат типа QWORD
 x86_opt_basic.c:    FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
+x86_opt_data_flow.c:TODO: заменить массив на set
+x86_opt_data_flow.c:TODO: устранить копи-паст
+x86_opt_data_flow.c:TODO: устранить копи-паст
 x86_regalloc.c:     FIXME: считается, что регистровые переменные используются до конца функции.
 x86_regalloc.c:     TODO: более точный анализ того, были ли какие-либо регистры изменены.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);

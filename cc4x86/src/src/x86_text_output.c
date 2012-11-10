@@ -12,8 +12,8 @@ static int cursor_pos = 0;
 
 
 //
-// Ќабор функций, замен€ющих fprintf/out_str/out_ch и замен€ющих /t на TAB_SIZE пробелов.
-static void out_ch(char c)
+// Ќабор функций, замен€ющих fprintf/fputs/fputc и замен€ющих /t на TAB_SIZE пробелов.
+static void _out_ch(char c)
 {
     int i;
 
@@ -36,21 +36,21 @@ static void out_ch(char c)
     }
 }
 
-static void out_str(const char *str)
+static void _out_str(const char *str)
 {
     while (*str) {
-        out_ch(*str++);
+        _out_ch(*str++);
     }
 }
 
-static void out_fmt(const char *fmt, ...)
+static void _out_fmt(const char *fmt, ...)
 {
     va_list args;
     char buffer[256];
 
     va_start(args, fmt);
     vsnprintf(buffer, 255, fmt, args);
-    out_str(buffer);
+    _out_str(buffer);
     va_end(args);
 }
 
@@ -67,13 +67,13 @@ void text_output_begin_unit(void)
     }
 
     cursor_pos = 0;
-    out_str("\n.686\n.model flat\n.xmm\n");
+    _out_str("\n.686\n.model flat\n.xmm\n");
 }
 
 void text_output_end_unit(void)
 {
     if (_asm_file) {
-        out_str("\nend\n");
+        _out_str("\nend\n");
         fclose(_asm_file);
         _asm_file = NULL;
     }
@@ -81,37 +81,37 @@ void text_output_end_unit(void)
 
 void text_output_begin_data_section(void)
 {
-    out_fmt("\n.data\n\n");
+    _out_fmt("\n.data\n\n");
 }
 
 void text_output_declare_uninitialized_bytes(symbol *sym, int size)
 {
     if (size == 4) {
-        out_fmt("_%s\tdd\t?\n", sym->sym_name);
+        _out_fmt("_%s\tdd\t?\n", sym->sym_name);
     } else {
-        out_fmt("_%s\tdb\t %d dup (?)\n", sym->sym_name, size);
+        _out_fmt("_%s\tdb\t %d dup (?)\n", sym->sym_name, size);
     }
 
-    out_fmt("public\t_%s\n", sym->sym_name);
+    _out_fmt("public\t_%s\n", sym->sym_name);
 }
 
 void text_output_declare_initialized_dword(symbol *sym, long value)
 {
-    out_fmt("_%s\tdd\t0%xh\n", sym->sym_name, value);
-    out_fmt("public\t_%s\n", sym->sym_name);
+    _out_fmt("_%s\tdd\t0%xh\n", sym->sym_name, value);
+    _out_fmt("public\t_%s\n", sym->sym_name);
 }
 
 void text_output_declare_initialized_qword(symbol *sym, __int64 value)
 {
-    out_fmt("_%s\tdq\t0%I64xh\n", sym->sym_name, value);
-    out_fmt("public\t_%s\n", sym->sym_name);
+    _out_fmt("_%s\tdq\t0%I64xh\n", sym->sym_name, value);
+    _out_fmt("public\t_%s\n", sym->sym_name);
 }
 
 void text_output_declare_initialized_xmmword(symbol *sym, long c1, long c2, long c3, long c4)
 {
-    out_fmt("align 16\n");
-    out_fmt("_%s\tdd\t0%xh, 0%xh, 0%xh, 0%xh\n", sym->sym_name, c1, c2, c3, c4);
-    out_fmt("public\t_%s\n", sym->sym_name);
+    _out_fmt("align 16\n");
+    _out_fmt("_%s\tdd\t0%xh, 0%xh, 0%xh, 0%xh\n", sym->sym_name, c1, c2, c3, c4);
+    _out_fmt("public\t_%s\n", sym->sym_name);
 }
 
 void text_output_declare_initialized_string(symbol *sym, const char *value)
@@ -119,35 +119,35 @@ void text_output_declare_initialized_string(symbol *sym, const char *value)
     int i;
     int length = strlen(value) + 1;
 
-    out_fmt("_%s\tdb\t", sym->sym_name);
+    _out_fmt("_%s\tdb\t", sym->sym_name);
 
     for (i = 0; ; i++) {
         if (i == length - 1) {
-            out_fmt("%d", (unsigned char) value[i]);
+            _out_fmt("%d", (unsigned char) value[i]);
             break;
         }
 
         if (i % 16 == 15) {
-            out_fmt("%d\n\tdb\t", (unsigned char) value[i]);
+            _out_fmt("%d\n\tdb\t", (unsigned char) value[i]);
         } else {
-            out_fmt( "%d, ", (unsigned char) value[i]);
+            _out_fmt( "%d, ", (unsigned char) value[i]);
         }
     }
 
-    out_ch('\n');
-    out_fmt("public\t_%s\n", sym->sym_name);
+    _out_ch('\n');
+    _out_fmt("public\t_%s\n", sym->sym_name);
 }
 
 void text_output_declare_ptr_to_relocable(symbol *ptr_sym, symbol *rel_sym)
 {
-    out_fmt("_%s\tdd\toffset _%s\n", ptr_sym->sym_name, rel_sym->sym_name);
-    out_fmt("public\t_%s\n", ptr_sym->sym_name);
+    _out_fmt("_%s\tdd\toffset _%s\n", ptr_sym->sym_name, rel_sym->sym_name);
+    _out_fmt("public\t_%s\n", ptr_sym->sym_name);
 }
 
 
 void text_output_begin_text_section(void)
 {
-    out_fmt("\n.code\n");
+    _out_fmt("\n.code\n");
 }
 
 
@@ -292,7 +292,7 @@ static const char *_encode_hw_type(x86_operand_type hw_type)
 static void _print_insn(x86_instruction_code code)
 {
     ASSERT(code < x86insn_count);
-    out_fmt("\t%s", _x86_instructions[code]);
+    _out_fmt("\t%s", _x86_instructions[code]);
 }
 
 static void _print_reg(x86_operand_type type, int reg)
@@ -300,42 +300,42 @@ static void _print_reg(x86_operand_type type, int reg)
     switch (type) {
     case x86op_byte:
         if (reg < -x86_byte_reg_count) {
-            out_fmt("byte0x%x", reg);
+            _out_fmt("byte0x%x", reg);
         } else if (reg < 0) {
-            out_str(_x86_byte_registers[~reg]);
+            _out_str(_x86_byte_registers[~reg]);
         } else {
-            out_fmt("byte%d", reg);
+            _out_fmt("byte%d", reg);
         }
         break;
 
     case x86op_word:
         if (reg < -x86_word_reg_count) {
-            out_fmt("word0x%x", reg);
+            _out_fmt("word0x%x", reg);
         } else if (reg < 0) {
-            out_str(_x86_word_registers[~reg]);
+            _out_str(_x86_word_registers[~reg]);
         } else {
-            out_fmt("word%d", reg);
+            _out_fmt("word%d", reg);
         }
         break;
 
     case x86op_dword:
         if (reg < -x86_dword_reg_count) {
-            out_fmt("dword0x%x", reg);
+            _out_fmt("dword0x%x", reg);
         } else if (reg < 0) {
-            out_str(_x86_dword_registers[~reg]);
+            _out_str(_x86_dword_registers[~reg]);
         } else {
-            out_fmt("dword%d", reg);
+            _out_fmt("dword%d", reg);
         }
         break;
 
     case x86op_float:
     case x86op_double:
         if (reg < -8) {
-            out_fmt("sse0x%x", reg);
+            _out_fmt("sse0x%x", reg);
         } else if (reg < 0) {
-            out_fmt("xmm%d", ~reg);
+            _out_fmt("xmm%d", ~reg);
         } else {
-            out_fmt("sse%d", reg);
+            _out_fmt("sse%d", reg);
         }
         break;
 
@@ -354,16 +354,16 @@ static void _print_op(x86_operand *op)
         break;
 
     case x86loc_int_constant:
-        out_fmt("%d", op->data.int_val);
+        _out_fmt("%d", op->data.int_val);
         break;
 
     case x86loc_address:
         if (op->data.address.base == 0 && op->data.address.index == 0) {
-            out_fmt("ds:");
+            _out_fmt("ds:");
         }
 
 
-        out_ch('[');
+        _out_ch('[');
 
         if (op->data.address.base != 0) {
             _print_reg(x86op_dword, op->data.address.base);
@@ -372,14 +372,14 @@ static void _print_op(x86_operand *op)
 
         if (op->data.address.index != 0) {
             if (was_smth) {
-                out_ch('+');
+                _out_ch('+');
             }
 
             _print_reg(x86op_dword, op->data.address.index);
 
             if (op->data.address.scale > 1) {
                 ASSERT(op->data.address.scale == 2 || op->data.address.scale == 4 || op->data.address.scale == 8);
-                out_fmt("*%d", op->data.address.scale);
+                _out_fmt("*%d", op->data.address.scale);
             }
 
             was_smth = TRUE;
@@ -387,37 +387,37 @@ static void _print_op(x86_operand *op)
 
         if (op->data.address.offset || !was_smth) {
             if (was_smth && op->data.address.offset > 0) {
-                out_ch('+');
+                _out_ch('+');
             }
 
-            out_fmt("%d", op->data.address.offset);
+            _out_fmt("%d", op->data.address.offset);
         }
 
-        out_ch(']');
+        _out_ch(']');
         break;
 
     case x86loc_symbol:
         if (TYPE_IS_FUNCTION(op->data.sym.name->sym_type)) {
             ASSERT(op->data.sym.offset == 0);
-            out_fmt("_%s", op->data.sym.name->sym_name);
+            _out_fmt("_%s", op->data.sym.name->sym_name);
         } else {
             if (op->data.sym.offset == 0) {
-                out_fmt("%s [_%s]", _encode_hw_type(op->op_type), op->data.sym.name->sym_name);
+                _out_fmt("%s [_%s]", _encode_hw_type(op->op_type), op->data.sym.name->sym_name);
             } else {
-                out_fmt("%s [_%s+%d]", _encode_hw_type(op->op_type), op->data.sym.name->sym_name, op->data.sym.offset);
+                _out_fmt("%s [_%s+%d]", _encode_hw_type(op->op_type), op->data.sym.name->sym_name, op->data.sym.offset);
             }
         }
         break;
 
     case x86loc_symbol_offset:
         if (op->data.sym.offset == 0)
-            out_fmt("(offset _%s)", op->data.sym.name->sym_name);
+            _out_fmt("(offset _%s)", op->data.sym.name->sym_name);
         else
-            out_fmt("(offset _%s)+%d", op->data.sym.name->sym_name, op->data.sym.offset);
+            _out_fmt("(offset _%s)+%d", op->data.sym.name->sym_name, op->data.sym.offset);
         break;
 
     case x86loc_label:
-        out_fmt("label%04x", op->data.label);
+        _out_fmt("label%04x", op->data.label);
         break;
 
     default:
@@ -428,64 +428,64 @@ static void _print_op(x86_operand *op)
 
 static void _output_push_comment(const char *s1, const char *s2)
 {
-    out_fmt("; %s%s%s\n", s1, (s2 ? " " : ""), (s2 ? s2 : ""));
+    _out_fmt("; %s%s%s\n", s1, (s2 ? " " : ""), (s2 ? s2 : ""));
 }
 
 static void _output_push_nullary_instruction(x86_instruction_code code)
 {
     _print_insn(code);
-    out_ch('\n');
+    _out_ch('\n');
 }
 
 static void _output_push_unary_instruction(x86_instruction_code code, x86_operand *op)
 {
     if (code == x86insn_label) {
         _print_op(op);
-        out_ch(':');
+        _out_ch(':');
     } else {
         _print_insn(code);
-        out_ch('\t');
+        _out_ch('\t');
 
         if (op->op_loc == x86loc_address) {
-            out_fmt("%s ", _encode_hw_type(op->op_type));
+            _out_fmt("%s ", _encode_hw_type(op->op_type));
         }
 
         _print_op(op);
     }
 
-    out_ch('\n');
+    _out_ch('\n');
 }
 
 static void _output_push_binary_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2)
 {
     _print_insn(code);
-    out_ch('\t');
+    _out_ch('\t');
 
     if (op1->op_loc == x86loc_address && (op2->op_loc == x86loc_int_constant || IS_SHIFT_INSN(code))) {
-        out_str("dword ptr ");
+        _out_str("dword ptr ");
     } else if (OP_IS_ADDRESS(*op1) && OP_IS_FLOAT(*op1)) {
-        out_fmt("%s ptr ", (op1->op_type == x86op_float ? "dword" : "qword"));
+        _out_fmt("%s ptr ", (op1->op_type == x86op_float ? "dword" : "qword"));
     }
 
     _print_op(op1);
-    out_ch(',');
+    _out_ch(',');
 
     if (OP_IS_ADDRESS(*op2) && (OP_IS_FLOAT(*op1) || OP_IS_FLOAT(*op2))) {
-        out_fmt("%s ptr ", (op2->op_type == x86op_double ? "qword" : "dword"));
+        _out_fmt("%s ptr ", (op2->op_type == x86op_double ? "qword" : "dword"));
     }
 
     _print_op(op2);
-    out_ch('\n');
+    _out_ch('\n');
 }
 
 static void _output_push_ternary_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2, int op3)
 {
     _print_insn(code);
-    out_ch('\t');
+    _out_ch('\t');
     _print_op(op1);
-    out_ch(',');
+    _out_ch(',');
     _print_op(op2);
-    out_fmt(",%d\n", op3);
+    _out_fmt(",%d\n", op3);
 }
 
 static void _output_push_instruction(x86_instruction *insn)
@@ -507,13 +507,13 @@ static void _output_function_code(function_desc *function)
 {
     x86_instruction *insn;
 
-    out_fmt("\n_%s proc\n", function->func_sym->sym_name);
+    _out_fmt("\n_%s proc\n", function->func_sym->sym_name);
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         _output_push_instruction(insn);
     }
 
-    out_fmt("_%s endp\n", function->func_sym->sym_name);
+    _out_fmt("_%s endp\n", function->func_sym->sym_name);
     fflush(_asm_file);
 }
 
@@ -530,5 +530,18 @@ void text_output_debug_print_function_code(function_desc *function)
     _asm_file = stdout;
     _output_function_code(function);
     _asm_file = old;
+}
+
+void text_output_debug_comment(const char *fmt, ...)
+{
+    va_list args;
+    char buffer[256];
+
+    va_start(args, fmt);
+    vsnprintf(buffer, 255, fmt, args);
+    _out_str(buffer);
+    va_end(args);
+
+    _out_ch('\n');
 }
 
