@@ -442,7 +442,6 @@ label0000:
         mulss   sse4,sse5
         addss   sse3,sse4
         cvttss2si       dword57,sse3
-        mov     dword107,dword57
         cvtsi2ss        sse6,dword50
         mulss   sse6,sse1
         cvtsi2ss        sse7,dword41
@@ -451,10 +450,9 @@ label0000:
         mulss   sse7,sse8
         addss   sse6,sse7
         cvttss2si       dword64,sse6
-        mov     dword108,dword64
-        mov     dword68,dword107
+        mov     dword68,dword57
         sal     dword68,8
-        add     dword68,dword108
+        add     dword68,dword64
         mov     [dword103],dword68
 label0003:
         movss   sse9,sse20
@@ -541,7 +539,6 @@ label0001:
         movss   sse54,dword ptr [ebp-12]
         mulss   sse54,dword ptr [dword378+12]
         addss   sse52,sse54
-        movss   sse76,sse52
 ; end of inline function vec4f_dot
         movss   sse3,dword ptr [___unnamed_float_2]
         comiss  sse3,sse72
@@ -560,11 +557,11 @@ label0003:
         comiss  sse4,sse72
         jae     label0006
         movss   sse5,dword ptr [___unnamed_float_2]
-        comiss  sse5,sse76
+        comiss  sse5,sse52
         ja      label0005
 label0006:
         movss   sse6,dword ptr [___unnamed_float_2]
-        comiss  sse6,sse76
+        comiss  sse6,sse52
         ja      label0004
         movss   sse7,dword ptr [___unnamed_float_2]
         comiss  sse7,sse72
@@ -624,9 +621,8 @@ label0005:
         movss   sse64,dword ptr [ebp-28]
         mulss   sse64,dword ptr [dword378+12]
         addss   sse62,sse64
-        movss   sse76,sse62
 ; end of inline function vec4f_dot
-        divss   sse8,sse76
+        divss   sse8,sse62
 ; start of inline function vec4f_mul
         movss   sse67,dword ptr [ebp-40]
         mulss   sse67,sse8
@@ -1357,7 +1353,6 @@ label000f:
         cdq     dword351,dword338
         idiv    dword338,dword350
         add     dword338,[dword867]
-        mov     dword872,dword338
         mov     dword361,[dword868+4]
         sub     dword361,[dword867+4]
         cvtsi2ss        sse21,dword361
@@ -1369,7 +1364,6 @@ label000f:
         cvtsi2ss        sse23,dword372
         divss   sse21,sse23
         addss   sse21,dword ptr [dword867+8]
-        movss   sse100,sse21
         mov     dword382,[dword868+4]
         sub     dword382,[dword867+4]
         cvtsi2ss        sse24,dword382
@@ -1390,37 +1384,34 @@ label000f:
         add     dword397,dword867
         add     dword397,4
         addss   sse24,dword ptr [dword397]
-        movss   sse101,sse24
-        movss   sse27,sse100
+        movss   sse27,sse21
         subss   sse27,dword ptr [dword868+8]
-        mov     dword406,dword872
+        mov     dword406,dword338
         sub     dword406,[dword868]
         cvtsi2ss        sse28,dword406
         divss   sse27,sse28
-        movss   sse102,sse27
         mov     dword409,8
         add     dword409,dword868
         add     dword409,4
-        movss   sse29,sse101
+        movss   sse29,sse24
         subss   sse29,dword ptr [dword409]
-        mov     dword415,dword872
+        mov     dword415,dword338
         sub     dword415,[dword868]
         cvtsi2ss        sse30,dword415
         divss   sse29,sse30
-        movss   sse103,sse29
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   sse109,sse103
-        movss   sse108,sse102
+        movss   sse109,sse29
+        movss   sse108,sse27
         mov     dword420,8
         add     dword420,dword868
         add     dword420,4
         movss   sse107,dword ptr [dword420]
         movss   sse106,dword ptr [dword868+8]
-        movss   sse105,sse101
-        movss   sse104,sse100
+        movss   sse105,sse24
+        movss   sse104,sse21
         mov     dword611,[dword868+4]
         mov     dword610,[dword868]
-        cmp     dword872,dword610
+        cmp     dword338,dword610
         jg      label0016
         push_all
         push_arg        sse109,4
@@ -1429,7 +1420,7 @@ label000f:
         push_arg        sse104,4
         push_arg        dword611,4
         push_arg        dword610,4
-        push_arg        dword872,4
+        push_arg        dword338,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
@@ -1441,7 +1432,7 @@ label0016:
         push_arg        sse107,4
         push_arg        sse106,4
         push_arg        dword611,4
-        push_arg        dword872,4
+        push_arg        dword338,4
         push_arg        dword610,4
         call    __rasterize_horiz_line
         restore_stack   28
@@ -1465,7 +1456,6 @@ label0011:
         cdq     dword459,dword446
         idiv    dword446,dword458
         add     dword446,[dword868]
-        mov     dword871,dword446
         mov     dword467,dword873
         sub     dword467,[dword867+4]
         mov     dword472,[dword869]
@@ -1476,7 +1466,6 @@ label0011:
         cdq     dword480,dword467
         idiv    dword467,dword479
         add     dword467,[dword867]
-        mov     dword872,dword467
         mov     dword488,dword873
         sub     dword488,[dword868+4]
         cvtsi2ss        sse31,dword488
@@ -1488,7 +1477,6 @@ label0011:
         cvtsi2ss        sse33,dword499
         divss   sse31,sse33
         addss   sse31,dword ptr [dword868+8]
-        movss   sse98,sse31
         mov     dword507,dword873
         sub     dword507,[dword867+4]
         cvtsi2ss        sse34,dword507
@@ -1500,7 +1488,6 @@ label0011:
         cvtsi2ss        sse36,dword518
         divss   sse34,sse36
         addss   sse34,dword ptr [dword867+8]
-        movss   sse100,sse34
         mov     dword526,dword873
         sub     dword526,[dword868+4]
         cvtsi2ss        sse37,dword526
@@ -1521,7 +1508,6 @@ label0011:
         add     dword541,dword868
         add     dword541,4
         addss   sse37,dword ptr [dword541]
-        movss   sse99,sse37
         mov     dword548,dword873
         sub     dword548,[dword867+4]
         cvtsi2ss        sse40,dword548
@@ -1542,52 +1528,48 @@ label0011:
         add     dword563,dword867
         add     dword563,4
         addss   sse40,dword ptr [dword563]
-        movss   sse101,sse40
-        mov     dword568,dword872
-        sub     dword568,dword871
+        mov     dword568,dword467
+        sub     dword568,dword446
         cvtsi2ss        sse43,dword568
-        movss   sse44,sse100
-        subss   sse44,sse98
+        movss   sse44,sse34
+        subss   sse44,sse31
         divss   sse44,sse43
-        movss   sse102,sse44
-        mov     dword574,dword872
-        sub     dword574,dword871
+        mov     dword574,dword467
+        sub     dword574,dword446
         cvtsi2ss        sse45,dword574
-        movss   sse46,sse101
-        subss   sse46,sse99
+        movss   sse46,sse40
+        subss   sse46,sse37
         divss   sse46,sse45
-        movss   sse103,sse46
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   sse108,sse102
-        movss   sse107,sse101
-        movss   sse106,sse100
-        movss   sse105,sse99
-        movss   sse104,sse98
+        movss   sse108,sse44
+        movss   sse107,sse40
+        movss   sse106,sse34
+        movss   sse105,sse37
+        movss   sse104,sse31
         mov     dword876,dword873
-        mov     dword875,dword872
-        cmp     dword871,dword875
+        cmp     dword446,dword467
         jg      label0019
         push_all
-        push_arg        sse103,4
+        push_arg        sse46,4
         push_arg        sse108,4
         push_arg        sse105,4
         push_arg        sse104,4
         push_arg        dword876,4
-        push_arg        dword875,4
-        push_arg        dword871,4
+        push_arg        dword467,4
+        push_arg        dword446,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
         jmp     label001a
 label0019:
         push_all
-        push_arg        sse103,4
+        push_arg        sse46,4
         push_arg        sse108,4
         push_arg        sse107,4
         push_arg        sse106,4
         push_arg        dword876,4
-        push_arg        dword871,4
-        push_arg        dword875,4
+        push_arg        dword446,4
+        push_arg        dword467,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all

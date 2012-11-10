@@ -25,7 +25,9 @@ void    text_output_declare_initialized_string      (symbol *sym, const char *va
 void    text_output_declare_ptr_to_relocable        (symbol *ptr_sym, symbol *rel_sym);
 
 void    text_output_push_function_code              (function_desc *function);
+
 void    text_output_debug_print_function_code       (function_desc *function);
+void    text_output_debug_comment                   (const char *fmt, ...);
 
 
 #else

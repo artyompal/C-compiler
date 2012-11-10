@@ -3,6 +3,7 @@
 #include "x86_bincode.h"
 #include "x86_opt_data_flow_inc.h"
 #include "x86_regalloc.h"
+#include "x86_text_output.h"
 
 
 // ќбщие данные.
@@ -82,8 +83,7 @@ static void _detect_basic_blocks(function_desc *function)
             current_index++;
         } while (insn && !_is_leader(insn));
 
-        // insn - новый лидер либо NULL.
-
+        // insn - новый лидер либо NULL
         _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_leader      = block_leader;
         _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_length      = current_index - leader_index;
         _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_last_insn   = prev_insn;
@@ -364,13 +364,17 @@ static void _exposeduses_build_table(function_desc *function, x86_operand_type t
 //
 // ¬ычисл€ет множество use дл€ данного блока (множество импортирующих использований),
 // т.е. множество пар (s,x) : s - инструкци€, использующа€ регистр x, причЄм предшествующих определений x в данном блоке нет.
-static void _exposeduses_build_use(set *use, basic_block *block, x86_operand_type type)
+static void _exposeduses_build_use(set *use, basic_block *block, function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
     int j, reg, idx, regs_cnt, regs[MAX_REGISTERS_PER_INSN];
+    set defined_registers;
 
     ASSERT(use->set_count == _exposeduse_table.insn_count);
     set_clear_to_zeros(use);
+
+    SET_ALLOCA(defined_registers, function->func_pseudoregs_count[type]);
+    set_clear_to_zeros(&defined_registers);
 
     // ѕроходим по всем инструкци€м данного блока.
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
@@ -379,14 +383,29 @@ static void _exposeduses_build_use(set *use, basic_block *block, x86_operand_typ
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
 
-            // Ќаходим индекс этой инструкции в таблице _exposeduse_table.
-            for (idx = _exposeduse_reg2idx.int_base[reg]; idx < _exposeduse_reg2idx.int_base[reg+1]; idx++) {
-                if (_exposeduse_table.insn_base[idx] == insn) {
-                    BIT_RAISE(*use, idx);
-                    break;
+            if (!BIT_TEST(defined_registers, reg)) {
+                // Ќаходим индекс этой инструкции в таблице _exposeduse_table.
+                for (idx = _exposeduse_reg2idx.int_base[reg]; idx < _exposeduse_reg2idx.int_base[reg+1]; idx++) {
+                    if (_exposeduse_table.insn_base[idx] == insn) {
+                        BIT_RAISE(*use, idx);
+                        break;
+                    }
                 }
             }
+        }
 
+        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
+
+        for (j = 0; j < regs_cnt; j++) {
+            reg = regs[j];
+            BIT_RAISE(defined_registers, reg);
+        }
+
+        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
+
+        for (j = 0; j < regs_cnt; j++) {
+            reg = regs[j];
+            BIT_RAISE(defined_registers, reg);
         }
     }
 }
@@ -509,7 +528,7 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
             _exposeduses_build_def(&tmp, &_basic_blocks.blocks_base[block], function, type);
             set_subtract(&_exposeduses_in.vec_base[block], &tmp);
 
-            _exposeduses_build_use(&tmp, &_basic_blocks.blocks_base[block], type);
+            _exposeduses_build_use(&tmp, &_basic_blocks.blocks_base[block], function, type);
             set_unite(&_exposeduses_in.vec_base[block], &tmp);
 
             changed |= !set_equal(&_exposeduses_in.vec_base[block], &old_in);
@@ -663,6 +682,7 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
     ASSERT(kill->set_count == _definitions_table.insn_count);
     set_clear_to_zeros(kill);
     memset(reg_definitions_table, -1, sizeof(int)*function->func_pseudoregs_count[type]);
+    // TODO: заменить массив на set
 
     // Ќаходим дл€ каждого регистра последнее определение, записывающее в него.
     for (def = block->block_first_def; def < block->block_last_def; def++) {
@@ -677,6 +697,7 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
     // находим все определени€ данного регистра и вносим их в множество.
     for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
         if (reg_definitions_table[reg] != -1) {
+            // TODO: устранить копи-паст
             for (def = 0; def < block->block_first_def; def++) {
                 insn = _definitions_table.insn_base[def];
 
@@ -909,6 +930,7 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
     }
 
     // проходим все инструкции этой функции, кроме этого блока
+    // TODO: устранить копи-паст
     for (insn = function->func_binary_code; insn != block->block_leader; insn = insn->in_next) {
         if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)
             && (BIT_TEST(modified_regs, insn->in_op1.data.reg) || BIT_TEST(modified_regs, insn->in_op2.data.reg))) {
