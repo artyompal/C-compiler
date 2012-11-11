@@ -654,13 +654,11 @@ label0005:
         movss   dword ptr [dword77+12],sse24
 ; end of inline function vec4f_add
 ; start of inline function vec2f_subtract
-        mov     dword79,dword357
-        mov     dword81,dword358
-        movss   sse14,dword ptr [dword81+16]
-        subss   sse14,dword ptr [dword79+16]
+        movss   sse14,dword ptr [dword358+16]
+        subss   sse14,dword ptr [dword357+16]
         movss   dword ptr [ebp-48],sse14
-        movss   sse15,dword ptr [dword81+20]
-        subss   sse15,dword ptr [dword79+20]
+        movss   sse15,dword ptr [dword358+20]
+        subss   sse15,dword ptr [dword357+20]
         movss   dword ptr [ebp-44],sse15
 ; end of inline function vec2f_subtract
 ; start of inline function vec2f_mul
@@ -672,16 +670,15 @@ label0005:
         movss   dword ptr [ebp-44],sse19
 ; end of inline function vec2f_mul
 ; start of inline function vec2f_add
-        mov     dword87,dword357
         mov     dword91,[dword375+192]
         imul    dword91,24
         mov     dword93,dword375
         add     dword93,dword91
         add     dword93,16
-        movss   sse11,dword ptr [dword87+16]
+        movss   sse11,dword ptr [dword357+16]
         addss   sse11,dword ptr [ebp-48]
         movss   dword ptr [dword93],sse11
-        movss   sse12,dword ptr [dword87+20]
+        movss   sse12,dword ptr [dword357+20]
         addss   sse12,dword ptr [ebp-44]
         movss   dword ptr [dword93+4],sse12
 ; end of inline function vec2f_add
