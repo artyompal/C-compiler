@@ -4,6 +4,7 @@
 #include "x86_opt_data_flow_inc.h"
 #include "x86_regalloc.h"
 #include "x86_text_output.h"
+#include "x86_optimizer.h"
 
 
 // Общие данные.
@@ -1253,6 +1254,10 @@ static void _optimize_redundant_copies_iterative(function_desc *function, x86_op
         _redundantcopies_build_inout(function, type);
 
         _optimize_redundant_copies(function, type);
+        x86_analyze_registers_usage(function);
+
+        x86_optimization_after_codegen(function);
+        x86_analyze_registers_usage(function);
 
         new_length = unit_get_instruction_count(function);
         ASSERT(new_length <= function_length);

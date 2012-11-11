@@ -502,7 +502,7 @@ __rasterize_horiz_line endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,144
+        sub     esp,140
         push    edi
         push    esi
         push    ebx
@@ -707,13 +707,11 @@ label0005:
         movss   dword ptr [ebx+12],xmm0
 ; end of inline function vec4f_add
 ; start of inline function vec2f_subtract
-        mov     edx,ecx
-        mov     ebx,eax
-        movss   xmm0,dword ptr [ebx+16]
-        subss   xmm0,dword ptr [edx+16]
+        movss   xmm0,dword ptr [eax+16]
+        subss   xmm0,dword ptr [ecx+16]
         movss   dword ptr [ebp-48],xmm0
-        movss   xmm0,dword ptr [ebx+20]
-        subss   xmm0,dword ptr [edx+20]
+        movss   xmm0,dword ptr [eax+20]
+        subss   xmm0,dword ptr [ecx+20]
         movss   dword ptr [ebp-44],xmm0
 ; end of inline function vec2f_subtract
 ; start of inline function vec2f_mul
@@ -725,29 +723,23 @@ label0005:
         movss   dword ptr [ebp-44],xmm0
 ; end of inline function vec2f_mul
 ; start of inline function vec2f_add
-        mov     edx,ecx
-        mov     [ebp-144],edx
-        mov     edx,[ebp+8]
-        mov     ebx,[edx+192]
-        imul    ebx,24
-        mov     [ebp+16],esi
-        mov     esi,edx
-        add     esi,ebx
-        add     esi,16
-        mov     [ebp+8],edx
-        mov     edx,[ebp-144]
-        movss   xmm0,dword ptr [edx+16]
+        mov     ebx,[ebp+8]
+        mov     edx,[ebx+192]
+        imul    edx,24
+        mov     ebx,[ebp+8]
+        add     ebx,edx
+        add     ebx,16
+        movss   xmm0,dword ptr [ecx+16]
         addss   xmm0,dword ptr [ebp-48]
-        movss   dword ptr [esi],xmm0
-        movss   xmm0,dword ptr [edx+20]
+        movss   dword ptr [ebx],xmm0
+        movss   xmm0,dword ptr [ecx+20]
         addss   xmm0,dword ptr [ebp-44]
-        movss   dword ptr [esi+4],xmm0
+        movss   dword ptr [ebx+4],xmm0
 ; end of inline function vec2f_add
         mov     edx,[ebp+8]
         inc     dword ptr [edx+192]
         mov     [ebp+8],edx
         mov     ebx,[ebp+12]
-        mov     esi,[ebp+16]
 label0004:
         add     ecx,24
         add     eax,24
@@ -767,7 +759,7 @@ label0002:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,144
+        add     esp,140
         pop     ebp
         ret
 __clip_on_plain endp
