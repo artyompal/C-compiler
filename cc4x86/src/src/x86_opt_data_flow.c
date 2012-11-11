@@ -1155,11 +1155,6 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
     BOOL replace_allowed;
 
     usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
-    x86_dataflow_init_use_def_tables(function, type);
-
-    // генерируем таблицы избыточных копирований
-    _redundantcopies_build_table(function, type);
-    _redundantcopies_build_inout(function, type);
 
     for (mov = function->func_binary_code; mov; mov = next) {
         next = mov->in_next;
@@ -1240,7 +1235,30 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
             }
         }
     }
+
+    allocator_free(allocator_per_function_pool, usage_arr, sizeof(void *) * function->func_insn_count);
 }
+
+//
+// Повторяет оптимизацию, пока она даёт результаты.
+static void _optimize_redundant_copies_iterative(function_desc *function, x86_operand_type type)
+{
+    int function_length, new_length = unit_get_instruction_count(function);
+
+    do {
+        function_length = new_length;
+
+        x86_dataflow_init_use_def_tables(function, type);
+        _redundantcopies_build_table(function, type);
+        _redundantcopies_build_inout(function, type);
+
+        _optimize_redundant_copies(function, type);
+
+        new_length = unit_get_instruction_count(function);
+        ASSERT(new_length <= function_length);
+    } while (new_length < function_length);
+}
+
 
 //
 // Внешний интерфейс для функции распространения копирований.
@@ -1248,8 +1266,8 @@ void x86_dataflow_optimize_redundant_copies(function_desc *function)
 {
     _detect_basic_blocks(function);
 
-    _optimize_redundant_copies(function, x86op_dword);
-    _optimize_redundant_copies(function, x86op_float);
+    _optimize_redundant_copies_iterative(function, x86op_dword);
+    _optimize_redundant_copies_iterative(function, x86op_float);
 
     x86_analyze_registers_usage(function);
 }
