@@ -51,14 +51,13 @@ _test proc
         movsd   sse29,sse3
         subsd   sse29,sse116
         cvtsd2ss        sse30,sse29
-        movss   sse117,sse30
         movss   sse34,dword ptr [___unnamed_float_0]
-        comiss  sse34,sse117
+        comiss  sse34,sse30
         ja      label0008
-        movss   sse118,sse117
+        movss   sse118,sse30
         jmp     label0009
 label0008:
-        movss   sse36,sse117
+        movss   sse36,sse30
         xorps   sse36,dword ptr [___unnamed_float_1]
         movss   sse118,sse36
 label0009:
@@ -205,22 +204,20 @@ label0019:
 label0004:
         movss   sse16,sse12
         subss   sse16,dword ptr [___unnamed_float_10]
-        movss   sse112,sse16
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_11]
-        cvtss2sd        sse18,sse112
+        cvtss2sd        sse18,sse16
 ; start of inline function fabs
         movsd   sse82,sse18
         subsd   sse82,sse116
         cvtsd2ss        sse83,sse82
-        movss   sse117,sse83
         movss   sse87,dword ptr [___unnamed_float_0]
-        comiss  sse87,sse117
+        comiss  sse87,sse83
         ja      label001c
-        movss   sse118,sse117
+        movss   sse118,sse83
         jmp     label001d
 label001c:
-        movss   sse89,sse117
+        movss   sse89,sse83
         xorps   sse89,dword ptr [___unnamed_float_1]
         movss   sse118,sse89
 label001d:
@@ -237,12 +234,11 @@ label001d:
         destroy_stack_frame
         ret
 label0005:
-        movss   sse20,sse112
+        movss   sse20,sse16
         mulss   sse20,dword ptr [___unnamed_float_3]
-        movss   sse112,sse20
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_12]
-        cvtss2sd        sse22,sse112
+        cvtss2sd        sse22,sse20
 ; start of inline function fabs
         movsd   sse92,sse22
         subsd   sse92,sse116
@@ -270,7 +266,7 @@ label0021:
         destroy_stack_frame
         ret
 label0006:
-        movss   sse24,sse112
+        movss   sse24,sse20
         divss   sse24,dword ptr [___unnamed_float_13]
 ; start of inline function eq
         movsd   sse116,qword ptr [___unnamed_double_14]

@@ -1370,11 +1370,8 @@ label000e:
         subss   xmm6,xmm2
         divss   xmm6,xmm4
 ; start of inline function _rasterize_horiz_line__unordered
-        mov     edi,ebx
-        mov     eax,[ebp-720]
-        mov     [ebp-340],esi
-        mov     esi,[ebp-712]
-        cmp     esi,eax
+        mov     eax,[ebp-712]
+        cmp     eax,[ebp-720]
         jg      label0013
         mov     [ebp-348],ecx
         movss   dword ptr [esp-4],xmm6
@@ -1385,9 +1382,9 @@ label000e:
         sub     esp,4
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
-        push    edi
+        push    ebx
+        push    dword ptr [ebp-720]
         push    eax
-        push    esi
         call    __rasterize_horiz_line
         add     esp,28
         jmp     label0014
@@ -1402,9 +1399,9 @@ label0013:
         sub     esp,4
         movss   dword ptr [esp-4],xmm1
         sub     esp,4
-        push    edi
-        push    esi
+        push    ebx
         push    eax
+        push    dword ptr [ebp-720]
         call    __rasterize_horiz_line
         add     esp,28
 label0014:
@@ -1413,7 +1410,6 @@ label0014:
         mov     eax,[ebp-708]
         mov     ecx,[ebp-348]
         mov     edx,[ebp-344]
-        mov     esi,[ebp-340]
         mov     edi,[ebp-336]
         jmp     label000e
 label000f:

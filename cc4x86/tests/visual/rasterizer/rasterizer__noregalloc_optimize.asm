@@ -418,10 +418,9 @@ label0000:
         mov     dword23,dword101
         sar     dword23,24
         and     dword23,255
-        mov     dword112,dword23
-        cmp     dword112,0
+        cmp     dword23,0
         je      label0003
-        cvtsi2ss        sse1,dword112
+        cvtsi2ss        sse1,dword23
         divss   sse1,dword ptr [___unnamed_float_6]
         mov     dword33,[dword103]
         mov     dword36,dword33
@@ -512,7 +511,6 @@ label0001:
         mulss   sse49,dword ptr [dword378+12]
         addss   sse47,sse49
 ; end of inline function vec4f_dot
-        movss   sse72,sse47
 ; start of inline function vec4f_subtract
         movss   sse31,dword ptr [dword358]
         subss   sse31,dword ptr [dword377]
@@ -541,7 +539,7 @@ label0001:
         addss   sse52,sse54
 ; end of inline function vec4f_dot
         movss   sse3,dword ptr [___unnamed_float_2]
-        comiss  sse3,sse72
+        comiss  sse3,sse47
         ja      label0003
         mov     dword36,[dword375+192]
         inc     dword ptr [dword375+192]
@@ -554,7 +552,7 @@ label0001:
         rep     movsd   dword42,dword43
 label0003:
         movss   sse4,dword ptr [___unnamed_float_2]
-        comiss  sse4,sse72
+        comiss  sse4,sse47
         jae     label0006
         movss   sse5,dword ptr [___unnamed_float_2]
         comiss  sse5,sse52
@@ -564,7 +562,7 @@ label0006:
         comiss  sse6,sse52
         ja      label0004
         movss   sse7,dword ptr [___unnamed_float_2]
-        comiss  sse7,sse72
+        comiss  sse7,sse47
         jbe     label0004
 label0005:
 ; start of inline function vec4f_subtract
@@ -931,7 +929,6 @@ label0003:
         mov     dword61,dword866
         sal     dword61,4
         add     dword58,dword61
-        mov     dword886,dword58
 ; start of inline function matrix4f_transform
         mov     dword890,(offset __viewport_matrix)
         movss   sse81,dword ptr [dword54+4]
@@ -990,21 +987,21 @@ label0003:
         movss   sse78,dword ptr [ebp-688]
         mulss   sse78,sse77
         cvttss2si       dword765,sse78
-        mov     [dword886],dword765
+        mov     [dword58],dword765
         lea     dword768,[ebp-688]
         add     dword768,4
         movss   sse79,dword ptr [dword768]
         mulss   sse79,sse77
         cvttss2si       dword771,sse79
-        mov     [dword886+4],dword771
-        cmp     dword ptr [dword886],0
+        mov     [dword58+4],dword771
+        cmp     dword ptr [dword58],0
         jl      label002a
-        mov     dword780,[dword886]
+        mov     dword780,[dword58]
         cmp     dword780,dword ptr [__width]
         jge     label002a
-        cmp     dword ptr [dword886+4],0
+        cmp     dword ptr [dword58+4],0
         jl      label002a
-        mov     dword787,[dword886+4]
+        mov     dword787,[dword58+4]
         cmp     dword787,dword ptr [__height]
         jl      label0029
 label002a:
@@ -1309,19 +1306,16 @@ label000e:
         movss   sse106,sse8
         movss   sse105,sse11
         movss   sse104,sse5
-        mov     dword876,dword873
-        mov     dword875,dword211
-        mov     dword874,dword190
-        cmp     dword874,dword875
+        cmp     dword190,dword211
         jg      label0013
         push_all
         push_arg        sse109,4
         push_arg        sse108,4
         push_arg        sse105,4
         push_arg        sse104,4
-        push_arg        dword876,4
-        push_arg        dword875,4
-        push_arg        dword874,4
+        push_arg        dword873,4
+        push_arg        dword211,4
+        push_arg        dword190,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
@@ -1332,9 +1326,9 @@ label0013:
         push_arg        sse108,4
         push_arg        sse107,4
         push_arg        sse106,4
-        push_arg        dword876,4
-        push_arg        dword874,4
-        push_arg        dword875,4
+        push_arg        dword873,4
+        push_arg        dword190,4
+        push_arg        dword211,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
