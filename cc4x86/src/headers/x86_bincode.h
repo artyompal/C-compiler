@@ -239,7 +239,8 @@ typedef struct x86_instruction_decl {
 
 #define IS_MODIFYING_INSN(INSN)         ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_not \
                                         || (INSN) >= x86insn_int_add && (INSN) <= x86insn_int_or \
-                                        || (INSN) >= x86insn_sse_addss && (INSN) <= x86insn_sse_xorpd)
+                                        || (INSN) >= x86insn_sse_addss && (INSN) <= x86insn_sse_xorpd \
+                                        || (INSN) == x86insn_rep_movsb || (INSN) == x86insn_rep_movsd)
 
 #define IS_DWORD_DEFINING_INSN(INSN)    ((INSN) == x86insn_int_mov || IS_SET_INSN((INSN)) \
                                         || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \

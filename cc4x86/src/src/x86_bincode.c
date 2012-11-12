@@ -211,6 +211,10 @@ BOOL bincode_is_pseudoreg_modified_by_insn(x86_instruction *insn, x86_operand_ty
 {
     int i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
 
+    if (!IS_VOLATILE_INSN(insn->in_code, type)) {
+        return FALSE;
+    }
+
     bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
 
     for (i = 0; i < regs_cnt; i++) {
