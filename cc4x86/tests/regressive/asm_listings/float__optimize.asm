@@ -234,13 +234,14 @@ label0006:
 ; start of inline function fabs
         subsd   xmm7,xmm5
         cvtsd2ss        xmm7,xmm7
-        movss   xmm0,xmm7
-        movss   xmm5,dword ptr [___unnamed_float_0]
-        comiss  xmm5,xmm0
+        movss   xmm0,dword ptr [___unnamed_float_0]
+        comiss  xmm0,xmm7
         ja      label0024
+        movss   xmm0,xmm7
         jmp     label0025
 label0024:
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm7,dword ptr [___unnamed_float_1]
+        movss   xmm0,xmm7
 label0025:
 ; end of inline function fabs
         comiss  xmm0,dword ptr [___unnamed_float_2]

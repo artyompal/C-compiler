@@ -480,14 +480,15 @@ _rasterizer_init proc
         push    edx
         call    _vec4f_assign
         add     esp,20
-        movss   xmm0,dword ptr [ebp+28]
-        comiss  xmm0,dword ptr [ebp+24]
+        movss   xmm6,dword ptr [ebp+28]
+        comiss  xmm6,dword ptr [ebp+24]
         jbe     label0000
         movss   xmm7,dword ptr [___unnamed_float_1]
         jmp     label0001
 label0000:
         movss   xmm7,dword ptr [___unnamed_float_5]
 label0001:
+        movss   dword ptr [ebp+28],xmm6
         movss   xmm0,dword ptr [___unnamed_float_1]
         movss   dword ptr [esp-4],xmm0
         sub     esp,4
@@ -517,8 +518,8 @@ label0001:
         push    edx
         call    _vec4f_assign
         add     esp,20
-        movss   xmm0,dword ptr [ebp+28]
-        comiss  xmm0,dword ptr [ebp+24]
+        movss   xmm6,dword ptr [ebp+28]
+        comiss  xmm6,dword ptr [ebp+24]
         jbe     label0002
         movss   xmm7,dword ptr [___unnamed_float_5]
         jmp     label0003

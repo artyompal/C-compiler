@@ -187,8 +187,7 @@ _rasterizer_init proc
         movss   dword ptr [edi+8],xmm5
         movss   dword ptr [edi+12],xmm7
 ; end of inline function vec4f_assign
-        movss   xmm0,xmm6
-        comiss  xmm0,xmm5
+        comiss  xmm6,xmm5
         jbe     label0000
         movss   xmm7,dword ptr [___unnamed_float_1]
         jmp     label0001

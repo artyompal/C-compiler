@@ -185,8 +185,7 @@ _rasterizer_init proc
         movss   dword ptr [dword375+8],sse189
         movss   dword ptr [dword375+12],sse178
 ; end of inline function vec4f_assign
-        movss   sse8,sse190
-        comiss  sse8,sse189
+        comiss  sse190,sse189
         jbe     label0000
         movss   sse173,dword ptr [___unnamed_float_1]
         jmp     label0001
@@ -213,8 +212,7 @@ label0001:
         movss   dword ptr [dword375+8],sse190
         movss   dword ptr [dword375+12],sse178
 ; end of inline function vec4f_assign
-        movss   sse17,sse190
-        comiss  sse17,sse189
+        comiss  sse190,sse189
         jbe     label0002
         movss   sse174,dword ptr [___unnamed_float_5]
         jmp     label0003
