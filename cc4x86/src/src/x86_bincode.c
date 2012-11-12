@@ -124,6 +124,15 @@ BOOL bincode_operand_contains_register(x86_operand *op, x86_operand_type type, i
 
 void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
+    if (type == x86op_dword && (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd)) {
+        ASSERT(OP_IS_REGISTER(insn->in_op1, type) && OP_IS_REGISTER(insn->in_op2, type));
+        regs[0] = insn->in_op1.data.reg;
+        regs[1] = insn->in_op2.data.reg;
+        regs[2] = insn->in_op3;
+        *regs_cnt = 3;
+        return;
+    }
+
     *regs_cnt = 0;
 
     if (OP_IS_ADDRESS(insn->in_op1)) {
@@ -171,18 +180,20 @@ void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_operand_
 
 void bincode_extract_pseudoregs_modified_by_insn(x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
-    *regs_cnt = 0;
-
-    if (OP_IS_PSEUDO_REG(insn->in_op1, type) && IS_MODIFYING_INSN(insn->in_code)) {
-        regs[*regs_cnt] = insn->in_op1.data.reg;
-        ++*regs_cnt;
-    }
-
     if (type == x86op_dword && (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd)) {
-        ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type));
+        ASSERT(OP_IS_REGISTER(insn->in_op1, type) && OP_IS_REGISTER(insn->in_op2, type));
         regs[0] = insn->in_op1.data.reg;
         regs[1] = insn->in_op2.data.reg;
-        *regs_cnt = 2;
+        regs[2] = insn->in_op3;
+        *regs_cnt = 3;
+        return;
+    }
+
+    *regs_cnt = 0;
+
+    if (OP_IS_PSEUDO_REG(insn->in_op1, type) && IS_VOLATILE_INSN(insn->in_code, type)) {
+        regs[*regs_cnt] = insn->in_op1.data.reg;
+        ++*regs_cnt;
     }
 }
 

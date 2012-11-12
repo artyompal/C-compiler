@@ -445,33 +445,18 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
             }
         }
 
-        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, reg_numbers, &registers_count);
-
-        for (i = 0; i < registers_count; i++) {
-            reg = reg_numbers[i];
-            ASSERT(reg < pseudoregs_cnt);
-
-            ASSERT(OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg));
-            pseudoregs_map[reg].reg_content_type = insn->in_op1.op_type;
-
-            if (!pseudoregs_map[reg].reg_first_write) {
-                pseudoregs_map[reg].reg_first_write = insn;
-            } else {
-                pseudoregs_map[reg].reg_changes_value = TRUE;
-            }
-        }
-
         bincode_extract_pseudoregs_modified_by_insn(insn, type, reg_numbers, &registers_count);
 
         for (i = 0; i < registers_count; i++) {
             reg = reg_numbers[i];
             ASSERT(reg < pseudoregs_cnt);
 
-            ASSERT(pseudoregs_map[reg].reg_first_write);
-            pseudoregs_map[reg].reg_changes_value = TRUE;
+            pseudoregs_map[reg].reg_content_type = (OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg) ? insn->in_op1.op_type : insn->in_op2.op_type);
 
-            if (!OP_IS_REGVAR(reg, type)) {
-                pseudoregs_map[reg].reg_last_read = insn;
+            if (!pseudoregs_map[reg].reg_first_write) {
+                pseudoregs_map[reg].reg_first_write = insn;
+            } else {
+                pseudoregs_map[reg].reg_changes_value = TRUE;
             }
         }
 
@@ -496,17 +481,6 @@ static void _analyze_registers_usage(function_desc *function, register_stat *sta
                     for (last = insn->in_next; last->in_code != x86insn_int_div; last = last->in_next) {}
                     pseudoregs_map[reg].reg_last_read = last;
                 }
-            } else if(insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd) {
-                // Для инструкций REP MOVSB/MOVSD: ставим область использования ECX до этой инструкции,
-                // если он не используется после; ставим также флаг модификации, чтобы защитить регистр от оптимизации.
-                ASSERT(OP_IS_REGISTER(insn->in_prev->in_op1, type));
-                reg = insn->in_prev->in_op1.data.reg;
-
-                if (pseudoregs_map[reg].reg_last_read == NULL) {
-                    pseudoregs_map[reg].reg_last_read = insn;
-                }
-
-                pseudoregs_map[reg].reg_changes_value = TRUE;
             }
         }
     }
