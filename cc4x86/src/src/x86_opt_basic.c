@@ -307,7 +307,7 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
             if (_is_address_using_reg(&usage->in_op1, reg)) {
                 _replace_register_in_address_with_constant(&usage->in_op1, reg, val);
             } else if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, x86op_dword, reg)) {
-                ASSERT(!IS_VOLATILE_INSN(usage->in_code, usage->in_op1.op_type));
+                ASSERT(!IS_VOLATILE_INSN(usage->in_code));
                 return;
             }
 

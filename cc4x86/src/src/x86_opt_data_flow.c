@@ -550,7 +550,7 @@ static void _exposeduses_get_usage_of_definition(int reg, x86_instruction *def, 
 
     // добавляем все использования в пределах данного блока
     for (test = def->in_next; test != def->in_block->block_last_insn->in_next; test = test->in_next) {
-        if (OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg) && IS_DEFINING_INSN(test->in_code, type)) {
+        if (bincode_is_pseudoreg_overwritten_by_insn(test, type, reg)) {
             reached_def = TRUE;
             break;
         } else if (bincode_insn_contains_register(test, type, reg)) {
@@ -609,7 +609,7 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
         }
 
         // добавляем найденные определения в таблицу
-        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_PSEUDO_REG(insn->in_op1, type)) {
+        if (IS_VOLATILE_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type)) {
             _definitions_table.insn_base[count++] = insn;
         }
     }
@@ -628,7 +628,7 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
 {
     int *reg_definitions_table = alloca(sizeof(int)*function->func_pseudoregs_count[type]);
     x86_instruction *insn;
-    int def, reg;
+    int def, reg, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
 
     ASSERT(gen->set_count == _definitions_table.insn_count);
     set_clear_to_zeros(gen);
@@ -637,9 +637,10 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
     // Находим для каждого регистра последнее однозначное определение, записывающее в него.
     for (def = block->block_first_def; def < block->block_last_def; def++) {
         insn = _definitions_table.insn_base[def];
+        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
 
-        if (IS_DEFINING_INSN(insn->in_code, type)) {
-            reg_definitions_table[insn->in_op1.data.reg] = def;
+        for (i = 0; i < regs_cnt; i++) {
+            reg_definitions_table[regs[i]] = def;
         }
     }
 
