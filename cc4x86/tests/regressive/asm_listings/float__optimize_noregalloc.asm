@@ -62,8 +62,7 @@ label0008:
         movss   sse118,sse36
 label0009:
 ; end of inline function fabs
-        movss   sse31,sse118
-        comiss  sse31,dword ptr [___unnamed_float_2]
+        comiss  sse118,dword ptr [___unnamed_float_2]
         setb    byte2
         movzx   dword62,byte2
 ; end of inline function eq
@@ -94,8 +93,7 @@ label000c:
         movss   sse118,sse47
 label000d:
 ; end of inline function fabs
-        movss   sse42,sse118
-        comiss  sse42,dword ptr [___unnamed_float_2]
+        comiss  sse118,dword ptr [___unnamed_float_2]
         setb    byte5
         movzx   dword75,byte5
 ; end of inline function eq
@@ -125,8 +123,7 @@ label0010:
         movss   sse118,sse58
 label0011:
 ; end of inline function fabs
-        movss   sse53,sse118
-        comiss  sse53,dword ptr [___unnamed_float_2]
+        comiss  sse118,dword ptr [___unnamed_float_2]
         setb    byte8
         movzx   dword88,byte8
 ; end of inline function eq
@@ -157,8 +154,7 @@ label0014:
         movss   sse118,sse69
 label0015:
 ; end of inline function fabs
-        movss   sse64,sse118
-        comiss  sse64,dword ptr [___unnamed_float_2]
+        comiss  sse118,dword ptr [___unnamed_float_2]
         setb    byte11
         movzx   dword101,byte11
 ; end of inline function eq
@@ -190,8 +186,7 @@ label0018:
         movss   sse118,sse79
 label0019:
 ; end of inline function fabs
-        movss   sse74,sse118
-        comiss  sse74,dword ptr [___unnamed_float_2]
+        comiss  sse118,dword ptr [___unnamed_float_2]
         setb    byte14
         movzx   dword114,byte14
 ; end of inline function eq
@@ -211,19 +206,19 @@ label0004:
         movsd   sse82,sse18
         subsd   sse82,sse116
         cvtsd2ss        sse83,sse82
+        movss   sse117,sse83
         movss   sse87,dword ptr [___unnamed_float_0]
-        comiss  sse87,sse83
+        comiss  sse87,sse117
         ja      label001c
-        movss   sse118,sse83
+        movss   sse118,sse117
         jmp     label001d
 label001c:
-        movss   sse89,sse83
+        movss   sse89,sse117
         xorps   sse89,dword ptr [___unnamed_float_1]
         movss   sse118,sse89
 label001d:
 ; end of inline function fabs
-        movss   sse84,sse118
-        comiss  sse84,dword ptr [___unnamed_float_2]
+        comiss  sse118,dword ptr [___unnamed_float_2]
         setb    byte17
         movzx   dword127,byte17
 ; end of inline function eq
@@ -254,8 +249,7 @@ label0020:
         movss   sse118,sse99
 label0021:
 ; end of inline function fabs
-        movss   sse94,sse118
-        comiss  sse94,dword ptr [___unnamed_float_2]
+        comiss  sse118,dword ptr [___unnamed_float_2]
         setb    byte20
         movzx   dword140,byte20
 ; end of inline function eq
@@ -275,20 +269,18 @@ label0006:
         movsd   sse102,sse26
         subsd   sse102,sse116
         cvtsd2ss        sse103,sse102
-        movss   sse117,sse103
         movss   sse107,dword ptr [___unnamed_float_0]
-        comiss  sse107,sse117
+        comiss  sse107,sse103
         ja      label0024
-        movss   sse118,sse117
+        movss   sse118,sse103
         jmp     label0025
 label0024:
-        movss   sse109,sse117
+        movss   sse109,sse103
         xorps   sse109,dword ptr [___unnamed_float_1]
         movss   sse118,sse109
 label0025:
 ; end of inline function fabs
-        movss   sse104,sse118
-        comiss  sse104,dword ptr [___unnamed_float_2]
+        comiss  sse118,dword ptr [___unnamed_float_2]
         setb    byte23
         movzx   dword153,byte23
 ; end of inline function eq

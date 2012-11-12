@@ -422,8 +422,7 @@ _rasterizer_init proc
         call    _vec4f_assign
         restore_stack   20
         pop_all
-        movss   sse8,sse65
-        comiss  sse8,sse64
+        comiss  sse65,sse64
         jbe     label0000
         movss   sse62,dword ptr [___unnamed_float_1]
         jmp     label0001
@@ -456,8 +455,7 @@ label0001:
         call    _vec4f_assign
         restore_stack   20
         pop_all
-        movss   sse17,sse65
-        comiss  sse17,sse64
+        comiss  sse65,sse64
         jbe     label0002
         movss   sse63,dword ptr [___unnamed_float_5]
         jmp     label0003

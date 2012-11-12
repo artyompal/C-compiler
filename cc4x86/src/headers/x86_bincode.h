@@ -237,11 +237,6 @@ typedef struct x86_instruction_decl {
 #define IS_JMP_INSN(INSN)               ((INSN) >= x86insn_jmp && (INSN) <= x86insn_ja)
 #define IS_JCC_INSN(INSN)               ((INSN) > x86insn_jmp && (INSN) <= x86insn_ja)
 
-#define IS_MODIFYING_INSN(INSN)         ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_not \
-                                        || (INSN) >= x86insn_int_add && (INSN) <= x86insn_int_or \
-                                        || (INSN) >= x86insn_sse_addss && (INSN) <= x86insn_sse_xorpd \
-                                        || (INSN) == x86insn_rep_movsb || (INSN) == x86insn_rep_movsd)
-
 #define IS_DWORD_DEFINING_INSN(INSN)    ((INSN) == x86insn_int_mov || IS_SET_INSN((INSN)) \
                                         || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \
                                         || (INSN) == x86insn_pop || (INSN) == x86insn_read_retval \
@@ -252,18 +247,13 @@ typedef struct x86_instruction_decl {
                                         || (INSN) >= x86insn_sse_float2double && (INSN) <= x86insn_sse_movsd \
                                         || (INSN) == x86insn_read_retval)
 #define IS_DEFINING_INSN(INSN, TYPE)    ((TYPE) == x86op_dword && IS_DWORD_DEFINING_INSN(INSN) || x86_equal_types((TYPE), x86op_float) && IS_FLOAT_DEFINING_INSN(INSN))
-#define IS_VOLATILE_INSN(INSN, TYPE)    (IS_DEFINING_INSN(INSN, TYPE) || IS_MODIFYING_INSN(INSN))
 #define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_sse_comiss || (INSN) == x86insn_sse_comisd || (INSN) == x86insn_push \
                                         || (INSN) == x86insn_push_arg || (INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
+#define IS_VOLATILE_INSN(INSN, TYPE)    (!IS_CONSTANT_INSN(INSN))
 
 #define IS_MUL_DIV_INSN(INSN)           ((INSN) >= x86insn_int_idiv && (INSN) <= x86insn_int_div)
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
 #define IS_MOV_INSN(INSN)               ((INSN) == x86insn_int_mov || (INSN) == x86insn_sse_movss || (INSN) == x86insn_sse_movsd)
-
-#define IS_SYMMETRIC_INSN(INSN)         ((INSN) == x86insn_int_add || (INSN) == x86insn_int_mul || (INSN) == x86insn_int_imul || \
-                                        (INSN) >= x86insn_int_and && (INSN) <= x86insn_int_or || (INSN) == x86insn_int_cmp || \
-                                        (INSN) == x86insn_sse_addss || (INSN) == x86insn_sse_mulss || (INSN) == x86insn_sse_comiss || \
-                                        (INSN) == x86insn_sse_addsd || (INSN) == x86insn_sse_mulsd || (INSN) == x86insn_sse_comisd)
 
 #define MAX_REGISTERS_PER_INSN          (3)
 
