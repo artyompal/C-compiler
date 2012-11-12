@@ -249,7 +249,7 @@ typedef struct x86_instruction_decl {
 #define IS_DEFINING_INSN(INSN, TYPE)    ((TYPE) == x86op_dword && IS_DWORD_DEFINING_INSN(INSN) || x86_equal_types((TYPE), x86op_float) && IS_FLOAT_DEFINING_INSN(INSN))
 #define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_sse_comiss || (INSN) == x86insn_sse_comisd || (INSN) == x86insn_push \
                                         || (INSN) == x86insn_push_arg || (INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
-#define IS_VOLATILE_INSN(INSN, TYPE)    (!IS_CONSTANT_INSN(INSN))
+#define IS_VOLATILE_INSN(INSN)          (!IS_CONSTANT_INSN(INSN))
 
 #define IS_MUL_DIV_INSN(INSN)           ((INSN) >= x86insn_int_idiv && (INSN) <= x86insn_int_div)
 #define IS_SHIFT_INSN(INSN)             ((INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_shr)
@@ -282,11 +282,12 @@ void    bincode_extract_pseudoregs_from_insn_wo_dupes   (x86_instruction *insn, 
 void    bincode_extract_real_registers_from_insn        (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 BOOL    bincode_insn_contains_register                  (x86_instruction *insn, x86_operand_type type, int reg);
 BOOL    bincode_operand_contains_register               (x86_operand *op, x86_operand_type type, int reg);
-BOOL    bincode_is_pseudoreg_modified_by_insn           (x86_instruction *insn, x86_operand_type type, int reg);
 
 void    bincode_extract_pseudoregs_read_by_insn         (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_pseudoregs_modified_by_insn     (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_pseudoregs_overwritten_by_insn  (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+BOOL    bincode_is_pseudoreg_modified_by_insn           (x86_instruction *insn, x86_operand_type type, int reg);
+BOOL    bincode_is_pseudoreg_overwritten_by_insn        (x86_instruction *insn, x86_operand_type type, int reg);
 
 void    bincode_create_operand_from_int_constant        (x86_operand *op, x86_operand_type type, int constant);
 void    bincode_create_operand_from_register            (x86_operand *op, x86_operand_type type, int reg);

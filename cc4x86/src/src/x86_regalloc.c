@@ -768,7 +768,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
         }
 
         // Если регистр изменён, запоминаем этот факт для случая, когда регистр придётся выгружать.
-        if (IS_VOLATILE_INSN(insn->in_code, type) && result > 0 && OP_IS_REGISTER(insn->in_op1, type) &&
+        if (IS_VOLATILE_INSN(insn->in_code) && result > 0 && OP_IS_REGISTER(insn->in_op1, type) &&
             !(IS_MOV_INSN(insn->in_code) && OP_IS_SPEC_EBP_OFFSET(insn->in_op2, pseudoregs_map[result].reg_stack_location))) {
                 pseudoregs_map[result].reg_dirty = TRUE;
             }
