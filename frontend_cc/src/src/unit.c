@@ -969,6 +969,12 @@ void unit_push_binary_instruction(x86_instruction_code code, x86_operand *op1, x
     _curr_func->func_binary_code_end = res;
 }
 
+void unit_push_ternary_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2, int op3)
+{
+    unit_push_binary_instruction(code, op1, op2);
+    _curr_func->func_binary_code_end->in_op3 = op3;
+}
+
 
 register_stat * unit_get_regstat(function_desc *function, x86_operand_type type)
 {

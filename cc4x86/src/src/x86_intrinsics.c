@@ -79,7 +79,7 @@ static void _static_memcpy(x86_operand *dst, x86_operand *src, int size)
     unit_push_binary_instruction(x86insn_int_mov, &ecx, &num);
 
     // rep movsd
-    unit_push_binary_instruction(x86insn_rep_movsd, &edi, &esi);
+    unit_push_ternary_instruction(x86insn_rep_movsd, &edi, &esi, ecx.data.reg);
 
     if (size % 4 != 0) {
         // mov ecx, size
@@ -88,7 +88,7 @@ static void _static_memcpy(x86_operand *dst, x86_operand *src, int size)
         unit_push_binary_instruction(x86insn_int_mov, &ecx, &num);
 
         // rep movsb
-        unit_push_binary_instruction(x86insn_rep_movsb, &edi, &esi);
+        unit_push_ternary_instruction(x86insn_rep_movsb, &edi, &esi, ecx.data.reg);
     }
 }
 
@@ -139,7 +139,7 @@ void x86_intrinsic_dynamic_memcpy(x86_operand *res, x86_operand *dst, x86_operan
     unit_push_binary_instruction(x86insn_int_shr, &ecx, &num);
 
     // rep movsd
-    unit_push_binary_instruction(x86insn_rep_movsd, &edi, &esi);
+    unit_push_ternary_instruction(x86insn_rep_movsd, &edi, &esi, ecx.data.reg);
 
     // mov ecx, eax
     unit_push_binary_instruction(x86insn_int_mov, &ecx, &eax);
@@ -149,7 +149,7 @@ void x86_intrinsic_dynamic_memcpy(x86_operand *res, x86_operand *dst, x86_operan
     unit_push_binary_instruction(x86insn_int_and, &ecx, &num);
 
     // rep movsb
-    unit_push_binary_instruction(x86insn_rep_movsb, &edi, &esi);
+    unit_push_ternary_instruction(x86insn_rep_movsb, &edi, &esi, ecx.data.reg);
 
     *res = *dst;
 }

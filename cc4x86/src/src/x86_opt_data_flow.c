@@ -401,13 +401,6 @@ static void _exposeduses_build_use(set *use, basic_block *block, function_desc *
             reg = regs[j];
             BIT_RAISE(defined_registers, reg);
         }
-
-        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
-
-        for (j = 0; j < regs_cnt; j++) {
-            reg = regs[j];
-            BIT_RAISE(defined_registers, reg);
-        }
     }
 }
 
@@ -426,7 +419,7 @@ static void _exposeduses_build_def(set *def, basic_block *block, function_desc *
 
     defined_registers = allocator_alloc(allocator_per_function_pool, sizeof(int)*block->block_length*MAX_REGISTERS_PER_INSN);
 
-    // Ќаходим все регистры, которые переписываютс€ в данном блоке.
+    // Ќаходим все регистры, которые модифицируютс€ в данном блоке.
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
         bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
         memcpy(defined_registers+defined_registers_count, regs, sizeof(int)*regs_cnt);

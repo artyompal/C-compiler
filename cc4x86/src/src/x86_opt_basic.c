@@ -5,9 +5,6 @@
 #include "x86_regalloc.h"
 
 
-// FIXME: при кодогенерации не должно появляться байтовых регистров; нужно делать movzx/movsx в нужных местах.
-
-
 #define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base > 0 && (OP).data.address.index == 0 \
                                                 && (OP).data.address.offset == 0)
 #define ADDRESS_IS_UNSCALED_INDEX(OP)       ((OP).data.address.base == 0 && (OP).data.address.index > 0 \
@@ -469,8 +466,7 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *insn)
 // Оптимизирует конструкции с LEA.
 static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 {
-    ASSERT(insn->in_op1.op_loc == x86loc_register);
-    ASSERT(insn->in_op1.data.reg > 0);  // LEA оперирует только псевдорегистрами.
+    ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword));
 
     if (insn->in_op2.op_loc == x86loc_symbol) {
         _try_optimize_lea_reg_symbol(function, insn);

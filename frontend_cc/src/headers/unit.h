@@ -101,6 +101,7 @@ void            unit_codegen                        (void);
 void            unit_push_nullary_instruction       (x86_instruction_code code);
 void            unit_push_unary_instruction         (x86_instruction_code code, x86_operand *op);
 void            unit_push_binary_instruction        (x86_instruction_code code, x86_operand *op1, x86_operand *op2);
+void            unit_push_ternary_instruction       (x86_instruction_code code, x86_operand *op1, x86_operand *op2, int op3);
 
 // поддержка оптимизатора
 register_stat * unit_get_regstat                    (function_desc *function, x86_operand_type type);

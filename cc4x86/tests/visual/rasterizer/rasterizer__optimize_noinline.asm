@@ -1442,7 +1442,7 @@ __rasterize_triangle_2i endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,76
+        sub     esp,80
         push    edi
         push    esi
         push    ebx
@@ -1475,7 +1475,7 @@ label0001:
         push    edx
         call    _vec4f_dot
         add     esp,8
-        movss   dword ptr [ebp-68],xmm0
+        movss   dword ptr [ebp-72],xmm0
         push    esi
         push    dword ptr [ebp-8]
         lea     edx,[ebp-24]
@@ -1488,7 +1488,7 @@ label0001:
         call    _vec4f_dot
         add     esp,8
         movss   xmm1,dword ptr [___unnamed_float_2]
-        comiss  xmm1,dword ptr [ebp-68]
+        comiss  xmm1,dword ptr [ebp-72]
         ja      label0003
         mov     edi,[ebp+8]
         mov     edx,[edi+192]
@@ -1505,10 +1505,11 @@ label0001:
         mov     esi,[ebp-4]
         mov     ecx,6
         rep     movsd
+        mov     [ebp-68],ecx
         mov     esi,[ebp+16]
 label0003:
         movss   xmm1,dword ptr [___unnamed_float_2]
-        comiss  xmm1,dword ptr [ebp-68]
+        comiss  xmm1,dword ptr [ebp-72]
         jae     label0006
         movss   xmm1,dword ptr [___unnamed_float_2]
         comiss  xmm1,xmm0
@@ -1518,7 +1519,7 @@ label0006:
         comiss  xmm1,xmm0
         ja      label0004
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,dword ptr [ebp-68]
+        comiss  xmm0,dword ptr [ebp-72]
         jbe     label0004
 label0005:
         push    dword ptr [ebp-4]
@@ -1538,17 +1539,17 @@ label0005:
         push    edx
         call    _vec4f_dot
         add     esp,8
-        movss   dword ptr [ebp-72],xmm0
+        movss   dword ptr [ebp-76],xmm0
         push    dword ptr [ebp+20]
         lea     edx,[ebp-40]
         push    edx
         call    _vec4f_dot
         add     esp,8
+        movss   dword ptr [ebp-80],xmm0
+        movss   xmm0,dword ptr [ebp-76]
+        divss   xmm0,dword ptr [ebp-80]
         movss   dword ptr [ebp-76],xmm0
-        movss   xmm0,dword ptr [ebp-72]
-        divss   xmm0,dword ptr [ebp-76]
-        movss   dword ptr [ebp-72],xmm0
-        push    dword ptr [ebp-72]
+        push    dword ptr [ebp-76]
         lea     edx,[ebp-40]
         push    edx
         call    _vec4f_mul
@@ -1574,7 +1575,7 @@ label0005:
         push    eax
         call    _vec2f_subtract
         add     esp,12
-        push    dword ptr [ebp-72]
+        push    dword ptr [ebp-76]
         lea     eax,[ebp-48]
         push    eax
         call    _vec2f_mul
@@ -1617,7 +1618,7 @@ label0002:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,76
+        add     esp,80
         pop     ebp
         ret
 __clip_on_plain endp
