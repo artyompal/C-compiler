@@ -654,7 +654,7 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
             for (; def != block->block_last_def; def++) {
                 insn = _definitions_table.insn_base[def];
 
-                if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg)) {
+                if (bincode_is_pseudoreg_modified_by_insn(insn, type, reg)) {
                     BIT_RAISE(*gen, def);
                 }
             }
@@ -671,7 +671,7 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
 {
     x86_instruction *insn;
     set modified_regs;
-    int def, reg;
+    int def, reg, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
 
     ASSERT(kill->set_count == _definitions_table.insn_count);
     set_clear_to_zeros(kill);
@@ -682,9 +682,10 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
     // Находим для каждого регистра последнее определение, записывающее в него.
     for (def = block->block_first_def; def < block->block_last_def; def++) {
         insn = _definitions_table.insn_base[def];
+        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
 
-        if (IS_VOLATILE_INSN(insn->in_code, type)) {
-            BIT_RAISE(modified_regs, insn->in_op1.data.reg);
+        for (i = 0; i < regs_cnt; i++) {
+            BIT_RAISE(modified_regs, regs[i]);
         }
     }
 
@@ -804,7 +805,7 @@ static BOOL _reachingdef_is_definition_available(x86_instruction *def, x86_instr
 
         if (test == def) {
             for (test = def->in_next; test != insn && test != def_block->block_last_insn->in_next; test = test->in_next) {
-                if (IS_VOLATILE_INSN(test->in_code, type) && OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg)) {
+                if (bincode_is_pseudoreg_modified_by_insn(test, type, reg)) {
                     return FALSE;
                 }
             }
@@ -825,7 +826,7 @@ static BOOL _reachingdef_is_definition_available(x86_instruction *def, x86_instr
 
     // если от начала блока до интересующей инструкции нет определений reg, то результат положительный
     for (test = insn_block->block_leader; test != insn; test = test->in_next) {
-        if (IS_VOLATILE_INSN(test->in_code, type) && OP_IS_THIS_PSEUDO_REG(test->in_op1, type, reg)) {
+        if (bincode_is_pseudoreg_modified_by_insn(test, type, reg)) {
             return FALSE;
         }
     }
@@ -876,7 +877,7 @@ static void _redundantcopies_build_gen(set *gen, function_desc *function, basic_
 {
     x86_instruction *insn;
     set modified_regs;
-    int idx;
+    int idx, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
 
     SET_ALLOCA(modified_regs, function->func_pseudoregs_count[type]);
     set_clear_to_zeros(&modified_regs);
@@ -893,8 +894,10 @@ static void _redundantcopies_build_gen(set *gen, function_desc *function, basic_
                 BIT_RAISE(*gen, idx);
             }
 
-        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_PSEUDO_REG(insn->in_op1, type)) {
-            BIT_RAISE(modified_regs, insn->in_op1.data.reg);
+        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
+
+        for (i = 0; i < regs_cnt; i++) {
+            BIT_RAISE(modified_regs, regs[i]);
         }
     }
 }
@@ -905,7 +908,7 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
 {
     x86_instruction *insn;
     set modified_regs;
-    int idx;
+    int idx, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
 
     SET_ALLOCA(modified_regs, function->func_pseudoregs_count[type]);
     set_clear_to_zeros(&modified_regs);
@@ -915,8 +918,10 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
 
     // помечаем все модифицированные в этом блоке регистры
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
-        if (IS_VOLATILE_INSN(insn->in_code, type) && OP_IS_PSEUDO_REG(insn->in_op1, type)) {
-            BIT_RAISE(modified_regs, insn->in_op1.data.reg);
+        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
+
+        for (i = 0; i < regs_cnt; i++) {
+            BIT_RAISE(modified_regs, regs[i]);
         }
     }
 
@@ -1196,11 +1201,10 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                     }
 
                     // если x или y изменяются, выходим
-                    if ((OP_IS_THIS_PSEUDO_REG(test->in_op1, type, x) || OP_IS_THIS_PSEUDO_REG(test->in_op1, type, y))
-                        && IS_VOLATILE_INSN(test->in_code, type)) {
-                            replace_allowed = FALSE;
-                            break;
-                        }
+                    if (bincode_is_pseudoreg_modified_by_insn(test, type, x) || bincode_is_pseudoreg_modified_by_insn(test, type, y)) {
+                        replace_allowed = FALSE;
+                        break;
+                    }
                 }
             }
 
