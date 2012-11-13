@@ -1623,7 +1623,7 @@ __rasterize_triangle_2i endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,72
+        sub     esp,68
         push    edi
         push    esi
         mov     eax,[ebp+8]
@@ -1681,7 +1681,6 @@ label0001:
         mov     esi,ecx
         mov     ecx,6
         rep     movsd
-        mov     [ebp-64],ecx
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         comiss  xmm0,dword ptr [ebp-52]
@@ -1717,15 +1716,15 @@ label0005:
         push    eax
         call    _vec4f_dot
         add     esp,8
-        movss   dword ptr [ebp-68],xmm0
+        movss   dword ptr [ebp-64],xmm0
         push    dword ptr [ebp+20]
         lea     eax,[ebp-40]
         push    eax
         call    _vec4f_dot
         add     esp,8
-        movss   dword ptr [ebp-72],xmm0
-        movss   xmm0,dword ptr [ebp-68]
-        divss   xmm0,dword ptr [ebp-72]
+        movss   dword ptr [ebp-68],xmm0
+        movss   xmm0,dword ptr [ebp-64]
+        divss   xmm0,dword ptr [ebp-68]
         movss   dword ptr [ebp-60],xmm0
         push    dword ptr [ebp-60]
         lea     eax,[ebp-40]
@@ -1793,7 +1792,7 @@ label0002:
         rep     movsd
         pop     esi
         pop     edi
-        add     esp,72
+        add     esp,68
         pop     ebp
         ret
 __clip_on_plain endp

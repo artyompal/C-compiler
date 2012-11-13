@@ -6,7 +6,7 @@ typedef struct basic_block_decl {           // структура базового блока:
     x86_instruction     *block_last_insn;   // указатель на последнюю инструкцию
 
     int                 block_first_def;    // первое определение
-    int                 block_last_def;     // определение, последующее последнему
+    int                 block_end_def;      // определение, последующее последнему
 } basic_block;
 
 typedef struct basic_blocks_vector_decl {   // вектор базовых блоков:

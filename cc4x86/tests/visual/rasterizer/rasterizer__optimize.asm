@@ -501,7 +501,7 @@ __rasterize_horiz_line endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,144
+        sub     esp,140
         push    edi
         push    esi
         push    ebx
@@ -597,7 +597,6 @@ label0001:
         mov     [ebp-4],ecx
         mov     ecx,6
         rep     movsd
-        mov     [ebp-144],ecx
         mov     ecx,[ebp-4]
         mov     ebx,[ebp+12]
         mov     esi,[ebp+16]
@@ -759,7 +758,7 @@ label0002:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,144
+        add     esp,140
         pop     ebp
         ret
 __clip_on_plain endp

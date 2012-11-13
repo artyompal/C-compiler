@@ -580,7 +580,7 @@ __rasterize_horiz_line endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,144
+        sub     esp,140
         push    edi
         push    esi
         push    ebx
@@ -719,7 +719,6 @@ label0001:
         mov     esi,ecx
         mov     ecx,6
         rep     movsd
-        mov     [ebp-140],ecx
         mov     esi,[ebp+16]
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
@@ -835,11 +834,11 @@ label0005:
         movss   xmm0,dword ptr [ecx+12]
         mulss   xmm0,dword ptr [eax+12]
         addss   xmm2,xmm0
-        movss   dword ptr [ebp-144],xmm1
+        movss   dword ptr [ebp-140],xmm1
         movss   xmm1,xmm2
 ; end of inline function vec4f_dot
         movss   dword ptr [ebp-128],xmm1
-        movss   xmm1,dword ptr [ebp-144]
+        movss   xmm1,dword ptr [ebp-140]
         divss   xmm1,dword ptr [ebp-128]
 ; start of inline function vec4f_mul
         movss   xmm2,xmm1
@@ -962,7 +961,7 @@ label0002:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,144
+        add     esp,140
         pop     ebp
         ret
 __clip_on_plain endp

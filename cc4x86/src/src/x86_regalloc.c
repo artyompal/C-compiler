@@ -652,6 +652,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 
     _clear_register_map(regmap);
     x86_dataflow_init_alive_reg_tables(function, type);
+    x86_dataflow_init_use_def_tables(function, type);
 
     for (insn = function->func_binary_code; insn; insn = next_insn) {
         next_insn = insn->in_next;
@@ -773,20 +774,29 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 pseudoregs_map[result].reg_dirty = TRUE;
             }
 
+        // Регистры, ставшие мёртвыми в текущей инструкции и переиспользованные, помечаются как swapped.
+        for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
+            if (pseudoregs_map[reg].reg_status == register_delayed_swapped ||
+                pseudoregs_map[reg].reg_status == register_allocated && !x86_dataflow_is_pseudoreg_alive_after(reg)) {
+                    real_reg = pseudoregs_map[reg].reg_location;
+
+                    if (x86_dataflow_is_last_usage(reg, insn, function, type)) {
+                        pseudoregs_map[reg].reg_status = register_unallocated;
+
+                        if (regmap->real_registers_map[real_reg] == reg) {
+                            _free_real_register(regmap, real_reg);
+                        }
+                    } else {
+                        pseudoregs_map[reg].reg_status = register_swapped;
+                    }
+                }
+        }
+
         // Удаляем тривиальные присваивания (тривиальная оптимизация).
         if (IS_MOV_INSN(insn->in_code) && OP_IS_REGISTER(insn->in_op1, type) && OP_IS_REGISTER(insn->in_op2, type)
             && insn->in_op1.data.reg == insn->in_op2.data.reg) {
                 x86_dataflow_erase_instruction(function, insn);
             }
-
-        // Регистры, ставшие мёртвыми в текущей инструкции и переиспользованные, помечаются как swapped.
-        for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
-            if (pseudoregs_map[reg].reg_status == register_delayed_swapped) {
-                pseudoregs_map[reg].reg_status = register_swapped;
-                real_reg = pseudoregs_map[reg].reg_location;
-                ASSERT(regmap->real_registers_map[real_reg] != reg);
-            }
-        }
 	}
 
     // Если последняя инструкция - jmp, могут оставаться живые регистры; иначе их не должно быть.
