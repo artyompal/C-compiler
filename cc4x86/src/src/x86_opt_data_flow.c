@@ -701,9 +701,12 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
                 }
 
                 insn = _definitions_table.insn_base[def];
+                bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
 
-                if (insn->in_op1.data.reg == reg) {
-                    BIT_RAISE(*kill, def);
+                for (i = 0; i < regs_cnt; i++) {
+                    if (regs[i] == reg) {
+                        BIT_RAISE(*kill, def);
+                    }
                 }
             }
         }
@@ -788,15 +791,12 @@ static void _reachingdef_build_inout(function_desc *function, x86_operand_type t
 //
 // ѕровер€ет, доступно ли определение def дл€ инструкции insn
 // (проверка на вхождение инструкции insn в ои-цепочку данного определени€).
-static BOOL _reachingdef_is_definition_available(x86_instruction *def, x86_instruction *insn, x86_operand_type type)
+static BOOL _reachingdef_is_definition_available(int reg, x86_instruction *def, x86_instruction *insn, x86_operand_type type)
 {
     basic_block *def_block  = def->in_block;
     basic_block *insn_block = insn->in_block;
-    int reg                 = def->in_op1.data.reg;
     x86_instruction *test;
     int def_idx;
-
-    ASSERT(OP_IS_PSEUDO_REG(def->in_op1, type));
 
     // если инструкции наход€тс€ в одном блоке, и определение предшествует использованию,
     // то нужно всего лишь проверить, что между ними нет других определений того же регистра
@@ -1095,13 +1095,6 @@ void x86_dataflow_init_use_def_tables(function_desc *function, x86_operand_type 
 }
 
 //
-// “ест ои-цепочки.
-BOOL x86_dataflow_is_definition_available(x86_instruction *def, x86_instruction *insn, x86_operand_type type)
-{
-    return _reachingdef_is_definition_available(def, insn, type);
-}
-
-//
 // »звлечение данных ио-цепочки.
 void x86_dataflow_get_usage_of_definition(int reg, x86_instruction *def, x86_operand_type type,
                                           x86_instruction **res_arr, int *res_count, int res_max_count)
@@ -1175,7 +1168,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 }
 
                 // провер€ем достижимость этого использовани€ этой инструкцией копировани€
-                if (!_reachingdef_is_definition_available(mov, usage, type)) {
+                if (!_reachingdef_is_definition_available(x, mov, usage, type)) {
                     continue;
                 }
 
@@ -1217,7 +1210,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                         continue;
                     }
 
-                    if (!_reachingdef_is_definition_available(mov, usage, type)) {
+                    if (!_reachingdef_is_definition_available(x, mov, usage, type)) {
                         continue;
                     }
 
@@ -1274,3 +1267,13 @@ void x86_dataflow_optimize_redundant_copies(function_desc *function)
 
     x86_analyze_registers_usage(function);
 }
+
+
+//
+// ѕровер€ет, можно ли освобождать регистр, т.е. €вл€етс€ ли данна€ инструкци€
+// последним использованием определени€ данного регистра.
+BOOL x86_dataflow_is_last_usage(int reg, x86_instruction *insn, function_desc *function, x86_operand_type type)
+{
+    return FALSE;
+}
+
