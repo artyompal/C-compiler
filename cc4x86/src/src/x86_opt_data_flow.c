@@ -538,8 +538,8 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
 // Если встречаются другие определения, то цепочка состоит из использований, находящихся между
 // рассматриваемым определением и следующим определением.
 //
-static void _exposeduses_get_usage_of_definition(int reg, x86_instruction *def, x86_operand_type type,
-                                                 x86_instruction **res_arr, int *res_count, int res_max_count)
+static void _exposeduses_find_all_usages_of_definition(int reg, x86_instruction *def, x86_operand_type type,
+                                                       x86_instruction **res_arr, int *res_count, int res_max_count)
 {
     x86_instruction *test;
     int i, block;
@@ -603,7 +603,7 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         // сохраняем для каждого блока данные о количестве определений в нём
         if (insn != function->func_binary_code && _is_leader(insn)) {
-            _basic_blocks.blocks_base[block].block_last_def = count;
+            _basic_blocks.blocks_base[block].block_end_def = count;
             block++;
             _basic_blocks.blocks_base[block].block_first_def = count;
         }
@@ -615,7 +615,7 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
     }
 
     ASSERT(count <= max_count);
-    _basic_blocks.blocks_base[block].block_last_def = count;
+    _basic_blocks.blocks_base[block].block_end_def = count;
     _definitions_table.insn_count = count;
 }
 
@@ -635,7 +635,7 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
     memset(reg_definitions_table, -1, sizeof(int)*function->func_pseudoregs_count[type]);
 
     // Находим для каждого регистра последнее однозначное определение, записывающее в него.
-    for (def = block->block_first_def; def < block->block_last_def; def++) {
+    for (def = block->block_first_def; def < block->block_end_def; def++) {
         insn = _definitions_table.insn_base[def];
         bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
 
@@ -652,7 +652,7 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
             BIT_RAISE(*gen, def);
 
             // А также вносим все неоднозначные определения, следующие после данного и до конца базового блока.
-            for (; def != block->block_last_def; def++) {
+            for (; def != block->block_end_def; def++) {
                 insn = _definitions_table.insn_base[def];
 
                 if (bincode_is_pseudoreg_modified_by_insn(insn, type, reg)) {
@@ -681,7 +681,7 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
     set_clear_to_zeros(&modified_regs);
 
     // Находим для каждого регистра последнее определение, записывающее в него.
-    for (def = block->block_first_def; def < block->block_last_def; def++) {
+    for (def = block->block_first_def; def < block->block_end_def; def++) {
         insn = _definitions_table.insn_base[def];
         bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
 
@@ -696,7 +696,7 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
         if (BIT_TEST(modified_regs, reg)) {
             for (def = 0; def < _definitions_table.insn_count; def++) {
                 if (def == block->block_first_def) {
-                    def = block->block_last_def - 1;
+                    def = block->block_end_def - 1;
                     continue;
                 }
 
@@ -789,50 +789,60 @@ static void _reachingdef_build_inout(function_desc *function, x86_operand_type t
 }
 
 //
+// Строит ои-цепочку для данной инструкции и данного регистра,
+// то есть возвращает все определения, влияющие на значение данного регистра в данной точке.
+static void _reachingdef_find_all_definitions(int reg, x86_instruction *insn, x86_operand_type type,
+                                             x86_instruction **res_arr, int *res_count, int res_max_count)
+{
+    basic_block *block = insn->in_block;
+    x86_instruction *test;
+    int def_idx;
+
+    *res_count = 0;
+
+    // проходим все определения внутри данного блока в обратном порядке
+    for (test = insn->in_prev; test != block->block_leader->in_prev; test = test->in_prev) {
+        // если находим однозначное определение, то на этом поиск заканчивается
+        if (bincode_is_pseudoreg_overwritten_by_insn(test, type, reg)) {
+            ASSERT(*res_count < res_max_count);
+            res_arr[*res_count] = test;
+            ++*res_count;
+            return;
+        }
+
+        if (bincode_is_pseudoreg_modified_by_insn(test, type, reg)) {
+            ASSERT(*res_count < res_max_count);
+            res_arr[*res_count] = test;
+            ++*res_count;
+        }
+    }
+
+    // прибавляем все определения из множества in
+    for (def_idx = 0; def_idx != _definitions_table.insn_count; def_idx++) {
+        if (_definitions_table.insn_base[def_idx] && BIT_TEST(_reachingdef_in.vec_base[block-_basic_blocks.blocks_base], def_idx)) {
+            if (bincode_is_pseudoreg_modified_by_insn(_definitions_table.insn_base[def_idx], type, reg)) {
+                ASSERT(*res_count < res_max_count);
+                res_arr[*res_count] = _definitions_table.insn_base[def_idx];
+                ++*res_count;
+            }
+        }
+    }
+
+    // обеспечиваем уникальность
+    aux_sort_int((int*)res_arr, *res_count);
+    *res_count = aux_unique_int((int*)res_arr, *res_count);
+}
+
+//
 // Проверяет, доступно ли определение def для инструкции insn
 // (проверка на вхождение инструкции insn в ои-цепочку данного определения).
 static BOOL _reachingdef_is_definition_available(int reg, x86_instruction *def, x86_instruction *insn, x86_operand_type type)
 {
-    basic_block *def_block  = def->in_block;
-    basic_block *insn_block = insn->in_block;
-    x86_instruction *test;
-    int def_idx;
+    x86_instruction **def_arr = alloca(sizeof(void *) * _definitions_table.insn_count);
+    int def_count;
 
-    // если инструкции находятся в одном блоке, и определение предшествует использованию,
-    // то нужно всего лишь проверить, что между ними нет других определений того же регистра
-    if (def_block == insn_block) {
-        for (test = def_block->block_leader; test != def && test != insn; test = test->in_next) {
-        }
-
-        if (test == def) {
-            for (test = def->in_next; test != insn && test != def_block->block_last_insn->in_next; test = test->in_next) {
-                if (bincode_is_pseudoreg_modified_by_insn(test, type, reg)) {
-                    return FALSE;
-                }
-            }
-
-            return TRUE;
-        }
-    }
-
-    // находим индекс инструкции def в таблице определений
-    for (def_idx = def_block->block_first_def; _definitions_table.insn_base[def_idx] != def; def_idx++) {
-        ASSERT(def_idx < def_block->block_last_def);
-    }
-
-    // тест на вхождение в соответствующее множество in (в смысле достигающих определений)
-    if (!BIT_TEST(_reachingdef_in.vec_base[insn_block-_basic_blocks.blocks_base], def_idx)) {
-        return FALSE;
-    }
-
-    // если от начала блока до интересующей инструкции нет определений reg, то результат положительный
-    for (test = insn_block->block_leader; test != insn; test = test->in_next) {
-        if (bincode_is_pseudoreg_modified_by_insn(test, type, reg)) {
-            return FALSE;
-        }
-    }
-
-    return TRUE;
+    _reachingdef_find_all_definitions(reg, insn, type, def_arr, &def_count, _definitions_table.insn_count);
+    return (aux_binary_search((int*)def_arr, def_count, (int)def) >= 0);
 }
 
 
@@ -1095,14 +1105,6 @@ void x86_dataflow_init_use_def_tables(function_desc *function, x86_operand_type 
 }
 
 //
-// Извлечение данных ио-цепочки.
-void x86_dataflow_get_usage_of_definition(int reg, x86_instruction *def, x86_operand_type type,
-                                          x86_instruction **res_arr, int *res_count, int res_max_count)
-{
-    _exposeduses_get_usage_of_definition(reg, def, type, res_arr, res_count, res_max_count);
-}
-
-//
 // Удаляет инструкцию из функции и изо всех таблиц.
 void x86_dataflow_erase_instruction(function_desc *function, x86_instruction *insn)
 {
@@ -1159,7 +1161,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
             replace_allowed = TRUE;
 
             // находим все использования x
-            _exposeduses_get_usage_of_definition(x, mov, type, usage_arr, &usage_count, function->func_insn_count);
+            _exposeduses_find_all_usages_of_definition(x, mov, type, usage_arr, &usage_count, function->func_insn_count);
 
             for (i = 0; i < usage_count && replace_allowed; i++) {
                 usage = usage_arr[i];
@@ -1255,7 +1257,6 @@ static void _optimize_redundant_copies_iterative(function_desc *function, x86_op
     } while (new_length < function_length);
 }
 
-
 //
 // Внешний интерфейс для функции распространения копирований.
 void x86_dataflow_optimize_redundant_copies(function_desc *function)
@@ -1274,6 +1275,40 @@ void x86_dataflow_optimize_redundant_copies(function_desc *function)
 // последним использованием определения данного регистра.
 BOOL x86_dataflow_is_last_usage(int reg, x86_instruction *insn, function_desc *function, x86_operand_type type)
 {
-    return FALSE;
+    x86_instruction **def_arr   = alloca(sizeof(void *) * _definitions_table.insn_count);
+    x86_instruction **usage_arr = alloca(sizeof(void *) * 2 * function->func_insn_count);
+    int def_count, usage_count, def, total_count, *regs[MAX_REGISTERS_PER_INSN], regs_count;
+
+    // находим все определения, доступные данной инструкции
+    _reachingdef_find_all_definitions(reg, insn, type, def_arr, &def_count, _definitions_table.insn_count);
+    if (!def_count) {
+        return FALSE; // FIXME???
+    }
+
+    // составляем список уникальных использований всех этих определений
+    _exposeduses_find_all_usages_of_definition(reg, def_arr[0], type, usage_arr, &total_count, function->func_insn_count);
+
+    for (def = 1; def < def_count; def++) {
+        _exposeduses_find_all_usages_of_definition(reg, def_arr[def], type, usage_arr+total_count, &usage_count, function->func_insn_count);
+        total_count += usage_count;
+
+        aux_sort_int((int*)usage_arr, total_count);
+        total_count = aux_unique_int((int*)usage_arr, total_count);
+    }
+
+    // все использования, кроме данного, не должны содержать неаллоцированных регистров
+    for (def = 0; def < total_count; def++) {
+        if (usage_arr[def] == insn) {
+            continue;
+        }
+
+        bincode_extract_pseudoregs_from_insn(usage_arr[def], type, regs, &regs_count);
+
+        if (regs_count) {
+            return FALSE;
+        }
+    }
+
+    return TRUE;
 }
 
