@@ -44,7 +44,6 @@ typedef char BOOL;
 
 
 #include "allocator.h"
-#include "hash_table.h"
 
 
 void aux_error(const char *text, ...);
