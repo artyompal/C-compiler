@@ -1,5 +1,6 @@
 
 #include "common.h"
+#include "hash_table.h"
 
 
 typedef struct hash_table_decl {
