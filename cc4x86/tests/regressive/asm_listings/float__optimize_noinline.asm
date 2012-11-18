@@ -79,12 +79,8 @@ _test proc
         push    ebp
         mov     ebp,esp
         sub     esp,32
-        movss   xmm7,dword ptr [___unnamed_float_3]
-        movsd   xmm6,qword ptr [___unnamed_double_4]
-        cvtss2sd        xmm0,xmm7
-        addsd   xmm0,xmm6
-        movsd   qword ptr [ebp-12],xmm6
-        movss   dword ptr [ebp-4],xmm7
+        cvtss2sd        xmm0,dword ptr [___unnamed_float_3]
+        addsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   xmm1,qword ptr [___unnamed_double_5]
         movsd   qword ptr [esp-8],xmm1
         sub     esp,8
@@ -99,8 +95,8 @@ _test proc
         pop     ebp
         ret
 label0000:
-        cvtss2sd        xmm0,dword ptr [ebp-4]
-        subsd   xmm0,qword ptr [ebp-12]
+        cvtss2sd        xmm0,dword ptr [___unnamed_float_3]
+        subsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   xmm1,qword ptr [___unnamed_double_6]
         movsd   qword ptr [esp-8],xmm1
         sub     esp,8
@@ -115,8 +111,8 @@ label0000:
         pop     ebp
         ret
 label0001:
-        cvtss2sd        xmm0,dword ptr [ebp-4]
-        mulsd   xmm0,qword ptr [ebp-12]
+        cvtss2sd        xmm0,dword ptr [___unnamed_float_3]
+        mulsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   xmm1,qword ptr [___unnamed_double_7]
         movsd   qword ptr [esp-8],xmm1
         sub     esp,8
@@ -131,8 +127,8 @@ label0001:
         pop     ebp
         ret
 label0002:
-        cvtss2sd        xmm0,dword ptr [ebp-4]
-        divsd   xmm0,qword ptr [ebp-12]
+        cvtss2sd        xmm0,dword ptr [___unnamed_float_3]
+        divsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   xmm1,qword ptr [___unnamed_double_8]
         movsd   qword ptr [esp-8],xmm1
         sub     esp,8
@@ -147,7 +143,7 @@ label0002:
         pop     ebp
         ret
 label0003:
-        movss   xmm0,dword ptr [ebp-4]
+        movss   xmm0,dword ptr [___unnamed_float_3]
         addss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [ebp-24],xmm0
         movsd   xmm0,qword ptr [___unnamed_double_9]

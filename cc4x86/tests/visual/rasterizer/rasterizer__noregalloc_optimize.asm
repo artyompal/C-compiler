@@ -176,63 +176,58 @@ _rasterizer_init proc
         movss   dword ptr [dword377+60],sse171
 ; end of inline function matrix4f_make_viewport
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse176,dword ptr [___unnamed_float_2]
-        movss   sse175,dword ptr [___unnamed_float_2]
         mov     dword375,(offset __clip_z_near_base)
-        movss   dword ptr [dword375],sse175
-        movss   dword ptr [dword375+4],sse176
+        movss   sse63,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375],sse63
+        movss   sse64,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+4],sse64
         movss   dword ptr [dword375+8],sse189
-        movss   dword ptr [dword375+12],sse178
+        movss   sse66,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse66
 ; end of inline function vec4f_assign
         comiss  sse190,sse189
         jbe     label0000
-        movss   sse173,dword ptr [___unnamed_float_1]
         jmp     label0001
 label0000:
-        movss   sse173,dword ptr [___unnamed_float_5]
 label0001:
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse176,dword ptr [___unnamed_float_2]
-        movss   sse175,dword ptr [___unnamed_float_2]
         mov     dword375,(offset __clip_z_near_norm)
-        movss   dword ptr [dword375],sse175
-        movss   dword ptr [dword375+4],sse176
-        movss   dword ptr [dword375+8],sse173
-        movss   dword ptr [dword375+12],sse178
+        movss   sse69,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375],sse69
+        movss   sse70,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+4],sse70
+        movss   sse71,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+8],sse71
+        movss   sse72,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse72
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse176,dword ptr [___unnamed_float_2]
-        movss   sse175,dword ptr [___unnamed_float_2]
         mov     dword375,(offset __clip_z_far_base)
-        movss   dword ptr [dword375],sse175
-        movss   dword ptr [dword375+4],sse176
+        movss   sse75,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375],sse75
+        movss   sse76,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+4],sse76
         movss   dword ptr [dword375+8],sse190
-        movss   dword ptr [dword375+12],sse178
+        movss   sse78,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse78
 ; end of inline function vec4f_assign
         comiss  sse190,sse189
         jbe     label0002
-        movss   sse174,dword ptr [___unnamed_float_5]
         jmp     label0003
 label0002:
-        movss   sse174,dword ptr [___unnamed_float_1]
 label0003:
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse176,dword ptr [___unnamed_float_2]
-        movss   sse175,dword ptr [___unnamed_float_2]
         mov     dword375,(offset __clip_z_far_norm)
-        movss   dword ptr [dword375],sse175
-        movss   dword ptr [dword375+4],sse176
-        movss   dword ptr [dword375+8],sse174
-        movss   dword ptr [dword375+12],sse178
+        movss   sse81,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375],sse81
+        movss   sse82,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+4],sse82
+        movss   sse83,dword ptr [___unnamed_float_5]
+        movss   dword ptr [dword375+8],sse83
+        movss   sse84,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse84
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse177,dword ptr [___unnamed_float_2]
-        movss   sse176,dword ptr [___unnamed_float_2]
         cvtsi2ss        sse26,dword379
         movss   sse27,dword ptr [___unnamed_float_1]
         divss   sse27,sse26
@@ -240,25 +235,25 @@ label0003:
         addss   sse28,sse27
         mov     dword375,(offset __clip_plane_left_base)
         movss   dword ptr [dword375],sse28
-        movss   dword ptr [dword375+4],sse176
-        movss   dword ptr [dword375+8],sse177
-        movss   dword ptr [dword375+12],sse178
+        movss   sse87,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+4],sse87
+        movss   sse88,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+8],sse88
+        movss   sse89,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse89
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse177,dword ptr [___unnamed_float_2]
-        movss   sse176,dword ptr [___unnamed_float_2]
-        movss   sse175,dword ptr [___unnamed_float_1]
         mov     dword375,(offset __clip_plane_left_norm)
-        movss   dword ptr [dword375],sse175
-        movss   dword ptr [dword375+4],sse176
-        movss   dword ptr [dword375+8],sse177
-        movss   dword ptr [dword375+12],sse178
+        movss   sse91,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375],sse91
+        movss   sse92,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+4],sse92
+        movss   sse93,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+8],sse93
+        movss   sse94,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse94
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse177,dword ptr [___unnamed_float_2]
-        movss   sse176,dword ptr [___unnamed_float_2]
         cvtsi2ss        sse36,dword379
         movss   sse37,dword ptr [___unnamed_float_1]
         divss   sse37,sse36
@@ -266,68 +261,71 @@ label0003:
         subss   sse38,sse37
         mov     dword375,(offset __clip_plane_right_base)
         movss   dword ptr [dword375],sse38
-        movss   dword ptr [dword375+4],sse176
-        movss   dword ptr [dword375+8],sse177
-        movss   dword ptr [dword375+12],sse178
+        movss   sse97,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+4],sse97
+        movss   sse98,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+8],sse98
+        movss   sse99,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse99
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse177,dword ptr [___unnamed_float_2]
-        movss   sse176,dword ptr [___unnamed_float_2]
-        movss   sse175,dword ptr [___unnamed_float_5]
         mov     dword375,(offset __clip_plane_right_norm)
-        movss   dword ptr [dword375],sse175
-        movss   dword ptr [dword375+4],sse176
-        movss   dword ptr [dword375+8],sse177
-        movss   dword ptr [dword375+12],sse178
+        movss   sse101,dword ptr [___unnamed_float_5]
+        movss   dword ptr [dword375],sse101
+        movss   sse102,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+4],sse102
+        movss   sse103,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+8],sse103
+        movss   sse104,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse104
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse177,dword ptr [___unnamed_float_2]
         cvtsi2ss        sse45,dword380
         movss   sse46,dword ptr [___unnamed_float_1]
         divss   sse46,sse45
         movss   sse47,dword ptr [___unnamed_float_5]
         addss   sse47,sse46
-        movss   sse175,dword ptr [___unnamed_float_2]
         mov     dword375,(offset __clip_plane_top_base)
-        movss   dword ptr [dword375],sse175
+        movss   sse106,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375],sse106
         movss   dword ptr [dword375+4],sse47
-        movss   dword ptr [dword375+8],sse177
-        movss   dword ptr [dword375+12],sse178
+        movss   sse108,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+8],sse108
+        movss   sse109,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse109
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse177,dword ptr [___unnamed_float_2]
-        movss   sse176,dword ptr [___unnamed_float_1]
-        movss   sse175,dword ptr [___unnamed_float_2]
         mov     dword375,(offset __clip_plane_top_norm)
-        movss   dword ptr [dword375],sse175
-        movss   dword ptr [dword375+4],sse176
-        movss   dword ptr [dword375+8],sse177
-        movss   dword ptr [dword375+12],sse178
+        movss   sse111,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375],sse111
+        movss   sse112,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+4],sse112
+        movss   sse113,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+8],sse113
+        movss   sse114,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse114
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse177,dword ptr [___unnamed_float_2]
-        movss   sse176,dword ptr [___unnamed_float_1]
-        movss   sse175,dword ptr [___unnamed_float_2]
         mov     dword375,(offset __clip_plane_bottom_base)
-        movss   dword ptr [dword375],sse175
-        movss   dword ptr [dword375+4],sse176
-        movss   dword ptr [dword375+8],sse177
-        movss   dword ptr [dword375+12],sse178
+        movss   sse116,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375],sse116
+        movss   sse117,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+4],sse117
+        movss   sse118,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+8],sse118
+        movss   sse119,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse119
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   sse178,dword ptr [___unnamed_float_1]
-        movss   sse177,dword ptr [___unnamed_float_2]
-        movss   sse176,dword ptr [___unnamed_float_5]
-        movss   sse175,dword ptr [___unnamed_float_2]
         mov     dword375,(offset __clip_plane_bottom_norm)
-        movss   dword ptr [dword375],sse175
-        movss   dword ptr [dword375+4],sse176
-        movss   dword ptr [dword375+8],sse177
-        movss   dword ptr [dword375+12],sse178
+        movss   sse121,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375],sse121
+        movss   sse122,dword ptr [___unnamed_float_5]
+        movss   dword ptr [dword375+4],sse122
+        movss   sse123,dword ptr [___unnamed_float_2]
+        movss   dword ptr [dword375+8],sse123
+        movss   sse124,dword ptr [___unnamed_float_1]
+        movss   dword ptr [dword375+12],sse124
 ; end of inline function vec4f_assign
         destroy_stack_frame
         ret
@@ -704,14 +702,14 @@ __transform_to_projection_space proc
         mov     dword105,[ebp+12]
         mov     dword104,[ebp+8]
 ; start of inline function vec4f_assign
-        movss   sse31,dword ptr [___unnamed_float_1]
-        movss   sse30,dword ptr [dword105+8]
-        movss   sse29,dword ptr [dword105+4]
-        movss   sse28,dword ptr [dword105]
-        movss   dword ptr [ebp-16],sse28
-        movss   dword ptr [ebp-12],sse29
-        movss   dword ptr [ebp-8],sse30
-        movss   dword ptr [ebp-4],sse31
+        movss   sse4,dword ptr [dword105+8]
+        movss   sse3,dword ptr [dword105+4]
+        movss   sse2,dword ptr [dword105]
+        movss   dword ptr [ebp-16],sse2
+        movss   dword ptr [ebp-12],sse3
+        movss   dword ptr [ebp-8],sse4
+        movss   sse9,dword ptr [___unnamed_float_1]
+        movss   dword ptr [ebp-4],sse9
 ; end of inline function vec4f_assign
 ; start of inline function matrix4f_transform
         mov     dword103,(offset __mvproj_matrix)
@@ -1389,13 +1387,11 @@ label000f:
         cvtsi2ss        sse30,dword415
         divss   sse29,sse30
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   sse109,sse29
-        movss   sse108,sse27
         mov     dword420,8
         add     dword420,dword868
         add     dword420,4
-        movss   sse107,dword ptr [dword420]
-        movss   sse106,dword ptr [dword868+8]
+        movss   sse57,dword ptr [dword420]
+        movss   sse56,dword ptr [dword868+8]
         movss   sse105,sse24
         movss   sse104,sse21
         mov     dword611,[dword868+4]
@@ -1403,8 +1399,8 @@ label000f:
         cmp     dword338,dword610
         jg      label0016
         push_all
-        push_arg        sse109,4
-        push_arg        sse108,4
+        push_arg        sse29,4
+        push_arg        sse27,4
         push_arg        sse105,4
         push_arg        sse104,4
         push_arg        dword611,4
@@ -1416,10 +1412,10 @@ label000f:
         jmp     label0017
 label0016:
         push_all
-        push_arg        sse109,4
-        push_arg        sse108,4
-        push_arg        sse107,4
-        push_arg        sse106,4
+        push_arg        sse29,4
+        push_arg        sse27,4
+        push_arg        sse57,4
+        push_arg        sse56,4
         push_arg        dword611,4
         push_arg        dword338,4
         push_arg        dword610,4
@@ -1530,6 +1526,7 @@ label0011:
         subss   sse46,sse37
         divss   sse46,sse45
 ; start of inline function _rasterize_horiz_line__unordered
+        movss   sse109,sse46
         movss   sse108,sse44
         movss   sse107,sse40
         movss   sse106,sse34
@@ -1539,7 +1536,7 @@ label0011:
         cmp     dword446,dword467
         jg      label0019
         push_all
-        push_arg        sse46,4
+        push_arg        sse109,4
         push_arg        sse108,4
         push_arg        sse105,4
         push_arg        sse104,4
@@ -1552,7 +1549,7 @@ label0011:
         jmp     label001a
 label0019:
         push_all
-        push_arg        sse46,4
+        push_arg        sse109,4
         push_arg        sse108,4
         push_arg        sse107,4
         push_arg        sse106,4

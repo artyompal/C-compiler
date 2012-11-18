@@ -3,6 +3,7 @@
 #include "x86_bincode.h"
 #include "x86_optimizer.h"
 #include "x86_regalloc.h"
+#include "x86_opt_data_flow.h"
 
 
 #define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base > 0 && (OP).data.address.index == 0 \
@@ -12,6 +13,10 @@
 #define ADDRESS_IS_BASE_OFS(OP)             ((OP).data.address.base > 0 && (OP).data.address.index == 0)
 #define ADDRESS_IS_UNSCALED_INDEX_OFS(OP)   ((OP).data.address.base == 0 && (OP).data.address.index > 0 \
                                                 && (OP).data.address.scale == 1)
+
+static x86_instruction  **_usage_arr;
+static int              _usage_count;
+static int              _usage_max_count;
 
 
 static void _try_optimize_lea       (function_desc *function, x86_instruction *insn);
@@ -421,37 +426,33 @@ static void _try_optimize_add_sub_const(x86_instruction *insn)
 
 //
 // Пытается распространять константу вместо регистра.
-static void _try_optimize_movss(function_desc *function, x86_instruction *insn)
+static void _try_optimize_movss(function_desc *function, x86_instruction *movss)
 {
-    x86_instruction *usage;
-    int reg                             = insn->in_op1.data.reg;
-    x86_pseudoreg_info *pseudoreg_info  = &function->func_sse_regstat.ptr[reg];
+    int reg, i;
+    x86_operand_type type = x86op_float;
 
-    if (!OP_IS_PSEUDO_REG(insn->in_op1, x86op_float) || OP_IS_REGVAR(insn->in_op1.data.reg, insn->in_op1.op_type)) {
+    if (movss->in_op2.op_loc != x86loc_symbol && movss->in_op2.op_loc != x86loc_symbol_offset || !OP_IS_PSEUDO_REG(movss->in_op1, type)) {
         return;
     }
 
-    // Если регистр нигде не модифицируется, просто подставляем второй операнд вместо него.
-    if (!pseudoreg_info->reg_changes_value) {
-        for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
-            ASSERT(usage);
+    reg = movss->in_op1.data.reg;
+    x86_dataflow_find_all_usages_of_definition(reg, movss, type, _usage_arr, &_usage_count, _usage_max_count);
 
-            if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, insn->in_op2.op_type, reg)) {
+    // проверяем, что регистр используется только в read-only контекстах
+    for (i = 0; i < _usage_count; i++) {
+        if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)
+            || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg) || !OP_IS_PSEUDO_REG(_usage_arr[i]->in_op1, type)) {
                 return;
             }
-
-            if (OP_IS_THIS_PSEUDO_REG(usage->in_op2, insn->in_op2.op_type, reg)) {
-                if (!OP_IS_PSEUDO_REG(usage->in_op1, x86op_float)) {
-                    return;
-                }
-
-                usage->in_op2 = insn->in_op2;
-            }
-        }
-
-        bincode_erase_instruction(function, insn);
-        return;
     }
+
+    // заменяем все вхождения
+    for (i = 0; i < _usage_count; i++) {
+        _usage_arr[i]->in_op2 = movss->in_op2;
+    }
+
+    // удаляем инструкцию
+    bincode_erase_instruction(function, movss);
 }
 
 
@@ -466,7 +467,8 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *insn)
 // Оптимизирует конструкции с LEA.
 static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 {
-    ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword));
+    ASSERT(insn->in_op1.op_loc == x86loc_register);
+    ASSERT(insn->in_op1.data.reg > 0);  // LEA оперирует только псевдорегистрами.
 
     if (insn->in_op2.op_loc == x86loc_symbol) {
         _try_optimize_lea_reg_symbol(function, insn);
@@ -499,17 +501,15 @@ static void _try_optimize_add_sub(function_desc *function, x86_instruction *insn
     }
 }
 
-
 //
-// Этап оптимизации, который выполняется сразу после генерации промежуточного кода.
-// На этом этапе оптимизатор пытается объединить идущие подряд инструкции в более эффективные формы,
-// восполняя недостатки кодогенератора для x86 (проблема кодогенератора -
-// в слишком большом количестве возможных комбинаций операндов в x86).
-//
-
-void x86_optimization_after_codegen(function_desc *function)
+// Оптимизирует целочисленные инструкции.
+static void _optimize_dword_insns(function_desc *function)
 {
     x86_instruction *insn, *next, *prev;
+
+    _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
+    _usage_max_count = function->func_insn_count;
+    x86_dataflow_init_use_def_tables(function, x86op_dword);
 
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
@@ -533,13 +533,50 @@ void x86_optimization_after_codegen(function_desc *function)
         case x86insn_int_sub:
             _try_optimize_add_sub(function, insn);
             break;
+        }
+    }
 
+    allocator_free(allocator_per_function_pool, _usage_arr, sizeof(void *) * function->func_insn_count);
+}
+
+//
+// Оптимизирует флоатовые инструкции.
+static void _optimize_float_insn(function_desc *function)
+{
+    x86_instruction *insn, *next;
+
+    _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
+    _usage_max_count = function->func_insn_count;
+    x86_dataflow_init_use_def_tables(function, x86op_float);
+
+    for (insn = function->func_binary_code; insn; insn = next) {
+        next = insn->in_next;
+
+        switch (insn->in_code) {
         case x86insn_sse_movss:
         case x86insn_sse_movsd:
             _try_optimize_movss(function, insn);
             break;
         }
     }
+
+    allocator_free(allocator_per_function_pool, _usage_arr, sizeof(void *) * function->func_insn_count);
+}
+
+
+//
+// Этап оптимизации, который выполняется сразу после генерации промежуточного кода.
+// На этом этапе оптимизатор пытается объединить идущие подряд инструкции в более эффективные формы,
+// восполняя недостатки кодогенератора для x86 (проблема кодогенератора -
+// в слишком большом количестве возможных комбинаций операндов в x86).
+//
+
+void x86_optimization_after_codegen(function_desc *function)
+{
+    function->func_insn_count = unit_get_instruction_count(function);
+
+    _optimize_dword_insns(function);
+    _optimize_float_insn(function);
 }
 
 
