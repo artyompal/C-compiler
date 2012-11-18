@@ -11,6 +11,7 @@ _test proc
         sub     esp,104
         push    edi
         push    esi
+        push    ebx
 ; start of inline function test1
         mov     eax,256
         imul    eax,512
@@ -19,6 +20,7 @@ _test proc
         cmp     eax,0
         je      label0000
         mov     eax,1
+        pop     ebx
         pop     esi
         pop     edi
         add     esp,104
@@ -33,6 +35,7 @@ label0000:
         cmp     eax,0
         je      label0001
         mov     eax,2
+        pop     ebx
         pop     esi
         pop     edi
         add     esp,104
@@ -40,24 +43,25 @@ label0000:
         ret
 label0001:
 ; start of inline function test3
-        mov     eax,444
-        mov     edi,222
-        mov     esi,0
-        mov     esi,edi
-        cmp     eax,0
+        mov     edi,444
+        mov     esi,222
+        mov     ebx,0
+        mov     ebx,esi
+        cmp     edi,0
         jle     label0007
-        mov     edi,111
+        mov     esi,111
         jmp     label0008
 label0007:
-        mov     esi,eax
+        mov     ebx,edi
 label0008:
-        add     esi,edi
-        add     esi,111
-        sub     esi,eax
+        add     ebx,esi
+        add     ebx,111
+        sub     ebx,edi
 ; end of inline function test3
-        cmp     esi,0
+        cmp     ebx,0
         je      label0002
         mov     eax,3
+        pop     ebx
         pop     esi
         pop     edi
         add     esp,104
@@ -73,6 +77,7 @@ label0002:
         cmp     edi,0
         je      label0003
         mov     eax,4
+        pop     ebx
         pop     esi
         pop     edi
         add     esp,104
@@ -96,6 +101,7 @@ label000c:
         cmp     esi,0
         je      label0004
         mov     eax,3
+        pop     ebx
         pop     esi
         pop     edi
         add     esp,104
@@ -103,6 +109,7 @@ label000c:
         ret
 label0004:
         mov     eax,0
+        pop     ebx
         pop     esi
         pop     edi
         add     esp,104

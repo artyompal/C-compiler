@@ -27,15 +27,13 @@ label0002:
         pop     ebp
         ret
 label0003:
-        mov     edi,0
-        mov     eax,edi
+        mov     eax,0
         pop     edi
         add     esp,8
         pop     ebp
         ret
 label0004:
-        mov     edi,1
-        mov     eax,edi
+        mov     eax,1
         pop     edi
         add     esp,8
         pop     ebp
@@ -67,15 +65,13 @@ label0001:
 label0002:
 label0003:
 label0004:
-        mov     edi,0
-        mov     eax,edi
+        mov     eax,0
         pop     edi
         add     esp,8
         pop     ebp
         ret
 label0005:
-        mov     edi,1
-        mov     eax,edi
+        mov     eax,1
         pop     edi
         add     esp,8
         pop     ebp
@@ -95,15 +91,13 @@ _test_default proc
         jmp     label0003
 label0001:
 label0002:
-        mov     edi,-1
-        mov     eax,edi
+        mov     eax,-1
         pop     edi
         add     esp,8
         pop     ebp
         ret
 label0003:
-        mov     edi,0
-        mov     eax,edi
+        mov     eax,0
         pop     edi
         add     esp,8
         pop     ebp

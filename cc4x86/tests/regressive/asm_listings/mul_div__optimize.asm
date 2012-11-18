@@ -43,7 +43,8 @@ _test proc
         add     eax,[ebp-32]
         cmp     eax,2
         je      label0000
-        mov     eax,1
+        mov     edx,1
+        mov     eax,edx
         pop     ebx
         pop     esi
         pop     edi
@@ -56,7 +57,8 @@ label0000:
         div     edi
         cmp     eax,2
         je      label0001
-        mov     eax,2
+        mov     edx,2
+        mov     eax,edx
         pop     ebx
         pop     esi
         pop     edi
@@ -69,7 +71,8 @@ label0001:
         div     esi
         cmp     edx,2
         je      label0002
-        mov     eax,3
+        mov     esi,3
+        mov     eax,esi
         pop     ebx
         pop     esi
         pop     edi
@@ -81,7 +84,8 @@ label0002:
         mul     esi
         cmp     eax,6
         je      label0003
-        mov     eax,4
+        mov     esi,4
+        mov     eax,esi
         pop     ebx
         pop     esi
         pop     edi
@@ -93,7 +97,8 @@ label0003:
         mul     esi
         cmp     eax,6
         je      label0004
-        mov     eax,5
+        mov     esi,5
+        mov     eax,esi
         pop     ebx
         pop     esi
         pop     edi
@@ -101,9 +106,10 @@ label0003:
         pop     ebp
         ret
 label0004:
-        mov     edi,65536
         mov     esi,65536
-        mov     eax,edi
+        mov     [ebp-4],esi
+        mov     esi,65536
+        mov     eax,[ebp-4]
         mul     esi
         cmp     eax,0
         je      label0005
@@ -115,23 +121,24 @@ label0004:
         pop     ebp
         ret
 label0005:
-        mov     edi,2
-        mov     esi,3
+        mov     esi,2
+        mov     edi,3
         mov     ebx,4
         mov     edx,5
-        mov     eax,esi
+        mov     eax,edi
         xor     edx,edx
-        div     edi
+        div     esi
         mov     [ebp-40],eax
         mov     eax,ebx
         xor     edx,edx
-        div     edi
+        div     esi
         mov     [ebp-44],eax
         mov     eax,[ebp-40]
         mul     dword ptr [ebp-44]
         cmp     eax,2
         je      label0006
-        mov     eax,7
+        mov     edx,7
+        mov     eax,edx
         pop     ebx
         pop     esi
         pop     edi
@@ -139,7 +146,8 @@ label0005:
         pop     ebp
         ret
 label0006:
-        mov     eax,0
+        mov     edx,0
+        mov     eax,edx
         pop     ebx
         pop     esi
         pop     edi

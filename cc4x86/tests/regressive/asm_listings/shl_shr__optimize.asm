@@ -27,8 +27,7 @@ label0000:
         shr     esi,4
         cmp     esi,268435455
         je      label0001
-        mov     esi,2
-        mov     eax,esi
+        mov     eax,2
         pop     esi
         pop     edi
         add     esp,8
@@ -51,8 +50,7 @@ label0002:
         shl     esi,1
         cmp     esi,-2147483648
         je      label0003
-        mov     esi,4
-        mov     eax,esi
+        mov     eax,4
         pop     esi
         pop     edi
         add     esp,8
@@ -67,7 +65,8 @@ label0003:
         shl     eax,cl
         cmp     eax,16
         je      label0004
-        mov     eax,5
+        mov     esi,5
+        mov     eax,esi
         pop     esi
         pop     edi
         add     esp,8
@@ -79,14 +78,16 @@ label0004:
         sal     edi,cl
         cmp     edi,64
         je      label0005
-        mov     eax,6
+        mov     esi,6
+        mov     eax,esi
         pop     esi
         pop     edi
         add     esp,8
         pop     ebp
         ret
 label0005:
-        mov     eax,0
+        mov     esi,0
+        mov     eax,esi
         pop     esi
         pop     edi
         add     esp,8

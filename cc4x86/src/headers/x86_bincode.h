@@ -226,6 +226,8 @@ typedef struct x86_instruction_decl {
     x86_operand                 in_op2;
     int                         in_op3;
     basic_block                 *in_block;
+    int                         in_reg_usage_mask;
+
     struct x86_instruction_decl *in_next;
     struct x86_instruction_decl *in_prev;
 } x86_instruction;
