@@ -18,6 +18,11 @@ void x86_dataflow_init_use_def_tables       (function_desc *function, x86_operan
 void x86_dataflow_erase_instruction         (function_desc *function, x86_instruction *insn);
 void x86_dataflow_detect_registers_range    (function_desc *function, x86_operand_type type);
 
+void x86_dataflow_find_all_usages_of_definition(int reg, x86_instruction *def, x86_operand_type type,
+                                                x86_instruction **res_arr, int *res_count, int res_max_count);
+void x86_dataflow_find_all_definitions      (int reg, x86_instruction *insn, x86_operand_type type,
+                                             x86_instruction **res_arr, int *res_count, int res_max_count);
+
 
 #else
 #error Header x86_opt_data_flow.h duplicated.

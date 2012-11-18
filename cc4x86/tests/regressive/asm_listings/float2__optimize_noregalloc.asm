@@ -19,8 +19,7 @@ public  ___unnamed_float_3
 _test proc
         create_stack_frame
 ; start of inline function test1
-        movss   sse17,dword ptr [___unnamed_float_1]
-        movss   sse10,sse17
+        movss   sse10,dword ptr [___unnamed_float_1]
         addss   sse10,dword ptr [___unnamed_float_0]
 ; end of inline function test1
         comiss  sse10,dword ptr [___unnamed_float_2]
@@ -31,8 +30,7 @@ _test proc
         ret
 label0000:
 ; start of inline function test2
-        movss   sse20,dword ptr [___unnamed_float_0]
-        movss   sse15,sse20
+        movss   sse15,dword ptr [___unnamed_float_0]
         addss   sse15,dword ptr [___unnamed_float_0]
 ; end of inline function test2
         comiss  sse15,dword ptr [___unnamed_float_3]

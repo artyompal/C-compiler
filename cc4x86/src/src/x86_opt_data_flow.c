@@ -1331,3 +1331,15 @@ void x86_dataflow_detect_registers_range(function_desc *function, x86_operand_ty
     }
 }
 
+void x86_dataflow_find_all_usages_of_definition(int reg, x86_instruction *def, x86_operand_type type,
+                                                x86_instruction **res_arr, int *res_count, int res_max_count)
+{
+    _exposeduses_find_all_usages_of_definition(reg, def, type, res_arr, res_count, res_max_count);
+}
+
+void x86_dataflow_find_all_definitions(int reg, x86_instruction *insn, x86_operand_type type,
+                                           x86_instruction **res_arr, int *res_count, int res_max_count)
+{
+    _reachingdef_find_all_definitions(reg, insn, type, res_arr, res_count, res_max_count);
+}
+
