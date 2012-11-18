@@ -93,15 +93,14 @@ static int _find_register_to_swap(x86_instruction *insn, register_map *regmap, x
     int free_registers_count    = x86_get_registers_count(type);
     int last_free_register      = 0;
 
-    // Двигаемся вниз по коду функции и вычисляем регистр, который наиболее долго не потребуется.
-
+    // двигаемся вниз по коду функции и вычисляем регистр, который наиболее долго не потребуется
     for (; insn && free_registers_count > 1; insn = insn->in_next) {
         bincode_extract_pseudoregs_from_insn_wo_dupes(insn, type, regs, &regs_cnt);
 
         for (i = 0; i < x86_get_registers_count(type); i++) {
             for (j = 0; j < regs_cnt; j++) {
                 if (regs[j] == regmap->real_registers_map[i]) {
-                    free_registers_count += (busy_regs[i] - 1);
+                    free_registers_count += (busy_regs[i] - 1); // free_registers_count -= busy_regs[i] ? 0 : 1
                     busy_regs[i] = TRUE;
                 }
             }
@@ -634,15 +633,21 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
 {
     x86_pseudoreg_info  *pseudoregs_map = stat->ptr;
     x86_instruction     *insn, *next_insn;
-    int                 *registers[MAX_REGISTERS_PER_INSN];
+    int                 *registers[MAX_REGISTERS_PER_INSN], saved_regs[MAX_REGISTERS_PER_INSN];
     int                 registers_count, i, reg, real_reg, conflict_reg, result, label;
     register_map        *labels_register_state;
 
 
+    // Обрабатываем инструкции, требующие фиксированных регистров.
+    _reserve_special_registers(function, type);
+
+    // Формируем маску последнего регистра для каждой инструкции и каждого регистра.
+    x86_dataflow_detect_registers_range(function, type);
+
     //
     // Строим таблицу соответствия меток и переходов на них.
     // На каждую метку должно быть не более одного перехода вперёд (назад - сколько угодно).
-    labels_register_state   = allocator_alloc(allocator_per_function_pool, sizeof(register_map) * function->func_labels_count);
+    labels_register_state = allocator_alloc(allocator_per_function_pool, sizeof(register_map) * function->func_labels_count);
     memset(labels_register_state, -1, sizeof(register_map) * function->func_labels_count);
 
 
@@ -692,6 +697,10 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
         // Извлекаем набор псевдорегистров, который используется инструкцией.
         bincode_extract_pseudoregs_from_insn(insn, type, registers, &registers_count);
 
+        for (i = 0; i < registers_count; i++) {
+            saved_regs[i] = *registers[i];
+        }
+
         // Заменяем все псевдорегистры на истинные регистры.
         for (i = 0; i < registers_count; i++) {
             reg = *registers[i];
@@ -734,7 +743,7 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                         pseudoregs_map[reg].reg_status          = register_allocated;
                         pseudoregs_map[conflict_reg].reg_status = register_swapped;
                         break;
-                    } else if (reg == result || conflict_reg != result) {
+                    } else if (reg == result || conflict_reg != result || result == -1) {
                         // Вытесняем конфликтующий регистр в стек и загружаем сохранённое значение из стека.
                         _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, FALSE);
 
@@ -774,22 +783,30 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
                 pseudoregs_map[result].reg_dirty = TRUE;
             }
 
-        // Регистры, ставшие мёртвыми в текущей инструкции и переиспользованные, помечаются как swapped.
-        for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
+        // Регистры, ставшие мёртвыми, становятся swapped или unallocated, в зависимости от того, будут ли они переиспользованы.
+        for (i = 0; i < registers_count; i++) {
+            reg = saved_regs[i];
+
             if (pseudoregs_map[reg].reg_status == register_delayed_swapped ||
                 pseudoregs_map[reg].reg_status == register_allocated && !x86_dataflow_is_pseudoreg_alive_after(reg)) {
                     real_reg = pseudoregs_map[reg].reg_location;
 
-                    if (x86_dataflow_is_last_usage(reg, insn, function, type)) {
+                    if (insn->in_reg_usage_mask & (1 << i) && regmap->real_registers_map[real_reg] == reg) {
                         pseudoregs_map[reg].reg_status = register_unallocated;
-
-                        if (regmap->real_registers_map[real_reg] == reg) {
-                            _free_real_register(regmap, real_reg);
-                        }
+                        _free_real_register(regmap, real_reg);
                     } else {
                         pseudoregs_map[reg].reg_status = register_swapped;
                     }
                 }
+        }
+
+        // Остальные мёртвые регистры становятся swapped.
+        for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
+            if (pseudoregs_map[reg].reg_status == register_delayed_swapped) {
+                pseudoregs_map[reg].reg_status = register_swapped;
+                real_reg = pseudoregs_map[reg].reg_location;
+                ASSERT(regmap->real_registers_map[real_reg] != reg);
+            }
         }
 
         // Удаляем тривиальные присваивания (тривиальная оптимизация).
@@ -802,7 +819,6 @@ static void _allocate_registers(function_desc *function, register_stat *stat, re
     // Если последняя инструкция - jmp, могут оставаться живые регистры; иначе их не должно быть.
     _free_all_dead_registers(regmap);
     ASSERT(regmap->real_registers_cnt == 0 || function->func_binary_code_end->in_code == x86insn_jmp);
-
     allocator_free(allocator_per_function_pool, labels_register_state, sizeof(register_map) * function->func_labels_count);
 }
 
@@ -946,10 +962,6 @@ static void _handle_pseudo_instructions(function_desc *function)
 
 void x86_allocate_registers(function_desc *function)
 {
-    // Обрабатываем инструкции, требующие фиксированных регистров.
-    _reserve_special_registers(function, x86op_dword);
-    _reserve_special_registers(function, x86op_float);
-
     // Запускаем аллокатор регистров для 32-битных регистров.
     _allocate_registers(function, &function->func_dword_regstat, &_dword_register_map, x86op_dword);
 

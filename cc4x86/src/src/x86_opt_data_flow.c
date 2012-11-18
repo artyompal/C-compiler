@@ -1,6 +1,7 @@
 
 #include "common.h"
 #include "x86_bincode.h"
+#include "x86_opt_data_flow.h"
 #include "x86_opt_data_flow_inc.h"
 #include "x86_regalloc.h"
 #include "x86_text_output.h"
@@ -1261,8 +1262,6 @@ static void _optimize_redundant_copies_iterative(function_desc *function, x86_op
 // ¬нешний интерфейс дл€ функции распространени€ копирований.
 void x86_dataflow_optimize_redundant_copies(function_desc *function)
 {
-    _detect_basic_blocks(function);
-
     _optimize_redundant_copies_iterative(function, x86op_dword);
     _optimize_redundant_copies_iterative(function, x86op_float);
 
@@ -1273,20 +1272,22 @@ void x86_dataflow_optimize_redundant_copies(function_desc *function)
 //
 // ѕровер€ет, можно ли освобождать регистр, т.е. €вл€етс€ ли данна€ инструкци€
 // последним использованием определени€ данного регистра.
-BOOL x86_dataflow_is_last_usage(int reg, x86_instruction *insn, function_desc *function, x86_operand_type type)
+static BOOL _is_last_usage(int reg, x86_instruction *insn, function_desc *function, x86_operand_type type)
 {
     x86_instruction **def_arr   = alloca(sizeof(void *) * _definitions_table.insn_count);
     x86_instruction **usage_arr = alloca(sizeof(void *) * 2 * function->func_insn_count);
-    int def_count, usage_count, def, total_count, *regs[MAX_REGISTERS_PER_INSN], regs_count;
+    int def_count, usage_count, def, total_count, current_count;
+    x86_instruction *test;
 
     // находим все определени€, доступные данной инструкции
     _reachingdef_find_all_definitions(reg, insn, type, def_arr, &def_count, _definitions_table.insn_count);
     if (!def_count) {
-        return FALSE; // FIXME???
+        return FALSE;
     }
 
     // составл€ем список уникальных использований всех этих определений
     _exposeduses_find_all_usages_of_definition(reg, def_arr[0], type, usage_arr, &total_count, function->func_insn_count);
+    aux_sort_int((int*)usage_arr, total_count);
 
     for (def = 1; def < def_count; def++) {
         _exposeduses_find_all_usages_of_definition(reg, def_arr[def], type, usage_arr+total_count, &usage_count, function->func_insn_count);
@@ -1296,19 +1297,37 @@ BOOL x86_dataflow_is_last_usage(int reg, x86_instruction *insn, function_desc *f
         total_count = aux_unique_int((int*)usage_arr, total_count);
     }
 
-    // все использовани€, кроме данного, не должны содержать неаллоцированных регистров
-    for (def = 0; def < total_count; def++) {
-        if (usage_arr[def] == insn) {
-            continue;
+    // проходим по всем инструкци€м функции в пор€дке их выполнени€ и считаем число встреченных определений
+    for (current_count = 0, test = function->func_binary_code; ; test = test->in_next) {
+        ASSERT(test);
+
+        if (aux_binary_search((int*)usage_arr, total_count, (int)test) >= 0) {
+            current_count++;
         }
 
-        bincode_extract_pseudoregs_from_insn(usage_arr[def], type, regs, &regs_count);
-
-        if (regs_count) {
-            return FALSE;
+        if (test == insn) {
+            return (current_count == total_count);
         }
     }
+}
 
-    return TRUE;
+void x86_dataflow_detect_registers_range(function_desc *function, x86_operand_type type)
+{
+    int *regs[MAX_REGISTERS_PER_INSN], regs_count;
+    x86_instruction *insn;
+    int i;
+
+    x86_dataflow_init_use_def_tables(function, type);
+
+    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
+        bincode_extract_pseudoregs_from_insn(insn, type, regs, &regs_count);
+        insn->in_reg_usage_mask = 0;
+
+        for (i = 0; i < regs_count; i++) {
+            if (_is_last_usage(*regs[i], insn, function, type)) {
+                insn->in_reg_usage_mask |= (1 << i);
+            }
+        }
+    }
 }
 

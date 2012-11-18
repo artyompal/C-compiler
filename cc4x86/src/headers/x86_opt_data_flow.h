@@ -16,7 +16,7 @@ int  x86_dataflow_is_pseudoreg_alive_before (int pseudoreg);
 void x86_dataflow_optimize_redundant_copies (function_desc *function);
 void x86_dataflow_init_use_def_tables       (function_desc *function, x86_operand_type type);
 void x86_dataflow_erase_instruction         (function_desc *function, x86_instruction *insn);
-BOOL x86_dataflow_is_last_usage             (int reg, x86_instruction *insn, function_desc *function, x86_operand_type type);
+void x86_dataflow_detect_registers_range    (function_desc *function, x86_operand_type type);
 
 
 #else

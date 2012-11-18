@@ -135,10 +135,11 @@ static void set_screen_dimentions()
 	
 	ASSERT((ddsd.dwFlags & DDSD_WIDTH) && (ddsd.dwFlags & DDSD_HEIGHT) && (ddsd.dwFlags & DDSD_PITCH));
 
-   if (fullscreen) {
-      ddraw_width	   = ddsd.dwWidth;
-      ddraw_height	= ddsd.dwHeight;
-   }
+    if (fullscreen) {
+        ddraw_width	   = ddsd.dwWidth;
+        ddraw_height	= ddsd.dwHeight;
+    }
+
 	ddraw_pitch    = ddsd.lPitch;
 }
 
@@ -172,20 +173,20 @@ void ddraw_flip()
 {
 	HRESULT ddrval;
 
-   if (fullscreen) {
-   	ddrval = front_surface->Flip(NULL, DDFLIP_WAIT);
-      CHECK_DDRAW_RESULT(ddrval, "Flip");
+    if (fullscreen) {
+   	    ddrval = front_surface->Flip(NULL, DDFLIP_NOVSYNC);
+        CHECK_DDRAW_RESULT(ddrval, "Flip");
 	} else {
-      RECT rect;
-      POINT pt;
+        RECT rect;
+        POINT pt;
 
-      GetClientRect(hwnd, &rect);
-      pt.x = pt.y = 0;
-      ClientToScreen(hwnd, &pt);
-      OffsetRect(&rect, pt.x, pt.y);
+        GetClientRect(hwnd, &rect);
+        pt.x = pt.y = 0;
+        ClientToScreen(hwnd, &pt);
+        OffsetRect(&rect, pt.x, pt.y);
 
-      ddrval = front_surface->Blt(&rect, back_surface, NULL, DDBLT_WAIT, NULL);
-      CHECK_DDRAW_RESULT(ddrval, "front_surface->Blt");
+        ddrval = front_surface->Blt(&rect, back_surface, NULL, DDFLIP_NOVSYNC, NULL);
+        CHECK_DDRAW_RESULT(ddrval, "front_surface->Blt");
 	}
 }
 
@@ -198,8 +199,8 @@ void ddraw_text(int x, int y, const char *txt)
 	CHECK_DDRAW_RESULT(ddrval, "GetDC");
 
 	SetBkColor(hdc, 0x000000); 
-   SetTextColor(hdc, 0xFFFFFF); 
-   TextOut(hdc, x, y, txt, (int)strlen(txt));
+    SetTextColor(hdc, 0xFFFFFF); 
+    TextOut(hdc, x, y, txt, (int)strlen(txt));
     
 	back_surface->ReleaseDC(hdc); 
 }

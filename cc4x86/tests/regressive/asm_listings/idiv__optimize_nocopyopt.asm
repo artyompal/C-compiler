@@ -43,7 +43,8 @@ _test proc
         add     eax,[ebp-32]
         cmp     eax,2
         je      label0000
-        mov     eax,1
+        mov     edx,1
+        mov     eax,edx
         pop     ebx
         pop     esi
         pop     edi
@@ -54,10 +55,10 @@ label0000:
         mov     eax,ebx
         cdq
         idiv    edi
-        mov     ebx,eax
-        cmp     ebx,2
+        cmp     eax,2
         je      label0001
-        mov     eax,2
+        mov     edx,2
+        mov     eax,edx
         pop     ebx
         pop     esi
         pop     edi

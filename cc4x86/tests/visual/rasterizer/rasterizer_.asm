@@ -1182,11 +1182,11 @@ label0006:
         mov     eax,[ebp-16]
         mov     ecx,[ebp-48]
         sub     eax,[ecx]
-        mov     edx,[ebp+16]
-        mov     ecx,[ebp+8]
-        mov     edx,[edx]
-        sub     edx,[ecx]
-        imul    eax,edx
+        mov     ecx,[ebp+16]
+        mov     edx,[ebp+8]
+        mov     ecx,[ecx]
+        sub     ecx,[edx]
+        imul    eax,ecx
         mov     ecx,[ebp+16]
         add     ecx,4
         mov     edx,[ebp+8]
@@ -1343,8 +1343,8 @@ label0007:
         sub     ecx,[edx]
         cdq
         idiv    ecx
-        mov     ecx,[ebp+8]
-        add     eax,[ecx]
+        mov     edx,[ebp+8]
+        add     eax,[edx]
         mov     [ebp-12],eax
         mov     eax,[ebp+12]
         add     eax,4
@@ -1453,11 +1453,11 @@ label0009:
         mov     eax,[ebp-16]
         mov     ecx,[ebp-56]
         sub     eax,[ecx]
-        mov     edx,[ebp+16]
-        mov     ecx,[ebp+12]
-        mov     edx,[edx]
-        sub     edx,[ecx]
-        imul    eax,edx
+        mov     ecx,[ebp+16]
+        mov     edx,[ebp+12]
+        mov     ecx,[ecx]
+        sub     ecx,[edx]
+        imul    eax,ecx
         mov     ecx,[ebp+16]
         add     ecx,4
         mov     edx,[ebp+12]
@@ -1475,11 +1475,11 @@ label0009:
         mov     eax,[ebp-16]
         mov     ecx,[ebp-60]
         sub     eax,[ecx]
-        mov     edx,[ebp+16]
-        mov     ecx,[ebp+8]
-        mov     edx,[edx]
-        sub     edx,[ecx]
-        imul    eax,edx
+        mov     ecx,[ebp+16]
+        mov     edx,[ebp+8]
+        mov     ecx,[ecx]
+        sub     ecx,[edx]
+        imul    eax,ecx
         mov     ecx,[ebp+16]
         add     ecx,4
         mov     edx,[ebp+8]
@@ -1623,7 +1623,7 @@ __rasterize_triangle_2i endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,68
+        sub     esp,72
         push    edi
         push    esi
         mov     eax,[ebp+8]
@@ -1681,6 +1681,7 @@ label0001:
         mov     esi,ecx
         mov     ecx,6
         rep     movsd
+        mov     [ebp-64],ecx
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         comiss  xmm0,dword ptr [ebp-52]
@@ -1716,15 +1717,15 @@ label0005:
         push    eax
         call    _vec4f_dot
         add     esp,8
-        movss   dword ptr [ebp-64],xmm0
+        movss   dword ptr [ebp-68],xmm0
         push    dword ptr [ebp+20]
         lea     eax,[ebp-40]
         push    eax
         call    _vec4f_dot
         add     esp,8
-        movss   dword ptr [ebp-68],xmm0
-        movss   xmm0,dword ptr [ebp-64]
-        divss   xmm0,dword ptr [ebp-68]
+        movss   dword ptr [ebp-72],xmm0
+        movss   xmm0,dword ptr [ebp-68]
+        divss   xmm0,dword ptr [ebp-72]
         movss   dword ptr [ebp-60],xmm0
         push    dword ptr [ebp-60]
         lea     eax,[ebp-40]
@@ -1792,7 +1793,7 @@ label0002:
         rep     movsd
         pop     esi
         pop     edi
-        add     esp,68
+        add     esp,72
         pop     ebp
         ret
 __clip_on_plain endp
@@ -2079,9 +2080,9 @@ _rasterizer_triangle3f proc
         mov     esi,ecx
         mov     ecx,6
         rep     movsd
-        lea     eax,[ebp-196]
-        add     eax,192
-        mov     dword ptr [eax],4
+        lea     ecx,[ebp-196]
+        add     ecx,192
+        mov     dword ptr [ecx],4
         lea     eax,[ebp-196]
         push    eax
         call    __rasterize_polygon_4f
