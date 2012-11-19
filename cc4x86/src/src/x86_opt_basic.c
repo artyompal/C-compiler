@@ -104,6 +104,24 @@ static BOOL _try_combine_addresses(x86_operand *dst, x86_operand *src, int reg)
     return TRUE;
 }
 
+//
+// Проверяет, что регистр используется только в текущем блоке и только в константных контекстах.
+// Берёт информацию из глобальных переменных _usage_arr, _usage_count.
+static BOOL _check_locality_and_constantness(x86_instruction *insn, int reg)
+{
+    x86_operand_type type = x86op_dword;
+    int i;
+
+    // проверяем, что регистр используется только в read-only контекстах
+    for (i = 0; i < _usage_count; i++) {
+        if (_usage_arr[i]->in_block != insn->in_block || bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)) {
+            return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+
 
 //
 //
@@ -113,95 +131,86 @@ static BOOL _try_combine_addresses(x86_operand *dst, x86_operand *src, int reg)
 
 //
 // Заменяет все использования регистра на смещение символа, и если это всегда удаётся, удаляем инструкцию LEA.
-static void _try_optimize_lea_reg_symbol(function_desc *function, x86_instruction *insn)
+static void _try_optimize_lea_reg_symbol(function_desc *function, x86_instruction *lea)
 {
-    x86_instruction *usage;
-    int reg;
-    x86_pseudoreg_info *pseudoreg_info;
+    x86_operand_type type = x86op_dword;
+    int reg, i;
 
+    reg = lea->in_op1.data.reg;
+    x86_dataflow_find_all_usages_of_definition(reg, lea, type, _usage_arr, &_usage_count, _usage_max_count);
 
-    reg             = insn->in_op1.data.reg;
-    ASSERT(reg < function->func_dword_regstat.count);
-    pseudoreg_info  = &function->func_dword_regstat.ptr[reg];
-
-    if (pseudoreg_info->reg_changes_value) {
-        // Мы не можем заменить регистр, если он модифицируется.
+    if (!_check_locality_and_constantness(lea, reg)) {
         return;
     }
 
-    for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
-        ASSERT(usage);
-
-        if (!_replace_register_with_symbol_offset(usage, reg, insn->in_op2.data.sym.name)) {
+    for (i = 0; i < _usage_count; i++) {
+        if (!_replace_register_with_symbol_offset(_usage_arr[i], reg, lea->in_op2.data.sym.name)) {
             return;
         }
     }
 
-    bincode_erase_instruction(function, insn);
+    x86_dataflow_erase_instruction(function, lea);
 }
 
 //
 // Пробует убрать инструкцию LEA.
-static void _try_optimize_lea_reg_address(function_desc *function, x86_instruction *insn)
+static void _try_optimize_lea_reg_address(function_desc *function, x86_instruction *lea)
 {
-    x86_instruction *usage;
-    int reg, reg2;
-    x86_pseudoreg_info *pseudoreg_info;
-    BOOL can_eliminate;
+    x86_instruction *block_end, *usage;
+    x86_operand_type type = x86op_dword;
+    int reg, reg2, usages_handled;
 
+    reg = lea->in_op1.data.reg;
+    x86_dataflow_find_all_usages_of_definition(reg, lea, type, _usage_arr, &_usage_count, _usage_max_count);
 
-    reg             = insn->in_op1.data.reg;
-    ASSERT(reg < function->func_dword_regstat.count);
-    pseudoreg_info  = &function->func_dword_regstat.ptr[reg];
-
-    if (pseudoreg_info->reg_changes_value) {
-        // Мы не можем заменить регистр, если он модифицируется.
+    if (!_check_locality_and_constantness(lea, reg)) {
         return;
     }
 
-    // Если инструкция - тривиальный LEA вроде LEA EAX,[EDX] или  LEA EAX,[EDX*1], то просто устраняем её.
-    if (ADDRESS_IS_BASE(insn->in_op2)) {
-        reg2 = insn->in_op2.data.address.base;
+    block_end = lea->in_block->block_last_insn->in_next;
 
-        for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
-            ASSERT(usage);
-            _replace_register_in_instruction(usage, reg, reg2);
+    // Если инструкция - тривиальный LEA вроде LEA EAX,[EDX] или LEA EAX,[EDX*1], то просто устраняем её.
+    if (ADDRESS_IS_BASE(lea->in_op2) || ADDRESS_IS_UNSCALED_INDEX(lea->in_op2)) {
+        reg2 = (ADDRESS_IS_BASE(lea->in_op2) ? lea->in_op2.data.address.base : lea->in_op2.data.address.index);
+
+        for (usage = lea->in_next, usages_handled = 0; usages_handled < _usage_count; usage = usage->in_next) {
+            ASSERT(usage != block_end);
+
+            if (bincode_is_pseudoreg_modified_by_insn(usage, type, reg2)) {
+                return;
+            }
+
+            if (aux_binary_search((int*)_usage_arr, _usage_count, (int)usage) >= 0) {
+                usages_handled++;
+                _replace_register_in_instruction(usage, reg, reg2);
+            }
         }
 
-        bincode_erase_instruction(function, insn);
-    } else if (ADDRESS_IS_UNSCALED_INDEX(insn->in_op2)) {
-        reg2 = insn->in_op2.data.address.index;
-
-        for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
-            ASSERT(usage);
-            _replace_register_in_instruction(usage, reg, reg2);
-        }
-
-        bincode_erase_instruction(function, insn);
+        x86_dataflow_erase_instruction(function, lea);
     } else {
-        // Иначе исследуем её использование и пытаемся объединить адреса в одной инструкции.
-        // Если не получается, то прекращаем; иначе удаляем исходную инструкцию.
-        can_eliminate = TRUE;
+        // Иначе пытаемся объединить два адреса.
+        for (usage = lea->in_next, usages_handled = 0; usages_handled < _usage_count; usage = usage->in_next) {
+            ASSERT(usage != block_end);
 
-        for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
-            ASSERT(usage);
-
-            if (_is_address_using_reg(&usage->in_op1, reg) && !_try_combine_addresses(&usage->in_op1, &insn->in_op2, reg)
-                || bincode_operand_contains_register(&usage->in_op1, x86op_dword, reg)) {
-                    can_eliminate = FALSE;
-                    break;
+            // Если один из компонентов адреса модифицируется, выходим.
+            if (lea->in_op2.data.address.base > 0 && bincode_is_pseudoreg_modified_by_insn(usage, type, lea->in_op2.data.address.base) ||
+                lea->in_op2.data.address.index > 0 && bincode_is_pseudoreg_modified_by_insn(usage, type, lea->in_op2.data.address.index)) {
+                return;
             }
 
-            if (_is_address_using_reg(&usage->in_op2, reg) && !_try_combine_addresses(&usage->in_op2, &insn->in_op2, reg)
-                || bincode_operand_contains_register(&usage->in_op2, x86op_dword, reg)) {
-                    can_eliminate = FALSE;
-                    break;
+            // Пытаемся объединить адреса.
+            if (aux_binary_search((int*)_usage_arr, _usage_count, (int)usage) >= 0) {
+                usages_handled++;
+
+                if (_is_address_using_reg(&usage->in_op1, reg) && !_try_combine_addresses(&usage->in_op1, &lea->in_op2, reg) ||
+                    OP_IS_THIS_PSEUDO_REG(usage->in_op1, type, reg) || OP_IS_THIS_PSEUDO_REG(usage->in_op2, type, reg) ||
+                    _is_address_using_reg(&usage->in_op2, reg) && !_try_combine_addresses(&usage->in_op2, &lea->in_op2, reg)) {
+                        return;
+                    }
             }
         }
 
-        if (can_eliminate) {
-            bincode_erase_instruction(function, insn);
-        }
+        x86_dataflow_erase_instruction(function, lea);
     }
 }
 
@@ -452,7 +461,7 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss)
     }
 
     // удаляем инструкцию
-    bincode_erase_instruction(function, movss);
+    x86_dataflow_erase_instruction(function, movss);
 }
 
 
@@ -483,7 +492,7 @@ static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
 {
     if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && !function->func_dword_regstat.ptr[insn->in_op1.data.reg].reg_last_read) {
-        aux_warning("variable is never used");
+        aux_warning("code has no effect");
         bincode_erase_instruction(function, insn);
     } else if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT(insn->in_op2)) {
         _try_optimize_mov_reg_const(function, insn);

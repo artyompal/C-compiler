@@ -7,6 +7,16 @@
 #endif // _MSC_VER
 
 
+typedef struct basic_block_decl {           // структура базового блока:
+    x86_instruction     *block_leader;      // первая инструкция блока, чаще всего метка
+    int                 block_length;       // число инструкций в блоке
+    x86_instruction     *block_last_insn;   // указатель на последнюю инструкцию
+
+    int                 block_first_def;    // первое определение
+    int                 block_end_def;      // определение, последующее последнему
+} basic_block;
+
+
 void x86_dataflow_init_alive_reg_tables     (function_desc *function, x86_operand_type type);
 void x86_dataflow_set_current_insn          (function_desc *function, x86_operand_type type, x86_instruction *pos);
 
