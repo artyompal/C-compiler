@@ -8,7 +8,6 @@
 //
 // Вспомогательные функции, используемые различными алгоритмами оптимизации:
 // анализируют, какие регистры используются данной функцией или данным операндом.
-//
 
 static void _extract_pseudoregs_from_operand(x86_operand *op, x86_operand_type type, int *regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
@@ -40,6 +39,7 @@ void bincode_extract_pseudoregs_from_operand(x86_operand *op, x86_operand_type t
 
 void bincode_extract_pseudoregs_from_insn(x86_instruction *insn, x86_operand_type type, int *regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
+    // FIXME: handle 3rd argument!
     *regs_cnt = 0;
     _extract_pseudoregs_from_operand(&insn->in_op1, type, regs, regs_cnt);
 
@@ -207,6 +207,21 @@ void bincode_extract_pseudoregs_overwritten_by_insn(x86_instruction *insn, x86_o
     }
 }
 
+BOOL bincode_is_pseudoreg_read_by_insn(x86_instruction *insn, x86_operand_type type, int reg)
+{
+    int i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
+
+    bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
+
+    for (i = 0; i < regs_cnt; i++) {
+        if (regs[i] == reg) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
 BOOL bincode_is_pseudoreg_modified_by_insn(x86_instruction *insn, x86_operand_type type, int reg)
 {
     int i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
@@ -243,6 +258,30 @@ BOOL bincode_is_pseudoreg_overwritten_by_insn(x86_instruction *insn, x86_operand
     }
 
     return FALSE;
+}
+
+x86_operand *bincode_find_usage_as_register_operand(x86_instruction *insn, x86_operand_type type, int reg)
+{
+    if (OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg)) {
+        return &insn->in_op1;
+    } else if (OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, reg)) {
+        return &insn->in_op2;
+    } else {
+        UNIMPLEMENTED_ASSERT(insn->in_code != x86insn_rep_movsd);
+    }
+
+    return NULL;
+}
+
+x86_operand *bincode_find_usage_as_address_operand(x86_instruction *insn, x86_operand_type type, int reg)
+{
+    if (OP_IS_ADDRESS(insn->in_op1) && bincode_operand_contains_register(&insn->in_op1, type, reg)) {
+        return &insn->in_op1;
+    } else if (OP_IS_ADDRESS(insn->in_op2) && bincode_operand_contains_register(&insn->in_op2, type, reg)) {
+        return &insn->in_op2;
+    } else {
+        return NULL;
+    }
 }
 
 

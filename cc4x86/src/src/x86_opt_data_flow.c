@@ -554,7 +554,7 @@ static void _exposeduses_find_all_usages_of_definition(int reg, x86_instruction 
         if (bincode_is_pseudoreg_overwritten_by_insn(test, type, reg)) {
             reached_def = TRUE;
             break;
-        } else if (bincode_insn_contains_register(test, type, reg)) {
+        } else if (bincode_is_pseudoreg_read_by_insn(test, type, reg)) {
             res_arr[*res_count] = test;
             ++*res_count;
             ASSERT(*res_count < res_max_count);
@@ -1248,10 +1248,7 @@ static void _optimize_redundant_copies_iterative(function_desc *function, x86_op
         _redundantcopies_build_inout(function, type);
 
         _optimize_redundant_copies(function, type);
-        x86_analyze_registers_usage(function);
-
-        x86_optimization_after_codegen(function);
-        x86_analyze_registers_usage(function);
+        x86_local_optimization_pass(function);
 
         new_length = unit_get_instruction_count(function);
         ASSERT(new_length <= function_length);
@@ -1264,8 +1261,6 @@ void x86_dataflow_optimize_redundant_copies(function_desc *function)
 {
     _optimize_redundant_copies_iterative(function, x86op_dword);
     _optimize_redundant_copies_iterative(function, x86op_float);
-
-    x86_analyze_registers_usage(function);
 }
 
 

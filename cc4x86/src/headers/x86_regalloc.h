@@ -24,11 +24,6 @@ typedef struct x86_pseudoreg_info_decl {
     int                     reg_stack_location;     // смещение ассоциированной €чейки в стеке
     BOOL                    reg_dirty;              // был ли регистр модифицирован
     x86_operand_type        reg_content_type;       // тип содержимого регистра
-
-// TODO: параметры reg_first_write/reg_last_read/reg_changes_value €вл€ютс€ deprecated. «адачи анализа потока данных должны теперь решатьс€ через множества in/out.
-    x86_instruction *       reg_first_write;
-    x86_instruction *       reg_last_read;
-    BOOL                    reg_changes_value;
 } x86_pseudoreg_info;
 
 #define OP_IS_REGVAR(REG, TYPE) ((REG) >= function->func_start_of_regvars[(TYPE)])
@@ -37,7 +32,6 @@ typedef struct x86_pseudoreg_info_decl {
 x86_operand_type            x86_encode_register_type        (x86_operand_type type);
 BOOL                        x86_equal_types                 (x86_operand_type type1, x86_operand_type type2);
 
-void                        x86_analyze_registers_usage     (function_desc *function);
 void                        x86_allocate_registers          (function_desc *function);
 
 int                         x86_get_registers_count         (x86_operand_type type);

@@ -17,11 +17,6 @@ typedef struct x86_operand_decl         x86_operand;
 typedef enum x86_operand_type_decl      x86_operand_type;
 
 
-typedef struct register_stat_decl {
-    x86_pseudoreg_info *        ptr;                        // массив с информацией об использовании псевдорегистров
-    int                         count;                      // длина этого массива
-} register_stat;
-
 typedef struct function_desc_decl {
     // синтаксическа€/семантическа€ информаци€:
     symbol *                    func_sym;                   // идентификатор функции
@@ -38,8 +33,6 @@ typedef struct function_desc_decl {
     int                         func_local_vars_sz;         // суммарный размер, в байтах, локальных переменных
 
     // информаци€ аллокатора регистров:
-    register_stat               func_dword_regstat;         // регистровые статистики дл€ соответствующих наборов регистров;
-    register_stat               func_sse_regstat;
     int                         func_start_of_regvars[6];   // перва€ регистрова€ переменна€ (номер псевдорегистра)
     int                         func_labels_count;          // последн€€ аллоцированна€ метка в функции
     int                         func_pseudoregs_count[6];   // X86_REGISTER_TYPES_COUNT
@@ -104,7 +97,6 @@ void            unit_push_binary_instruction        (x86_instruction_code code, 
 void            unit_push_ternary_instruction       (x86_instruction_code code, x86_operand *op1, x86_operand *op2, int op3);
 
 // поддержка оптимизатора
-register_stat * unit_get_regstat                    (function_desc *function, x86_operand_type type);
 int             unit_get_instruction_count          (function_desc *function);
 
 

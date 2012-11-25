@@ -10,10 +10,10 @@ _test proc
         mov     dword45,2
         mov     dword46,3
         mov     dword47,4
-        mov     dword11,3
+        mov     dword11,dword46
         cdq     dword12,dword11
         idiv    dword11,dword45
-        mov     dword15,3
+        mov     dword15,dword46
         cdq     dword16,dword15
         idiv    dword15,dword45
         imul    dword11,dword15

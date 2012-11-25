@@ -45,7 +45,6 @@ label0001:
 ; start of inline function test3
         mov     edi,444
         mov     esi,222
-        mov     ebx,0
         mov     ebx,esi
         cmp     edi,0
         jle     label0007
@@ -71,7 +70,7 @@ label0002:
 ; start of inline function test4
         mov     edi,5
         inc     edi
-        lea     edi,[edi+4]
+        add     edi,4
         sub     edi,10
 ; end of inline function test4
         cmp     edi,0
@@ -86,8 +85,6 @@ label0002:
 label0003:
 ; start of inline function test5
         mov     edi,888
-        mov     esi,0
-        mov     esi,222
         cmp     edi,0
         jle     label000b
         mov     esi,444
@@ -95,7 +92,7 @@ label0003:
 label000b:
         mov     esi,222
 label000c:
-        lea     esi,[esi+444]
+        add     esi,444
         sub     esi,edi
 ; end of inline function test5
         cmp     esi,0

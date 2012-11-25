@@ -13,7 +13,8 @@ _test proc
         cdq     dword12,dword11
         idiv    dword11,dword21
         add     dword11,[ebp-12]
-        lea     dword18,[dword11-3]
+        mov     dword18,dword11
+        sub     dword18,3
         set_retval      dword18
         destroy_stack_frame
         ret

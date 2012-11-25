@@ -879,13 +879,11 @@ void unit_codegen(void)
         _curr_func->func_start_of_regvars[x86op_float] = INT_MAX;
 
         if (!option_no_basic_opt) {
-            x86_analyze_registers_usage(_curr_func);
-            x86_optimization_after_codegen(_curr_func);
+            x86_local_optimization_pass(_curr_func);
         }
 
         // строим статистику вызовов функций
         if (option_enable_optimization && !option_no_inline) {
-            x86_analyze_registers_usage(_curr_func);
             x86_inlining_analyze_function(_curr_func);
         }
 
@@ -915,16 +913,14 @@ void unit_codegen(void)
             continue;
         }
 
-        x86_init_register_variables();
+        x86_regvars_init();
 
         if (!option_no_basic_opt) {
-            x86_optimization_after_inlining(_curr_func);
+            x86_local_optimization_pass(_curr_func);
         }
 
-        x86_analyze_registers_usage(_curr_func);
-
         if (option_enable_optimization) {
-            x86_create_register_variables(_curr_func);
+            x86_regvars_create(_curr_func);
 
             if (!option_no_copy_opt) {
                 x86_dataflow_optimize_redundant_copies(_curr_func);
@@ -975,17 +971,6 @@ void unit_push_ternary_instruction(x86_instruction_code code, x86_operand *op1, 
     _curr_func->func_binary_code_end->in_op3 = op3;
 }
 
-
-register_stat * unit_get_regstat(function_desc *function, x86_operand_type type)
-{
-    if (type == x86op_dword) {
-        return &function->func_dword_regstat;
-    } else if (type == x86op_float || type == x86op_double) {
-        return &function->func_sse_regstat;
-    } else {
-        ASSERT(FALSE);
-    }
-}
 
 //
 // Считает число инструкций в функции.

@@ -130,15 +130,13 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
 
 //
 // Сохраняет ссылку на аллоцированное место в стеке для регистровой переменной.
-static void _link_stack_var_to_register_var(function_desc *function, x86_register_var *reg_var)
+static void _link_stack_var_to_register_var(function_desc *function, x86_pseudoreg_info *info, x86_register_var *reg_var, x86_operand_type type)
 {
     int var_offset  = reg_var->sym->sym_offset;
     int var_reg     = reg_var->pseudo_reg;
 
-    register_stat *rs = unit_get_regstat(function, reg_var->type);
-    ASSERT(var_reg < rs->count);
-
-    rs->ptr[var_reg].reg_stack_location = var_offset;
+    ASSERT(var_reg < function->func_pseudoregs_count[type]);
+    info[var_reg].reg_stack_location = var_offset;
 }
 
 //
@@ -147,8 +145,6 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
 {
     int last_pseudo_register;
     x86_register_var *reg_var;
-    register_stat *regstat = unit_get_regstat(function, type);
-
 
     // составляем список переменых
     _choose_possible_register_variables(function, type);
@@ -156,7 +152,7 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
     // регистры нумеруются с единицы
     function->func_pseudoregs_count[type]++;
 
-    last_pseudo_register                    = regstat->count+1;
+    last_pseudo_register                    = function->func_pseudoregs_count[type];
     function->func_start_of_regvars[type]   = last_pseudo_register;
 
 
@@ -173,35 +169,32 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
 
 //
 // Инициализация списка регистровых переменных.
-
-void x86_init_register_variables()
+void x86_regvars_init()
 {
     _register_vars_list.first = _register_vars_list.last = NULL;
 }
 
 //
 // Глобальная точка входа в аллокатор регистровых переменных.
-void x86_create_register_variables(function_desc *function)
+void x86_regvars_create(function_desc *function)
 {
     _create_register_variables_for_type(function, x86op_dword);
     _create_register_variables_for_type(function, x86op_float);
 
     // делаем оптимизации, ставшие теперь возможными
-    x86_analyze_registers_usage(function);
-    x86_optimization_after_codegen(function);
-    x86_analyze_registers_usage(function);
+    x86_local_optimization_pass(function);
 }
 
 //
 // Заполняет поле reg_stack_location смещением стековой переменой для всех регистровых переменных.
-void x86_setup_offset_for_register_variables(function_desc *function, x86_operand_type type)
+void x86_regvars_setup_offset(function_desc *function, x86_pseudoreg_info *info, x86_operand_type type)
 {
     x86_register_var *reg_var;
 
     // сохраняем стековые смещения для каждой переменной, чтобы не аллоцировать лишнее место в стеке
     for (reg_var = _register_vars_list.first; reg_var; reg_var = reg_var->next) {
         if (reg_var->type == type) {
-            _link_stack_var_to_register_var(function, reg_var);
+            _link_stack_var_to_register_var(function, info, reg_var, type);
         }
     }
 }

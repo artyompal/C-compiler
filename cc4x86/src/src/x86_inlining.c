@@ -332,11 +332,6 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             }
         }
     }
-
-    if (was) {
-        // Мы создали новые псевдо-регистры, поэтому мы должны перестроить регистровую статистику.
-        x86_analyze_registers_usage(caller);
-    }
 }
 
 
