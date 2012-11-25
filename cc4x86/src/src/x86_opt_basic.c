@@ -180,7 +180,11 @@ static BOOL _can_combine_address_and_insn(int reg, x86_operand *addr, x86_instru
             addr->data.address.base     = 0;
             addr->data.address.offset   += insn->in_op2.data.int_val;
             return TRUE;
-    // TODO: the same for .index register
+    } else if (insn->in_code == x86insn_int_mov && OP_IS_CONSTANT(insn->in_op2)
+        && addr->data.address.index > 0 && addr->data.address.scale == 1 && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, addr->data.address.index)) {
+            addr->data.address.index    = 0;
+            addr->data.address.offset   += insn->in_op2.data.int_val;
+            return TRUE;
     } else if (insn->in_code == x86insn_int_add && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, reg)
         && OP_IS_PSEUDO_REG(insn->in_op2, x86op_dword) && (ADDRESS_IS_BASE_OFS(*addr) || ADDRESS_IS_UNSCALED_INDEX_OFS(*addr))) {
             addr->data.address.base     = (addr->data.address.base > 0 ? addr->data.address.base : addr->data.address.index);
@@ -231,7 +235,30 @@ static void _try_optimize_address(function_desc *function, x86_instruction *insn
         }
     }
 
-    // TODO: the same for .index register
+    if (addr->data.address.index > 0 && addr->data.address.scale == 1) {
+        reg = addr->data.address.index;
+        def = _find_local_definition(function, insn, reg);
+
+        if (def && _is_unused_anymore(function, insn, reg)) {
+            allowed = TRUE;
+
+            for (usage = def->in_next; usage != insn->in_next && allowed; usage = usage->in_next) {
+                if (bincode_find_usage_as_register_operand(usage, type, reg)) {
+                    allowed = FALSE;
+                }
+
+                found = bincode_find_usage_as_address_operand(usage, type, reg);
+
+                if (found && !_can_combine_address_and_insn(reg, found, def)) {
+                    allowed = FALSE;
+                }
+            }
+
+            if (allowed) {
+                x86_dataflow_erase_instruction(function, def);
+            }
+        }
+    }
 }
 
 
