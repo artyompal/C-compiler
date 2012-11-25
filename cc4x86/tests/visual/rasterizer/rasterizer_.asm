@@ -2102,24 +2102,22 @@ _rasterizer_triangle3f proc
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        lea     eax,[ebp-196]
-        mov     ecx,[ebp+24]
-        mov     edx,[ecx]
-        mov     ecx,[ecx+4]
-        mov     [eax+40],edx
-        mov     [eax+44],ecx
+        mov     eax,[ebp+24]
+        mov     ecx,[eax]
+        mov     eax,[eax+4]
+        mov     [ebp-156],ecx
+        mov     [ebp-152],eax
         push    dword ptr [ebp+16]
         lea     eax,[ebp-196]
         add     eax,48
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        lea     eax,[ebp-196]
-        mov     ecx,[ebp+28]
-        mov     edx,[ecx]
-        mov     ecx,[ecx+4]
-        mov     [eax+64],edx
-        mov     [eax+68],ecx
+        mov     eax,[ebp+28]
+        mov     ecx,[eax]
+        mov     eax,[eax+4]
+        mov     [ebp-132],ecx
+        mov     [ebp-128],eax
         lea     eax,[ebp-196]
         add     eax,72
         lea     ecx,[ebp-196]
