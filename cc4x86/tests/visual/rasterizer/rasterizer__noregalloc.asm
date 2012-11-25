@@ -2081,12 +2081,11 @@ _rasterizer_triangle3f proc
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        lea     dword12,[ebp-196]
         mov     dword16,[ebp+24]
         mov     dword17,[dword16]
         mov     dword18,[dword16+4]
-        mov     [dword12+40],dword17
-        mov     [dword12+44],dword18
+        mov     [ebp-156],dword17
+        mov     [ebp-152],dword18
         push_all
         push_arg        dword ptr [ebp+16],4
         lea     dword20,[ebp-196]
@@ -2095,12 +2094,11 @@ _rasterizer_triangle3f proc
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        lea     dword22,[ebp-196]
         mov     dword26,[ebp+28]
         mov     dword27,[dword26]
         mov     dword28,[dword26+4]
-        mov     [dword22+64],dword27
-        mov     [dword22+68],dword28
+        mov     [ebp-132],dword27
+        mov     [ebp-128],dword28
         lea     dword29,[ebp-196]
         add     dword29,72
         lea     dword31,[ebp-196]

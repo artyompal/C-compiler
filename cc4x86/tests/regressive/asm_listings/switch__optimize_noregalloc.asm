@@ -105,7 +105,6 @@ label0006:
         jmp     label0008
 label0007:
         mov     dword63,1
-        jmp     label0008
 label0008:
 ; end of inline function test_case
         cmp     dword63,0
@@ -136,7 +135,6 @@ label000d:
         jmp     label000f
 label000e:
         mov     dword66,1
-        jmp     label000f
 label000f:
 ; end of inline function test_case2
         cmp     dword66,0
@@ -159,7 +157,6 @@ label0012:
         jmp     label0016
 label0013:
         mov     dword69,0
-        jmp     label0016
 label0016:
 ; end of inline function test_default
         cmp     dword69,0

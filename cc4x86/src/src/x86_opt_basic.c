@@ -4,7 +4,6 @@
 #include "x86_optimizer.h"
 #include "x86_regalloc.h"
 #include "x86_opt_data_flow.h"
-#include "x86_text_output.h"
 
 
 #define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base > 0 && (OP).data.address.index == 0 \
@@ -579,16 +578,18 @@ static void _kill_unused_labels(function_desc *function)
 // Итерация оптимизации. Оптимизатор пытается объединить идущие подряд инструкции в более эффективные формы.
 void x86_local_optimization_pass(function_desc *function)
 {
+    int old_insn_count;
+
     function->func_insn_count = unit_get_instruction_count(function);
 
-    //text_output_debug_comment("before opt");
-    //text_output_push_function_code(function);
+    do {
+        old_insn_count = function->func_insn_count;
 
-    _optimize_dword_insns(function);
-    _optimize_float_insn(function);
-    _kill_unused_labels(function);
+        _optimize_dword_insns(function);
+        _optimize_float_insn(function);
+        _kill_unused_labels(function);
 
-    //text_output_debug_comment("after opt");
-    //text_output_push_function_code(function);
+        function->func_insn_count = unit_get_instruction_count(function);
+    } while (function->func_insn_count != old_insn_count);
 }
 

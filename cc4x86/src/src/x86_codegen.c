@@ -7,7 +7,7 @@
 #include "x86_regalloc.h"
 
 
-static function_desc *_curr_func = NULL;
+static function_desc *_curr_codegen_func = NULL;
 
 
 static void _evaluate_nested_expression(expression *expr, x86_operand *res);
@@ -15,7 +15,7 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res);
 
 int x86_codegen_alloc_pseudoreg(x86_operand_type type)
 {
-    return _curr_func->func_pseudoregs_count[x86_encode_register_type(type)]++;
+    return _curr_codegen_func->func_pseudoregs_count[x86_encode_register_type(type)]++;
 }
 
 
@@ -781,7 +781,7 @@ static void _generate_conditional_jump(expression *condition, int destination, B
 
 static void _generate_jumps_for_and(expression *cond1, expression *cond2, int destination, BOOL invert_operands)
 {
-    int label = unit_create_label(_curr_func);
+    int label = unit_create_label(_curr_codegen_func);
     x86_operand op;
 
     _generate_conditional_jump(cond1, label, !invert_operands);
@@ -930,7 +930,7 @@ static void _walk_through_expressions(void)
     x86_operand label;
     expression *expr;
 
-    for (expr = _curr_func->func_body; expr; expr = expr->expr_next) {
+    for (expr = _curr_codegen_func->func_body; expr; expr = expr->expr_next) {
         switch (expr->expr_code) {
         case code_expr_label:
             bincode_create_operand_from_label(&label, expr->data.label);
@@ -975,29 +975,29 @@ static void _extract_float_constants(expression *expr, void *unused)
 
 static void _place_float_constants_into_data_section(void)
 {
-    expr_iterate_through_subexpressions(_curr_func->func_body, code_expr_float_constant, EXPR_IT_APPLY_FILTER,
+    expr_iterate_through_subexpressions(_curr_codegen_func->func_body, code_expr_float_constant, EXPR_IT_APPLY_FILTER,
         _extract_float_constants, NULL);
 }
 
 
 // Точка входа в кодогенератор.
 
-AUX_CASSERT(sizeof(_curr_func->func_pseudoregs_count)/sizeof(int) == X86_REGISTER_TYPES_COUNT);
+AUX_CASSERT(sizeof(_curr_codegen_func->func_pseudoregs_count)/sizeof(int) == X86_REGISTER_TYPES_COUNT);
 
 void x86_codegen_do_function(function_desc *function)
 {
     x86_operand_type type;
 
-    _curr_func   = function;
+    _curr_codegen_func = function;
 
     for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
-        _curr_func->func_pseudoregs_count[type] = 1;
+        _curr_codegen_func->func_pseudoregs_count[type] = 1;
     }
 
     _place_float_constants_into_data_section();
     _generate_prolog();
     _walk_through_expressions();
 
-    _curr_func   = NULL;
+    _curr_codegen_func = NULL;
 }
 

@@ -127,7 +127,6 @@ label0006:
         jmp     label0008
 label0007:
         mov     edi,1
-        jmp     label0008
 label0008:
 ; end of inline function test_case
         cmp     edi,0
@@ -159,7 +158,6 @@ label000d:
         jmp     label000f
 label000e:
         mov     edi,1
-        jmp     label000f
 label000f:
 ; end of inline function test_case2
         cmp     edi,0
@@ -183,7 +181,6 @@ label0012:
         jmp     label0016
 label0013:
         mov     edi,0
-        jmp     label0016
 label0016:
 ; end of inline function test_default
         cmp     edi,0
