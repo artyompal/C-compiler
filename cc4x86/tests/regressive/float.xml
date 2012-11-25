@@ -223,9 +223,9 @@
           <retvalue type="int" lvalue="no" complexity="1" code="integer literal" value="7"/>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="label" name="label0006"/>
-        <expression type="float" lvalue="no" complexity="2" code="div_assign">
+        <expression type="float" lvalue="no" complexity="2" code="mul_assign">
           <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="x"/>
-          <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="3.000000"/>
+          <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="0.333333"/>
         </expression>
         <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0007" invert_condition="yes">
           <condition type="int" lvalue="no" complexity="20" code="not">

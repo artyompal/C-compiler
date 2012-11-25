@@ -57,14 +57,14 @@ ___unnamed_float_1      dd      03f800000h
 public  ___unnamed_float_1
 ___unnamed_float_2      dd      00h
 public  ___unnamed_float_2
-___unnamed_float_3      dd      040000000h
+___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
 ___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
 public  ___unnamed_float_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
-___unnamed_float_6      dd      0437f0000h
+___unnamed_float_6      dd      03b808081h
 public  ___unnamed_float_6
 
 .code
@@ -274,7 +274,7 @@ _matrix4f_make_viewport proc
         movss   sse22,dword ptr [ebp+12]
         mov     dword55,[ebp+8]
         movss   sse2,sse22
-        divss   sse2,dword ptr [___unnamed_float_3]
+        mulss   sse2,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword55],sse2
         movss   sse3,dword ptr [___unnamed_float_2]
         movss   dword ptr [dword55+4],sse3
@@ -286,7 +286,7 @@ _matrix4f_make_viewport proc
         movss   dword ptr [dword55+16],sse6
         movss   sse7,sse23
         xorps   sse7,dword ptr [___unnamed_float_4]
-        divss   sse7,dword ptr [___unnamed_float_3]
+        mulss   sse7,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword55+20],sse7
         movss   sse9,dword ptr [___unnamed_float_2]
         movss   dword ptr [dword55+24],sse9
@@ -302,10 +302,10 @@ _matrix4f_make_viewport proc
         movss   sse14,dword ptr [___unnamed_float_2]
         movss   dword ptr [dword55+44],sse14
         movss   sse16,sse22
-        divss   sse16,dword ptr [___unnamed_float_3]
+        mulss   sse16,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword55+48],sse16
         movss   sse18,sse23
-        divss   sse18,dword ptr [___unnamed_float_3]
+        mulss   sse18,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword55+52],sse18
         movss   dword ptr [dword55+56],sse24
         movss   sse20,dword ptr [___unnamed_float_1]
@@ -702,7 +702,7 @@ label0000:
         cmp     dword23,0
         je      label0003
         cvtsi2ss        sse1,dword23
-        divss   sse1,dword ptr [___unnamed_float_6]
+        mulss   sse1,dword ptr [___unnamed_float_6]
         mov     dword33,[dword83]
         mov     dword36,dword33
         and     dword36,65280

@@ -855,9 +855,9 @@
           <operand_1 type="float" lvalue="yes" complexity="2" code="dereference">
             <operand_1 type="struct matrix4f_decl *" lvalue="yes" complexity="1" code="variable" name="dst"/>
           </operand_1>
-          <operand_2 type="float" lvalue="no" complexity="2" code="div">
+          <operand_2 type="float" lvalue="no" complexity="2" code="mul">
             <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="width"/>
-            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="2.000000"/>
+            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="0.500000"/>
           </operand_2>
         </expression>
         <expression type="float" lvalue="no" complexity="4" code="assign">
@@ -903,11 +903,11 @@
               <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="20"/>
             </operand_1>
           </operand_1>
-          <operand_2 type="float" lvalue="no" complexity="3" code="div">
+          <operand_2 type="float" lvalue="no" complexity="3" code="mul">
             <operand_1 type="float" lvalue="no" complexity="2" code="neg">
               <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="height"/>
             </operand_1>
-            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="2.000000"/>
+            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="0.500000"/>
           </operand_2>
         </expression>
         <expression type="float" lvalue="no" complexity="4" code="assign">
@@ -974,9 +974,9 @@
               <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="48"/>
             </operand_1>
           </operand_1>
-          <operand_2 type="float" lvalue="no" complexity="2" code="div">
+          <operand_2 type="float" lvalue="no" complexity="2" code="mul">
             <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="width"/>
-            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="2.000000"/>
+            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="0.500000"/>
           </operand_2>
         </expression>
         <expression type="float" lvalue="no" complexity="4" code="assign">
@@ -986,9 +986,9 @@
               <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="52"/>
             </operand_1>
           </operand_1>
-          <operand_2 type="float" lvalue="no" complexity="2" code="div">
+          <operand_2 type="float" lvalue="no" complexity="2" code="mul">
             <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="height"/>
-            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="2.000000"/>
+            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="0.500000"/>
           </operand_2>
         </expression>
         <expression type="float" lvalue="no" complexity="4" code="assign">
@@ -2929,11 +2929,11 @@
         </expression>
         <expression type="float" lvalue="no" complexity="4" code="assign">
           <operand_1 type="float" lvalue="yes" complexity="1" code="variable" name="float_alpha"/>
-          <operand_2 type="float" lvalue="no" complexity="3" code="div">
+          <operand_2 type="float" lvalue="no" complexity="3" code="mul">
             <operand_1 type="float" lvalue="no" complexity="2" code="convert_int2float">
               <operand_1 type="int" lvalue="yes" complexity="1" code="variable" name="int_alpha"/>
             </operand_1>
-            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="255.000000"/>
+            <operand_2 type="float" lvalue="no" complexity="1" code="float literal" value="0.003922"/>
           </operand_2>
         </expression>
         <expression type="int" lvalue="no" complexity="3" code="assign">

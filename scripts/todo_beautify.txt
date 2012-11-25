@@ -1,9 +1,8 @@
 
-=======================================================
 __rasterize_horiz_line proc
         push    ebp
         mov     ebp,esp
-        sub     esp,96
+        sub     esp,64
         push    edi
         push    esi
         push    ebx
@@ -14,100 +13,79 @@ __rasterize_horiz_line proc
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
-        mov     edx,dword ptr [__pitch]
-        imul    edx,edi
-        add     edx,dword ptr [__videomem]
-        mov     edi,ebx
-        sal     edi,2
-        add     edx,edi
-        mov     edi,esi
-        sal     edi,2
-        add     edi,edx
+        mov     eax,dword ptr [__pitch]
+        imul    eax,edi
+        add     eax,dword ptr [__videomem]
+        mov     ecx,ebx
+        sal     ecx,2
+        add     eax,ecx
+        sal     esi,2
+        add     esi,eax
         sal     ebx,2
-        sub     edi,ebx
-        mov     [ebp-68],edx
-        mov     [ebp-72],edi
-        movss   dword ptr [ebp-84],xmm4
-        movss   dword ptr [ebp-88],xmm5
-        movss   dword ptr [ebp-92],xmm6
-        movss   dword ptr [ebp-96],xmm7
+        sub     esi,ebx
 label0000:                                                ;
 ; start of inline function _tex2d                         ;
-        movss   xmm7,dword ptr [ebp-88]                   ; 1 лишние копирования, поможет распространение копирований
-        movss   xmm6,dword ptr [ebp-84]                   ; 1 
-        mov     eax,dword ptr [__texture_width]           ; 2 константные выражения в цикле
-        dec     eax                                       ; 2
-        cvtsi2ss        xmm0,eax                          ; 2
-        mulss   xmm0,xmm6                                 ;
-        cvttss2si       eax,xmm0                          ; 2
-        mov     ecx,dword ptr [__texture_height]          ; 2
-        dec     ecx                                       ; 2
-        cvtsi2ss        xmm0,ecx                          ; 2
-        mulss   xmm0,xmm7                                 ; 2
-        cvttss2si       ecx,xmm0                          ; 2
-        imul    ecx,dword ptr [__texture_width]           ; 2
-        add     ecx,eax                                   ; 3 можно вместить в режимы адресации x86
-        sal     ecx,2                                     ; 3
-        add     ecx,dword ptr [__texture_data]            ; 3
-        mov     ecx,[ecx]                                 ; 3
+        mov     ecx,dword ptr [__texture_width]           ; 1 инвариант цикла
+        dec     ecx                                       ; 1 инвариант цикла
+        cvtsi2ss        xmm0,ecx                          ; 1 инвариант цикла
+        mulss   xmm0,xmm4                                 ;
+        cvttss2si       ecx,xmm0                          ;
+        mov     edx,dword ptr [__texture_height]          ; 1 инвариант цикла
+        dec     edx                                       ; 1 инвариант цикла
+        cvtsi2ss        xmm0,edx                          ; 1 инвариант цикла
+        mulss   xmm0,xmm5                                 ;
+        cvttss2si       edx,xmm0                          ;
+        imul    edx,dword ptr [__texture_width]           ;
+        add     edx,ecx                                   ; 5 можно вместить в режимы адресации, при условии что указатель закеширован вне цикла
+        sal     edx,2                                     ; 5
+        add     edx,dword ptr [__texture_data]            ; 4 чтение по указателю можно считать инвариантом цикла
+        mov     edx,[edx]                                 ;
 ; end of inline function _tex2d                           ;
-        mov     eax,ecx                                   ;
-        sar     eax,24                                    ;
-        and     eax,255                                   ;
-        cmp     eax,0                                     ; 4 cmp,0/je бессмысленен после арифметической операции
-        mov     [ebp-76],ecx                              ; 5 лишние сохранения регистров
-        mov     [ebp-80],eax                              ; 5
+        mov     ecx,edx                                   ;
+        sar     ecx,24                                    ;
+        and     ecx,255                                   ;
+        cmp     eax,0                                     ; 2 cmp,0/je бессмысленен после арифметической операции
         je      label0003                                 ;
-        cvtsi2ss        xmm7,dword ptr [ebp-80]           ;
-        divss   xmm7,dword ptr [___unnamed_float_6]       ; 6 деление на константу можно было заменить на умножение
-        mov     edx,[ebp-68]                              ; 7 лишнее восстановление регистра
-        mov     edi,[edx]                                 ;
-        mov     esi,edi                                   ;
-        and     esi,65280                                 ;
-        sar     esi,8                                     ;
-        and     edi,255                                   ;
-        mov     ebx,[ebp-76]                              ; 7 лишнее восстановление регистра
+        cvtsi2ss        xmm0,ecx                          ;
+        divss   xmm7,dword ptr [___unnamed_float_6]       ; 3 деление на константу можно заменить на умножение
+        mov     ecx,[eax]                                 ;
+        mov     ebx,ecx                                   ;
         and     ebx,65280                                 ;
         sar     ebx,8                                     ;
-        mov     ecx,[ebp-76]                              ; 7 лишнее восстановление регистра
         and     ecx,255                                   ;
-        cvtsi2ss        xmm0,ebx                          ;
-        mulss   xmm0,xmm7                                 ;
-        cvtsi2ss        xmm1,esi                          ;
-        movss   xmm2,dword ptr [___unnamed_float_1]       ;
-        subss   xmm2,xmm7                                 ;
-        mulss   xmm1,xmm2                                 ;
-        addss   xmm0,xmm1                                 ;
-        cvttss2si       ebx,xmm0                          ;
-        cvtsi2ss        xmm0,ecx                          ;
-        mulss   xmm0,xmm7                                 ;
+        mov     edi,edx                                   ;
+        and     edi,65280                                 ;
+        sar     edi,8                                     ;
+        and     edx,255                                   ;
         cvtsi2ss        xmm1,edi                          ;
-        movss   xmm2,dword ptr [___unnamed_float_1]       ;
-        subss   xmm2,xmm7                                 ;
-        mulss   xmm1,xmm2                                 ;
-        addss   xmm0,xmm1                                 ;
-        cvttss2si       ecx,xmm0                          ;
-        mov     edi,ebx                                   ;
-        sal     edi,8                                     ;
-        add     edi,ecx                                   ;
-        mov     [edx],edi                                 ;
+        mulss   xmm1,xmm0                                 ;
+        cvtsi2ss        xmm2,ebx                          ;
+        movss   xmm3,dword ptr [___unnamed_float_1]       ;
+        subss   xmm3,xmm0                                 ;
+        mulss   xmm2,xmm3                                 ;
+        addss   xmm1,xmm2                                 ;
+        cvttss2si       ebx,xmm1                          ;
+        cvtsi2ss        xmm1,edx                          ;
+        mulss   xmm1,xmm0                                 ;
+        cvtsi2ss        xmm2,ecx                          ;
+        movss   xmm3,dword ptr [___unnamed_float_1]       ;
+        subss   xmm3,xmm0                                 ;
+        mulss   xmm2,xmm3                                 ;
+        addss   xmm1,xmm2                                 ;
+        cvttss2si       ecx,xmm1                          ;
+        sal     ebx,8                                     ;
+        add     ebx,ecx                                   ;
+        mov     [eax],ebx                                 ;
 label0003:                                                ;
-        movss   xmm4,dword ptr [ebp-84]                   ; 7 лишнее восстановление регистра
-        addss   xmm4,dword ptr [ebp-92]                   ;
-        movss   xmm5,dword ptr [ebp-88]                   ; 7 лишнее восстановление регистра
-        addss   xmm5,dword ptr [ebp-96]                   ;
-        mov     edx,[ebp-68]                              ; 7 лишнее восстановление регистра
-        add     edx,4                                     ;
-        cmp     edx,[ebp-72]                              ;
-        mov     [ebp-68],edx                              ; 8 лишние сохранения регистров
-        movss   dword ptr [ebp-84],xmm4                   ; 8
-        movss   dword ptr [ebp-88],xmm5                   ; 8
+        addss   xmm4,xmm6                                 ;
+        addss   xmm5,xmm7                                 ;
+        add     eax,4                                     ;
+        cmp     eax,esi                                   ;
         jl      label0000                                 ;
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,96
+        add     esp,64
         pop     ebp
         ret
-__rasterize_horiz_line endp     
-=======================================================
+__rasterize_horiz_line endp

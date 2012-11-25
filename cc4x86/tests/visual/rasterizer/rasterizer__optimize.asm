@@ -57,14 +57,14 @@ ___unnamed_float_1      dd      03f800000h
 public  ___unnamed_float_1
 ___unnamed_float_2      dd      00h
 public  ___unnamed_float_2
-___unnamed_float_3      dd      040000000h
+___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
 ___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
 public  ___unnamed_float_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
-___unnamed_float_6      dd      0437f0000h
+___unnamed_float_6      dd      03b808081h
 public  ___unnamed_float_6
 
 .code
@@ -206,7 +206,7 @@ _rasterizer_init proc
         cvtsi2ss        xmm1,ebx
         mov     edi,(offset __viewport_matrix)
         movss   xmm2,xmm1
-        divss   xmm2,dword ptr [___unnamed_float_3]
+        mulss   xmm2,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi],xmm2
         movss   xmm2,dword ptr [___unnamed_float_2]
         movss   dword ptr [edi+4],xmm2
@@ -218,7 +218,7 @@ _rasterizer_init proc
         movss   dword ptr [edi+16],xmm2
         movss   xmm2,xmm0
         xorps   xmm2,dword ptr [___unnamed_float_4]
-        divss   xmm2,dword ptr [___unnamed_float_3]
+        mulss   xmm2,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+20],xmm2
         movss   xmm2,dword ptr [___unnamed_float_2]
         movss   dword ptr [edi+24],xmm2
@@ -233,9 +233,9 @@ _rasterizer_init proc
         movss   dword ptr [edi+40],xmm2
         movss   xmm2,dword ptr [___unnamed_float_2]
         movss   dword ptr [edi+44],xmm2
-        divss   xmm1,dword ptr [___unnamed_float_3]
+        mulss   xmm1,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+48],xmm1
-        divss   xmm0,dword ptr [___unnamed_float_3]
+        mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+52],xmm0
         movss   dword ptr [edi+56],xmm5
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -511,7 +511,7 @@ label0000:
         cmp     ecx,0
         je      label0003
         cvtsi2ss        xmm0,ecx
-        divss   xmm0,dword ptr [___unnamed_float_6]
+        mulss   xmm0,dword ptr [___unnamed_float_6]
         mov     ecx,[eax]
         mov     ebx,ecx
         and     ebx,65280

@@ -32,7 +32,7 @@ ___unnamed_double_11    dq      04008000000000000h
 public  ___unnamed_double_11
 ___unnamed_double_12    dq      04018000000000000h
 public  ___unnamed_double_12
-___unnamed_float_13     dd      040400000h
+___unnamed_float_13     dd      03eaaaaabh
 public  ___unnamed_float_13
 ___unnamed_double_14    dq      04000000000000000h
 public  ___unnamed_double_14
@@ -212,7 +212,7 @@ label0005:
         ret
 label0006:
         movss   xmm0,dword ptr [ebp-4]
-        divss   xmm0,dword ptr [___unnamed_float_13]
+        mulss   xmm0,dword ptr [___unnamed_float_13]
         movss   dword ptr [ebp-4],xmm0
         movsd   xmm0,qword ptr [___unnamed_double_14]
         movsd   qword ptr [esp-8],xmm0
