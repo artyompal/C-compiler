@@ -57,14 +57,14 @@ ___unnamed_float_1      dd      03f800000h
 public  ___unnamed_float_1
 ___unnamed_float_2      dd      00h
 public  ___unnamed_float_2
-___unnamed_float_3      dd      040000000h
+___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
 ___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
 public  ___unnamed_float_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
-___unnamed_float_6      dd      0437f0000h
+___unnamed_float_6      dd      03b808081h
 public  ___unnamed_float_6
 
 .code
@@ -195,7 +195,7 @@ _rasterizer_init proc
         cvtsi2ss        sse4,dword379
         mov     dword377,(offset __viewport_matrix)
         movss   sse153,sse4
-        divss   sse153,dword ptr [___unnamed_float_3]
+        mulss   sse153,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword377],sse153
         movss   sse154,dword ptr [___unnamed_float_2]
         movss   dword ptr [dword377+4],sse154
@@ -207,7 +207,7 @@ _rasterizer_init proc
         movss   dword ptr [dword377+16],sse157
         movss   sse158,sse3
         xorps   sse158,dword ptr [___unnamed_float_4]
-        divss   sse158,dword ptr [___unnamed_float_3]
+        mulss   sse158,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword377+20],sse158
         movss   sse160,dword ptr [___unnamed_float_2]
         movss   dword ptr [dword377+24],sse160
@@ -223,10 +223,10 @@ _rasterizer_init proc
         movss   sse165,dword ptr [___unnamed_float_2]
         movss   dword ptr [dword377+44],sse165
         movss   sse167,sse4
-        divss   sse167,dword ptr [___unnamed_float_3]
+        mulss   sse167,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword377+48],sse167
         movss   sse169,sse3
-        divss   sse169,dword ptr [___unnamed_float_3]
+        mulss   sse169,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword377+52],sse169
         movss   dword ptr [dword377+56],sse189
         movss   sse171,dword ptr [___unnamed_float_1]
@@ -476,7 +476,7 @@ label0000:
         cmp     dword23,0
         je      label0003
         cvtsi2ss        sse1,dword23
-        divss   sse1,dword ptr [___unnamed_float_6]
+        mulss   sse1,dword ptr [___unnamed_float_6]
         mov     dword33,[dword103]
         mov     dword36,dword33
         and     dword36,65280

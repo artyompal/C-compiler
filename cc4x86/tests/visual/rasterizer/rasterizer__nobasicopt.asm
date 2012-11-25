@@ -57,14 +57,14 @@ ___unnamed_float_1      dd      03f800000h
 public  ___unnamed_float_1
 ___unnamed_float_2      dd      00h
 public  ___unnamed_float_2
-___unnamed_float_3      dd      040000000h
+___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
 ___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
 public  ___unnamed_float_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
-___unnamed_float_6      dd      0437f0000h
+___unnamed_float_6      dd      03b808081h
 public  ___unnamed_float_6
 
 .code
@@ -495,7 +495,7 @@ _matrix4f_make_viewport proc
         lea     edx,dword ptr [___unnamed_float_3]
         movss   xmm0,dword ptr [edx]
         movss   xmm1,dword ptr [ecx]
-        divss   xmm1,xmm0
+        mulss   xmm1,xmm0
         movss   dword ptr [eax],xmm1
         lea     eax,[ebp+8]
         mov     ecx,4
@@ -529,7 +529,7 @@ _matrix4f_make_viewport proc
         xorps   xmm0,dword ptr [___unnamed_float_4]
         lea     eax,dword ptr [___unnamed_float_3]
         movss   xmm1,dword ptr [eax]
-        divss   xmm0,xmm1
+        mulss   xmm0,xmm1
         movss   dword ptr [ecx],xmm0
         lea     eax,[ebp+8]
         mov     ecx,24
@@ -576,7 +576,7 @@ _matrix4f_make_viewport proc
         lea     edx,dword ptr [___unnamed_float_3]
         movss   xmm0,dword ptr [edx]
         movss   xmm1,dword ptr [eax]
-        divss   xmm1,xmm0
+        mulss   xmm1,xmm0
         movss   dword ptr [ecx],xmm1
         lea     eax,[ebp+8]
         mov     ecx,52
@@ -585,7 +585,7 @@ _matrix4f_make_viewport proc
         lea     edx,dword ptr [___unnamed_float_3]
         movss   xmm0,dword ptr [edx]
         movss   xmm1,dword ptr [eax]
-        divss   xmm1,xmm0
+        mulss   xmm1,xmm0
         movss   dword ptr [ecx],xmm1
         lea     eax,[ebp+8]
         mov     ecx,56
@@ -1261,7 +1261,7 @@ label0000:
         cvtsi2ss        xmm0,dword ptr [eax]
         lea     eax,dword ptr [___unnamed_float_6]
         movss   xmm1,dword ptr [eax]
-        divss   xmm0,xmm1
+        mulss   xmm0,xmm1
         lea     eax,[ebp-44]
         movss   dword ptr [eax],xmm0
         lea     eax,[ebp-4]

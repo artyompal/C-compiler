@@ -57,14 +57,14 @@ ___unnamed_float_1      dd      03f800000h
 public  ___unnamed_float_1
 ___unnamed_float_2      dd      00h
 public  ___unnamed_float_2
-___unnamed_float_3      dd      040000000h
+___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
 ___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
 public  ___unnamed_float_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
-___unnamed_float_6      dd      0437f0000h
+___unnamed_float_6      dd      03b808081h
 public  ___unnamed_float_6
 
 .code
@@ -483,7 +483,7 @@ _matrix4f_make_viewport proc
         lea     dword4,dword ptr [___unnamed_float_3]
         movss   sse1,dword ptr [dword4]
         movss   sse2,dword ptr [dword3]
-        divss   sse2,sse1
+        mulss   sse2,sse1
         movss   dword ptr [dword2],sse2
         lea     dword5,[ebp+8]
         mov     dword6,4
@@ -517,7 +517,7 @@ _matrix4f_make_viewport proc
         xorps   sse7,dword ptr [___unnamed_float_4]
         lea     dword20,dword ptr [___unnamed_float_3]
         movss   sse8,dword ptr [dword20]
-        divss   sse7,sse8
+        mulss   sse7,sse8
         movss   dword ptr [dword18],sse7
         lea     dword21,[ebp+8]
         mov     dword22,24
@@ -564,7 +564,7 @@ _matrix4f_make_viewport proc
         lea     dword43,dword ptr [___unnamed_float_3]
         movss   sse15,dword ptr [dword43]
         movss   sse16,dword ptr [dword42]
-        divss   sse16,sse15
+        mulss   sse16,sse15
         movss   dword ptr [dword41],sse16
         lea     dword44,[ebp+8]
         mov     dword45,52
@@ -573,7 +573,7 @@ _matrix4f_make_viewport proc
         lea     dword47,dword ptr [___unnamed_float_3]
         movss   sse17,dword ptr [dword47]
         movss   sse18,dword ptr [dword46]
-        divss   sse18,sse17
+        mulss   sse18,sse17
         movss   dword ptr [dword45],sse18
         lea     dword48,[ebp+8]
         mov     dword49,56
@@ -1208,7 +1208,7 @@ label0000:
         cvtsi2ss        sse1,dword ptr [dword27]
         lea     dword28,dword ptr [___unnamed_float_6]
         movss   sse2,dword ptr [dword28]
-        divss   sse1,sse2
+        mulss   sse1,sse2
         lea     dword29,[ebp-44]
         movss   dword ptr [dword29],sse1
         lea     dword30,[ebp-4]

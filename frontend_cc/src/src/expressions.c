@@ -363,7 +363,7 @@ expression *expr_create_unary(expression *expr, arithmetic_opcode opcode)
 }
 
 
-static expression *_try_optimize_constant_operand(arithmetic_opcode opcode, expression *e1, expression *e2, data_type *type)
+static expression *_try_optimize_int_constant_operand(arithmetic_opcode opcode, expression *e1, expression *e2, data_type *type)
 {
     int val = e2->data.int_const;
     expression *log;
@@ -411,6 +411,44 @@ static expression *_try_optimize_constant_operand(arithmetic_opcode opcode, expr
     return NULL;
 }
 
+static expression *_try_optimize_float_constant_operand(arithmetic_opcode opcode, expression *e1, expression *e2, data_type *type)
+{
+    double val = e2->data.float_const.val;
+
+    if (val == 0) {
+        if (opcode == op_add || opcode == op_add_assign || opcode == op_sub || opcode == op_sub_assign
+            || opcode == op_shl || opcode == op_shl_assign || opcode == op_shr || opcode == op_shr_assign
+                || opcode == op_or || opcode == op_or_assign) {
+                    return e1;
+                }
+
+        if (opcode == op_mul || opcode == op_mul_assign || opcode == op_and || opcode == op_and_assign) {
+            return e2;
+        }
+
+        if (opcode == op_div || opcode == op_div_assign) {
+            aux_error("constant division by zero");
+            return NULL;
+        }
+    } else if (val == 1) {
+        if (opcode == op_mul || opcode == op_mul_assign || opcode == op_div || opcode == op_div_assign) {
+            return e1;
+        } else if (opcode == op_mod) {
+            return expr_create_from_float(0, type);
+        } else if (opcode == op_mod_assign) {
+            return _create_binary_arithm_expr(op_assign, e1, expr_create_from_float(1, type), type);
+        }
+    }
+
+    if (opcode == op_div || opcode == op_div_assign) {
+        return _create_binary_arithm_expr((opcode == op_div ? op_mul : op_mul_assign), e1,
+            expr_create_from_float(1/val, type), type);
+    }
+
+    return NULL;
+}
+
+
 static expression *_create_binary_arithm_expr(arithmetic_opcode opcode, expression *e1, expression *e2, data_type *type)
 {
     expression *res;
@@ -431,13 +469,25 @@ static expression *_create_binary_arithm_expr(arithmetic_opcode opcode, expressi
 
     // заменяем умножение/деление на константную степень двойки битовыми сдвигами
     if (IS_INT_CONSTANT_EXPR(e2)) {
-        res = _try_optimize_constant_operand(opcode, e1, e2, type);
+        res = _try_optimize_int_constant_operand(opcode, e1, e2, type);
 
         if (res) {
             return res;
         }
     } else if (IS_INT_CONSTANT_EXPR(e1) && (opcode == op_mul || opcode == op_add)) {
-        res = _try_optimize_constant_operand(opcode, e2, e1, type);
+        res = _try_optimize_int_constant_operand(opcode, e2, e1, type);
+
+        if (res) {
+            return res;
+        }
+    } else if (IS_FLOAT_CONSTANT_EXPR(e2)) {
+        res = _try_optimize_float_constant_operand(opcode, e1, e2, type);
+
+        if (res) {
+            return res;
+        }
+    } else if (IS_FLOAT_CONSTANT_EXPR(e1) && (opcode == op_mul || opcode == op_add)) {
+        res = _try_optimize_float_constant_operand(opcode, e2, e1, type);
 
         if (res) {
             return res;

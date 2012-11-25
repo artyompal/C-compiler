@@ -57,14 +57,14 @@ ___unnamed_float_1      dd      03f800000h
 public  ___unnamed_float_1
 ___unnamed_float_2      dd      00h
 public  ___unnamed_float_2
-___unnamed_float_3      dd      040000000h
+___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
 ___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
 public  ___unnamed_float_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
-___unnamed_float_6      dd      0437f0000h
+___unnamed_float_6      dd      03b808081h
 public  ___unnamed_float_6
 
 .code
@@ -321,7 +321,7 @@ _matrix4f_make_viewport proc
         movss   xmm4,dword ptr [ebp+12]
         mov     edi,[ebp+8]
         movss   xmm0,xmm4
-        divss   xmm0,dword ptr [___unnamed_float_3]
+        mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi],xmm0
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [edi+4],xmm0
@@ -333,7 +333,7 @@ _matrix4f_make_viewport proc
         movss   dword ptr [edi+16],xmm0
         movss   xmm0,xmm5
         xorps   xmm0,dword ptr [___unnamed_float_4]
-        divss   xmm0,dword ptr [___unnamed_float_3]
+        mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+20],xmm0
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [edi+24],xmm0
@@ -347,9 +347,9 @@ _matrix4f_make_viewport proc
         movss   dword ptr [edi+40],xmm7
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [edi+44],xmm0
-        divss   xmm4,dword ptr [___unnamed_float_3]
+        mulss   xmm4,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+48],xmm4
-        divss   xmm5,dword ptr [___unnamed_float_3]
+        mulss   xmm5,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+52],xmm5
         movss   dword ptr [edi+56],xmm6
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -817,7 +817,7 @@ label0000:
         cmp     ecx,0
         je      label0003
         cvtsi2ss        xmm0,ecx
-        divss   xmm0,dword ptr [___unnamed_float_6]
+        mulss   xmm0,dword ptr [___unnamed_float_6]
         mov     [ebp-52],eax
         mov     eax,[ebp-48]
         mov     ecx,[eax]

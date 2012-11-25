@@ -57,14 +57,14 @@ ___unnamed_float_1      dd      03f800000h
 public  ___unnamed_float_1
 ___unnamed_float_2      dd      00h
 public  ___unnamed_float_2
-___unnamed_float_3      dd      040000000h
+___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
 ___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
 public  ___unnamed_float_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
-___unnamed_float_6      dd      0437f0000h
+___unnamed_float_6      dd      03b808081h
 public  ___unnamed_float_6
 
 .code
@@ -382,7 +382,7 @@ _matrix4f_make_viewport proc
         mov     ebp,esp
         mov     eax,[ebp+8]
         movss   xmm0,dword ptr [ebp+12]
-        divss   xmm0,dword ptr [___unnamed_float_3]
+        mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [eax],xmm0
         mov     eax,4
         add     eax,[ebp+8]
@@ -404,7 +404,7 @@ _matrix4f_make_viewport proc
         add     eax,[ebp+8]
         movss   xmm0,dword ptr [ebp+16]
         xorps   xmm0,dword ptr [___unnamed_float_4]
-        divss   xmm0,dword ptr [___unnamed_float_3]
+        mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [eax],xmm0
         mov     eax,24
         add     eax,[ebp+8]
@@ -434,12 +434,12 @@ _matrix4f_make_viewport proc
         mov     eax,48
         add     eax,[ebp+8]
         movss   xmm0,dword ptr [ebp+12]
-        divss   xmm0,dword ptr [___unnamed_float_3]
+        mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [eax],xmm0
         mov     eax,52
         add     eax,[ebp+8]
         movss   xmm0,dword ptr [ebp+16]
-        divss   xmm0,dword ptr [___unnamed_float_3]
+        mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [eax],xmm0
         mov     eax,56
         add     eax,[ebp+8]
@@ -936,7 +936,7 @@ label0000:
         cmp     dword ptr [ebp-40],0
         je      label0003
         cvtsi2ss        xmm0,dword ptr [ebp-40]
-        divss   xmm0,dword ptr [___unnamed_float_6]
+        mulss   xmm0,dword ptr [___unnamed_float_6]
         movss   dword ptr [ebp-44],xmm0
         mov     eax,[ebp-4]
         mov     eax,[eax]
