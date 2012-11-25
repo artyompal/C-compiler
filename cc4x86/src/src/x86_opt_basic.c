@@ -151,7 +151,8 @@ static void _try_optimize_lea_reg_address(function_desc *function, x86_instructi
     }
 }
 
-
+//
+// Ищет определение данного регистра в пределах текущего блока.
 static x86_instruction *_find_local_definition(function_desc *function, x86_instruction *insn, int reg)
 {
     for (insn = insn->in_prev; insn && insn != insn->in_block->block_leader->in_prev; insn = insn->in_prev) {
@@ -163,12 +164,16 @@ static x86_instruction *_find_local_definition(function_desc *function, x86_inst
     return NULL;
 }
 
+//
+// Проверяет факт того, что значение больше не будет кем-то использоваться.
 static BOOL _is_unused_anymore(function_desc *function, x86_instruction *insn, int reg)
 {
     x86_dataflow_set_current_insn(function, x86op_dword, insn);
     return !x86_dataflow_is_pseudoreg_alive_after(reg);
 }
 
+//
+// Пытается объединить поместить арифметическую операцию в адрес.
 static BOOL _can_combine_address_and_insn(int reg, x86_operand *addr, x86_instruction *insn)
 {
     if (insn->in_code == x86insn_int_add && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, reg) && OP_IS_CONSTANT(insn->in_op2)) {
@@ -201,6 +206,8 @@ static BOOL _can_combine_address_and_insn(int reg, x86_operand *addr, x86_instru
     }
 }
 
+//
+// Пытается поместить в адрес столько вычислений, сколько возможно.
 static void _try_optimize_address(function_desc *function, x86_instruction *insn, x86_operand *addr)
 {
     x86_operand_type type = x86op_dword;
@@ -260,34 +267,6 @@ static void _try_optimize_address(function_desc *function, x86_instruction *insn
     }
 }
 
-
-// Проверяет соответствие кода паттерну MOV reg,const; IMUL reg,mem.
-// Если совпадение найдено, возвращает адрес инструкции IMUL.
-//static x86_instruction *_is_constant_used_only_in_imul(function_desc *function, x86_instruction *insn)
-//{
-//    x86_instruction *usage;
-//    int reg                             = insn->in_op1.data.reg;
-//    x86_pseudoreg_info *pseudoreg_info  = &function->func_dword_regstat.ptr[reg];
-//
-//
-//    for (usage = insn->in_next; usage != pseudoreg_info->reg_last_read->in_next; usage = usage->in_next) {
-//        ASSERT(usage);
-//
-//        if (OP_IS_THIS_PSEUDO_REG(usage->in_op1, x86op_dword, reg)) {
-//            if (usage->in_code == x86insn_int_imul && !bincode_operand_contains_register(&usage->in_op2, x86op_dword, reg)
-//                && !OP_IS_CONSTANT(usage->in_op2)) {
-//                    return usage;
-//            } else {
-//                return NULL;
-//            }
-//        } else if (bincode_insn_contains_register(usage, x86op_dword, reg)) {
-//            return NULL;
-//        }
-//    }
-//
-//    return NULL;
-//}
-
 //
 // Пытается распространять константу вместо регистра.
 static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction *mov)
@@ -325,65 +304,7 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 
     // удаляем инструкцию
     x86_dataflow_erase_instruction(function, mov);
-//
-//
-//    // Если эта константа используется в IMUL, генерируем трёхоперандную форму IMUL.
-//    pattern = _is_constant_used_only_in_imul(function, insn);
-//
-//    if (pattern) {
-//        // Удаляем MOV и заменяем IMUL на его трёхоперандную форму.
-//        bincode_erase_instruction(function, insn);
-//        pattern->in_code    = x86insn_imul_const;
-//        pattern->in_op2     = pattern->in_op1;
-//        pattern->in_op3     = val;
-//        return;
-//    }
 }
-
-//
-// Заменяет сложение/вычитание регистра с константой на LEA.
-// Паттерн: MOV reg,reg_src; ADD reg,val
-//static BOOL _try_optimize_reg_add_sub_const_into_lea(function_desc *function, x86_instruction *insn)
-//{
-//    int reg                             = insn->in_op1.data.reg;
-//    x86_pseudoreg_info *pseudoreg_info  = &function->func_dword_regstat.ptr[reg];
-//    int val                             = insn->in_op2.data.int_val;
-//    x86_instruction *mov, *checked;
-//    int reg_src;
-//
-//
-//    // Проверяем соответствие кода паттерну.
-//    if (!OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword)) {
-//        return FALSE;
-//    }
-//
-//    mov = pseudoreg_info->reg_first_write;
-//
-//    if (mov->in_code != x86insn_int_mov || !OP_IS_THIS_PSEUDO_REG(mov->in_op1, x86op_dword, reg) || mov->in_op2.op_loc != x86loc_register) {
-//        return FALSE;
-//    }
-//
-//    reg_src = mov->in_op2.data.reg;
-//
-//    for (checked = mov->in_next; checked != insn; checked = checked->in_next) {
-//        if (bincode_insn_contains_register(checked, x86op_dword, reg) || OP_IS_THIS_REAL_REG(checked->in_op1, x86op_dword, reg_src)) {
-//            return FALSE;
-//        }
-//    }
-//
-//
-//    // Удаляем MOV и заменяем ADD на LEA.
-//    bincode_erase_instruction(function, mov);
-//
-//    if (insn->in_code == x86insn_int_sub) {
-//        val = -val;
-//    }
-//
-//    insn->in_code = x86insn_lea;
-//    bincode_create_operand_addr_from_reg_offset(&insn->in_op2, x86op_dword, reg_src, val);
-//
-//    return TRUE;
-//}
 
 //
 // Пытается распространять константу вместо регистра.
