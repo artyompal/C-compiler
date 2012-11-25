@@ -185,7 +185,7 @@ void ddraw_flip()
         ClientToScreen(hwnd, &pt);
         OffsetRect(&rect, pt.x, pt.y);
 
-        ddrval = front_surface->Blt(&rect, back_surface, NULL, DDFLIP_NOVSYNC, NULL);
+        ddrval = front_surface->Blt(&rect, back_surface, NULL, DDFLIP_WAIT, NULL);
         CHECK_DDRAW_RESULT(ddrval, "front_surface->Blt");
 	}
 }

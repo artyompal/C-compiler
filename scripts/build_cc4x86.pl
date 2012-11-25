@@ -4,17 +4,17 @@ use warnings;
 
 
 sub build_compilers2 {
-	my $config = shift;
+    my $config = shift;
 
-	print "building $config configuration...\n";
-	system("d:\\bin\\msvs2012\\Common7\\IDE\\devenv compilers2.sln /build $config") == 0
-		or die("build failed");
+    print "building $config configuration...\n";
+    system("d:\\bin\\msvs12\\Common7\\IDE\\devenv compilers2.sln /build $config") == 0
+        or die("build failed");
 }
 
 sub run {
-	my $cmd_line = shift;
-	print "running '$cmd_line'...\n";
-	system $cmd_line;
+    my $cmd_line = shift;
+    print "running '$cmd_line'...\n";
+    system $cmd_line;
 }
 
 

@@ -10,7 +10,6 @@ _test proc
         mov     dword90,2
         mov     dword91,3
         mov     dword92,4
-        mov     dword93,5
         mov     dword11,dword91
         xor_edx_edx     dword12
         div     dword11,dword90
@@ -18,10 +17,10 @@ _test proc
         xor_edx_edx     dword16
         div     dword15,dword90
         mul     dword11,dword15
-        mov     dword19,dword93
+        mov     dword19,5
         xor_edx_edx     dword20
         div     dword19,dword92
-        mov     dword23,dword93
+        mov     dword23,5
         xor_edx_edx     dword24
         div     dword23,dword92
         mul     dword19,dword23
@@ -43,7 +42,7 @@ label0000:
         destroy_stack_frame
         ret
 label0001:
-        mov     dword38,dword93
+        mov     dword38,5
         xor_edx_edx     dword39
         div     dword38,dword91
         cmp     dword39,2
@@ -71,9 +70,8 @@ label0003:
         destroy_stack_frame
         ret
 label0004:
-        mov     dword90,65536
         mov     dword91,65536
-        mov     dword65,dword90
+        mov     dword65,65536
         mul     dword65,dword91
         cmp     dword65,0
         je      label0005
@@ -83,13 +81,10 @@ label0004:
         ret
 label0005:
         mov     dword90,2
-        mov     dword91,3
-        mov     dword92,4
-        mov     dword93,5
-        mov     dword78,dword91
+        mov     dword78,3
         xor_edx_edx     dword79
         div     dword78,dword90
-        mov     dword82,dword92
+        mov     dword82,4
         xor_edx_edx     dword83
         div     dword82,dword90
         mul     dword78,dword82

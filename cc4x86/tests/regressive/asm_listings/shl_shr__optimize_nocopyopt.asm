@@ -9,87 +9,65 @@ _test proc
         push    ebp
         mov     ebp,esp
         sub     esp,8
-        push    edi
-        push    esi
-        mov     edi,-16
-        mov     esi,-16
-        sar     edi,4
-        cmp     edi,-1
+        mov     eax,-16
+        sar     eax,4
+        cmp     eax,-1
         je      label0000
-        mov     esi,1
-        mov     eax,esi
-        pop     esi
-        pop     edi
+        mov     eax,1
         add     esp,8
         pop     ebp
         ret
 label0000:
-        shr     esi,4
-        cmp     esi,268435455
+        mov     eax,-16
+        shr     eax,4
+        cmp     eax,268435455
         je      label0001
         mov     eax,2
-        pop     esi
-        pop     edi
         add     esp,8
         pop     ebp
         ret
 label0001:
-        mov     edi,1073741824
-        mov     esi,1073741824
-        sal     edi,1
-        cmp     edi,0
+        mov     eax,1073741824
+        sal     eax,1
+        cmp     eax,0
         jl      label0002
-        mov     esi,3
-        mov     eax,esi
-        pop     esi
-        pop     edi
+        mov     eax,3
         add     esp,8
         pop     ebp
         ret
 label0002:
-        shl     esi,1
-        cmp     esi,-2147483648
+        mov     eax,1073741824
+        shl     eax,1
+        cmp     eax,-2147483648
         je      label0003
         mov     eax,4
-        pop     esi
-        pop     edi
         add     esp,8
         pop     ebp
         ret
 label0003:
-        mov     edi,1
-        mov     esi,1
         mov     ecx,3
-        add     ecx,esi
-        mov     eax,edi
+        inc     ecx
+        mov     eax,1
         shl     eax,cl
         cmp     eax,16
         je      label0004
-        mov     esi,5
-        mov     eax,esi
-        pop     esi
-        pop     edi
+        mov     eax,5
         add     esp,8
         pop     ebp
         ret
 label0004:
         mov     ecx,5
-        add     ecx,esi
-        sal     edi,cl
-        cmp     edi,64
+        inc     ecx
+        mov     eax,1
+        sal     eax,cl
+        cmp     eax,64
         je      label0005
-        mov     esi,6
-        mov     eax,esi
-        pop     esi
-        pop     edi
+        mov     eax,6
         add     esp,8
         pop     ebp
         ret
 label0005:
-        mov     esi,0
-        mov     eax,esi
-        pop     esi
-        pop     edi
+        mov     eax,0
         add     esp,8
         pop     ebp
         ret

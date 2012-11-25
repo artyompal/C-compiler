@@ -42,7 +42,7 @@ public  ___unnamed_double_14
 _test proc
         push    ebp
         mov     ebp,esp
-        sub     esp,52
+        sub     esp,56
         cvtss2sd        xmm0,dword ptr [___unnamed_float_3]
         addsd   xmm0,qword ptr [___unnamed_double_4]
 ; start of inline function eq
@@ -64,7 +64,7 @@ label0009:
         cmp     eax,0
         jne     label0000
         mov     eax,1
-        add     esp,52
+        add     esp,56
         pop     ebp
         ret
 label0000:
@@ -89,7 +89,7 @@ label000d:
         cmp     eax,0
         jne     label0001
         mov     eax,2
-        add     esp,52
+        add     esp,56
         pop     ebp
         ret
 label0001:
@@ -114,7 +114,7 @@ label0011:
         cmp     eax,0
         jne     label0002
         mov     eax,3
-        add     esp,52
+        add     esp,56
         pop     ebp
         ret
 label0002:
@@ -139,7 +139,7 @@ label0015:
         cmp     eax,0
         jne     label0003
         mov     eax,4
-        add     esp,52
+        add     esp,56
         pop     ebp
         ret
 label0003:
@@ -147,7 +147,7 @@ label0003:
         addss   xmm0,dword ptr [___unnamed_float_3]
 ; start of inline function eq
         cvtss2sd        xmm1,xmm0
-        movss   dword ptr [ebp-4],xmm0
+        movss   dword ptr [ebp-56],xmm0
         movsd   xmm0,xmm1
 ; start of inline function fabs
         subsd   xmm0,qword ptr [___unnamed_double_9]
@@ -167,15 +167,15 @@ label0019:
         cmp     eax,0
         jne     label0004
         mov     eax,5
-        add     esp,52
+        add     esp,56
         pop     ebp
         ret
 label0004:
-        movss   xmm0,dword ptr [ebp-4]
+        movss   xmm0,dword ptr [ebp-56]
         subss   xmm0,dword ptr [___unnamed_float_10]
 ; start of inline function eq
         cvtss2sd        xmm1,xmm0
-        movss   dword ptr [ebp-4],xmm0
+        movss   dword ptr [ebp-56],xmm0
         movsd   xmm0,xmm1
 ; start of inline function fabs
         subsd   xmm0,qword ptr [___unnamed_double_11]
@@ -195,15 +195,15 @@ label001d:
         cmp     eax,0
         jne     label0005
         mov     eax,6
-        add     esp,52
+        add     esp,56
         pop     ebp
         ret
 label0005:
-        movss   xmm0,dword ptr [ebp-4]
+        movss   xmm0,dword ptr [ebp-56]
         mulss   xmm0,dword ptr [___unnamed_float_3]
 ; start of inline function eq
         cvtss2sd        xmm1,xmm0
-        movss   dword ptr [ebp-4],xmm0
+        movss   dword ptr [ebp-56],xmm0
         movsd   xmm0,xmm1
 ; start of inline function fabs
         subsd   xmm0,qword ptr [___unnamed_double_12]
@@ -223,11 +223,11 @@ label0021:
         cmp     eax,0
         jne     label0006
         mov     eax,7
-        add     esp,52
+        add     esp,56
         pop     ebp
         ret
 label0006:
-        movss   xmm0,dword ptr [ebp-4]
+        movss   xmm0,dword ptr [ebp-56]
         divss   xmm0,dword ptr [___unnamed_float_13]
 ; start of inline function eq
         cvtss2sd        xmm0,xmm0
@@ -249,12 +249,12 @@ label0025:
         cmp     eax,0
         jne     label0007
         mov     eax,8
-        add     esp,52
+        add     esp,56
         pop     ebp
         ret
 label0007:
         mov     eax,0
-        add     esp,52
+        add     esp,56
         pop     ebp
         ret
 _test endp

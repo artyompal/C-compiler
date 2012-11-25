@@ -43,8 +43,7 @@ _test proc
         push    esi
         mov     edi,2
         mov     esi,3
-        mov     eax,2
-        cmp     eax,3
+        cmp     edi,esi
         jle     label0000
         push    esi
         push    edi

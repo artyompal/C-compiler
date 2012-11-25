@@ -15,11 +15,11 @@ _test proc
         mov     edi,2
         mov     esi,3
         mov     ebx,4
-        mov     eax,3
+        mov     eax,esi
         cdq
         idiv    edi
         mov     [ebp-24],eax
-        mov     eax,3
+        mov     eax,esi
         cdq
         idiv    edi
         mov     [ebp-28],eax

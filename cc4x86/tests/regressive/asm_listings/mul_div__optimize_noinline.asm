@@ -15,9 +15,7 @@ _test proc
         mov     edi,2
         mov     esi,3
         mov     ebx,4
-        mov     edx,5
         mov     eax,esi
-        mov     [ebp-16],edx
         xor     edx,edx
         div     edi
         mov     [ebp-24],eax
@@ -28,11 +26,11 @@ _test proc
         mov     eax,[ebp-24]
         mul     dword ptr [ebp-28]
         mov     [ebp-24],eax
-        mov     eax,[ebp-16]
+        mov     eax,5
         xor     edx,edx
         div     ebx
         mov     [ebp-32],eax
-        mov     eax,[ebp-16]
+        mov     eax,5
         xor     edx,edx
         div     ebx
         mov     [ebp-36],eax
@@ -66,7 +64,7 @@ label0000:
         pop     ebp
         ret
 label0001:
-        mov     eax,[ebp-16]
+        mov     eax,5
         xor     edx,edx
         div     esi
         cmp     edx,2
@@ -107,13 +105,12 @@ label0003:
         ret
 label0004:
         mov     esi,65536
-        mov     [ebp-4],esi
-        mov     esi,65536
-        mov     eax,[ebp-4]
+        mov     eax,65536
         mul     esi
         cmp     eax,0
         je      label0005
-        mov     eax,6
+        mov     esi,6
+        mov     eax,esi
         pop     ebx
         pop     esi
         pop     edi
@@ -122,14 +119,11 @@ label0004:
         ret
 label0005:
         mov     esi,2
-        mov     edi,3
-        mov     ebx,4
-        mov     edx,5
-        mov     eax,edi
+        mov     eax,3
         xor     edx,edx
         div     esi
         mov     [ebp-40],eax
-        mov     eax,ebx
+        mov     eax,4
         xor     edx,edx
         div     esi
         mov     [ebp-44],eax

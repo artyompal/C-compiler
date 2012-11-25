@@ -55,7 +55,6 @@ _test3 proc
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
-        mov     edx,0
         mov     edx,ebx
         cmp     edi,0
         jle     label0000
@@ -108,17 +107,15 @@ _test5 proc
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
         mov     ebx,[ebp+8]
-        mov     edx,0
         cmp     edi,0
         jle     label0000
-        mov     edx,esi
+        mov     ebx,esi
         jmp     label0001
 label0000:
-        mov     edx,ebx
 label0001:
-        add     edx,esi
-        sub     edx,edi
-        mov     eax,edx
+        add     ebx,esi
+        sub     ebx,edi
+        mov     eax,ebx
         pop     ebx
         pop     esi
         pop     edi

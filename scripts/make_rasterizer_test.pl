@@ -1,20 +1,20 @@
 
 
 sub run {
-	my $options = shift;
+    my $options = shift;
     my $filename = $options;
     $filename =~ tr/[\-\ ]/_/s;
 
     $cmd_line = "cc4x86.exe $options --output-file-name ..\\..\\tests\\visual\\rasterizer\\rasterizer_$filename.asm ..\\..\\tests\\visual\\rasterizer\\rasterizer.c";
-	print "running '$cmd_line'...\n";
-	system $cmd_line;
+    print "running '$cmd_line'...\n";
+    system $cmd_line;
 }
 
 sub assemble {
-	my $filename = shift;
-	chdir("../../tests/visual/rasterizer") or die("chdir: $!");
-	system("d:\\bin\\msvs2012\\VC\\bin\\ml /Fl /nologo $filename");
-	chdir("../../../../cc4x86/bin/release/") or die("chdir: $!");
+    my $filename = shift;
+    chdir("../../tests/visual/rasterizer") or die("chdir: $!");
+    system("d:\\bin\\msvs12\\VC\\bin\\ml /Fl /nologo $filename");
+    chdir("../../../../cc4x86/bin/release/") or die("chdir: $!");
 }
 
 

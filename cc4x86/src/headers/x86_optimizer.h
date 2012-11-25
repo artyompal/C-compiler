@@ -11,12 +11,11 @@ typedef struct function_desc_decl function_desc;
 typedef enum x86_operand_type_decl x86_operand_type;
 
 
-void    x86_optimization_after_codegen              (function_desc *function);
-void    x86_optimization_after_inlining             (function_desc *function);
+void    x86_local_optimization_pass         (function_desc *function);
 
-void    x86_init_register_variables                 ();
-void    x86_create_register_variables               (function_desc *function);
-void    x86_setup_offset_for_register_variables     (function_desc *function, x86_operand_type type);
+void    x86_regvars_init                    ();
+void    x86_regvars_create                  (function_desc *function);
+void    x86_regvars_setup_offset            (function_desc *function, x86_pseudoreg_info *info, x86_operand_type type);
 
 
 #else

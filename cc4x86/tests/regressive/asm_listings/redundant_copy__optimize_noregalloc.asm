@@ -34,7 +34,6 @@ label0001:
 ; start of inline function test3
         mov     dword105,444
         mov     dword103,222
-        mov     dword106,0
         mov     dword106,dword103
         cmp     dword105,0
         jle     label0007
@@ -58,7 +57,8 @@ label0002:
 ; start of inline function test4
         mov     dword111,5
         inc     dword111
-        lea     dword72,[dword111+4]
+        mov     dword72,dword111
+        add     dword72,4
         sub     dword72,10
 ; end of inline function test4
         cmp     dword72,0
@@ -70,8 +70,6 @@ label0002:
 label0003:
 ; start of inline function test5
         mov     dword116,888
-        mov     dword117,0
-        mov     dword117,222
         cmp     dword116,0
         jle     label000b
         mov     dword117,444
@@ -79,7 +77,8 @@ label0003:
 label000b:
         mov     dword117,222
 label000c:
-        lea     dword90,[dword117+444]
+        mov     dword90,dword117
+        add     dword90,444
         sub     dword90,dword116
 ; end of inline function test5
         cmp     dword90,0
