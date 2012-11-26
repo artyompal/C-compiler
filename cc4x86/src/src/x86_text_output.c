@@ -229,6 +229,7 @@ static const char *_x86_instructions[] = {
     "lea",
     "movsx",
     "movzx",
+    "movq",
 
     // управление стеком:
     "push",

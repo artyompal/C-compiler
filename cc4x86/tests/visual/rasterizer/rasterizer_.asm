@@ -1663,8 +1663,6 @@ __clip_on_plain proc
         push    ebp
         mov     ebp,esp
         sub     esp,72
-        push    edi
-        push    esi
         mov     eax,192
         add     eax,[ebp+8]
         mov     dword ptr [eax],0
@@ -1717,13 +1715,14 @@ label0001:
         inc     dword ptr [eax]
         imul    ecx,24
         mov     eax,[ebp+8]
-        add     eax,ecx
-        mov     ecx,[ebp-4]
-        mov     edi,eax
-        mov     esi,ecx
-        mov     ecx,6
-        rep     movsd
-        mov     [ebp-64],ecx
+        mov     edx,[ebp-4]
+        movq    xmm0,qword ptr [edx]
+        movq    qword ptr [eax+ecx],xmm0
+        movq    xmm0,qword ptr [edx+8]
+        movq    qword ptr [eax+ecx+8],xmm0
+        movq    xmm0,qword ptr [edx+16]
+        movq    qword ptr [eax+ecx+16],xmm0
+        movss   dword ptr [ebp-64],xmm0
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         comiss  xmm0,dword ptr [ebp-52]
@@ -1831,14 +1830,13 @@ label0002:
         inc     dword ptr [eax]
         imul    ecx,24
         mov     eax,[ebp+8]
-        add     eax,ecx
-        mov     ecx,[ebp+8]
-        mov     edi,eax
-        mov     esi,ecx
-        mov     ecx,6
-        rep     movsd
-        pop     esi
-        pop     edi
+        mov     edx,[ebp+8]
+        movq    xmm0,qword ptr [edx]
+        movq    qword ptr [eax+ecx],xmm0
+        movq    xmm0,qword ptr [edx+8]
+        movq    qword ptr [eax+ecx+8],xmm0
+        movq    xmm0,qword ptr [edx+16]
+        movq    qword ptr [eax+ecx+16],xmm0
         add     esp,72
         pop     ebp
         ret
@@ -1964,8 +1962,7 @@ __transform_to_screen_space endp
 __rasterize_polygon_4f proc
         push    ebp
         mov     ebp,esp
-        sub     esp,136
-        push    esi
+        sub     esp,140
         push    ebx
         push    dword ptr [ebp+8]
         call    __clip_poligon
@@ -1973,8 +1970,7 @@ __rasterize_polygon_4f proc
         cmp     eax,0
         jne     label0000
         pop     ebx
-        pop     esi
-        add     esp,136
+        add     esp,140
         pop     ebp
         ret
 label0000:
@@ -2009,11 +2005,10 @@ label0003:
         mov     edx,[ebp+8]
         mov     ebx,[ebp-136]
         imul    ebx,24
-        mov     esi,[edx+ebx+16]
-        mov     edx,[edx+ebx+20]
-        mov     [eax+ecx+8],esi
-        mov     [eax+ecx+12],edx
+        movq    xmm0,qword ptr [edx+ebx+16]
+        movq    qword ptr [eax+ecx+8],xmm0
         inc     dword ptr [ebp-136]
+        movss   dword ptr [ebp-140],xmm0
         jmp     label0003
 label0004:
         mov     dword ptr [ebp-136],2
@@ -2043,8 +2038,7 @@ label0006:
         jmp     label0006
 label0007:
         pop     ebx
-        pop     esi
-        add     esp,136
+        add     esp,140
         pop     ebp
         ret
 __rasterize_polygon_4f endp
@@ -2084,18 +2078,14 @@ _rasterizer_triangle3f proc
         push    ebp
         mov     ebp,esp
         sub     esp,196
-        push    edi
-        push    esi
         push    dword ptr [ebp+8]
         lea     eax,[ebp-196]
         push    eax
         call    __transform_to_projection_space
         add     esp,8
         mov     eax,[ebp+20]
-        mov     ecx,[eax]
-        mov     eax,[eax+4]
-        mov     [ebp-180],ecx
-        mov     [ebp-176],eax
+        movq    xmm0,qword ptr [eax]
+        movq    qword ptr [ebp-180],xmm0
         push    dword ptr [ebp+12]
         lea     eax,[ebp-196]
         add     eax,24
@@ -2103,10 +2093,8 @@ _rasterizer_triangle3f proc
         call    __transform_to_projection_space
         add     esp,8
         mov     eax,[ebp+24]
-        mov     ecx,[eax]
-        mov     eax,[eax+4]
-        mov     [ebp-156],ecx
-        mov     [ebp-152],eax
+        movq    xmm0,qword ptr [eax]
+        movq    qword ptr [ebp-156],xmm0
         push    dword ptr [ebp+16]
         lea     eax,[ebp-196]
         add     eax,48
@@ -2114,24 +2102,19 @@ _rasterizer_triangle3f proc
         call    __transform_to_projection_space
         add     esp,8
         mov     eax,[ebp+28]
-        mov     ecx,[eax]
-        mov     eax,[eax+4]
-        mov     [ebp-132],ecx
-        mov     [ebp-128],eax
-        lea     eax,[ebp-196]
-        add     eax,72
-        lea     ecx,[ebp-196]
-        mov     edi,eax
-        mov     esi,ecx
-        mov     ecx,6
-        rep     movsd
+        movq    xmm0,qword ptr [eax]
+        movq    qword ptr [ebp-132],xmm0
+        movq    xmm0,qword ptr [ebp-196]
+        movq    qword ptr [ebp-124],xmm0
+        movq    xmm0,qword ptr [ebp-188]
+        movq    qword ptr [ebp-116],xmm0
+        movq    xmm0,qword ptr [ebp-180]
+        movq    qword ptr [ebp-108],xmm0
         mov     dword ptr [ebp-4],4
-        lea     ecx,[ebp-196]
-        push    ecx
+        lea     eax,[ebp-196]
+        push    eax
         call    __rasterize_polygon_4f
         add     esp,4
-        pop     esi
-        pop     edi
         add     esp,196
         pop     ebp
         ret

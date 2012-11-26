@@ -188,6 +188,7 @@ typedef enum x86_instruction_code_decl {
     x86insn_lea,
     x86insn_movsx,
     x86insn_movzx,
+    x86insn_movq,
 
     // управление стеком:
     x86insn_push,
@@ -240,7 +241,7 @@ typedef struct x86_instruction_decl {
 #define IS_JCC_INSN(INSN)               ((INSN) > x86insn_jmp && (INSN) <= x86insn_ja)
 
 #define IS_DWORD_DEFINING_INSN(INSN)    ((INSN) == x86insn_int_mov || IS_SET_INSN((INSN)) \
-                                        || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movzx \
+                                        || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movq \
                                         || (INSN) == x86insn_pop || (INSN) == x86insn_read_retval \
                                         || (INSN) == x86insn_cdq || (INSN) == x86insn_xor_edx_edx \
                                         || (INSN) == x86insn_read_retval \

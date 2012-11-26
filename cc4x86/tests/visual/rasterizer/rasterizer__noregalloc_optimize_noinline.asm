@@ -1227,32 +1227,32 @@ __rasterize_triangle_2i endp
 
 __clip_on_plain proc
         create_stack_frame
-        mov     dword116,[ebp+20]
-        mov     dword115,[ebp+16]
-        mov     dword114,[ebp+12]
-        mov     dword113,[ebp+8]
-        mov     dword ptr [dword113+192],0
-        mov     dword111,dword114
-        mov     dword8,dword114
+        mov     dword110,[ebp+20]
+        mov     dword109,[ebp+16]
+        mov     dword108,[ebp+12]
+        mov     dword107,[ebp+8]
+        mov     dword ptr [dword107+192],0
+        mov     dword105,dword108
+        mov     dword8,dword108
         add     dword8,24
-        mov     dword112,dword8
+        mov     dword106,dword8
 label0001:
-        mov     dword14,[dword114+192]
+        mov     dword14,[dword108+192]
         imul    dword14,24
-        mov     dword16,dword114
+        mov     dword16,dword108
         add     dword16,dword14
-        cmp     dword16,dword112
+        cmp     dword16,dword106
         jle     label0002
         push_all
-        push_arg        dword115,4
-        push_arg        dword111,4
+        push_arg        dword109,4
+        push_arg        dword105,4
         lea     dword21,[ebp-24]
         push_arg        dword21,4
         call    _vec4f_subtract
         restore_stack   12
         pop_all
         push_all
-        push_arg        dword116,4
+        push_arg        dword110,4
         lea     dword23,[ebp-24]
         push_arg        dword23,4
         call    _vec4f_dot
@@ -1260,15 +1260,15 @@ label0001:
         pop_all
         read_retval     sse1
         push_all
-        push_arg        dword115,4
-        push_arg        dword112,4
+        push_arg        dword109,4
+        push_arg        dword106,4
         lea     dword28,[ebp-24]
         push_arg        dword28,4
         call    _vec4f_subtract
         restore_stack   12
         pop_all
         push_all
-        push_arg        dword116,4
+        push_arg        dword110,4
         lea     dword30,[ebp-24]
         push_arg        dword30,4
         call    _vec4f_dot
@@ -1278,131 +1278,131 @@ label0001:
         movss   sse3,dword ptr [___unnamed_float_2]
         comiss  sse3,sse1
         ja      label0003
-        mov     dword36,[dword113+192]
-        inc     dword ptr [dword113+192]
+        mov     dword36,[dword107+192]
+        inc     dword ptr [dword107+192]
         imul    dword36,24
-        mov     dword39,dword113
-        add     dword39,dword36
-        mov     dword42,dword39
-        mov     dword43,dword111
-        mov     dword44,6
-        rep     movsd   dword42,dword43
+        movq    sse4,qword ptr [dword105]
+        movq    qword ptr [dword107+dword36],sse4
+        movq    sse4,qword ptr [dword105+8]
+        movq    qword ptr [dword107+dword36+8],sse4
+        movq    sse4,qword ptr [dword105+16]
+        movq    qword ptr [dword107+dword36+16],sse4
 label0003:
-        movss   sse4,dword ptr [___unnamed_float_2]
-        comiss  sse4,sse1
-        jae     label0006
         movss   sse5,dword ptr [___unnamed_float_2]
-        comiss  sse5,sse2
-        ja      label0005
-label0006:
+        comiss  sse5,sse1
+        jae     label0006
         movss   sse6,dword ptr [___unnamed_float_2]
         comiss  sse6,sse2
-        ja      label0004
+        ja      label0005
+label0006:
         movss   sse7,dword ptr [___unnamed_float_2]
-        comiss  sse7,sse1
+        comiss  sse7,sse2
+        ja      label0004
+        movss   sse8,dword ptr [___unnamed_float_2]
+        comiss  sse8,sse1
         jbe     label0004
 label0005:
         push_all
-        push_arg        dword111,4
-        push_arg        dword115,4
-        lea     dword56,[ebp-24]
-        push_arg        dword56,4
+        push_arg        dword105,4
+        push_arg        dword109,4
+        lea     dword53,[ebp-24]
+        push_arg        dword53,4
         call    _vec4f_subtract
         restore_stack   12
         pop_all
         push_all
-        push_arg        dword111,4
-        push_arg        dword112,4
-        lea     dword61,[ebp-40]
-        push_arg        dword61,4
+        push_arg        dword105,4
+        push_arg        dword106,4
+        lea     dword58,[ebp-40]
+        push_arg        dword58,4
         call    _vec4f_subtract
         restore_stack   12
         pop_all
         push_all
-        push_arg        dword116,4
-        lea     dword63,[ebp-24]
-        push_arg        dword63,4
-        call    _vec4f_dot
-        restore_stack   8
-        pop_all
-        read_retval     sse8
-        push_all
-        push_arg        dword116,4
-        lea     dword65,[ebp-40]
-        push_arg        dword65,4
+        push_arg        dword110,4
+        lea     dword60,[ebp-24]
+        push_arg        dword60,4
         call    _vec4f_dot
         restore_stack   8
         pop_all
         read_retval     sse9
-        divss   sse8,sse9
         push_all
-        push_arg        sse8,4
-        lea     dword68,[ebp-40]
-        push_arg        dword68,4
+        push_arg        dword110,4
+        lea     dword62,[ebp-40]
+        push_arg        dword62,4
+        call    _vec4f_dot
+        restore_stack   8
+        pop_all
+        read_retval     sse10
+        divss   sse9,sse10
+        push_all
+        push_arg        sse9,4
+        lea     dword65,[ebp-40]
+        push_arg        dword65,4
         call    _vec4f_mul
         restore_stack   8
         pop_all
         push_all
-        lea     dword69,[ebp-40]
-        push_arg        dword69,4
-        push_arg        dword111,4
-        mov     dword75,[dword113+192]
-        imul    dword75,24
-        mov     dword77,dword113
-        add     dword77,dword75
-        push_arg        dword77,4
+        lea     dword66,[ebp-40]
+        push_arg        dword66,4
+        push_arg        dword105,4
+        mov     dword72,[dword107+192]
+        imul    dword72,24
+        mov     dword74,dword107
+        add     dword74,dword72
+        push_arg        dword74,4
         call    _vec4f_add
         restore_stack   12
         pop_all
         push_all
-        mov     dword79,16
-        add     dword79,dword111
+        mov     dword76,16
+        add     dword76,dword105
+        push_arg        dword76,4
+        mov     dword78,16
+        add     dword78,dword106
+        push_arg        dword78,4
+        lea     dword79,[ebp-48]
         push_arg        dword79,4
-        mov     dword81,16
-        add     dword81,dword112
-        push_arg        dword81,4
-        lea     dword82,[ebp-48]
-        push_arg        dword82,4
         call    _vec2f_subtract
         restore_stack   12
         pop_all
         push_all
-        push_arg        sse8,4
-        lea     dword84,[ebp-48]
-        push_arg        dword84,4
+        push_arg        sse9,4
+        lea     dword81,[ebp-48]
+        push_arg        dword81,4
         call    _vec2f_mul
         restore_stack   8
         pop_all
         push_all
-        lea     dword85,[ebp-48]
-        push_arg        dword85,4
-        mov     dword87,16
-        add     dword87,dword111
-        push_arg        dword87,4
-        mov     dword91,[dword113+192]
-        imul    dword91,24
-        mov     dword93,dword113
-        add     dword93,dword91
-        add     dword93,16
-        push_arg        dword93,4
+        lea     dword82,[ebp-48]
+        push_arg        dword82,4
+        mov     dword84,16
+        add     dword84,dword105
+        push_arg        dword84,4
+        mov     dword88,[dword107+192]
+        imul    dword88,24
+        mov     dword90,dword107
+        add     dword90,dword88
+        add     dword90,16
+        push_arg        dword90,4
         call    _vec2f_add
         restore_stack   12
         pop_all
-        inc     dword ptr [dword113+192]
+        inc     dword ptr [dword107+192]
 label0004:
-        add     dword111,24
-        add     dword112,24
+        add     dword105,24
+        add     dword106,24
         jmp     label0001
 label0002:
-        mov     dword101,[dword113+192]
-        inc     dword ptr [dword113+192]
-        imul    dword101,24
-        mov     dword104,dword113
-        add     dword104,dword101
-        mov     dword107,dword104
-        mov     dword108,dword113
-        mov     dword109,6
-        rep     movsd   dword107,dword108
+        mov     dword98,[dword107+192]
+        inc     dword ptr [dword107+192]
+        imul    dword98,24
+        movq    sse11,qword ptr [dword107]
+        movq    qword ptr [dword107+dword98],sse11
+        movq    sse11,qword ptr [dword107+8]
+        movq    qword ptr [dword107+dword98+8],sse11
+        movq    sse11,qword ptr [dword107+16]
+        movq    qword ptr [dword107+dword98+16],sse11
         destroy_stack_frame
         ret
 __clip_on_plain endp
@@ -1526,9 +1526,9 @@ __transform_to_screen_space endp
 
 __rasterize_polygon_4f proc
         create_stack_frame
-        mov     dword57,[ebp+8]
+        mov     dword55,[ebp+8]
         push_all
-        push_arg        dword57,4
+        push_arg        dword55,4
         call    __clip_poligon
         restore_stack   4
         pop_all
@@ -1538,23 +1538,23 @@ __rasterize_polygon_4f proc
         destroy_stack_frame
         ret
 label0000:
-        cmp     dword ptr [dword57+192],8
+        cmp     dword ptr [dword55+192],8
         jle     label0001
         mov     dword ptr ds:[0],0
 label0001:
-        mov     dword56,0
+        mov     dword54,0
 label0003:
-        mov     dword13,[dword57+192]
-        cmp     dword13,dword56
+        mov     dword13,[dword55+192]
+        cmp     dword13,dword54
         jle     label0004
         push_all
-        mov     dword15,dword57
-        mov     dword18,dword56
+        mov     dword15,dword55
+        mov     dword18,dword54
         imul    dword18,24
         add     dword15,dword18
         push_arg        dword15,4
         lea     dword19,[ebp-132]
-        mov     dword22,dword56
+        mov     dword22,dword54
         sal     dword22,4
         add     dword19,dword22
         push_arg        dword19,4
@@ -1562,41 +1562,39 @@ label0003:
         restore_stack   8
         pop_all
         lea     dword23,[ebp-132]
-        mov     dword26,dword56
+        mov     dword26,dword54
         sal     dword26,4
-        mov     dword32,dword56
+        mov     dword32,dword54
         imul    dword32,24
-        mov     dword34,[dword57+dword32+16]
-        mov     dword35,[dword57+dword32+20]
-        mov     [dword23+dword26+8],dword34
-        mov     [dword23+dword26+12],dword35
-        inc     dword56
+        movq    sse1,qword ptr [dword55+dword32+16]
+        movq    qword ptr [dword23+dword26+8],sse1
+        inc     dword54
         jmp     label0003
 label0004:
-        mov     dword56,2
+        mov     dword54,2
 label0006:
-        mov     dword42,[dword57+192]
-        dec     dword42
-        cmp     dword42,dword56
+        mov     dword40,[dword55+192]
+        dec     dword40
+        cmp     dword40,dword54
         jle     label0007
         push_all
-        lea     dword44,[ebp-132]
-        mov     dword47,dword56
-        sal     dword47,4
-        add     dword44,dword47
-        push_arg        dword44,4
-        mov     dword50,dword56
-        dec     dword50
-        sal     dword50,4
-        lea     dword52,[ebp-132]
-        add     dword52,dword50
-        push_arg        dword52,4
-        lea     dword53,[ebp-132]
-        push_arg        dword53,4
+        lea     dword42,[ebp-132]
+        mov     dword45,dword54
+        sal     dword45,4
+        add     dword42,dword45
+        push_arg        dword42,4
+        mov     dword48,dword54
+        dec     dword48
+        sal     dword48,4
+        lea     dword50,[ebp-132]
+        add     dword50,dword48
+        push_arg        dword50,4
+        lea     dword51,[ebp-132]
+        push_arg        dword51,4
         call    __rasterize_triangle_2i
         restore_stack   12
         pop_all
-        inc     dword56
+        inc     dword54
         jmp     label0006
 label0007:
         destroy_stack_frame
@@ -1633,58 +1631,51 @@ __transform_to_projection_space endp
 
 _rasterizer_triangle3f proc
         create_stack_frame
-        mov     dword45,[ebp+28]
-        mov     dword44,[ebp+24]
-        mov     dword43,[ebp+20]
-        mov     dword42,[ebp+16]
-        mov     dword41,[ebp+12]
-        mov     dword40,[ebp+8]
+        mov     dword36,[ebp+28]
+        mov     dword35,[ebp+24]
+        mov     dword34,[ebp+20]
+        mov     dword33,[ebp+16]
+        mov     dword32,[ebp+12]
+        mov     dword31,[ebp+8]
         push_all
-        push_arg        dword40,4
+        push_arg        dword31,4
         lea     dword2,[ebp-196]
         push_arg        dword2,4
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        mov     dword7,[dword43]
-        mov     dword8,[dword43+4]
-        mov     [ebp-180],dword7
-        mov     [ebp-176],dword8
+        movq    sse1,qword ptr [dword34]
+        movq    qword ptr [ebp-180],sse1
         push_all
-        push_arg        dword41,4
-        lea     dword10,[ebp-196]
-        add     dword10,24
-        push_arg        dword10,4
+        push_arg        dword32,4
+        lea     dword8,[ebp-196]
+        add     dword8,24
+        push_arg        dword8,4
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        mov     dword17,[dword44]
-        mov     dword18,[dword44+4]
-        mov     [ebp-156],dword17
-        mov     [ebp-152],dword18
+        movq    sse2,qword ptr [dword35]
+        movq    qword ptr [ebp-156],sse2
         push_all
-        push_arg        dword42,4
-        lea     dword20,[ebp-196]
-        add     dword20,48
-        push_arg        dword20,4
+        push_arg        dword33,4
+        lea     dword16,[ebp-196]
+        add     dword16,48
+        push_arg        dword16,4
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        mov     dword27,[dword45]
-        mov     dword28,[dword45+4]
-        mov     [ebp-132],dword27
-        mov     [ebp-128],dword28
-        lea     dword29,[ebp-196]
-        add     dword29,72
-        lea     dword31,[ebp-196]
-        mov     dword32,dword29
-        mov     dword33,dword31
-        mov     dword34,6
-        rep     movsd   dword32,dword33
+        movq    sse3,qword ptr [dword36]
+        movq    qword ptr [ebp-132],sse3
+        movq    sse4,qword ptr [ebp-196]
+        movq    qword ptr [ebp-124],sse4
+        movq    sse4,qword ptr [ebp-188]
+        movq    qword ptr [ebp-116],sse4
+        movq    sse4,qword ptr [ebp-180]
+        movq    qword ptr [ebp-108],sse4
         mov     dword ptr [ebp-4],4
         push_all
-        lea     dword38,[ebp-196]
-        push_arg        dword38,4
+        lea     dword29,[ebp-196]
+        push_arg        dword29,4
         call    __rasterize_polygon_4f
         restore_stack   4
         pop_all
