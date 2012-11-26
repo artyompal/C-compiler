@@ -5,7 +5,7 @@ use warnings;
 
 sub build_sln {
     my ($solution, $config) = @_;
-    system("d:\\bin\\msvs12\\Common7\\IDE\\devenv.exe $solution /build $config");
+    system("d:\\bin\\msvs2012\\Common7\\IDE\\devenv.exe $solution /build $config");
 }
 
 sub run {
@@ -31,7 +31,7 @@ sub run_test {
     compile_test($test_name, $config, $option);
 
     system("echo const char *test_name = \"$test_name\"; >test_name.c");
-    system("d:\\bin\\msvs12\\VC\\bin\\ml /Fl /nologo /c /Zf current_test.asm");
+    system("d:\\bin\\msvs2012\\VC\\bin\\ml /Fl /nologo /c /Zf current_test.asm");
 
     build_sln("current_test_cc.sln", "debug");
     system("current_test_cc.exe >out.txt");
