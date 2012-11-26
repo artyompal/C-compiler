@@ -1,7 +1,7 @@
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,168
+        sub     esp,160
         push    edi
         push    esi
         push    ebx
@@ -89,20 +89,20 @@ label0001:
         mov     [ebp-140],edx
         mov     edx,[ebp-152]
         imul    edx,24
-        mov     ebx,[ebp-140]
-        add     ebx,edx
-        mov     [ebp-144],edi
-        mov     edi,ebx
-        mov     [ebp-156],esi
-        mov     esi,ecx
-        mov     [ebp-160],ecx
-        mov     ecx,6
-        rep     movsd
-        mov     [ebp-164],ecx
-        mov     ecx,[ebp-160]
+        movq    xmm0,qword ptr [ecx]
+        mov     [ebp-152],edx
+        mov     edx,[ebp-140]
+        mov     ebx,[ebp-152]
+        movq    qword ptr [edx+ebx],xmm0
+        movq    xmm0,qword ptr [ecx+8]
+        mov     ebx,[ebp-152]
+        movq    qword ptr [edx+ebx+8],xmm0
+        movq    xmm0,qword ptr [ecx+16]
+        mov     ebx,[ebp-152]
+        movq    qword ptr [edx+ebx+16],xmm0
+        mov     [ebp-140],edx
         mov     ebx,[ebp-148]
-        mov     esi,[ebp-156]
-        mov     edi,[ebp-144]
+        movss   dword ptr [ebp-160],xmm0
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         comiss  xmm0,xmm1
@@ -194,21 +194,21 @@ label0005:
         imul    edx,24
         movss   xmm0,dword ptr [ecx]
         addss   xmm0,dword ptr [ebp-40]
-        mov     [ebp-168],edx
+        mov     [ebp-156],edx
         mov     edx,[ebp-140]
-        mov     ebx,[ebp-168]
+        mov     ebx,[ebp-156]
         movss   dword ptr [edx+ebx],xmm0
         movss   xmm0,dword ptr [ecx+4]
         addss   xmm0,dword ptr [ebp-36]
-        mov     ebx,[ebp-168]
+        mov     ebx,[ebp-156]
         movss   dword ptr [edx+ebx+4],xmm0
         movss   xmm0,dword ptr [ecx+8]
         addss   xmm0,dword ptr [ebp-32]
-        mov     ebx,[ebp-168]
+        mov     ebx,[ebp-156]
         movss   dword ptr [edx+ebx+8],xmm0
         movss   xmm0,dword ptr [ecx+12]
         addss   xmm0,dword ptr [ebp-28]
-        mov     ebx,[ebp-168]
+        mov     ebx,[ebp-156]
         movss   dword ptr [edx+ebx+12],xmm0
 ; end of inline function vec4f_add
 ; start of inline function vec2f_subtract
@@ -250,16 +250,16 @@ label0002:
         mov     eax,[edx+192]
         inc     dword ptr [edx+192]
         imul    eax,24
-        mov     ecx,edx
-        add     ecx,eax
-        mov     edi,ecx
-        mov     esi,edx
-        mov     ecx,6
-        rep     movsd
+        movq    xmm0,qword ptr [edx]
+        movq    qword ptr [edx+eax],xmm0
+        movq    xmm0,qword ptr [edx+8]
+        movq    qword ptr [edx+eax+8],xmm0
+        movq    xmm0,qword ptr [edx+16]
+        movq    qword ptr [edx+eax+16],xmm0
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,168
+        add     esp,160
         pop     ebp
         ret
 __clip_on_plain endp

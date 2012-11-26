@@ -4,9 +4,9 @@
 #include "x86_intrinsics.h"
 
 
-static void _memcpy_via_dword_mov(x86_operand *dst, x86_operand *src, int size_in_dwords)
+static void _memcpy_via_registers(x86_operand *dst, x86_operand *src, int size_in_dwords)
 {
-    x86_operand r0, r1, src_ptr, dst_ptr;
+    x86_operand r0, src_ptr, dst_ptr;
     int i;
 
     if (size_in_dwords == 1) {
@@ -14,27 +14,24 @@ static void _memcpy_via_dword_mov(x86_operand *dst, x86_operand *src, int size_i
         unit_push_binary_instruction(x86insn_int_mov, &r0, src);
         unit_push_binary_instruction(x86insn_int_mov, dst, &r0);
     } else {
-        bincode_create_operand_and_alloc_pseudoreg(&r0, x86op_dword);
-        bincode_create_operand_and_alloc_pseudoreg(&r1, x86op_dword);
-
-        src->op_type = x86op_dword;
-        dst->op_type = x86op_dword;
+        bincode_create_operand_and_alloc_pseudoreg(&r0, x86op_double);
+        src->op_type = x86op_double;
+        dst->op_type = x86op_double;
 
         src_ptr = *src;
         dst_ptr = *dst;
 
         for (i = 0; i < size_in_dwords; i += 2) {
             if (i < size_in_dwords - 1) {
-                unit_push_binary_instruction(x86insn_int_mov, &r0, &src_ptr);
-                src_ptr.data.address.offset += 4;
-                unit_push_binary_instruction(x86insn_int_mov, &r1, &src_ptr);
-                src_ptr.data.address.offset += 4;
-
-                unit_push_binary_instruction(x86insn_int_mov, &dst_ptr, &r0);
-                dst_ptr.data.address.offset += 4;
-                unit_push_binary_instruction(x86insn_int_mov, &dst_ptr, &r1);
-                dst_ptr.data.address.offset += 4;
+                unit_push_binary_instruction(x86insn_movq, &r0, &src_ptr);
+                src_ptr.data.address.offset += 8;
+                unit_push_binary_instruction(x86insn_movq, &dst_ptr, &r0);
+                dst_ptr.data.address.offset += 8;
             } else {
+                bincode_create_operand_and_alloc_pseudoreg(&r0, x86op_dword);
+                src->op_type = x86op_dword;
+                dst->op_type = x86op_dword;
+
                 unit_push_binary_instruction(x86insn_int_mov, &r0, &src_ptr);
                 unit_push_binary_instruction(x86insn_int_mov, &dst_ptr, &r0);
             }
@@ -97,8 +94,8 @@ void x86_intrinsic_static_memcpy(x86_operand *res, x86_operand *dst, x86_operand
 {
     ASSERT(dst->op_loc == x86loc_address && src->op_loc == x86loc_address);
 
-    if (size % 4 == 0 && size <= 8) {
-        _memcpy_via_dword_mov(dst, src, size / 4);
+    if (size % 4 == 0 && size <= 32) {
+        _memcpy_via_registers(dst, src, size / 4);
     } else {
         _static_memcpy(dst, src, size);
     }
