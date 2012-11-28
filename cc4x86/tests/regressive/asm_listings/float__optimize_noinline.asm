@@ -83,9 +83,8 @@ _test proc
         addsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   xmm1,qword ptr [___unnamed_double_5]
         movsd   qword ptr [esp-8],xmm1
-        sub     esp,8
-        movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
+        movsd   qword ptr [esp-16],xmm0
+        sub     esp,16
         call    _eq
         add     esp,16
         cmp     eax,0
@@ -99,9 +98,8 @@ label0000:
         subsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   xmm1,qword ptr [___unnamed_double_6]
         movsd   qword ptr [esp-8],xmm1
-        sub     esp,8
-        movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
+        movsd   qword ptr [esp-16],xmm0
+        sub     esp,16
         call    _eq
         add     esp,16
         cmp     eax,0
@@ -115,9 +113,8 @@ label0001:
         mulsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   xmm1,qword ptr [___unnamed_double_7]
         movsd   qword ptr [esp-8],xmm1
-        sub     esp,8
-        movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
+        movsd   qword ptr [esp-16],xmm0
+        sub     esp,16
         call    _eq
         add     esp,16
         cmp     eax,0
@@ -131,9 +128,8 @@ label0002:
         divsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   xmm1,qword ptr [___unnamed_double_8]
         movsd   qword ptr [esp-8],xmm1
-        sub     esp,8
-        movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
+        movsd   qword ptr [esp-16],xmm0
+        sub     esp,16
         call    _eq
         add     esp,16
         cmp     eax,0
@@ -148,10 +144,9 @@ label0003:
         movss   dword ptr [ebp-24],xmm0
         movsd   xmm0,qword ptr [___unnamed_double_9]
         movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
         cvtss2sd        xmm0,dword ptr [ebp-24]
-        movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
+        movsd   qword ptr [esp-16],xmm0
+        sub     esp,16
         call    _eq
         add     esp,16
         cmp     eax,0
@@ -166,10 +161,9 @@ label0004:
         movss   dword ptr [ebp-28],xmm0
         movsd   xmm0,qword ptr [___unnamed_double_11]
         movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
         cvtss2sd        xmm0,dword ptr [ebp-28]
-        movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
+        movsd   qword ptr [esp-16],xmm0
+        sub     esp,16
         call    _eq
         add     esp,16
         cmp     eax,0
@@ -184,10 +178,9 @@ label0005:
         movss   dword ptr [ebp-32],xmm0
         movsd   xmm0,qword ptr [___unnamed_double_12]
         movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
         cvtss2sd        xmm0,dword ptr [ebp-32]
-        movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
+        movsd   qword ptr [esp-16],xmm0
+        sub     esp,16
         call    _eq
         add     esp,16
         cmp     eax,0
@@ -201,10 +194,9 @@ label0006:
         mulss   xmm0,dword ptr [___unnamed_float_13]
         movsd   xmm1,qword ptr [___unnamed_double_14]
         movsd   qword ptr [esp-8],xmm1
-        sub     esp,8
         cvtss2sd        xmm0,xmm0
-        movsd   qword ptr [esp-8],xmm0
-        sub     esp,8
+        movsd   qword ptr [esp-16],xmm0
+        sub     esp,16
         call    _eq
         add     esp,16
         cmp     eax,0

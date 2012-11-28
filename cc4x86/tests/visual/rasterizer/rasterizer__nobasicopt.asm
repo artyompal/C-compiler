@@ -804,11 +804,10 @@ _rasterizer_init proc
         lea     eax,[ebp+16]
         cvtsi2ss        xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,[ebp+12]
         cvtsi2ss        xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         lea     eax,dword ptr [__viewport_matrix]
         push    eax
         call    _matrix4f_make_viewport
@@ -822,11 +821,10 @@ _rasterizer_init proc
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         lea     eax,dword ptr [__clip_z_near_base]
         push    eax
         call    _vec4f_assign
@@ -856,11 +854,10 @@ label0001:
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         lea     eax,dword ptr [__clip_z_near_norm]
         push    eax
         call    _vec4f_assign
@@ -874,11 +871,10 @@ label0001:
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         lea     eax,dword ptr [__clip_z_far_base]
         push    eax
         call    _vec4f_assign
@@ -908,11 +904,10 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         lea     eax,dword ptr [__clip_z_far_norm]
         push    eax
         call    _vec4f_assign
@@ -920,15 +915,12 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-12],xmm0
         lea     eax,[ebp+12]
         cvtsi2ss        xmm0,dword ptr [eax]
         lea     eax,dword ptr [___unnamed_float_1]
@@ -937,8 +929,8 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_5]
         movss   xmm0,dword ptr [eax]
         addss   xmm0,xmm1
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         lea     eax,dword ptr [__clip_plane_left_base]
         push    eax
         call    _vec4f_assign
@@ -946,19 +938,16 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-12],xmm0
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         lea     eax,dword ptr [__clip_plane_left_norm]
         push    eax
         call    _vec4f_assign
@@ -966,15 +955,12 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-12],xmm0
         lea     eax,[ebp+12]
         cvtsi2ss        xmm0,dword ptr [eax]
         lea     eax,dword ptr [___unnamed_float_1]
@@ -983,8 +969,8 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
         subss   xmm0,xmm1
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         lea     eax,dword ptr [__clip_plane_right_base]
         push    eax
         call    _vec4f_assign
@@ -992,19 +978,16 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-12],xmm0
         lea     eax,dword ptr [___unnamed_float_5]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         lea     eax,dword ptr [__clip_plane_right_norm]
         push    eax
         call    _vec4f_assign
@@ -1012,11 +995,9 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
         lea     eax,[ebp+16]
         cvtsi2ss        xmm0,dword ptr [eax]
         lea     eax,dword ptr [___unnamed_float_1]
@@ -1025,12 +1006,11 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_5]
         movss   xmm0,dword ptr [eax]
         addss   xmm0,xmm1
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-12],xmm0
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         lea     eax,dword ptr [__clip_plane_top_base]
         push    eax
         call    _vec4f_assign
@@ -1038,19 +1018,16 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-12],xmm0
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         lea     eax,dword ptr [__clip_plane_top_norm]
         push    eax
         call    _vec4f_assign
@@ -1058,19 +1035,16 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-12],xmm0
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         lea     eax,dword ptr [__clip_plane_bottom_base]
         push    eax
         call    _vec4f_assign
@@ -1078,19 +1052,16 @@ label0003:
         lea     eax,dword ptr [___unnamed_float_1]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
         lea     eax,dword ptr [___unnamed_float_5]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-12],xmm0
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         lea     eax,dword ptr [__clip_plane_bottom_norm]
         push    eax
         call    _vec4f_assign
@@ -1503,12 +1474,11 @@ label0000:
         movss   xmm0,dword ptr [eax]
         xorps   xmm0,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,[ebp+36]
         movss   xmm0,dword ptr [eax]
         xorps   xmm0,dword ptr [___unnamed_float_4]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         lea     eax,[ebp+32]
         mov     ecx,4
         add     ecx,[eax]
@@ -1535,12 +1505,11 @@ label0006:
         movss   xmm0,dword ptr [eax]
         xorps   xmm0,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,[ebp+36]
         movss   xmm0,dword ptr [eax]
         xorps   xmm0,dword ptr [___unnamed_float_4]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         lea     eax,[ebp+28]
         mov     ecx,4
         add     ecx,[eax]
@@ -1562,12 +1531,11 @@ label0008:
         movss   xmm0,dword ptr [eax]
         xorps   xmm0,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,[ebp+36]
         movss   xmm0,dword ptr [eax]
         xorps   xmm0,dword ptr [___unnamed_float_4]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         lea     eax,[ebp+28]
         mov     ecx,4
         add     ecx,[eax]
@@ -1696,11 +1664,10 @@ label0002:
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [esp-4],xmm0
-        sub     esp,4
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         lea     eax,[ebp+16]
         mov     ecx,8
         add     ecx,[eax]

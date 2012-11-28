@@ -1244,9 +1244,8 @@ label000a:
         cmp     eax,ebx
         jle     label001d
         movss   dword ptr [esp-4],xmm7
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm6
+        sub     esp,8
         push    dword ptr [edi+4]
         push    dword ptr [edi]
         push    esi
@@ -1260,9 +1259,8 @@ label001d:
         cmp     eax,edx
         jge     label001f
         movss   dword ptr [esp-4],xmm7
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm6
+        sub     esp,8
         mov     eax,[ebp-780]
         push    dword ptr [eax+4]
         push    dword ptr [eax]
@@ -1274,9 +1272,8 @@ label001d:
         jmp     label0020
 label001f:
         movss   dword ptr [esp-4],xmm7
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm6
+        sub     esp,8
         push    dword ptr [edi+4]
         push    dword ptr [edi]
         push    esi
@@ -1293,10 +1290,9 @@ label001c:
         jge     label0022
         xorps   xmm7,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm7
-        sub     esp,4
         xorps   xmm6,dword ptr [___unnamed_float_4]
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm6
+        sub     esp,8
         mov     eax,[ebp-780]
         push    dword ptr [eax+4]
         push    dword ptr [eax]
@@ -1312,10 +1308,9 @@ label0022:
         jle     label0024
         xorps   xmm7,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm7
-        sub     esp,4
         xorps   xmm6,dword ptr [___unnamed_float_4]
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm6
+        sub     esp,8
         mov     [ebp-784],esi
         mov     esi,[ebp-776]
         push    dword ptr [esi+4]
@@ -1329,10 +1324,9 @@ label0022:
 label0024:
         xorps   xmm7,dword ptr [___unnamed_float_4]
         movss   dword ptr [esp-4],xmm7
-        sub     esp,4
         xorps   xmm6,dword ptr [___unnamed_float_4]
-        movss   dword ptr [esp-4],xmm6
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm6
+        sub     esp,8
         mov     [ebp-784],esi
         mov     esi,[ebp-776]
         push    dword ptr [esi+4]
@@ -1471,13 +1465,10 @@ label000e:
         cmp     ecx,eax
         jg      label0013
         movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm2
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm5
+        movss   dword ptr [esp-12],xmm2
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         push    esi
         push    eax
         push    edi
@@ -1487,13 +1478,10 @@ label000e:
 label0013:
         mov     [ebp-768],edx
         movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm3
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm1
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm5
+        movss   dword ptr [esp-12],xmm3
+        movss   dword ptr [esp-16],xmm1
+        sub     esp,16
         push    esi
         push    edi
         push    eax
@@ -1601,13 +1589,10 @@ label000f:
         jg      label0016
         mov     [ebp-800],ecx
         movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm2
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm5
+        movss   dword ptr [esp-12],xmm2
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         push    esi
         push    eax
         push    edi
@@ -1617,13 +1602,10 @@ label000f:
 label0016:
         mov     [ebp-800],ecx
         movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm3
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm1
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm5
+        movss   dword ptr [esp-12],xmm3
+        movss   dword ptr [esp-16],xmm1
+        sub     esp,16
         push    esi
         push    edi
         push    eax
@@ -1754,13 +1736,10 @@ label0011:
         cmp     ecx,eax
         jg      label0019
         movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm2
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm0
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm5
+        movss   dword ptr [esp-12],xmm2
+        movss   dword ptr [esp-16],xmm0
+        sub     esp,16
         push    esi
         push    eax
         push    edi
@@ -1770,13 +1749,10 @@ label0011:
 label0019:
         mov     [ebp-768],edx
         movss   dword ptr [esp-4],xmm6
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm5
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm3
-        sub     esp,4
-        movss   dword ptr [esp-4],xmm1
-        sub     esp,4
+        movss   dword ptr [esp-8],xmm5
+        movss   dword ptr [esp-12],xmm3
+        movss   dword ptr [esp-16],xmm1
+        sub     esp,16
         push    esi
         push    edi
         push    eax
