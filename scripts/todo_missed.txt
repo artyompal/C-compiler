@@ -4,7 +4,6 @@ x86_codegen.c:      TODO: возвращать результат типа QWORD
 x86_regalloc.c:     TODO: более точный анализ того, были ли какие-либо регистры изменены.
 x86_regalloc.c:     UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);
 symbol_table.h:     TODO: независимые неймспейсы для меток/мемберов/тайпдефов
-expressions.c:      TODO: нужно поддержать вычитание указателей
 parser_actions.c:   TODO: семантические проверки: проверки типов и неявные преобразования типов.
 symbol_table.c:     FIXME: мы может оверрайдить только функции; extern declarations / typedefs пока не поддерживаются.
 symbol_table.c:     FIXME: символы могут переопределяться несколько раз

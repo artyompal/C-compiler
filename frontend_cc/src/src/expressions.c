@@ -139,11 +139,7 @@ char const *expr_print_opcode_to_debug(arithmetic_opcode code)
 
 static expression *_add_offset_to_raw_pointer(expression *ptr, expression *index, int subtract)
 {
-    if (index->expr_code == code_expr_int_constant && index->data.int_const == 0) {
-        return ptr;
-    } else {
-        return _create_binary_arithm_expr((subtract ? op_sub : op_add), ptr, index, ptr->expr_type);
-    }
+    return _create_binary_arithm_expr((subtract ? op_sub : op_add), ptr, index, ptr->expr_type);
 }
 
 static expression *_add_offset_to_sized_pointer(expression *ptr, expression *index, BOOL subtract)
@@ -164,7 +160,29 @@ static expression *_add_offset_to_sized_pointer(expression *ptr, expression *ind
     }
 
     res             = _add_offset_to_raw_pointer(ptr, index, subtract);
-    res->expr_type  = ptr->expr_type;
+    return res;
+}
+
+static expression *_subtract_pointers(expression *p1, expression *p2)
+{
+    int             item_type_size;
+    expression *    res;
+    data_type *     int_type;
+
+    ASSERT(TYPE_IS_POINTER(p1->expr_type));
+    item_type_size  = type_calculate_sizeof(p1->expr_type->data.ptr.item_type);
+
+    if (item_type_size == 0) {
+        aux_error("subtracting void pointers");
+        return NULL;
+    }
+
+    res             = _create_binary_arithm_expr(op_sub, p1, p2, p1->expr_type);
+    int_type        = type_create_arithmetic(code_type_int);
+
+    if (item_type_size > 1) {
+        res         = _create_binary_arithm_expr(op_div, res, expr_create_from_integer(item_type_size, int_type), int_type);
+    }
 
     return res;
 }
@@ -587,10 +605,11 @@ expression *expr_create_binary(expression *e1, expression *e2, arithmetic_opcode
 
     // проверяем случай сравнения указателей
     if (TYPE_IS_POINTER(e1->expr_type)) {
-        // TODO: нужно поддержать вычитание указателей
         if (!IS_COMPARE_OP(opcode) && opcode != op_sub && opcode != op_assign) {
             aux_error("type mismatch: invalid operation with pointers");
             return NULL;
+        } else if (opcode == op_sub) {
+            return _subtract_pointers(e1, e2);
         }
     }
 
