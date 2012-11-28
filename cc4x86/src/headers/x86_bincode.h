@@ -240,6 +240,9 @@ typedef struct x86_instruction_decl {
 #define IS_JMP_INSN(INSN)               ((INSN) >= x86insn_jmp && (INSN) <= x86insn_ja)
 #define IS_JCC_INSN(INSN)               ((INSN) > x86insn_jmp && (INSN) <= x86insn_ja)
 
+#define IS_FLAGS_MODIFYING_INSN(INSN)   ((INSN) >= x86insn_int_inc && (INSN) <= x86insn_int_neg || \
+                                        (INSN) >= x86insn_int_add && (INSN) <= x86insn_int_sub || \
+                                        (INSN) >= x86insn_int_sal && (INSN) <= x86insn_int_or || (INSN) == x86insn_imul_const)
 #define IS_DWORD_DEFINING_INSN(INSN)    ((INSN) == x86insn_int_mov || IS_SET_INSN((INSN)) \
                                         || (INSN) >= x86insn_imul_const && (INSN) <= x86insn_movq \
                                         || (INSN) == x86insn_pop || (INSN) == x86insn_read_retval \
