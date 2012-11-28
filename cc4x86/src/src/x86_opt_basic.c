@@ -390,6 +390,18 @@ static void _try_optimize_add_sub(function_desc *function, x86_instruction *insn
 }
 
 //
+// Удаляет инструкцию CMP reg,0 или TEST, следующую сразу после арифметичекой операции с этим же регистром.
+static void _try_optimize_cmp_test(function_desc *function, x86_instruction *cmp)
+{
+    if (OP_IS_PSEUDO_REG(cmp->in_op1, x86op_dword) && IS_FLAGS_MODIFYING_INSN(cmp->in_prev->in_code)
+        && (OP_IS_CONSTANT(cmp->in_op2) && cmp->in_op2.data.int_val == 0 || cmp->in_code == x86insn_int_test)
+        && cmp->in_prev && OP_IS_THIS_PSEUDO_REG(cmp->in_prev->in_op1, x86op_dword, cmp->in_op1.data.reg)
+        && cmp->in_next && (cmp->in_next->in_code == x86insn_je || cmp->in_next->in_code == x86insn_jne)) {
+            x86_dataflow_erase_instruction(function, cmp);
+        }
+}
+
+//
 // Оптимизирует целочисленные инструкции.
 static void _optimize_dword_insns(function_desc *function)
 {
@@ -422,6 +434,11 @@ static void _optimize_dword_insns(function_desc *function)
         case x86insn_int_add:
         case x86insn_int_sub:
             _try_optimize_add_sub(function, insn);
+            break;
+
+        case x86insn_int_cmp:
+        case x86insn_int_test:
+            _try_optimize_cmp_test(function, insn);
             break;
         }
     }

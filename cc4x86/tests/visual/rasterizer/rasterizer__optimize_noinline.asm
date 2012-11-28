@@ -814,7 +814,6 @@ label0000:
         mov     ecx,eax
         sar     ecx,24
         and     ecx,255
-        cmp     ecx,0
         je      label0003
         cvtsi2ss        xmm0,ecx
         mulss   xmm0,dword ptr [___unnamed_float_6]

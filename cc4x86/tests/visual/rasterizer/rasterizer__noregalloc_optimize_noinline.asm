@@ -699,7 +699,6 @@ label0000:
         mov     dword23,dword19
         sar     dword23,24
         and     dword23,255
-        cmp     dword23,0
         je      label0003
         cvtsi2ss        sse1,dword23
         mulss   sse1,dword ptr [___unnamed_float_6]
