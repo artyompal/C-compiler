@@ -276,6 +276,7 @@ void rasterizer_init(void (*__dbgprintf)(const char *msg, ...), int width, int h
     vec4f_assign(&_clip_plane_left_norm,    1.0f, 0.0f, 0.0f, 1.0f);
     vec4f_assign(&_clip_plane_right_base,   1.0f - 1.0f/width, 0.0f, 0.0f, 1.0f);
     vec4f_assign(&_clip_plane_right_norm,  -1.0f, 0.0f, 0.0f, 1.0f);
+
     vec4f_assign(&_clip_plane_top_base,     0.0f,-1.0f + 1.0f/height, 0.0f, 1.0f);
     vec4f_assign(&_clip_plane_top_norm,     0.0f, 1.0f, 0.0f, 1.0f);
     vec4f_assign(&_clip_plane_bottom_base,  0.0f, 1.0f, 0.0f, 1.0f);
