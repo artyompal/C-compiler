@@ -1,5 +1,3 @@
-x86_bincode.c:      FIXME: handle 3rd argument!
-x86_bincode.c:      UNIMPLEMENTED_ASSERT(insn->in_code != x86insn_rep_movsd);
 x86_codegen.c:      TODO: поддержать кодогенерацию для long long
 x86_codegen.c:      TODO: поддержать кодогенерацию для операндов типа byte/word
 x86_codegen.c:      TODO: возвращать результат типа QWORD

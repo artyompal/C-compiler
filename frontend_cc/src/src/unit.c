@@ -949,7 +949,12 @@ void unit_push_unary_instruction(x86_instruction_code code, x86_operand *op)
 
 void unit_push_binary_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2)
 {
-    x86_instruction *res    = bincode_create_instruction(code, op1, op2);
+    unit_push_ternary_instruction(code, op1, op2, NULL);
+}
+
+void unit_push_ternary_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2, x86_operand *op3)
+{
+    x86_instruction *res    = bincode_create_instruction(code, op1, op2, op3);
 
     ASSERT(_curr_func);
 
@@ -963,12 +968,6 @@ void unit_push_binary_instruction(x86_instruction_code code, x86_operand *op1, x
     res->in_prev            = _curr_func->func_binary_code_end;
 
     _curr_func->func_binary_code_end = res;
-}
-
-void unit_push_ternary_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2, int op3)
-{
-    unit_push_binary_instruction(code, op1, op2);
-    _curr_func->func_binary_code_end->in_op3 = op3;
 }
 
 

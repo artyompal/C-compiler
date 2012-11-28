@@ -479,14 +479,16 @@ static void _output_push_binary_instruction(x86_instruction_code code, x86_opera
     _out_ch('\n');
 }
 
-static void _output_push_ternary_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2, int op3)
+static void _output_push_ternary_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2, x86_operand *op3)
 {
     _print_insn(code);
     _out_ch('\t');
     _print_op(op1);
     _out_ch(',');
     _print_op(op2);
-    _out_fmt(",%d\n", op3);
+    _out_ch(',');
+    _print_op(op3);
+    _out_ch('\n');
 }
 
 static void _output_push_instruction(x86_instruction *insn)
@@ -500,7 +502,7 @@ static void _output_push_instruction(x86_instruction *insn)
     } else if (insn->in_code != x86insn_imul_const) {
         _output_push_binary_instruction(insn->in_code, &insn->in_op1, &insn->in_op2);
     } else {
-        _output_push_ternary_instruction(insn->in_code, &insn->in_op1, &insn->in_op2, insn->in_op3);
+        _output_push_ternary_instruction(insn->in_code, &insn->in_op1, &insn->in_op2, &insn->in_op3);
     }
 }
 

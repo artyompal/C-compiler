@@ -225,7 +225,7 @@ typedef struct x86_instruction_decl {
     x86_instruction_code        in_code;
     x86_operand                 in_op1;
     x86_operand                 in_op2;
-    int                         in_op3;
+    x86_operand                 in_op3;
     basic_block                 *in_block;
     int                         in_reg_usage_mask;
 
@@ -309,11 +309,13 @@ void    bincode_create_operand_addr_from_esp_offset     (x86_operand *op, x86_op
 void    bincode_create_operand_from_symbol              (x86_operand *op, symbol *sym);
 void    bincode_create_operand_from_label               (x86_operand *op, int label);
 
-x86_instruction *       bincode_create_instruction      (x86_instruction_code code, x86_operand *op1, x86_operand *op2);
+x86_instruction *       bincode_create_instruction      (x86_instruction_code code, x86_operand *op1, x86_operand *op2, x86_operand *op3);
 
 x86_operand_type        bincode_encode_type             (data_type *type);
 
 // Все следующие функции вставляют инструкцию перед заданной.
+void    bincode_insert_ternary_instruction              (function_desc *function, x86_instruction *pos,
+                                                            x86_instruction_code code, x86_operand *op1, x86_operand *op2, x86_operand *op3);
 void    bincode_insert_instruction                      (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand *op1, x86_operand *op2);
 void    bincode_insert_unary_instruction                (function_desc *function, x86_instruction *pos,
