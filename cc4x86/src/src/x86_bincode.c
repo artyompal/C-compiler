@@ -39,12 +39,10 @@ void bincode_extract_pseudoregs_from_operand(x86_operand *op, x86_operand_type t
 
 void bincode_extract_pseudoregs_from_insn(x86_instruction *insn, x86_operand_type type, int *regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
-    // FIXME: handle 3rd argument!
     *regs_cnt = 0;
     _extract_pseudoregs_from_operand(&insn->in_op1, type, regs, regs_cnt);
-
-    if (insn->in_code != x86insn_call)
-        _extract_pseudoregs_from_operand(&insn->in_op2, type, regs, regs_cnt);
+    _extract_pseudoregs_from_operand(&insn->in_op2, type, regs, regs_cnt);
+    _extract_pseudoregs_from_operand(&insn->in_op3, type, regs, regs_cnt);
 }
 
 void bincode_extract_pseudoregs_from_insn_wo_dupes(x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
@@ -124,15 +122,6 @@ BOOL bincode_operand_contains_register(x86_operand *op, x86_operand_type type, i
 
 void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
-    if (type == x86op_dword && (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd)) {
-        ASSERT(OP_IS_REGISTER(insn->in_op1, type) && OP_IS_REGISTER(insn->in_op2, type));
-        regs[0] = insn->in_op1.data.reg;
-        regs[1] = insn->in_op2.data.reg;
-        regs[2] = insn->in_op3;
-        *regs_cnt = 3;
-        return;
-    }
-
     *regs_cnt = 0;
 
     if (OP_IS_ADDRESS(insn->in_op1)) {
@@ -176,6 +165,12 @@ void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_operand_
             ++*regs_cnt;
         }
     }
+
+    if (OP_IS_REGISTER(insn->in_op3, type)) {
+        ASSERT(*regs_cnt <= MAX_REGISTERS_PER_INSN - 1);
+        regs[*regs_cnt] = insn->in_op3.data.reg;
+        ++*regs_cnt;
+    }
 }
 
 void bincode_extract_pseudoregs_modified_by_insn(x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
@@ -184,7 +179,7 @@ void bincode_extract_pseudoregs_modified_by_insn(x86_instruction *insn, x86_oper
         ASSERT(OP_IS_REGISTER(insn->in_op1, type) && OP_IS_REGISTER(insn->in_op2, type));
         regs[0] = insn->in_op1.data.reg;
         regs[1] = insn->in_op2.data.reg;
-        regs[2] = insn->in_op3;
+        regs[2] = insn->in_op3.data.reg;
         *regs_cnt = 3;
         return;
     }
@@ -266,8 +261,8 @@ x86_operand *bincode_find_usage_as_register_operand(x86_instruction *insn, x86_o
         return &insn->in_op1;
     } else if (OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, reg)) {
         return &insn->in_op2;
-    } else {
-        UNIMPLEMENTED_ASSERT(insn->in_code != x86insn_rep_movsd);
+    } else if (OP_IS_THIS_PSEUDO_REG(insn->in_op3, type, reg)) {
+        return &insn->in_op2;
     }
 
     return NULL;
@@ -400,7 +395,7 @@ void bincode_create_operand_from_label(x86_operand *op, int label)
 // Обслуживание бинарного кода, представленного двусвязным списком.
 //
 
-x86_instruction *bincode_create_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2)
+x86_instruction *bincode_create_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2, x86_operand *op3)
 {
     x86_instruction *res    = allocator_alloc(allocator_global_pool, sizeof(x86_instruction));
 
@@ -418,14 +413,20 @@ x86_instruction *bincode_create_instruction(x86_instruction_code code, x86_opera
         res->in_op2.op_loc = x86loc_none;
     }
 
+    if (op3) {
+        res->in_op3         = *op3;
+    } else {
+        res->in_op3.op_loc = x86loc_none;
+    }
+
     return res;
 }
 
 
-void bincode_insert_instruction(function_desc *function, x86_instruction *pos, x86_instruction_code code,
-                                x86_operand *op1, x86_operand *op2)
+void bincode_insert_ternary_instruction(function_desc *function, x86_instruction *pos, x86_instruction_code code,
+                                        x86_operand *op1, x86_operand *op2, x86_operand *op3)
 {
-    x86_instruction *res    = bincode_create_instruction(code, op1, op2);
+    x86_instruction *res    = bincode_create_instruction(code, op1, op2, op3);
 
     res->in_next            = pos;
     res->in_prev            = pos->in_prev;
@@ -444,13 +445,16 @@ void bincode_insert_instruction(function_desc *function, x86_instruction *pos, x
     }
 }
 
+void bincode_insert_instruction(function_desc *function, x86_instruction *pos, x86_instruction_code code,
+                                x86_operand *op1, x86_operand *op2)
+{
+    bincode_insert_ternary_instruction(function, pos, code, op1, op2, NULL);
+}
+
 void bincode_insert_unary_instruction(function_desc *function, x86_instruction *pos, x86_instruction_code code,
                                       x86_operand *op)
 {
-    x86_operand empty_op;
-
-    empty_op.op_loc = x86op_none;
-    bincode_insert_instruction(function, pos, code, op, &empty_op);
+    bincode_insert_instruction(function, pos, code, op, NULL);
 }
 
 void bincode_insert_insn_reg_reg(function_desc *function, x86_instruction *pos, x86_instruction_code code,

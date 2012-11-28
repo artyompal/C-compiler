@@ -416,7 +416,7 @@ static void _reserve_special_registers(function_desc *function, x86_pseudoreg_in
                 ASSERT(insn->in_prev && OP_IS_PSEUDO_REG(insn->in_prev->in_op1, type));
                 ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type));
 
-                _reserve_real_register(pseudoregs_map, insn->in_op3, x86reg_ecx);
+                _reserve_real_register(pseudoregs_map, insn->in_op3.data.reg, x86reg_ecx);
                 _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_edi);
                 _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_esi);
             }

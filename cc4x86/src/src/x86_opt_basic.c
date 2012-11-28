@@ -369,7 +369,6 @@ static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
     x86_dataflow_set_current_insn(function, x86op_dword, insn);
 
     if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && !x86_dataflow_is_pseudoreg_alive_after(insn->in_op1.data.reg)) {
-        aux_warning("function %s: code has no effect", function->func_sym->sym_name);
         bincode_erase_instruction(function, insn);
     } else if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT(insn->in_op2)) {
         _try_optimize_mov_reg_const(function, insn);

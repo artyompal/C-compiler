@@ -135,9 +135,8 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
             break;
         }
 
-        bincode_insert_instruction(caller, point, insn->in_code, &insn->in_op1, &insn->in_op2);
+        bincode_insert_ternary_instruction(caller, point, insn->in_code, &insn->in_op1, &insn->in_op2, &insn->in_op3);
         inserted = point->in_prev;
-        inserted->in_op3 = insn->in_op3;
 
         if (inserted->in_code == x86insn_ret) {
             inserted->in_code = x86insn_jmp;
