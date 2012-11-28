@@ -168,7 +168,7 @@
     <ClCompile Include="src\x86_data.c" />
     <ClCompile Include="src\x86_inlining.c" />
     <ClCompile Include="src\x86_intrinsics.c" />
-    <ClCompile Include="src\x86_opt_basic.c" />
+    <ClCompile Include="src\x86_opt_local.c" />
     <ClCompile Include="src\x86_opt_data_flow.c" />
     <ClCompile Include="src\x86_opt_regvar.c" />
     <ClCompile Include="src\x86_regalloc.c" />
