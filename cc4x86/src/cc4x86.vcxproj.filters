@@ -41,7 +41,7 @@
     <ClCompile Include="src\x86_text_output.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\x86_opt_basic.c">
+    <ClCompile Include="src\x86_opt_local.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
