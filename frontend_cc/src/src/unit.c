@@ -929,6 +929,7 @@ void unit_codegen(void)
 
         if (!option_no_regalloc) {
             x86_allocate_registers(_curr_func);
+            x86_optimize_after_register_coloring(_curr_func);
         }
 
         text_output_push_function_code(_curr_func);

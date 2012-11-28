@@ -530,3 +530,73 @@ void x86_local_optimization_pass(function_desc *function)
     } while (function->func_insn_count != old_insn_count);
 }
 
+
+#define IS_SUB_ESP_CONST(INSN)  ((INSN)->in_code == x86insn_int_sub && OP_IS_THIS_REAL_REG((INSN)->in_op1, x86op_dword, x86reg_esp) \
+                                && OP_IS_CONSTANT((INSN)->in_op2))
+#define IS_ESP_RELATED_ADDR(OP) ((OP).op_loc == x86loc_address && \
+                                ((OP).data.address.base == ~x86reg_esp || (OP).data.address.index == ~x86reg_esp))
+
+
+//
+// Оптимизирует последовательные серии movss/sub esp,4/...
+static void _optimize_sub_esp(function_desc *function, x86_instruction *first)
+{
+    x86_instruction *insn, *last, *prev;
+    int total_sz, delta_esp;
+
+    last        = NULL;
+    total_sz    = 0;
+
+    for (insn = first; insn && insn->in_code != x86insn_call && insn->in_code != x86insn_push; insn = insn->in_next) {
+        if (IS_SUB_ESP_CONST(insn)) {
+            total_sz += insn->in_op2.data.int_val;
+            last = insn;
+        }
+    }
+
+    if (total_sz == first->in_op2.data.int_val) {
+        return;
+    }
+
+    delta_esp                   = total_sz - last->in_op2.data.int_val;
+    last->in_op2.data.int_val   = total_sz;
+
+    for (insn = last->in_prev; ; insn = prev) {
+        prev = insn->in_prev;
+
+        if (IS_ESP_RELATED_ADDR(insn->in_op1)) {
+            insn->in_op1.data.address.offset -= delta_esp;
+        } else if (IS_ESP_RELATED_ADDR(insn->in_op2)) {
+            insn->in_op2.data.address.offset -= delta_esp;
+        } else if (IS_SUB_ESP_CONST(insn)) {
+            delta_esp -= insn->in_op2.data.int_val;
+            bincode_erase_instruction(function, insn);
+
+            if (insn == first) {
+                break;
+            }
+        }
+    }
+}
+
+//
+// Стадия оптимизации, выполняемая после аллокации регистров.
+void x86_optimize_after_register_coloring(function_desc *function)
+{
+    x86_instruction *insn, *next;
+
+    insn = function->func_binary_code;
+
+    if (insn->in_code == x86insn_push && OP_IS_THIS_REAL_REG(insn->in_op1, x86op_dword, x86reg_ebp)) {
+        insn = insn->in_next->in_next->in_next;
+    }
+
+    for (; insn; insn = next) {
+        next = insn->in_next;
+
+        if (IS_SUB_ESP_CONST(insn)) {
+            _optimize_sub_esp(function, insn);
+        }
+    }
+}
+

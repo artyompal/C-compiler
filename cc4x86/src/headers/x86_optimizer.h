@@ -12,6 +12,7 @@ typedef enum x86_operand_type_decl x86_operand_type;
 
 
 void    x86_local_optimization_pass         (function_desc *function);
+void    x86_optimize_after_register_coloring(function_desc *function);
 
 void    x86_regvars_init                    ();
 void    x86_regvars_create                  (function_desc *function);
