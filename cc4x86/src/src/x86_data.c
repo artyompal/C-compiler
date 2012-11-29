@@ -138,7 +138,7 @@ symbol *x86data_insert_float4_constant(long c1, long c2, long c3, long c4)
         return found;
     }
 
-    key = symbol_create_unnamed("float", code_sym_variable, type_create_arithmetic(code_type_float));
+    key = symbol_create_unnamed("float4", code_sym_variable, type_create_arithmetic(code_type_float));
 
     key->sym_value.val_float4.i[0] = c1;
     key->sym_value.val_float4.i[1] = c2;

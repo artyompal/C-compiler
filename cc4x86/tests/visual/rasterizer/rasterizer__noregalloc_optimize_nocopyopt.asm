@@ -60,8 +60,8 @@ public  ___unnamed_float_2
 ___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
-___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
-public  ___unnamed_float_4
+___unnamed_float4_4     dd      080000000h, 00h, 00h, 00h
+public  ___unnamed_float4_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
 ___unnamed_float_6      dd      03b808081h
@@ -217,7 +217,7 @@ _rasterizer_init proc
         mov     dword ptr [dword377+12],0
         mov     dword ptr [dword377+16],0
         movss   sse158,sse186
-        xorps   sse158,dword ptr [___unnamed_float_4]
+        xorps   sse158,dword ptr [___unnamed_float4_4]
         mulss   sse158,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword377+20],sse158
         mov     dword ptr [dword377+24],0
@@ -1325,10 +1325,10 @@ label001c:
         jge     label0022
         push_all
         movss   sse74,sse129
-        xorps   sse74,dword ptr [___unnamed_float_4]
+        xorps   sse74,dword ptr [___unnamed_float4_4]
         push_arg        sse74,4
         movss   sse75,sse128
-        xorps   sse75,dword ptr [___unnamed_float_4]
+        xorps   sse75,dword ptr [___unnamed_float4_4]
         push_arg        sse75,4
         push_arg        dword ptr [dword876+4],4
         mov     dword689,dword876
@@ -1346,10 +1346,10 @@ label0022:
         jle     label0024
         push_all
         movss   sse76,sse129
-        xorps   sse76,dword ptr [___unnamed_float_4]
+        xorps   sse76,dword ptr [___unnamed_float4_4]
         push_arg        sse76,4
         movss   sse77,sse128
-        xorps   sse77,dword ptr [___unnamed_float_4]
+        xorps   sse77,dword ptr [___unnamed_float4_4]
         push_arg        sse77,4
         push_arg        dword ptr [dword875+4],4
         mov     dword701,dword875
@@ -1364,10 +1364,10 @@ label0022:
 label0024:
         push_all
         movss   sse78,sse129
-        xorps   sse78,dword ptr [___unnamed_float_4]
+        xorps   sse78,dword ptr [___unnamed_float4_4]
         push_arg        sse78,4
         movss   sse79,sse128
-        xorps   sse79,dword ptr [___unnamed_float_4]
+        xorps   sse79,dword ptr [___unnamed_float4_4]
         push_arg        sse79,4
         push_arg        dword ptr [dword875+4],4
         mov     dword710,dword875

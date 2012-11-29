@@ -60,8 +60,8 @@ public  ___unnamed_float_2
 ___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
-___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
-public  ___unnamed_float_4
+___unnamed_float4_4     dd      080000000h, 00h, 00h, 00h
+public  ___unnamed_float4_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
 ___unnamed_float_6      dd      03b808081h
@@ -201,7 +201,7 @@ _rasterizer_init proc
         mov     dword ptr [edi+12],0
         mov     dword ptr [edi+16],0
         movss   xmm2,xmm0
-        xorps   xmm2,dword ptr [___unnamed_float_4]
+        xorps   xmm2,dword ptr [___unnamed_float4_4]
         mulss   xmm2,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+20],xmm2
         mov     dword ptr [edi+24],0
@@ -1091,9 +1091,9 @@ label001e:
 label001c:
         cmp     ecx,ebx
         jge     label0022
-        xorps   xmm7,dword ptr [___unnamed_float_4]
+        xorps   xmm7,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-4],xmm7
-        xorps   xmm6,dword ptr [___unnamed_float_4]
+        xorps   xmm6,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-8],xmm6
         sub     esp,8
         push    dword ptr [esi+4]
@@ -1107,9 +1107,9 @@ label001c:
 label0022:
         cmp     ecx,edx
         jle     label0024
-        xorps   xmm7,dword ptr [___unnamed_float_4]
+        xorps   xmm7,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-4],xmm7
-        xorps   xmm6,dword ptr [___unnamed_float_4]
+        xorps   xmm6,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-8],xmm6
         sub     esp,8
         mov     [ebp-780],eax
@@ -1123,9 +1123,9 @@ label0022:
         add     esp,28
         jmp     label0025
 label0024:
-        xorps   xmm7,dword ptr [___unnamed_float_4]
+        xorps   xmm7,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-4],xmm7
-        xorps   xmm6,dword ptr [___unnamed_float_4]
+        xorps   xmm6,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-8],xmm6
         sub     esp,8
         mov     [ebp-780],eax

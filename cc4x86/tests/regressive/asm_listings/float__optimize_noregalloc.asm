@@ -8,8 +8,8 @@
 ___unnamed_float_0      dd      00h
 public  ___unnamed_float_0
 align 16
-___unnamed_float_1      dd      080000000h, 00h, 00h, 00h
-public  ___unnamed_float_1
+___unnamed_float4_1     dd      080000000h, 00h, 00h, 00h
+public  ___unnamed_float4_1
 ___unnamed_float_2      dd      03a83126fh
 public  ___unnamed_float_2
 ___unnamed_float_3      dd      040000000h
@@ -51,7 +51,7 @@ _test proc
         jmp     label0009
 label0008:
         movss   sse36,sse30
-        xorps   sse36,dword ptr [___unnamed_float_1]
+        xorps   sse36,dword ptr [___unnamed_float4_1]
         movss   sse118,sse36
 label0009:
 ; end of inline function fabs
@@ -81,7 +81,7 @@ label0000:
         jmp     label000d
 label000c:
         movss   sse47,sse117
-        xorps   sse47,dword ptr [___unnamed_float_1]
+        xorps   sse47,dword ptr [___unnamed_float4_1]
         movss   sse118,sse47
 label000d:
 ; end of inline function fabs
@@ -111,7 +111,7 @@ label0001:
         jmp     label0011
 label0010:
         movss   sse58,sse117
-        xorps   sse58,dword ptr [___unnamed_float_1]
+        xorps   sse58,dword ptr [___unnamed_float4_1]
         movss   sse118,sse58
 label0011:
 ; end of inline function fabs
@@ -141,7 +141,7 @@ label0002:
         jmp     label0015
 label0014:
         movss   sse69,sse117
-        xorps   sse69,dword ptr [___unnamed_float_1]
+        xorps   sse69,dword ptr [___unnamed_float4_1]
         movss   sse118,sse69
 label0015:
 ; end of inline function fabs
@@ -172,7 +172,7 @@ label0003:
         jmp     label0019
 label0018:
         movss   sse79,sse117
-        xorps   sse79,dword ptr [___unnamed_float_1]
+        xorps   sse79,dword ptr [___unnamed_float4_1]
         movss   sse118,sse79
 label0019:
 ; end of inline function fabs
@@ -202,7 +202,7 @@ label0004:
         jmp     label001d
 label001c:
         movss   sse89,sse83
-        xorps   sse89,dword ptr [___unnamed_float_1]
+        xorps   sse89,dword ptr [___unnamed_float4_1]
         movss   sse118,sse89
 label001d:
 ; end of inline function fabs
@@ -232,7 +232,7 @@ label0005:
         jmp     label0021
 label0020:
         movss   sse99,sse93
-        xorps   sse99,dword ptr [___unnamed_float_1]
+        xorps   sse99,dword ptr [___unnamed_float4_1]
         movss   sse118,sse99
 label0021:
 ; end of inline function fabs
@@ -262,7 +262,7 @@ label0006:
         jmp     label0025
 label0024:
         movss   sse109,sse103
-        xorps   sse109,dword ptr [___unnamed_float_1]
+        xorps   sse109,dword ptr [___unnamed_float4_1]
         movss   sse118,sse109
 label0025:
 ; end of inline function fabs
