@@ -60,8 +60,8 @@ public  ___unnamed_float_2
 ___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
-___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
-public  ___unnamed_float_4
+___unnamed_float4_4     dd      080000000h, 00h, 00h, 00h
+public  ___unnamed_float4_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
 ___unnamed_float_6      dd      03b808081h
@@ -391,7 +391,7 @@ _matrix4f_make_viewport proc
         mov     dword18,20
         add     dword18,[ebp+8]
         movss   sse7,dword ptr [ebp+16]
-        xorps   sse7,dword ptr [___unnamed_float_4]
+        xorps   sse7,dword ptr [___unnamed_float4_4]
         mulss   sse7,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword18],sse7
         mov     dword22,24
@@ -1050,10 +1050,10 @@ label0000:
         jge     label0006
         push_all
         movss   sse1,dword ptr [ebp+40]
-        xorps   sse1,dword ptr [___unnamed_float_4]
+        xorps   sse1,dword ptr [___unnamed_float4_4]
         push_arg        sse1,4
         movss   sse2,dword ptr [ebp+36]
-        xorps   sse2,dword ptr [___unnamed_float_4]
+        xorps   sse2,dword ptr [___unnamed_float4_4]
         push_arg        sse2,4
         mov     dword43,4
         add     dword43,[ebp+32]
@@ -1073,10 +1073,10 @@ label0006:
         jle     label0008
         push_all
         movss   sse3,dword ptr [ebp+40]
-        xorps   sse3,dword ptr [___unnamed_float_4]
+        xorps   sse3,dword ptr [___unnamed_float4_4]
         push_arg        sse3,4
         movss   sse4,dword ptr [ebp+36]
-        xorps   sse4,dword ptr [___unnamed_float_4]
+        xorps   sse4,dword ptr [___unnamed_float4_4]
         push_arg        sse4,4
         mov     dword55,4
         add     dword55,[ebp+28]
@@ -1093,10 +1093,10 @@ label0006:
 label0008:
         push_all
         movss   sse5,dword ptr [ebp+40]
-        xorps   sse5,dword ptr [___unnamed_float_4]
+        xorps   sse5,dword ptr [___unnamed_float4_4]
         push_arg        sse5,4
         movss   sse6,dword ptr [ebp+36]
-        xorps   sse6,dword ptr [___unnamed_float_4]
+        xorps   sse6,dword ptr [___unnamed_float4_4]
         push_arg        sse6,4
         mov     dword64,4
         add     dword64,[ebp+28]

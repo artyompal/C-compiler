@@ -8,8 +8,8 @@
 ___unnamed_float_0      dd      00h
 public  ___unnamed_float_0
 align 16
-___unnamed_float_1      dd      080000000h, 00h, 00h, 00h
-public  ___unnamed_float_1
+___unnamed_float4_1     dd      080000000h, 00h, 00h, 00h
+public  ___unnamed_float4_1
 ___unnamed_float_2      dd      03a83126fh
 public  ___unnamed_float_2
 ___unnamed_float_3      dd      040000000h
@@ -47,7 +47,7 @@ _fabs proc
         jmp     label0001
 label0000:
         movss   xmm0,dword ptr [ebp+8]
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm0,dword ptr [___unnamed_float4_1]
         movss   dword ptr [ebp-4],xmm0
 label0001:
         movss   xmm0,dword ptr [ebp-4]

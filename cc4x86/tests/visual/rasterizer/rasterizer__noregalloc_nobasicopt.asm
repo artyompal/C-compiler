@@ -60,8 +60,8 @@ public  ___unnamed_float_2
 ___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
-___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
-public  ___unnamed_float_4
+___unnamed_float4_4     dd      080000000h, 00h, 00h, 00h
+public  ___unnamed_float4_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
 ___unnamed_float_6      dd      03b808081h
@@ -514,7 +514,7 @@ _matrix4f_make_viewport proc
         add     dword18,[dword17]
         lea     dword19,[ebp+16]
         movss   sse7,dword ptr [dword19]
-        xorps   sse7,dword ptr [___unnamed_float_4]
+        xorps   sse7,dword ptr [___unnamed_float4_4]
         lea     dword20,dword ptr [___unnamed_float_3]
         movss   sse8,dword ptr [dword20]
         mulss   sse7,sse8
@@ -1456,11 +1456,11 @@ label0000:
         push_all
         lea     dword40,[ebp+40]
         movss   sse1,dword ptr [dword40]
-        xorps   sse1,dword ptr [___unnamed_float_4]
+        xorps   sse1,dword ptr [___unnamed_float4_4]
         push_arg        sse1,4
         lea     dword41,[ebp+36]
         movss   sse2,dword ptr [dword41]
-        xorps   sse2,dword ptr [___unnamed_float_4]
+        xorps   sse2,dword ptr [___unnamed_float4_4]
         push_arg        sse2,4
         lea     dword42,[ebp+32]
         mov     dword43,4
@@ -1488,11 +1488,11 @@ label0006:
         push_all
         lea     dword52,[ebp+40]
         movss   sse3,dword ptr [dword52]
-        xorps   sse3,dword ptr [___unnamed_float_4]
+        xorps   sse3,dword ptr [___unnamed_float4_4]
         push_arg        sse3,4
         lea     dword53,[ebp+36]
         movss   sse4,dword ptr [dword53]
-        xorps   sse4,dword ptr [___unnamed_float_4]
+        xorps   sse4,dword ptr [___unnamed_float4_4]
         push_arg        sse4,4
         lea     dword54,[ebp+28]
         mov     dword55,4
@@ -1515,11 +1515,11 @@ label0008:
         push_all
         lea     dword61,[ebp+40]
         movss   sse5,dword ptr [dword61]
-        xorps   sse5,dword ptr [___unnamed_float_4]
+        xorps   sse5,dword ptr [___unnamed_float4_4]
         push_arg        sse5,4
         lea     dword62,[ebp+36]
         movss   sse6,dword ptr [dword62]
-        xorps   sse6,dword ptr [___unnamed_float_4]
+        xorps   sse6,dword ptr [___unnamed_float4_4]
         push_arg        sse6,4
         lea     dword63,[ebp+28]
         mov     dword64,4

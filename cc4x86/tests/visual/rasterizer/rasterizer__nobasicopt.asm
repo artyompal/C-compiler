@@ -60,8 +60,8 @@ public  ___unnamed_float_2
 ___unnamed_float_3      dd      03f000000h
 public  ___unnamed_float_3
 align 16
-___unnamed_float_4      dd      080000000h, 00h, 00h, 00h
-public  ___unnamed_float_4
+___unnamed_float4_4     dd      080000000h, 00h, 00h, 00h
+public  ___unnamed_float4_4
 ___unnamed_float_5      dd      0bf800000h
 public  ___unnamed_float_5
 ___unnamed_float_6      dd      03b808081h
@@ -526,7 +526,7 @@ _matrix4f_make_viewport proc
         add     ecx,[eax]
         lea     eax,[ebp+16]
         movss   xmm0,dword ptr [eax]
-        xorps   xmm0,dword ptr [___unnamed_float_4]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
         lea     eax,dword ptr [___unnamed_float_3]
         movss   xmm1,dword ptr [eax]
         mulss   xmm0,xmm1
@@ -1472,11 +1472,11 @@ label0000:
         jge     label0006
         lea     eax,[ebp+40]
         movss   xmm0,dword ptr [eax]
-        xorps   xmm0,dword ptr [___unnamed_float_4]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-4],xmm0
         lea     eax,[ebp+36]
         movss   xmm0,dword ptr [eax]
-        xorps   xmm0,dword ptr [___unnamed_float_4]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-8],xmm0
         sub     esp,8
         lea     eax,[ebp+32]
@@ -1503,11 +1503,11 @@ label0006:
         jle     label0008
         lea     eax,[ebp+40]
         movss   xmm0,dword ptr [eax]
-        xorps   xmm0,dword ptr [___unnamed_float_4]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-4],xmm0
         lea     eax,[ebp+36]
         movss   xmm0,dword ptr [eax]
-        xorps   xmm0,dword ptr [___unnamed_float_4]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-8],xmm0
         sub     esp,8
         lea     eax,[ebp+28]
@@ -1529,11 +1529,11 @@ label0006:
 label0008:
         lea     eax,[ebp+40]
         movss   xmm0,dword ptr [eax]
-        xorps   xmm0,dword ptr [___unnamed_float_4]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-4],xmm0
         lea     eax,[ebp+36]
         movss   xmm0,dword ptr [eax]
-        xorps   xmm0,dword ptr [___unnamed_float_4]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-8],xmm0
         sub     esp,8
         lea     eax,[ebp+28]

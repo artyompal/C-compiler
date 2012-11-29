@@ -8,8 +8,8 @@
 ___unnamed_float_0      dd      00h
 public  ___unnamed_float_0
 align 16
-___unnamed_float_1      dd      080000000h, 00h, 00h, 00h
-public  ___unnamed_float_1
+___unnamed_float4_1     dd      080000000h, 00h, 00h, 00h
+public  ___unnamed_float4_1
 ___unnamed_float_2      dd      03a83126fh
 public  ___unnamed_float_2
 ___unnamed_float_3      dd      040000000h
@@ -50,7 +50,7 @@ _test proc
         ja      label0008
         jmp     label0009
 label0008:
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm0,dword ptr [___unnamed_float4_1]
 label0009:
 ; end of inline function fabs
         comiss  xmm0,dword ptr [___unnamed_float_2]
@@ -75,7 +75,7 @@ label0000:
         ja      label000c
         jmp     label000d
 label000c:
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm0,dword ptr [___unnamed_float4_1]
 label000d:
 ; end of inline function fabs
         comiss  xmm0,dword ptr [___unnamed_float_2]
@@ -100,7 +100,7 @@ label0001:
         ja      label0010
         jmp     label0011
 label0010:
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm0,dword ptr [___unnamed_float4_1]
 label0011:
 ; end of inline function fabs
         comiss  xmm0,dword ptr [___unnamed_float_2]
@@ -125,7 +125,7 @@ label0002:
         ja      label0014
         jmp     label0015
 label0014:
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm0,dword ptr [___unnamed_float4_1]
 label0015:
 ; end of inline function fabs
         comiss  xmm0,dword ptr [___unnamed_float_2]
@@ -153,7 +153,7 @@ label0003:
         ja      label0018
         jmp     label0019
 label0018:
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm0,dword ptr [___unnamed_float4_1]
 label0019:
 ; end of inline function fabs
         comiss  xmm0,dword ptr [___unnamed_float_2]
@@ -181,7 +181,7 @@ label0004:
         ja      label001c
         jmp     label001d
 label001c:
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm0,dword ptr [___unnamed_float4_1]
 label001d:
 ; end of inline function fabs
         comiss  xmm0,dword ptr [___unnamed_float_2]
@@ -209,7 +209,7 @@ label0005:
         ja      label0020
         jmp     label0021
 label0020:
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm0,dword ptr [___unnamed_float4_1]
 label0021:
 ; end of inline function fabs
         comiss  xmm0,dword ptr [___unnamed_float_2]
@@ -235,7 +235,7 @@ label0006:
         ja      label0024
         jmp     label0025
 label0024:
-        xorps   xmm0,dword ptr [___unnamed_float_1]
+        xorps   xmm0,dword ptr [___unnamed_float4_1]
 label0025:
 ; end of inline function fabs
         comiss  xmm0,dword ptr [___unnamed_float_2]
