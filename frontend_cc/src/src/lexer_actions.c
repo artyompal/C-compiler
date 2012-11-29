@@ -41,9 +41,9 @@ int token_identifier(const char *token, int token_len)
     }
 }
 
-static __int64 str_to_signed(const char *token, const char **endptr, int radix)
+static long long str_to_signed(const char *token, const char **endptr, int radix)
 {
-    __int64 res = 0;
+    long long res = 0;
 
     while (*token >= '0' && *token <= '9' || *token >= 'A' && *token <= 'F'
         || *token >= 'a' && *token <= 'f') {
@@ -58,9 +58,9 @@ static __int64 str_to_signed(const char *token, const char **endptr, int radix)
     return res;
 }
 
-static unsigned __int64 str_to_unsigned(const char *token, const char **endptr, int radix)
+static unsigned long long str_to_unsigned(const char *token, const char **endptr, int radix)
 {
-    unsigned __int64 res = 0;
+    unsigned long long res = 0;
 
     while (*token >= '0' && *token <= '9' || *token >= 'A' && *token <= 'F'
         || *token >= 'a' && *token <= 'f') {
@@ -79,9 +79,9 @@ int token_integer_literal(const char *token, int unused)
 {
     char *endptr;
     int radix               = (*token == '0' ? (token[1] == 'x' ? 16 : 8) : 10);
-    __int64 sres            = str_to_signed((radix == 16 ? token+2 : token), &endptr, radix);
-    unsigned __int64 ures   = str_to_unsigned((radix == 16 ? token+2 : token), &endptr, radix);
-    __int64 val;
+    long long sres          = str_to_signed((radix == 16 ? token+2 : token), &endptr, radix);
+    unsigned long long ures = str_to_unsigned((radix == 16 ? token+2 : token), &endptr, radix);
+    long long val;
     data_type_code type     = code_type_int;
 
     // парсим суффиксы ulUL и выводим тип

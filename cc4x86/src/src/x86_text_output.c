@@ -101,7 +101,7 @@ void text_output_declare_initialized_dword(symbol *sym, long value)
     _out_fmt("public\t_%s\n", sym->sym_name);
 }
 
-void text_output_declare_initialized_qword(symbol *sym, __int64 value)
+void text_output_declare_initialized_qword(symbol *sym, long long value)
 {
     _out_fmt("_%s\tdq\t0%I64xh\n", sym->sym_name, value);
     _out_fmt("public\t_%s\n", sym->sym_name);

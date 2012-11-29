@@ -288,7 +288,7 @@ static void _generate_inc_dec(expr_arithm *arithm, x86_operand *op, data_type *t
 }
 
 const unsigned  _negate_float           = 0x80000000;
-const unsigned __int64 _negate_double   = 0x8000000000000000;
+const unsigned long long _negate_double = 0x8000000000000000;
 
 static void _generate_common_unary_arithm_expr(expression *expr, x86_operand *res, x86_operand *op)
 {
@@ -967,7 +967,7 @@ static void _extract_float_constants(expression *expr, void *unused)
         float c = expr->data.float_const.val;
         expr->data.float_const.sym = x86data_insert_float_constant(*(long*)&c);
     } else if (expr->expr_type->type_code == code_type_double) {
-        expr->data.float_const.sym = x86data_insert_double_constant(*(__int64*)&expr->data.float_const.val);
+        expr->data.float_const.sym = x86data_insert_double_constant(*(long long*)&expr->data.float_const.val);
     } else {
         ASSERT(FALSE);
     }
