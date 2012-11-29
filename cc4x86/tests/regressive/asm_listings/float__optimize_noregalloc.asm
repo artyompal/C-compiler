@@ -28,14 +28,10 @@ ___unnamed_double_9     dq      04010000000000000h
 public  ___unnamed_double_9
 ___unnamed_float_10     dd      03f800000h
 public  ___unnamed_float_10
-___unnamed_double_11    dq      04008000000000000h
-public  ___unnamed_double_11
-___unnamed_double_12    dq      04018000000000000h
+___unnamed_float_11     dd      03eaaaaabh
+public  ___unnamed_float_11
+___unnamed_double_12    dq      04000000000000000h
 public  ___unnamed_double_12
-___unnamed_float_13     dd      03eaaaaabh
-public  ___unnamed_float_13
-___unnamed_double_14    dq      04000000000000000h
-public  ___unnamed_double_14
 
 .code
 
@@ -197,7 +193,7 @@ label0004:
         cvtss2sd        sse18,sse16
 ; start of inline function fabs
         movsd   sse82,sse18
-        subsd   sse82,qword ptr [___unnamed_double_11]
+        subsd   sse82,qword ptr [___unnamed_double_4]
         cvtsd2ss        sse83,sse82
         movss   sse87,dword ptr [___unnamed_float_0]
         comiss  sse87,sse83
@@ -227,7 +223,7 @@ label0005:
         cvtss2sd        sse22,sse20
 ; start of inline function fabs
         movsd   sse92,sse22
-        subsd   sse92,qword ptr [___unnamed_double_12]
+        subsd   sse92,qword ptr [___unnamed_double_7]
         cvtsd2ss        sse93,sse92
         movss   sse97,dword ptr [___unnamed_float_0]
         comiss  sse97,sse93
@@ -252,12 +248,12 @@ label0021:
         ret
 label0006:
         movss   sse24,sse20
-        mulss   sse24,dword ptr [___unnamed_float_13]
+        mulss   sse24,dword ptr [___unnamed_float_11]
 ; start of inline function eq
         cvtss2sd        sse26,sse24
 ; start of inline function fabs
         movsd   sse102,sse26
-        subsd   sse102,qword ptr [___unnamed_double_14]
+        subsd   sse102,qword ptr [___unnamed_double_12]
         cvtsd2ss        sse103,sse102
         movss   sse107,dword ptr [___unnamed_float_0]
         comiss  sse107,sse103

@@ -28,14 +28,10 @@ ___unnamed_double_9     dq      04010000000000000h
 public  ___unnamed_double_9
 ___unnamed_float_10     dd      03f800000h
 public  ___unnamed_float_10
-___unnamed_double_11    dq      04008000000000000h
-public  ___unnamed_double_11
-___unnamed_double_12    dq      04018000000000000h
+___unnamed_float_11     dd      03eaaaaabh
+public  ___unnamed_float_11
+___unnamed_double_12    dq      04000000000000000h
 public  ___unnamed_double_12
-___unnamed_float_13     dd      03eaaaaabh
-public  ___unnamed_float_13
-___unnamed_double_14    dq      04000000000000000h
-public  ___unnamed_double_14
 
 .code
 
@@ -159,7 +155,7 @@ label0004:
         movss   xmm0,dword ptr [ebp-24]
         subss   xmm0,dword ptr [___unnamed_float_10]
         movss   dword ptr [ebp-28],xmm0
-        movsd   xmm0,qword ptr [___unnamed_double_11]
+        movsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   qword ptr [esp-8],xmm0
         cvtss2sd        xmm0,dword ptr [ebp-28]
         movsd   qword ptr [esp-16],xmm0
@@ -176,7 +172,7 @@ label0005:
         movss   xmm0,dword ptr [ebp-28]
         mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [ebp-32],xmm0
-        movsd   xmm0,qword ptr [___unnamed_double_12]
+        movsd   xmm0,qword ptr [___unnamed_double_7]
         movsd   qword ptr [esp-8],xmm0
         cvtss2sd        xmm0,dword ptr [ebp-32]
         movsd   qword ptr [esp-16],xmm0
@@ -191,8 +187,8 @@ label0005:
         ret
 label0006:
         movss   xmm0,dword ptr [ebp-32]
-        mulss   xmm0,dword ptr [___unnamed_float_13]
-        movsd   xmm1,qword ptr [___unnamed_double_14]
+        mulss   xmm0,dword ptr [___unnamed_float_11]
+        movsd   xmm1,qword ptr [___unnamed_double_12]
         movsd   qword ptr [esp-8],xmm1
         cvtss2sd        xmm0,xmm0
         movsd   qword ptr [esp-16],xmm0

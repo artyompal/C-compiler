@@ -95,7 +95,7 @@ symbol *symbol_create_variable(symbol *sym)
     char *hidden_symbol_name;
     symbol *hidden_symbol;
 
-    if (sym->sym_code != code_sym_unknown && (sym->sym_code != code_sym_label || sym->sym_value != INVALID_LABEL)) {
+    if (sym->sym_code != code_sym_unknown && (sym->sym_code != code_sym_label || sym->sym_value.val_int != INVALID_LABEL)) {
         if (sym->sym_code == code_sym_function) {
             // FIXME: мы может оверрайдить только функции; extern declarations / typedefs пока не поддерживаются.
             // Создаём скрытый символ и позже проверяем соответствие типов.
@@ -122,7 +122,7 @@ symbol *symbol_create_label(symbol *sym, int label)
 {
     sym             = symbol_create_variable(sym);
     sym->sym_code   = code_sym_label;
-    sym->sym_value  = label;
+    sym->sym_value.val_int  = label;
 
     return sym;
 }

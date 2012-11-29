@@ -209,7 +209,7 @@ void unit_push_jump_to_named_label(symbol *label_name)
     expression *jump;
 
     if (label_name->sym_code == code_sym_label) {
-        jump = expr_create_jump(label_name->sym_value, NULL, FALSE);
+        jump = expr_create_jump(label_name->sym_value.val_int, NULL, FALSE);
     } else {
         jump = expr_create_jump_to_named_label(symbol_create_label(label_name, INVALID_LABEL));
     }
@@ -223,7 +223,7 @@ static void _resolve_jumps_to_named_labels(void)
 
     for (expr = _curr_func->func_body; expr; expr = expr->expr_next) {
         if (expr->expr_code == code_expr_jump_by_name) {
-            int label                   = expr->data.jump_by_name->sym_value;
+            int label                   = expr->data.jump_by_name->sym_value.val_int;
 
             if (label == INVALID_LABEL) {
                 aux_error("unknown label: '%s'", expr->data.jump_by_name->sym_name);
@@ -690,7 +690,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
                         float c = val->data.float_const.val;
                         x86data_declare_initialized_dword(sym, *(int*)&c);
                     } else if (val->expr_type->type_code == code_type_double) {
-                        x86data_declare_initialized_qword(sym, *(__int64*)&val->data.float_const.val);
+                        x86data_declare_initialized_qword(sym, *(long long*)&val->data.float_const.val);
                     } else {
                         ASSERT(FALSE);
                     }

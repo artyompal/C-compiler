@@ -678,12 +678,12 @@ void type_declare_enum_item(symbol *sym, expression *value)
     sym->sym_code   = code_sym_type;
 
     if (!value)
-        sym->sym_value = last_enum_item++;
+        sym->sym_value.val_int = last_enum_item++;
     else if (value->expr_code == code_expr_int_constant) {
-        sym->sym_value = value->data.int_const;
+        sym->sym_value.val_int = value->data.int_const;
     } else {
         aux_error("enumeration item must be an integer constant");
-        sym->sym_value = last_enum_item++;
+        sym->sym_value.val_int = last_enum_item++;
     }
 }
 

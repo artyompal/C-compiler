@@ -14,56 +14,42 @@ typedef enum section_type_decl {
 } section_type;
 
 static section_type _current_section = section_unknown;
-
-
-typedef struct float_symbol_decl {
-    long        value;
-    symbol *    sym;
-} float_symbol;
-
-typedef struct double_symbol_decl {
-    __int64     value;
-    symbol *    sym;
-} double_symbol;
-
-typedef struct xmmword_symbol_decl {
-    long        c1, c2, c3, c4;
-    symbol *    sym;
-} xmmword_symbol;
-
 static hash_id float_table, double_table, xmmword_table;
 
 
-static unsigned int float_hash(float_symbol *key)
+static unsigned int float_hash(symbol *key)
 {
-    return key->value;
+    return key->sym_value.val_int;
 }
 
-static int float_equal(float_symbol *key1, float_symbol *key2)
+static int float_equal(symbol *key1, symbol *key2)
 {
-    return (key1->value == key2->value);
-}
-
-
-static unsigned int double_hash(double_symbol *key)
-{
-    return key->value;
-}
-
-static int double_equal(double_symbol *key1, double_symbol *key2)
-{
-    return (key1->value == key2->value);
+    return (key1->sym_value.val_int == key2->sym_value.val_int);
 }
 
 
-static unsigned int xmmword_hash(xmmword_symbol *key)
+static unsigned int double_hash(symbol *key)
 {
-    return (key->c1 ^ key->c2 ^ key->c4 ^ key->c4);
+    return key->sym_value.val_longlong;
 }
 
-static int xmmword_equal(xmmword_symbol *key1, xmmword_symbol *key2)
+static int double_equal(symbol *key1, symbol *key2)
 {
-    return (key1->c1 == key2->c1 && key1->c2 == key2->c2 && key1->c3 == key2->c3 && key1->c4 == key2->c4);
+    return (key1->sym_value.val_longlong == key2->sym_value.val_longlong);
+}
+
+
+static unsigned int xmmword_hash(symbol *key)
+{
+    return (key->sym_value.val_float4.i[0] ^ key->sym_value.val_float4.i[1] ^ key->sym_value.val_float4.i[2] ^ key->sym_value.val_float4.i[3]);
+}
+
+static int xmmword_equal(symbol *key1, symbol *key2)
+{
+    return (key1->sym_value.val_float4.i[0] == key2->sym_value.val_float4.i[0] &&
+            key1->sym_value.val_float4.i[1] == key2->sym_value.val_float4.i[1] &&
+            key1->sym_value.val_float4.i[2] == key2->sym_value.val_float4.i[2] &&
+            key1->sym_value.val_float4.i[3] == key2->sym_value.val_float4.i[3]);
 }
 
 
@@ -93,71 +79,77 @@ void x86data_enter_text_section(void)
 
 symbol *x86data_insert_float_constant(long constant)
 {
-    float_symbol *key = allocator_alloc(allocator_global_pool, sizeof(float_symbol));
-    float_symbol *found;
-    symbol *sym;
+    symbol *key = allocator_alloc(allocator_global_pool, sizeof(symbol));
+    symbol *found;
 
-    key->value  = constant;
-    found       = hash_find(float_table, key);
+    key->sym_value.val_int = constant;
+    found = hash_find(float_table, key);
 
     if (found) {
-        allocator_free(allocator_global_pool, key, sizeof(float_symbol));
-        return found->sym;
+        allocator_free(allocator_global_pool, key, sizeof(symbol));
+        return found;
     }
 
-    sym         = symbol_create_unnamed("float", code_sym_variable, type_create_arithmetic(code_type_float));
-    key->sym    = sym;
+    key = symbol_create_unnamed("float", code_sym_variable, type_create_arithmetic(code_type_float));
+    key->sym_value.val_int = constant;
     hash_insert(float_table, key);
 
     _ensure_data_section();
-    text_output_declare_initialized_dword(sym, constant);
-    return sym;
+    text_output_declare_initialized_dword(key, constant);
+    return key;
 }
 
-symbol *x86data_insert_double_constant(__int64 constant)
+symbol *x86data_insert_double_constant(long long constant)
 {
-    float_symbol *key = allocator_alloc(allocator_global_pool, sizeof(float_symbol));
-    float_symbol *found;
-    symbol *sym;
+    symbol *key = allocator_alloc(allocator_global_pool, sizeof(symbol));
+    symbol *found;
 
-    key->value  = constant;
-    found       = hash_find(double_table, key);
+    key->sym_value.val_longlong = constant;
+    found = hash_find(double_table, key);
 
     if (found) {
-        allocator_free(allocator_global_pool, key, sizeof(float_symbol));
-        return found->sym;
+        allocator_free(allocator_global_pool, key, sizeof(symbol));
+        return found;
     }
 
-    sym         = symbol_create_unnamed("double", code_sym_variable, type_create_arithmetic(code_type_double));
-    key->sym    = sym;
+    key = symbol_create_unnamed("double", code_sym_variable, type_create_arithmetic(code_type_double));
+    key->sym_value.val_longlong = constant;
     hash_insert(double_table, key);
 
     _ensure_data_section();
-    text_output_declare_initialized_qword(sym, constant);
-    return sym;
+    text_output_declare_initialized_qword(key, constant);
+    return key;
 }
 
 symbol *x86data_insert_float4_constant(long c1, long c2, long c3, long c4)
 {
-    xmmword_symbol *key = allocator_alloc(allocator_global_pool, sizeof(xmmword_symbol));
-    xmmword_symbol *found;
-    symbol *sym;
+    symbol *key = allocator_alloc(allocator_global_pool, sizeof(symbol));
+    symbol *found;
 
-    key->c1 = c1, key->c2 = c2, key->c3 = c3, key->c4 = c4;
-    found       = hash_find(xmmword_table, key);
+    key->sym_value.val_float4.i[0] = c1;
+    key->sym_value.val_float4.i[1] = c2;
+    key->sym_value.val_float4.i[2] = c3;
+    key->sym_value.val_float4.i[3] = c4;
+
+    found = hash_find(xmmword_table, key);
 
     if (found) {
-        allocator_free(allocator_global_pool, key, sizeof(xmmword_symbol));
-        return found->sym;
+        allocator_free(allocator_global_pool, key, sizeof(symbol));
+        return found;
     }
 
-    sym         = symbol_create_unnamed("float", code_sym_variable, type_create_arithmetic(code_type_float));
-    key->sym    = sym;
+    key = symbol_create_unnamed("float", code_sym_variable, type_create_arithmetic(code_type_float));
+
+    key->sym_value.val_float4.i[0] = c1;
+    key->sym_value.val_float4.i[1] = c2;
+    key->sym_value.val_float4.i[2] = c3;
+    key->sym_value.val_float4.i[3] = c4;
+
     hash_insert(xmmword_table, key);
 
     _ensure_data_section();
-    text_output_declare_initialized_xmmword(sym, c1, c2, c3, c4);
-    return sym;
+    text_output_declare_initialized_xmmword(key, c1, c2, c3, c4);
+    return key;
 }
 
 
@@ -173,7 +165,7 @@ void x86data_declare_initialized_dword(symbol *sym, long value)
     text_output_declare_initialized_dword(sym, value);
 }
 
-void x86data_declare_initialized_qword(symbol *sym, __int64 value)
+void x86data_declare_initialized_qword(symbol *sym, long long value)
 {
     _ensure_data_section();
     text_output_declare_initialized_qword(sym, value);

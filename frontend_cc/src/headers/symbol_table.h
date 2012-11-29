@@ -29,7 +29,14 @@ typedef struct symbol_decl {
     initializer *       sym_init;           // инициализатор - используется парсером
     int                 sym_usage_count;    // счётчик использования в коде - используется кодогенератором
     struct symbol_decl *sym_next;           // указатель на следующий элемент, для списков
-    long                sym_value;          // значение - используется для enum и для label
+
+    union sym_value_decl {                  // значение
+        int             val_int;
+        long long       val_longlong;
+        struct val_float4_decl {
+            int         i[4];
+        } val_float4;
+    } sym_value;
 } symbol;
 
 typedef struct symbol_list_decl {
