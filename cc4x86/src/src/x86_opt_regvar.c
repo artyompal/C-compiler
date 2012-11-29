@@ -182,7 +182,7 @@ void x86_regvars_create(function_desc *function)
     _create_register_variables_for_type(function, x86op_float);
 
     // делаем оптимизации, ставшие теперь возможными
-    x86_local_optimization_pass(function);
+    x86_local_optimization_pass(function, TRUE);
 }
 
 //

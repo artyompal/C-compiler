@@ -1248,7 +1248,7 @@ static void _optimize_redundant_copies_iterative(function_desc *function, x86_op
         _redundantcopies_build_inout(function, type);
 
         _optimize_redundant_copies(function, type);
-        x86_local_optimization_pass(function);
+        x86_local_optimization_pass(function, TRUE);
 
         new_length = unit_get_instruction_count(function);
         ASSERT(new_length <= function_length);

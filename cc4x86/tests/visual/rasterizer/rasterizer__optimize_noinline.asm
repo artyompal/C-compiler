@@ -268,43 +268,31 @@ _matrix4f_make_perspective proc
         movss   xmm1,xmm4
         divss   xmm1,xmm0
         movss   dword ptr [edi],xmm1
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+4],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+8],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+12],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+16],xmm0
+        mov     dword ptr [edi+4],0
+        mov     dword ptr [edi+8],0
+        mov     dword ptr [edi+12],0
+        mov     dword ptr [edi+16],0
         movss   xmm0,xmm4
         divss   xmm0,xmm6
         movss   dword ptr [edi+20],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+24],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+28],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+32],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+36],xmm0
+        mov     dword ptr [edi+24],0
+        mov     dword ptr [edi+28],0
+        mov     dword ptr [edi+32],0
+        mov     dword ptr [edi+36],0
         movss   xmm0,xmm5
         subss   xmm0,xmm4
         movss   xmm1,xmm5
         divss   xmm1,xmm0
         movss   dword ptr [edi+40],xmm1
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   dword ptr [edi+44],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+48],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+52],xmm0
+        mov     dword ptr [edi+44],1065353216
+        mov     dword ptr [edi+48],0
+        mov     dword ptr [edi+52],0
         movss   xmm0,xmm4
         mulss   xmm0,xmm5
         subss   xmm4,xmm5
         divss   xmm0,xmm4
         movss   dword ptr [edi+56],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+60],xmm0
+        mov     dword ptr [edi+60],0
         pop     edi
         add     esp,8
         pop     ebp
@@ -323,37 +311,27 @@ _matrix4f_make_viewport proc
         movss   xmm0,xmm4
         mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+4],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+8],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+12],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+16],xmm0
+        mov     dword ptr [edi+4],0
+        mov     dword ptr [edi+8],0
+        mov     dword ptr [edi+12],0
+        mov     dword ptr [edi+16],0
         movss   xmm0,xmm5
         xorps   xmm0,dword ptr [___unnamed_float_4]
         mulss   xmm0,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+20],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+24],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+28],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+32],xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+36],xmm0
+        mov     dword ptr [edi+24],0
+        mov     dword ptr [edi+28],0
+        mov     dword ptr [edi+32],0
+        mov     dword ptr [edi+36],0
         subss   xmm7,xmm6
         movss   dword ptr [edi+40],xmm7
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   dword ptr [edi+44],xmm0
+        mov     dword ptr [edi+44],0
         mulss   xmm4,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+48],xmm4
         mulss   xmm5,dword ptr [___unnamed_float_3]
         movss   dword ptr [edi+52],xmm5
         movss   dword ptr [edi+56],xmm6
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   dword ptr [edi+60],xmm0
+        mov     dword ptr [edi+60],1065353216
         pop     edi
         pop     ebp
         ret
