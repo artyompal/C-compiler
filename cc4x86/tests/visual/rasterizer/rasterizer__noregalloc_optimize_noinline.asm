@@ -224,44 +224,32 @@ _matrix4f_make_perspective proc
         movss   sse3,sse24
         divss   sse3,sse2
         movss   dword ptr [dword63],sse3
-        movss   sse4,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+4],sse4
-        movss   sse5,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+8],sse5
-        movss   sse6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+12],sse6
-        movss   sse7,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+16],sse7
+        mov     dword ptr [dword63+4],0
+        mov     dword ptr [dword63+8],0
+        mov     dword ptr [dword63+12],0
+        mov     dword ptr [dword63+16],0
         movss   sse8,sse24
         divss   sse8,sse1
         movss   dword ptr [dword63+20],sse8
-        movss   sse9,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+24],sse9
-        movss   sse10,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+28],sse10
-        movss   sse11,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+32],sse11
-        movss   sse12,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+36],sse12
+        mov     dword ptr [dword63+24],0
+        mov     dword ptr [dword63+28],0
+        mov     dword ptr [dword63+32],0
+        mov     dword ptr [dword63+36],0
         movss   sse13,sse25
         subss   sse13,sse24
         movss   sse14,sse25
         divss   sse14,sse13
         movss   dword ptr [dword63+40],sse14
-        movss   sse15,dword ptr [___unnamed_float_1]
-        movss   dword ptr [dword63+44],sse15
-        movss   sse16,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+48],sse16
-        movss   sse17,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+52],sse17
+        mov     dword ptr [dword63+44],1065353216
+        mov     dword ptr [dword63+48],0
+        mov     dword ptr [dword63+52],0
         movss   sse18,sse24
         mulss   sse18,sse25
         movss   sse19,sse24
         subss   sse19,sse25
         divss   sse18,sse19
         movss   dword ptr [dword63+56],sse18
-        movss   sse20,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword63+60],sse20
+        mov     dword ptr [dword63+60],0
         destroy_stack_frame
         ret
 _matrix4f_make_perspective endp
@@ -276,31 +264,22 @@ _matrix4f_make_viewport proc
         movss   sse2,sse22
         mulss   sse2,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword55],sse2
-        movss   sse3,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword55+4],sse3
-        movss   sse4,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword55+8],sse4
-        movss   sse5,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword55+12],sse5
-        movss   sse6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword55+16],sse6
+        mov     dword ptr [dword55+4],0
+        mov     dword ptr [dword55+8],0
+        mov     dword ptr [dword55+12],0
+        mov     dword ptr [dword55+16],0
         movss   sse7,sse23
         xorps   sse7,dword ptr [___unnamed_float_4]
         mulss   sse7,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword55+20],sse7
-        movss   sse9,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword55+24],sse9
-        movss   sse10,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword55+28],sse10
-        movss   sse11,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword55+32],sse11
-        movss   sse12,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword55+36],sse12
+        mov     dword ptr [dword55+24],0
+        mov     dword ptr [dword55+28],0
+        mov     dword ptr [dword55+32],0
+        mov     dword ptr [dword55+36],0
         movss   sse13,sse25
         subss   sse13,sse24
         movss   dword ptr [dword55+40],sse13
-        movss   sse14,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword55+44],sse14
+        mov     dword ptr [dword55+44],0
         movss   sse16,sse22
         mulss   sse16,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword55+48],sse16
@@ -308,8 +287,7 @@ _matrix4f_make_viewport proc
         mulss   sse18,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword55+52],sse18
         movss   dword ptr [dword55+56],sse24
-        movss   sse20,dword ptr [___unnamed_float_1]
-        movss   dword ptr [dword55+60],sse20
+        mov     dword ptr [dword55+60],1065353216
         destroy_stack_frame
         ret
 _matrix4f_make_viewport endp

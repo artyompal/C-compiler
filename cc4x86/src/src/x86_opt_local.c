@@ -308,7 +308,7 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 
 //
 // Пытается распространять константу вместо регистра.
-static void _try_optimize_movss(function_desc *function, x86_instruction *movss)
+static void _try_optimize_movss(function_desc *function, x86_instruction *movss, BOOL after_regvars)
 {
     int reg, i, def_count;
     x86_instruction **definitions;
@@ -320,13 +320,12 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss)
 
     reg = movss->in_op1.data.reg;
     x86_dataflow_find_all_usages_of_definition(reg, movss, type, _usage_arr, &_usage_count, _usage_max_count);
-
     definitions = alloca(sizeof(void*) * _usage_max_count);
 
     // проверяем, что регистр используется только в read-only контекстах
     for (i = 0; i < _usage_count; i++) {
-        if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)
-            || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg) || !OP_IS_PSEUDO_REG(_usage_arr[i]->in_op1, type)) {
+        if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg) || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
+            || !after_regvars && !OP_IS_PSEUDO_REG(_usage_arr[i]->in_op1, type)) {
                 return;
             }
 
@@ -340,7 +339,15 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss)
 
     // заменяем все вхождения
     for (i = 0; i < _usage_count; i++) {
-        _usage_arr[i]->in_op2 = movss->in_op2;
+        if (_usage_arr[i]->in_code == x86insn_sse_movss && OP_IS_ADDRESS_OR_SYMBOL(_usage_arr[i]->in_op1) && OP_IS_SYMBOL(movss->in_op2)) {
+            _usage_arr[i]->in_code          = x86insn_int_mov;
+            _usage_arr[i]->in_op1.op_type   = x86op_dword;
+
+            bincode_create_operand_from_int_constant(&_usage_arr[i]->in_op2, x86op_dword,
+                movss->in_op2.data.sym.name->sym_value.val_int);
+        } else {
+            _usage_arr[i]->in_op2 = movss->in_op2;
+        }
     }
 
     // удаляем инструкцию
@@ -458,7 +465,7 @@ static void _optimize_dword_insns(function_desc *function)
 
 //
 // Оптимизирует флоатовые инструкции.
-static void _optimize_float_insn(function_desc *function)
+static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
 {
     x86_instruction *insn, *next;
 
@@ -472,7 +479,7 @@ static void _optimize_float_insn(function_desc *function)
         switch (insn->in_code) {
         case x86insn_sse_movss:
         case x86insn_sse_movsd:
-            _try_optimize_movss(function, insn);
+            _try_optimize_movss(function, insn, after_regvars);
             break;
         }
     }
@@ -513,7 +520,7 @@ static void _kill_unused_labels(function_desc *function)
 
 //
 // Итерация оптимизации. Оптимизатор пытается объединить идущие подряд инструкции в более эффективные формы.
-void x86_local_optimization_pass(function_desc *function)
+void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 {
     int old_insn_count;
 
@@ -523,7 +530,7 @@ void x86_local_optimization_pass(function_desc *function)
         old_insn_count = function->func_insn_count;
 
         _optimize_dword_insns(function);
-        _optimize_float_insn(function);
+        _optimize_float_insn(function, after_regvars);
         _kill_unused_labels(function);
 
         function->func_insn_count = unit_get_instruction_count(function);

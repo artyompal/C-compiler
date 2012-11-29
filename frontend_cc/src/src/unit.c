@@ -879,7 +879,7 @@ void unit_codegen(void)
         _curr_func->func_start_of_regvars[x86op_float] = INT_MAX;
 
         if (!option_no_basic_opt) {
-            x86_local_optimization_pass(_curr_func);
+            x86_local_optimization_pass(_curr_func, FALSE);
         }
 
         // строим статистику вызовов функций
@@ -916,7 +916,7 @@ void unit_codegen(void)
         x86_regvars_init();
 
         if (!option_no_basic_opt) {
-            x86_local_optimization_pass(_curr_func);
+            x86_local_optimization_pass(_curr_func, FALSE);
         }
 
         if (option_enable_optimization) {
