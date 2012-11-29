@@ -36,17 +36,6 @@ int x86_get_registers_count(x86_operand_type type)
     }
 }
 
-int _get_max_register_count(register_map *regmap)
-{
-    if (regmap == &_dword_register_map) {
-        return X86_DWORD_REGISTERS_COUNT;
-    } else if (regmap == &_sse_register_map) {
-        return X86_SSE_REGISTERS_COUNT;
-    } else {
-        ASSERT(FALSE);
-    }
-}
-
 x86_operand_type x86_encode_register_type(x86_operand_type type)
 {
     switch (type) {
@@ -306,7 +295,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
     }
 
     // Нет свободных регистров, ищем наименее нужный регистр и вытесняем его.
-    ASSERT(regmap->real_registers_cnt == _get_max_register_count(regmap));
+    ASSERT(regmap->real_registers_cnt == x86_get_registers_count(type));
 
     real_reg = _find_register_to_swap(insn, regmap, type);
     _swap_register(function, insn, regmap, pseudoregs_map, real_reg, type, FALSE);
