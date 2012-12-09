@@ -42,7 +42,7 @@ _test proc
         je      label0000
         mov     edx,1
         mov     eax,edx
-        add     esp,36
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
@@ -54,7 +54,7 @@ label0000:
         je      label0001
         mov     edx,2
         mov     eax,edx
-        add     esp,36
+        mov     esp,ebp
         pop     ebp
         ret
 label0001:
@@ -65,12 +65,12 @@ label0001:
         cmp     dword ptr [ebp-16],2
         je      label0002
         mov     eax,3
-        add     esp,36
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:
         mov     eax,0
-        add     esp,36
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

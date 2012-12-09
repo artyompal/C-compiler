@@ -335,7 +335,7 @@ label0003:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,76
+        mov     esp,ebp
         pop     ebp
         ret
 _rasterizer_init endp
@@ -365,7 +365,7 @@ _rasterizer_set_mvproj proc
         rep     movsd
         pop     esi
         pop     edi
-        add     esp,4
+        mov     esp,ebp
         pop     ebp
         ret
 _rasterizer_set_mvproj endp
@@ -485,7 +485,7 @@ label0003:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,64
+        mov     esp,ebp
         pop     ebp
         ret
 __rasterize_horiz_line endp
@@ -751,7 +751,7 @@ label0002:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,160
+        mov     esp,ebp
         pop     ebp
         ret
 __clip_on_plain endp
@@ -1500,7 +1500,7 @@ label002c:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,820
+        mov     esp,ebp
         pop     ebp
         ret
 _rasterizer_triangle3f endp

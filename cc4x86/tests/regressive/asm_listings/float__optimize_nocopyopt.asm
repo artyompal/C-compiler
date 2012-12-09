@@ -60,7 +60,7 @@ label0009:
         cmp     eax,0
         jne     label0000
         mov     eax,1
-        add     esp,56
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
@@ -85,7 +85,7 @@ label000d:
         cmp     eax,0
         jne     label0001
         mov     eax,2
-        add     esp,56
+        mov     esp,ebp
         pop     ebp
         ret
 label0001:
@@ -110,7 +110,7 @@ label0011:
         cmp     eax,0
         jne     label0002
         mov     eax,3
-        add     esp,56
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:
@@ -135,7 +135,7 @@ label0015:
         cmp     eax,0
         jne     label0003
         mov     eax,4
-        add     esp,56
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
@@ -163,7 +163,7 @@ label0019:
         cmp     eax,0
         jne     label0004
         mov     eax,5
-        add     esp,56
+        mov     esp,ebp
         pop     ebp
         ret
 label0004:
@@ -191,7 +191,7 @@ label001d:
         cmp     eax,0
         jne     label0005
         mov     eax,6
-        add     esp,56
+        mov     esp,ebp
         pop     ebp
         ret
 label0005:
@@ -219,7 +219,7 @@ label0021:
         cmp     eax,0
         jne     label0006
         mov     eax,7
-        add     esp,56
+        mov     esp,ebp
         pop     ebp
         ret
 label0006:
@@ -245,12 +245,12 @@ label0025:
         cmp     eax,0
         jne     label0007
         mov     eax,8
-        add     esp,56
+        mov     esp,ebp
         pop     ebp
         ret
 label0007:
         mov     eax,0
-        add     esp,56
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

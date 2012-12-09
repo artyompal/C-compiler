@@ -23,7 +23,7 @@ _test1 proc
         movss   xmm7,dword ptr [ebp+8]
         addss   xmm7,dword ptr [___unnamed_float_0]
         movss   xmm0,xmm7
-        add     esp,4
+        mov     esp,ebp
         pop     ebp
         ret
 _test1 endp

@@ -23,7 +23,7 @@ label0001:
         cmp     dword ptr [ebp-4],5
         je      label0003
         mov     eax,1
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
@@ -45,12 +45,12 @@ label0005:
         cmp     dword ptr [ebp-12],50
         je      label0008
         mov     eax,1
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 label0008:
         mov     eax,0
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

@@ -27,7 +27,7 @@ _test proc
         comiss  xmm0,dword ptr [___unnamed_float_2]
         je      label0000
         mov     eax,1
-        add     esp,20
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
@@ -38,12 +38,12 @@ label0000:
         comiss  xmm0,dword ptr [___unnamed_float_3]
         je      label0001
         mov     eax,2
-        add     esp,20
+        mov     esp,ebp
         pop     ebp
         ret
 label0001:
         mov     eax,0
-        add     esp,20
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

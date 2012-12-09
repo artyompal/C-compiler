@@ -76,6 +76,14 @@ typedef enum x86_operand_type_decl {
 
 #define X86_REGISTER_TYPES_COUNT ((int)x86op_float+1)
 
+// base и index €вл€ютс€ 32-битными регистрами
+typedef struct x86_address_decl {
+    int     base;
+    int     index;
+    int     scale;
+    int     offset;
+} x86_address;
+
 typedef struct x86_operand_decl {
     x86_operand_location    op_loc;
     x86_operand_type        op_type;
@@ -91,13 +99,8 @@ typedef struct x86_operand_decl {
             int     high;
         } qword;
 
-        // x86loc_address (base и index €вл€ютс€ 32-битными регистрами x86reg_dword_register)
-        struct address_decl {
-            int     base;
-            int     index;
-            int     scale;
-            int     offset;
-        } address;
+        // x86loc_address
+        x86_address address;
 
         // x86loc_int_constant
         int int_val;

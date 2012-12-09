@@ -26,7 +26,7 @@ _test2 proc
         mov     eax,[ebp-4]
         add     eax,[ebp-8]
         sub     eax,[ebp+16]
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _test2 endp
@@ -51,7 +51,7 @@ label0001:
         add     eax,[ebp+8]
         add     eax,[ebp+12]
         sub     eax,[ebp+16]
-        add     esp,4
+        mov     esp,ebp
         pop     ebp
         ret
 _test3 endp
@@ -68,7 +68,7 @@ _test4 proc
         mov     eax,[ebp-4]
         add     eax,[ebp-8]
         sub     eax,[ebp+16]
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _test4 endp
@@ -92,7 +92,7 @@ label0001:
         mov     eax,[ebp-4]
         add     eax,[ebp+12]
         sub     eax,[ebp+16]
-        add     esp,4
+        mov     esp,ebp
         pop     ebp
         ret
 _test5 endp

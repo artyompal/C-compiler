@@ -16,7 +16,7 @@ _test proc
         cmp     eax,-1
         je      label0000
         mov     eax,1
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
@@ -25,7 +25,7 @@ label0000:
         cmp     eax,268435455
         je      label0001
         mov     eax,2
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0001:
@@ -36,7 +36,7 @@ label0001:
         cmp     eax,0
         jl      label0002
         mov     eax,3
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:
@@ -45,7 +45,7 @@ label0002:
         cmp     eax,-2147483648
         je      label0003
         mov     eax,4
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
@@ -58,7 +58,7 @@ label0003:
         cmp     eax,16
         je      label0004
         mov     eax,5
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0004:
@@ -70,12 +70,12 @@ label0004:
         cmp     dword ptr [ebp-4],64
         je      label0005
         mov     eax,6
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0005:
         mov     eax,0
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

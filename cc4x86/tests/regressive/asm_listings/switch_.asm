@@ -22,17 +22,17 @@ _test_case proc
 label0001:
 label0002:
         mov     eax,-1
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
         mov     eax,0
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0004:
         mov     eax,1
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _test_case endp
@@ -55,19 +55,19 @@ _test_case2 proc
         jmp     label0005
 label0001:
         mov     eax,-1
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:
 label0003:
 label0004:
         mov     eax,0
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0005:
         mov     eax,1
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _test_case2 endp
@@ -87,12 +87,12 @@ _test_default proc
 label0001:
 label0002:
         mov     eax,-1
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
         mov     eax,0
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _test_default endp

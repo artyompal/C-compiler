@@ -47,7 +47,7 @@ label0000:
 label0001:
         mov     eax,1
         add     eax,[ebp-12]
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

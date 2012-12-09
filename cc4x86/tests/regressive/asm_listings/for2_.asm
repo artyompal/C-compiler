@@ -33,7 +33,7 @@ label0004:
         mov     dword ptr [ebp-16],1
 label0005:
         mov     eax,[ebp-16]
-        add     esp,16
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

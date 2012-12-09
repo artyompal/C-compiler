@@ -37,7 +37,7 @@ label0005:
         mov     eax,edi
         pop     esi
         pop     edi
-        add     esp,16
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

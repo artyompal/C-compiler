@@ -28,7 +28,7 @@ _test1 proc
         movss   xmm0,dword ptr [ebp-4]
         movss   dword ptr [ebp+8],xmm0
         movss   xmm0,dword ptr [ebp+8]
-        add     esp,4
+        mov     esp,ebp
         pop     ebp
         ret
 _test1 endp

@@ -23,19 +23,19 @@ label0002:
         mov     edi,-1
         mov     eax,edi
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
         mov     eax,0
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0004:
         mov     eax,1
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _test_case endp
@@ -59,7 +59,7 @@ label0001:
         mov     edi,-1
         mov     eax,edi
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:
@@ -67,13 +67,13 @@ label0003:
 label0004:
         mov     eax,0
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0005:
         mov     eax,1
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _test_case2 endp
@@ -93,13 +93,13 @@ label0001:
 label0002:
         mov     eax,-1
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
         mov     eax,0
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _test_default endp

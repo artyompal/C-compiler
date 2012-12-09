@@ -17,12 +17,12 @@ _test proc
         cmp     dword ptr [ebp-12],4
         jne     label0000
         mov     eax,0
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
         mov     eax,1
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

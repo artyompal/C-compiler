@@ -23,7 +23,7 @@ label0002:
         cmp     dword ptr [ebp-4],4
         setne   al
         movzx   eax,al
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

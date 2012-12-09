@@ -294,7 +294,7 @@ _matrix4f_make_perspective proc
         movss   dword ptr [edi+56],xmm0
         mov     dword ptr [edi+60],0
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _matrix4f_make_perspective endp
@@ -630,7 +630,7 @@ label0003:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,16
+        mov     esp,ebp
         pop     ebp
         ret
 _rasterizer_init endp
@@ -660,7 +660,7 @@ _rasterizer_set_mvproj proc
         rep     movsd
         pop     esi
         pop     edi
-        add     esp,4
+        mov     esp,ebp
         pop     ebp
         ret
 _rasterizer_set_mvproj endp
@@ -716,7 +716,7 @@ __tex2d proc
         sal     ecx,2
         add     ecx,dword ptr [__texture_data]
         mov     eax,[ecx]
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 __tex2d endp
@@ -809,7 +809,7 @@ label0003:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,68
+        mov     esp,ebp
         pop     ebp
         ret
 __rasterize_horiz_line endp
@@ -975,7 +975,7 @@ label0005:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 __rasterize_triangle_1i endp
@@ -1045,7 +1045,7 @@ label0004:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,60
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
@@ -1308,7 +1308,7 @@ label000a:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,60
+        mov     esp,ebp
         pop     ebp
         ret
 __rasterize_triangle_2i endp
@@ -1490,7 +1490,7 @@ label0002:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,92
+        mov     esp,ebp
         pop     ebp
         ret
 __clip_on_plain endp
@@ -1559,7 +1559,7 @@ __clip_poligon proc
         setg    al
         movzx   eax,al
         pop     edi
-        add     esp,196
+        mov     esp,ebp
         pop     ebp
         ret
 __clip_poligon endp
@@ -1604,7 +1604,7 @@ label0001:
 label0000:
         pop     esi
         pop     edi
-        add     esp,20
+        mov     esp,ebp
         pop     ebp
         ret
 __transform_to_screen_space endp
@@ -1623,7 +1623,7 @@ __rasterize_polygon_4f proc
         jne     label0000
         pop     esi
         pop     edi
-        add     esp,140
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
@@ -1685,7 +1685,7 @@ label0006:
 label0007:
         pop     esi
         pop     edi
-        add     esp,140
+        mov     esp,ebp
         pop     ebp
         ret
 __rasterize_polygon_4f endp
@@ -1717,7 +1717,7 @@ __transform_to_projection_space proc
         add     esp,12
         pop     esi
         pop     edi
-        add     esp,16
+        mov     esp,ebp
         pop     ebp
         ret
 __transform_to_projection_space endp
@@ -1774,7 +1774,7 @@ _rasterizer_triangle3f proc
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,204
+        mov     esp,ebp
         pop     ebp
         ret
 _rasterizer_triangle3f endp

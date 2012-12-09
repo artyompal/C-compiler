@@ -31,7 +31,7 @@ typedef struct symbol_decl {
     struct symbol_decl *sym_next;           // указатель на следующий элемент, для списков
 
     union sym_value_decl {                  // значение
-        int             val_int;
+        long            val_int;
         long long       val_longlong;
         struct val_float4_decl {
             int         i[4];

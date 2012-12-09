@@ -21,7 +21,7 @@ _test proc
         mov     eax,1
         pop     esi
         pop     edi
-        add     esp,104
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
@@ -35,7 +35,7 @@ label0000:
         mov     eax,2
         pop     esi
         pop     edi
-        add     esp,104
+        mov     esp,ebp
         pop     ebp
         ret
 label0001:
@@ -59,7 +59,7 @@ label0008:
         mov     eax,3
         pop     esi
         pop     edi
-        add     esp,104
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:
@@ -74,7 +74,7 @@ label0002:
         mov     eax,4
         pop     esi
         pop     edi
-        add     esp,104
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
@@ -95,14 +95,14 @@ label000c:
         mov     eax,3
         pop     esi
         pop     edi
-        add     esp,104
+        mov     esp,ebp
         pop     ebp
         ret
 label0004:
         mov     eax,0
         pop     esi
         pop     edi
-        add     esp,104
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

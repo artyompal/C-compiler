@@ -46,7 +46,7 @@ _test proc
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,36
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
@@ -60,7 +60,7 @@ label0000:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,36
+        mov     esp,ebp
         pop     ebp
         ret
 label0001:
@@ -73,7 +73,7 @@ label0001:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,36
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:
@@ -81,7 +81,7 @@ label0002:
         pop     ebx
         pop     esi
         pop     edi
-        add     esp,36
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

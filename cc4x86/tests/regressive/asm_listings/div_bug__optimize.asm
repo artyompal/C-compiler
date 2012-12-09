@@ -18,7 +18,7 @@ _test proc
         add     eax,[ebp-12]
         sub     eax,3
         pop     edi
-        add     esp,20
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

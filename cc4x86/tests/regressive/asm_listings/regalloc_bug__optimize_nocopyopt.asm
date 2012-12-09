@@ -26,7 +26,7 @@ label0001:
         mov     ecx,1
         add     ecx,eax
         mov     eax,ecx
-        add     esp,36
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

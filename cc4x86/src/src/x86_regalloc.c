@@ -782,7 +782,7 @@ static void _handle_pseudo_instructions(function_desc *function)
             }
 
             if (function->func_local_vars_sz) {
-                bincode_insert_insn_reg_const(function, insn, x86insn_int_add, x86op_dword, ~x86reg_esp, function->func_local_vars_sz);
+                bincode_insert_insn_reg_reg(function, insn, x86insn_int_mov, x86op_dword, ~x86reg_esp, ~x86reg_ebp);
             }
 
             bincode_insert_pop_reg(function, insn, x86op_dword, ~x86reg_ebp);

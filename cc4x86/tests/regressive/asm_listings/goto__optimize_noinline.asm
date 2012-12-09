@@ -19,7 +19,7 @@ label0001:
         setne   al
         movzx   eax,al
         pop     edi
-        add     esp,4
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:

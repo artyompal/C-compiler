@@ -481,7 +481,7 @@ _matrix4f_make_perspective proc
         lea     eax,dword ptr [___unnamed_float_2]
         movss   xmm0,dword ptr [eax]
         movss   dword ptr [ecx],xmm0
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _matrix4f_make_perspective endp
@@ -1066,7 +1066,7 @@ label0003:
         push    eax
         call    _vec4f_assign
         add     esp,20
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 _rasterizer_init endp
@@ -1165,7 +1165,7 @@ __tex2d proc
         lea     ecx,dword ptr [__texture_data]
         add     eax,[ecx]
         mov     eax,[eax]
-        add     esp,8
+        mov     esp,ebp
         pop     ebp
         ret
 __tex2d endp
@@ -1330,7 +1330,7 @@ label0001:
         cmp     eax,[ecx]
         jl      label0000
 label0002:
-        add     esp,60
+        mov     esp,ebp
         pop     ebp
         ret
 __rasterize_horiz_line endp
@@ -1698,7 +1698,7 @@ label0002:
         add     esp,36
 label0004:
         pop     ebx
-        add     esp,60
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
@@ -2450,7 +2450,7 @@ label0009:
         jmp     label0009
 label000a:
         pop     ebx
-        add     esp,60
+        mov     esp,ebp
         pop     ebp
         ret
 __rasterize_triangle_2i endp
@@ -2696,7 +2696,7 @@ label0002:
         movq    qword ptr [ecx+8],xmm0
         movq    xmm0,qword ptr [eax+16]
         movq    qword ptr [ecx+16],xmm0
-        add     esp,72
+        mov     esp,ebp
         pop     ebp
         ret
 __clip_on_plain endp
@@ -2772,7 +2772,7 @@ __clip_poligon proc
         cmp     [ecx],eax
         setg    al
         movzx   eax,al
-        add     esp,196
+        mov     esp,ebp
         pop     ebp
         ret
 __clip_poligon endp
@@ -2845,7 +2845,7 @@ label0001:
         mov     ecx,0
         mov     [eax],ecx
 label0000:
-        add     esp,20
+        mov     esp,ebp
         pop     ebp
         ret
 __transform_to_screen_space endp
@@ -2862,7 +2862,7 @@ __rasterize_polygon_4f proc
         cmp     eax,0
         jne     label0000
         pop     ebx
-        add     esp,164
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
@@ -2980,7 +2980,7 @@ label0006:
         jmp     label0006
 label0007:
         pop     ebx
-        add     esp,164
+        mov     esp,ebp
         pop     ebp
         ret
 __rasterize_polygon_4f endp
@@ -3016,7 +3016,7 @@ __transform_to_projection_space proc
         push    dword ptr [eax]
         call    _matrix4f_transform
         add     esp,12
-        add     esp,16
+        mov     esp,ebp
         pop     ebp
         ret
 __transform_to_projection_space endp
@@ -3091,7 +3091,7 @@ _rasterizer_triangle3f proc
         push    eax
         call    __rasterize_polygon_4f
         add     esp,4
-        add     esp,196
+        mov     esp,ebp
         pop     ebp
         ret
 _rasterizer_triangle3f endp

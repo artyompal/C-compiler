@@ -25,7 +25,7 @@ label0002:
         setne   al
         movzx   eax,al
         pop     edi
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

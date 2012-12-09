@@ -25,7 +25,7 @@ label0001:
         mov     eax,edi
         pop     esi
         pop     edi
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:
@@ -42,7 +42,7 @@ label0003:
         mov     eax,esi
         pop     esi
         pop     edi
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 label0006:
@@ -50,7 +50,7 @@ label0006:
         mov     eax,esi
         pop     esi
         pop     edi
-        add     esp,12
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

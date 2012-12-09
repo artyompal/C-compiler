@@ -48,7 +48,7 @@ label0000:
         xorps   xmm7,dword ptr [___unnamed_float4_1]
 label0001:
         movss   xmm0,xmm7
-        add     esp,4
+        mov     esp,ebp
         pop     ebp
         ret
 _fabs endp
@@ -86,7 +86,7 @@ _test proc
         cmp     eax,0
         jne     label0000
         mov     eax,1
-        add     esp,32
+        mov     esp,ebp
         pop     ebp
         ret
 label0000:
@@ -101,7 +101,7 @@ label0000:
         cmp     eax,0
         jne     label0001
         mov     eax,2
-        add     esp,32
+        mov     esp,ebp
         pop     ebp
         ret
 label0001:
@@ -116,7 +116,7 @@ label0001:
         cmp     eax,0
         jne     label0002
         mov     eax,3
-        add     esp,32
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:
@@ -131,7 +131,7 @@ label0002:
         cmp     eax,0
         jne     label0003
         mov     eax,4
-        add     esp,32
+        mov     esp,ebp
         pop     ebp
         ret
 label0003:
@@ -148,7 +148,7 @@ label0003:
         cmp     eax,0
         jne     label0004
         mov     eax,5
-        add     esp,32
+        mov     esp,ebp
         pop     ebp
         ret
 label0004:
@@ -165,7 +165,7 @@ label0004:
         cmp     eax,0
         jne     label0005
         mov     eax,6
-        add     esp,32
+        mov     esp,ebp
         pop     ebp
         ret
 label0005:
@@ -182,7 +182,7 @@ label0005:
         cmp     eax,0
         jne     label0006
         mov     eax,7
-        add     esp,32
+        mov     esp,ebp
         pop     ebp
         ret
 label0006:
@@ -198,12 +198,12 @@ label0006:
         cmp     eax,0
         jne     label0007
         mov     eax,8
-        add     esp,32
+        mov     esp,ebp
         pop     ebp
         ret
 label0007:
         mov     eax,0
-        add     esp,32
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp

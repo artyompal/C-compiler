@@ -17,7 +17,7 @@ label0001:
         cmp     dword ptr [ebp-4],1
         setne   al
         movzx   eax,al
-        add     esp,4
+        mov     esp,ebp
         pop     ebp
         ret
 label0002:

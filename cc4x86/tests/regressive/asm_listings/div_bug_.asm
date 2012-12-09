@@ -22,7 +22,7 @@ _test proc
         mov     [ebp-20],eax
         mov     eax,[ebp-20]
         sub     eax,3
-        add     esp,20
+        mov     esp,ebp
         pop     ebp
         ret
 _test endp
