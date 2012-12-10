@@ -29,11 +29,7 @@ typedef struct x86_pseudoreg_info_decl {
 #define OP_IS_REGVAR(REG, TYPE) ((REG) >= function->func_start_of_regvars[(TYPE)])
 
 
-x86_operand_type            x86_encode_register_type        (x86_operand_type type);
-BOOL                        x86_equal_types                 (x86_operand_type type1, x86_operand_type type2);
-
 void                        x86_allocate_registers          (function_desc *function);
-
 int                         x86_get_registers_count         (x86_operand_type type);
 
 

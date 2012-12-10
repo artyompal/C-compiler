@@ -122,3 +122,13 @@ void hash_delete(hash_id hash, void *value)
     hash->data[value_to_erase] = NULL;
 }
 
+unsigned int hash_get_count(hash_id hash)
+{
+    return hash->reserved;
+}
+
+void ** hash_get_items(hash_id hash)
+{
+    return hash->data;
+}
+

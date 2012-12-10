@@ -4,6 +4,7 @@
 #include "unit.h"
 #include "x86_data.h"
 #include "x86_text_output.h"
+#include "x86_optimizer.h"
 
 
 #define ENABLE_YY_LOG 0
@@ -75,6 +76,8 @@ static void _compile_unit(const char *filename)
     allocator_init();
     symbol_init_table();
     x86data_init();
+    x86_caching_init();
+
 
     if (option_output_filename[0] == '\0')
         aux_replace_file_extension(option_output_filename, filename, ".asm");

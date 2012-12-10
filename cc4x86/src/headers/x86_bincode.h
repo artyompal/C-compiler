@@ -343,6 +343,9 @@ void    bincode_insert_comment                          (function_desc *function
 
 void    bincode_erase_instruction                       (function_desc *function, x86_instruction *insn);
 
+x86_operand_type            x86_encode_register_type    (x86_operand_type type);
+BOOL                        x86_equal_types             (x86_operand_type type1, x86_operand_type type2);
+
 
 #else
 #error Header x86_bincode.h duplicated.

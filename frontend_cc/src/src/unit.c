@@ -907,6 +907,7 @@ void unit_codegen(void)
 
     x86data_enter_text_section();
 
+
     // делаем оптимизацию каждой функции и выводим ассемблерный код
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
         if (_curr_func->func_is_static && _curr_func->func_usage_count == 0) {
@@ -921,6 +922,12 @@ void unit_codegen(void)
 
         if (option_enable_optimization) {
             x86_regvars_create(_curr_func);
+
+            if (!option_no_copy_opt) {
+                x86_dataflow_optimize_redundant_copies(_curr_func);
+            }
+
+            x86_caching_pass(_curr_func);
 
             if (!option_no_copy_opt) {
                 x86_dataflow_optimize_redundant_copies(_curr_func);

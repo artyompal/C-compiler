@@ -592,3 +592,29 @@ x86_operand_type bincode_encode_type(data_type *type)
         ASSERT(FALSE);
     }
 }
+
+
+x86_operand_type x86_encode_register_type(x86_operand_type type)
+{
+    switch (type) {
+    case x86op_byte:
+        return x86op_byte;
+    case x86op_word:
+        return x86op_word;
+    case x86op_dword:
+        return x86op_dword;
+
+    case x86op_float:
+    case x86op_double:
+        return x86op_float;
+
+    default:
+        ASSERT(FALSE);
+    }
+}
+
+BOOL x86_equal_types(x86_operand_type type1, x86_operand_type type2)
+{
+    return (type1 == type2 || type1 == x86op_float && type2 == x86op_double || type1 == x86op_double && type2 == x86op_float);
+}
+
