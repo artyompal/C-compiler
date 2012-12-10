@@ -73,13 +73,10 @@ _vec2f_add proc
         create_stack_frame
         mov     dword16,[ebp+16]
         mov     dword15,[ebp+12]
-        mov     dword14,[ebp+8]
         movss   sse1,dword ptr [dword15]
         addss   sse1,dword ptr [dword16]
-        movss   dword ptr [dword14],sse1
         movss   sse2,dword ptr [dword15+4]
         addss   sse2,dword ptr [dword16+4]
-        movss   dword ptr [dword14+4],sse2
         destroy_stack_frame
         ret
 _vec2f_add endp
@@ -88,13 +85,10 @@ _vec2f_subtract proc
         create_stack_frame
         mov     dword16,[ebp+16]
         mov     dword15,[ebp+12]
-        mov     dword14,[ebp+8]
         movss   sse1,dword ptr [dword15]
         subss   sse1,dword ptr [dword16]
-        movss   dword ptr [dword14],sse1
         movss   sse2,dword ptr [dword15+4]
         subss   sse2,dword ptr [dword16+4]
-        movss   dword ptr [dword14+4],sse2
         destroy_stack_frame
         ret
 _vec2f_subtract endp
@@ -105,10 +99,8 @@ _vec2f_mul proc
         mov     dword8,[ebp+8]
         movss   sse1,dword ptr [dword8]
         mulss   sse1,sse4
-        movss   dword ptr [dword8],sse1
         movss   sse2,dword ptr [dword8+4]
         mulss   sse2,sse4
-        movss   dword ptr [dword8+4],sse2
         destroy_stack_frame
         ret
 _vec2f_mul endp
@@ -119,11 +111,6 @@ _vec4f_assign proc
         movss   sse8,dword ptr [ebp+20]
         movss   sse7,dword ptr [ebp+16]
         movss   sse6,dword ptr [ebp+12]
-        mov     dword14,[ebp+8]
-        movss   dword ptr [dword14],sse6
-        movss   dword ptr [dword14+4],sse7
-        movss   dword ptr [dword14+8],sse8
-        movss   dword ptr [dword14+12],sse9
         destroy_stack_frame
         ret
 _vec4f_assign endp
@@ -132,19 +119,14 @@ _vec4f_add proc
         create_stack_frame
         mov     dword28,[ebp+16]
         mov     dword27,[ebp+12]
-        mov     dword26,[ebp+8]
         movss   sse1,dword ptr [dword27]
         addss   sse1,dword ptr [dword28]
-        movss   dword ptr [dword26],sse1
         movss   sse2,dword ptr [dword27+4]
         addss   sse2,dword ptr [dword28+4]
-        movss   dword ptr [dword26+4],sse2
         movss   sse3,dword ptr [dword27+8]
         addss   sse3,dword ptr [dword28+8]
-        movss   dword ptr [dword26+8],sse3
         movss   sse4,dword ptr [dword27+12]
         addss   sse4,dword ptr [dword28+12]
-        movss   dword ptr [dword26+12],sse4
         destroy_stack_frame
         ret
 _vec4f_add endp
@@ -153,19 +135,14 @@ _vec4f_subtract proc
         create_stack_frame
         mov     dword28,[ebp+16]
         mov     dword27,[ebp+12]
-        mov     dword26,[ebp+8]
         movss   sse1,dword ptr [dword27]
         subss   sse1,dword ptr [dword28]
-        movss   dword ptr [dword26],sse1
         movss   sse2,dword ptr [dword27+4]
         subss   sse2,dword ptr [dword28+4]
-        movss   dword ptr [dword26+4],sse2
         movss   sse3,dword ptr [dword27+8]
         subss   sse3,dword ptr [dword28+8]
-        movss   dword ptr [dword26+8],sse3
         movss   sse4,dword ptr [dword27+12]
         subss   sse4,dword ptr [dword28+12]
-        movss   dword ptr [dword26+12],sse4
         destroy_stack_frame
         ret
 _vec4f_subtract endp
@@ -196,16 +173,12 @@ _vec4f_mul proc
         mov     dword14,[ebp+8]
         movss   sse1,dword ptr [dword14]
         mulss   sse1,sse6
-        movss   dword ptr [dword14],sse1
         movss   sse2,dword ptr [dword14+4]
         mulss   sse2,sse6
-        movss   dword ptr [dword14+4],sse2
         movss   sse3,dword ptr [dword14+8]
         mulss   sse3,sse6
-        movss   dword ptr [dword14+8],sse3
         movss   sse4,dword ptr [dword14+12]
         mulss   sse4,sse6
-        movss   dword ptr [dword14+12],sse4
         destroy_stack_frame
         ret
 _vec4f_mul endp
@@ -223,14 +196,12 @@ _matrix4f_make_perspective proc
         mulss   sse2,sse27
         movss   sse3,sse24
         divss   sse3,sse2
-        movss   dword ptr [dword63],sse3
         mov     dword ptr [dword63+4],0
         mov     dword ptr [dword63+8],0
         mov     dword ptr [dword63+12],0
         mov     dword ptr [dword63+16],0
         movss   sse8,sse24
         divss   sse8,sse1
-        movss   dword ptr [dword63+20],sse8
         mov     dword ptr [dword63+24],0
         mov     dword ptr [dword63+28],0
         mov     dword ptr [dword63+32],0
@@ -239,7 +210,6 @@ _matrix4f_make_perspective proc
         subss   sse13,sse24
         movss   sse14,sse25
         divss   sse14,sse13
-        movss   dword ptr [dword63+40],sse14
         mov     dword ptr [dword63+44],1065353216
         mov     dword ptr [dword63+48],0
         mov     dword ptr [dword63+52],0
@@ -248,7 +218,6 @@ _matrix4f_make_perspective proc
         movss   sse19,sse24
         subss   sse19,sse25
         divss   sse18,sse19
-        movss   dword ptr [dword63+56],sse18
         mov     dword ptr [dword63+60],0
         destroy_stack_frame
         ret
@@ -263,7 +232,6 @@ _matrix4f_make_viewport proc
         mov     dword55,[ebp+8]
         movss   sse2,sse22
         mulss   sse2,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword55],sse2
         mov     dword ptr [dword55+4],0
         mov     dword ptr [dword55+8],0
         mov     dword ptr [dword55+12],0
@@ -271,22 +239,17 @@ _matrix4f_make_viewport proc
         movss   sse7,sse23
         xorps   sse7,dword ptr [___unnamed_float4_4]
         mulss   sse7,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword55+20],sse7
         mov     dword ptr [dword55+24],0
         mov     dword ptr [dword55+28],0
         mov     dword ptr [dword55+32],0
         mov     dword ptr [dword55+36],0
         movss   sse13,sse25
         subss   sse13,sse24
-        movss   dword ptr [dword55+40],sse13
         mov     dword ptr [dword55+44],0
         movss   sse16,sse22
         mulss   sse16,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword55+48],sse16
         movss   sse18,sse23
         mulss   sse18,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword55+52],sse18
-        movss   dword ptr [dword55+56],sse24
         mov     dword ptr [dword55+60],1065353216
         destroy_stack_frame
         ret
@@ -296,7 +259,6 @@ _matrix4f_transform proc
         create_stack_frame
         mov     dword76,[ebp+16]
         mov     dword75,[ebp+12]
-        mov     dword74,[ebp+8]
         movss   sse1,dword ptr [dword75+4]
         mulss   sse1,dword ptr [dword76+16]
         movss   sse2,dword ptr [dword75]
@@ -308,7 +270,6 @@ _matrix4f_transform proc
         movss   sse4,dword ptr [dword75+12]
         mulss   sse4,dword ptr [dword76+48]
         addss   sse2,sse4
-        movss   dword ptr [dword74],sse2
         movss   sse5,dword ptr [dword75]
         mulss   sse5,dword ptr [dword76+4]
         movss   sse6,dword ptr [dword75+4]
@@ -320,7 +281,6 @@ _matrix4f_transform proc
         movss   sse8,dword ptr [dword75+12]
         mulss   sse8,dword ptr [dword76+52]
         addss   sse5,sse8
-        movss   dword ptr [dword74+4],sse5
         movss   sse9,dword ptr [dword75]
         mulss   sse9,dword ptr [dword76+8]
         movss   sse10,dword ptr [dword75+4]
@@ -332,7 +292,6 @@ _matrix4f_transform proc
         movss   sse12,dword ptr [dword75+12]
         mulss   sse12,dword ptr [dword76+56]
         addss   sse9,sse12
-        movss   dword ptr [dword74+8],sse9
         movss   sse13,dword ptr [dword75]
         mulss   sse13,dword ptr [dword76+12]
         movss   sse14,dword ptr [dword75+4]
@@ -344,7 +303,6 @@ _matrix4f_transform proc
         movss   sse16,dword ptr [dword75+12]
         mulss   sse16,dword ptr [dword76+60]
         addss   sse13,sse16
-        movss   dword ptr [dword74+12],sse13
         destroy_stack_frame
         ret
 _matrix4f_transform endp
@@ -710,7 +668,6 @@ label0000:
         mov     dword68,dword57
         sal     dword68,8
         add     dword68,dword64
-        mov     [dword83],dword68
 label0003:
         movss   sse9,sse13
         addss   sse9,sse15
@@ -1479,20 +1436,17 @@ __transform_to_screen_space proc
         movss   sse2,dword ptr [ebp-16]
         mulss   sse2,sse1
         cvttss2si       dword10,sse2
-        mov     [dword36],dword10
         movss   sse3,dword ptr [ebp-12]
         mulss   sse3,sse1
         cvttss2si       dword16,sse3
-        mov     [dword36+4],dword16
         cmp     dword ptr [dword36],0
         jl      label0001
         mov     dword25,[dword36]
         cmp     dword25,dword ptr [__width]
         jge     label0001
-        cmp     dword ptr [dword36+4],0
+        cmp     dword16,0
         jl      label0001
-        mov     dword32,[dword36+4]
-        cmp     dword32,dword ptr [__height]
+        cmp     dword16,dword ptr [__height]
         jl      label0000
 label0001:
         mov     dword ptr ds:[0],0

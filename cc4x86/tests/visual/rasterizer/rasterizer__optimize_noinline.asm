@@ -74,17 +74,12 @@ _vec2f_add proc
         mov     ebp,esp
         push    edi
         push    esi
-        push    ebx
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
-        mov     ebx,[ebp+8]
         movss   xmm0,dword ptr [esi]
         addss   xmm0,dword ptr [edi]
-        movss   dword ptr [ebx],xmm0
         movss   xmm0,dword ptr [esi+4]
         addss   xmm0,dword ptr [edi+4]
-        movss   dword ptr [ebx+4],xmm0
-        pop     ebx
         pop     esi
         pop     edi
         pop     ebp
@@ -96,17 +91,12 @@ _vec2f_subtract proc
         mov     ebp,esp
         push    edi
         push    esi
-        push    ebx
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
-        mov     ebx,[ebp+8]
         movss   xmm0,dword ptr [esi]
         subss   xmm0,dword ptr [edi]
-        movss   dword ptr [ebx],xmm0
         movss   xmm0,dword ptr [esi+4]
         subss   xmm0,dword ptr [edi+4]
-        movss   dword ptr [ebx+4],xmm0
-        pop     ebx
         pop     esi
         pop     edi
         pop     ebp
@@ -121,10 +111,8 @@ _vec2f_mul proc
         mov     edi,[ebp+8]
         movss   xmm0,dword ptr [edi]
         mulss   xmm0,xmm7
-        movss   dword ptr [edi],xmm0
         movss   xmm0,dword ptr [edi+4]
         mulss   xmm0,xmm7
-        movss   dword ptr [edi+4],xmm0
         pop     edi
         pop     ebp
         ret
@@ -133,17 +121,10 @@ _vec2f_mul endp
 _vec4f_assign proc
         push    ebp
         mov     ebp,esp
-        push    edi
         movss   xmm7,dword ptr [ebp+24]
-        movss   xmm6,dword ptr [ebp+20]
-        movss   xmm5,dword ptr [ebp+16]
-        movss   xmm4,dword ptr [ebp+12]
-        mov     edi,[ebp+8]
-        movss   dword ptr [edi],xmm4
-        movss   dword ptr [edi+4],xmm5
-        movss   dword ptr [edi+8],xmm6
-        movss   dword ptr [edi+12],xmm7
-        pop     edi
+        movss   xmm7,dword ptr [ebp+20]
+        movss   xmm7,dword ptr [ebp+16]
+        movss   xmm7,dword ptr [ebp+12]
         pop     ebp
         ret
 _vec4f_assign endp
@@ -153,23 +134,16 @@ _vec4f_add proc
         mov     ebp,esp
         push    edi
         push    esi
-        push    ebx
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
-        mov     ebx,[ebp+8]
         movss   xmm0,dword ptr [esi]
         addss   xmm0,dword ptr [edi]
-        movss   dword ptr [ebx],xmm0
         movss   xmm0,dword ptr [esi+4]
         addss   xmm0,dword ptr [edi+4]
-        movss   dword ptr [ebx+4],xmm0
         movss   xmm0,dword ptr [esi+8]
         addss   xmm0,dword ptr [edi+8]
-        movss   dword ptr [ebx+8],xmm0
         movss   xmm0,dword ptr [esi+12]
         addss   xmm0,dword ptr [edi+12]
-        movss   dword ptr [ebx+12],xmm0
-        pop     ebx
         pop     esi
         pop     edi
         pop     ebp
@@ -181,23 +155,16 @@ _vec4f_subtract proc
         mov     ebp,esp
         push    edi
         push    esi
-        push    ebx
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
-        mov     ebx,[ebp+8]
         movss   xmm0,dword ptr [esi]
         subss   xmm0,dword ptr [edi]
-        movss   dword ptr [ebx],xmm0
         movss   xmm0,dword ptr [esi+4]
         subss   xmm0,dword ptr [edi+4]
-        movss   dword ptr [ebx+4],xmm0
         movss   xmm0,dword ptr [esi+8]
         subss   xmm0,dword ptr [edi+8]
-        movss   dword ptr [ebx+8],xmm0
         movss   xmm0,dword ptr [esi+12]
         subss   xmm0,dword ptr [edi+12]
-        movss   dword ptr [ebx+12],xmm0
-        pop     ebx
         pop     esi
         pop     edi
         pop     ebp
@@ -237,16 +204,12 @@ _vec4f_mul proc
         mov     edi,[ebp+8]
         movss   xmm0,dword ptr [edi]
         mulss   xmm0,xmm7
-        movss   dword ptr [edi],xmm0
         movss   xmm0,dword ptr [edi+4]
         mulss   xmm0,xmm7
-        movss   dword ptr [edi+4],xmm0
         movss   xmm0,dword ptr [edi+8]
         mulss   xmm0,xmm7
-        movss   dword ptr [edi+8],xmm0
         movss   xmm0,dword ptr [edi+12]
         mulss   xmm0,xmm7
-        movss   dword ptr [edi+12],xmm0
         pop     edi
         pop     ebp
         ret
@@ -267,14 +230,12 @@ _matrix4f_make_perspective proc
         mulss   xmm0,xmm7
         movss   xmm1,xmm4
         divss   xmm1,xmm0
-        movss   dword ptr [edi],xmm1
         mov     dword ptr [edi+4],0
         mov     dword ptr [edi+8],0
         mov     dword ptr [edi+12],0
         mov     dword ptr [edi+16],0
         movss   xmm0,xmm4
         divss   xmm0,xmm6
-        movss   dword ptr [edi+20],xmm0
         mov     dword ptr [edi+24],0
         mov     dword ptr [edi+28],0
         mov     dword ptr [edi+32],0
@@ -283,7 +244,6 @@ _matrix4f_make_perspective proc
         subss   xmm0,xmm4
         movss   xmm1,xmm5
         divss   xmm1,xmm0
-        movss   dword ptr [edi+40],xmm1
         mov     dword ptr [edi+44],1065353216
         mov     dword ptr [edi+48],0
         mov     dword ptr [edi+52],0
@@ -291,7 +251,6 @@ _matrix4f_make_perspective proc
         mulss   xmm0,xmm5
         subss   xmm4,xmm5
         divss   xmm0,xmm4
-        movss   dword ptr [edi+56],xmm0
         mov     dword ptr [edi+60],0
         pop     edi
         mov     esp,ebp
@@ -310,7 +269,6 @@ _matrix4f_make_viewport proc
         mov     edi,[ebp+8]
         movss   xmm0,xmm4
         mulss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [edi],xmm0
         mov     dword ptr [edi+4],0
         mov     dword ptr [edi+8],0
         mov     dword ptr [edi+12],0
@@ -318,19 +276,14 @@ _matrix4f_make_viewport proc
         movss   xmm0,xmm5
         xorps   xmm0,dword ptr [___unnamed_float4_4]
         mulss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [edi+20],xmm0
         mov     dword ptr [edi+24],0
         mov     dword ptr [edi+28],0
         mov     dword ptr [edi+32],0
         mov     dword ptr [edi+36],0
         subss   xmm7,xmm6
-        movss   dword ptr [edi+40],xmm7
         mov     dword ptr [edi+44],0
         mulss   xmm4,dword ptr [___unnamed_float_3]
-        movss   dword ptr [edi+48],xmm4
         mulss   xmm5,dword ptr [___unnamed_float_3]
-        movss   dword ptr [edi+52],xmm5
-        movss   dword ptr [edi+56],xmm6
         mov     dword ptr [edi+60],1065353216
         pop     edi
         pop     ebp
@@ -342,10 +295,8 @@ _matrix4f_transform proc
         mov     ebp,esp
         push    edi
         push    esi
-        push    ebx
         mov     edi,[ebp+16]
         mov     esi,[ebp+12]
-        mov     ebx,[ebp+8]
         movss   xmm0,dword ptr [esi+4]
         mulss   xmm0,dword ptr [edi+16]
         movss   xmm1,dword ptr [esi]
@@ -357,7 +308,6 @@ _matrix4f_transform proc
         movss   xmm0,dword ptr [esi+12]
         mulss   xmm0,dword ptr [edi+48]
         addss   xmm1,xmm0
-        movss   dword ptr [ebx],xmm1
         movss   xmm0,dword ptr [esi]
         mulss   xmm0,dword ptr [edi+4]
         movss   xmm1,dword ptr [esi+4]
@@ -369,7 +319,6 @@ _matrix4f_transform proc
         movss   xmm1,dword ptr [esi+12]
         mulss   xmm1,dword ptr [edi+52]
         addss   xmm0,xmm1
-        movss   dword ptr [ebx+4],xmm0
         movss   xmm0,dword ptr [esi]
         mulss   xmm0,dword ptr [edi+8]
         movss   xmm1,dword ptr [esi+4]
@@ -381,7 +330,6 @@ _matrix4f_transform proc
         movss   xmm1,dword ptr [esi+12]
         mulss   xmm1,dword ptr [edi+56]
         addss   xmm0,xmm1
-        movss   dword ptr [ebx+8],xmm0
         movss   xmm0,dword ptr [esi]
         mulss   xmm0,dword ptr [edi+12]
         movss   xmm1,dword ptr [esi+4]
@@ -393,8 +341,6 @@ _matrix4f_transform proc
         movss   xmm1,dword ptr [esi+12]
         mulss   xmm1,dword ptr [edi+60]
         addss   xmm0,xmm1
-        movss   dword ptr [ebx+12],xmm0
-        pop     ebx
         pop     esi
         pop     edi
         pop     ebp
@@ -791,7 +737,6 @@ label0000:
         cvttss2si       ecx,xmm1
         sal     edx,8
         add     edx,ecx
-        mov     [eax],edx
         mov     [ebp-48],eax
 label0003:
         movss   xmm0,dword ptr [ebp-56]
@@ -1584,20 +1529,17 @@ __transform_to_screen_space proc
         movss   xmm1,dword ptr [ebp-16]
         mulss   xmm1,xmm0
         cvttss2si       eax,xmm1
-        mov     [esi],eax
         movss   xmm1,dword ptr [ebp-12]
         mulss   xmm1,xmm0
         cvttss2si       eax,xmm1
-        mov     [esi+4],eax
         cmp     dword ptr [esi],0
         jl      label0001
-        mov     eax,[esi]
-        cmp     eax,dword ptr [__width]
+        mov     esi,[esi]
+        cmp     esi,dword ptr [__width]
         jge     label0001
-        cmp     dword ptr [esi+4],0
+        cmp     eax,0
         jl      label0001
-        mov     esi,[esi+4]
-        cmp     esi,dword ptr [__height]
+        cmp     eax,dword ptr [__height]
         jl      label0000
 label0001:
         mov     dword ptr ds:[0],0
