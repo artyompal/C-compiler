@@ -1514,9 +1514,7 @@ __transform_to_screen_space proc
         mov     ebp,esp
         sub     esp,20
         push    edi
-        push    esi
         mov     edi,[ebp+12]
-        mov     esi,[ebp+8]
         lea     eax,dword ptr [__viewport_matrix]
         push    eax
         push    edi
@@ -1531,20 +1529,18 @@ __transform_to_screen_space proc
         cvttss2si       eax,xmm1
         movss   xmm1,dword ptr [ebp-12]
         mulss   xmm1,xmm0
-        cvttss2si       eax,xmm1
-        cmp     dword ptr [esi],0
-        jl      label0001
-        mov     esi,[esi]
-        cmp     esi,dword ptr [__width]
-        jge     label0001
+        cvttss2si       ecx,xmm1
         cmp     eax,0
         jl      label0001
-        cmp     eax,dword ptr [__height]
+        cmp     eax,dword ptr [__width]
+        jge     label0001
+        cmp     ecx,0
+        jl      label0001
+        cmp     ecx,dword ptr [__height]
         jl      label0000
 label0001:
         mov     dword ptr ds:[0],0
 label0000:
-        pop     esi
         pop     edi
         mov     esp,ebp
         pop     ebp

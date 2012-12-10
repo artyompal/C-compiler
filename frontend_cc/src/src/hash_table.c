@@ -17,14 +17,8 @@ typedef struct hash_table_decl {
 
 static void _hash_reset(hash_id hash)
 {
-    unsigned i;
-
-    hash->data  = allocator_alloc(allocator_global_pool, hash->reserved * sizeof(void *));
-    hash->size  = 0;
-
-    for (i = 0; i < hash->reserved; i++) {
-        hash->data[i] = NULL;
-    }
+    hash->data = allocator_alloc(allocator_global_pool, hash->reserved * sizeof(void *));
+    hash_clear(hash);
 }
 
 
@@ -41,10 +35,15 @@ hash_id hash_init(hash_function hash_func, hash_equal_function equal_func)
     return hash;
 }
 
-void hash_term(hash_id hash)
+void hash_clear(hash_id hash)
 {
-    allocator_free(allocator_global_pool, hash->data, hash->reserved * sizeof(void *));
-    allocator_free(allocator_global_pool, hash, sizeof(hash_table));
+    unsigned i;
+
+    for (i = 0; i < hash->reserved; i++) {
+        hash->data[i] = NULL;
+    }
+
+    hash->size = 0;
 }
 
 

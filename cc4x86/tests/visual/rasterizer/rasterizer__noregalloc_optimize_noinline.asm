@@ -1421,7 +1421,6 @@ __clip_poligon endp
 __transform_to_screen_space proc
         create_stack_frame
         mov     dword37,[ebp+12]
-        mov     dword36,[ebp+8]
         push_all
         lea     dword1,dword ptr [__viewport_matrix]
         push_arg        dword1,4
@@ -1439,10 +1438,9 @@ __transform_to_screen_space proc
         movss   sse3,dword ptr [ebp-12]
         mulss   sse3,sse1
         cvttss2si       dword16,sse3
-        cmp     dword ptr [dword36],0
+        cmp     dword10,0
         jl      label0001
-        mov     dword25,[dword36]
-        cmp     dword25,dword ptr [__width]
+        cmp     dword10,dword ptr [__width]
         jge     label0001
         cmp     dword16,0
         jl      label0001

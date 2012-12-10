@@ -460,15 +460,15 @@ label0001:
         subss   sse31,dword ptr [dword371+12]
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   sse48,dword ptr [ebp-20]
+        movss   sse48,sse29
         mulss   sse48,dword ptr [dword372+4]
-        movss   sse49,dword ptr [ebp-24]
+        movss   sse49,sse28
         mulss   sse49,dword ptr [dword372]
         addss   sse49,sse48
-        movss   sse50,dword ptr [ebp-16]
+        movss   sse50,sse30
         mulss   sse50,dword ptr [dword372+8]
         addss   sse49,sse50
-        movss   sse51,dword ptr [ebp-12]
+        movss   sse51,sse31
         mulss   sse51,dword ptr [dword372+12]
         addss   sse49,sse51
 ; end of inline function vec4f_dot
@@ -483,15 +483,15 @@ label0001:
         subss   sse36,dword ptr [dword371+12]
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   sse53,dword ptr [ebp-20]
+        movss   sse53,sse34
         mulss   sse53,dword ptr [dword372+4]
-        movss   sse54,dword ptr [ebp-24]
+        movss   sse54,sse33
         mulss   sse54,dword ptr [dword372]
         addss   sse54,sse53
-        movss   sse55,dword ptr [ebp-16]
+        movss   sse55,sse35
         mulss   sse55,dword ptr [dword372+8]
         addss   sse54,sse55
-        movss   sse56,dword ptr [ebp-12]
+        movss   sse56,sse36
         mulss   sse56,dword ptr [dword372+12]
         addss   sse54,sse56
 ; end of inline function vec4f_dot
@@ -543,41 +543,41 @@ label0005:
         subss   sse46,dword ptr [dword351+12]
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   sse58,dword ptr [ebp-20]
+        movss   sse58,sse39
         mulss   sse58,dword ptr [dword372+4]
-        movss   sse59,dword ptr [ebp-24]
+        movss   sse59,sse38
         mulss   sse59,dword ptr [dword372]
         addss   sse59,sse58
-        movss   sse60,dword ptr [ebp-16]
+        movss   sse60,sse40
         mulss   sse60,dword ptr [dword372+8]
         addss   sse59,sse60
-        movss   sse61,dword ptr [ebp-12]
+        movss   sse61,sse41
         mulss   sse61,dword ptr [dword372+12]
         addss   sse59,sse61
 ; end of inline function vec4f_dot
         movss   sse9,sse59
 ; start of inline function vec4f_dot
-        movss   sse63,dword ptr [ebp-36]
+        movss   sse63,sse44
         mulss   sse63,dword ptr [dword372+4]
-        movss   sse64,dword ptr [ebp-40]
+        movss   sse64,sse43
         mulss   sse64,dword ptr [dword372]
         addss   sse64,sse63
-        movss   sse65,dword ptr [ebp-32]
+        movss   sse65,sse45
         mulss   sse65,dword ptr [dword372+8]
         addss   sse64,sse65
-        movss   sse66,dword ptr [ebp-28]
+        movss   sse66,sse46
         mulss   sse66,dword ptr [dword372+12]
         addss   sse64,sse66
 ; end of inline function vec4f_dot
         divss   sse9,sse64
 ; start of inline function vec4f_mul
-        movss   sse69,dword ptr [ebp-40]
+        movss   sse69,sse43
         mulss   sse69,sse9
-        movss   sse70,dword ptr [ebp-36]
+        movss   sse70,sse44
         mulss   sse70,sse9
-        movss   sse71,dword ptr [ebp-32]
+        movss   sse71,sse45
         mulss   sse71,sse9
-        movss   sse72,dword ptr [ebp-28]
+        movss   sse72,sse46
         mulss   sse72,sse9
 ; end of inline function vec4f_mul
 ; start of inline function vec4f_add
