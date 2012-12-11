@@ -14,17 +14,17 @@ _test proc
         mov     dword23,2
         add     dword23,3
 ; end of inline function f
-        mov     dword33,dword23
+        mov     dword35,dword23
         jmp     label0001
 label0000:
 ; start of inline function g
         mov     dword29,2
         sub     dword29,3
 ; end of inline function g
-        mov     dword33,dword29
+        mov     dword35,dword29
 label0001:
         mov     dword17,1
-        add     dword17,dword33
+        add     dword17,dword35
         set_retval      dword17
         destroy_stack_frame
         ret

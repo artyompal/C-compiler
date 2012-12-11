@@ -32,20 +32,20 @@ label0000:
         ret
 label0001:
 ; start of inline function test3
-        mov     dword105,444
-        mov     dword103,222
-        mov     dword106,dword103
-        cmp     dword105,0
+        mov     dword102,444
+        mov     dword104,222
+        mov     dword105,dword104
+        cmp     dword102,0
         jle     label0007
-        mov     dword103,111
+        mov     dword104,111
         jmp     label0008
 label0007:
-        mov     dword106,dword105
+        mov     dword105,dword102
 label0008:
-        mov     dword59,dword106
-        add     dword59,dword103
+        mov     dword59,dword105
+        add     dword59,dword104
         add     dword59,111
-        sub     dword59,dword105
+        sub     dword59,dword102
 ; end of inline function test3
         cmp     dword59,0
         je      label0002
@@ -55,9 +55,9 @@ label0008:
         ret
 label0002:
 ; start of inline function test4
-        mov     dword111,5
-        inc     dword111
-        mov     dword72,dword111
+        mov     dword110,5
+        inc     dword110
+        mov     dword72,dword110
         add     dword72,4
         sub     dword72,10
 ; end of inline function test4
@@ -69,17 +69,17 @@ label0002:
         ret
 label0003:
 ; start of inline function test5
-        mov     dword116,888
-        cmp     dword116,0
+        mov     dword113,888
+        cmp     dword113,0
         jle     label000b
-        mov     dword117,444
+        mov     dword116,444
         jmp     label000c
 label000b:
-        mov     dword117,222
+        mov     dword116,222
 label000c:
-        mov     dword90,dword117
+        mov     dword90,dword116
         add     dword90,444
-        sub     dword90,dword116
+        sub     dword90,dword113
 ; end of inline function test5
         cmp     dword90,0
         je      label0004

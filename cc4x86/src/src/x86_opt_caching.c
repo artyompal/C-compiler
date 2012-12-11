@@ -37,7 +37,7 @@ static int _address_compare(x86_address *key1, x86_address *key2)
 
 //
 // Алгоритм кеширования адресов в памяти.
-static void _build_addresses_table(function_desc *function, x86_operand_type type)
+static void _cache_every_variable(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn, *next;
     variable *var;
@@ -53,7 +53,7 @@ static void _build_addresses_table(function_desc *function, x86_operand_type typ
                 var = allocator_alloc(allocator_per_function_pool, sizeof(variable));
                 memcpy(&var->var_addr, &insn->in_op1.data.address, sizeof(x86_address));
 
-                bincode_create_operand_and_alloc_pseudoreg_in_function(function, &insn->in_op1, type);
+                bincode_create_operand_and_alloc_pseudoreg_in_function(function, &insn->in_op1, insn->in_op1.op_type);
                 var->var_reg = insn->in_op1.data.reg;
 
                 //printf("inserted op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
@@ -67,12 +67,12 @@ static void _build_addresses_table(function_desc *function, x86_operand_type typ
                 //printf("replaced op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
                 //    var->var_addr.index, var->var_addr.offset);
 
-                bincode_create_operand_from_pseudoreg(&insn->in_op1, type, var->var_reg);
+                bincode_create_operand_from_pseudoreg(&insn->in_op1, insn->in_op1.op_type, var->var_reg);
                 continue;
             }
         }
 
-        // Анализируем второй операнд и заменяем адрес на регистр, если он найден.
+        // Анализируем второй операнд.
         if (x86_equal_types(insn->in_op2.op_type, type) && OP_IS_ADDRESS(insn->in_op2) && insn->in_op2.data.address.base == ~x86reg_ebp) {
             var = hash_find(_variables_table, &insn->in_op2.data.address);
 
@@ -107,11 +107,11 @@ static void _build_addresses_table(function_desc *function, x86_operand_type typ
     }
 }
 
-static void _cache_every_address(function_desc *function, x86_operand_type type)
+static void _caching_pass(function_desc *function, x86_operand_type type)
 {
     function->func_start_of_regvars[type] = function->func_pseudoregs_count[type];
 
-    _build_addresses_table(function, type);
+    _cache_every_variable(function, type);
     x86_dataflow_init_alive_reg_tables(function, type);
 }
 
@@ -127,8 +127,8 @@ void x86_caching_pass(function_desc *function)
 {
     hash_clear(_variables_table);
 
-    _cache_every_address(function, x86op_dword);
-    _cache_every_address(function, x86op_float);
+    _caching_pass(function, x86op_dword);
+    _caching_pass(function, x86op_float);
 
     x86_local_optimization_pass(function, TRUE);
 }

@@ -56,8 +56,8 @@ _fabs endp
 _eq proc
         push    ebp
         mov     ebp,esp
-        movss   xmm7,dword ptr [ebp+16]
-        movss   xmm6,dword ptr [ebp+8]
+        movsd   xmm7,qword ptr [ebp+16]
+        movsd   xmm6,qword ptr [ebp+8]
         subsd   xmm6,xmm7
         cvtsd2ss        xmm6,xmm6
         movss   dword ptr [esp-4],xmm6
