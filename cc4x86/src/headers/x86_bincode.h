@@ -283,6 +283,7 @@ typedef struct x86_instruction_decl {
                                         && (OP).data.address.index == 0 && (OP).data.address.offset == (OFS))
 
 #define ENCODE_SSE_MOV(TYPE)            ((TYPE) == x86op_float ? x86insn_sse_movss : x86insn_sse_movsd)
+#define ENCODE_MOV(TYPE)                ((TYPE) == x86op_dword ? x86insn_int_mov : ENCODE_SSE_MOV(TYPE))
 #define ENCODE_SSE_COMPARE(TYPE)        ((TYPE) == x86op_float ? x86insn_sse_comiss : x86insn_sse_comisd)
 
 

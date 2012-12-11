@@ -2,6 +2,7 @@
 #include "common.h"
 #include "hash_table.h"
 #include "x86_bincode.h"
+#include "x86_optimizer.h"
 #include "x86_opt_data_flow.h"
 
 
@@ -45,40 +46,59 @@ static void _build_addresses_table(function_desc *function, x86_operand_type typ
         next = insn->in_next;
 
         // јнализируем первый операнд и создаЄм новую переменную, если потребуетс€.
-        if (x86_equal_types(insn->in_op1.op_type, type) && OP_IS_ADDRESS(insn->in_op1)) {
+        if (x86_equal_types(insn->in_op1.op_type, type) && OP_IS_ADDRESS(insn->in_op1) && insn->in_op1.data.address.base == ~x86reg_ebp) {
             var = hash_find(_variables_table, &insn->in_op1.data.address);
 
-            if (!var && IS_DEFINING_INSN(insn->in_code, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)) {
+            if (!var && IS_DEFINING_INSN(insn->in_code, type)) {
                 var = allocator_alloc(allocator_per_function_pool, sizeof(variable));
                 memcpy(&var->var_addr, &insn->in_op1.data.address, sizeof(x86_address));
 
                 bincode_create_operand_and_alloc_pseudoreg_in_function(function, &insn->in_op1, type);
                 var->var_reg = insn->in_op1.data.reg;
 
-                //if (strstr(function->func_sym->sym_name, "clip"))
-                //    printf("inserted reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
-                //        insn->in_op1.data.address.index, insn->in_op1.data.address.offset);
+                //printf("inserted op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
+                //    var->var_addr.index, var->var_addr.offset);
 
                 hash_insert(_variables_table, var);
                 continue;
             }
 
             if (var) {
+                //printf("replaced op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
+                //    var->var_addr.index, var->var_addr.offset);
+
                 bincode_create_operand_from_pseudoreg(&insn->in_op1, type, var->var_reg);
                 continue;
             }
         }
 
         // јнализируем второй операнд и замен€ем адрес на регистр, если он найден.
-        if (x86_equal_types(insn->in_op2.op_type, type) && OP_IS_ADDRESS(insn->in_op2)) {
+        if (x86_equal_types(insn->in_op2.op_type, type) && OP_IS_ADDRESS(insn->in_op2) && insn->in_op2.data.address.base == ~x86reg_ebp) {
             var = hash_find(_variables_table, &insn->in_op2.data.address);
 
-            if (var) {
-                //if (strstr(function->func_sym->sym_name, "clip"))
-                //    printf("replaced reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg,
-                //        insn->in_op2.data.address.base,
-                //        insn->in_op2.data.address.index,
-                //        insn->in_op2.data.address.offset);
+            if (!var && insn->in_code != x86insn_lea) {
+                var = allocator_alloc(allocator_per_function_pool, sizeof(variable));
+                memcpy(&var->var_addr, &insn->in_op2.data.address, sizeof(x86_address));
+
+                bincode_insert_instruction(function, function->func_binary_code->in_next,
+                    ENCODE_MOV(insn->in_op2.op_type), &insn->in_op2, &insn->in_op2);
+                bincode_create_operand_and_alloc_pseudoreg_in_function(function,
+                    &function->func_binary_code->in_next->in_op1, insn->in_op2.op_type);
+                bincode_create_operand_from_pseudoreg(&insn->in_op2, insn->in_op2.op_type,
+                    function->func_binary_code->in_next->in_op1.data.reg);
+
+                var->var_reg = function->func_binary_code->in_next->in_op1.data.reg;
+
+                //printf("inserted op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
+                //    var->var_addr.index, var->var_addr.offset);
+
+                hash_insert(_variables_table, var);
+                continue;
+            }
+
+            if (var && insn->in_code != x86insn_lea) {
+                //printf("replaced op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
+                //    var->var_addr.index, var->var_addr.offset);
 
                 bincode_create_operand_from_pseudoreg(&insn->in_op2, type, var->var_reg);
                 continue;
@@ -89,6 +109,8 @@ static void _build_addresses_table(function_desc *function, x86_operand_type typ
 
 static void _cache_every_address(function_desc *function, x86_operand_type type)
 {
+    function->func_start_of_regvars[type] = function->func_pseudoregs_count[type];
+
     _build_addresses_table(function, type);
     x86_dataflow_init_alive_reg_tables(function, type);
 }
@@ -107,5 +129,7 @@ void x86_caching_pass(function_desc *function)
 
     _cache_every_address(function, x86op_dword);
     _cache_every_address(function, x86op_float);
+
+    x86_local_optimization_pass(function, TRUE);
 }
 

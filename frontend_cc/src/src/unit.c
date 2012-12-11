@@ -921,11 +921,11 @@ void unit_codegen(void)
         }
 
         if (option_enable_optimization) {
-            x86_regvars_create(_curr_func);
+            //x86_regvars_create(_curr_func);
 
-            if (!option_no_copy_opt) {
-                x86_dataflow_optimize_redundant_copies(_curr_func);
-            }
+            //if (!option_no_copy_opt) {
+            //    x86_dataflow_optimize_redundant_copies(_curr_func);
+            //}
 
             x86_caching_pass(_curr_func);
 

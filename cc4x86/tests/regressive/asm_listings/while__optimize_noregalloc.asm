@@ -7,31 +7,31 @@
 
 _test proc
         create_stack_frame
-        mov     dword24,0
+        mov     dword23,0
 label0000:
-        mov     dword4,dword24
-        inc     dword24
+        mov     dword4,dword23
+        inc     dword23
         cmp     dword4,10
         jge     label0001
         jmp     label0000
 label0001:
-        cmp     dword24,11
+        cmp     dword23,11
         je      label0002
         mov     dword8,1
         set_retval      dword8
         destroy_stack_frame
         ret
 label0002:
-        mov     dword25,1
-        mov     dword26,0
+        mov     dword24,1
+        mov     dword25,0
 label0003:
-        mov     dword15,dword25
+        mov     dword15,dword24
         sal     dword15,1
-        mov     dword25,dword15
-        inc     dword26
-        cmp     dword25,65536
+        mov     dword24,dword15
+        inc     dword25
+        cmp     dword24,65536
         jl      label0003
-        cmp     dword26,16
+        cmp     dword25,16
         je      label0006
         mov     dword21,2
         set_retval      dword21

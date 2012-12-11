@@ -11,7 +11,6 @@ _test proc
         sub     esp,24
         push    edi
         mov     edi,2
-        mov     dword ptr [ebp-12],1
         lea     eax,[ebp-12]
         mov     [ebp-24],eax
         mov     eax,4
