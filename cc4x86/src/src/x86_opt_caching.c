@@ -56,16 +56,18 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
                 bincode_create_operand_and_alloc_pseudoreg_in_function(function, &insn->in_op1, insn->in_op1.op_type);
                 var->var_reg = insn->in_op1.data.reg;
 
-                //printf("inserted op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
-                //    var->var_addr.index, var->var_addr.offset);
+                //if (strstr(function->func_sym->sym_name, "clip"))
+                //    printf("inserted op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
+                //        var->var_addr.index, var->var_addr.offset);
 
                 hash_insert(_variables_table, var);
                 continue;
             }
 
             if (var) {
-                //printf("replaced op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
-                //    var->var_addr.index, var->var_addr.offset);
+                //if (strstr(function->func_sym->sym_name, "clip"))
+                //    printf("replaced op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
+                //        var->var_addr.index, var->var_addr.offset);
 
                 bincode_create_operand_from_pseudoreg(&insn->in_op1, insn->in_op1.op_type, var->var_reg);
                 continue;
@@ -89,16 +91,18 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
 
                 var->var_reg = function->func_binary_code->in_next->in_op1.data.reg;
 
-                //printf("inserted op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
-                //    var->var_addr.index, var->var_addr.offset);
+                //if (strstr(function->func_sym->sym_name, "clip"))
+                //    printf("inserted op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
+                //        var->var_addr.index, var->var_addr.offset);
 
                 hash_insert(_variables_table, var);
                 continue;
             }
 
             if (var && insn->in_code != x86insn_lea) {
-                //printf("replaced op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
-                //    var->var_addr.index, var->var_addr.offset);
+                //if (strstr(function->func_sym->sym_name, "clip"))
+                //    printf("replaced op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
+                //        var->var_addr.index, var->var_addr.offset);
 
                 bincode_create_operand_from_pseudoreg(&insn->in_op2, type, var->var_reg);
                 continue;
@@ -109,7 +113,7 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
 
 static void _caching_pass(function_desc *function, x86_operand_type type)
 {
-    function->func_start_of_regvars[type] = function->func_pseudoregs_count[type];
+    //function->func_start_of_regvars[type] = function->func_pseudoregs_count[type];
 
     _cache_every_variable(function, type);
     x86_dataflow_init_alive_reg_tables(function, type);
@@ -130,6 +134,6 @@ void x86_caching_pass(function_desc *function)
     _caching_pass(function, x86op_dword);
     _caching_pass(function, x86op_float);
 
-    x86_local_optimization_pass(function, TRUE);
+    //x86_local_optimization_pass(function, TRUE);
 }
 

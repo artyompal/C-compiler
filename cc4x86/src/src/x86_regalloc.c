@@ -284,9 +284,9 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
 static int _alloc_real_register(function_desc *function, x86_instruction *insn, register_map *regmap,
     x86_pseudoreg_info *pseudoregs_map, int pseudoreg, x86_operand_type type)
 {
-    int start_reg   = (OP_IS_REGVAR(pseudoreg, type) ? x86_get_registers_count(type) - 1 : 0);
-    int last_reg    = (OP_IS_REGVAR(pseudoreg, type) ? -1 : x86_get_registers_count(type));
-    int reg_step    = (OP_IS_REGVAR(pseudoreg, type) ? -1 : 1);
+    int start_reg   = (/*OP_IS_REGVAR(pseudoreg, type) ? x86_get_registers_count(type) - 1 :*/ 0);
+    int last_reg    = (/*OP_IS_REGVAR(pseudoreg, type) ? -1 :*/ x86_get_registers_count(type));
+    int reg_step    = (/*OP_IS_REGVAR(pseudoreg, type) ? -1 :*/ 1);
 
     return _alloc_real_register_from_range(function, insn, regmap, pseudoregs_map, pseudoreg, type,
         start_reg, last_reg, reg_step);
@@ -505,7 +505,7 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
 
     // Инициализируем регистровую статистику.
     pseudoregs_map = allocator_alloc(allocator_global_pool, sizeof(x86_pseudoreg_info) * function->func_pseudoregs_count[type]);
-    x86_regvars_setup_offset(function, pseudoregs_map, type);
+    //x86_regvars_setup_offset(function, pseudoregs_map, type); // TODO: implement analog of x86_regvars_setup_offset
 
     for (i = 0; i < function->func_pseudoregs_count[type]; i++)
     {

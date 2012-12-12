@@ -7,7 +7,9 @@
 
 _test_case proc
         create_stack_frame
-        mov     dword16,3
+        mov     dword15,3
+        mov     dword5,dword15
+        mov     dword16,dword5
         cmp     dword16,1
         je      label0001
         cmp     dword16,2
@@ -35,7 +37,9 @@ _test_case endp
 
 _test_case2 proc
         create_stack_frame
-        mov     dword18,3
+        mov     dword17,3
+        mov     dword5,dword17
+        mov     dword18,dword5
         cmp     dword18,0
         je      label0001
         cmp     dword18,1
@@ -66,7 +70,9 @@ _test_case2 endp
 
 _test_default proc
         create_stack_frame
-        mov     dword18,100
+        mov     dword17,100
+        mov     dword5,dword17
+        mov     dword18,dword5
         cmp     dword18,1
         je      label0001
         cmp     dword18,2
@@ -88,7 +94,9 @@ _test_default endp
 _test proc
         create_stack_frame
 ; start of inline function test_case
-        mov     dword61,3
+        mov     dword60,3
+        mov     dword16,dword60
+        mov     dword61,dword16
         cmp     dword61,1
         je      label0004
         cmp     dword61,2
@@ -107,7 +115,8 @@ label0007:
         mov     dword62,1
 label0008:
 ; end of inline function test_case
-        cmp     dword62,0
+        mov     dword1,dword62
+        cmp     dword1,0
         je      label0000
         mov     dword3,1
         set_retval      dword3
@@ -115,7 +124,9 @@ label0008:
         ret
 label0000:
 ; start of inline function test_case2
-        mov     dword64,3
+        mov     dword63,3
+        mov     dword31,dword63
+        mov     dword64,dword31
         cmp     dword64,0
         je      label000a
         cmp     dword64,1
@@ -137,7 +148,8 @@ label000e:
         mov     dword65,1
 label000f:
 ; end of inline function test_case2
-        cmp     dword65,0
+        mov     dword4,dword65
+        cmp     dword4,0
         je      label0001
         mov     dword6,1
         set_retval      dword6
@@ -145,7 +157,9 @@ label000f:
         ret
 label0001:
 ; start of inline function test_default
-        mov     dword67,100
+        mov     dword66,100
+        mov     dword48,dword66
+        mov     dword67,dword48
         cmp     dword67,1
         je      label0011
         cmp     dword67,2
@@ -159,7 +173,8 @@ label0013:
         mov     dword68,0
 label0016:
 ; end of inline function test_default
-        cmp     dword68,0
+        mov     dword7,dword68
+        cmp     dword7,0
         je      label0002
         mov     dword9,1
         set_retval      dword9

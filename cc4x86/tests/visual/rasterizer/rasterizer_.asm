@@ -381,9 +381,10 @@ _matrix4f_make_viewport proc
         push    ebp
         mov     ebp,esp
         mov     eax,[ebp+8]
-        movss   xmm0,dword ptr [ebp+12]
-        mulss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [eax],xmm0
+        movss   xmm0,dword ptr [___unnamed_float_3]
+        movss   xmm1,dword ptr [ebp+12]
+        mulss   xmm1,xmm0
+        movss   dword ptr [eax],xmm1
         mov     eax,4
         add     eax,[ebp+8]
         movss   xmm0,dword ptr [___unnamed_float_2]
@@ -404,7 +405,8 @@ _matrix4f_make_viewport proc
         add     eax,[ebp+8]
         movss   xmm0,dword ptr [ebp+16]
         xorps   xmm0,dword ptr [___unnamed_float4_4]
-        mulss   xmm0,dword ptr [___unnamed_float_3]
+        movss   xmm1,dword ptr [___unnamed_float_3]
+        mulss   xmm0,xmm1
         movss   dword ptr [eax],xmm0
         mov     eax,24
         add     eax,[ebp+8]
@@ -433,14 +435,16 @@ _matrix4f_make_viewport proc
         movss   dword ptr [eax],xmm0
         mov     eax,48
         add     eax,[ebp+8]
-        movss   xmm0,dword ptr [ebp+12]
-        mulss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [eax],xmm0
+        movss   xmm0,dword ptr [___unnamed_float_3]
+        movss   xmm1,dword ptr [ebp+12]
+        mulss   xmm1,xmm0
+        movss   dword ptr [eax],xmm1
         mov     eax,52
         add     eax,[ebp+8]
-        movss   xmm0,dword ptr [ebp+16]
-        mulss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [eax],xmm0
+        movss   xmm0,dword ptr [___unnamed_float_3]
+        movss   xmm1,dword ptr [ebp+16]
+        mulss   xmm1,xmm0
+        movss   dword ptr [eax],xmm1
         mov     eax,56
         add     eax,[ebp+8]
         movss   xmm0,dword ptr [ebp+20]
@@ -907,7 +911,8 @@ label0000:
         cmp     dword ptr [ebp-40],0
         je      label0003
         cvtsi2ss        xmm0,dword ptr [ebp-40]
-        mulss   xmm0,dword ptr [___unnamed_float_6]
+        movss   xmm1,dword ptr [___unnamed_float_6]
+        mulss   xmm0,xmm1
         movss   dword ptr [ebp-44],xmm0
         mov     eax,[ebp-4]
         mov     eax,[eax]

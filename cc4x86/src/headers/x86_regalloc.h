@@ -26,7 +26,7 @@ typedef struct x86_pseudoreg_info_decl {
     x86_operand_type        reg_content_type;       // тип содержимого регистра
 } x86_pseudoreg_info;
 
-#define OP_IS_REGVAR(REG, TYPE) ((REG) >= function->func_start_of_regvars[(TYPE)])
+//#define OP_IS_REGVAR(REG, TYPE) ((REG) >= function->func_start_of_regvars[(TYPE)])
 
 
 void                        x86_allocate_registers          (function_desc *function);

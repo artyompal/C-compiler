@@ -4,6 +4,7 @@
 #include "x86_regalloc.h"
 #include "x86_optimizer.h"
 
+/*
 
 typedef struct x86_register_var_decl {
     symbol                      *sym;
@@ -153,7 +154,7 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
     function->func_pseudoregs_count[type]++;
 
     last_pseudo_register                    = function->func_pseudoregs_count[type];
-    function->func_start_of_regvars[type]   = last_pseudo_register;
+    //function->func_start_of_regvars[type]   = last_pseudo_register;
 
 
     // создаём все возможные регистровые переменные
@@ -199,3 +200,4 @@ void x86_regvars_setup_offset(function_desc *function, x86_pseudoreg_info *info,
     }
 }
 
+*/

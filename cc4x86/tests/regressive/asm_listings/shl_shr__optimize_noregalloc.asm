@@ -7,7 +7,9 @@
 
 _test proc
         create_stack_frame
-        mov     dword7,-16
+        mov     dword47,-16
+        mov     dword48,-16
+        mov     dword7,dword47
         sar     dword7,4
         cmp     dword7,-1
         je      label0000
@@ -16,7 +18,7 @@ _test proc
         destroy_stack_frame
         ret
 label0000:
-        mov     dword12,-16
+        mov     dword12,dword48
         shr     dword12,4
         cmp     dword12,268435455
         je      label0001
@@ -25,7 +27,9 @@ label0000:
         destroy_stack_frame
         ret
 label0001:
-        mov     dword21,1073741824
+        mov     dword47,1073741824
+        mov     dword48,1073741824
+        mov     dword21,dword47
         sal     dword21,1
         cmp     dword21,0
         jl      label0002
@@ -34,7 +38,7 @@ label0001:
         destroy_stack_frame
         ret
 label0002:
-        mov     dword26,1073741824
+        mov     dword26,dword48
         shl     dword26,1
         cmp     dword26,-2147483648
         je      label0003
@@ -43,9 +47,11 @@ label0002:
         destroy_stack_frame
         ret
 label0003:
+        mov     dword47,1
+        mov     dword48,1
         mov     dword34,3
-        inc     dword34
-        mov     dword36,1
+        add     dword34,dword48
+        mov     dword36,dword47
         shl     dword36,dword34
         cmp     dword36,16
         je      label0004
@@ -55,10 +61,11 @@ label0003:
         ret
 label0004:
         mov     dword40,5
-        inc     dword40
-        mov     dword42,1
+        add     dword40,dword48
+        mov     dword42,dword47
         sal     dword42,dword40
-        cmp     dword42,64
+        mov     dword47,dword42
+        cmp     dword47,64
         je      label0005
         mov     dword45,6
         set_retval      dword45

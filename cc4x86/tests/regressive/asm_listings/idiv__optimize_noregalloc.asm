@@ -10,6 +10,7 @@ _test proc
         mov     dword44,2
         mov     dword45,3
         mov     dword46,4
+        mov     dword47,5
         mov     dword11,dword45
         cdq     dword12,dword11
         idiv    dword11,dword44
@@ -17,15 +18,16 @@ _test proc
         cdq     dword16,dword15
         idiv    dword15,dword44
         imul    dword11,dword15
-        mov     dword19,5
+        mov     dword19,dword47
         cdq     dword20,dword19
         idiv    dword19,dword46
-        mov     dword23,5
+        mov     dword23,dword47
         cdq     dword24,dword23
         idiv    dword23,dword46
         imul    dword19,dword23
         add     dword11,dword19
-        cmp     dword11,2
+        mov     dword48,dword11
+        cmp     dword48,2
         je      label0000
         mov     dword28,1
         set_retval      dword28
@@ -35,17 +37,19 @@ label0000:
         mov     dword31,dword46
         cdq     dword32,dword31
         idiv    dword31,dword44
-        cmp     dword31,2
+        mov     dword46,dword31
+        cmp     dword46,2
         je      label0001
         mov     dword35,2
         set_retval      dword35
         destroy_stack_frame
         ret
 label0001:
-        mov     dword38,5
+        mov     dword38,dword47
         cdq     dword39,dword38
         idiv    dword38,dword45
-        cmp     dword39,2
+        mov     dword47,dword39
+        cmp     dword47,2
         je      label0002
         mov     dword42,3
         set_retval      dword42

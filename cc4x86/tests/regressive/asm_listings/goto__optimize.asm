@@ -9,21 +9,20 @@ _test proc
         push    ebp
         mov     ebp,esp
         sub     esp,4
-        push    edi
-        mov     edi,0
+        mov     eax,0
         jmp     label0002
 label0000:
         jmp     label0001
 label0001:
-        cmp     edi,1
-        setne   al
-        movzx   eax,al
-        pop     edi
+        cmp     eax,1
+        setne   cl
+        movzx   ecx,cl
+        mov     eax,ecx
         mov     esp,ebp
         pop     ebp
         ret
 label0002:
-        inc     edi
+        inc     eax
         jmp     label0000
 _test endp
 

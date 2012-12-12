@@ -476,12 +476,12 @@ static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
 
-        switch (insn->in_code) {
-        case x86insn_sse_movss:
-        case x86insn_sse_movsd:
-            _try_optimize_movss(function, insn, after_regvars);
-            break;
-        }
+        //switch (insn->in_code) {
+        //case x86insn_sse_movss:
+        //case x86insn_sse_movsd:
+        //    _try_optimize_movss(function, insn, after_regvars);
+        //    break;
+        //}
     }
 
     allocator_free(allocator_per_function_pool, _usage_arr, sizeof(void *) * function->func_insn_count);

@@ -66,7 +66,8 @@ _eq proc
         sub     esp,4
         call    _fabs
         add     esp,4
-        comiss  xmm0,dword ptr [___unnamed_float_2]
+        movss   xmm1,dword ptr [___unnamed_float_2]
+        comiss  xmm0,xmm1
         setb    al
         movzx   eax,al
         pop     ebp
@@ -149,9 +150,10 @@ label0002:
         pop     ebp
         ret
 label0003:
-        movss   xmm0,dword ptr [ebp-4]
-        addss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [ebp-4],xmm0
+        movss   xmm0,dword ptr [___unnamed_float_3]
+        movss   xmm1,dword ptr [ebp-4]
+        addss   xmm1,xmm0
+        movss   dword ptr [ebp-4],xmm1
         movsd   xmm0,qword ptr [___unnamed_double_9]
         movsd   qword ptr [esp-8],xmm0
         cvtss2sd        xmm0,dword ptr [ebp-4]
@@ -166,9 +168,10 @@ label0003:
         pop     ebp
         ret
 label0004:
-        movss   xmm0,dword ptr [ebp-4]
-        subss   xmm0,dword ptr [___unnamed_float_10]
-        movss   dword ptr [ebp-4],xmm0
+        movss   xmm0,dword ptr [___unnamed_float_10]
+        movss   xmm1,dword ptr [ebp-4]
+        subss   xmm1,xmm0
+        movss   dword ptr [ebp-4],xmm1
         movsd   xmm0,qword ptr [___unnamed_double_4]
         movsd   qword ptr [esp-8],xmm0
         cvtss2sd        xmm0,dword ptr [ebp-4]
@@ -183,9 +186,10 @@ label0004:
         pop     ebp
         ret
 label0005:
-        movss   xmm0,dword ptr [ebp-4]
-        mulss   xmm0,dword ptr [___unnamed_float_3]
-        movss   dword ptr [ebp-4],xmm0
+        movss   xmm0,dword ptr [___unnamed_float_3]
+        movss   xmm1,dword ptr [ebp-4]
+        mulss   xmm1,xmm0
+        movss   dword ptr [ebp-4],xmm1
         movsd   xmm0,qword ptr [___unnamed_double_7]
         movsd   qword ptr [esp-8],xmm0
         cvtss2sd        xmm0,dword ptr [ebp-4]
@@ -200,9 +204,10 @@ label0005:
         pop     ebp
         ret
 label0006:
-        movss   xmm0,dword ptr [ebp-4]
-        mulss   xmm0,dword ptr [___unnamed_float_11]
-        movss   dword ptr [ebp-4],xmm0
+        movss   xmm0,dword ptr [___unnamed_float_11]
+        movss   xmm1,dword ptr [ebp-4]
+        mulss   xmm1,xmm0
+        movss   dword ptr [ebp-4],xmm1
         movsd   xmm0,qword ptr [___unnamed_double_12]
         movsd   qword ptr [esp-8],xmm0
         cvtss2sd        xmm0,dword ptr [ebp-4]

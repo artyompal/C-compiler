@@ -864,6 +864,23 @@ static void _reset_function_calling_stat()
     }
 }
 
+static void _perform_optimizations()
+{
+    int function_length, new_length = unit_get_instruction_count(_curr_func);
+
+    do {
+        function_length = new_length;
+
+        if (!option_no_copy_opt) {
+            x86_dataflow_optimize_redundant_copies(_curr_func);
+        }
+
+        x86_caching_pass(_curr_func);
+
+        new_length = unit_get_instruction_count(_curr_func);
+    } while (new_length != function_length);
+}
+
 void unit_codegen(void)
 {
     _reset_function_calling_stat();
@@ -875,8 +892,8 @@ void unit_codegen(void)
         x86_stack_frame_begin_function(_curr_func);
         x86_codegen_do_function(_curr_func);
 
-        _curr_func->func_start_of_regvars[x86op_dword] = INT_MAX;
-        _curr_func->func_start_of_regvars[x86op_float] = INT_MAX;
+        //_curr_func->func_start_of_regvars[x86op_dword] = INT_MAX;
+        //_curr_func->func_start_of_regvars[x86op_float] = INT_MAX;
 
         if (!option_no_basic_opt) {
             x86_local_optimization_pass(_curr_func, FALSE);
@@ -914,24 +931,14 @@ void unit_codegen(void)
             continue;
         }
 
-        x86_regvars_init();
+        //x86_regvars_init();
 
         if (!option_no_basic_opt) {
             x86_local_optimization_pass(_curr_func, FALSE);
         }
 
         if (option_enable_optimization) {
-            //x86_regvars_create(_curr_func);
-
-            //if (!option_no_copy_opt) {
-            //    x86_dataflow_optimize_redundant_copies(_curr_func);
-            //}
-
-            x86_caching_pass(_curr_func);
-
-            if (!option_no_copy_opt) {
-                x86_dataflow_optimize_redundant_copies(_curr_func);
-            }
+            _perform_optimizations();
         }
 
         if (!option_no_regalloc) {
