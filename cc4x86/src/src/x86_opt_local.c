@@ -476,12 +476,12 @@ static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
 
-        //switch (insn->in_code) {
-        //case x86insn_sse_movss:
-        //case x86insn_sse_movsd:
-        //    _try_optimize_movss(function, insn, after_regvars);
-        //    break;
-        //}
+        switch (insn->in_code) {
+        case x86insn_sse_movss:
+        case x86insn_sse_movsd:
+            _try_optimize_movss(function, insn, after_regvars);
+            break;
+        }
     }
 
     allocator_free(allocator_per_function_pool, _usage_arr, sizeof(void *) * function->func_insn_count);
@@ -519,22 +519,17 @@ static void _kill_unused_labels(function_desc *function)
 }
 
 //
-// Итерация оптимизации. Оптимизатор пытается объединить идущие подряд инструкции в более эффективные формы.
+// Итерация оптимизации.
+// Делается линейная оптимизация внутри блоков и распространение констант.
 void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 {
-    int old_insn_count;
+    _optimize_dword_insns(function);
 
-    function->func_insn_count = unit_get_instruction_count(function);
-
-    do {
-        old_insn_count = function->func_insn_count;
-
-        _optimize_dword_insns(function);
+    if (after_regvars) {
         _optimize_float_insn(function, after_regvars);
-        _kill_unused_labels(function);
+    }
 
-        function->func_insn_count = unit_get_instruction_count(function);
-    } while (function->func_insn_count != old_insn_count);
+    _kill_unused_labels(function);
 }
 
 

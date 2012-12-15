@@ -133,7 +133,5 @@ void x86_caching_pass(function_desc *function)
 
     _caching_pass(function, x86op_dword);
     _caching_pass(function, x86op_float);
-
-    //x86_local_optimization_pass(function, TRUE);
 }
 

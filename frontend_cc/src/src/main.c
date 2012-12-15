@@ -15,9 +15,10 @@ struct option_decl {
     BOOL *          flag_address;
     const char *    comment;
 } options[] = {
-    {"nocodegen",           &option_no_codegen,             "disable any code generation"},
-    {"noregalloc",          &option_no_regalloc,            "don't replace pseudo-registers with real registers"},
-    {"nocopyopt",           &option_no_copy_opt,            "don't do copy propagation"},
+    {"nocodegen",           &option_no_codegen,             "disables any code generation"},
+    {"noregalloc",          &option_no_regalloc,            "disables registers coloring"},
+    {"nocopyopt",           &option_no_copy_opt,            "disables copy propagation"},
+    {"nocaching",           &option_no_copy_opt,            "disables caching of variables in memory"},
     {"nobasicopt",          &option_no_basic_opt,           "don't optimize well-known sequences after code generation"},
     {"optimize",            &option_enable_optimization,    "enables code optimization"},
     {"noinline",            &option_no_inline,              "disables functions inlining"},

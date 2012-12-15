@@ -593,7 +593,7 @@ static void _exposeduses_find_all_usages_of_definition(int reg, x86_instruction 
 // Строит таблицу определений в данной функции (т.е. массив модифицирующих инструкций).
 static void _reachingdef_build_table(function_desc *function, x86_operand_type type)
 {
-    int max_count = unit_get_instruction_count(function);
+    int max_count = function->func_insn_count;
     int count = 0, block = 0;
     x86_instruction *insn;
 
@@ -1235,32 +1235,11 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 }
 
 //
-// Повторяет оптимизацию, пока она даёт результаты.
-static void _optimize_redundant_copies_iterative(function_desc *function, x86_operand_type type)
-{
-    int function_length, new_length = unit_get_instruction_count(function);
-
-    do {
-        function_length = new_length;
-
-        x86_dataflow_init_use_def_tables(function, type);
-        _redundantcopies_build_table(function, type);
-        _redundantcopies_build_inout(function, type);
-
-        _optimize_redundant_copies(function, type);
-        x86_local_optimization_pass(function, TRUE);
-
-        new_length = unit_get_instruction_count(function);
-        ASSERT(new_length <= function_length);
-    } while (new_length < function_length);
-}
-
-//
 // Внешний интерфейс для функции распространения копирований.
 void x86_dataflow_optimize_redundant_copies(function_desc *function)
 {
-    _optimize_redundant_copies_iterative(function, x86op_dword);
-    _optimize_redundant_copies_iterative(function, x86op_float);
+    _optimize_redundant_copies(function, x86op_dword);
+    _optimize_redundant_copies(function, x86op_float);
 }
 
 

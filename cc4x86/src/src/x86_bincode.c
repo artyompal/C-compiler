@@ -443,6 +443,8 @@ void bincode_insert_ternary_instruction(function_desc *function, x86_instruction
     } else {
         function->func_binary_code_end  = res;
     }
+
+    function->func_insn_count++;
 }
 
 void bincode_insert_instruction(function_desc *function, x86_instruction *pos, x86_instruction_code code,
@@ -543,6 +545,8 @@ void bincode_erase_instruction(function_desc *function, x86_instruction *insn)
     } else {
         function->func_binary_code      = insn->in_next;
     }
+
+    function->func_insn_count--;
 
     memset(insn, 0xee, sizeof(x86_instruction));
 }

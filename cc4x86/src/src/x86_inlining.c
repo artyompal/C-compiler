@@ -16,8 +16,6 @@ void x86_inlining_analyze_function(function_desc *function)
     x86_instruction *insn;
     function_desc *callee;
 
-    function->func_insn_count = unit_get_instruction_count(function);
-
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         if (insn->in_code == x86insn_call && insn->in_op1.op_loc == x86loc_symbol) {
             callee = unit_find_function(insn->in_op1.data.sym.name);
@@ -344,7 +342,5 @@ void x86_inlining_process_function(function_desc *function)
     for (callee = unit_get_functions_list(); callee; callee = callee->func_next)
         if (callee->func_insn_count < option_max_inline_insn || callee->func_is_static && callee->func_usage_count == 1)
             _inline_function_if_used(callee, function);
-
-    function->func_insn_count = unit_get_instruction_count(function);
 }
 

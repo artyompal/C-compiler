@@ -866,19 +866,24 @@ static void _reset_function_calling_stat()
 
 static void _perform_optimizations()
 {
-    int function_length, new_length = unit_get_instruction_count(_curr_func);
+    int function_length;
 
     do {
-        function_length = new_length;
+        function_length = _curr_func->func_insn_count;
 
         if (!option_no_copy_opt) {
             x86_dataflow_optimize_redundant_copies(_curr_func);
         }
 
-        x86_caching_pass(_curr_func);
+        if (!option_no_basic_opt) {
+            x86_local_optimization_pass(_curr_func, FALSE);
+        }
 
-        new_length = unit_get_instruction_count(_curr_func);
-    } while (new_length != function_length);
+        if (!option_no_caching) {
+            x86_caching_pass(_curr_func);
+        }
+    } while (_curr_func->func_insn_count != function_length);
+    // FIXME: определение факта оптимизаций по числу инструкций более некорректно.
 }
 
 void unit_codegen(void)
@@ -933,10 +938,6 @@ void unit_codegen(void)
 
         //x86_regvars_init();
 
-        if (!option_no_basic_opt) {
-            x86_local_optimization_pass(_curr_func, FALSE);
-        }
-
         if (option_enable_optimization) {
             _perform_optimizations();
         }
@@ -983,23 +984,6 @@ void unit_push_ternary_instruction(x86_instruction_code code, x86_operand *op1, 
     res->in_prev            = _curr_func->func_binary_code_end;
 
     _curr_func->func_binary_code_end = res;
-}
-
-
-//
-// Считает число инструкций в функции.
-//
-int unit_get_instruction_count(function_desc *function)
-{
-    int insn_count;
-    x86_instruction *insn;
-
-    insn_count = 0;
-
-    for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        insn_count++;
-    }
-
-    return insn_count;
+    _curr_func->func_insn_count++;
 }
 

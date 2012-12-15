@@ -37,7 +37,7 @@ typedef struct function_desc_decl {
     int                         func_labels_count;          // последняя аллоцированная метка в функции
     int                         func_pseudoregs_count[6];   // X86_REGISTER_TYPES_COUNT
 
-    // информация для инлайнинга:
+    // информация для оптимизации:
     int                         func_insn_count;            // количество инструкций во внутреннем представлении
     int                         func_usage_count;           // число вызовов этой функции
 
@@ -95,9 +95,6 @@ void            unit_push_nullary_instruction       (x86_instruction_code code);
 void            unit_push_unary_instruction         (x86_instruction_code code, x86_operand *op);
 void            unit_push_binary_instruction        (x86_instruction_code code, x86_operand *op1, x86_operand *op2);
 void            unit_push_ternary_instruction       (x86_instruction_code code, x86_operand *op1, x86_operand *op2, x86_operand *op3);
-
-// поддержка оптимизатора
-int             unit_get_instruction_count          (function_desc *function);
 
 
 #else
