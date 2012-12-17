@@ -50,13 +50,13 @@ static void _fixup_stack_address(x86_operand *op, int params_ofs, int locals_ofs
 //
 // Корректирует стековые адреса и псевдорегистры в данной инструкции.
 //
-static void _fixup_instruction(x86_instruction *inserted, int regs_ofs[X86_REGISTER_TYPES_COUNT],
+static void _fixup_instruction(x86_instruction *inserted, int regs_ofs[X86_TYPES_COUNT],
     int params_ofs, int locals_ofs)
 {
     int i, type, regs_cnt;
     int *regs[MAX_REGISTERS_PER_INSN];
 
-    for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
+    for (type = 0; type < X86_TYPES_COUNT; type++) {
         bincode_extract_pseudoregs_from_insn(inserted, type, regs, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
@@ -116,7 +116,7 @@ static void _patch_retval(function_desc *caller, x86_instruction *inserted, int 
 //
 
 static void _insert_function_code(x86_instruction *point, function_desc *callee, function_desc *caller,
-    int params_ofs, int locals_ofs, int regs_ofs[X86_REGISTER_TYPES_COUNT], int labels_ofs, int res_ofs)
+    int params_ofs, int locals_ofs, int regs_ofs[X86_TYPES_COUNT], int labels_ofs, int res_ofs)
 {
     x86_operand op;
     x86_instruction *insn, *inserted;
@@ -167,7 +167,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
     BOOL was = FALSE;
     x86_operand_type type;
     int params_total_sz = 0, params_ofs = 0, locals_ofs = 0, ofs, sz, labels_ofs, res_ofs = 0;
-    int regs_ofs[X86_REGISTER_TYPES_COUNT];
+    int regs_ofs[X86_TYPES_COUNT];
     x86_operand tmp;
     symbol *sym, *sym_copy;
     parameter *param;
@@ -296,7 +296,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 
 
         // Вставляем код функции с коррекцией локальных переменных и параметров, и обработкой return.
-        for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
+        for (type = 0; type < X86_TYPES_COUNT; type++) {
             regs_ofs[type] = caller->func_pseudoregs_count[type];
             caller->func_pseudoregs_count[type] += callee->func_pseudoregs_count[type];
         }

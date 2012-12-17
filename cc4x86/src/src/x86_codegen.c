@@ -982,7 +982,7 @@ static void _place_float_constants_into_data_section(void)
 
 // Точка входа в кодогенератор.
 
-AUX_CASSERT(sizeof(_curr_codegen_func->func_pseudoregs_count)/sizeof(int) == X86_REGISTER_TYPES_COUNT);
+AUX_CASSERT(sizeof(_curr_codegen_func->func_pseudoregs_count)/sizeof(int) == X86_TYPES_COUNT);
 
 void x86_codegen_do_function(function_desc *function)
 {
@@ -990,7 +990,7 @@ void x86_codegen_do_function(function_desc *function)
 
     _curr_codegen_func = function;
 
-    for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
+    for (type = 0; type < X86_TYPES_COUNT; type++) {
         _curr_codegen_func->func_pseudoregs_count[type] = 1;
     }
 

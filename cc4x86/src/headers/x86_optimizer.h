@@ -16,10 +16,11 @@ void    x86_optimize_after_register_coloring(function_desc *function);
 
 void    x86_caching_init                    ();
 void    x86_caching_pass                    (function_desc *function);
+void    x86_caching_setup_reg_info          (function_desc *function, x86_pseudoreg_info *pseudoregs_map, x86_operand_type type);
 
-void    x86_regvars_init                    ();
-void    x86_regvars_create                  (function_desc *function);
-void    x86_regvars_setup_offset            (function_desc *function, x86_pseudoreg_info *info, x86_operand_type type);
+//void    x86_regvars_init                    ();
+//void    x86_regvars_create                  (function_desc *function);
+//void    x86_regvars_setup_offset            (function_desc *function, x86_pseudoreg_info *info, x86_operand_type type);
 
 
 #else

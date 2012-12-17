@@ -91,6 +91,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
         if (x86_dataflow_is_pseudoreg_alive_before(conflict_reg)) {
             int ofs = pseudoregs_map[conflict_reg].reg_stack_location;
             int dbl = (pseudoregs_map[conflict_reg].reg_content_type == x86op_double);
+            ASSERT(pseudoregs_map[conflict_reg].reg_content_type != x86op_none);
 
             if (!skip_codegen) {
                 if (ofs == -1) {
@@ -130,6 +131,7 @@ static void _swap_register_for_push_all(function_desc *function, x86_instruction
 	if (x86_dataflow_is_pseudoreg_alive_after(reg) && pseudoregs_map[reg].reg_dirty) {
         int ofs = pseudoregs_map[reg].reg_stack_location;
         int dbl = (pseudoregs_map[reg].reg_content_type == x86op_double);
+        ASSERT(pseudoregs_map[reg].reg_content_type != x86op_none);
 
         if (ofs == -1) {
             ofs = x86_stack_frame_alloc_tmp_var(function, (dbl ? 8 : 4));
@@ -158,6 +160,7 @@ static void _restore_register(function_desc *function, x86_instruction *insn,
 
     if (x86_dataflow_is_pseudoreg_alive_before(reg)) {
         ASSERT(ofs != -1);
+        ASSERT(pseudoregs_map[reg].reg_content_type != x86op_none);
 
         if (type == x86op_dword) {
             bincode_insert_insn_reg_ebp_offset(function, insn, x86insn_int_mov, x86op_dword, ~real_reg, ofs);
@@ -178,6 +181,7 @@ static void _restore_register_after_merge(function_desc *function, x86_instructi
 
     if (x86_dataflow_is_pseudoreg_alive_after(reg)) {
         ASSERT(ofs != -1);
+        ASSERT(pseudoregs_map[reg].reg_content_type != x86op_none);
 
         if (!skip_codegen) {
             if (type == x86op_dword) {
@@ -505,7 +509,6 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
 
     // Инициализируем регистровую статистику.
     pseudoregs_map = allocator_alloc(allocator_global_pool, sizeof(x86_pseudoreg_info) * function->func_pseudoregs_count[type]);
-    //x86_regvars_setup_offset(function, pseudoregs_map, type); // TODO: implement analog of x86_regvars_setup_offset
 
     for (i = 0; i < function->func_pseudoregs_count[type]; i++)
     {
@@ -515,6 +518,9 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
         pseudoregs_map[i].reg_location          = -1;
         pseudoregs_map[i].reg_content_type      = x86op_none;
     }
+
+    x86_caching_setup_reg_info(function, pseudoregs_map, type);
+
 
     // Обрабатываем инструкции, требующие фиксированных регистров.
     _reserve_special_registers(function, pseudoregs_map, type);
@@ -574,6 +580,15 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
         for (i = 0; i < registers_count; i++) {
             saved_regs[i] = *registers[i];
         }
+
+        if (OP_IS_PSEUDO_REG(insn->in_op1, type)) {
+            pseudoregs_map[insn->in_op1.data.reg].reg_content_type = insn->in_op1.op_type;
+        }
+
+        if (OP_IS_PSEUDO_REG(insn->in_op2, type)) {
+            pseudoregs_map[insn->in_op2.data.reg].reg_content_type = insn->in_op2.op_type;
+        }
+
 
         // Заменяем все псевдорегистры на истинные регистры.
         for (i = 0; i < registers_count; i++) {

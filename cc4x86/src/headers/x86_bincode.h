@@ -74,7 +74,7 @@ typedef enum x86_operand_type_decl {
     x86op_unused,
 } x86_operand_type;
 
-#define X86_REGISTER_TYPES_COUNT ((int)x86op_float+1)
+#define X86_TYPES_COUNT ((int)x86op_float+1)
 
 // base и index €вл€ютс€ 32-битными регистрами
 typedef struct x86_address_decl {

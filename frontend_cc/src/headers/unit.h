@@ -35,7 +35,7 @@ typedef struct function_desc_decl {
     // информация аллокатора регистров:
     //int                         func_start_of_regvars[6];   // первая регистровая переменная (номер псевдорегистра)
     int                         func_labels_count;          // последняя аллоцированная метка в функции
-    int                         func_pseudoregs_count[6];   // X86_REGISTER_TYPES_COUNT
+    int                         func_pseudoregs_count[6];   // X86_TYPES_COUNT
 
     // информация для оптимизации:
     int                         func_insn_count;            // количество инструкций во внутреннем представлении

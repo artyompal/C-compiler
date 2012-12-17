@@ -330,13 +330,22 @@ static void _print_reg(x86_operand_type type, int reg)
         break;
 
     case x86op_float:
-    case x86op_double:
         if (reg < -8) {
-            _out_fmt("sse0x%x", reg);
+            _out_fmt("float0x%x", reg);
         } else if (reg < 0) {
             _out_fmt("xmm%d", ~reg);
         } else {
-            _out_fmt("sse%d", reg);
+            _out_fmt("float%d", reg);
+        }
+        break;
+
+    case x86op_double:
+        if (reg < -8) {
+            _out_fmt("double0x%x", reg);
+        } else if (reg < 0) {
+            _out_fmt("xmm%d", ~reg);
+        } else {
+            _out_fmt("double%d", reg);
         }
         break;
 

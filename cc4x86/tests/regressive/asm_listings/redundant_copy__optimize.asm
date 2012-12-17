@@ -9,9 +9,6 @@ _test proc
         push    ebp
         mov     ebp,esp
         sub     esp,104
-        push    edi
-        push    esi
-        push    ebx
 ; start of inline function test1
         mov     eax,256
         imul    eax,512
@@ -20,9 +17,6 @@ _test proc
         cmp     eax,0
         je      label0000
         mov     eax,1
-        pop     ebx
-        pop     esi
-        pop     edi
         mov     esp,ebp
         pop     ebp
         ret
@@ -35,80 +29,65 @@ label0000:
         cmp     eax,0
         je      label0001
         mov     eax,2
-        pop     ebx
-        pop     esi
-        pop     edi
         mov     esp,ebp
         pop     ebp
         ret
 label0001:
 ; start of inline function test3
-        mov     edi,444
-        mov     esi,222
-        mov     ebx,esi
-        cmp     edi,0
+        mov     eax,444
+        mov     ecx,222
+        mov     edx,ecx
+        cmp     eax,0
         jle     label0007
-        mov     esi,111
+        mov     ecx,111
         jmp     label0008
 label0007:
-        mov     ebx,edi
+        mov     edx,eax
 label0008:
-        add     ebx,esi
-        add     ebx,111
-        sub     ebx,edi
+        add     edx,ecx
+        add     edx,111
+        sub     edx,eax
 ; end of inline function test3
-        cmp     ebx,0
+        cmp     edx,0
         je      label0002
         mov     eax,3
-        pop     ebx
-        pop     esi
-        pop     edi
         mov     esp,ebp
         pop     ebp
         ret
 label0002:
 ; start of inline function test4
-        mov     edi,5
-        inc     edi
-        add     edi,4
-        sub     edi,10
+        mov     eax,5
+        inc     eax
+        add     eax,4
+        sub     eax,10
 ; end of inline function test4
-        cmp     edi,0
+        cmp     eax,0
         je      label0003
         mov     eax,4
-        pop     ebx
-        pop     esi
-        pop     edi
         mov     esp,ebp
         pop     ebp
         ret
 label0003:
 ; start of inline function test5
-        mov     edi,888
-        cmp     edi,0
+        mov     eax,888
+        cmp     eax,0
         jle     label000b
-        mov     esi,444
+        mov     ecx,444
         jmp     label000c
 label000b:
-        mov     esi,222
+        mov     ecx,222
 label000c:
-        add     esi,444
-        sub     esi,edi
+        add     ecx,444
+        sub     ecx,eax
 ; end of inline function test5
-        cmp     esi,0
+        cmp     ecx,0
         je      label0004
         mov     eax,3
-        pop     ebx
-        pop     esi
-        pop     edi
         mov     esp,ebp
         pop     ebp
         ret
 label0004:
         mov     eax,0
-        pop     ebx
-        pop     esi
-        pop     edi
         mov     esp,ebp
         pop     ebp
         ret

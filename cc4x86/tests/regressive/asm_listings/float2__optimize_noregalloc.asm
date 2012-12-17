@@ -19,10 +19,13 @@ public  ___unnamed_float_3
 _test proc
         create_stack_frame
 ; start of inline function test1
-        movss   sse10,dword ptr [___unnamed_float_1]
-        addss   sse10,dword ptr [___unnamed_float_0]
+        movss   float1,dword ptr [___unnamed_float_1]
+        movss   float9,dword ptr [___unnamed_float_0]
+        movss   float10,float1
+        addss   float10,float9
 ; end of inline function test1
-        comiss  sse10,dword ptr [___unnamed_float_2]
+        movss   float3,dword ptr [___unnamed_float_2]
+        comiss  float10,float3
         je      label0000
         mov     dword3,1
         set_retval      dword3
@@ -30,10 +33,13 @@ _test proc
         ret
 label0000:
 ; start of inline function test2
-        movss   sse15,dword ptr [___unnamed_float_0]
-        addss   sse15,dword ptr [___unnamed_float_0]
+        movss   float4,dword ptr [___unnamed_float_0]
+        movss   float14,dword ptr [___unnamed_float_0]
+        movss   float15,float4
+        addss   float15,float14
 ; end of inline function test2
-        comiss  sse15,dword ptr [___unnamed_float_3]
+        movss   float6,dword ptr [___unnamed_float_3]
+        comiss  float15,float6
         je      label0001
         mov     dword6,2
         set_retval      dword6

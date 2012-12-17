@@ -2458,7 +2458,7 @@ __rasterize_triangle_2i endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,72
+        sub     esp,76
         lea     eax,[ebp+8]
         mov     ecx,192
         add     ecx,[eax]
@@ -2545,7 +2545,7 @@ label0001:
         movq    qword ptr [ecx+8],xmm0
         movq    xmm0,qword ptr [eax+16]
         movq    qword ptr [ecx+16],xmm0
-        movss   dword ptr [ebp-64],xmm0
+        movsd   qword ptr [ebp-68],xmm0
 label0003:
         lea     eax,[ebp-52]
         lea     ecx,dword ptr [___unnamed_float_2]
@@ -2594,16 +2594,16 @@ label0005:
         push    eax
         call    _vec4f_dot
         add     esp,8
-        movss   dword ptr [ebp-68],xmm0
+        movss   dword ptr [ebp-72],xmm0
         lea     eax,[ebp+20]
         push    dword ptr [eax]
         lea     eax,[ebp-40]
         push    eax
         call    _vec4f_dot
         add     esp,8
-        movss   dword ptr [ebp-72],xmm0
-        movss   xmm0,dword ptr [ebp-68]
-        divss   xmm0,dword ptr [ebp-72]
+        movss   dword ptr [ebp-76],xmm0
+        movss   xmm0,dword ptr [ebp-72]
+        divss   xmm0,dword ptr [ebp-76]
         lea     eax,[ebp-60]
         movss   dword ptr [eax],xmm0
         lea     eax,[ebp-60]
@@ -2853,7 +2853,7 @@ __transform_to_screen_space endp
 __rasterize_polygon_4f proc
         push    ebp
         mov     ebp,esp
-        sub     esp,164
+        sub     esp,168
         push    ebx
         lea     eax,[ebp+8]
         push    dword ptr [eax]
@@ -2934,7 +2934,7 @@ label0003:
         movq    qword ptr [eax],xmm0
         lea     eax,[ebp-136]
         inc     dword ptr [eax]
-        movss   dword ptr [ebp-164],xmm0
+        movsd   qword ptr [ebp-168],xmm0
         jmp     label0003
 label0004:
         lea     eax,[ebp-136]

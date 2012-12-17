@@ -8,36 +8,36 @@
 _test proc
         push    ebp
         mov     ebp,esp
-        sub     esp,52
+        sub     esp,44
         mov     eax,2
         mov     ecx,3
         mov     edx,4
+        mov     [ebp-4],eax
+        mov     eax,ecx
+        mov     [ebp-12],edx
+        xor     edx,edx
+        div     dword ptr [ebp-4]
         mov     [ebp-24],eax
         mov     eax,ecx
-        mov     [ebp-28],edx
         xor     edx,edx
-        div     dword ptr [ebp-24]
+        div     dword ptr [ebp-4]
+        mov     [ebp-28],eax
+        mov     eax,[ebp-24]
+        mul     dword ptr [ebp-28]
+        mov     [ebp-24],eax
+        mov     eax,5
+        xor     edx,edx
+        div     dword ptr [ebp-12]
         mov     [ebp-32],eax
-        mov     eax,ecx
+        mov     eax,5
         xor     edx,edx
-        div     dword ptr [ebp-24]
+        div     dword ptr [ebp-12]
         mov     [ebp-36],eax
         mov     eax,[ebp-32]
         mul     dword ptr [ebp-36]
         mov     [ebp-32],eax
-        mov     eax,5
-        xor     edx,edx
-        div     dword ptr [ebp-28]
-        mov     [ebp-40],eax
-        mov     eax,5
-        xor     edx,edx
-        div     dword ptr [ebp-28]
-        mov     [ebp-44],eax
-        mov     eax,[ebp-40]
-        mul     dword ptr [ebp-44]
-        mov     [ebp-40],eax
-        mov     eax,[ebp-32]
-        add     eax,[ebp-40]
+        mov     eax,[ebp-24]
+        add     eax,[ebp-32]
         cmp     eax,2
         je      label0000
         mov     ecx,1
@@ -46,9 +46,9 @@ _test proc
         pop     ebp
         ret
 label0000:
-        mov     eax,[ebp-28]
+        mov     eax,[ebp-12]
         xor     edx,edx
-        div     dword ptr [ebp-24]
+        div     dword ptr [ebp-4]
         cmp     eax,2
         je      label0001
         mov     ecx,2
@@ -68,7 +68,7 @@ label0001:
         pop     ebp
         ret
 label0002:
-        mov     eax,[ebp-24]
+        mov     eax,[ebp-4]
         mul     ecx
         cmp     eax,6
         je      label0003
@@ -78,7 +78,7 @@ label0002:
         pop     ebp
         ret
 label0003:
-        mov     eax,[ebp-24]
+        mov     eax,[ebp-4]
         mul     ecx
         cmp     eax,6
         je      label0004
@@ -100,17 +100,17 @@ label0004:
         ret
 label0005:
         mov     eax,2
-        mov     [ebp-24],eax
+        mov     [ebp-4],eax
         mov     eax,3
         xor     edx,edx
-        div     dword ptr [ebp-24]
-        mov     [ebp-48],eax
+        div     dword ptr [ebp-4]
+        mov     [ebp-40],eax
         mov     eax,4
         xor     edx,edx
-        div     dword ptr [ebp-24]
-        mov     [ebp-52],eax
-        mov     eax,[ebp-48]
-        mul     dword ptr [ebp-52]
+        div     dword ptr [ebp-4]
+        mov     [ebp-44],eax
+        mov     eax,[ebp-40]
+        mul     dword ptr [ebp-44]
         cmp     eax,2
         je      label0006
         mov     ecx,7
