@@ -526,9 +526,9 @@ void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 {
     _optimize_dword_insns(function);
 
-    //if (after_regvars) {
-    //    _optimize_float_insn(function, after_regvars);
-    //}
+    if (after_regvars) {
+        _optimize_float_insn(function, after_regvars);
+    }
 
     _kill_unused_labels(function);
 }

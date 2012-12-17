@@ -142,9 +142,14 @@ _rasterizer_init proc
         mov     ebp,esp
         sub     esp,76
         push    ebx
-        movss   xmm0,dword ptr [ebp+24]
-        movss   xmm1,dword ptr [ebp+28]
-        movss   xmm2,dword ptr [ebp+32]
+        movss   xmm0,dword ptr [ebp-8]
+        movss   xmm1,dword ptr [ebp-4]
+        movss   xmm2,dword ptr [ebp-12]
+        movss   xmm3,dword ptr [ebp-20]
+        movss   xmm4,dword ptr [ebp-24]
+        movss   xmm5,dword ptr [ebp+24]
+        movss   xmm6,dword ptr [ebp+28]
+        movss   xmm7,dword ptr [ebp+32]
         mov     eax,[ebp+20]
         mov     ecx,[ebp+16]
         mov     edx,[ebp+12]
@@ -156,310 +161,249 @@ _rasterizer_init proc
         mov     dword ptr [__height],ebx
         mov     dword ptr [__pitch],eax
 ; start of inline function matrix4f_make_perspective
-        cvtsi2ss        xmm3,edx
-        cvtsi2ss        xmm4,ecx
-        divss   xmm3,xmm4
-        movss   xmm4,xmm1
-        movss   xmm5,xmm0
-        mov     eax,(offset __mvproj_matrix)
-        mulss   xmm2,xmm5
-        movss   xmm6,xmm2
-        mulss   xmm6,xmm3
-        mov     ebx,eax
-        movss   xmm3,xmm5
-        divss   xmm3,xmm6
-        movss   dword ptr [ebx],xmm3
-        movss   xmm3,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+4],xmm3
-        movss   xmm3,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+8],xmm3
-        movss   xmm3,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+12],xmm3
-        movss   xmm3,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+16],xmm3
-        movss   xmm3,xmm5
-        divss   xmm3,xmm2
-        movss   dword ptr [eax+20],xmm3
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+24],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+28],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+32],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+36],xmm2
-        movss   xmm2,xmm4
-        subss   xmm2,xmm5
-        movss   xmm3,xmm4
-        divss   xmm3,xmm2
-        movss   dword ptr [eax+40],xmm3
-        movss   xmm2,dword ptr [___unnamed_float_1]
-        movss   dword ptr [eax+44],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+48],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+52],xmm2
+        movss   dword ptr [ebp-8],xmm0
+        cvtsi2ss        xmm0,edx
+        movss   dword ptr [ebp-4],xmm1
+        cvtsi2ss        xmm1,ecx
+        divss   xmm0,xmm1
+        movss   xmm1,xmm6
+        movss   dword ptr [ebp-12],xmm2
         movss   xmm2,xmm5
-        mulss   xmm2,xmm4
-        subss   xmm5,xmm4
-        divss   xmm2,xmm5
-        movss   dword ptr [eax+56],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+60],xmm2
+        mov     eax,(offset __mvproj_matrix)
+        mulss   xmm7,xmm2
+        movss   dword ptr [ebp-20],xmm3
+        movss   xmm3,xmm7
+        mulss   xmm3,xmm0
+        mov     ebx,eax
+        movss   xmm0,xmm2
+        divss   xmm0,xmm3
+        movss   dword ptr [ebx],xmm0
+        mov     dword ptr [eax+4],0
+        mov     dword ptr [eax+8],0
+        mov     dword ptr [eax+12],0
+        mov     dword ptr [eax+16],0
+        movss   xmm0,xmm2
+        divss   xmm0,xmm7
+        movss   dword ptr [eax+20],xmm0
+        mov     dword ptr [eax+24],0
+        mov     dword ptr [eax+28],0
+        mov     dword ptr [eax+32],0
+        mov     dword ptr [eax+36],0
+        movss   xmm0,xmm1
+        subss   xmm0,xmm2
+        movss   xmm3,xmm1
+        divss   xmm3,xmm0
+        movss   dword ptr [eax+40],xmm3
+        mov     dword ptr [eax+44],1065353216
+        mov     dword ptr [eax+48],0
+        mov     dword ptr [eax+52],0
+        movss   xmm0,xmm2
+        mulss   xmm0,xmm1
+        subss   xmm2,xmm1
+        divss   xmm0,xmm2
+        movss   dword ptr [eax+56],xmm0
+        mov     dword ptr [eax+60],0
 ; end of inline function matrix4f_make_perspective
 ; start of inline function matrix4f_make_viewport
-        movss   xmm2,xmm1
-        movss   xmm3,xmm0
-        cvtsi2ss        xmm4,ecx
-        cvtsi2ss        xmm5,edx
+        movss   xmm0,xmm6
+        movss   xmm1,xmm5
+        cvtsi2ss        xmm2,ecx
+        cvtsi2ss        xmm3,edx
         mov     eax,(offset __viewport_matrix)
         mov     ebx,eax
-        movss   xmm6,dword ptr [___unnamed_float_3]
-        movss   xmm7,xmm5
-        mulss   xmm7,xmm6
+        movss   xmm7,xmm3
+        mulss   xmm7,dword ptr [___unnamed_float_3]
         movss   dword ptr [ebx],xmm7
-        movss   xmm6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+4],xmm6
-        movss   xmm6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+8],xmm6
-        movss   xmm6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+12],xmm6
-        movss   xmm6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+16],xmm6
-        movss   xmm6,xmm4
-        xorps   xmm6,dword ptr [___unnamed_float4_4]
-        movss   xmm7,dword ptr [___unnamed_float_3]
-        mulss   xmm6,xmm7
-        movss   dword ptr [eax+20],xmm6
-        movss   xmm6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+24],xmm6
-        movss   xmm6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+28],xmm6
-        movss   xmm6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+32],xmm6
-        movss   xmm6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+36],xmm6
-        subss   xmm2,xmm3
-        movss   dword ptr [eax+40],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_2]
-        movss   dword ptr [eax+44],xmm2
-        movss   xmm2,dword ptr [___unnamed_float_3]
-        mulss   xmm5,xmm2
-        movss   dword ptr [eax+48],xmm5
-        movss   xmm2,dword ptr [___unnamed_float_3]
-        mulss   xmm4,xmm2
-        movss   dword ptr [eax+52],xmm4
-        movss   dword ptr [eax+56],xmm3
-        movss   xmm2,dword ptr [___unnamed_float_1]
-        movss   dword ptr [eax+60],xmm2
+        mov     dword ptr [eax+4],0
+        mov     dword ptr [eax+8],0
+        mov     dword ptr [eax+12],0
+        mov     dword ptr [eax+16],0
+        movss   xmm7,xmm2
+        xorps   xmm7,dword ptr [___unnamed_float4_4]
+        mulss   xmm7,dword ptr [___unnamed_float_3]
+        movss   dword ptr [eax+20],xmm7
+        mov     dword ptr [eax+24],0
+        mov     dword ptr [eax+28],0
+        mov     dword ptr [eax+32],0
+        mov     dword ptr [eax+36],0
+        subss   xmm0,xmm1
+        movss   dword ptr [eax+40],xmm0
+        mov     dword ptr [eax+44],0
+        mulss   xmm3,dword ptr [___unnamed_float_3]
+        movss   dword ptr [eax+48],xmm3
+        mulss   xmm2,dword ptr [___unnamed_float_3]
+        movss   dword ptr [eax+52],xmm2
+        movss   dword ptr [eax+56],xmm1
+        mov     dword ptr [eax+60],1065353216
 ; end of inline function matrix4f_make_viewport
 ; start of inline function vec4f_assign
-        movss   xmm2,dword ptr [___unnamed_float_1]
-        movss   xmm3,xmm0
-        movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm5,dword ptr [___unnamed_float_2]
+        movss   xmm0,xmm5
         mov     eax,(offset __clip_z_near_base)
         mov     ebx,eax
-        movss   dword ptr [ebx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   xmm1,xmm4
+        movss   dword ptr [ebx],xmm1
+        movss   xmm1,dword ptr [ebp-20]
+        movss   dword ptr [eax+4],xmm1
+        movss   dword ptr [eax+8],xmm0
+        movss   xmm0,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_assign
-        movss   xmm2,xmm1
-        comiss  xmm2,xmm0
+        movss   xmm0,xmm6
+        comiss  xmm0,xmm5
         jbe     label0000
-        movss   xmm2,dword ptr [___unnamed_float_1]
         jmp     label0001
 label0000:
-        movss   xmm2,dword ptr [___unnamed_float_5]
 label0001:
 ; start of inline function vec4f_assign
-        movss   xmm3,dword ptr [___unnamed_float_1]
-        movss   dword ptr [ebp-4],xmm2
-        movss   xmm2,xmm3
-        movss   xmm3,dword ptr [ebp-4]
-        movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm5,dword ptr [___unnamed_float_2]
+        movss   xmm0,dword ptr [ebp-4]
         mov     eax,(offset __clip_z_near_norm)
         mov     ebx,eax
-        movss   dword ptr [ebx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   xmm1,xmm4
+        movss   dword ptr [ebx],xmm1
+        movss   xmm1,dword ptr [ebp-20]
+        movss   dword ptr [eax+4],xmm1
+        movss   dword ptr [eax+8],xmm0
+        movss   xmm0,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   xmm2,dword ptr [___unnamed_float_1]
-        movss   xmm3,xmm1
-        movss   xmm4,dword ptr [___unnamed_float_2]
-        movss   xmm5,dword ptr [___unnamed_float_2]
+        movss   xmm0,xmm6
         mov     eax,(offset __clip_z_far_base)
         mov     ebx,eax
-        movss   dword ptr [ebx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   xmm1,xmm4
+        movss   dword ptr [ebx],xmm1
+        movss   xmm1,dword ptr [ebp-20]
+        movss   dword ptr [eax+4],xmm1
+        movss   dword ptr [eax+8],xmm0
+        movss   xmm0,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_assign
-        comiss  xmm1,xmm0
+        comiss  xmm6,xmm5
         jbe     label0002
-        movss   xmm0,dword ptr [___unnamed_float_5]
         jmp     label0003
 label0002:
-        movss   xmm0,dword ptr [___unnamed_float_1]
 label0003:
 ; start of inline function vec4f_assign
-        movss   xmm1,dword ptr [___unnamed_float_1]
-        movss   xmm2,xmm1
-        movss   xmm3,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm4,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm5,xmm0
+        movss   xmm0,dword ptr [ebp-8]
         mov     eax,(offset __clip_z_far_norm)
         mov     ebx,eax
-        movss   dword ptr [ebx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   dword ptr [ebx],xmm4
+        movss   xmm1,dword ptr [ebp-20]
+        movss   dword ptr [eax+4],xmm1
+        movss   xmm1,xmm0
+        movss   dword ptr [eax+8],xmm1
+        movss   xmm1,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm1
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm2,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm3,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm4,xmm0
-        cvtsi2ss        xmm0,edx
-        movss   xmm1,dword ptr [___unnamed_float_1]
-        divss   xmm1,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_5]
-        addss   xmm0,xmm1
-        movss   xmm5,xmm0
+        cvtsi2ss        xmm1,edx
+        movss   xmm2,dword ptr [___unnamed_float_1]
+        divss   xmm2,xmm1
+        movss   xmm1,dword ptr [___unnamed_float_5]
+        addss   xmm1,xmm2
+        movss   xmm4,xmm1
         mov     eax,(offset __clip_plane_left_base)
         mov     ebx,eax
-        movss   dword ptr [ebx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   xmm1,xmm4
+        movss   dword ptr [ebx],xmm1
+        movss   xmm1,dword ptr [ebp-20]
+        movss   dword ptr [eax+4],xmm1
+        movss   xmm1,xmm0
+        movss   dword ptr [eax+8],xmm1
+        movss   xmm1,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm1
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm2,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm3,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm4,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm5,xmm0
         mov     eax,(offset __clip_plane_left_norm)
         mov     ebx,eax
-        movss   dword ptr [ebx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   dword ptr [ebx],xmm4
+        movss   xmm1,dword ptr [ebp-20]
+        movss   dword ptr [eax+4],xmm1
+        movss   xmm1,xmm0
+        movss   dword ptr [eax+8],xmm1
+        movss   xmm1,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm1
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm2,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm3,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm4,xmm0
-        cvtsi2ss        xmm0,edx
+        cvtsi2ss        xmm1,edx
+        movss   xmm2,dword ptr [___unnamed_float_1]
+        divss   xmm2,xmm1
         movss   xmm1,dword ptr [___unnamed_float_1]
-        divss   xmm1,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        subss   xmm0,xmm1
-        movss   xmm5,xmm0
+        subss   xmm1,xmm2
+        movss   xmm4,xmm1
         mov     eax,(offset __clip_plane_right_base)
         mov     edx,eax
-        movss   dword ptr [edx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   xmm1,xmm4
+        movss   dword ptr [edx],xmm1
+        movss   xmm1,dword ptr [ebp-20]
+        movss   dword ptr [eax+4],xmm1
+        movss   xmm1,xmm0
+        movss   dword ptr [eax+8],xmm1
+        movss   xmm1,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm1
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm2,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm3,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm4,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_5]
-        movss   xmm5,xmm0
         mov     eax,(offset __clip_plane_right_norm)
         mov     edx,eax
-        movss   dword ptr [edx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   xmm1,xmm4
+        movss   dword ptr [edx],xmm1
+        movss   xmm1,dword ptr [ebp-20]
+        movss   dword ptr [eax+4],xmm1
+        movss   xmm1,xmm0
+        movss   dword ptr [eax+8],xmm1
+        movss   xmm1,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm1
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm2,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm3,xmm0
-        cvtsi2ss        xmm0,ecx
-        movss   xmm1,dword ptr [___unnamed_float_1]
-        divss   xmm1,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_5]
-        addss   xmm0,xmm1
-        movss   xmm4,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm5,xmm0
+        cvtsi2ss        xmm1,ecx
+        movss   xmm2,dword ptr [___unnamed_float_1]
+        divss   xmm2,xmm1
+        movss   xmm1,dword ptr [___unnamed_float_5]
+        addss   xmm1,xmm2
+        movss   xmm3,xmm1
         mov     eax,(offset __clip_plane_top_base)
         mov     ecx,eax
-        movss   dword ptr [ecx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   xmm1,xmm4
+        movss   dword ptr [ecx],xmm1
+        movss   xmm1,xmm3
+        movss   dword ptr [eax+4],xmm1
+        movss   xmm1,xmm0
+        movss   dword ptr [eax+8],xmm1
+        movss   xmm1,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm1
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm2,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm3,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm4,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm5,xmm0
         mov     eax,(offset __clip_plane_top_norm)
         mov     ecx,eax
-        movss   dword ptr [ecx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   xmm1,xmm4
+        movss   dword ptr [ecx],xmm1
+        movss   xmm1,xmm3
+        movss   dword ptr [eax+4],xmm1
+        movss   xmm1,xmm0
+        movss   dword ptr [eax+8],xmm1
+        movss   xmm1,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm1
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm2,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm3,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm4,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm5,xmm0
         mov     eax,(offset __clip_plane_bottom_base)
         mov     ecx,eax
-        movss   dword ptr [ecx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   xmm1,xmm4
+        movss   dword ptr [ecx],xmm1
+        movss   xmm1,xmm3
+        movss   dword ptr [eax+4],xmm1
+        movss   xmm1,xmm0
+        movss   dword ptr [eax+8],xmm1
+        movss   xmm1,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm1
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm2,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm3,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_5]
-        movss   xmm4,xmm0
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm5,xmm0
         mov     eax,(offset __clip_plane_bottom_norm)
         mov     ecx,eax
-        movss   dword ptr [ecx],xmm5
-        movss   dword ptr [eax+4],xmm4
-        movss   dword ptr [eax+8],xmm3
-        movss   dword ptr [eax+12],xmm2
+        movss   dword ptr [ecx],xmm4
+        movss   dword ptr [eax+4],xmm3
+        movss   dword ptr [eax+8],xmm0
+        movss   xmm0,dword ptr [ebp-12]
+        movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_assign
         pop     ebx
         mov     esp,ebp
@@ -564,8 +508,7 @@ label0000:
         cmp     ecx,0
         je      label0003
         cvtsi2ss        xmm4,ecx
-        movss   xmm5,dword ptr [___unnamed_float_6]
-        mulss   xmm4,xmm5
+        mulss   xmm4,dword ptr [___unnamed_float_6]
         mov     ecx,ebx
         mov     ecx,[ecx]
         mov     esi,ecx
@@ -951,12 +894,16 @@ _rasterizer_triangle3f proc
         push    edi
         push    esi
         push    ebx
-        movss   xmm0,dword ptr [ebp-684]
-        movss   xmm1,dword ptr [ebp-688]
-        movss   xmm2,dword ptr [ebp-676]
-        movsd   xmm3,qword ptr [ebp-180]
-        movsd   xmm4,qword ptr [ebp-188]
-        movsd   xmm5,qword ptr [ebp-196]
+        movss   xmm0,dword ptr [ebp-432]
+        movss   xmm1,dword ptr [ebp-428]
+        movss   xmm2,dword ptr [ebp-684]
+        movss   xmm3,dword ptr [ebp-688]
+        movss   xmm4,dword ptr [ebp-676]
+        movsd   xmm5,qword ptr [ebp-180]
+        movsd   xmm6,qword ptr [ebp-188]
+        movsd   xmm7,qword ptr [ebp-196]
+        movss   dword ptr [ebp-432],xmm0
+        movss   xmm0,dword ptr [ebp-720]
         mov     eax,[ebp+28]
         mov     ecx,[ebp+16]
         mov     edx,[ebp+24]
@@ -967,19 +914,20 @@ _rasterizer_triangle3f proc
         mov     [ebp+28],eax
         lea     eax,[ebp-196]
 ; start of inline function vec4f_assign
-        movss   xmm6,dword ptr [___unnamed_float_1]
-        movss   xmm7,dword ptr [edi+8]
-        movss   dword ptr [ebp-684],xmm0
-        movss   xmm0,dword ptr [edi+4]
-        movss   dword ptr [ebp-688],xmm1
-        movss   xmm1,dword ptr [edi]
+        movss   dword ptr [ebp-428],xmm1
+        movss   xmm1,dword ptr [edi+8]
+        movss   dword ptr [ebp-684],xmm2
+        movss   xmm2,dword ptr [edi+4]
+        movss   dword ptr [ebp-688],xmm3
+        movss   xmm3,dword ptr [edi]
         lea     edi,[ebp-716]
         mov     [ebp+16],ecx
         mov     ecx,edi
-        movss   dword ptr [ecx],xmm1
-        movss   dword ptr [edi+4],xmm0
-        movss   dword ptr [edi+8],xmm7
-        movss   dword ptr [edi+12],xmm6
+        movss   dword ptr [ecx],xmm3
+        movss   dword ptr [edi+4],xmm2
+        movss   dword ptr [edi+8],xmm1
+        movss   xmm1,xmm0
+        movss   dword ptr [edi+12],xmm1
 ; end of inline function vec4f_assign
         lea     ecx,dword ptr [__mvproj_matrix]
         push    ecx
@@ -996,18 +944,19 @@ _rasterizer_triangle3f proc
         lea     eax,[ebp-196]
         add     eax,24
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm6,xmm0
         movss   xmm0,dword ptr [edi+8]
-        movss   xmm7,xmm0
+        movss   xmm1,xmm0
         movss   xmm0,dword ptr [edi+4]
-        movss   xmm1,dword ptr [edi]
+        movss   xmm2,xmm0
+        movss   xmm0,dword ptr [edi]
+        movss   xmm3,xmm0
         lea     ecx,[ebp-716]
         mov     edx,ecx
-        movss   dword ptr [edx],xmm1
-        movss   dword ptr [ecx+4],xmm0
-        movss   dword ptr [ecx+8],xmm7
-        movss   dword ptr [ecx+12],xmm6
+        movss   dword ptr [edx],xmm3
+        movss   dword ptr [ecx+4],xmm2
+        movss   dword ptr [ecx+8],xmm1
+        movss   xmm0,dword ptr [ebp-720]
+        movss   dword ptr [ecx+12],xmm0
 ; end of inline function vec4f_assign
         lea     ecx,dword ptr [__mvproj_matrix]
         push    ecx
@@ -1026,18 +975,19 @@ _rasterizer_triangle3f proc
         lea     eax,[ebp-196]
         add     eax,48
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm6,xmm0
         movss   xmm0,dword ptr [edi+8]
-        movss   xmm7,xmm0
+        movss   xmm1,xmm0
         movss   xmm0,dword ptr [edi+4]
-        movss   xmm1,dword ptr [edi]
+        movss   xmm2,xmm0
+        movss   xmm0,dword ptr [edi]
+        movss   xmm3,xmm0
         lea     ecx,[ebp-716]
         mov     edx,ecx
-        movss   dword ptr [edx],xmm1
-        movss   dword ptr [ecx+4],xmm0
-        movss   dword ptr [ecx+8],xmm7
-        movss   dword ptr [ecx+12],xmm6
+        movss   dword ptr [edx],xmm3
+        movss   dword ptr [ecx+4],xmm2
+        movss   dword ptr [ecx+8],xmm1
+        movss   xmm0,dword ptr [ebp-720]
+        movss   dword ptr [ecx+12],xmm0
 ; end of inline function vec4f_assign
         lea     ecx,dword ptr [__mvproj_matrix]
         push    ecx
@@ -1256,8 +1206,6 @@ label000a:
         cmp     eax,dword ptr [__height]
         jge     label000c
 ; start of inline function _rasterize_triangle_1i
-        movss   xmm0,dword ptr [___unnamed_float_2]
-        movss   xmm1,dword ptr [___unnamed_float_2]
         mov     eax,8
         add     eax,edx
         mov     edi,8
@@ -1278,9 +1226,8 @@ label000a:
         mov     eax,edx
         cmp     eax,esi
         jle     label001d
-        movss   dword ptr [esp-4],xmm0
-        movss   dword ptr [esp-8],xmm1
-        sub     esp,8
+        push    dword ptr [ebp-428]
+        push    dword ptr [ebp-432]
         push    dword ptr [ecx+4]
         push    dword ptr [ecx]
         push    edi
@@ -1293,9 +1240,8 @@ label001d:
         mov     eax,edx
         cmp     eax,ebx
         jge     label001f
-        movss   dword ptr [esp-4],xmm0
-        movss   dword ptr [esp-8],xmm1
-        sub     esp,8
+        push    dword ptr [ebp-428]
+        push    dword ptr [ebp-432]
         mov     eax,[ebp-436]
         push    dword ptr [eax+4]
         push    dword ptr [eax]
@@ -1306,9 +1252,8 @@ label001d:
         add     esp,28
         jmp     label0020
 label001f:
-        movss   dword ptr [esp-4],xmm0
-        movss   dword ptr [esp-8],xmm1
-        sub     esp,8
+        push    dword ptr [ebp-428]
+        push    dword ptr [ebp-432]
         push    dword ptr [ecx+4]
         push    dword ptr [ecx]
         push    edi
@@ -1323,10 +1268,12 @@ label001c:
         mov     ecx,edx
         cmp     ecx,esi
         jge     label0022
+        movss   xmm0,dword ptr [ebp-428]
         xorps   xmm0,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-4],xmm0
-        xorps   xmm1,dword ptr [___unnamed_float4_4]
-        movss   dword ptr [esp-8],xmm1
+        movss   xmm0,dword ptr [ebp-432]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
+        movss   dword ptr [esp-8],xmm0
         sub     esp,8
         mov     eax,[ebp-436]
         push    dword ptr [eax+4]
@@ -1341,10 +1288,12 @@ label0022:
         mov     eax,edx
         cmp     eax,ebx
         jle     label0024
+        movss   xmm0,dword ptr [ebp-428]
         xorps   xmm0,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-4],xmm0
-        xorps   xmm1,dword ptr [___unnamed_float4_4]
-        movss   dword ptr [esp-8],xmm1
+        movss   xmm0,dword ptr [ebp-432]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
+        movss   dword ptr [esp-8],xmm0
         sub     esp,8
         mov     [ebp-448],edi
         mov     edi,[ebp-440]
@@ -1357,10 +1306,12 @@ label0022:
         add     esp,28
         jmp     label0025
 label0024:
+        movss   xmm0,dword ptr [ebp-428]
         xorps   xmm0,dword ptr [___unnamed_float4_4]
         movss   dword ptr [esp-4],xmm0
-        xorps   xmm1,dword ptr [___unnamed_float4_4]
-        movss   dword ptr [esp-8],xmm1
+        movss   xmm0,dword ptr [ebp-432]
+        xorps   xmm0,dword ptr [___unnamed_float4_4]
+        movss   dword ptr [esp-8],xmm0
         sub     esp,8
         mov     [ebp-448],edi
         mov     edi,[ebp-440]

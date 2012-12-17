@@ -224,44 +224,32 @@ _matrix4f_make_perspective proc
         movss   float3,float22
         divss   float3,float2
         movss   dword ptr [dword62],float3
-        movss   float4,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+4],float4
-        movss   float5,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+8],float5
-        movss   float6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+12],float6
-        movss   float7,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+16],float7
+        mov     dword ptr [dword62+4],0
+        mov     dword ptr [dword62+8],0
+        mov     dword ptr [dword62+12],0
+        mov     dword ptr [dword62+16],0
         movss   float8,float22
         divss   float8,float1
         movss   dword ptr [dword62+20],float8
-        movss   float9,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+24],float9
-        movss   float10,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+28],float10
-        movss   float11,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+32],float11
-        movss   float12,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+36],float12
+        mov     dword ptr [dword62+24],0
+        mov     dword ptr [dword62+28],0
+        mov     dword ptr [dword62+32],0
+        mov     dword ptr [dword62+36],0
         movss   float13,float26
         subss   float13,float22
         movss   float14,float26
         divss   float14,float13
         movss   dword ptr [dword62+40],float14
-        movss   float15,dword ptr [___unnamed_float_1]
-        movss   dword ptr [dword62+44],float15
-        movss   float16,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+48],float16
-        movss   float17,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+52],float17
+        mov     dword ptr [dword62+44],1065353216
+        mov     dword ptr [dword62+48],0
+        mov     dword ptr [dword62+52],0
         movss   float18,float22
         mulss   float18,float26
         movss   float19,float22
         subss   float19,float26
         divss   float18,float19
         movss   dword ptr [dword62+56],float18
-        movss   float20,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword62+60],float20
+        mov     dword ptr [dword62+60],0
         destroy_stack_frame
         ret
 _matrix4f_make_perspective endp
@@ -273,47 +261,33 @@ _matrix4f_make_viewport proc
         movss   float22,dword ptr [ebp+16]
         movss   float21,dword ptr [ebp+12]
         mov     dword54,[ebp+8]
-        movss   float1,dword ptr [___unnamed_float_3]
         movss   float2,float21
-        mulss   float2,float1
+        mulss   float2,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword54],float2
-        movss   float3,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword54+4],float3
-        movss   float4,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword54+8],float4
-        movss   float5,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword54+12],float5
-        movss   float6,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword54+16],float6
+        mov     dword ptr [dword54+4],0
+        mov     dword ptr [dword54+8],0
+        mov     dword ptr [dword54+12],0
+        mov     dword ptr [dword54+16],0
         movss   float7,float22
         xorps   float7,dword ptr [___unnamed_float4_4]
-        movss   float8,dword ptr [___unnamed_float_3]
-        mulss   float7,float8
+        mulss   float7,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword54+20],float7
-        movss   float9,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword54+24],float9
-        movss   float10,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword54+28],float10
-        movss   float11,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword54+32],float11
-        movss   float12,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword54+36],float12
+        mov     dword ptr [dword54+24],0
+        mov     dword ptr [dword54+28],0
+        mov     dword ptr [dword54+32],0
+        mov     dword ptr [dword54+36],0
         movss   float13,float23
         subss   float13,float24
         movss   dword ptr [dword54+40],float13
-        movss   float14,dword ptr [___unnamed_float_2]
-        movss   dword ptr [dword54+44],float14
-        movss   float15,dword ptr [___unnamed_float_3]
+        mov     dword ptr [dword54+44],0
         movss   float16,float21
-        mulss   float16,float15
+        mulss   float16,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword54+48],float16
-        movss   float17,dword ptr [___unnamed_float_3]
         movss   float18,float22
-        mulss   float18,float17
+        mulss   float18,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword54+52],float18
         movss   dword ptr [dword54+56],float24
-        movss   float20,dword ptr [___unnamed_float_1]
-        movss   dword ptr [dword54+60],float20
+        mov     dword ptr [dword54+60],1065353216
         destroy_stack_frame
         ret
 _matrix4f_make_viewport endp
@@ -427,17 +401,13 @@ _rasterizer_init proc
         pop_all
         comiss  float61,float62
         jbe     label0000
-        movss   float9,dword ptr [___unnamed_float_1]
-        movss   float63,float9
         jmp     label0001
 label0000:
-        movss   float10,dword ptr [___unnamed_float_5]
-        movss   float63,float10
 label0001:
         push_all
         movss   float11,dword ptr [___unnamed_float_1]
         push_arg        float11,4
-        push_arg        float63,4
+        push_arg        dword ptr [ebp-4],4
         movss   float12,dword ptr [___unnamed_float_2]
         push_arg        float12,4
         movss   float13,dword ptr [___unnamed_float_2]
@@ -462,17 +432,13 @@ label0001:
         pop_all
         comiss  float61,float62
         jbe     label0002
-        movss   float18,dword ptr [___unnamed_float_5]
-        movss   float64,float18
         jmp     label0003
 label0002:
-        movss   float19,dword ptr [___unnamed_float_1]
-        movss   float64,float19
 label0003:
         push_all
         movss   float20,dword ptr [___unnamed_float_1]
         push_arg        float20,4
-        push_arg        float64,4
+        push_arg        dword ptr [ebp-8],4
         movss   float21,dword ptr [___unnamed_float_2]
         push_arg        float21,4
         movss   float22,dword ptr [___unnamed_float_2]
@@ -708,8 +674,7 @@ label0000:
         and     dword23,255
         je      label0003
         cvtsi2ss        float1,dword23
-        movss   float2,dword ptr [___unnamed_float_6]
-        mulss   float1,float2
+        mulss   float1,dword ptr [___unnamed_float_6]
         mov     dword33,[dword84]
         mov     dword36,dword33
         and     dword36,65280
