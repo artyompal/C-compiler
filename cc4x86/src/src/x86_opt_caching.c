@@ -116,7 +116,7 @@ static void _caching_pass(function_desc *function, x86_operand_type type)
     //function->func_start_of_regvars[type] = function->func_pseudoregs_count[type];
 
     _cache_every_variable(function, type);
-    x86_dataflow_init_alive_reg_tables(function, type);
+    //x86_dataflow_init_alive_reg_tables(function, type);
 }
 
 

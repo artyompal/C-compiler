@@ -8,15 +8,14 @@
 _test proc
         push    ebp
         mov     ebp,esp
-        sub     esp,20
-        push    edi
-        mov     edi,2
+        sub     esp,24
+        mov     eax,2
+        mov     [ebp-24],eax
         mov     eax,4
         cdq
-        idiv    edi
+        idiv    dword ptr [ebp-24]
         add     eax,[ebp-12]
         sub     eax,3
-        pop     edi
         mov     esp,ebp
         pop     ebp
         ret

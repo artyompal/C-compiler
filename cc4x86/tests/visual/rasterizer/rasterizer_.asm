@@ -1893,15 +1893,17 @@ __transform_to_screen_space proc
         push    eax
         call    _matrix4f_transform
         add     esp,12
+        lea     eax,[ebp-16]
         movss   xmm0,dword ptr [___unnamed_float_1]
-        divss   xmm0,dword ptr [ebp-4]
+        divss   xmm0,dword ptr [eax+12]
         movss   dword ptr [ebp-20],xmm0
         movss   xmm0,dword ptr [ebp-16]
         mulss   xmm0,dword ptr [ebp-20]
         cvttss2si       eax,xmm0
         mov     ecx,[ebp+8]
         mov     [ecx],eax
-        movss   xmm0,dword ptr [ebp-12]
+        lea     eax,[ebp-16]
+        movss   xmm0,dword ptr [eax+4]
         mulss   xmm0,dword ptr [ebp-20]
         cvttss2si       eax,xmm0
         mov     ecx,4
@@ -1935,13 +1937,11 @@ __rasterize_polygon_4f proc
         push    ebp
         mov     ebp,esp
         sub     esp,140
-        push    ebx
         push    dword ptr [ebp+8]
         call    __clip_poligon
         add     esp,4
         cmp     eax,0
         jne     label0000
-        pop     ebx
         mov     esp,ebp
         pop     ebp
         ret
@@ -1974,11 +1974,13 @@ label0003:
         lea     eax,[ebp-132]
         mov     ecx,[ebp-136]
         sal     ecx,4
-        mov     edx,[ebp+8]
-        mov     ebx,[ebp-136]
-        imul    ebx,24
-        movq    xmm0,qword ptr [edx+ebx+16]
-        movq    qword ptr [eax+ecx+8],xmm0
+        add     eax,ecx
+        mov     ecx,[ebp+8]
+        mov     edx,[ebp-136]
+        imul    edx,24
+        add     ecx,edx
+        movq    xmm0,qword ptr [ecx+16]
+        movq    qword ptr [eax+8],xmm0
         inc     dword ptr [ebp-136]
         movss   dword ptr [ebp-140],xmm0
         jmp     label0003
@@ -2009,7 +2011,6 @@ label0006:
         inc     dword ptr [ebp-136]
         jmp     label0006
 label0007:
-        pop     ebx
         mov     esp,ebp
         pop     ebp
         ret
@@ -2055,34 +2056,41 @@ _rasterizer_triangle3f proc
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     eax,[ebp+20]
-        movq    xmm0,qword ptr [eax]
-        movq    qword ptr [ebp-180],xmm0
+        lea     eax,[ebp-196]
+        mov     ecx,[ebp+20]
+        movq    xmm0,qword ptr [ecx]
+        movq    qword ptr [eax+16],xmm0
         push    dword ptr [ebp+12]
         lea     eax,[ebp-196]
         add     eax,24
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     eax,[ebp+24]
-        movq    xmm0,qword ptr [eax]
-        movq    qword ptr [ebp-156],xmm0
+        lea     eax,[ebp-196]
+        add     eax,24
+        mov     ecx,[ebp+24]
+        movq    xmm0,qword ptr [ecx]
+        movq    qword ptr [eax+16],xmm0
         push    dword ptr [ebp+16]
         lea     eax,[ebp-196]
         add     eax,48
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     eax,[ebp+28]
-        movq    xmm0,qword ptr [eax]
-        movq    qword ptr [ebp-132],xmm0
+        lea     eax,[ebp-196]
+        add     eax,48
+        mov     ecx,[ebp+28]
+        movq    xmm0,qword ptr [ecx]
+        movq    qword ptr [eax+16],xmm0
+        lea     eax,[ebp-196]
         movq    xmm0,qword ptr [ebp-196]
-        movq    qword ptr [ebp-124],xmm0
+        movq    qword ptr [eax+72],xmm0
         movq    xmm0,qword ptr [ebp-188]
-        movq    qword ptr [ebp-116],xmm0
+        movq    qword ptr [eax+80],xmm0
         movq    xmm0,qword ptr [ebp-180]
-        movq    qword ptr [ebp-108],xmm0
-        mov     dword ptr [ebp-4],4
+        movq    qword ptr [eax+88],xmm0
+        lea     eax,[ebp-196]
+        mov     dword ptr [eax+192],4
         lea     eax,[ebp-196]
         push    eax
         call    __rasterize_polygon_4f

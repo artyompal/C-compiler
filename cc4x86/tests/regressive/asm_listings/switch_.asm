@@ -35,6 +35,9 @@ label0004:
         mov     esp,ebp
         pop     ebp
         ret
+        mov     esp,ebp
+        pop     ebp
+        ret
 _test_case endp
 
 _test_case2 proc
@@ -70,6 +73,9 @@ label0005:
         mov     esp,ebp
         pop     ebp
         ret
+        mov     esp,ebp
+        pop     ebp
+        ret
 _test_case2 endp
 
 _test_default proc
@@ -92,6 +98,13 @@ label0002:
         ret
 label0003:
         mov     eax,0
+        mov     esp,ebp
+        pop     ebp
+        ret
+        mov     eax,1
+        mov     esp,ebp
+        pop     ebp
+        ret
         mov     esp,ebp
         pop     ebp
         ret

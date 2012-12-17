@@ -876,14 +876,25 @@ static void _perform_optimizations()
         }
 
         if (!option_no_basic_opt) {
-            x86_local_optimization_pass(_curr_func, FALSE);
-        }
-
-        if (!option_no_caching) {
-            x86_caching_pass(_curr_func);
+            x86_local_optimization_pass(_curr_func, TRUE);
         }
     } while (_curr_func->func_insn_count != function_length);
-    // FIXME: определение факта оптимизаций по числу инструкций более некорректно.
+
+    if (!option_no_caching) {
+        x86_caching_pass(_curr_func);
+    }
+
+    do {
+        function_length = _curr_func->func_insn_count;
+
+        if (!option_no_copy_opt) {
+            x86_dataflow_optimize_redundant_copies(_curr_func);
+        }
+
+        if (!option_no_basic_opt) {
+            x86_local_optimization_pass(_curr_func, TRUE);
+        }
+    } while (_curr_func->func_insn_count != function_length);
 }
 
 void unit_codegen(void)

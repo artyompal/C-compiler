@@ -1150,6 +1150,10 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
     int usage_count, i, j, x, y, regs_cnt, *regs[MAX_REGISTERS_PER_INSN];
     BOOL replace_allowed;
 
+    x86_dataflow_init_use_def_tables(function, type);
+    _redundantcopies_build_table(function, type);
+    _redundantcopies_build_inout(function, type);
+
     usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
 
     for (mov = function->func_binary_code; mov; mov = next) {

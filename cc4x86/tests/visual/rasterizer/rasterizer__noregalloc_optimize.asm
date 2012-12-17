@@ -71,92 +71,80 @@ public  ___unnamed_float_6
 
 _matrix4f_transform proc
         create_stack_frame
-        mov     dword81,[ebp+8]
-        mov     dword80,[ebp+16]
-        mov     dword79,[ebp+12]
-        mov     dword78,dword79
-        mov     dword77,dword80
-        mov     dword76,dword81
-        movss   sse1,dword ptr [dword78+4]
-        mulss   sse1,dword ptr [dword77+16]
-        movss   sse2,dword ptr [dword78]
-        mulss   sse2,dword ptr [dword77]
+        mov     dword75,[ebp+8]
+        mov     dword74,[ebp+16]
+        mov     dword73,[ebp+12]
+        movss   sse1,dword ptr [dword73+4]
+        mulss   sse1,dword ptr [dword74+16]
+        movss   sse2,dword ptr [dword73]
+        mulss   sse2,dword ptr [dword74]
         addss   sse2,sse1
-        movss   sse3,dword ptr [dword78+8]
-        mulss   sse3,dword ptr [dword77+32]
+        movss   sse3,dword ptr [dword73+8]
+        mulss   sse3,dword ptr [dword74+32]
         addss   sse2,sse3
-        movss   sse4,dword ptr [dword78+12]
-        mulss   sse4,dword ptr [dword77+48]
+        movss   sse4,dword ptr [dword73+12]
+        mulss   sse4,dword ptr [dword74+48]
         addss   sse2,sse4
-        movss   dword ptr [dword76],sse2
-        movss   sse5,dword ptr [dword78]
-        mulss   sse5,dword ptr [dword77+4]
-        movss   sse6,dword ptr [dword78+4]
-        mulss   sse6,dword ptr [dword77+20]
+        movss   dword ptr [dword75],sse2
+        movss   sse5,dword ptr [dword73]
+        mulss   sse5,dword ptr [dword74+4]
+        movss   sse6,dword ptr [dword73+4]
+        mulss   sse6,dword ptr [dword74+20]
         addss   sse5,sse6
-        movss   sse7,dword ptr [dword78+8]
-        mulss   sse7,dword ptr [dword77+36]
+        movss   sse7,dword ptr [dword73+8]
+        mulss   sse7,dword ptr [dword74+36]
         addss   sse5,sse7
-        movss   sse8,dword ptr [dword78+12]
-        mulss   sse8,dword ptr [dword77+52]
+        movss   sse8,dword ptr [dword73+12]
+        mulss   sse8,dword ptr [dword74+52]
         addss   sse5,sse8
-        movss   dword ptr [dword76+4],sse5
-        movss   sse9,dword ptr [dword78]
-        mulss   sse9,dword ptr [dword77+8]
-        movss   sse10,dword ptr [dword78+4]
-        mulss   sse10,dword ptr [dword77+24]
+        movss   dword ptr [dword75+4],sse5
+        movss   sse9,dword ptr [dword73]
+        mulss   sse9,dword ptr [dword74+8]
+        movss   sse10,dword ptr [dword73+4]
+        mulss   sse10,dword ptr [dword74+24]
         addss   sse9,sse10
-        movss   sse11,dword ptr [dword78+8]
-        mulss   sse11,dword ptr [dword77+40]
+        movss   sse11,dword ptr [dword73+8]
+        mulss   sse11,dword ptr [dword74+40]
         addss   sse9,sse11
-        movss   sse12,dword ptr [dword78+12]
-        mulss   sse12,dword ptr [dword77+56]
+        movss   sse12,dword ptr [dword73+12]
+        mulss   sse12,dword ptr [dword74+56]
         addss   sse9,sse12
-        movss   dword ptr [dword76+8],sse9
-        movss   sse13,dword ptr [dword78]
-        mulss   sse13,dword ptr [dword77+12]
-        movss   sse14,dword ptr [dword78+4]
-        mulss   sse14,dword ptr [dword77+28]
+        movss   dword ptr [dword75+8],sse9
+        movss   sse13,dword ptr [dword73]
+        mulss   sse13,dword ptr [dword74+12]
+        movss   sse14,dword ptr [dword73+4]
+        mulss   sse14,dword ptr [dword74+28]
         addss   sse13,sse14
-        movss   sse15,dword ptr [dword78+8]
-        mulss   sse15,dword ptr [dword77+44]
+        movss   sse15,dword ptr [dword73+8]
+        mulss   sse15,dword ptr [dword74+44]
         addss   sse13,sse15
-        movss   sse16,dword ptr [dword78+12]
-        mulss   sse16,dword ptr [dword77+60]
+        movss   sse16,dword ptr [dword73+12]
+        mulss   sse16,dword ptr [dword74+60]
         addss   sse13,sse16
-        movss   dword ptr [dword76+12],sse13
+        movss   dword ptr [dword75+12],sse13
         destroy_stack_frame
         ret
 _matrix4f_transform endp
 
 _rasterizer_init proc
         create_stack_frame
-        movss   sse199,dword ptr [ebp+32]
-        movss   sse198,dword ptr [ebp+28]
-        movss   sse197,dword ptr [ebp+24]
-        mov     dword392,[ebp+8]
-        mov     dword391,[ebp+12]
-        mov     dword390,[ebp+16]
-        mov     dword389,[ebp+20]
-        movss   sse196,sse197
-        movss   sse195,sse198
-        movss   sse194,sse199
-        mov     dword388,dword389
-        mov     dword387,dword390
-        mov     dword386,dword391
-        mov     dword385,dword392
-        movss   sse177,sse196
-        movss   sse175,sse195
-        mov     dword ptr [__dbgprintf],dword385
-        mov     dword ptr [__width],dword386
-        mov     dword ptr [__height],dword387
-        mov     dword ptr [__pitch],dword388
+        movss   sse177,dword ptr [ebp+24]
+        movss   sse175,dword ptr [ebp+28]
+        movss   sse173,dword ptr [ebp+32]
+        mov     dword377,[ebp+20]
+        mov     dword376,[ebp+16]
+        mov     dword375,[ebp+12]
+        mov     dword374,[ebp+8]
+        mov     dword ptr [__dbgprintf],dword374
+        mov     dword ptr [__width],dword375
+        mov     dword ptr [__height],dword376
+        mov     dword ptr [__pitch],dword377
 ; start of inline function matrix4f_make_perspective
-        cvtsi2ss        sse1,dword386
-        cvtsi2ss        sse2,dword387
+        cvtsi2ss        sse1,dword375
+        cvtsi2ss        sse2,dword376
         divss   sse1,sse2
         mov     dword378,(offset __mvproj_matrix)
-        movss   sse129,sse194
+        movss   sse129,sse173
         mulss   sse129,sse177
         movss   sse130,sse129
         mulss   sse130,sse1
@@ -203,8 +191,8 @@ _rasterizer_init proc
         movss   dword ptr [dword378+60],sse148
 ; end of inline function matrix4f_make_perspective
 ; start of inline function matrix4f_make_viewport
-        cvtsi2ss        sse3,dword387
-        cvtsi2ss        sse4,dword386
+        cvtsi2ss        sse3,dword376
+        cvtsi2ss        sse4,dword375
         mov     dword379,(offset __viewport_matrix)
         movss   sse152,dword ptr [___unnamed_float_3]
         movss   sse153,sse4
@@ -310,7 +298,7 @@ label0003:
         movss   sse23,dword ptr [___unnamed_float_1]
         movss   sse24,dword ptr [___unnamed_float_2]
         movss   sse25,dword ptr [___unnamed_float_2]
-        cvtsi2ss        sse26,dword386
+        cvtsi2ss        sse26,dword375
         movss   sse27,dword ptr [___unnamed_float_1]
         divss   sse27,sse26
         movss   sse28,dword ptr [___unnamed_float_5]
@@ -336,7 +324,7 @@ label0003:
         movss   sse33,dword ptr [___unnamed_float_1]
         movss   sse34,dword ptr [___unnamed_float_2]
         movss   sse35,dword ptr [___unnamed_float_2]
-        cvtsi2ss        sse36,dword386
+        cvtsi2ss        sse36,dword375
         movss   sse37,dword ptr [___unnamed_float_1]
         divss   sse37,sse36
         movss   sse38,dword ptr [___unnamed_float_1]
@@ -361,7 +349,7 @@ label0003:
 ; start of inline function vec4f_assign
         movss   sse43,dword ptr [___unnamed_float_1]
         movss   sse44,dword ptr [___unnamed_float_2]
-        cvtsi2ss        sse45,dword387
+        cvtsi2ss        sse45,dword376
         movss   sse46,dword ptr [___unnamed_float_1]
         divss   sse46,sse45
         movss   sse47,dword ptr [___unnamed_float_5]
@@ -412,8 +400,7 @@ _rasterizer_init endp
 
 _rasterizer_begin_frame proc
         create_stack_frame
-        mov     dword5,[ebp+8]
-        mov     dword4,dword5
+        mov     dword4,[ebp+8]
         mov     dword ptr [__videomem],dword4
         destroy_stack_frame
         ret
@@ -421,8 +408,7 @@ _rasterizer_begin_frame endp
 
 _rasterizer_set_mvproj proc
         create_stack_frame
-        mov     dword8,[ebp+8]
-        mov     dword7,dword8
+        mov     dword7,[ebp+8]
         mov     dword4,(offset __mvproj_matrix)
         mov     dword5,dword7
         mov     dword6,16
@@ -433,8 +419,7 @@ _rasterizer_set_mvproj endp
 
 _rasterizer_set_color proc
         create_stack_frame
-        mov     dword5,[ebp+8]
-        mov     dword4,dword5
+        mov     dword4,[ebp+8]
         mov     dword ptr [__color],dword4
         destroy_stack_frame
         ret
@@ -442,12 +427,9 @@ _rasterizer_set_color endp
 
 _rasterizer_set_texture proc
         create_stack_frame
-        mov     dword15,[ebp+8]
-        mov     dword14,[ebp+12]
-        mov     dword13,[ebp+16]
-        mov     dword12,dword13
-        mov     dword11,dword14
-        mov     dword10,dword15
+        mov     dword12,[ebp+16]
+        mov     dword11,[ebp+12]
+        mov     dword10,[ebp+8]
         mov     dword ptr [__texture_data],dword10
         mov     dword ptr [__texture_width],dword11
         mov     dword ptr [__texture_height],dword12
@@ -457,33 +439,24 @@ _rasterizer_set_texture endp
 
 __rasterize_horiz_line proc
         create_stack_frame
-        movss   sse34,dword ptr [ebp+24]
-        movss   sse33,dword ptr [ebp+20]
-        movss   sse32,dword ptr [ebp+28]
-        movss   sse31,dword ptr [ebp+32]
-        mov     dword126,[ebp+16]
-        mov     dword125,[ebp+8]
-        mov     dword124,[ebp+12]
-        movss   sse30,sse31
-        movss   sse29,sse32
-        movss   sse28,sse33
-        movss   sse27,sse34
-        mov     dword123,dword124
-        mov     dword122,dword125
-        mov     dword121,dword126
-        movss   sse18,sse28
-        movss   sse16,sse27
+        movss   sse22,dword ptr [ebp+32]
+        movss   sse21,dword ptr [ebp+28]
+        movss   sse18,dword ptr [ebp+20]
+        movss   sse16,dword ptr [ebp+24]
+        mov     dword105,[ebp+12]
+        mov     dword103,[ebp+8]
+        mov     dword102,[ebp+16]
         mov     dword3,dword ptr [__pitch]
-        imul    dword3,dword121
+        imul    dword3,dword102
         add     dword3,dword ptr [__videomem]
-        mov     dword7,dword122
+        mov     dword7,dword103
         sal     dword7,2
         add     dword3,dword7
         mov     dword104,dword3
-        mov     dword11,dword123
+        mov     dword11,dword105
         sal     dword11,2
         add     dword11,dword104
-        mov     dword15,dword122
+        mov     dword15,dword103
         sal     dword15,2
         sub     dword11,dword15
 label0000:
@@ -545,10 +518,10 @@ label0000:
         mov     [dword104],dword68
 label0003:
         movss   sse9,sse18
-        addss   sse9,sse29
+        addss   sse9,sse21
         movss   sse18,sse9
         movss   sse10,sse16
-        addss   sse10,sse30
+        addss   sse10,sse22
         movss   sse16,sse10
         add     dword104,4
         cmp     dword104,dword11
@@ -559,84 +532,88 @@ __rasterize_horiz_line endp
 
 __clip_on_plain proc
         create_stack_frame
-        mov     dword383,[ebp+8]
-        mov     dword382,[ebp+12]
-        mov     dword381,[ebp+16]
-        mov     dword380,[ebp+20]
-        mov     dword379,dword380
-        mov     dword378,dword381
-        mov     dword377,dword382
-        mov     dword376,dword383
-        mov     dword ptr [dword376+192],0
-        mov     dword352,dword377
-        mov     dword8,dword377
+        mov     dword358,[ebp+20]
+        mov     dword354,[ebp+16]
+        mov     dword351,[ebp+12]
+        mov     dword350,[ebp+8]
+        mov     dword ptr [dword350+192],0
+        mov     dword352,dword351
+        mov     dword8,dword351
         add     dword8,24
         mov     dword353,dword8
 label0001:
-        mov     dword14,[dword377+192]
+        mov     dword14,[dword351+192]
         imul    dword14,24
-        mov     dword16,dword377
+        mov     dword16,dword351
         add     dword16,dword14
         cmp     dword16,dword353
         jle     label0002
 ; start of inline function vec4f_subtract
         movss   sse28,dword ptr [dword352]
-        subss   sse28,dword ptr [dword378]
+        subss   sse28,dword ptr [dword354]
+        movss   dword ptr [ebp-24],sse28
         movss   sse29,dword ptr [dword352+4]
-        subss   sse29,dword ptr [dword378+4]
+        subss   sse29,dword ptr [dword354+4]
+        movss   dword ptr [ebp-20],sse29
         movss   sse30,dword ptr [dword352+8]
-        subss   sse30,dword ptr [dword378+8]
+        subss   sse30,dword ptr [dword354+8]
+        movss   dword ptr [ebp-16],sse30
         movss   sse31,dword ptr [dword352+12]
-        subss   sse31,dword ptr [dword378+12]
+        subss   sse31,dword ptr [dword354+12]
+        movss   dword ptr [ebp-12],sse31
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   sse48,sse29
-        mulss   sse48,dword ptr [dword379+4]
-        movss   sse49,sse28
-        mulss   sse49,dword ptr [dword379]
+        movss   sse48,dword ptr [ebp-20]
+        mulss   sse48,dword ptr [dword358+4]
+        movss   sse49,dword ptr [ebp-24]
+        mulss   sse49,dword ptr [dword358]
         addss   sse49,sse48
-        movss   sse50,sse30
-        mulss   sse50,dword ptr [dword379+8]
+        movss   sse50,dword ptr [ebp-16]
+        mulss   sse50,dword ptr [dword358+8]
         addss   sse49,sse50
-        movss   sse51,sse31
-        mulss   sse51,dword ptr [dword379+12]
+        movss   sse51,dword ptr [ebp-12]
+        mulss   sse51,dword ptr [dword358+12]
         addss   sse49,sse51
 ; end of inline function vec4f_dot
 ; start of inline function vec4f_subtract
         movss   sse33,dword ptr [dword353]
-        subss   sse33,dword ptr [dword378]
+        subss   sse33,dword ptr [dword354]
+        movss   dword ptr [ebp-24],sse33
         movss   sse34,dword ptr [dword353+4]
-        subss   sse34,dword ptr [dword378+4]
+        subss   sse34,dword ptr [dword354+4]
+        movss   dword ptr [ebp-20],sse34
         movss   sse35,dword ptr [dword353+8]
-        subss   sse35,dword ptr [dword378+8]
+        subss   sse35,dword ptr [dword354+8]
+        movss   dword ptr [ebp-16],sse35
         movss   sse36,dword ptr [dword353+12]
-        subss   sse36,dword ptr [dword378+12]
+        subss   sse36,dword ptr [dword354+12]
+        movss   dword ptr [ebp-12],sse36
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   sse53,sse34
-        mulss   sse53,dword ptr [dword379+4]
-        movss   sse54,sse33
-        mulss   sse54,dword ptr [dword379]
+        movss   sse53,dword ptr [ebp-20]
+        mulss   sse53,dword ptr [dword358+4]
+        movss   sse54,dword ptr [ebp-24]
+        mulss   sse54,dword ptr [dword358]
         addss   sse54,sse53
-        movss   sse55,sse35
-        mulss   sse55,dword ptr [dword379+8]
+        movss   sse55,dword ptr [ebp-16]
+        mulss   sse55,dword ptr [dword358+8]
         addss   sse54,sse55
-        movss   sse56,sse36
-        mulss   sse56,dword ptr [dword379+12]
+        movss   sse56,dword ptr [ebp-12]
+        mulss   sse56,dword ptr [dword358+12]
         addss   sse54,sse56
 ; end of inline function vec4f_dot
         movss   sse3,dword ptr [___unnamed_float_2]
         comiss  sse3,sse49
         ja      label0003
-        mov     dword36,[dword376+192]
-        inc     dword ptr [dword376+192]
+        mov     dword36,[dword350+192]
+        inc     dword ptr [dword350+192]
         imul    dword36,24
         movq    sse4,qword ptr [dword352]
-        movq    qword ptr [dword376+dword36],sse4
+        movq    qword ptr [dword350+dword36],sse4
         movq    sse4,qword ptr [dword352+8]
-        movq    qword ptr [dword376+dword36+8],sse4
+        movq    qword ptr [dword350+dword36+8],sse4
         movq    sse4,qword ptr [dword352+16]
-        movq    qword ptr [dword376+dword36+16],sse4
+        movq    qword ptr [dword350+dword36+16],sse4
 label0003:
         movss   sse5,dword ptr [___unnamed_float_2]
         comiss  sse5,sse49
@@ -653,79 +630,91 @@ label0006:
         jbe     label0004
 label0005:
 ; start of inline function vec4f_subtract
-        movss   sse38,dword ptr [dword378]
+        movss   sse38,dword ptr [dword354]
         subss   sse38,dword ptr [dword352]
-        movss   sse39,dword ptr [dword378+4]
+        movss   dword ptr [ebp-24],sse38
+        movss   sse39,dword ptr [dword354+4]
         subss   sse39,dword ptr [dword352+4]
-        movss   sse40,dword ptr [dword378+8]
+        movss   dword ptr [ebp-20],sse39
+        movss   sse40,dword ptr [dword354+8]
         subss   sse40,dword ptr [dword352+8]
-        movss   sse41,dword ptr [dword378+12]
+        movss   dword ptr [ebp-16],sse40
+        movss   sse41,dword ptr [dword354+12]
         subss   sse41,dword ptr [dword352+12]
+        movss   dword ptr [ebp-12],sse41
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_subtract
         movss   sse43,dword ptr [dword353]
         subss   sse43,dword ptr [dword352]
+        movss   dword ptr [ebp-40],sse43
         movss   sse44,dword ptr [dword353+4]
         subss   sse44,dword ptr [dword352+4]
+        movss   dword ptr [ebp-36],sse44
         movss   sse45,dword ptr [dword353+8]
         subss   sse45,dword ptr [dword352+8]
+        movss   dword ptr [ebp-32],sse45
         movss   sse46,dword ptr [dword353+12]
         subss   sse46,dword ptr [dword352+12]
+        movss   dword ptr [ebp-28],sse46
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   sse58,sse39
-        mulss   sse58,dword ptr [dword379+4]
-        movss   sse59,sse38
-        mulss   sse59,dword ptr [dword379]
+        movss   sse58,dword ptr [ebp-20]
+        mulss   sse58,dword ptr [dword358+4]
+        movss   sse59,dword ptr [ebp-24]
+        mulss   sse59,dword ptr [dword358]
         addss   sse59,sse58
-        movss   sse60,sse40
-        mulss   sse60,dword ptr [dword379+8]
+        movss   sse60,dword ptr [ebp-16]
+        mulss   sse60,dword ptr [dword358+8]
         addss   sse59,sse60
-        movss   sse61,sse41
-        mulss   sse61,dword ptr [dword379+12]
+        movss   sse61,dword ptr [ebp-12]
+        mulss   sse61,dword ptr [dword358+12]
         addss   sse59,sse61
 ; end of inline function vec4f_dot
         movss   sse9,sse59
 ; start of inline function vec4f_dot
-        movss   sse63,sse44
-        mulss   sse63,dword ptr [dword379+4]
-        movss   sse64,sse43
-        mulss   sse64,dword ptr [dword379]
+        movss   sse63,dword ptr [ebp-36]
+        mulss   sse63,dword ptr [dword358+4]
+        movss   sse64,dword ptr [ebp-40]
+        mulss   sse64,dword ptr [dword358]
         addss   sse64,sse63
-        movss   sse65,sse45
-        mulss   sse65,dword ptr [dword379+8]
+        movss   sse65,dword ptr [ebp-32]
+        mulss   sse65,dword ptr [dword358+8]
         addss   sse64,sse65
-        movss   sse66,sse46
-        mulss   sse66,dword ptr [dword379+12]
+        movss   sse66,dword ptr [ebp-28]
+        mulss   sse66,dword ptr [dword358+12]
         addss   sse64,sse66
 ; end of inline function vec4f_dot
         divss   sse9,sse64
 ; start of inline function vec4f_mul
-        movss   sse69,sse43
+        movss   sse69,dword ptr [ebp-40]
         mulss   sse69,sse9
-        movss   sse70,sse44
+        movss   dword ptr [ebp-40],sse69
+        movss   sse70,dword ptr [ebp-36]
         mulss   sse70,sse9
-        movss   sse71,sse45
+        movss   dword ptr [ebp-36],sse70
+        movss   sse71,dword ptr [ebp-32]
         mulss   sse71,sse9
-        movss   sse72,sse46
+        movss   dword ptr [ebp-32],sse71
+        movss   sse72,dword ptr [ebp-28]
         mulss   sse72,sse9
+        movss   dword ptr [ebp-28],sse72
 ; end of inline function vec4f_mul
 ; start of inline function vec4f_add
-        mov     dword72,[dword376+192]
+        mov     dword72,[dword350+192]
         imul    dword72,24
-        mov     dword74,dword376
+        mov     dword74,dword350
         add     dword74,dword72
         movss   sse23,dword ptr [dword352]
-        addss   sse23,sse69
+        addss   sse23,dword ptr [ebp-40]
         movss   dword ptr [dword74+dword72],sse23
         movss   sse24,dword ptr [dword352+4]
-        addss   sse24,sse70
+        addss   sse24,dword ptr [ebp-36]
         movss   dword ptr [dword74+4],sse24
         movss   sse25,dword ptr [dword352+8]
-        addss   sse25,sse71
+        addss   sse25,dword ptr [ebp-32]
         movss   dword ptr [dword74+8],sse25
         movss   sse26,dword ptr [dword352+12]
-        addss   sse26,sse72
+        addss   sse26,dword ptr [ebp-28]
         movss   dword ptr [dword74+12],sse26
 ; end of inline function vec4f_add
 ; start of inline function vec2f_subtract
@@ -735,83 +724,75 @@ label0005:
         add     dword78,dword353
         movss   sse16,dword ptr [dword78+dword353]
         subss   sse16,dword ptr [dword76+dword352]
+        movss   dword ptr [ebp-48],sse16
         movss   sse17,dword ptr [dword78+4]
         subss   sse17,dword ptr [dword76+4]
+        movss   dword ptr [ebp-44],sse17
 ; end of inline function vec2f_subtract
 ; start of inline function vec2f_mul
-        movss   sse20,sse16
+        movss   sse20,dword ptr [ebp-48]
         mulss   sse20,sse9
-        movss   sse21,sse17
+        movss   dword ptr [ebp-48],sse20
+        movss   sse21,dword ptr [ebp-44]
         mulss   sse21,sse9
+        movss   dword ptr [ebp-44],sse21
 ; end of inline function vec2f_mul
 ; start of inline function vec2f_add
         mov     dword84,16
         add     dword84,dword352
-        mov     dword88,[dword376+192]
+        mov     dword88,[dword350+192]
         imul    dword88,24
         movss   sse13,dword ptr [dword84+dword352]
-        addss   sse13,sse20
-        movss   dword ptr [dword376+dword88+16],sse13
+        addss   sse13,dword ptr [ebp-48]
+        movss   dword ptr [dword350+dword88+16],sse13
         movss   sse14,dword ptr [dword84+4]
-        addss   sse14,sse21
-        movss   dword ptr [dword376+dword88+20],sse14
+        addss   sse14,dword ptr [ebp-44]
+        movss   dword ptr [dword350+dword88+20],sse14
 ; end of inline function vec2f_add
-        inc     dword ptr [dword376+192]
+        inc     dword ptr [dword350+192]
 label0004:
         add     dword352,24
         add     dword353,24
         jmp     label0001
 label0002:
-        mov     dword98,[dword376+192]
-        inc     dword ptr [dword376+192]
+        mov     dword98,[dword350+192]
+        inc     dword ptr [dword350+192]
         imul    dword98,24
-        movq    sse11,qword ptr [dword376]
-        movq    qword ptr [dword376+dword98],sse11
-        movq    sse11,qword ptr [dword376+8]
-        movq    qword ptr [dword376+dword98+8],sse11
-        movq    sse11,qword ptr [dword376+16]
-        movq    qword ptr [dword376+dword98+16],sse11
+        movq    sse11,qword ptr [dword350]
+        movq    qword ptr [dword350+dword98],sse11
+        movq    sse11,qword ptr [dword350+8]
+        movq    qword ptr [dword350+dword98+8],sse11
+        movq    sse11,qword ptr [dword350+16]
+        movq    qword ptr [dword350+dword98+16],sse11
         destroy_stack_frame
         ret
 __clip_on_plain endp
 
 _rasterizer_triangle3f proc
         create_stack_frame
-        movss   sse167,dword ptr [ebp-684]
-        movss   sse166,dword ptr [ebp-688]
-        movss   sse165,dword ptr [ebp-676]
-        movsd   sse164,qword ptr [ebp-180]
-        movsd   sse163,qword ptr [ebp-188]
-        movsd   sse162,qword ptr [ebp-196]
-        mov     dword913,[ebp+28]
-        mov     dword912,[ebp+16]
-        mov     dword911,[ebp+24]
-        mov     dword910,[ebp+12]
-        mov     dword909,[ebp+20]
-        mov     dword908,[ebp+8]
-        movsd   sse161,sse162
-        movsd   sse160,sse163
-        movsd   sse159,sse164
-        movss   sse158,sse165
-        movss   sse157,sse166
-        movss   sse156,sse167
-        mov     dword907,dword908
-        mov     dword906,dword909
-        mov     dword905,dword910
-        mov     dword904,dword911
-        mov     dword903,dword912
-        mov     dword902,dword913
-        movsd   sse143,sse159
-        movss   sse124,sse157
-        movss   sse122,sse158
-        movsd   sse121,sse143
+        movss   sse125,dword ptr [ebp-684]
+        movss   sse124,dword ptr [ebp-688]
+        movss   sse122,dword ptr [ebp-676]
+        movsd   sse121,qword ptr [ebp-180]
+        movsd   sse120,qword ptr [ebp-188]
+        movsd   sse119,qword ptr [ebp-196]
+        mov     dword865,[ebp+28]
+        mov     dword864,[ebp+16]
+        mov     dword863,[ebp+24]
+        mov     dword862,[ebp+12]
+        mov     dword861,[ebp+20]
+        mov     dword857,[ebp+8]
 ; start of inline function _transform_to_projection_space
         lea     dword2,[ebp-196]
 ; start of inline function vec4f_assign
         movss   sse86,dword ptr [___unnamed_float_1]
-        movss   sse89,dword ptr [dword907+8]
-        movss   sse88,dword ptr [dword907+4]
-        movss   sse87,dword ptr [dword907]
+        movss   sse89,dword ptr [dword857+8]
+        movss   sse88,dword ptr [dword857+4]
+        movss   sse87,dword ptr [dword857]
+        movss   dword ptr [ebp-716],sse87
+        movss   dword ptr [ebp-712],sse88
+        movss   dword ptr [ebp-708],sse89
+        movss   dword ptr [ebp-704],sse86
 ; end of inline function vec4f_assign
         push_all
         lea     dword789,dword ptr [__mvproj_matrix]
@@ -823,16 +804,20 @@ _rasterizer_triangle3f proc
         restore_stack   12
         pop_all
 ; end of inline function _transform_to_projection_space
-        movq    sse1,qword ptr [dword906]
-        movq    sse143,sse1
+        movq    sse1,qword ptr [dword861]
+        movq    qword ptr [ebp-180],sse1
 ; start of inline function _transform_to_projection_space
         lea     dword8,[ebp-196]
         add     dword8,24
 ; start of inline function vec4f_assign
         movss   sse96,dword ptr [___unnamed_float_1]
-        movss   sse99,dword ptr [dword905+8]
-        movss   sse98,dword ptr [dword905+4]
-        movss   sse97,dword ptr [dword905]
+        movss   sse99,dword ptr [dword862+8]
+        movss   sse98,dword ptr [dword862+4]
+        movss   sse97,dword ptr [dword862]
+        movss   dword ptr [ebp-716],sse97
+        movss   dword ptr [ebp-712],sse98
+        movss   dword ptr [ebp-708],sse99
+        movss   dword ptr [ebp-704],sse96
 ; end of inline function vec4f_assign
         push_all
         lea     dword815,dword ptr [__mvproj_matrix]
@@ -844,16 +829,20 @@ _rasterizer_triangle3f proc
         restore_stack   12
         pop_all
 ; end of inline function _transform_to_projection_space
-        movq    sse2,qword ptr [dword904]
+        movq    sse2,qword ptr [dword863]
         movq    qword ptr [ebp-156],sse2
 ; start of inline function _transform_to_projection_space
         lea     dword16,[ebp-196]
         add     dword16,48
 ; start of inline function vec4f_assign
         movss   sse106,dword ptr [___unnamed_float_1]
-        movss   sse109,dword ptr [dword903+8]
-        movss   sse108,dword ptr [dword903+4]
-        movss   sse107,dword ptr [dword903]
+        movss   sse109,dword ptr [dword864+8]
+        movss   sse108,dword ptr [dword864+4]
+        movss   sse107,dword ptr [dword864]
+        movss   dword ptr [ebp-716],sse107
+        movss   dword ptr [ebp-712],sse108
+        movss   dword ptr [ebp-708],sse109
+        movss   dword ptr [ebp-704],sse106
 ; end of inline function vec4f_assign
         push_all
         lea     dword841,dword ptr [__mvproj_matrix]
@@ -865,11 +854,11 @@ _rasterizer_triangle3f proc
         restore_stack   12
         pop_all
 ; end of inline function _transform_to_projection_space
-        movq    sse3,qword ptr [dword902]
+        movq    sse3,qword ptr [dword865]
         movq    qword ptr [ebp-132],sse3
-        movq    sse4,sse161
+        movq    sse4,sse119
         movq    qword ptr [ebp-124],sse4
-        movq    sse4,sse160
+        movq    sse4,sse120
         movq    qword ptr [ebp-116],sse4
         movq    sse4,sse121
         movq    qword ptr [ebp-108],sse4
@@ -982,7 +971,7 @@ label0003:
         mulss   sse83,sse82
         cvttss2si       dword754,sse83
         mov     [dword49+dword52],dword754
-        movss   sse84,sse156
+        movss   sse84,sse125
         mulss   sse84,sse82
         cvttss2si       dword760,sse84
         mov     [dword49+dword52+4],dword760

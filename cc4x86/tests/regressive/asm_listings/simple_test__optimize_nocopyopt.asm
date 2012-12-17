@@ -10,8 +10,7 @@ _test proc
         mov     ebp,esp
         sub     esp,12
         mov     eax,2
-        mov     ecx,2
-        imul    eax,ecx
+        imul    eax,2
         cmp     eax,4
         jne     label0000
         mov     eax,0

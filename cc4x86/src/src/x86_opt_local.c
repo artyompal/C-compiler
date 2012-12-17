@@ -433,6 +433,7 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss,
 
     // проверяем, что регистр используется только в read-only контекстах
     for (i = 0; i < _usage_count; i++) {
+        // если первый операнд является адресом, выполняем оптимизацию только при флаге after_regvars.
         if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg) || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
             || !after_regvars && !OP_IS_PSEUDO_REG(_usage_arr[i]->in_op1, type)) {
                 return;
@@ -525,9 +526,9 @@ void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 {
     _optimize_dword_insns(function);
 
-    if (after_regvars) {
-        _optimize_float_insn(function, after_regvars);
-    }
+    //if (after_regvars) {
+    //    _optimize_float_insn(function, after_regvars);
+    //}
 
     _kill_unused_labels(function);
 }
