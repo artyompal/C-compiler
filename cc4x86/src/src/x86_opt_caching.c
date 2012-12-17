@@ -83,10 +83,13 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
                 var = allocator_alloc(allocator_per_function_pool, sizeof(variable));
                 memcpy(&var->var_addr, &insn->in_op2.data.address, sizeof(x86_address));
 
-                bincode_insert_instruction(function, function->func_binary_code->in_next,
-                    ENCODE_MOV(insn->in_op2.op_type), &insn->in_op2, &insn->in_op2);
-                bincode_create_operand_and_alloc_pseudoreg_in_function(function,
-                    &function->func_binary_code->in_next->in_op1, insn->in_op2.op_type);
+                if (insn->in_op2.data.address.offset > 0) {
+                    bincode_insert_instruction(function, function->func_binary_code->in_next,
+                        ENCODE_MOV(insn->in_op2.op_type), &insn->in_op2, &insn->in_op2);
+                    bincode_create_operand_and_alloc_pseudoreg_in_function(function,
+                        &function->func_binary_code->in_next->in_op1, insn->in_op2.op_type);
+                }
+
                 bincode_create_operand_from_pseudoreg(&insn->in_op2, insn->in_op2.op_type,
                     function->func_binary_code->in_next->in_op1.data.reg);
 

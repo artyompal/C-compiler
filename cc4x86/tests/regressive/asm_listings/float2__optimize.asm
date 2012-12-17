@@ -22,11 +22,9 @@ _test proc
         sub     esp,20
 ; start of inline function test1
         movss   xmm0,dword ptr [___unnamed_float_1]
-        movss   xmm1,dword ptr [___unnamed_float_0]
-        addss   xmm0,xmm1
+        addss   xmm0,dword ptr [___unnamed_float_0]
 ; end of inline function test1
-        movss   xmm1,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm1
+        comiss  xmm0,dword ptr [___unnamed_float_2]
         je      label0000
         mov     eax,1
         mov     esp,ebp
@@ -35,11 +33,9 @@ _test proc
 label0000:
 ; start of inline function test2
         movss   xmm0,dword ptr [___unnamed_float_0]
-        movss   xmm1,dword ptr [___unnamed_float_0]
-        addss   xmm0,xmm1
+        addss   xmm0,dword ptr [___unnamed_float_0]
 ; end of inline function test2
-        movss   xmm1,dword ptr [___unnamed_float_3]
-        comiss  xmm0,xmm1
+        comiss  xmm0,dword ptr [___unnamed_float_3]
         je      label0001
         mov     eax,2
         mov     esp,ebp

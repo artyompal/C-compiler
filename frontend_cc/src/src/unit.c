@@ -876,7 +876,7 @@ static void _perform_optimizations()
         }
 
         if (!option_no_basic_opt) {
-            x86_local_optimization_pass(_curr_func, TRUE);
+            x86_local_optimization_pass(_curr_func, FALSE);
         }
     } while (_curr_func->func_insn_count != function_length);
 

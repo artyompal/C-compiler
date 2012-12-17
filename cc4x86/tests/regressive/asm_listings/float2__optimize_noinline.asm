@@ -21,8 +21,7 @@ _test1 proc
         mov     ebp,esp
         sub     esp,4
         movss   xmm0,dword ptr [ebp+8]
-        movss   xmm1,dword ptr [___unnamed_float_0]
-        addss   xmm0,xmm1
+        addss   xmm0,dword ptr [___unnamed_float_0]
         mov     esp,ebp
         pop     ebp
         ret
@@ -32,8 +31,7 @@ _test2 proc
         push    ebp
         mov     ebp,esp
         movss   xmm0,dword ptr [ebp+8]
-        movss   xmm1,dword ptr [___unnamed_float_0]
-        addss   xmm0,xmm1
+        addss   xmm0,dword ptr [___unnamed_float_0]
         pop     ebp
         ret
 _test2 endp
@@ -46,8 +44,7 @@ _test proc
         sub     esp,4
         call    _test1
         add     esp,4
-        movss   xmm1,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm1
+        comiss  xmm0,dword ptr [___unnamed_float_2]
         je      label0000
         mov     eax,1
         pop     ebp
@@ -58,8 +55,7 @@ label0000:
         sub     esp,4
         call    _test2
         add     esp,4
-        movss   xmm1,dword ptr [___unnamed_float_3]
-        comiss  xmm0,xmm1
+        comiss  xmm0,dword ptr [___unnamed_float_3]
         je      label0001
         mov     eax,2
         pop     ebp
