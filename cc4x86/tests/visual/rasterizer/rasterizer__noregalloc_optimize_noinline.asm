@@ -1452,7 +1452,7 @@ __clip_poligon endp
 
 __transform_to_screen_space proc
         create_stack_frame
-        mov     float7,dword ptr [ebp+8]
+        mov     dword35,[ebp+8]
         push_all
         lea     dword1,dword ptr [__viewport_matrix]
         push_arg        dword1,4
@@ -1595,7 +1595,7 @@ __transform_to_projection_space endp
 
 _rasterizer_triangle3f proc
         create_stack_frame
-        mov     double7,dword ptr [ebp+28]
+        mov     dword32,[ebp+28]
         mov     dword31,[ebp+24]
         mov     dword30,[ebp+20]
         push_all

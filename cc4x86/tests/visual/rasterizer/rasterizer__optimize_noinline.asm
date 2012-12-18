@@ -1526,9 +1526,8 @@ __clip_poligon endp
 __transform_to_screen_space proc
         push    ebp
         mov     ebp,esp
-        sub     esp,20
-        mov     xmm0,dword ptr [ebp+8]
-        movss   dword ptr [ebp-12],xmm0
+        sub     esp,24
+        mov     eax,[ebp+8]
         lea     eax,dword ptr [__viewport_matrix]
         push    eax
         push    dword ptr [ebp+12]
@@ -1541,20 +1540,23 @@ __transform_to_screen_space proc
         movss   xmm1,xmm2
         mulss   xmm1,xmm0
         cvttss2si       eax,xmm1
-        mov     [ecx],eax
-        movss   xmm2,dword ptr [ebp-12]
+        mov     [ebp-24],eax
+        mov     eax,[ebp+8]
+        mov     ecx,[ebp-24]
+        mov     [eax],ecx
+        movss   xmm2,xmm1
         mulss   xmm2,xmm0
-        cvttss2si       eax,xmm2
-        mov     [ecx+4],eax
-        cmp     dword ptr [ecx],0
+        cvttss2si       ecx,xmm2
+        mov     [eax+4],ecx
+        cmp     dword ptr [eax],0
         jl      label0001
-        mov     eax,[ecx]
-        cmp     eax,dword ptr [__width]
+        mov     ecx,[eax]
+        cmp     ecx,dword ptr [__width]
         jge     label0001
-        cmp     dword ptr [ecx+4],0
+        cmp     dword ptr [eax+4],0
         jl      label0001
-        mov     ecx,[ecx+4]
-        cmp     ecx,dword ptr [__height]
+        mov     eax,[eax+4]
+        cmp     eax,dword ptr [__height]
         jl      label0000
 label0001:
         mov     dword ptr ds:[0],0
@@ -1683,17 +1685,16 @@ _rasterizer_triangle3f proc
         push    ebp
         mov     ebp,esp
         sub     esp,196
-        mov     xmm0,dword ptr [ebp+28]
-        mov     eax,[ebp+24]
-        mov     ecx,[ebp+20]
-        movsd   qword ptr [ebp-180],xmm0
+        mov     eax,[ebp+28]
+        mov     ecx,[ebp+24]
+        mov     edx,[ebp+20]
         push    dword ptr [ebp+8]
         lea     eax,[ebp-196]
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     ecx,[ebp+20]
-        movq    xmm0,qword ptr [ecx]
+        mov     edx,[ebp+20]
+        movq    xmm0,qword ptr [edx]
         movq    qword ptr [ebp-180],xmm0
         push    dword ptr [ebp+12]
         lea     eax,[ebp-196]
@@ -1701,8 +1702,8 @@ _rasterizer_triangle3f proc
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     eax,[ebp+24]
-        movq    xmm0,qword ptr [eax]
+        mov     ecx,[ebp+24]
+        movq    xmm0,qword ptr [ecx]
         movq    qword ptr [ebp-156],xmm0
         push    dword ptr [ebp+16]
         lea     eax,[ebp-196]
@@ -1710,13 +1711,14 @@ _rasterizer_triangle3f proc
         push    eax
         call    __transform_to_projection_space
         add     esp,8
+        mov     eax,[ebp+28]
         movq    xmm0,qword ptr [eax]
         movq    qword ptr [ebp-132],xmm0
         movq    xmm0,xmm1
         movq    qword ptr [ebp-124],xmm0
         movq    xmm0,xmm2
         movq    qword ptr [ebp-116],xmm0
-        movq    xmm0,qword ptr [ebp-180]
+        movq    xmm0,xmm3
         movq    qword ptr [ebp-108],xmm0
         lea     eax,[ebp-196]
         push    eax

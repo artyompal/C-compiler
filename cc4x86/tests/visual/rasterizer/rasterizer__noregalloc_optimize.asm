@@ -698,7 +698,7 @@ __clip_on_plain endp
 
 _rasterizer_triangle3f proc
         create_stack_frame
-        mov     float125,dword ptr [ebp+28]
+        mov     dword865,[ebp+28]
         mov     dword864,[ebp+16]
         mov     dword863,[ebp+24]
         mov     dword862,[ebp+12]

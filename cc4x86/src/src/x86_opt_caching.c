@@ -57,18 +57,14 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
                 bincode_create_operand_and_alloc_pseudoreg_in_function(function, &insn->in_op1, insn->in_op1.op_type);
                 var->var_reg    = insn->in_op1.data.reg;
 
-                //if (strstr(function->func_sym->sym_name, "clip"))
-                //    printf("inserted op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
-                //        var->var_addr.index, var->var_addr.offset);
+                //printf("inserted op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
                 hash_insert(_variables_table[type], var);
                 continue;
             }
 
             if (var) {
-                //if (strstr(function->func_sym->sym_name, "clip"))
-                //    printf("replaced op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
-                //        var->var_addr.index, var->var_addr.offset);
+                //printf("replaced op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
                 bincode_create_operand_from_pseudoreg(&insn->in_op1, insn->in_op1.op_type, var->var_reg);
                 continue;
@@ -90,21 +86,20 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
 
                 bincode_create_operand_and_alloc_pseudoreg_in_function(function, &insn->in_op2, insn->in_op2.op_type);
 
-                function->func_binary_code->in_next->in_op1 = insn->in_op2;
+                if (insn->in_op2.data.address.offset > 0) {
+                    function->func_binary_code->in_next->in_op1 = insn->in_op2;
+                }
+
                 var->var_reg = insn->in_op2.data.reg;
 
-                //if (strstr(function->func_sym->sym_name, "clip"))
-                //    printf("inserted op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
-                //        var->var_addr.index, var->var_addr.offset);
+                //printf("inserted op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
                 hash_insert(_variables_table[type], var);
                 continue;
             }
 
             if (var && insn->in_code != x86insn_lea) {
-                //if (strstr(function->func_sym->sym_name, "clip"))
-                //    printf("replaced op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,
-                //        var->var_addr.index, var->var_addr.offset);
+                //printf("replaced op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
                 bincode_create_operand_from_pseudoreg(&insn->in_op2, insn->in_op2.op_type, var->var_reg);
                 continue;
