@@ -374,7 +374,12 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
             unit_push_binary_instruction(x86insn_int_mov, res, op1);
         }
 
-        unit_push_binary_instruction(is_unsigned ? x86insn_int_mul : x86insn_int_imul, res, op2);
+        if (is_unsigned) {
+            bincode_create_operand_and_alloc_pseudoreg(&tmp, res->op_type);     // edx
+            unit_push_ternary_instruction(x86insn_int_mul, res, op2, &tmp);
+        } else {
+            unit_push_binary_instruction(x86insn_int_imul, res, op2);
+        }
     } else if (opcode == op_div) {
         if (!OP_IS_REGISTER(*op1, x86op_dword)) {
             bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);  // eax
@@ -385,10 +390,10 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
 
 		if (is_unsigned) {
 			unit_push_unary_instruction(x86insn_xor_edx_edx, &tmp);
-	        unit_push_binary_instruction(x86insn_int_div, res, op2);
+	        unit_push_ternary_instruction(x86insn_int_div, res, op2, &tmp);
 		} else {
 			unit_push_binary_instruction(x86insn_cdq, &tmp, res);
-	        unit_push_binary_instruction(x86insn_int_idiv, res, op2);
+	        unit_push_ternary_instruction(x86insn_int_idiv, res, op2, &tmp);
 		}
     } else if (opcode == op_mod) {
         bincode_create_operand_and_alloc_pseudoreg(res, op1->op_type);      // edx
@@ -402,10 +407,10 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
 
 		if (is_unsigned) {
 	        unit_push_unary_instruction(x86insn_xor_edx_edx, res);
-	        unit_push_binary_instruction(x86insn_int_div, &tmp, op2);
+	        unit_push_ternary_instruction(x86insn_int_div, &tmp, op2, res);
 		} else {
 	        unit_push_binary_instruction(x86insn_cdq, res, &tmp);
-		    unit_push_binary_instruction(x86insn_int_idiv, &tmp, op2);
+		    unit_push_ternary_instruction(x86insn_int_idiv, &tmp, op2, res);
 		}
     } else if (IS_SHIFT_OP(opcode)) {
         if (op2->op_loc != x86loc_register) {

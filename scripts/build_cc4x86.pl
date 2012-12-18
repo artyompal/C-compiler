@@ -35,7 +35,7 @@ build_compilers2("Release");
 chdir("./scripts") or die("chdir: $!");
 
 system("perl make_rasterizer_test.pl");
-system("perl run_regressive_tests.pl");
+#system("perl run_regressive_tests.pl");
 
 system("pause");
 

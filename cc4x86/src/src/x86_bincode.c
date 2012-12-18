@@ -200,6 +200,11 @@ void bincode_extract_pseudoregs_overwritten_by_insn(x86_instruction *insn, x86_o
         regs[*regs_cnt] = insn->in_op1.data.reg;
         ++*regs_cnt;
     }
+
+    if (OP_IS_REGISTER(insn->in_op3, type)) {
+        regs[*regs_cnt] = insn->in_op3.data.reg;
+        ++*regs_cnt;
+    }
 }
 
 BOOL bincode_is_pseudoreg_read_by_insn(x86_instruction *insn, x86_operand_type type, int reg)

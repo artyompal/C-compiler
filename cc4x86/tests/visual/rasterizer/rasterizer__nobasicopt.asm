@@ -2016,9 +2016,9 @@ label0007:
         sub     ecx,[edx]
         cdq
         idiv    ecx
-        lea     edx,[ebp+8]
-        mov     edx,[edx]
-        add     eax,[edx]
+        lea     ecx,[ebp+8]
+        mov     ecx,[ecx]
+        add     eax,[ecx]
         lea     ecx,[ebp-12]
         mov     [ecx],eax
         lea     eax,[ebp+12]

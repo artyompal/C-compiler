@@ -1383,8 +1383,8 @@ label0007:
         sub     ecx,[edx+4]
         cdq
         idiv    ecx
-        mov     edx,[ebp+8]
-        add     eax,[edx]
+        mov     ecx,[ebp+8]
+        add     eax,[ecx]
         mov     [ebp-12],eax
         mov     eax,[ebp+12]
         mov     ecx,[ebp+8]

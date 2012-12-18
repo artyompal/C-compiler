@@ -141,9 +141,9 @@ typedef enum x86_instruction_code_decl {
     x86insn_int_add,
     x86insn_int_sub,
     x86insn_int_imul,
-    x86insn_int_idiv,           // первый параметр - псевдорегистр для EAX, второй - делитель
-    x86insn_int_mul,            // первый параметр - псевдорегистр для EAX, второй - множитель
-    x86insn_int_div,            // первый параметр - псевдорегистр для EAX, второй - делитель
+    x86insn_int_idiv,           // первый параметр - EAX, второй - делитель, третий - EDX
+    x86insn_int_mul,            // первый параметр - EAX, второй - множитель, третий - EDX
+    x86insn_int_div,            // первый параметр - EAX, второй - делитель, третий - EDX
     x86insn_int_sal,
     x86insn_int_sar,
     x86insn_int_shl,
@@ -257,7 +257,8 @@ typedef struct x86_instruction_decl {
                                         || (INSN) == x86insn_read_retval)
 #define IS_DEFINING_INSN(INSN, TYPE)    ((TYPE) == x86op_dword && IS_DWORD_DEFINING_INSN(INSN) || x86_equal_types((TYPE), x86op_float) && IS_FLOAT_DEFINING_INSN(INSN))
 #define IS_CONSTANT_INSN(INSN)          ((INSN) == x86insn_sse_comiss || (INSN) == x86insn_sse_comisd || (INSN) == x86insn_push \
-                                        || (INSN) == x86insn_push_arg || (INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test)
+                                        || (INSN) == x86insn_push_arg || (INSN) == x86insn_int_cmp || (INSN) == x86insn_int_test \
+                                        || (INSN) == x86insn_set_retval)
 #define IS_VOLATILE_INSN(INSN)          (!IS_CONSTANT_INSN(INSN))
 
 #define IS_MUL_DIV_INSN(INSN)           ((INSN) >= x86insn_int_idiv && (INSN) <= x86insn_int_div)

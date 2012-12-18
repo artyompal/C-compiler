@@ -327,9 +327,7 @@ static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
 {
     x86_dataflow_set_current_insn(function, x86op_dword, insn);
 
-    if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && !x86_dataflow_is_pseudoreg_alive_after(insn->in_op1.data.reg)) {
-        bincode_erase_instruction(function, insn);
-    } else if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT(insn->in_op2)) {
+    if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT(insn->in_op2)) {
         _try_optimize_mov_reg_const(function, insn);
     }
 }
@@ -364,6 +362,7 @@ static void _try_optimize_cmp_test(function_desc *function, x86_instruction *cmp
 // Оптимизирует целочисленные инструкции.
 static void _optimize_dword_insns(function_desc *function)
 {
+    int regs[MAX_REGISTERS_PER_INSN], regs_count;
     x86_instruction *insn, *next, *prev;
 
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
@@ -377,7 +376,15 @@ static void _optimize_dword_insns(function_desc *function)
         prev = insn->in_prev;
 
         if (prev && (prev->in_code == x86insn_jmp || prev->in_code == x86insn_ret) && insn->in_code != x86insn_label) {
-            bincode_erase_instruction(function, insn);
+            x86_dataflow_erase_instruction(function, insn);
+            continue;
+        }
+
+        x86_dataflow_set_current_insn(function, x86op_dword, insn);
+        bincode_extract_pseudoregs_modified_by_insn(insn, x86op_dword, regs, &regs_count);
+
+        if (regs_count == 1 && !x86_dataflow_is_pseudoreg_alive_after(regs[0])) {
+            x86_dataflow_erase_instruction(function, insn);
             continue;
         }
 
@@ -468,14 +475,25 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss,
 // Оптимизирует флоатовые инструкции.
 static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
 {
+    int regs[MAX_REGISTERS_PER_INSN], regs_count;
     x86_instruction *insn, *next;
 
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
     _usage_max_count = function->func_insn_count;
+
+    x86_dataflow_init_alive_reg_tables(function, x86op_float);
     x86_dataflow_init_use_def_tables(function, x86op_float);
 
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
+
+        x86_dataflow_set_current_insn(function, x86op_float, insn);
+        bincode_extract_pseudoregs_modified_by_insn(insn, x86op_float, regs, &regs_count);
+
+        if (regs_count == 1 && !x86_dataflow_is_pseudoreg_alive_after(regs[0])) {
+            x86_dataflow_erase_instruction(function, insn);
+            continue;
+        }
 
         switch (insn->in_code) {
         case x86insn_sse_movss:
