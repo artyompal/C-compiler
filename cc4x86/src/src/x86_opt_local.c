@@ -325,8 +325,6 @@ static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 // Оптимизирует конструкции с MOV.
 static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
 {
-    x86_dataflow_alivereg_seek(function, x86op_dword, insn);
-
     if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT(insn->in_op2)) {
         _try_optimize_mov_reg_const(function, insn);
     }
@@ -358,26 +356,10 @@ static void _try_optimize_cmp_test(function_desc *function, x86_instruction *cmp
         }
 }
 
-static void _remove_unreachable_code(function_desc *function)
-{
-    x86_instruction *insn, *next, *prev;
-
-    for (insn = function->func_binary_code; insn; insn = next) {
-        next = insn->in_next;
-        prev = insn->in_prev;
-
-        if (prev && (prev->in_code == x86insn_jmp || prev->in_code == x86insn_ret) && insn->in_code != x86insn_label) {
-            bincode_erase_instruction(function, insn);
-            continue;
-        }
-    }
-}
-
 //
 // Оптимизирует целочисленные инструкции.
 static void _optimize_dword_insns(function_desc *function)
 {
-    int regs[MAX_REGISTERS_PER_INSN], regs_count;
     x86_instruction *insn, *next;
 
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
@@ -388,14 +370,6 @@ static void _optimize_dword_insns(function_desc *function)
 
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
-
-        x86_dataflow_alivereg_seek(function, x86op_dword, insn);
-        bincode_extract_pseudoregs_modified_by_insn(insn, x86op_dword, regs, &regs_count);
-
-        if (regs_count == 1 && !x86_dataflow_alivereg_test_after(regs[0])) {
-            x86_dataflow_erase_instruction(function, insn);
-            continue;
-        }
 
         switch (insn->in_code) {
         case x86insn_lea:
@@ -484,25 +458,15 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss,
 // Оптимизирует флоатовые инструкции.
 static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
 {
-    int regs[MAX_REGISTERS_PER_INSN], regs_count;
     x86_instruction *insn, *next;
 
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
     _usage_max_count = function->func_insn_count;
 
-    x86_dataflow_alivereg_init(function, x86op_float);
     x86_dataflow_init_use_def_tables(function, x86op_float);
 
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
-
-        x86_dataflow_alivereg_seek(function, x86op_float, insn);
-        bincode_extract_pseudoregs_modified_by_insn(insn, x86op_float, regs, &regs_count);
-
-        if (regs_count == 1 && !x86_dataflow_alivereg_test_after(regs[0])) {
-            x86_dataflow_erase_instruction(function, insn);
-            continue;
-        }
 
         switch (insn->in_code) {
         case x86insn_sse_movss:
@@ -514,6 +478,45 @@ static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
 
     allocator_free(allocator_per_function_pool, _usage_arr, sizeof(void *) * function->func_insn_count);
 }
+
+//
+// Удаляет код, находящийся после jmp/ret.
+static void _remove_unreachable_code(function_desc *function)
+{
+    x86_instruction *insn, *next, *prev;
+
+    for (insn = function->func_binary_code; insn; insn = next) {
+        next = insn->in_next;
+        prev = insn->in_prev;
+
+        if (prev && (prev->in_code == x86insn_jmp || prev->in_code == x86insn_ret) && insn->in_code != x86insn_label) {
+            bincode_erase_instruction(function, insn);
+            continue;
+        }
+    }
+}
+
+//
+// Удаляет инструкции, результат которых неиспользуется.
+static void _remove_dead_code(function_desc *function, x86_operand_type type)
+{
+    int regs[MAX_REGISTERS_PER_INSN], regs_count;
+    x86_instruction *insn, *next;
+
+    x86_dataflow_alivereg_init(function, type);
+
+    for (insn = function->func_binary_code; insn; insn = next) {
+        next = insn->in_next;
+
+        x86_dataflow_alivereg_seek(function, type, insn);
+        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_count);
+
+        if (regs_count == 1 && !x86_dataflow_alivereg_test_after(regs[0])) {
+            x86_dataflow_erase_instruction(function, insn);
+        }
+    }
+}
+
 
 //
 // Устраняет неиспользуемые метки в коде.
@@ -553,7 +556,10 @@ void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 {
     _remove_unreachable_code(function);
 
+    _remove_dead_code(function, x86op_dword);
     _optimize_dword_insns(function);
+
+    _remove_dead_code(function, x86op_float);
     _optimize_float_insn(function, after_regvars);
 
     _kill_unused_labels(function);
