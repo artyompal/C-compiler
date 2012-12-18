@@ -369,9 +369,8 @@ _matrix4f_make_perspective endp
 _matrix4f_make_viewport proc
         create_stack_frame
         mov     dword2,[ebp+8]
-        movss   float1,dword ptr [___unnamed_float_3]
         movss   float2,dword ptr [ebp+12]
-        mulss   float2,float1
+        mulss   float2,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword2],float2
         mov     dword6,4
         add     dword6,[ebp+8]
@@ -393,8 +392,7 @@ _matrix4f_make_viewport proc
         add     dword18,[ebp+8]
         movss   float7,dword ptr [ebp+16]
         xorps   float7,dword ptr [___unnamed_float4_4]
-        movss   float8,dword ptr [___unnamed_float_3]
-        mulss   float7,float8
+        mulss   float7,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword18],float7
         mov     dword22,24
         add     dword22,[ebp+8]
@@ -423,15 +421,13 @@ _matrix4f_make_viewport proc
         movss   dword ptr [dword38],float14
         mov     dword41,48
         add     dword41,[ebp+8]
-        movss   float15,dword ptr [___unnamed_float_3]
         movss   float16,dword ptr [ebp+12]
-        mulss   float16,float15
+        mulss   float16,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword41],float16
         mov     dword45,52
         add     dword45,[ebp+8]
-        movss   float17,dword ptr [___unnamed_float_3]
         movss   float18,dword ptr [ebp+16]
-        mulss   float18,float17
+        mulss   float18,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword45],float18
         mov     dword49,56
         add     dword49,[ebp+8]
@@ -895,8 +891,7 @@ label0000:
         cmp     dword ptr [ebp-40],0
         je      label0003
         cvtsi2ss        float1,dword ptr [ebp-40]
-        movss   float2,dword ptr [___unnamed_float_6]
-        mulss   float1,float2
+        mulss   float1,dword ptr [___unnamed_float_6]
         movss   dword ptr [ebp-44],float1
         mov     dword31,[ebp-4]
         mov     dword33,[dword31]
