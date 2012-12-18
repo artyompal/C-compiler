@@ -86,14 +86,12 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
                 if (insn->in_op2.data.address.offset > 0) {
                     bincode_insert_instruction(function, function->func_binary_code->in_next,
                         ENCODE_MOV(insn->in_op2.op_type), &insn->in_op2, &insn->in_op2);
-                    bincode_create_operand_and_alloc_pseudoreg_in_function(function,
-                        &function->func_binary_code->in_next->in_op1, insn->in_op2.op_type);
                 }
 
-                bincode_create_operand_from_pseudoreg(&insn->in_op2, insn->in_op2.op_type,
-                    function->func_binary_code->in_next->in_op1.data.reg);
+                bincode_create_operand_and_alloc_pseudoreg_in_function(function, &insn->in_op2, insn->in_op2.op_type);
 
-                var->var_reg    = function->func_binary_code->in_next->in_op1.data.reg;
+                function->func_binary_code->in_next->in_op1 = insn->in_op2;
+                var->var_reg = insn->in_op2.data.reg;
 
                 //if (strstr(function->func_sym->sym_name, "clip"))
                 //    printf("inserted op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base,

@@ -401,13 +401,15 @@ _rasterizer_init proc
         pop_all
         comiss  float61,float62
         jbe     label0000
+        movss   float63,dword ptr [___unnamed_float_1]
         jmp     label0001
 label0000:
+        movss   float63,dword ptr [___unnamed_float_5]
 label0001:
         push_all
         movss   float11,dword ptr [___unnamed_float_1]
         push_arg        float11,4
-        push_arg        dword ptr [ebp-4],4
+        push_arg        float63,4
         movss   float12,dword ptr [___unnamed_float_2]
         push_arg        float12,4
         movss   float13,dword ptr [___unnamed_float_2]
@@ -432,13 +434,15 @@ label0001:
         pop_all
         comiss  float61,float62
         jbe     label0002
+        movss   float64,dword ptr [___unnamed_float_5]
         jmp     label0003
 label0002:
+        movss   float64,dword ptr [___unnamed_float_1]
 label0003:
         push_all
         movss   float20,dword ptr [___unnamed_float_1]
         push_arg        float20,4
-        push_arg        dword ptr [ebp-8],4
+        push_arg        float64,4
         movss   float21,dword ptr [___unnamed_float_2]
         push_arg        float21,4
         movss   float22,dword ptr [___unnamed_float_2]
@@ -1448,10 +1452,7 @@ __clip_poligon endp
 
 __transform_to_screen_space proc
         create_stack_frame
-        movss   float7,dword ptr [ebp-12]
-        movss   float6,dword ptr [ebp-16]
-        movss   float4,dword ptr [ebp-4]
-        mov     dword35,[ebp+8]
+        mov     float7,dword ptr [ebp+8]
         push_all
         lea     dword1,dword ptr [__viewport_matrix]
         push_arg        dword1,4
@@ -1594,10 +1595,7 @@ __transform_to_projection_space endp
 
 _rasterizer_triangle3f proc
         create_stack_frame
-        movsd   double7,qword ptr [ebp-180]
-        movsd   double6,qword ptr [ebp-188]
-        movsd   double5,qword ptr [ebp-196]
-        mov     dword32,[ebp+28]
+        mov     double7,dword ptr [ebp+28]
         mov     dword31,[ebp+24]
         mov     dword30,[ebp+20]
         push_all
