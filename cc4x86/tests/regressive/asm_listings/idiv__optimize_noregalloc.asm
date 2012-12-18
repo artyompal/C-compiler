@@ -12,17 +12,17 @@ _test proc
         mov     dword46,4
         mov     dword11,dword45
         cdq     dword12,dword11
-        idiv    dword11,dword44
+        idiv    dword11,dword44,dword12
         mov     dword15,dword45
         cdq     dword16,dword15
-        idiv    dword15,dword44
+        idiv    dword15,dword44,dword16
         imul    dword11,dword15
         mov     dword19,5
         cdq     dword20,dword19
-        idiv    dword19,dword46
+        idiv    dword19,dword46,dword20
         mov     dword23,5
         cdq     dword24,dword23
-        idiv    dword23,dword46
+        idiv    dword23,dword46,dword24
         imul    dword19,dword23
         add     dword11,dword19
         cmp     dword11,2
@@ -34,7 +34,7 @@ _test proc
 label0000:
         mov     dword31,dword46
         cdq     dword32,dword31
-        idiv    dword31,dword44
+        idiv    dword31,dword44,dword32
         cmp     dword31,2
         je      label0001
         mov     dword35,2
@@ -44,7 +44,7 @@ label0000:
 label0001:
         mov     dword38,5
         cdq     dword39,dword38
-        idiv    dword38,dword45
+        idiv    dword38,dword45,dword39
         cmp     dword39,2
         je      label0002
         mov     dword42,3

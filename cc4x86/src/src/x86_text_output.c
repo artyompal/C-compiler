@@ -508,7 +508,7 @@ static void _output_push_instruction(x86_instruction *insn)
         _output_push_nullary_instruction(insn->in_code);
     } else if (insn->in_op2.op_loc == x86loc_none || insn->in_code == x86insn_call) {
         _output_push_unary_instruction(insn->in_code, &insn->in_op1);
-    } else if (insn->in_code != x86insn_imul_const) {
+    } else if (insn->in_op3.op_loc == x86loc_none) {
         _output_push_binary_instruction(insn->in_code, &insn->in_op1, &insn->in_op2);
     } else {
         _output_push_ternary_instruction(insn->in_code, &insn->in_op1, &insn->in_op2, &insn->in_op3);

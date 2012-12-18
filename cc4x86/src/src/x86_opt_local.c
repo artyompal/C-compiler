@@ -284,7 +284,7 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
     for (i = 0; i < _usage_count; i++) {
         if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)
             || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
-            || IS_MUL_DIV_INSN(_usage_arr[i]->in_code)) {
+            || IS_MUL_DIV_INSN(_usage_arr[i]->in_code) || _usage_arr[i]->in_code == x86insn_cdq) {
                 return;
             }
 

@@ -814,7 +814,7 @@ _rasterizer_set_mvproj proc
         mov     dword4,(offset __mvproj_matrix)
         mov     dword5,dword2
         mov     dword6,16
-        rep     movsd   dword4,dword5
+        rep     movsd   dword4,dword5,dword6
         destroy_stack_frame
         ret
 _rasterizer_set_mvproj endp
@@ -1221,7 +1221,7 @@ label0006:
         mov     dword108,[dword103+4]
         sub     dword108,[dword106+4]
         cdq     dword109,dword96
-        idiv    dword96,dword108
+        idiv    dword96,dword108,dword109
         mov     dword111,[ebp+8]
         add     dword96,[dword111]
         mov     [ebp-8],dword96
@@ -1238,7 +1238,7 @@ label0006:
         mov     dword129,[dword124+4]
         sub     dword129,[dword127+4]
         cdq     dword130,dword117
-        idiv    dword117,dword129
+        idiv    dword117,dword129,dword130
         mov     dword132,[ebp+8]
         add     dword117,[dword132]
         mov     [ebp-12],dword117
@@ -1370,7 +1370,7 @@ label0007:
         mov     dword256,[dword251+4]
         sub     dword256,[dword254+4]
         cdq     dword257,dword244
-        idiv    dword244,dword256
+        idiv    dword244,dword256,dword257
         mov     dword259,[ebp+8]
         add     dword244,[dword259]
         mov     [ebp-12],dword244
@@ -1479,7 +1479,7 @@ label0009:
         mov     dword364,[dword359+4]
         sub     dword364,[dword362+4]
         cdq     dword365,dword352
-        idiv    dword352,dword364
+        idiv    dword352,dword364,dword365
         mov     dword367,[ebp+12]
         add     dword352,[dword367]
         mov     [ebp-8],dword352
@@ -1496,7 +1496,7 @@ label0009:
         mov     dword385,[dword380+4]
         sub     dword385,[dword383+4]
         cdq     dword386,dword373
-        idiv    dword373,dword385
+        idiv    dword373,dword385,dword386
         mov     dword388,[ebp+8]
         add     dword373,[dword388]
         mov     [ebp-12],dword373
