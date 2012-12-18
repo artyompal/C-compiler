@@ -52,8 +52,7 @@ label0000:
         mov     [ebp-12],eax
         cmp     dword ptr [ebp-12],2
         je      label0001
-        mov     edx,2
-        mov     eax,edx
+        mov     eax,2
         mov     esp,ebp
         pop     ebp
         ret
@@ -74,19 +73,21 @@ label0002:
         mov     [ebp-12],eax
         cmp     dword ptr [ebp-12],6
         je      label0003
-        mov     eax,4
+        mov     edx,4
+        mov     eax,edx
         mov     esp,ebp
         pop     ebp
         ret
 label0003:
-        mov     eax,[ebp-4]
-        mov     [ebp-16],eax
+        mov     edx,[ebp-4]
+        mov     [ebp-16],edx
         mov     eax,[ebp-16]
         mul     dword ptr [ebp-8]
         mov     [ebp-16],eax
         cmp     dword ptr [ebp-16],6
         je      label0004
-        mov     eax,5
+        mov     edx,5
+        mov     eax,edx
         mov     esp,ebp
         pop     ebp
         ret
@@ -97,7 +98,8 @@ label0004:
         mul     dword ptr [ebp-8]
         cmp     eax,0
         je      label0005
-        mov     eax,6
+        mov     edx,6
+        mov     eax,edx
         mov     esp,ebp
         pop     ebp
         ret

@@ -79,9 +79,8 @@ label0002:
         pop     ebp
         ret
 label0003:
-        mov     eax,[ebp-4]
-        mov     [ebp-16],eax
-        mov     eax,[ebp-16]
+        mov     edx,[ebp-4]
+        mov     eax,edx
         mul     ecx
         cmp     eax,6
         je      label0004

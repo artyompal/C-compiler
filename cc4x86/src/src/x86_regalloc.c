@@ -377,8 +377,9 @@ static void _reserve_special_registers(function_desc *function, x86_pseudoreg_in
                 ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && insn->in_op2.op_loc == x86loc_none);
                 _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_edx);
             } else if (IS_MUL_DIV_INSN(insn->in_code)) {
-                ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && insn->in_op2.op_loc != x86loc_none);
+                ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, type) && insn->in_op2.op_loc != x86loc_none && OP_IS_PSEUDO_REG(insn->in_op1, type));
                 _reserve_real_register(pseudoregs_map, insn->in_op1.data.reg, x86reg_eax);
+                _reserve_real_register(pseudoregs_map, insn->in_op3.data.reg, x86reg_edx);
             } else if (IS_SHIFT_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op2, type)) {
                 _reserve_real_register(pseudoregs_map, insn->in_op2.data.reg, x86reg_ecx);
             } else if (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd) {
