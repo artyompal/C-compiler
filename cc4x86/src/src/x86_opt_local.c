@@ -512,11 +512,10 @@ static void _remove_dead_code(function_desc *function, x86_operand_type type)
         bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_count);
 
         if (regs_count == 1 && !x86_dataflow_alivereg_test_after(regs[0])) {
-            x86_dataflow_erase_instruction(function, insn);
+            bincode_erase_instruction(function, insn);
         }
     }
 }
-
 
 //
 // Устраняет неиспользуемые метки в коде.
@@ -554,6 +553,7 @@ static void _kill_unused_labels(function_desc *function)
 // Делается линейная оптимизация внутри блоков и распространение констант.
 void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 {
+    _kill_unused_labels(function);
     _remove_unreachable_code(function);
 
     _remove_dead_code(function, x86op_dword);
@@ -561,8 +561,6 @@ void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 
     _remove_dead_code(function, x86op_float);
     _optimize_float_insn(function, after_regvars);
-
-    _kill_unused_labels(function);
 }
 
 

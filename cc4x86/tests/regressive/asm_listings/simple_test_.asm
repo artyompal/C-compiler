@@ -25,9 +25,6 @@ label0000:
         mov     esp,ebp
         pop     ebp
         ret
-        mov     esp,ebp
-        pop     ebp
-        ret
 _test endp
 
 end

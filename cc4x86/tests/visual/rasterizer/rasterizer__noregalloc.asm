@@ -1908,17 +1908,15 @@ __transform_to_screen_space proc
         call    _matrix4f_transform
         restore_stack   12
         pop_all
-        lea     dword4,[ebp-16]
         movss   float1,dword ptr [___unnamed_float_1]
-        divss   float1,dword ptr [dword4+12]
+        divss   float1,dword ptr [ebp-4]
         movss   dword ptr [ebp-20],float1
         movss   float2,dword ptr [ebp-16]
         mulss   float2,dword ptr [ebp-20]
         cvttss2si       dword10,float2
         mov     dword12,[ebp+8]
         mov     [dword12],dword10
-        lea     dword13,[ebp-16]
-        movss   float3,dword ptr [dword13+4]
+        movss   float3,dword ptr [ebp-12]
         mulss   float3,dword ptr [ebp-20]
         cvttss2si       dword16,float3
         mov     dword18,4
@@ -1990,13 +1988,11 @@ label0003:
         lea     dword23,[ebp-132]
         mov     dword26,[ebp-136]
         sal     dword26,4
-        add     dword23,dword26
         mov     dword29,[ebp+8]
         mov     dword32,[ebp-136]
         imul    dword32,24
-        add     dword29,dword32
-        movq    double1,qword ptr [dword29+16]
-        movq    qword ptr [dword23+8],double1
+        movq    double1,qword ptr [dword29+dword32+16]
+        movq    qword ptr [dword23+dword26+8],double1
         inc     dword ptr [ebp-136]
         jmp     label0003
 label0004:
@@ -2072,10 +2068,9 @@ _rasterizer_triangle3f proc
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        lea     dword3,[ebp-196]
         mov     dword6,[ebp+20]
         movq    double1,qword ptr [dword6]
-        movq    qword ptr [dword3+16],double1
+        movq    qword ptr [ebp-180],double1
         push_all
         push_arg        dword ptr [ebp+12],4
         lea     dword8,[ebp-196]
@@ -2084,11 +2079,9 @@ _rasterizer_triangle3f proc
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        lea     dword10,[ebp-196]
-        add     dword10,24
         mov     dword14,[ebp+24]
         movq    double2,qword ptr [dword14]
-        movq    qword ptr [dword10+16],double2
+        movq    qword ptr [ebp-156],double2
         push_all
         push_arg        dword ptr [ebp+16],4
         lea     dword16,[ebp-196]
@@ -2097,20 +2090,16 @@ _rasterizer_triangle3f proc
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        lea     dword18,[ebp-196]
-        add     dword18,48
         mov     dword22,[ebp+28]
         movq    double3,qword ptr [dword22]
-        movq    qword ptr [dword18+16],double3
-        lea     dword23,[ebp-196]
+        movq    qword ptr [ebp-132],double3
         movq    double4,qword ptr [ebp-196]
-        movq    qword ptr [dword23+72],double4
+        movq    qword ptr [ebp-124],double4
         movq    double4,qword ptr [ebp-188]
-        movq    qword ptr [dword23+80],double4
+        movq    qword ptr [ebp-116],double4
         movq    double4,qword ptr [ebp-180]
-        movq    qword ptr [dword23+88],double4
-        lea     dword26,[ebp-196]
-        mov     dword ptr [dword26+192],4
+        movq    qword ptr [ebp-108],double4
+        mov     dword ptr [ebp-4],4
         push_all
         lea     dword29,[ebp-196]
         push_arg        dword29,4

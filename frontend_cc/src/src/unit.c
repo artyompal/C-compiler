@@ -864,6 +864,19 @@ static void _reset_function_calling_stat()
     }
 }
 
+static void _perform_local_optimizations()
+{
+    int function_length;
+
+    do {
+        function_length = _curr_func->func_insn_count;
+
+        if (!option_no_basic_opt) {
+            x86_local_optimization_pass(_curr_func, FALSE);
+        }
+    } while (_curr_func->func_insn_count != function_length);
+}
+
 static void _perform_optimizations()
 {
     int function_length;
@@ -911,9 +924,7 @@ void unit_codegen(void)
         //_curr_func->func_start_of_regvars[x86op_dword] = INT_MAX;
         //_curr_func->func_start_of_regvars[x86op_float] = INT_MAX;
 
-        if (!option_no_basic_opt) {
-            x86_local_optimization_pass(_curr_func, FALSE);
-        }
+        _perform_local_optimizations();
 
         // строим статистику вызовов функций
         if (option_enable_optimization && !option_no_inline) {
