@@ -358,12 +358,27 @@ static void _try_optimize_cmp_test(function_desc *function, x86_instruction *cmp
         }
 }
 
+static void _remove_unreachable_code(function_desc *function)
+{
+    x86_instruction *insn, *next, *prev;
+
+    for (insn = function->func_binary_code; insn; insn = next) {
+        next = insn->in_next;
+        prev = insn->in_prev;
+
+        if (prev && (prev->in_code == x86insn_jmp || prev->in_code == x86insn_ret) && insn->in_code != x86insn_label) {
+            bincode_erase_instruction(function, insn);
+            continue;
+        }
+    }
+}
+
 //
 // Оптимизирует целочисленные инструкции.
 static void _optimize_dword_insns(function_desc *function)
 {
     int regs[MAX_REGISTERS_PER_INSN], regs_count;
-    x86_instruction *insn, *next, *prev;
+    x86_instruction *insn, *next;
 
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
     _usage_max_count = function->func_insn_count;
@@ -373,12 +388,6 @@ static void _optimize_dword_insns(function_desc *function)
 
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
-        prev = insn->in_prev;
-
-        if (prev && (prev->in_code == x86insn_jmp || prev->in_code == x86insn_ret) && insn->in_code != x86insn_label) {
-            x86_dataflow_erase_instruction(function, insn);
-            continue;
-        }
 
         x86_dataflow_alivereg_seek(function, x86op_dword, insn);
         bincode_extract_pseudoregs_modified_by_insn(insn, x86op_dword, regs, &regs_count);
@@ -542,9 +551,11 @@ static void _kill_unused_labels(function_desc *function)
 // Делается линейная оптимизация внутри блоков и распространение констант.
 void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 {
+    _remove_unreachable_code(function);
+
     _optimize_dword_insns(function);
 
-    if (after_regvars) {
+    if (after_regvars) { // TODO: remove this
         _optimize_float_insn(function, after_regvars);
     }
 
