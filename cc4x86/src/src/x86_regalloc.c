@@ -88,7 +88,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
     ASSERT(real_reg < x86_get_registers_count(type));
 
     if (conflict_reg > 0) {
-        if (x86_dataflow_is_pseudoreg_alive_before(conflict_reg)) {
+        if (x86_dataflow_alivereg_test_before(conflict_reg)) {
             int ofs = pseudoregs_map[conflict_reg].reg_stack_location;
             int dbl = (pseudoregs_map[conflict_reg].reg_content_type == x86op_double);
             ASSERT(pseudoregs_map[conflict_reg].reg_content_type != x86op_none);
@@ -109,7 +109,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
             }
 
             pseudoregs_map[conflict_reg].reg_status = register_swapped;
-        } else if (!x86_dataflow_is_pseudoreg_alive_after(conflict_reg)) {
+        } else if (!x86_dataflow_alivereg_test_after(conflict_reg)) {
             pseudoregs_map[conflict_reg].reg_status = register_delayed_swapped;
         } else {
 			pseudoregs_map[conflict_reg].reg_status = register_swapped;
@@ -128,7 +128,7 @@ static void _swap_register_for_push_all(function_desc *function, x86_instruction
     ASSERT(real_reg < x86_get_registers_count(type));
     ASSERT(reg > 0);
 
-	if (x86_dataflow_is_pseudoreg_alive_after(reg) && pseudoregs_map[reg].reg_dirty) {
+	if (x86_dataflow_alivereg_test_after(reg) && pseudoregs_map[reg].reg_dirty) {
         int ofs = pseudoregs_map[reg].reg_stack_location;
         int dbl = (pseudoregs_map[reg].reg_content_type == x86op_double);
         ASSERT(pseudoregs_map[reg].reg_content_type != x86op_none);
@@ -158,7 +158,7 @@ static void _restore_register(function_desc *function, x86_instruction *insn,
 {
     int ofs = pseudoregs_map[reg].reg_stack_location;
 
-    if (x86_dataflow_is_pseudoreg_alive_before(reg)) {
+    if (x86_dataflow_alivereg_test_before(reg)) {
         ASSERT(ofs != -1);
         ASSERT(pseudoregs_map[reg].reg_content_type != x86op_none);
 
@@ -179,7 +179,7 @@ static void _restore_register_after_merge(function_desc *function, x86_instructi
 {
     int ofs = pseudoregs_map[reg].reg_stack_location;
 
-    if (x86_dataflow_is_pseudoreg_alive_after(reg)) {
+    if (x86_dataflow_alivereg_test_after(reg)) {
         ASSERT(ofs != -1);
         ASSERT(pseudoregs_map[reg].reg_content_type != x86op_none);
 
@@ -226,7 +226,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
                 continue;
             }
 
-            if (!x86_dataflow_is_pseudoreg_alive_after(pseudoreg2) && x86_dataflow_is_pseudoreg_alive_before(pseudoreg2)) {
+            if (!x86_dataflow_alivereg_test_after(pseudoreg2) && x86_dataflow_alivereg_test_before(pseudoreg2)) {
                 pseudoregs_map[pseudoreg2].reg_status = register_delayed_swapped;
                 regmap->real_registers_map[real_reg] = pseudoreg;
                 return real_reg;
@@ -249,7 +249,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
                 continue;
             }
 
-            if (!x86_dataflow_is_pseudoreg_alive_after(pseudoreg2)) {
+            if (!x86_dataflow_alivereg_test_after(pseudoreg2)) {
                 pseudoregs_map[pseudoreg2].reg_status = register_delayed_swapped;
                 regmap->real_registers_map[real_reg] = pseudoreg;
                 return real_reg;
@@ -344,7 +344,7 @@ static void _free_all_dead_registers(register_map *regmap)
     for (real_reg = 0; real_reg != X86_MAX_REG; real_reg++) {
         pseudoreg = regmap->real_registers_map[real_reg];
 
-        if (pseudoreg != -1 && !x86_dataflow_is_pseudoreg_alive_after(pseudoreg)) {
+        if (pseudoreg != -1 && !x86_dataflow_alivereg_test_after(pseudoreg)) {
             _free_real_register(regmap, real_reg);
         }
     }
@@ -432,14 +432,14 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         pop_all = pop_all->in_next;
     }
 
-    x86_dataflow_set_current_insn(function, type, pop_all);
+    x86_dataflow_alivereg_seek(function, type, pop_all);
 
     if (type == x86op_dword) {
         // Нам нужно сохранить те из регистров EAX/ECX/EDX, которые используются на момент x86insn_pop_all.
         for (i = x86reg_eax; i <= x86reg_edx; i++) {
             reg = regmap->real_registers_map[i];
 
-            if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(reg)) {
+            if (reg != -1 && x86_dataflow_alivereg_test_after(reg)) {
 				_swap_register_for_push_all(function, insn, regmap, pseudoregs_map, reg, type);
             }
         }
@@ -449,13 +449,13 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         for (i = 0; i < X86_MAX_REG; i++) {
             reg = regmap->real_registers_map[i];
 
-            if (reg != -1 && x86_dataflow_is_pseudoreg_alive_after(reg)) {
+            if (reg != -1 && x86_dataflow_alivereg_test_after(reg)) {
 				_swap_register_for_push_all(function, insn, regmap, pseudoregs_map, reg, type);
             }
         }
     }
 
-    x86_dataflow_set_current_insn(function, type, insn);
+    x86_dataflow_alivereg_seek(function, type, insn);
 }
 
 static void _merge_register_states(function_desc *function, x86_instruction *insn, register_map *new_regmap, register_map *old_regmap,
@@ -465,7 +465,7 @@ static void _merge_register_states(function_desc *function, x86_instruction *ins
     BOOL skip_codegen = (insn->in_prev->in_code == x86insn_ret || insn->in_prev->in_code == x86insn_jmp);
 
     ASSERT(insn->in_prev);
-    x86_dataflow_set_current_insn(function, type, insn->in_prev);
+    x86_dataflow_alivereg_seek(function, type, insn->in_prev);
 
     for (real_reg = 0; real_reg < x86_get_registers_count(type); real_reg++) {
         if (new_regmap->real_registers_map[real_reg] != old_regmap->real_registers_map[real_reg]) {
@@ -483,7 +483,7 @@ static void _merge_register_states(function_desc *function, x86_instruction *ins
         }
     }
 
-    x86_dataflow_set_current_insn(function, type, insn);
+    x86_dataflow_alivereg_seek(function, type, insn);
 }
 
 static BOOL _is_reg_in_array(int reg, int *regs, int count)
@@ -537,12 +537,12 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
     // Проходим по инструкциям функции и заменяем псевдорегистры на соответствующие реальные регистры.
     // Если под псевдорегистр не выделен реальный регистр, выделяем.
     _clear_register_map(regmap);
-    x86_dataflow_init_alive_reg_tables(function, type);
+    x86_dataflow_alivereg_init(function, type);
     x86_dataflow_init_use_def_tables(function, type);
 
     for (insn = function->func_binary_code; insn; insn = next_insn) {
         next_insn = insn->in_next;
-        x86_dataflow_set_current_insn(function, type, insn);
+        x86_dataflow_alivereg_seek(function, type, insn);
 
         // Обрабатываем метки и переходы: мы должны смержить стейты.
         if (insn->in_code == x86insn_label || IS_JMP_INSN(insn->in_code)) {
@@ -680,7 +680,7 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
             reg = saved_regs[i];
 
             if (pseudoregs_map[reg].reg_status == register_delayed_swapped ||
-                pseudoregs_map[reg].reg_status == register_allocated && !x86_dataflow_is_pseudoreg_alive_after(reg)) {
+                pseudoregs_map[reg].reg_status == register_allocated && !x86_dataflow_alivereg_test_after(reg)) {
                     real_reg = pseudoregs_map[reg].reg_location;
 
                     if (insn->in_reg_usage_mask & (1 << i) && regmap->real_registers_map[real_reg] == reg) {

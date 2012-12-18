@@ -1054,7 +1054,7 @@ static BOOL _redundantcopies_is_insn_available(x86_instruction *insn, basic_bloc
 
 //
 // Инициализация структур для анализа живых регистров.
-void x86_dataflow_init_alive_reg_tables(function_desc *function, x86_operand_type type)
+void x86_dataflow_alivereg_init(function_desc *function, x86_operand_type type)
 {
     _detect_basic_blocks(function);
     _alivereg_build_inout(function, type);
@@ -1068,7 +1068,7 @@ void x86_dataflow_init_alive_reg_tables(function_desc *function, x86_operand_typ
 
 //
 // Пересчитывает таблицы для данной инструкции.
-void x86_dataflow_set_current_insn(function_desc *function, x86_operand_type type, x86_instruction *insn)
+void x86_dataflow_alivereg_seek(function_desc *function, x86_operand_type type, x86_instruction *insn)
 {
     _current_block  = insn->in_block - _basic_blocks.blocks_base;
     _current_insn   = insn;
@@ -1078,14 +1078,14 @@ void x86_dataflow_set_current_insn(function_desc *function, x86_operand_type typ
 
 //
 // Проверяет, можно ли освободить регистр ПОСЛЕ этой инструкции.
-int x86_dataflow_is_pseudoreg_alive_after(int pseudoreg)
+int x86_dataflow_alivereg_test_after(int pseudoreg)
 {
     return BIT_TEST(_alivereg_after_current_insn, pseudoreg);
 }
 
 //
 // Проверяет, можно ли освободить регистр ПЕРЕД этой инструкцией.
-int x86_dataflow_is_pseudoreg_alive_before(int pseudoreg)
+int x86_dataflow_alivereg_test_before(int pseudoreg)
 {
     return BIT_TEST(_alivereg_before_current_insn, pseudoreg);
 }

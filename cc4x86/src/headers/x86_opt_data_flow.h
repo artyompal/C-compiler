@@ -17,11 +17,11 @@ typedef struct basic_block_decl {           // структура базового блока:
 } basic_block;
 
 
-void x86_dataflow_init_alive_reg_tables     (function_desc *function, x86_operand_type type);
-void x86_dataflow_set_current_insn          (function_desc *function, x86_operand_type type, x86_instruction *pos);
+void x86_dataflow_alivereg_init             (function_desc *function, x86_operand_type type);
+void x86_dataflow_alivereg_seek             (function_desc *function, x86_operand_type type, x86_instruction *pos);
 
-int  x86_dataflow_is_pseudoreg_alive_after  (int pseudoreg);
-int  x86_dataflow_is_pseudoreg_alive_before (int pseudoreg);
+int  x86_dataflow_alivereg_test_after       (int pseudoreg);
+int  x86_dataflow_alivereg_test_before      (int pseudoreg);
 
 void x86_dataflow_optimize_redundant_copies (function_desc *function);
 void x86_dataflow_init_use_def_tables       (function_desc *function, x86_operand_type type);

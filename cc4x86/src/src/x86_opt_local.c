@@ -168,8 +168,8 @@ static x86_instruction *_find_local_definition(function_desc *function, x86_inst
 // Проверяет факт того, что значение больше не будет кем-то использоваться.
 static BOOL _is_unused_anymore(function_desc *function, x86_instruction *insn, int reg)
 {
-    x86_dataflow_set_current_insn(function, x86op_dword, insn);
-    return !x86_dataflow_is_pseudoreg_alive_after(reg);
+    x86_dataflow_alivereg_seek(function, x86op_dword, insn);
+    return !x86_dataflow_alivereg_test_after(reg);
 }
 
 //
@@ -325,7 +325,7 @@ static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 // Оптимизирует конструкции с MOV.
 static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
 {
-    x86_dataflow_set_current_insn(function, x86op_dword, insn);
+    x86_dataflow_alivereg_seek(function, x86op_dword, insn);
 
     if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT(insn->in_op2)) {
         _try_optimize_mov_reg_const(function, insn);
@@ -368,7 +368,7 @@ static void _optimize_dword_insns(function_desc *function)
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
     _usage_max_count = function->func_insn_count;
 
-    x86_dataflow_init_alive_reg_tables(function, x86op_dword);
+    x86_dataflow_alivereg_init(function, x86op_dword);
     x86_dataflow_init_use_def_tables(function, x86op_dword);
 
     for (insn = function->func_binary_code; insn; insn = next) {
@@ -380,10 +380,10 @@ static void _optimize_dword_insns(function_desc *function)
             continue;
         }
 
-        x86_dataflow_set_current_insn(function, x86op_dword, insn);
+        x86_dataflow_alivereg_seek(function, x86op_dword, insn);
         bincode_extract_pseudoregs_modified_by_insn(insn, x86op_dword, regs, &regs_count);
 
-        if (regs_count == 1 && !x86_dataflow_is_pseudoreg_alive_after(regs[0])) {
+        if (regs_count == 1 && !x86_dataflow_alivereg_test_after(regs[0])) {
             x86_dataflow_erase_instruction(function, insn);
             continue;
         }
@@ -481,16 +481,16 @@ static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
     _usage_max_count = function->func_insn_count;
 
-    x86_dataflow_init_alive_reg_tables(function, x86op_float);
+    x86_dataflow_alivereg_init(function, x86op_float);
     x86_dataflow_init_use_def_tables(function, x86op_float);
 
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
 
-        x86_dataflow_set_current_insn(function, x86op_float, insn);
+        x86_dataflow_alivereg_seek(function, x86op_float, insn);
         bincode_extract_pseudoregs_modified_by_insn(insn, x86op_float, regs, &regs_count);
 
-        if (regs_count == 1 && !x86_dataflow_is_pseudoreg_alive_after(regs[0])) {
+        if (regs_count == 1 && !x86_dataflow_alivereg_test_after(regs[0])) {
             x86_dataflow_erase_instruction(function, insn);
             continue;
         }
