@@ -10,8 +10,7 @@
 typedef struct register_map_decl {
     int real_registers_cnt;
     int real_registers_map[X86_MAX_REG];    // положительное число: псевдо-регистр,
-                                            // -1:                  свободный регистр,
-                                            // остальное:           ошибка
+                                            // NO_REG:              свободный регистр
 } register_map;
 
 static register_map _dword_register_map;
@@ -47,7 +46,7 @@ static void _clear_register_map(register_map *regmap)
     regmap->real_registers_cnt = 0;
 
     for (i = 0; i < X86_MAX_REG; i++) {
-        regmap->real_registers_map[i] = -1;
+        regmap->real_registers_map[i] = NO_REG;
     }
 }
 
@@ -116,7 +115,7 @@ static void _swap_register(function_desc *function, x86_instruction *insn, regis
         }
 
         regmap->real_registers_cnt--;
-        regmap->real_registers_map[real_reg] = -1;
+        regmap->real_registers_map[real_reg] = NO_REG;
     }
 }
 
@@ -149,7 +148,7 @@ static void _swap_register_for_push_all(function_desc *function, x86_instruction
 
     pseudoregs_map[reg].reg_status = register_swapped;
     regmap->real_registers_cnt--;
-    regmap->real_registers_map[real_reg] = -1;
+    regmap->real_registers_map[real_reg] = NO_REG;
 }
 
 
@@ -200,7 +199,7 @@ static void _restore_register_after_merge(function_desc *function, x86_instructi
 static BOOL _is_real_register_free(register_map *regmap, int real_reg)
 {
     ASSERT(real_reg >= 0 && real_reg < X86_MAX_REG);
-    return (regmap->real_registers_map[real_reg] == -1);
+    return (regmap->real_registers_map[real_reg] == NO_REG);
 }
 
 static int _alloc_real_register_from_range(function_desc *function, x86_instruction *insn, register_map *regmap,
@@ -222,7 +221,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
 
             pseudoreg2 = regmap->real_registers_map[real_reg];
 
-            if (pseudoreg2 == -1) {
+            if (pseudoreg2 == NO_REG) {
                 continue;
             }
 
@@ -245,7 +244,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
 
             pseudoreg2 = regmap->real_registers_map[real_reg];
 
-            if (pseudoreg2 == -1) {
+            if (pseudoreg2 == NO_REG) {
                 continue;
             }
 
@@ -333,7 +332,7 @@ static void _free_real_register(register_map *regmap, int real_reg)
     ASSERT(real_reg >= 0 && real_reg < X86_MAX_REG);
     ASSERT(regmap->real_registers_cnt > 0);
 
-    regmap->real_registers_map[real_reg] = -1;
+    regmap->real_registers_map[real_reg] = NO_REG;
     regmap->real_registers_cnt--;
 }
 
@@ -344,7 +343,7 @@ static void _free_all_dead_registers(register_map *regmap)
     for (real_reg = 0; real_reg != X86_MAX_REG; real_reg++) {
         pseudoreg = regmap->real_registers_map[real_reg];
 
-        if (pseudoreg != -1 && !x86_dataflow_alivereg_test_after(pseudoreg)) {
+        if (pseudoreg != NO_REG && !x86_dataflow_alivereg_test_after(pseudoreg)) {
             _free_real_register(regmap, real_reg);
         }
     }
@@ -440,7 +439,7 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         for (i = x86reg_eax; i <= x86reg_edx; i++) {
             reg = regmap->real_registers_map[i];
 
-            if (reg != -1 && x86_dataflow_alivereg_test_after(reg)) {
+            if (reg != NO_REG && x86_dataflow_alivereg_test_after(reg)) {
 				_swap_register_for_push_all(function, insn, regmap, pseudoregs_map, reg, type);
             }
         }
@@ -450,7 +449,7 @@ static void _emulate_push_all(function_desc *function, x86_instruction *insn, x8
         for (i = 0; i < X86_MAX_REG; i++) {
             reg = regmap->real_registers_map[i];
 
-            if (reg != -1 && x86_dataflow_alivereg_test_after(reg)) {
+            if (reg != NO_REG && x86_dataflow_alivereg_test_after(reg)) {
 				_swap_register_for_push_all(function, insn, regmap, pseudoregs_map, reg, type);
             }
         }
@@ -475,7 +474,7 @@ static void _merge_register_states(function_desc *function, x86_instruction *ins
             reg = old_regmap->real_registers_map[real_reg];
             ASSERT(reg < function->func_pseudoregs_count[type]);
 
-            if (reg != -1) {
+            if (reg != NO_REG) {
                 new_regmap->real_registers_cnt++;
                 new_regmap->real_registers_map[real_reg] = reg;
 
@@ -516,7 +515,7 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
         pseudoregs_map[i].reg_status            = register_unallocated;
         pseudoregs_map[i].reg_stack_location    = -1;
         pseudoregs_map[i].reg_dirty             = FALSE;
-        pseudoregs_map[i].reg_location          = -1;
+        pseudoregs_map[i].reg_location          = NO_REG;
         pseudoregs_map[i].reg_content_type      = x86op_none;
     }
 
@@ -563,7 +562,7 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
             for (i = 0; i < x86_get_registers_count(type); i++) {
                 reg = regmap->real_registers_map[i];
 
-                if (reg != -1) {
+                if (reg != NO_REG) {
                     pseudoregs_map[reg].reg_dirty = TRUE;
                 }
             }

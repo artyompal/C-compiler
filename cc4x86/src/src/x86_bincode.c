@@ -334,7 +334,7 @@ void bincode_create_operand_addr_from_reg(x86_operand *op, x86_operand_type type
     op->op_loc              = x86loc_address;
     op->op_type             = type;
     op->data.address.base   = reg;
-    op->data.address.index  = 0;
+    op->data.address.index  = NO_REG;
     op->data.address.offset = 0;
 }
 
@@ -343,7 +343,7 @@ void bincode_create_operand_addr_from_reg_offset(x86_operand *op, x86_operand_ty
     op->op_loc              = x86loc_address;
     op->op_type             = type;
     op->data.address.base   = reg;
-    op->data.address.index  = 0;
+    op->data.address.index  = NO_REG;
     op->data.address.offset = offset;
 }
 
@@ -372,7 +372,7 @@ void bincode_create_operand_addr_from_ebp_offset(x86_operand *op, x86_operand_ty
     op->op_loc              = x86loc_address;
     op->op_type             = type;
     op->data.address.base   = ~x86reg_ebp;
-    op->data.address.index  = 0;
+    op->data.address.index  = NO_REG;
     op->data.address.offset = offset;
 }
 
@@ -381,7 +381,7 @@ void bincode_create_operand_addr_from_esp_offset(x86_operand *op, x86_operand_ty
     op->op_loc              = x86loc_address;
     op->op_type             = type;
     op->data.address.base   = ~x86reg_esp;
-    op->data.address.index  = 0;
+    op->data.address.index  = NO_REG;
     op->data.address.offset = offset;
 }
 

@@ -22,7 +22,7 @@ static unsigned int _address_hash(x86_address *addr)
 {
     unsigned res = addr->base ^ addr->index ^ addr->offset;
 
-    if (addr->index != 0) {
+    if (addr->index != NO_REG) {
         res ^= addr->scale;
     }
 
@@ -32,7 +32,7 @@ static unsigned int _address_hash(x86_address *addr)
 static int _address_compare(x86_address *key1, x86_address *key2)
 {
     return (key1->base == key2->base && key1->index == key2->index && key1->offset == key2->offset
-        && (key1->index == 0 || key1->scale == key2->scale));
+        && (key1->index == NO_REG || key1->scale == key2->scale));
 }
 
 

@@ -50,6 +50,7 @@ typedef enum x86_dword_register_decl {
 } x86_dword_register;
 
 #define X86_MAX_REG (8)
+#define NO_REG      (0)
 
 typedef enum x86_operand_location_decl {
     x86loc_none,

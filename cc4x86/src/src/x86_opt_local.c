@@ -6,12 +6,12 @@
 #include "x86_opt_data_flow.h"
 
 
-#define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base > 0 && (OP).data.address.index == 0 \
+#define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base != NO_REG && (OP).data.address.index == NO_REG \
                                                 && (OP).data.address.offset == 0)
-#define ADDRESS_IS_UNSCALED_INDEX(OP)       ((OP).data.address.base == 0 && (OP).data.address.index > 0 \
+#define ADDRESS_IS_UNSCALED_INDEX(OP)       ((OP).data.address.base == NO_REG && (OP).data.address.index != NO_REG \
                                                 && (OP).data.address.offset == 0  && (OP).data.address.scale == 1)
-#define ADDRESS_IS_BASE_OFS(OP)             ((OP).data.address.base > 0 && (OP).data.address.index == 0)
-#define ADDRESS_IS_UNSCALED_INDEX_OFS(OP)   ((OP).data.address.base == 0 && (OP).data.address.index > 0 \
+#define ADDRESS_IS_BASE_OFS(OP)             ((OP).data.address.base != NO_REG && (OP).data.address.index == NO_REG)
+#define ADDRESS_IS_UNSCALED_INDEX_OFS(OP)   ((OP).data.address.base == NO_REG && (OP).data.address.index != NO_REG \
                                                 && (OP).data.address.scale == 1)
 
 static x86_instruction  **_usage_arr;
@@ -180,18 +180,18 @@ static BOOL _can_combine_address_and_insn(int reg, x86_operand *addr, x86_instru
         addr->data.address.offset       += insn->in_op2.data.int_val;
         return TRUE;
     } else if (insn->in_code == x86insn_int_mov && OP_IS_CONSTANT(insn->in_op2)
-        && addr->data.address.base > 0 && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, addr->data.address.base)) {
-            addr->data.address.base     = 0;
+        && addr->data.address.base != NO_REG && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, addr->data.address.base)) {
+            addr->data.address.base     = NO_REG;
             addr->data.address.offset   += insn->in_op2.data.int_val;
             return TRUE;
     } else if (insn->in_code == x86insn_int_mov && OP_IS_CONSTANT(insn->in_op2)
-        && addr->data.address.index > 0 && addr->data.address.scale == 1 && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, addr->data.address.index)) {
-            addr->data.address.index    = 0;
+        && addr->data.address.index != NO_REG && addr->data.address.scale == 1 && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, addr->data.address.index)) {
+            addr->data.address.index    = NO_REG;
             addr->data.address.offset   += insn->in_op2.data.int_val;
             return TRUE;
     } else if (insn->in_code == x86insn_int_add && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, reg)
         && OP_IS_PSEUDO_REG(insn->in_op2, x86op_dword) && (ADDRESS_IS_BASE_OFS(*addr) || ADDRESS_IS_UNSCALED_INDEX_OFS(*addr))) {
-            addr->data.address.base     = (addr->data.address.base > 0 ? addr->data.address.base : addr->data.address.index);
+            addr->data.address.base     = (addr->data.address.base != NO_REG ? addr->data.address.base : addr->data.address.index);
             addr->data.address.index    = insn->in_op2.data.reg;
             addr->data.address.scale    = 1;
             return TRUE;
@@ -216,7 +216,7 @@ static void _try_optimize_address(function_desc *function, x86_instruction *insn
     BOOL allowed;
     int reg;
 
-    if (addr->data.address.base > 0) {
+    if (addr->data.address.base != NO_REG) {
         reg = addr->data.address.base;
         def = _find_local_definition(function, insn, reg);
 
@@ -241,7 +241,7 @@ static void _try_optimize_address(function_desc *function, x86_instruction *insn
         }
     }
 
-    if (addr->data.address.index > 0 && addr->data.address.scale == 1) {
+    if (addr->data.address.index != NO_REG && addr->data.address.scale == 1) {
         reg = addr->data.address.index;
         def = _find_local_definition(function, insn, reg);
 
@@ -310,8 +310,7 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 // Оптимизирует конструкции с LEA.
 static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 {
-    ASSERT(insn->in_op1.op_loc == x86loc_register);
-    ASSERT(insn->in_op1.data.reg > 0);  // LEA оперирует только псевдорегистрами.
+    ASSERT(insn->in_op1.op_loc == x86loc_register && insn->in_op1.data.reg != NO_REG);  // LEA оперирует только псевдорегистрами.
 
     if (insn->in_op2.op_loc == x86loc_symbol) {
         _try_optimize_lea_reg_symbol(function, insn);
