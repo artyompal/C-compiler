@@ -11,11 +11,12 @@ typedef struct function_desc_decl function_desc;
 typedef enum x86_operand_type_decl x86_operand_type;
 
 
-void    x86_local_optimization_pass         (function_desc *function, BOOL after_regvars);
+BOOL    x86_local_optimization_pass         (function_desc *function, BOOL after_regvars);
 void    x86_optimize_after_register_coloring(function_desc *function);
 
 void    x86_caching_init                    ();
-void    x86_caching_pass                    (function_desc *function);
+void    x86_caching_reset                   ();
+BOOL    x86_caching_pass                    (function_desc *function);
 void    x86_caching_setup_reg_info          (function_desc *function, x86_pseudoreg_info *pseudoregs_map, x86_operand_type type);
 
 //void    x86_regvars_init                    ();

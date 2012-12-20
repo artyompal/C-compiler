@@ -27,7 +27,7 @@ void symbol_init_table(void)
     symbol_table = hash_init((hash_function) _symbol_hash, (hash_equal_function) symbol_equal);
 }
 
-int symbol_equal(symbol *key1, symbol *key2)
+BOOL symbol_equal(symbol *key1, symbol *key2)
 {
     return !strcmp(key1->sym_name, key2->sym_name);
 }

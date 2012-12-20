@@ -5,7 +5,7 @@
 #include "x86_optimizer.h"
 #include "x86_opt_data_flow.h"
 #include "x86_regalloc.h"
-
+#include "x86_text_output.h"
 
 //
 // Хеш переменных.
@@ -29,7 +29,7 @@ static unsigned int _address_hash(x86_address *addr)
     return res;
 }
 
-static int _address_compare(x86_address *key1, x86_address *key2)
+static BOOL _address_compare(x86_address *key1, x86_address *key2)
 {
     return (key1->base == key2->base && key1->index == key2->index && key1->offset == key2->offset
         && (key1->index == NO_REG || key1->scale == key2->scale));
@@ -38,9 +38,10 @@ static int _address_compare(x86_address *key1, x86_address *key2)
 
 //
 // Алгоритм кеширования адресов в памяти.
-static void _cache_every_variable(function_desc *function, x86_operand_type type)
+static BOOL _cache_every_variable(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn, *next;
+    BOOL changed = FALSE;
     variable *var;
 
     for (insn = function->func_binary_code; insn; insn = next) {
@@ -60,6 +61,7 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
                 //printf("inserted op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
                 hash_insert(_variables_table[type], var);
+                changed = TRUE;
                 continue;
             }
 
@@ -67,6 +69,7 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
                 //printf("replaced op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
                 bincode_create_operand_from_pseudoreg(&insn->in_op1, insn->in_op1.op_type, var->var_reg);
+                changed = TRUE;
                 continue;
             }
         }
@@ -95,24 +98,26 @@ static void _cache_every_variable(function_desc *function, x86_operand_type type
                 //printf("inserted op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
                 hash_insert(_variables_table[type], var);
+                changed = TRUE;
                 continue;
             }
 
-            if (var && insn->in_code != x86insn_lea) {
+            if (var && insn->in_code != x86insn_lea && (!OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, var->var_reg) || !IS_MOV_INSN(insn->in_code))) {
                 //printf("replaced op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
                 bincode_create_operand_from_pseudoreg(&insn->in_op2, insn->in_op2.op_type, var->var_reg);
+                changed = TRUE;
                 continue;
             }
         }
     }
+
+    return changed;
 }
 
-static void _caching_pass(function_desc *function, x86_operand_type type)
+static BOOL _caching_pass(function_desc *function, x86_operand_type type)
 {
-    //function->func_start_of_regvars[type] = function->func_pseudoregs_count[type];
-
-    _cache_every_variable(function, type);
+    return _cache_every_variable(function, type);
 }
 
 
@@ -124,13 +129,20 @@ void x86_caching_init()
     _variables_table[x86op_float] = hash_init((hash_function) _address_hash, (hash_equal_function) _address_compare);
 }
 
-void x86_caching_pass(function_desc *function)
+void x86_caching_reset()
 {
     hash_clear(_variables_table[x86op_dword]);
     hash_clear(_variables_table[x86op_float]);
+}
 
-    _caching_pass(function, x86op_dword);
-    _caching_pass(function, x86op_float);
+BOOL x86_caching_pass(function_desc *function)
+{
+    BOOL changed = FALSE;
+
+    changed |= _caching_pass(function, x86op_dword);
+    changed |= _caching_pass(function, x86op_float);
+
+    return changed;
 }
 
 void x86_caching_setup_reg_info(function_desc *function, x86_pseudoreg_info *pseudoregs_map, x86_operand_type type)

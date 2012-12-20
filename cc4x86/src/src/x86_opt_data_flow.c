@@ -1144,11 +1144,11 @@ void x86_dataflow_erase_instruction(function_desc *function, x86_instruction *in
 
 //
 // Делает оптимизацию распространения копирований (Дракон, алгоритм 10.6).
-void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
+BOOL _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 {
     x86_instruction *mov, *usage, *next, *test, **usage_arr;
     int usage_count, i, j, x, y, regs_cnt, *regs[MAX_REGISTERS_PER_INSN];
-    BOOL replace_allowed;
+    BOOL replace_allowed, changed = FALSE;
 
     x86_dataflow_init_use_def_tables(function, type);
     _redundantcopies_build_table(function, type);
@@ -1231,19 +1231,25 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 }
 
                 x86_dataflow_erase_instruction(function, mov);
+                changed = TRUE;
             }
         }
     }
 
     allocator_free(allocator_per_function_pool, usage_arr, sizeof(void *) * function->func_insn_count);
+    return changed;
 }
 
 //
 // Внешний интерфейс для функции распространения копирований.
-void x86_dataflow_optimize_redundant_copies(function_desc *function)
+BOOL x86_dataflow_optimize_redundant_copies(function_desc *function)
 {
-    _optimize_redundant_copies(function, x86op_dword);
-    _optimize_redundant_copies(function, x86op_float);
+    BOOL changed = FALSE;
+
+    changed |= _optimize_redundant_copies(function, x86op_dword);
+    changed |= _optimize_redundant_copies(function, x86op_float);
+
+    return changed;
 }
 
 

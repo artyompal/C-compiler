@@ -801,8 +801,9 @@ __rasterize_triangle_1i proc
         jge     label0000
         cmp     ebx,esi
         jle     label0001
-        push    dword ptr [ebp+40]
-        push    dword ptr [ebp+36]
+        movss   dword ptr [esp-4],xmm1
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         push    dword ptr [edx+4]
         push    dword ptr [edx]
         push    dword ptr [ebp+20]
@@ -814,8 +815,9 @@ __rasterize_triangle_1i proc
 label0001:
         cmp     ebx,edi
         jge     label0003
-        push    dword ptr [ebp+40]
-        push    dword ptr [ebp+36]
+        movss   dword ptr [esp-4],xmm1
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         push    dword ptr [ecx+4]
         push    dword ptr [ecx]
         push    dword ptr [ebp+20]
@@ -825,8 +827,9 @@ label0001:
         add     esp,28
         jmp     label0004
 label0003:
-        push    dword ptr [ebp+40]
-        push    dword ptr [ebp+36]
+        movss   dword ptr [esp-4],xmm1
+        movss   dword ptr [esp-8],xmm0
+        sub     esp,8
         push    dword ptr [edx+4]
         push    dword ptr [edx]
         push    dword ptr [ebp+20]
@@ -1695,7 +1698,8 @@ _rasterizer_triangle3f proc
         add     esp,8
         mov     edx,[ebp+20]
         movq    xmm0,qword ptr [edx]
-        movq    qword ptr [ebp-180],xmm0
+        movq    xmm1,xmm0
+        movsd   qword ptr [ebp-180],xmm1
         push    dword ptr [ebp+12]
         lea     eax,[ebp-196]
         add     eax,24
@@ -1718,7 +1722,7 @@ _rasterizer_triangle3f proc
         movq    qword ptr [ebp-124],xmm0
         movq    xmm0,xmm2
         movq    qword ptr [ebp-116],xmm0
-        movq    xmm0,xmm3
+        movq    xmm0,qword ptr [ebp-180]
         movq    qword ptr [ebp-108],xmm0
         lea     eax,[ebp-196]
         push    eax

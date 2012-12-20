@@ -941,7 +941,7 @@ _rasterizer_triangle3f proc
 ; end of inline function _transform_to_projection_space
         mov     dword6,dword861
         movq    double1,qword ptr [dword6]
-        movq    qword ptr [ebp-180],double1
+        movq    double121,double1
 ; start of inline function _transform_to_projection_space
         mov     dword805,dword862
         mov     dword858,dword805

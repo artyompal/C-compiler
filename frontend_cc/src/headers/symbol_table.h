@@ -47,7 +47,7 @@ typedef struct symbol_list_decl {
 
 void            symbol_init_table               (void);
 
-int             symbol_equal                    (symbol *key1, symbol *key2);
+BOOL            symbol_equal                    (symbol *key1, symbol *key2);
 symbol *        symbol_lookup                   (const char *str, int len);
 symbol *        symbol_create_variable          (symbol *sym);
 symbol *        symbol_create_label             (symbol *sym, int label);

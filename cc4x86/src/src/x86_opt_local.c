@@ -92,7 +92,7 @@ static BOOL _check_locality_and_constantness(x86_instruction *insn, int reg)
 
 //
 // Заменяет все использования регистра на смещение символа, и если это всегда удаётся, удаляем инструкцию LEA.
-static void _try_optimize_lea_reg_symbol(function_desc *function, x86_instruction *lea)
+static BOOL _try_optimize_lea_reg_symbol(function_desc *function, x86_instruction *lea)
 {
     x86_operand_type type = x86op_dword;
     int reg, i;
@@ -101,21 +101,22 @@ static void _try_optimize_lea_reg_symbol(function_desc *function, x86_instructio
     x86_dataflow_find_all_usages_of_definition(reg, lea, type, _usage_arr, &_usage_count, _usage_max_count);
 
     if (!_check_locality_and_constantness(lea, reg)) {
-        return;
+        return FALSE;
     }
 
     for (i = 0; i < _usage_count; i++) {
         if (!_replace_register_with_symbol_offset(_usage_arr[i], reg, lea->in_op2.data.sym.name)) {
-            return;
+            return FALSE;
         }
     }
 
     x86_dataflow_erase_instruction(function, lea);
+    return TRUE;
 }
 
 //
 // Пробует убрать инструкцию LEA.
-static void _try_optimize_lea_reg_address(function_desc *function, x86_instruction *lea)
+static BOOL _try_optimize_lea_reg_address(function_desc *function, x86_instruction *lea)
 {
     x86_instruction *block_end, *usage;
     x86_operand_type type = x86op_dword;
@@ -125,7 +126,7 @@ static void _try_optimize_lea_reg_address(function_desc *function, x86_instructi
     x86_dataflow_find_all_usages_of_definition(reg, lea, type, _usage_arr, &_usage_count, _usage_max_count);
 
     if (!_check_locality_and_constantness(lea, reg)) {
-        return;
+        return FALSE;
     }
 
     block_end = lea->in_block->block_last_insn->in_next;
@@ -138,7 +139,7 @@ static void _try_optimize_lea_reg_address(function_desc *function, x86_instructi
             ASSERT(usage != block_end);
 
             if (bincode_is_pseudoreg_modified_by_insn(usage, type, reg2)) {
-                return;
+                return FALSE;
             }
 
             if (aux_binary_search((int*)_usage_arr, _usage_count, (int)usage) >= 0) {
@@ -148,6 +149,9 @@ static void _try_optimize_lea_reg_address(function_desc *function, x86_instructi
         }
 
         x86_dataflow_erase_instruction(function, lea);
+        return TRUE;
+    } else {
+        return FALSE;
     }
 }
 
@@ -269,7 +273,7 @@ static void _try_optimize_address(function_desc *function, x86_instruction *insn
 
 //
 // Пытается распространять константу вместо регистра.
-static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction *mov)
+static BOOL _try_optimize_mov_reg_const(function_desc *function, x86_instruction *mov)
 {
     int reg, i, def_count;
     x86_instruction **definitions;
@@ -285,13 +289,12 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
         if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)
             || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
             || IS_MUL_DIV_INSN(_usage_arr[i]->in_code) || _usage_arr[i]->in_code == x86insn_cdq) {
-                return;
+                return FALSE;
             }
 
         x86_dataflow_find_all_definitions(reg, _usage_arr[i], type, definitions, &def_count, _usage_max_count);
-
         if (def_count != 1) {
-            return;
+            return FALSE;
         }
 
         ASSERT(definitions[0] == mov);
@@ -304,34 +307,37 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 
     // удаляем инструкцию
     x86_dataflow_erase_instruction(function, mov);
+    return TRUE;
 }
 
 //
 // Оптимизирует конструкции с LEA.
-static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
+static BOOL _try_optimize_lea(function_desc *function, x86_instruction *insn)
 {
     ASSERT(insn->in_op1.op_loc == x86loc_register && insn->in_op1.data.reg != NO_REG);  // LEA оперирует только псевдорегистрами.
 
     if (insn->in_op2.op_loc == x86loc_symbol) {
-        _try_optimize_lea_reg_symbol(function, insn);
+        return _try_optimize_lea_reg_symbol(function, insn);
     } else {
         ASSERT(insn->in_op2.op_loc == x86loc_address);
-        _try_optimize_lea_reg_address(function, insn);
+        return _try_optimize_lea_reg_address(function, insn);
     }
 }
 
 //
 // Оптимизирует конструкции с MOV.
-static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
+static BOOL _try_optimize_mov(function_desc *function, x86_instruction *insn)
 {
     if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT(insn->in_op2)) {
-        _try_optimize_mov_reg_const(function, insn);
+        return _try_optimize_mov_reg_const(function, insn);
+    } else {
+        return FALSE;
     }
 }
 
 //
 // Оптимизирует конструкции с ADD/SUB.
-static void _try_optimize_add_sub(function_desc *function, x86_instruction *insn)
+static BOOL _try_optimize_add_sub(function_desc *function, x86_instruction *insn)
 {
     if (OP_IS_CONSTANT(insn->in_op2)) {
         int val = insn->in_op2.data.int_val;
@@ -339,27 +345,34 @@ static void _try_optimize_add_sub(function_desc *function, x86_instruction *insn
         if (val == 1 || val == -1) {
             insn->in_code = ((val == -1) ^ (insn->in_code == x86insn_int_sub)) ? x86insn_int_dec : x86insn_int_inc;
             insn->in_op2.op_loc = x86loc_none;
+            return TRUE;
         }
     }
+
+    return FALSE;
 }
 
 //
 // Удаляет инструкцию CMP reg,0 или TEST, следующую сразу после арифметичекой операции с этим же регистром.
-static void _try_optimize_cmp_test(function_desc *function, x86_instruction *cmp)
+static BOOL _try_optimize_cmp_test(function_desc *function, x86_instruction *cmp)
 {
     if (OP_IS_PSEUDO_REG(cmp->in_op1, x86op_dword) && IS_FLAGS_MODIFYING_INSN(cmp->in_prev->in_code)
         && (OP_IS_CONSTANT(cmp->in_op2) && cmp->in_op2.data.int_val == 0 || cmp->in_code == x86insn_int_test)
         && cmp->in_prev && OP_IS_THIS_PSEUDO_REG(cmp->in_prev->in_op1, x86op_dword, cmp->in_op1.data.reg)
         && cmp->in_next && (cmp->in_next->in_code == x86insn_je || cmp->in_next->in_code == x86insn_jne)) {
             x86_dataflow_erase_instruction(function, cmp);
+            return TRUE;
         }
+
+    return FALSE;
 }
 
 //
 // Оптимизирует целочисленные инструкции.
-static void _optimize_dword_insns(function_desc *function)
+static BOOL _optimize_dword_insns(function_desc *function)
 {
     x86_instruction *insn, *next;
+    BOOL changed = FALSE;
 
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
     _usage_max_count = function->func_insn_count;
@@ -372,21 +385,21 @@ static void _optimize_dword_insns(function_desc *function)
 
         switch (insn->in_code) {
         case x86insn_lea:
-            _try_optimize_lea(function, insn);
+            changed |= _try_optimize_lea(function, insn);
             break;
 
         case x86insn_int_mov:
-            _try_optimize_mov(function, insn);
+            changed |= _try_optimize_mov(function, insn);
             break;
 
         case x86insn_int_add:
         case x86insn_int_sub:
-            _try_optimize_add_sub(function, insn);
+            changed |= _try_optimize_add_sub(function, insn);
             break;
 
         case x86insn_int_cmp:
         case x86insn_int_test:
-            _try_optimize_cmp_test(function, insn);
+            changed |= _try_optimize_cmp_test(function, insn);
             break;
         }
     }
@@ -402,18 +415,19 @@ static void _optimize_dword_insns(function_desc *function)
     }
 
     allocator_free(allocator_per_function_pool, _usage_arr, sizeof(void *) * _usage_max_count);
+    return changed;
 }
 
 //
 // Пытается распространять константу вместо регистра.
-static void _try_optimize_movss(function_desc *function, x86_instruction *movss, BOOL after_regvars)
+static BOOL _try_optimize_movss(function_desc *function, x86_instruction *movss, BOOL after_regvars)
 {
     int reg, i, def_count;
     x86_instruction **definitions;
     x86_operand_type type = x86op_float;
 
     if (movss->in_op2.op_loc != x86loc_symbol && movss->in_op2.op_loc != x86loc_symbol_offset || !OP_IS_PSEUDO_REG(movss->in_op1, type)) {
-        return;
+        return FALSE;
     }
 
     reg = movss->in_op1.data.reg;
@@ -425,12 +439,12 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss,
         // если первый операнд является адресом, выполняем оптимизацию только при флаге after_regvars.
         if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg) || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
             || !after_regvars && !OP_IS_PSEUDO_REG(_usage_arr[i]->in_op1, type)) {
-                return;
+                return FALSE;
             }
 
         x86_dataflow_find_all_definitions(reg, _usage_arr[i], type, definitions, &def_count, _usage_max_count);
         if (def_count != 1) {
-            return;
+            return FALSE;
         }
 
         ASSERT(definitions[0] == movss);
@@ -451,13 +465,15 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss,
 
     // удаляем инструкцию
     x86_dataflow_erase_instruction(function, movss);
+    return TRUE;
 }
 
 //
 // Оптимизирует флоатовые инструкции.
-static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
+static BOOL _optimize_float_insn(function_desc *function, BOOL after_regvars)
 {
     x86_instruction *insn, *next;
+    BOOL changed = FALSE;
 
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
     _usage_max_count = function->func_insn_count;
@@ -470,19 +486,21 @@ static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
         switch (insn->in_code) {
         case x86insn_sse_movss:
         case x86insn_sse_movsd:
-            _try_optimize_movss(function, insn, after_regvars);
+            changed |= _try_optimize_movss(function, insn, after_regvars);
             break;
         }
     }
 
     allocator_free(allocator_per_function_pool, _usage_arr, sizeof(void *) * function->func_insn_count);
+    return changed;
 }
 
 //
 // Удаляет код, находящийся после jmp/ret.
-static void _remove_unreachable_code(function_desc *function)
+static BOOL _remove_unreachable_code(function_desc *function)
 {
     x86_instruction *insn, *next, *prev;
+    BOOL changed = FALSE;
 
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
@@ -490,17 +508,21 @@ static void _remove_unreachable_code(function_desc *function)
 
         if (prev && (prev->in_code == x86insn_jmp || prev->in_code == x86insn_ret) && insn->in_code != x86insn_label) {
             bincode_erase_instruction(function, insn);
+            changed = TRUE;
             continue;
         }
     }
+
+    return changed;
 }
 
 //
 // Удаляет инструкции, результат которых неиспользуется.
-static void _remove_dead_code(function_desc *function, x86_operand_type type)
+static BOOL _remove_dead_code(function_desc *function, x86_operand_type type)
 {
     int regs[MAX_REGISTERS_PER_INSN], regs_count;
     x86_instruction *insn, *next;
+    BOOL changed = FALSE;
 
     x86_dataflow_alivereg_init(function, type);
 
@@ -512,17 +534,21 @@ static void _remove_dead_code(function_desc *function, x86_operand_type type)
 
         if (regs_count == 1 && !x86_dataflow_alivereg_test_after(regs[0])) {
             bincode_erase_instruction(function, insn);
+            changed = TRUE;
         }
     }
+
+    return changed;
 }
 
 //
 // Устраняет неиспользуемые метки в коде.
-static void _kill_unused_labels(function_desc *function)
+static BOOL _kill_unused_labels(function_desc *function)
 {
     int labels_count    = function->func_labels_count;
     int *labels_stat    = (int *) allocator_alloc(allocator_per_function_pool, labels_count*sizeof(int));
     x86_instruction *insn, *next;
+    BOOL changed = FALSE;
 
     memset(labels_stat, 0, labels_count*sizeof(int));
 
@@ -540,26 +566,32 @@ static void _kill_unused_labels(function_desc *function)
             ASSERT(insn->in_op1.op_loc == x86loc_label);
             if (labels_stat[insn->in_op1.data.label] == 0) {
                 bincode_erase_instruction(function, insn);
+                changed = TRUE;
             }
         }
     }
 
     allocator_free(allocator_per_function_pool, labels_stat, labels_count*sizeof(int));
+    return changed;
 }
 
 //
 // Итерация оптимизации.
 // Делается линейная оптимизация внутри блоков и распространение констант.
-void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
+BOOL x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 {
-    _kill_unused_labels(function);
-    _remove_unreachable_code(function);
+    BOOL changed = FALSE;
 
-    _remove_dead_code(function, x86op_dword);
-    _optimize_dword_insns(function);
+    changed |= _kill_unused_labels(function);
+    changed |= _remove_unreachable_code(function);
 
-    _remove_dead_code(function, x86op_float);
-    _optimize_float_insn(function, after_regvars);
+    changed |= _remove_dead_code(function, x86op_dword);
+    changed |= _optimize_dword_insns(function);
+
+    changed |= _remove_dead_code(function, x86op_float);
+    changed |= _optimize_float_insn(function, after_regvars);
+
+    return changed;
 }
 
 

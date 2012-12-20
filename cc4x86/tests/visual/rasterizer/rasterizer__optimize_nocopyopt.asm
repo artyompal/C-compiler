@@ -875,14 +875,16 @@ _rasterizer_triangle3f proc
         add     esp,12
 ; end of inline function _transform_to_projection_space
         movq    xmm0,qword ptr [esi]
-        movq    qword ptr [ebp-180],xmm0
+        movq    xmm1,xmm0
 ; start of inline function _transform_to_projection_space
         mov     edi,ebx
         lea     eax,[ebp-196]
         add     eax,24
 ; start of inline function vec4f_assign
         movss   xmm0,dword ptr [edi+8]
-        movss   xmm1,dword ptr [edi+4]
+        movss   xmm2,dword ptr [edi+4]
+        movsd   qword ptr [ebp-180],xmm1
+        movss   xmm1,xmm2
         movss   xmm2,dword ptr [edi]
         lea     ecx,[ebp-716]
         mov     edx,ecx
@@ -933,7 +935,7 @@ _rasterizer_triangle3f proc
         movq    qword ptr [ebp-124],xmm0
         movq    xmm0,xmm2
         movq    qword ptr [ebp-116],xmm0
-        movq    xmm0,xmm3
+        movq    xmm0,qword ptr [ebp-180]
         movq    qword ptr [ebp-108],xmm0
 ; start of inline function _rasterize_polygon_4f
         lea     eax,[ebp-196]
@@ -1034,14 +1036,14 @@ label0003:
         add     esp,12
         movss   xmm1,dword ptr [___unnamed_float_1]
         divss   xmm1,xmm0
-        movss   xmm2,xmm4
+        movss   xmm2,xmm3
         mulss   xmm2,xmm1
         cvttss2si       eax,xmm2
         mov     ecx,ebx
         mov     [ecx],eax
-        movss   xmm3,xmm2
-        mulss   xmm3,xmm1
-        cvttss2si       eax,xmm3
+        movss   xmm2,xmm4
+        mulss   xmm2,xmm1
+        cvttss2si       eax,xmm2
         mov     [ebx+4],eax
         mov     eax,ebx
         cmp     dword ptr [eax],0
@@ -1072,8 +1074,8 @@ label0029:
         mov     ecx,[ebp-336]
         movss   dword ptr [ebp-676],xmm0
         movsd   qword ptr [ebp-748],xmm1
-        movss   dword ptr [ebp-684],xmm2
-        movss   dword ptr [ebp-688],xmm4
+        movss   dword ptr [ebp-688],xmm3
+        movss   dword ptr [ebp-684],xmm4
         jmp     label0003
 label0004:
         mov     ecx,2
@@ -1315,8 +1317,8 @@ label000e:
         mov     edx,ebx
         mov     ecx,[ecx+4]
         sub     ecx,[edx+4]
-        cvtsi2ss        xmm3,ecx
-        divss   xmm1,xmm3
+        cvtsi2ss        xmm0,ecx
+        divss   xmm1,xmm0
         addss   xmm1,dword ptr [ebx+8]
         mov     ecx,ebx
         mov     edx,[ebp-364]
@@ -1444,8 +1446,8 @@ label000f:
         mov     edi,ebx
         mov     ecx,[ecx+4]
         sub     ecx,[edi+4]
-        cvtsi2ss        xmm3,ecx
-        divss   xmm1,xmm3
+        cvtsi2ss        xmm0,ecx
+        divss   xmm1,xmm0
         addss   xmm1,dword ptr [ebx+8]
         movss   xmm0,xmm1
         mov     ecx,esi

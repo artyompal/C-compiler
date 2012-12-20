@@ -10,7 +10,7 @@
 typedef struct hash_table_decl *hash_id;
 
 typedef unsigned int (*hash_function)(void *key);
-typedef int (*hash_equal_function)(void *key1, void *key2);
+typedef BOOL (*hash_equal_function)(void *key1, void *key2);
 
 
 hash_id         hash_init       (hash_function hash_func, hash_equal_function equal_func);

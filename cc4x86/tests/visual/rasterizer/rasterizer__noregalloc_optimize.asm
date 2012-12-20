@@ -477,56 +477,44 @@ label0001:
         cmp     dword16,dword353
         jle     label0002
 ; start of inline function vec4f_subtract
-        movss   float28,dword ptr [dword352]
-        subss   float28,dword ptr [dword354]
-        movss   dword ptr [ebp-24],float28
         movss   float29,dword ptr [dword352+4]
         subss   float29,dword ptr [dword354+4]
-        movss   dword ptr [ebp-20],float29
         movss   float30,dword ptr [dword352+8]
         subss   float30,dword ptr [dword354+8]
-        movss   dword ptr [ebp-16],float30
         movss   float31,dword ptr [dword352+12]
         subss   float31,dword ptr [dword354+12]
-        movss   dword ptr [ebp-12],float31
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   float48,dword ptr [ebp-20]
+        movss   float48,float29
         mulss   float48,dword ptr [dword358+4]
-        movss   float49,dword ptr [ebp-24]
+        movss   float49,float79
         mulss   float49,dword ptr [dword358]
         addss   float49,float48
-        movss   float50,dword ptr [ebp-16]
+        movss   float50,float30
         mulss   float50,dword ptr [dword358+8]
         addss   float49,float50
-        movss   float51,dword ptr [ebp-12]
+        movss   float51,float31
         mulss   float51,dword ptr [dword358+12]
         addss   float49,float51
 ; end of inline function vec4f_dot
 ; start of inline function vec4f_subtract
-        movss   float33,dword ptr [dword353]
-        subss   float33,dword ptr [dword354]
-        movss   dword ptr [ebp-24],float33
         movss   float34,dword ptr [dword353+4]
         subss   float34,dword ptr [dword354+4]
-        movss   dword ptr [ebp-20],float34
         movss   float35,dword ptr [dword353+8]
         subss   float35,dword ptr [dword354+8]
-        movss   dword ptr [ebp-16],float35
         movss   float36,dword ptr [dword353+12]
         subss   float36,dword ptr [dword354+12]
-        movss   dword ptr [ebp-12],float36
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   float53,dword ptr [ebp-20]
+        movss   float53,float34
         mulss   float53,dword ptr [dword358+4]
-        movss   float54,dword ptr [ebp-24]
+        movss   float54,float79
         mulss   float54,dword ptr [dword358]
         addss   float54,float53
-        movss   float55,dword ptr [ebp-16]
+        movss   float55,float35
         mulss   float55,dword ptr [dword358+8]
         addss   float54,float55
-        movss   float56,dword ptr [ebp-12]
+        movss   float56,float36
         mulss   float56,dword ptr [dword358+12]
         addss   float54,float56
 ; end of inline function vec4f_dot
@@ -558,74 +546,60 @@ label0006:
         jbe     label0004
 label0005:
 ; start of inline function vec4f_subtract
-        movss   float38,dword ptr [dword354]
-        subss   float38,dword ptr [dword352]
-        movss   dword ptr [ebp-24],float38
         movss   float39,dword ptr [dword354+4]
         subss   float39,dword ptr [dword352+4]
-        movss   dword ptr [ebp-20],float39
         movss   float40,dword ptr [dword354+8]
         subss   float40,dword ptr [dword352+8]
-        movss   dword ptr [ebp-16],float40
         movss   float41,dword ptr [dword354+12]
         subss   float41,dword ptr [dword352+12]
-        movss   dword ptr [ebp-12],float41
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_subtract
         movss   float43,dword ptr [dword353]
         subss   float43,dword ptr [dword352]
-        movss   dword ptr [ebp-40],float43
         movss   float44,dword ptr [dword353+4]
         subss   float44,dword ptr [dword352+4]
-        movss   dword ptr [ebp-36],float44
         movss   float45,dword ptr [dword353+8]
         subss   float45,dword ptr [dword352+8]
-        movss   dword ptr [ebp-32],float45
         movss   float46,dword ptr [dword353+12]
         subss   float46,dword ptr [dword352+12]
-        movss   dword ptr [ebp-28],float46
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   float58,dword ptr [ebp-20]
+        movss   float58,float39
         mulss   float58,dword ptr [dword358+4]
-        movss   float59,dword ptr [ebp-24]
+        movss   float59,float79
         mulss   float59,dword ptr [dword358]
         addss   float59,float58
-        movss   float60,dword ptr [ebp-16]
+        movss   float60,float40
         mulss   float60,dword ptr [dword358+8]
         addss   float59,float60
-        movss   float61,dword ptr [ebp-12]
+        movss   float61,float41
         mulss   float61,dword ptr [dword358+12]
         addss   float59,float61
 ; end of inline function vec4f_dot
         movss   float9,float59
 ; start of inline function vec4f_dot
-        movss   float63,dword ptr [ebp-36]
+        movss   float63,float44
         mulss   float63,dword ptr [dword358+4]
-        movss   float64,dword ptr [ebp-40]
+        movss   float64,float80
         mulss   float64,dword ptr [dword358]
         addss   float64,float63
-        movss   float65,dword ptr [ebp-32]
+        movss   float65,float45
         mulss   float65,dword ptr [dword358+8]
         addss   float64,float65
-        movss   float66,dword ptr [ebp-28]
+        movss   float66,float46
         mulss   float66,dword ptr [dword358+12]
         addss   float64,float66
 ; end of inline function vec4f_dot
         divss   float9,float64
 ; start of inline function vec4f_mul
-        movss   float69,dword ptr [ebp-40]
+        movss   float69,float43
         mulss   float69,float9
-        movss   dword ptr [ebp-40],float69
-        movss   float70,dword ptr [ebp-36]
+        movss   float70,float44
         mulss   float70,float9
-        movss   dword ptr [ebp-36],float70
-        movss   float71,dword ptr [ebp-32]
+        movss   float71,float45
         mulss   float71,float9
-        movss   dword ptr [ebp-32],float71
-        movss   float72,dword ptr [ebp-28]
+        movss   float72,float46
         mulss   float72,float9
-        movss   dword ptr [ebp-28],float72
 ; end of inline function vec4f_mul
 ; start of inline function vec4f_add
         mov     dword72,[dword350+192]
@@ -633,16 +607,16 @@ label0005:
         mov     dword74,dword350
         add     dword74,dword72
         movss   float23,dword ptr [dword352]
-        addss   float23,dword ptr [ebp-40]
+        addss   float23,float69
         movss   dword ptr [dword74+dword72],float23
         movss   float24,dword ptr [dword352+4]
-        addss   float24,dword ptr [ebp-36]
+        addss   float24,float70
         movss   dword ptr [dword74+4],float24
         movss   float25,dword ptr [dword352+8]
-        addss   float25,dword ptr [ebp-32]
+        addss   float25,float71
         movss   dword ptr [dword74+8],float25
         movss   float26,dword ptr [dword352+12]
-        addss   float26,dword ptr [ebp-28]
+        addss   float26,float72
         movss   dword ptr [dword74+12],float26
 ; end of inline function vec4f_add
 ; start of inline function vec2f_subtract
@@ -652,18 +626,14 @@ label0005:
         add     dword78,dword353
         movss   float16,dword ptr [dword78+dword353]
         subss   float16,dword ptr [dword76+dword352]
-        movss   dword ptr [ebp-48],float16
         movss   float17,dword ptr [dword78+4]
         subss   float17,dword ptr [dword76+4]
-        movss   dword ptr [ebp-44],float17
 ; end of inline function vec2f_subtract
 ; start of inline function vec2f_mul
-        movss   float20,dword ptr [ebp-48]
+        movss   float20,float16
         mulss   float20,float9
-        movss   dword ptr [ebp-48],float20
-        movss   float21,dword ptr [ebp-44]
+        movss   float21,float17
         mulss   float21,float9
-        movss   dword ptr [ebp-44],float21
 ; end of inline function vec2f_mul
 ; start of inline function vec2f_add
         mov     dword84,16
@@ -671,10 +641,10 @@ label0005:
         mov     dword88,[dword350+192]
         imul    dword88,24
         movss   float13,dword ptr [dword84+dword352]
-        addss   float13,dword ptr [ebp-48]
+        addss   float13,float20
         movss   dword ptr [dword350+dword88+16],float13
         movss   float14,dword ptr [dword84+4]
-        addss   float14,dword ptr [ebp-44]
+        addss   float14,float21
         movss   dword ptr [dword350+dword88+20],float14
 ; end of inline function vec2f_add
         inc     dword ptr [dword350+192]
@@ -699,21 +669,11 @@ __clip_on_plain endp
 _rasterizer_triangle3f proc
         create_stack_frame
         mov     dword865,[ebp+28]
-        mov     dword864,[ebp+16]
         mov     dword863,[ebp+24]
-        mov     dword862,[ebp+12]
         mov     dword861,[ebp+20]
-        mov     dword857,[ebp+8]
 ; start of inline function _transform_to_projection_space
         lea     dword2,[ebp-196]
 ; start of inline function vec4f_assign
-        movss   float89,dword ptr [dword857+8]
-        movss   float88,dword ptr [dword857+4]
-        movss   float87,dword ptr [dword857]
-        movss   dword ptr [ebp-716],float87
-        movss   dword ptr [ebp-712],float88
-        movss   dword ptr [ebp-708],float89
-        mov     dword ptr [ebp-704],1065353216
 ; end of inline function vec4f_assign
         push_all
         lea     dword789,dword ptr [__mvproj_matrix]
@@ -726,18 +686,11 @@ _rasterizer_triangle3f proc
         pop_all
 ; end of inline function _transform_to_projection_space
         movq    double1,qword ptr [dword861]
-        movq    qword ptr [ebp-180],double1
+        movq    double121,double1
 ; start of inline function _transform_to_projection_space
         lea     dword8,[ebp-196]
         add     dword8,24
 ; start of inline function vec4f_assign
-        movss   float99,dword ptr [dword862+8]
-        movss   float98,dword ptr [dword862+4]
-        movss   float97,dword ptr [dword862]
-        movss   dword ptr [ebp-716],float97
-        movss   dword ptr [ebp-712],float98
-        movss   dword ptr [ebp-708],float99
-        mov     dword ptr [ebp-704],1065353216
 ; end of inline function vec4f_assign
         push_all
         lea     dword815,dword ptr [__mvproj_matrix]
@@ -755,13 +708,6 @@ _rasterizer_triangle3f proc
         lea     dword16,[ebp-196]
         add     dword16,48
 ; start of inline function vec4f_assign
-        movss   float109,dword ptr [dword864+8]
-        movss   float108,dword ptr [dword864+4]
-        movss   float107,dword ptr [dword864]
-        movss   dword ptr [ebp-716],float107
-        movss   dword ptr [ebp-712],float108
-        movss   dword ptr [ebp-708],float109
-        mov     dword ptr [ebp-704],1065353216
 ; end of inline function vec4f_assign
         push_all
         lea     dword841,dword ptr [__mvproj_matrix]

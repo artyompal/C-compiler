@@ -23,7 +23,7 @@ void x86_dataflow_alivereg_seek             (function_desc *function, x86_operan
 int  x86_dataflow_alivereg_test_after       (int pseudoreg);
 int  x86_dataflow_alivereg_test_before      (int pseudoreg);
 
-void x86_dataflow_optimize_redundant_copies (function_desc *function);
+BOOL x86_dataflow_optimize_redundant_copies (function_desc *function);
 void x86_dataflow_init_use_def_tables       (function_desc *function, x86_operand_type type);
 void x86_dataflow_erase_instruction         (function_desc *function, x86_instruction *insn);
 void x86_dataflow_detect_registers_range    (function_desc *function, x86_operand_type type);

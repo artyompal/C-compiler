@@ -22,7 +22,7 @@ static unsigned int float_hash(symbol *key)
     return key->sym_value.val_int;
 }
 
-static int float_equal(symbol *key1, symbol *key2)
+static BOOL float_equal(symbol *key1, symbol *key2)
 {
     return (key1->sym_value.val_int == key2->sym_value.val_int);
 }
@@ -33,7 +33,7 @@ static unsigned int double_hash(symbol *key)
     return key->sym_value.val_longlong;
 }
 
-static int double_equal(symbol *key1, symbol *key2)
+static BOOL double_equal(symbol *key1, symbol *key2)
 {
     return (key1->sym_value.val_longlong == key2->sym_value.val_longlong);
 }
@@ -44,7 +44,7 @@ static unsigned int xmmword_hash(symbol *key)
     return (key->sym_value.val_float4.i[0] ^ key->sym_value.val_float4.i[1] ^ key->sym_value.val_float4.i[2] ^ key->sym_value.val_float4.i[3]);
 }
 
-static int xmmword_equal(symbol *key1, symbol *key2)
+static BOOL xmmword_equal(symbol *key1, symbol *key2)
 {
     return (key1->sym_value.val_float4.i[0] == key2->sym_value.val_float4.i[0] &&
             key1->sym_value.val_float4.i[1] == key2->sym_value.val_float4.i[1] &&

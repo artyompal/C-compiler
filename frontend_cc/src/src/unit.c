@@ -866,48 +866,50 @@ static void _reset_function_calling_stat()
 
 static void _perform_local_optimizations()
 {
-    int function_length;
+    BOOL changed;
 
     do {
-        function_length = _curr_func->func_insn_count;
+        changed = FALSE;
 
         if (!option_no_basic_opt) {
-            x86_local_optimization_pass(_curr_func, FALSE);
+            changed = x86_local_optimization_pass(_curr_func, FALSE);
         }
-    } while (_curr_func->func_insn_count != function_length);
+    } while (changed);
 }
 
 static void _perform_optimizations()
 {
-    int function_length;
+    BOOL changed;
+
+    x86_caching_reset();
 
     do {
-        function_length = _curr_func->func_insn_count;
+        changed = FALSE;
 
         if (!option_no_copy_opt) {
-            x86_dataflow_optimize_redundant_copies(_curr_func);
+            changed |= x86_dataflow_optimize_redundant_copies(_curr_func);
         }
 
         if (!option_no_basic_opt) {
-            x86_local_optimization_pass(_curr_func, FALSE);
+            changed |= x86_local_optimization_pass(_curr_func, FALSE);
         }
-    } while (_curr_func->func_insn_count != function_length);
 
-    if (!option_no_caching) {
-        x86_caching_pass(_curr_func);
-    }
+        if (!option_no_caching) {
+            changed |= x86_caching_pass(_curr_func);
+        }
+    } while (changed);
 
     do {
-        function_length = _curr_func->func_insn_count;
+        changed = FALSE;
 
         if (!option_no_copy_opt) {
-            x86_dataflow_optimize_redundant_copies(_curr_func);
+            changed |= x86_dataflow_optimize_redundant_copies(_curr_func);
         }
 
         if (!option_no_basic_opt) {
-            x86_local_optimization_pass(_curr_func, TRUE);
+            changed |= x86_local_optimization_pass(_curr_func, TRUE);
         }
-    } while (_curr_func->func_insn_count != function_length);
+    } while (changed);
 }
 
 void unit_codegen(void)

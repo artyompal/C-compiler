@@ -367,16 +367,16 @@ _rasterizer_init proc
         divss   float1,float2
         push_arg        float1,4
         push_arg        dword ptr [ebp+32],4
-        push_arg        dword ptr [ebp+28],4
-        push_arg        dword ptr [ebp+24],4
+        push_arg        float61,4
+        push_arg        float62,4
         lea     dword18,dword ptr [__mvproj_matrix]
         push_arg        dword18,4
         call    _matrix4f_make_perspective
         restore_stack   20
         pop_all
         push_all
-        push_arg        dword ptr [ebp+28],4
-        push_arg        dword ptr [ebp+24],4
+        push_arg        float61,4
+        push_arg        float62,4
         cvtsi2ss        float3,dword104
         push_arg        float3,4
         cvtsi2ss        float4,dword103
@@ -389,7 +389,7 @@ _rasterizer_init proc
         push_all
         movss   float5,dword ptr [___unnamed_float_1]
         push_arg        float5,4
-        push_arg        dword ptr [ebp+24],4
+        push_arg        float62,4
         movss   float6,dword ptr [___unnamed_float_2]
         push_arg        float6,4
         movss   float7,dword ptr [___unnamed_float_2]
@@ -667,8 +667,8 @@ __rasterize_horiz_line proc
         sub     dword11,dword15
 label0000:
         push_all
-        push_arg        dword ptr [ebp+24],4
-        push_arg        dword ptr [ebp+20],4
+        push_arg        float14,4
+        push_arg        float12,4
         call    __tex2d
         restore_stack   8
         pop_all
@@ -774,8 +774,8 @@ __rasterize_triangle_1i proc
         cmp     dword72,dword71
         jle     label0001
         push_all
-        push_arg        dword ptr [ebp+40],4
-        push_arg        dword ptr [ebp+36],4
+        push_arg        float7,4
+        push_arg        float8,4
         push_arg        dword ptr [dword73+4],4
         push_arg        dword ptr [dword73],4
         push_arg        dword ptr [ebp+20],4
@@ -789,8 +789,8 @@ label0001:
         cmp     dword72,dword70
         jge     label0003
         push_all
-        push_arg        dword ptr [ebp+40],4
-        push_arg        dword ptr [ebp+36],4
+        push_arg        float7,4
+        push_arg        float8,4
         push_arg        dword ptr [dword74+4],4
         push_arg        dword ptr [dword74],4
         push_arg        dword ptr [ebp+20],4
@@ -802,8 +802,8 @@ label0001:
         jmp     label0004
 label0003:
         push_all
-        push_arg        dword ptr [ebp+40],4
-        push_arg        dword ptr [ebp+36],4
+        push_arg        float7,4
+        push_arg        float8,4
         push_arg        dword ptr [dword73+4],4
         push_arg        dword ptr [dword73],4
         push_arg        dword ptr [ebp+20],4
@@ -1381,7 +1381,7 @@ __clip_poligon proc
         push_arg        dword1,4
         lea     dword2,dword ptr [__clip_z_far_base]
         push_arg        dword2,4
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         lea     dword4,[ebp-196]
         push_arg        dword4,4
         call    __clip_on_plain
@@ -1394,7 +1394,7 @@ __clip_poligon proc
         push_arg        dword6,4
         lea     dword7,[ebp-196]
         push_arg        dword7,4
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         call    __clip_on_plain
         restore_stack   16
         pop_all
@@ -1403,7 +1403,7 @@ __clip_poligon proc
         push_arg        dword9,4
         lea     dword10,dword ptr [__clip_plane_left_base]
         push_arg        dword10,4
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         lea     dword12,[ebp-196]
         push_arg        dword12,4
         call    __clip_on_plain
@@ -1416,7 +1416,7 @@ __clip_poligon proc
         push_arg        dword14,4
         lea     dword15,[ebp-196]
         push_arg        dword15,4
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         call    __clip_on_plain
         restore_stack   16
         pop_all
@@ -1425,7 +1425,7 @@ __clip_poligon proc
         push_arg        dword17,4
         lea     dword18,dword ptr [__clip_plane_top_base]
         push_arg        dword18,4
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         lea     dword20,[ebp-196]
         push_arg        dword20,4
         call    __clip_on_plain
@@ -1438,7 +1438,7 @@ __clip_poligon proc
         push_arg        dword22,4
         lea     dword23,[ebp-196]
         push_arg        dword23,4
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         call    __clip_on_plain
         restore_stack   16
         pop_all
@@ -1493,7 +1493,7 @@ __rasterize_polygon_4f proc
         create_stack_frame
         mov     dword53,[ebp+8]
         push_all
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword53,4
         call    __clip_poligon
         restore_stack   4
         pop_all
@@ -1606,7 +1606,7 @@ _rasterizer_triangle3f proc
         restore_stack   8
         pop_all
         movq    double1,qword ptr [dword30]
-        movq    qword ptr [ebp-180],double1
+        movq    double7,double1
         push_all
         push_arg        dword ptr [ebp+12],4
         lea     dword8,[ebp-196]

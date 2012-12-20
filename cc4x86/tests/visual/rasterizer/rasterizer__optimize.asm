@@ -470,7 +470,7 @@ __rasterize_horiz_line endp
 __clip_on_plain proc
         push    ebp
         mov     ebp,esp
-        sub     esp,152
+        sub     esp,156
         push    edi
         push    esi
         push    ebx
@@ -492,62 +492,44 @@ label0001:
         cmp     eax,edi
         jle     label0002
 ; start of inline function vec4f_subtract
-        movss   xmm0,dword ptr [esi]
-        subss   xmm0,dword ptr [ecx]
-        movss   dword ptr [ebp-24],xmm0
         movss   xmm0,dword ptr [esi+4]
         subss   xmm0,dword ptr [ecx+4]
-        movss   dword ptr [ebp-20],xmm0
-        movss   xmm0,dword ptr [esi+8]
-        subss   xmm0,dword ptr [ecx+8]
-        movss   dword ptr [ebp-16],xmm0
-        movss   xmm0,dword ptr [esi+12]
-        subss   xmm0,dword ptr [ecx+12]
-        movss   dword ptr [ebp-12],xmm0
+        movss   xmm1,dword ptr [esi+8]
+        subss   xmm1,dword ptr [ecx+8]
+        movss   xmm2,dword ptr [esi+12]
+        subss   xmm2,dword ptr [ecx+12]
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   xmm0,dword ptr [ebp-20]
         mov     eax,[ebp+20]
         mulss   xmm0,dword ptr [eax+4]
-        movss   xmm1,dword ptr [ebp-24]
-        mulss   xmm1,dword ptr [eax]
-        addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebp-16]
-        mulss   xmm0,dword ptr [eax+8]
-        addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebp-12]
-        mulss   xmm0,dword ptr [eax+12]
-        addss   xmm1,xmm0
+        movss   xmm3,xmm4
+        mulss   xmm3,dword ptr [eax]
+        addss   xmm3,xmm0
+        mulss   xmm1,dword ptr [eax+8]
+        addss   xmm3,xmm1
+        mulss   xmm2,dword ptr [eax+12]
+        addss   xmm3,xmm2
 ; end of inline function vec4f_dot
 ; start of inline function vec4f_subtract
-        movss   xmm0,dword ptr [edi]
-        subss   xmm0,dword ptr [ecx]
-        movss   dword ptr [ebp-24],xmm0
         movss   xmm0,dword ptr [edi+4]
         subss   xmm0,dword ptr [ecx+4]
-        movss   dword ptr [ebp-20],xmm0
-        movss   xmm0,dword ptr [edi+8]
-        subss   xmm0,dword ptr [ecx+8]
-        movss   dword ptr [ebp-16],xmm0
-        movss   xmm0,dword ptr [edi+12]
-        subss   xmm0,dword ptr [ecx+12]
-        movss   dword ptr [ebp-12],xmm0
+        movss   xmm1,dword ptr [edi+8]
+        subss   xmm1,dword ptr [ecx+8]
+        movss   xmm2,dword ptr [edi+12]
+        subss   xmm2,dword ptr [ecx+12]
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   xmm0,dword ptr [ebp-20]
         mulss   xmm0,dword ptr [eax+4]
-        movss   xmm2,dword ptr [ebp-24]
-        mulss   xmm2,dword ptr [eax]
-        addss   xmm2,xmm0
-        movss   xmm0,dword ptr [ebp-16]
-        mulss   xmm0,dword ptr [eax+8]
-        addss   xmm2,xmm0
-        movss   xmm0,dword ptr [ebp-12]
-        mulss   xmm0,dword ptr [eax+12]
-        addss   xmm2,xmm0
+        movss   xmm5,xmm4
+        mulss   xmm5,dword ptr [eax]
+        addss   xmm5,xmm0
+        mulss   xmm1,dword ptr [eax+8]
+        addss   xmm5,xmm1
+        mulss   xmm2,dword ptr [eax+12]
+        addss   xmm5,xmm2
 ; end of inline function vec4f_dot
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm1
+        comiss  xmm0,xmm3
         ja      label0003
         mov     [ebp+12],edx
         mov     edx,[ebp+8]
@@ -574,87 +556,68 @@ label0001:
         movsd   qword ptr [ebp-152],xmm0
 label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm1
+        comiss  xmm0,xmm3
         jae     label0006
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm2
+        comiss  xmm0,xmm5
         ja      label0005
 label0006:
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm2
+        comiss  xmm0,xmm5
         ja      label0004
         movss   xmm0,dword ptr [___unnamed_float_2]
-        comiss  xmm0,xmm1
+        comiss  xmm0,xmm3
         jbe     label0004
 label0005:
 ; start of inline function vec4f_subtract
-        movss   xmm1,dword ptr [ecx]
-        subss   xmm1,dword ptr [esi]
-        movss   dword ptr [ebp-24],xmm1
-        movss   xmm2,dword ptr [ecx+4]
-        subss   xmm2,dword ptr [esi+4]
-        movss   dword ptr [ebp-20],xmm2
-        movss   xmm0,dword ptr [ecx+8]
-        subss   xmm0,dword ptr [esi+8]
-        movss   dword ptr [ebp-16],xmm0
+        movss   xmm3,dword ptr [ecx+4]
+        subss   xmm3,dword ptr [esi+4]
+        movss   xmm5,dword ptr [ecx+8]
+        subss   xmm5,dword ptr [esi+8]
         movss   xmm0,dword ptr [ecx+12]
         subss   xmm0,dword ptr [esi+12]
-        movss   dword ptr [ebp-12],xmm0
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_subtract
-        movss   xmm0,dword ptr [edi]
-        subss   xmm0,dword ptr [esi]
-        movss   dword ptr [ebp-40],xmm0
-        movss   xmm0,dword ptr [edi+4]
-        subss   xmm0,dword ptr [esi+4]
-        movss   dword ptr [ebp-36],xmm0
-        movss   xmm0,dword ptr [edi+8]
-        subss   xmm0,dword ptr [esi+8]
-        movss   dword ptr [ebp-32],xmm0
-        movss   xmm0,dword ptr [edi+12]
-        subss   xmm0,dword ptr [esi+12]
-        movss   dword ptr [ebp-28],xmm0
+        movss   xmm1,dword ptr [edi]
+        subss   xmm1,dword ptr [esi]
+        movss   xmm2,dword ptr [edi+4]
+        subss   xmm2,dword ptr [esi+4]
+        movss   xmm6,dword ptr [edi+8]
+        subss   xmm6,dword ptr [esi+8]
+        movss   xmm7,dword ptr [edi+12]
+        subss   xmm7,dword ptr [esi+12]
 ; end of inline function vec4f_subtract
 ; start of inline function vec4f_dot
-        movss   xmm0,dword ptr [ebp-20]
-        mulss   xmm0,dword ptr [eax+4]
-        movss   xmm1,dword ptr [ebp-24]
+        mulss   xmm3,dword ptr [eax+4]
+        movss   dword ptr [ebp-156],xmm1
+        movss   xmm1,xmm4
         mulss   xmm1,dword ptr [eax]
-        addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebp-16]
-        mulss   xmm0,dword ptr [eax+8]
-        addss   xmm1,xmm0
-        movss   xmm0,dword ptr [ebp-12]
+        addss   xmm1,xmm3
+        mulss   xmm5,dword ptr [eax+8]
+        addss   xmm1,xmm5
         mulss   xmm0,dword ptr [eax+12]
         addss   xmm1,xmm0
 ; end of inline function vec4f_dot
 ; start of inline function vec4f_dot
-        movss   xmm0,dword ptr [ebp-36]
+        movss   xmm0,xmm2
         mulss   xmm0,dword ptr [eax+4]
-        movss   xmm2,dword ptr [ebp-40]
-        mulss   xmm2,dword ptr [eax]
-        addss   xmm2,xmm0
-        movss   xmm0,dword ptr [ebp-32]
+        movss   xmm3,xmm5
+        mulss   xmm3,dword ptr [eax]
+        addss   xmm3,xmm0
+        movss   xmm0,xmm6
         mulss   xmm0,dword ptr [eax+8]
-        addss   xmm2,xmm0
-        movss   xmm0,dword ptr [ebp-28]
+        addss   xmm3,xmm0
+        movss   xmm0,xmm7
         mulss   xmm0,dword ptr [eax+12]
-        addss   xmm2,xmm0
+        addss   xmm3,xmm0
 ; end of inline function vec4f_dot
-        divss   xmm1,xmm2
+        divss   xmm1,xmm3
 ; start of inline function vec4f_mul
-        movss   xmm0,dword ptr [ebp-40]
+        movss   xmm0,dword ptr [ebp-156]
         mulss   xmm0,xmm1
-        movss   dword ptr [ebp-40],xmm0
-        movss   xmm0,dword ptr [ebp-36]
-        mulss   xmm0,xmm1
-        movss   dword ptr [ebp-36],xmm0
-        movss   xmm0,dword ptr [ebp-32]
-        mulss   xmm0,xmm1
-        movss   dword ptr [ebp-32],xmm0
-        movss   xmm0,dword ptr [ebp-28]
-        mulss   xmm0,xmm1
-        movss   dword ptr [ebp-28],xmm0
+        mulss   xmm2,xmm1
+        mulss   xmm6,xmm1
+        mulss   xmm7,xmm1
 ; end of inline function vec4f_mul
 ; start of inline function vec4f_add
         mov     [ebp+20],eax
@@ -663,17 +626,17 @@ label0005:
         imul    ebx,24
         mov     eax,[ebp+8]
         add     eax,ebx
-        movss   xmm0,dword ptr [esi]
-        addss   xmm0,dword ptr [ebp-40]
-        movss   dword ptr [eax+ebx],xmm0
+        movss   xmm3,dword ptr [esi]
+        addss   xmm3,xmm0
+        movss   dword ptr [eax+ebx],xmm3
         movss   xmm0,dword ptr [esi+4]
-        addss   xmm0,dword ptr [ebp-36]
+        addss   xmm0,xmm2
         movss   dword ptr [eax+4],xmm0
         movss   xmm0,dword ptr [esi+8]
-        addss   xmm0,dword ptr [ebp-32]
+        addss   xmm0,xmm6
         movss   dword ptr [eax+8],xmm0
         movss   xmm0,dword ptr [esi+12]
-        addss   xmm0,dword ptr [ebp-28]
+        addss   xmm0,xmm7
         movss   dword ptr [eax+12],xmm0
 ; end of inline function vec4f_add
 ; start of inline function vec2f_subtract
@@ -683,18 +646,12 @@ label0005:
         add     ebx,edi
         movss   xmm0,dword ptr [ebx+edi]
         subss   xmm0,dword ptr [eax+esi]
-        movss   dword ptr [ebp-48],xmm0
-        movss   xmm0,dword ptr [ebx+4]
-        subss   xmm0,dword ptr [eax+4]
-        movss   dword ptr [ebp-44],xmm0
+        movss   xmm2,dword ptr [ebx+4]
+        subss   xmm2,dword ptr [eax+4]
 ; end of inline function vec2f_subtract
 ; start of inline function vec2f_mul
-        movss   xmm0,dword ptr [ebp-48]
         mulss   xmm0,xmm1
-        movss   dword ptr [ebp-48],xmm0
-        movss   xmm0,dword ptr [ebp-44]
-        mulss   xmm0,xmm1
-        movss   dword ptr [ebp-44],xmm0
+        mulss   xmm2,xmm1
 ; end of inline function vec2f_mul
 ; start of inline function vec2f_add
         mov     eax,16
@@ -703,14 +660,14 @@ label0005:
         mov     ecx,[ebp+8]
         mov     ebx,[ecx+192]
         imul    ebx,24
-        movss   xmm0,dword ptr [eax+esi]
-        addss   xmm0,dword ptr [ebp-48]
+        movss   xmm1,dword ptr [eax+esi]
+        addss   xmm1,xmm0
         mov     [ebp-144],ebx
         mov     ebx,[ebp+8]
         mov     ecx,[ebp-144]
-        movss   dword ptr [ebx+ecx+16],xmm0
+        movss   dword ptr [ebx+ecx+16],xmm1
         movss   xmm0,dword ptr [eax+4]
-        addss   xmm0,dword ptr [ebp-44]
+        addss   xmm0,xmm2
         mov     eax,[ebp-144]
         movss   dword ptr [ebx+eax+20],xmm0
 ; end of inline function vec2f_add
@@ -718,10 +675,12 @@ label0005:
         mov     eax,[ebp+20]
         mov     ecx,[ebp+16]
         mov     [ebp+8],ebx
+        movss   dword ptr [ebp-40],xmm5
 label0004:
         add     esi,24
         add     edi,24
         mov     ebx,[ebp+8]
+        movss   dword ptr [ebp-24],xmm4
         jmp     label0001
 label0002:
         mov     ebx,[ebp+8]
@@ -750,45 +709,29 @@ _rasterizer_triangle3f proc
         push    esi
         push    ebx
         mov     eax,[ebp+28]
-        mov     ecx,[ebp+16]
-        mov     edx,[ebp+24]
-        mov     ebx,[ebp+12]
-        mov     esi,[ebp+20]
-        mov     edi,[ebp+8]
+        mov     ecx,[ebp+24]
+        mov     edx,[ebp+20]
 ; start of inline function _transform_to_projection_space
-        mov     [ebp+28],eax
-        lea     eax,[ebp-196]
+        lea     ebx,[ebp-196]
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [edi+8]
-        movss   xmm1,dword ptr [edi+4]
-        movss   xmm2,dword ptr [edi]
-        movss   dword ptr [ebp-716],xmm2
-        movss   dword ptr [ebp-712],xmm1
-        movss   dword ptr [ebp-708],xmm0
-        mov     dword ptr [ebp-704],1065353216
 ; end of inline function vec4f_assign
-        lea     ecx,dword ptr [__mvproj_matrix]
-        push    ecx
-        lea     ecx,[ebp-716]
-        push    ecx
+        lea     eax,dword ptr [__mvproj_matrix]
         push    eax
+        lea     eax,[ebp-716]
+        push    eax
+        push    ebx
         call    _matrix4f_transform
         add     esp,12
 ; end of inline function _transform_to_projection_space
-        movq    xmm0,qword ptr [esi]
-        movq    qword ptr [ebp-180],xmm0
+        mov     edx,[ebp+20]
+        movq    xmm0,qword ptr [edx]
+        movq    xmm1,xmm0
 ; start of inline function _transform_to_projection_space
         lea     eax,[ebp-196]
         add     eax,24
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [ebx+8]
-        movss   xmm1,dword ptr [ebx+4]
-        movss   xmm2,dword ptr [ebx]
-        movss   dword ptr [ebp-716],xmm2
-        movss   dword ptr [ebp-712],xmm1
-        movss   dword ptr [ebp-708],xmm0
-        mov     dword ptr [ebp-704],1065353216
 ; end of inline function vec4f_assign
+        movsd   qword ptr [ebp-180],xmm1
         lea     ecx,dword ptr [__mvproj_matrix]
         push    ecx
         lea     ecx,[ebp-716]
@@ -797,21 +740,13 @@ _rasterizer_triangle3f proc
         call    _matrix4f_transform
         add     esp,12
 ; end of inline function _transform_to_projection_space
-        mov     edx,[ebp+24]
-        movq    xmm0,qword ptr [edx]
+        mov     ecx,[ebp+24]
+        movq    xmm0,qword ptr [ecx]
         movq    qword ptr [ebp-156],xmm0
 ; start of inline function _transform_to_projection_space
         lea     eax,[ebp-196]
         add     eax,48
 ; start of inline function vec4f_assign
-        mov     ecx,[ebp+16]
-        movss   xmm0,dword ptr [ecx+8]
-        movss   xmm1,dword ptr [ecx+4]
-        movss   xmm2,dword ptr [ecx]
-        movss   dword ptr [ebp-716],xmm2
-        movss   dword ptr [ebp-712],xmm1
-        movss   dword ptr [ebp-708],xmm0
-        mov     dword ptr [ebp-704],1065353216
 ; end of inline function vec4f_assign
         lea     ecx,dword ptr [__mvproj_matrix]
         push    ecx
@@ -828,7 +763,7 @@ _rasterizer_triangle3f proc
         movq    qword ptr [ebp-124],xmm0
         movq    xmm0,xmm2
         movq    qword ptr [ebp-116],xmm0
-        movq    xmm0,xmm3
+        movq    xmm0,qword ptr [ebp-180]
         movq    qword ptr [ebp-108],xmm0
 ; start of inline function _rasterize_polygon_4f
         lea     eax,[ebp-196]
@@ -925,13 +860,13 @@ label0003:
         add     esp,12
         movss   xmm1,dword ptr [___unnamed_float_1]
         divss   xmm1,xmm0
-        movss   xmm2,xmm4
+        movss   xmm2,xmm3
         mulss   xmm2,xmm1
         cvttss2si       eax,xmm2
         mov     [ebx+esi],eax
-        movss   xmm3,xmm2
-        mulss   xmm3,xmm1
-        cvttss2si       eax,xmm3
+        movss   xmm2,xmm4
+        mulss   xmm2,xmm1
+        cvttss2si       eax,xmm2
         mov     [ebx+esi+4],eax
         cmp     dword ptr [ebx+esi],0
         jl      label002a
@@ -963,8 +898,8 @@ label0029:
         mov     ecx,[ebp-336]
         movss   dword ptr [ebp-676],xmm0
         movsd   qword ptr [ebp-764],xmm1
-        movss   dword ptr [ebp-684],xmm2
-        movss   dword ptr [ebp-688],xmm4
+        movss   dword ptr [ebp-688],xmm3
+        movss   dword ptr [ebp-684],xmm4
         jmp     label0003
 label0004:
         mov     ecx,2
@@ -1171,8 +1106,8 @@ label000e:
         mulss   xmm1,xmm2
         mov     ecx,[esi+4]
         sub     ecx,[ebx+4]
-        cvtsi2ss        xmm3,ecx
-        divss   xmm1,xmm3
+        cvtsi2ss        xmm0,ecx
+        divss   xmm1,xmm0
         addss   xmm1,dword ptr [ebx+8]
         mov     ecx,edi
         sub     ecx,[ebx+4]
@@ -1276,8 +1211,8 @@ label000f:
         mulss   xmm1,xmm2
         mov     edi,[edx+4]
         sub     edi,[ebx+4]
-        cvtsi2ss        xmm3,edi
-        divss   xmm1,xmm3
+        cvtsi2ss        xmm0,edi
+        divss   xmm1,xmm0
         addss   xmm1,dword ptr [ebx+8]
         mov     edi,[esi+4]
         sub     edi,[ebx+4]

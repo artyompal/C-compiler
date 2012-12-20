@@ -42,7 +42,7 @@ _test3 proc
         mov     ecx,[ebp+12]
         mov     edx,[ebp+8]
         mov     ebx,edx
-        cmp     dword ptr [ebp+16],0
+        cmp     eax,0
         jle     label0000
         mov     edx,ecx
         jmp     label0001
@@ -82,7 +82,7 @@ _test5 proc
         mov     eax,[ebp+16]
         mov     ecx,[ebp+12]
         mov     edx,[ebp+8]
-        cmp     dword ptr [ebp+16],0
+        cmp     eax,0
         jle     label0000
         mov     edx,ecx
         jmp     label0001
