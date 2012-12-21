@@ -212,12 +212,12 @@ static BOOL _can_combine_address_and_insn(int reg, x86_operand *addr, x86_instru
 
 //
 // Пытается поместить в адрес столько вычислений, сколько возможно.
-static void _try_optimize_address(function_desc *function, x86_instruction *insn, x86_operand *addr)
+static BOOL _try_optimize_address(function_desc *function, x86_instruction *insn, x86_operand *addr)
 {
     x86_operand_type type = x86op_dword;
+    BOOL allowed, changed = FALSE;
     x86_instruction *def, *usage;
     x86_operand *found;
-    BOOL allowed;
     int reg;
 
     if (addr->data.address.base != NO_REG) {
@@ -241,6 +241,7 @@ static void _try_optimize_address(function_desc *function, x86_instruction *insn
 
             if (allowed) {
                 x86_dataflow_erase_instruction(function, def);
+                changed = TRUE;
             }
         }
     }
@@ -266,9 +267,12 @@ static void _try_optimize_address(function_desc *function, x86_instruction *insn
 
             if (allowed) {
                 x86_dataflow_erase_instruction(function, def);
+                changed = TRUE;
             }
         }
     }
+
+    return changed;
 }
 
 //
@@ -377,7 +381,6 @@ static BOOL _optimize_dword_insns(function_desc *function)
     _usage_arr = allocator_alloc(allocator_per_function_pool, sizeof(void *) * function->func_insn_count);
     _usage_max_count = function->func_insn_count;
 
-    x86_dataflow_alivereg_init(function, x86op_dword);
     x86_dataflow_init_use_def_tables(function, x86op_dword);
 
     for (insn = function->func_binary_code; insn; insn = next) {
@@ -401,16 +404,6 @@ static BOOL _optimize_dword_insns(function_desc *function)
         case x86insn_int_test:
             changed |= _try_optimize_cmp_test(function, insn);
             break;
-        }
-    }
-
-    for (insn = function->func_binary_code; insn; insn = next) {
-        next = insn->in_next;
-
-        if (OP_IS_ADDRESS(insn->in_op1)) {
-            _try_optimize_address(function, insn, &insn->in_op1);
-        } else if (OP_IS_ADDRESS(insn->in_op2)) {
-            _try_optimize_address(function, insn, &insn->in_op2);
         }
     }
 
@@ -576,6 +569,29 @@ static BOOL _kill_unused_labels(function_desc *function)
 }
 
 //
+// Пытается поместить максимум вычислений в адреса в рамках режимов адресации x86.
+static BOOL _optimize_addresses(function_desc *function)
+{
+    x86_instruction *insn, *next;
+    BOOL changed = FALSE;
+
+    x86_dataflow_alivereg_init(function, x86op_dword);
+
+    for (insn = function->func_binary_code; insn; insn = next) {
+        next = insn->in_next;
+
+        if (OP_IS_ADDRESS(insn->in_op1)) {
+            changed |= _try_optimize_address(function, insn, &insn->in_op1);
+        } else if (OP_IS_ADDRESS(insn->in_op2)) {
+            changed |= _try_optimize_address(function, insn, &insn->in_op2);
+        }
+    }
+
+    return changed;
+}
+
+
+//
 // Итерация оптимизации.
 // Делается линейная оптимизация внутри блоков и распространение констант.
 BOOL x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
@@ -590,6 +606,8 @@ BOOL x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 
     changed |= _remove_dead_code(function, x86op_float);
     changed |= _optimize_float_insn(function, after_regvars);
+
+    changed |= _optimize_addresses(function);
 
     return changed;
 }
