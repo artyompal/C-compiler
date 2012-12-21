@@ -33,7 +33,6 @@ typedef struct function_desc_decl {
     int                         func_local_vars_sz;         // суммарный размер, в байтах, локальных переменных
 
     // информаци€ аллокатора регистров:
-    //int                         func_start_of_regvars[6];   // перва€ регистрова€ переменна€ (номер псевдорегистра)
     int                         func_labels_count;          // последн€€ аллоцированна€ метка в функции
     int                         func_pseudoregs_count[6];   // X86_TYPES_COUNT
 

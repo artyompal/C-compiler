@@ -923,9 +923,6 @@ void unit_codegen(void)
         x86_stack_frame_begin_function(_curr_func);
         x86_codegen_do_function(_curr_func);
 
-        //_curr_func->func_start_of_regvars[x86op_dword] = INT_MAX;
-        //_curr_func->func_start_of_regvars[x86op_float] = INT_MAX;
-
         _perform_local_optimizations();
 
         // строим статистику вызовов функций
@@ -959,8 +956,6 @@ void unit_codegen(void)
         if (_curr_func->func_is_static && _curr_func->func_usage_count == 0) {
             continue;
         }
-
-        //x86_regvars_init();
 
         if (option_enable_optimization) {
             _perform_optimizations();

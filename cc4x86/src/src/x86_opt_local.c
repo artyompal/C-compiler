@@ -452,7 +452,7 @@ static BOOL _optimize_dword_insns(function_desc *function)
 
 //
 // Пытается распространять константу вместо регистра.
-static BOOL _try_optimize_movss(function_desc *function, x86_instruction *movss, BOOL after_regvars)
+static BOOL _try_optimize_movss(function_desc *function, x86_instruction *movss, BOOL after_caching)
 {
     int reg, i, def_count;
     x86_instruction **definitions;
@@ -468,9 +468,9 @@ static BOOL _try_optimize_movss(function_desc *function, x86_instruction *movss,
 
     // проверяем, что регистр используется только в read-only контекстах
     for (i = 0; i < _usage_count; i++) {
-        // если первый операнд является адресом, выполняем оптимизацию только при флаге after_regvars.
+        // если первый операнд является адресом, выполняем оптимизацию только при флаге after_caching.
         if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg) || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
-            || !after_regvars && !OP_IS_PSEUDO_REG(_usage_arr[i]->in_op1, type)) {
+            || !after_caching && !OP_IS_PSEUDO_REG(_usage_arr[i]->in_op1, type)) {
                 return FALSE;
             }
 
@@ -502,7 +502,7 @@ static BOOL _try_optimize_movss(function_desc *function, x86_instruction *movss,
 
 //
 // Оптимизирует флоатовые инструкции.
-static BOOL _optimize_float_insn(function_desc *function, BOOL after_regvars)
+static BOOL _optimize_float_insn(function_desc *function, BOOL after_caching)
 {
     x86_instruction *insn, *next;
     BOOL changed = FALSE;
@@ -518,7 +518,7 @@ static BOOL _optimize_float_insn(function_desc *function, BOOL after_regvars)
         switch (insn->in_code) {
         case x86insn_sse_movss:
         case x86insn_sse_movsd:
-            changed |= _try_optimize_movss(function, insn, after_regvars);
+            changed |= _try_optimize_movss(function, insn, after_caching);
             break;
         }
     }
@@ -633,7 +633,7 @@ static BOOL _optimize_addresses(function_desc *function)
 //
 // Итерация оптимизации.
 // Делается линейная оптимизация внутри блоков и распространение констант.
-BOOL x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
+BOOL x86_local_optimization_pass(function_desc *function, BOOL after_caching)
 {
     BOOL changed = FALSE;
 
@@ -644,7 +644,7 @@ BOOL x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
     changed |= _optimize_dword_insns(function);
 
     changed |= _remove_dead_code(function, x86op_float);
-    changed |= _optimize_float_insn(function, after_regvars);
+    changed |= _optimize_float_insn(function, after_caching);
 
     changed |= _optimize_addresses(function);
 

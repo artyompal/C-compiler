@@ -171,7 +171,6 @@
     <ClCompile Include="src\x86_opt_caching.c" />
     <ClCompile Include="src\x86_opt_local.c" />
     <ClCompile Include="src\x86_opt_data_flow.c" />
-    <ClCompile Include="src\x86_opt_regvar.c" />
     <ClCompile Include="src\x86_regalloc.c" />
     <ClCompile Include="src\x86_stack_frame.c" />
     <ClCompile Include="src\x86_text_output.c" />
