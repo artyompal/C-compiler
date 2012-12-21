@@ -300,11 +300,10 @@ BOOL    bincode_insn_contains_register                  (x86_instruction *insn, 
 BOOL    bincode_operand_contains_register               (x86_operand *op, x86_operand_type type, int reg);
 
 void    bincode_extract_pseudoregs_read_by_insn         (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-void    bincode_extract_pseudoregs_modified_by_insn     (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
-void    bincode_extract_pseudoregs_overwritten_by_insn  (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
+void    bincode_extract_pseudoregs_written_by_insn      (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 BOOL    bincode_is_pseudoreg_read_by_insn               (x86_instruction *insn, x86_operand_type type, int reg);
-BOOL    bincode_is_pseudoreg_modified_by_insn           (x86_instruction *insn, x86_operand_type type, int reg);
-BOOL    bincode_is_pseudoreg_overwritten_by_insn        (x86_instruction *insn, x86_operand_type type, int reg);
+BOOL    bincode_is_pseudoreg_written_by_insn            (x86_instruction *insn, x86_operand_type type, int reg);
+
 x86_operand *bincode_find_usage_as_register_operand     (x86_instruction *insn, x86_operand_type type, int reg);
 x86_operand *bincode_find_usage_as_address_operand      (x86_instruction *insn, x86_operand_type type, int reg);
 

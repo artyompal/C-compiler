@@ -29,7 +29,7 @@ static int              _usage_max_count;
 // Заменяет регистр смещением символа. Используется для устранения LEA.
 static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg, symbol *sym, int ofs)
 {
-    if (bincode_is_pseudoreg_modified_by_insn(insn, x86op_dword, reg)) {
+    if (bincode_is_pseudoreg_written_by_insn(insn, x86op_dword, reg)) {
         return FALSE;
     }
 
@@ -90,7 +90,7 @@ static BOOL _check_locality_and_constantness(x86_instruction *insn, int reg)
 
     // проверяем, что регистр используется только в read-only контекстах
     for (i = 0; i < _usage_count; i++) {
-        if (_usage_arr[i]->in_block != insn->in_block || bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)) {
+        if (_usage_arr[i]->in_block != insn->in_block || bincode_is_pseudoreg_written_by_insn(_usage_arr[i], type, reg)) {
             return FALSE;
         }
     }
@@ -146,7 +146,7 @@ static BOOL _try_optimize_lea_reg_address(function_desc *function, x86_instructi
         for (usage = lea->in_next, usages_handled = 0; usages_handled < _usage_count; usage = usage->in_next) {
             ASSERT(usage != block_end);
 
-            if (bincode_is_pseudoreg_modified_by_insn(usage, type, reg2)) {
+            if (bincode_is_pseudoreg_written_by_insn(usage, type, reg2)) {
                 return FALSE;
             }
 
@@ -168,7 +168,7 @@ static BOOL _try_optimize_lea_reg_address(function_desc *function, x86_instructi
 static x86_instruction *_find_local_definition(function_desc *function, x86_instruction *insn, int reg)
 {
     for (insn = insn->in_prev; insn && insn != insn->in_block->block_leader->in_prev; insn = insn->in_prev) {
-        if (bincode_is_pseudoreg_modified_by_insn(insn, x86op_dword, reg)) {
+        if (bincode_is_pseudoreg_written_by_insn(insn, x86op_dword, reg)) {
             return insn;
         }
     }
@@ -235,7 +235,7 @@ static BOOL _try_optimize_address(function_desc *function, x86_instruction *insn
     x86_operand *found;
     int reg;
 
-    if (addr->data.address.base != NO_REG) {
+    if (addr->data.address.base > 0) {
         reg = addr->data.address.base;
         def = _find_local_definition(function, insn, reg);
 
@@ -261,7 +261,7 @@ static BOOL _try_optimize_address(function_desc *function, x86_instruction *insn
         }
     }
 
-    if (addr->data.address.index != NO_REG && addr->data.address.scale == 1) {
+    if (addr->data.address.index > 0 && addr->data.address.scale == 1) {
         reg = addr->data.address.index;
         def = _find_local_definition(function, insn, reg);
 
@@ -314,7 +314,7 @@ static BOOL _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 
     // проверяем, что регистр используется только в read-only контекстах
     for (i = 0; i < _usage_count; i++) {
-        if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)
+        if (bincode_is_pseudoreg_written_by_insn(_usage_arr[i], type, reg)
             || OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
             && (IS_MUL_DIV_INSN(_usage_arr[i]->in_code) || _usage_arr[i]->in_code == x86insn_cdq)
             || OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op1, type, reg) && _usage_arr[i]->in_op2.op_loc != x86loc_none) {
@@ -469,7 +469,7 @@ static BOOL _try_optimize_movss(function_desc *function, x86_instruction *movss,
     // проверяем, что регистр используется только в read-only контекстах
     for (i = 0; i < _usage_count; i++) {
         // если первый операнд является адресом, выполняем оптимизацию только при флаге after_caching.
-        if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg) || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
+        if (bincode_is_pseudoreg_written_by_insn(_usage_arr[i], type, reg) || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
             || !after_caching && !OP_IS_PSEUDO_REG(_usage_arr[i]->in_op1, type)) {
                 return FALSE;
             }
@@ -562,7 +562,7 @@ static BOOL _remove_dead_code(function_desc *function, x86_operand_type type)
         next = insn->in_next;
 
         x86_dataflow_alivereg_seek(function, type, insn);
-        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_count);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_count);
 
         if (regs_count == 1 && !x86_dataflow_alivereg_test_after(regs[0])) {
             bincode_erase_instruction(function, insn);

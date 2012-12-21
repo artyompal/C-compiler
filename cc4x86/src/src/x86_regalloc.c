@@ -208,7 +208,7 @@ static int _alloc_real_register_from_range(function_desc *function, x86_instruct
 {
     int real_reg, pseudoreg2;
 
-    if (bincode_is_pseudoreg_overwritten_by_insn(insn, type, pseudoreg)) {
+    if (bincode_is_pseudoreg_written_by_insn(insn, type, pseudoreg)) {
         // Сначала пытаемся переиспользовать регистры, ставшие мёртвыми непосредственно после текущей инструкции.
         for (real_reg = start_reg; real_reg != last_reg; real_reg += reg_step) {
             if (IS_MUL_DIV_INSN(insn->in_code) && real_reg == x86reg_edx) {
@@ -571,7 +571,7 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
 
         // Извлекаем набор псевдорегистров, который используется инструкцией.
         bincode_extract_pseudoregs_from_insn(insn, type, registers, &registers_count);
-        bincode_extract_pseudoregs_modified_by_insn(insn, type, mod_regs, &mod_regs_count);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, mod_regs, &mod_regs_count);
 
         for (i = 0; i < registers_count; i++) {
             saved_regs[i] = *registers[i];

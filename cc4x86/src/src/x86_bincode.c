@@ -173,7 +173,7 @@ void bincode_extract_pseudoregs_read_by_insn(x86_instruction *insn, x86_operand_
     }
 }
 
-void bincode_extract_pseudoregs_modified_by_insn(x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
+void bincode_extract_pseudoregs_written_by_insn(x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
 {
     if (type == x86op_dword && (insn->in_code == x86insn_rep_movsb || insn->in_code == x86insn_rep_movsd)) {
         ASSERT(OP_IS_REGISTER(insn->in_op1, type) && OP_IS_REGISTER(insn->in_op2, type));
@@ -187,21 +187,6 @@ void bincode_extract_pseudoregs_modified_by_insn(x86_instruction *insn, x86_oper
     *regs_cnt = 0;
 
     if (OP_IS_PSEUDO_REG(insn->in_op1, type) && IS_VOLATILE_INSN(insn->in_code)) {
-        regs[*regs_cnt] = insn->in_op1.data.reg;
-        ++*regs_cnt;
-    }
-
-    if (OP_IS_REGISTER(insn->in_op3, type)) {
-        regs[*regs_cnt] = insn->in_op3.data.reg;
-        ++*regs_cnt;
-    }
-}
-
-void bincode_extract_pseudoregs_overwritten_by_insn(x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt)
-{
-    *regs_cnt = 0;
-
-    if (OP_IS_PSEUDO_REG(insn->in_op1, type) && IS_DEFINING_INSN(insn->in_code, type)) {
         regs[*regs_cnt] = insn->in_op1.data.reg;
         ++*regs_cnt;
     }
@@ -227,7 +212,7 @@ BOOL bincode_is_pseudoreg_read_by_insn(x86_instruction *insn, x86_operand_type t
     return FALSE;
 }
 
-BOOL bincode_is_pseudoreg_modified_by_insn(x86_instruction *insn, x86_operand_type type, int reg)
+BOOL bincode_is_pseudoreg_written_by_insn(x86_instruction *insn, x86_operand_type type, int reg)
 {
     int i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
 
@@ -235,26 +220,7 @@ BOOL bincode_is_pseudoreg_modified_by_insn(x86_instruction *insn, x86_operand_ty
         return FALSE;
     }
 
-    bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
-
-    for (i = 0; i < regs_cnt; i++) {
-        if (regs[i] == reg) {
-            return TRUE;
-        }
-    }
-
-    return FALSE;
-}
-
-BOOL bincode_is_pseudoreg_overwritten_by_insn(x86_instruction *insn, x86_operand_type type, int reg)
-{
-    int i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
-
-    if (!IS_DEFINING_INSN(insn->in_code, type)) {
-        return FALSE;
-    }
-
-    bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
+    bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
     for (i = 0; i < regs_cnt; i++) {
         if (regs[i] == reg) {

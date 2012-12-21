@@ -120,19 +120,6 @@ static void _alivereg_build_def(set *def, basic_block *block, function_desc *fun
 
     // помечаем все инструкции
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
-        // извлекаем все переписываемые регистры
-        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
-
-        for (j = 0; j < regs_cnt; j++) {
-            reg = regs[j];
-            ASSERT(reg < function->func_pseudoregs_count[type]);
-
-            // если регистр не использовался ранее, вносим его во множество
-            if (!BIT_TEST(used, reg)) {
-                BIT_RAISE(*def, reg);
-            }
-        }
-
         // извлекаем все читаемые регистры
         bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
 
@@ -142,6 +129,19 @@ static void _alivereg_build_def(set *def, basic_block *block, function_desc *fun
 
             // помечаем их как использованные
             BIT_RAISE(used, reg);
+        }
+
+        // извлекаем все переписываемые регистры
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
+
+        for (j = 0; j < regs_cnt; j++) {
+            reg = regs[j];
+            ASSERT(reg < function->func_pseudoregs_count[type]);
+
+            // если регистр не использовался ранее, вносим его во множество
+            if (!BIT_TEST(used, reg)) {
+                BIT_RAISE(*def, reg);
+            }
         }
     }
 }
@@ -177,7 +177,7 @@ static void _alivereg_build_use(set *use, basic_block *block, function_desc *fun
         }
 
         // извлекаем все переписываемые регистры
-        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
@@ -277,7 +277,7 @@ static void _alivereg_update_tables(x86_operand_type type)
 		ASSERT(insn);
 
         // извлекаем все переписываемые регистры
-        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
         // вычитаем все эти регистры из множества
         for (j = 0; j < regs_cnt; j++)
@@ -296,7 +296,7 @@ static void _alivereg_update_tables(x86_operand_type type)
     set_assign(&_alivereg_before_current_insn, &_alivereg_after_current_insn);
 
     // извлекаем все переписываемые регистры
-    bincode_extract_pseudoregs_overwritten_by_insn(_current_insn, type, regs, &regs_cnt);
+    bincode_extract_pseudoregs_written_by_insn(_current_insn, type, regs, &regs_cnt);
 
     // вычитаем все эти регистры из множества
     for (j = 0; j < regs_cnt; j++)
@@ -395,7 +395,7 @@ static void _exposeduses_build_use(set *use, basic_block *block, function_desc *
             }
         }
 
-        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
@@ -417,12 +417,11 @@ static void _exposeduses_build_def(set *def, basic_block *block, function_desc *
     ASSERT(def->set_count == _exposeduse_table.insn_count);
     set_clear_to_zeros(def);
 
-    defined_registers = allocator_alloc(allocator_per_function_pool, sizeof(int)*block->block_length*MAX_REGISTERS_PER_INSN);
+    defined_registers = alloca(sizeof(int)*block->block_length*MAX_REGISTERS_PER_INSN);
 
     // Находим все регистры, которые модифицируются в данном блоке.
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
-        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
-        memcpy(defined_registers+defined_registers_count, regs, sizeof(int)*regs_cnt);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, defined_registers+defined_registers_count, &regs_cnt);
         defined_registers_count += regs_cnt;
     }
 
@@ -452,8 +451,6 @@ static void _exposeduses_build_def(set *def, basic_block *block, function_desc *
             }
         }
     }
-
-    allocator_free(allocator_per_function_pool, defined_registers, sizeof(int)*block->block_length*MAX_REGISTERS_PER_INSN);
 }
 
 //
@@ -533,8 +530,7 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
 //
 // Возвращает все использования данного определения в данной функции (ио-цепочку данного определения).
 //
-// Проходит в обратном порядке от конца блока до интересующего определения.
-// Если других определений нет, то цепочка состоит из множества out плюс использования в данном блоке.
+// Если других определений в данном блоке нет, то цепочка состоит из множества out плюс использования в данном блоке.
 // Если встречаются другие определения, то цепочка состоит из использований, находящихся между
 // рассматриваемым определением и следующим определением.
 //
@@ -550,13 +546,15 @@ static void _exposeduses_find_all_usages_of_definition(int reg, x86_instruction 
 
     // добавляем все использования в пределах данного блока
     for (test = def->in_next; test != def->in_block->block_last_insn->in_next; test = test->in_next) {
-        if (bincode_is_pseudoreg_overwritten_by_insn(test, type, reg)) {
-            reached_def = TRUE;
-            break;
-        } else if (bincode_is_pseudoreg_read_by_insn(test, type, reg)) {
+        if (bincode_is_pseudoreg_read_by_insn(test, type, reg)) {
             res_arr[*res_count] = test;
             ++*res_count;
             ASSERT(*res_count < res_max_count);
+        }
+
+        if (bincode_is_pseudoreg_written_by_insn(test, type, reg)) {
+            reached_def = TRUE;
+            break;
         }
     }
 
@@ -621,44 +619,35 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
 
 //
 // Вычисляет множество gen для данного блока в смысле достигающих определений,
-// т.е. множество определений, добавленных в данном блоке, однозначных и неоднозначных.
+// т.е. множество определений, добавленных в данном блоке.
 // "Мы хотим, чтобы определение d находилось в gen[S], если d достигает конца S,
 // независимо от того, достигает ли оно начала S или нет."
 static void _reachingdef_build_gen(set *gen, function_desc *function, basic_block *block, x86_operand_type type)
 {
     int *reg_definitions_table = alloca(sizeof(int)*function->func_pseudoregs_count[type]);
-    x86_instruction *insn;
     int def, reg, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
+    x86_instruction *insn;
 
     ASSERT(gen->set_count == _definitions_table.insn_count);
     set_clear_to_zeros(gen);
     memset(reg_definitions_table, -1, sizeof(int)*function->func_pseudoregs_count[type]);
 
-    // Находим для каждого регистра последнее однозначное определение, записывающее в него.
+    // Находим для каждого регистра последнее определение, записывающее в него.
     for (def = block->block_first_def; def < block->block_end_def; def++) {
         insn = _definitions_table.insn_base[def];
-        bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             reg_definitions_table[regs[i]] = def;
         }
     }
 
-    // Вносим последнее однозначное определение для каждого регистра в множество gen.
+    // Формируем результат.
     for (reg = 0; reg < function->func_pseudoregs_count[type]; reg++) {
         def = reg_definitions_table[reg];
 
         if (def != -1) {
             BIT_RAISE(*gen, def);
-
-            // А также вносим все неоднозначные определения, следующие после данного и до конца базового блока.
-            for (; def != block->block_end_def; def++) {
-                insn = _definitions_table.insn_base[def];
-
-                if (bincode_is_pseudoreg_modified_by_insn(insn, type, reg)) {
-                    BIT_RAISE(*gen, def);
-                }
-            }
         }
     }
 }
@@ -683,7 +672,7 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
     // Находим для каждого регистра последнее определение, записывающее в него.
     for (def = block->block_first_def; def < block->block_end_def; def++) {
         insn = _definitions_table.insn_base[def];
-        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             BIT_RAISE(modified_regs, regs[i]);
@@ -701,7 +690,7 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
                 }
 
                 insn = _definitions_table.insn_base[def];
-                bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
+                bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
                 for (i = 0; i < regs_cnt; i++) {
                     if (regs[i] == reg) {
@@ -802,25 +791,21 @@ static void _reachingdef_find_all_definitions(int reg, x86_instruction *insn, x8
 
     // проходим все определения внутри данного блока в обратном порядке
     for (test = insn->in_prev; test != block->block_leader->in_prev; test = test->in_prev) {
-        // если находим однозначное определение, то на этом поиск заканчивается
-        if (bincode_is_pseudoreg_overwritten_by_insn(test, type, reg)) {
+        // если находим определение, то на этом поиск заканчивается
+        if (bincode_is_pseudoreg_written_by_insn(test, type, reg)) {
             ASSERT(*res_count < res_max_count);
             res_arr[*res_count] = test;
             ++*res_count;
             return;
         }
 
-        if (bincode_is_pseudoreg_modified_by_insn(test, type, reg)) {
-            ASSERT(*res_count < res_max_count);
-            res_arr[*res_count] = test;
-            ++*res_count;
-        }
+        // TODO: тут можно вносить неоднозначные определения в цепочку
     }
 
     // прибавляем все определения из множества in
     for (def_idx = 0; def_idx != _definitions_table.insn_count; def_idx++) {
         if (_definitions_table.insn_base[def_idx] && BIT_TEST(_reachingdef_in.vec_base[block-_basic_blocks.blocks_base], def_idx)) {
-            if (bincode_is_pseudoreg_modified_by_insn(_definitions_table.insn_base[def_idx], type, reg)) {
+            if (bincode_is_pseudoreg_written_by_insn(_definitions_table.insn_base[def_idx], type, reg)) {
                 ASSERT(*res_count < res_max_count);
                 res_arr[*res_count] = _definitions_table.insn_base[def_idx];
                 ++*res_count;
@@ -905,7 +890,7 @@ static void _redundantcopies_build_gen(set *gen, function_desc *function, basic_
                 BIT_RAISE(*gen, idx);
             }
 
-        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             BIT_RAISE(modified_regs, regs[i]);
@@ -929,7 +914,7 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
 
     // помечаем все модифицированные в этом блоке регистры
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
-        bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
         for (i = 0; i < regs_cnt; i++) {
             BIT_RAISE(modified_regs, regs[i]);
@@ -1179,7 +1164,7 @@ BOOL _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 }
 
                 // x должно использоваться только в read-only контекстах
-                if (bincode_is_pseudoreg_modified_by_insn(usage, type, x)) {
+                if (bincode_is_pseudoreg_written_by_insn(usage, type, x)) {
                     replace_allowed = FALSE;
                     break;
                 }
@@ -1201,7 +1186,7 @@ BOOL _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                     }
 
                     // если x или y изменяются, выходим
-                    if (bincode_is_pseudoreg_modified_by_insn(test, type, x) || bincode_is_pseudoreg_modified_by_insn(test, type, y)) {
+                    if (bincode_is_pseudoreg_written_by_insn(test, type, x) || bincode_is_pseudoreg_written_by_insn(test, type, y)) {
                         replace_allowed = FALSE;
                         break;
                     }
