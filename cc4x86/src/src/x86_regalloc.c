@@ -806,26 +806,15 @@ static void _handle_pseudo_instructions(function_desc *function)
         } else if (insn->in_code == x86insn_set_retval) {
             UNIMPLEMENTED_ASSERT(insn->in_op1.op_type != x86op_qword);
 
-            if (OP_IS_INT(insn->in_op1)) {
-                if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~x86reg_eax) {
-                    bincode_create_operand_from_register(&tmp, insn->in_op1.op_type, x86reg_eax);
-                    bincode_insert_instruction(function, insn, x86insn_int_mov, &tmp, &insn->in_op1);
-                }
-            } else if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~0) {
-                // результат в xmm0
+            if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~0) {
+                // результат в eax/xmm0
                 bincode_create_operand_from_register(&tmp, insn->in_op1.op_type, 0);
-                bincode_insert_instruction(function, insn, ENCODE_SSE_MOV(insn->in_op1.op_type),
-                    &tmp, &insn->in_op1);
+                bincode_insert_instruction(function, insn, ENCODE_MOV(insn->in_op1.op_type), &tmp, &insn->in_op1);
             }
         } else if (insn->in_code == x86insn_read_retval) {
-            if (OP_IS_INT(insn->in_op1)) {
-                if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~x86reg_eax) {
-                    insn->in_code = x86insn_int_mov;
-                    bincode_create_operand_from_register(&insn->in_op2, insn->in_op1.op_type, x86reg_eax);
-                }
-            } else if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~0) {
-                // результат в xmm0
-                insn->in_code = ENCODE_SSE_MOV(insn->in_op1.op_type);
+            if (insn->in_op1.op_loc != x86loc_register || insn->in_op1.data.reg != ~0) {
+                // результат в eax/xmm0
+                insn->in_code = ENCODE_MOV(insn->in_op1.op_type);
                 bincode_create_operand_from_register(&insn->in_op2, insn->in_op1.op_type, 0);
             }
         }
