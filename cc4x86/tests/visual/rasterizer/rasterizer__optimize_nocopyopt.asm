@@ -161,39 +161,68 @@ _rasterizer_init proc
         divss   xmm3,xmm4
         movss   xmm4,xmm1
         movss   xmm5,xmm0
-        mov     eax,(offset __mvproj_matrix)
         mulss   xmm2,xmm5
         movss   xmm6,xmm2
         mulss   xmm6,xmm3
-        mov     ebx,eax
+        mov     eax,(offset __mvproj_matrix)
         movss   xmm3,xmm5
         divss   xmm3,xmm6
-        movss   dword ptr [ebx],xmm3
-        mov     dword ptr [eax+4],0
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],0
-        mov     dword ptr [eax+16],0
+        movss   dword ptr [eax],xmm3
+        mov     eax,4
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,16
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,20
+        add     eax,(offset __mvproj_matrix)
         movss   xmm3,xmm5
         divss   xmm3,xmm2
-        movss   dword ptr [eax+20],xmm3
-        mov     dword ptr [eax+24],0
-        mov     dword ptr [eax+28],0
-        mov     dword ptr [eax+32],0
-        mov     dword ptr [eax+36],0
+        movss   dword ptr [eax],xmm3
+        mov     eax,24
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,28
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,32
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,36
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,40
+        add     eax,(offset __mvproj_matrix)
         movss   xmm2,xmm4
         subss   xmm2,xmm5
         movss   xmm3,xmm4
         divss   xmm3,xmm2
-        movss   dword ptr [eax+40],xmm3
-        mov     dword ptr [eax+44],1065353216
-        mov     dword ptr [eax+48],0
-        mov     dword ptr [eax+52],0
+        movss   dword ptr [eax],xmm3
+        mov     eax,44
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],1065353216
+        mov     eax,48
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,52
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,56
+        add     eax,(offset __mvproj_matrix)
         movss   xmm2,xmm5
         mulss   xmm2,xmm4
         subss   xmm5,xmm4
         divss   xmm2,xmm5
-        movss   dword ptr [eax+56],xmm2
-        mov     dword ptr [eax+60],0
+        movss   dword ptr [eax],xmm2
+        mov     eax,60
+        add     eax,(offset __mvproj_matrix)
+        mov     dword ptr [eax],0
 ; end of inline function matrix4f_make_perspective
 ; start of inline function matrix4f_make_viewport
         movss   xmm2,xmm1
@@ -201,40 +230,74 @@ _rasterizer_init proc
         cvtsi2ss        xmm4,ecx
         cvtsi2ss        xmm5,edx
         mov     eax,(offset __viewport_matrix)
-        mov     ebx,eax
         movss   xmm6,xmm5
         mulss   xmm6,dword ptr [___unnamed_float_3]
-        movss   dword ptr [ebx],xmm6
-        mov     dword ptr [eax+4],0
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],0
-        mov     dword ptr [eax+16],0
+        movss   dword ptr [eax],xmm6
+        mov     eax,4
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,16
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,20
+        add     eax,(offset __viewport_matrix)
         movss   xmm6,xmm4
         xorps   xmm6,dword ptr [___unnamed_float4_4]
         mulss   xmm6,dword ptr [___unnamed_float_3]
-        movss   dword ptr [eax+20],xmm6
-        mov     dword ptr [eax+24],0
-        mov     dword ptr [eax+28],0
-        mov     dword ptr [eax+32],0
-        mov     dword ptr [eax+36],0
+        movss   dword ptr [eax],xmm6
+        mov     eax,24
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,28
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,32
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,36
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,40
+        add     eax,(offset __viewport_matrix)
         subss   xmm2,xmm3
-        movss   dword ptr [eax+40],xmm2
-        mov     dword ptr [eax+44],0
+        movss   dword ptr [eax],xmm2
+        mov     eax,44
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],0
+        mov     eax,48
+        add     eax,(offset __viewport_matrix)
         mulss   xmm5,dword ptr [___unnamed_float_3]
-        movss   dword ptr [eax+48],xmm5
+        movss   dword ptr [eax],xmm5
+        mov     eax,52
+        add     eax,(offset __viewport_matrix)
         mulss   xmm4,dword ptr [___unnamed_float_3]
-        movss   dword ptr [eax+52],xmm4
-        movss   dword ptr [eax+56],xmm3
-        mov     dword ptr [eax+60],1065353216
+        movss   dword ptr [eax],xmm4
+        mov     eax,56
+        add     eax,(offset __viewport_matrix)
+        movss   dword ptr [eax],xmm3
+        mov     eax,60
+        add     eax,(offset __viewport_matrix)
+        mov     dword ptr [eax],1065353216
 ; end of inline function matrix4f_make_viewport
 ; start of inline function vec4f_assign
         movss   xmm2,xmm0
         mov     eax,(offset __clip_z_near_base)
-        mov     ebx,eax
-        mov     dword ptr [ebx],0
-        mov     dword ptr [eax+4],0
-        movss   dword ptr [eax+8],xmm2
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],0
+        mov     eax,4
+        add     eax,(offset __clip_z_near_base)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __clip_z_near_base)
+        movss   dword ptr [eax],xmm2
+        mov     eax,12
+        add     eax,(offset __clip_z_near_base)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
         movss   xmm2,xmm1
         comiss  xmm2,xmm0
@@ -246,20 +309,30 @@ label0000:
 label0001:
 ; start of inline function vec4f_assign
         mov     eax,(offset __clip_z_near_norm)
-        mov     ebx,eax
-        mov     dword ptr [ebx],0
-        mov     dword ptr [eax+4],0
-        movss   dword ptr [eax+8],xmm2
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],0
+        mov     eax,4
+        add     eax,(offset __clip_z_near_norm)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __clip_z_near_norm)
+        movss   dword ptr [eax],xmm2
+        mov     eax,12
+        add     eax,(offset __clip_z_near_norm)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   xmm2,xmm1
         mov     eax,(offset __clip_z_far_base)
-        mov     ebx,eax
-        mov     dword ptr [ebx],0
-        mov     dword ptr [eax+4],0
-        movss   dword ptr [eax+8],xmm2
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],0
+        mov     eax,4
+        add     eax,(offset __clip_z_far_base)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __clip_z_far_base)
+        movss   dword ptr [eax],xmm2
+        mov     eax,12
+        add     eax,(offset __clip_z_far_base)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
         comiss  xmm1,xmm0
         jbe     label0002
@@ -271,11 +344,16 @@ label0003:
 ; start of inline function vec4f_assign
         movss   xmm2,xmm0
         mov     eax,(offset __clip_z_far_norm)
-        mov     ebx,eax
-        mov     dword ptr [ebx],0
-        mov     dword ptr [eax+4],0
-        movss   dword ptr [eax+8],xmm2
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],0
+        mov     eax,4
+        add     eax,(offset __clip_z_far_norm)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __clip_z_far_norm)
+        movss   dword ptr [eax],xmm2
+        mov     eax,12
+        add     eax,(offset __clip_z_far_norm)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         cvtsi2ss        xmm0,edx
@@ -284,19 +362,29 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_5]
         addss   xmm0,xmm1
         mov     eax,(offset __clip_plane_left_base)
-        mov     ebx,eax
-        movss   dword ptr [ebx],xmm0
-        mov     dword ptr [eax+4],0
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],1065353216
+        movss   dword ptr [eax],xmm0
+        mov     eax,4
+        add     eax,(offset __clip_plane_left_base)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __clip_plane_left_base)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __clip_plane_left_base)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         mov     eax,(offset __clip_plane_left_norm)
-        mov     ebx,eax
-        mov     dword ptr [ebx],1065353216
-        mov     dword ptr [eax+4],0
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],1065353216
+        mov     eax,4
+        add     eax,(offset __clip_plane_left_norm)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __clip_plane_left_norm)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __clip_plane_left_norm)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         cvtsi2ss        xmm0,edx
@@ -305,19 +393,29 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_1]
         subss   xmm0,xmm1
         mov     eax,(offset __clip_plane_right_base)
-        mov     edx,eax
-        movss   dword ptr [edx],xmm0
-        mov     dword ptr [eax+4],0
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],1065353216
+        movss   dword ptr [eax],xmm0
+        mov     eax,4
+        add     eax,(offset __clip_plane_right_base)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __clip_plane_right_base)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __clip_plane_right_base)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         mov     eax,(offset __clip_plane_right_norm)
-        mov     edx,eax
-        mov     dword ptr [edx],-1082130432
-        mov     dword ptr [eax+4],0
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],-1082130432
+        mov     eax,4
+        add     eax,(offset __clip_plane_right_norm)
+        mov     dword ptr [eax],0
+        mov     eax,8
+        add     eax,(offset __clip_plane_right_norm)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __clip_plane_right_norm)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         cvtsi2ss        xmm0,ecx
@@ -326,35 +424,55 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_5]
         addss   xmm0,xmm1
         mov     eax,(offset __clip_plane_top_base)
-        mov     ecx,eax
-        mov     dword ptr [ecx],0
-        movss   dword ptr [eax+4],xmm0
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],0
+        mov     eax,4
+        add     eax,(offset __clip_plane_top_base)
+        movss   dword ptr [eax],xmm0
+        mov     eax,8
+        add     eax,(offset __clip_plane_top_base)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __clip_plane_top_base)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         mov     eax,(offset __clip_plane_top_norm)
-        mov     ecx,eax
-        mov     dword ptr [ecx],0
-        mov     dword ptr [eax+4],1065353216
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],0
+        mov     eax,4
+        add     eax,(offset __clip_plane_top_norm)
+        mov     dword ptr [eax],1065353216
+        mov     eax,8
+        add     eax,(offset __clip_plane_top_norm)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __clip_plane_top_norm)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         mov     eax,(offset __clip_plane_bottom_base)
-        mov     ecx,eax
-        mov     dword ptr [ecx],0
-        mov     dword ptr [eax+4],1065353216
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],0
+        mov     eax,4
+        add     eax,(offset __clip_plane_bottom_base)
+        mov     dword ptr [eax],1065353216
+        mov     eax,8
+        add     eax,(offset __clip_plane_bottom_base)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __clip_plane_bottom_base)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         mov     eax,(offset __clip_plane_bottom_norm)
-        mov     ecx,eax
-        mov     dword ptr [ecx],0
-        mov     dword ptr [eax+4],-1082130432
-        mov     dword ptr [eax+8],0
-        mov     dword ptr [eax+12],1065353216
+        mov     dword ptr [eax],0
+        mov     eax,4
+        add     eax,(offset __clip_plane_bottom_norm)
+        mov     dword ptr [eax],-1082130432
+        mov     eax,8
+        add     eax,(offset __clip_plane_bottom_norm)
+        mov     dword ptr [eax],0
+        mov     eax,12
+        add     eax,(offset __clip_plane_bottom_norm)
+        mov     dword ptr [eax],1065353216
 ; end of inline function vec4f_assign
         pop     ebx
         mov     esp,ebp

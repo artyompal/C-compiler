@@ -11,8 +11,7 @@ _test proc
         sar     dword7,4
         cmp     dword7,-1
         je      label0000
-        mov     dword9,1
-        set_retval      dword9
+        set_retval      1
         destroy_stack_frame
         ret
 label0000:
@@ -20,8 +19,7 @@ label0000:
         shr     dword12,4
         cmp     dword12,268435455
         je      label0001
-        mov     dword14,2
-        set_retval      dword14
+        set_retval      2
         destroy_stack_frame
         ret
 label0001:
@@ -29,8 +27,7 @@ label0001:
         sal     dword21,1
         cmp     dword21,0
         jl      label0002
-        mov     dword23,3
-        set_retval      dword23
+        set_retval      3
         destroy_stack_frame
         ret
 label0002:
@@ -38,8 +35,7 @@ label0002:
         shl     dword26,1
         cmp     dword26,-2147483648
         je      label0003
-        mov     dword28,4
-        set_retval      dword28
+        set_retval      4
         destroy_stack_frame
         ret
 label0003:
@@ -49,8 +45,7 @@ label0003:
         shl     dword36,dword34
         cmp     dword36,16
         je      label0004
-        mov     dword38,5
-        set_retval      dword38
+        set_retval      5
         destroy_stack_frame
         ret
 label0004:
@@ -60,13 +55,11 @@ label0004:
         sal     dword42,dword40
         cmp     dword42,64
         je      label0005
-        mov     dword45,6
-        set_retval      dword45
+        set_retval      6
         destroy_stack_frame
         ret
 label0005:
-        mov     dword46,0
-        set_retval      dword46
+        set_retval      0
         destroy_stack_frame
         ret
 _test endp

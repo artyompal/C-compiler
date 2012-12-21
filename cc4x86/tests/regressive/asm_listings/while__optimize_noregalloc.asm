@@ -17,8 +17,7 @@ label0000:
 label0001:
         cmp     dword23,11
         je      label0002
-        mov     dword8,1
-        set_retval      dword8
+        set_retval      1
         destroy_stack_frame
         ret
 label0002:
@@ -33,13 +32,11 @@ label0003:
         jl      label0003
         cmp     dword25,16
         je      label0006
-        mov     dword21,2
-        set_retval      dword21
+        set_retval      2
         destroy_stack_frame
         ret
 label0006:
-        mov     dword22,0
-        set_retval      dword22
+        set_retval      0
         destroy_stack_frame
         ret
 _test endp

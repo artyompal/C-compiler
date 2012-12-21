@@ -281,6 +281,9 @@ typedef struct x86_instruction_decl {
 #define OP_IS_THIS_REAL_REG(OP, T, REG) (OP_IS_REGISTER(OP, T) && (OP).data.reg == ~(REG))
 #define OP_IS_THIS_PSEUDO_REG(OP,T,REG) (OP_IS_REGISTER(OP, T) && (OP).data.reg == (REG))
 #define OP_IS_CONSTANT(OP)              ((OP).op_loc == x86loc_int_constant)
+#define OP_IS_SYM_OFFSET(OP)            ((OP).op_loc == x86loc_symbol_offset)
+#define OP_IS_SYMBOL_OR_OFFSET(OP)      ((OP).op_loc == x86loc_symbol || (OP).op_loc == x86loc_symbol_offset)
+#define OP_IS_CONSTANT_OR_OFFSET(OP)    ((OP).op_loc == x86loc_int_constant || (OP).op_loc == x86loc_symbol_offset)
 #define OP_IS_SPEC_EBP_OFFSET(OP, OFS)  ((OP).op_loc == x86loc_address && (OP).data.address.base == ~x86reg_ebp \
                                         && (OP).data.address.index == 0 && (OP).data.address.offset == (OFS))
 

@@ -87,7 +87,7 @@ int             aux_unique_int(int *arr, int count);
 int             aux_binary_search(const int *arr, int count, int key); // возращает индекс или -1
 
 typedef struct function_desc_decl function_desc;
-void            text_output_debug_print_function_code(function_desc *function);
+void            text_output_push_function_code(function_desc *function);
 
 #define AUX_ARRAY_LENGTH(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 

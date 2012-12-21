@@ -14,8 +14,7 @@ _test proc
 ; end of inline function test1
         cmp     dword30,0
         je      label0000
-        mov     dword5,1
-        set_retval      dword5
+        set_retval      1
         destroy_stack_frame
         ret
 label0000:
@@ -26,8 +25,7 @@ label0000:
 ; end of inline function test2
         cmp     dword41,0
         je      label0001
-        mov     dword10,2
-        set_retval      dword10
+        set_retval      2
         destroy_stack_frame
         ret
 label0001:
@@ -49,8 +47,7 @@ label0008:
 ; end of inline function test3
         cmp     dword59,0
         je      label0002
-        mov     dword15,3
-        set_retval      dword15
+        set_retval      3
         destroy_stack_frame
         ret
 label0002:
@@ -63,8 +60,7 @@ label0002:
 ; end of inline function test4
         cmp     dword72,0
         je      label0003
-        mov     dword20,4
-        set_retval      dword20
+        set_retval      4
         destroy_stack_frame
         ret
 label0003:
@@ -83,13 +79,11 @@ label000c:
 ; end of inline function test5
         cmp     dword90,0
         je      label0004
-        mov     dword25,3
-        set_retval      dword25
+        set_retval      3
         destroy_stack_frame
         ret
 label0004:
-        mov     dword26,0
-        set_retval      dword26
+        set_retval      0
         destroy_stack_frame
         ret
 _test endp

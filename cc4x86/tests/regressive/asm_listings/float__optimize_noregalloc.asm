@@ -61,8 +61,7 @@ label0009:
 ; end of inline function eq
         cmp     dword62,0
         jne     label0000
-        mov     dword11,1
-        set_retval      dword11
+        set_retval      1
         destroy_stack_frame
         ret
 label0000:
@@ -91,8 +90,7 @@ label000d:
 ; end of inline function eq
         cmp     dword75,0
         jne     label0001
-        mov     dword18,2
-        set_retval      dword18
+        set_retval      2
         destroy_stack_frame
         ret
 label0001:
@@ -121,8 +119,7 @@ label0011:
 ; end of inline function eq
         cmp     dword88,0
         jne     label0002
-        mov     dword25,3
-        set_retval      dword25
+        set_retval      3
         destroy_stack_frame
         ret
 label0002:
@@ -151,8 +148,7 @@ label0015:
 ; end of inline function eq
         cmp     dword101,0
         jne     label0003
-        mov     dword32,4
-        set_retval      dword32
+        set_retval      4
         destroy_stack_frame
         ret
 label0003:
@@ -181,8 +177,7 @@ label0019:
 ; end of inline function eq
         cmp     dword114,0
         jne     label0004
-        mov     dword38,5
-        set_retval      dword38
+        set_retval      5
         destroy_stack_frame
         ret
 label0004:
@@ -212,8 +207,7 @@ label001d:
 ; end of inline function eq
         cmp     dword127,0
         jne     label0005
-        mov     dword44,6
-        set_retval      dword44
+        set_retval      6
         destroy_stack_frame
         ret
 label0005:
@@ -242,8 +236,7 @@ label0021:
 ; end of inline function eq
         cmp     dword140,0
         jne     label0006
-        mov     dword50,7
-        set_retval      dword50
+        set_retval      7
         destroy_stack_frame
         ret
 label0006:
@@ -272,13 +265,11 @@ label0025:
 ; end of inline function eq
         cmp     dword153,0
         jne     label0007
-        mov     dword56,8
-        set_retval      dword56
+        set_retval      8
         destroy_stack_frame
         ret
 label0007:
-        mov     dword57,0
-        set_retval      dword57
+        set_retval      0
         destroy_stack_frame
         ret
 _test endp

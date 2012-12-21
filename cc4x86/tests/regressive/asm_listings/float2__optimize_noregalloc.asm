@@ -24,8 +24,7 @@ _test proc
 ; end of inline function test1
         comiss  float10,dword ptr [___unnamed_float_2]
         je      label0000
-        mov     dword3,1
-        set_retval      dword3
+        set_retval      1
         destroy_stack_frame
         ret
 label0000:
@@ -35,13 +34,11 @@ label0000:
 ; end of inline function test2
         comiss  float15,dword ptr [___unnamed_float_3]
         je      label0001
-        mov     dword6,2
-        set_retval      dword6
+        set_retval      2
         destroy_stack_frame
         ret
 label0001:
-        mov     dword7,0
-        set_retval      dword7
+        set_retval      0
         destroy_stack_frame
         ret
 _test endp

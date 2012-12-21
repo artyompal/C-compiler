@@ -4,7 +4,6 @@
 #include "x86_opt_data_flow.h"
 #include "x86_opt_data_flow_inc.h"
 #include "x86_regalloc.h"
-#include "x86_text_output.h"
 #include "x86_optimizer.h"
 
 

@@ -471,7 +471,7 @@ static void _output_push_binary_instruction(x86_instruction_code code, x86_opera
     _print_insn(code);
     _out_ch('\t');
 
-    if (op1->op_loc == x86loc_address && (op2->op_loc == x86loc_int_constant || IS_SHIFT_INSN(code))) {
+    if (op1->op_loc == x86loc_address && (OP_IS_CONSTANT(*op2) || IS_SHIFT_INSN(code))) {
         _out_str("dword ptr ");
     } else if (OP_IS_ADDRESS(*op1) && OP_IS_FLOAT(*op1)) {
         _out_fmt("%s ptr ", (op1->op_type == x86op_float ? "dword" : "qword"));

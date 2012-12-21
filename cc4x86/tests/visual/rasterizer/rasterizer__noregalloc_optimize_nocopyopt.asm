@@ -160,43 +160,72 @@ _rasterizer_init proc
         movss   float176,float126
         movss   float125,float177
         movss   float178,float125
-        mov     dword378,(offset __mvproj_matrix)
         movss   float129,float174
         mulss   float129,float178
         movss   float179,float129
         movss   float130,float179
         mulss   float130,float172
         movss   float180,float130
-        mov     dword266,dword378
+        mov     dword266,(offset __mvproj_matrix)
         movss   float131,float178
         divss   float131,float180
         movss   dword ptr [dword266],float131
-        mov     dword ptr [dword378+4],0
-        mov     dword ptr [dword378+8],0
-        mov     dword ptr [dword378+12],0
-        mov     dword ptr [dword378+16],0
+        mov     dword270,4
+        add     dword270,(offset __mvproj_matrix)
+        mov     dword ptr [dword270],0
+        mov     dword273,8
+        add     dword273,(offset __mvproj_matrix)
+        mov     dword ptr [dword273],0
+        mov     dword276,12
+        add     dword276,(offset __mvproj_matrix)
+        mov     dword ptr [dword276],0
+        mov     dword279,16
+        add     dword279,(offset __mvproj_matrix)
+        mov     dword ptr [dword279],0
+        mov     dword282,20
+        add     dword282,(offset __mvproj_matrix)
         movss   float136,float178
         divss   float136,float179
-        movss   dword ptr [dword378+20],float136
-        mov     dword ptr [dword378+24],0
-        mov     dword ptr [dword378+28],0
-        mov     dword ptr [dword378+32],0
-        mov     dword ptr [dword378+36],0
+        movss   dword ptr [dword282],float136
+        mov     dword286,24
+        add     dword286,(offset __mvproj_matrix)
+        mov     dword ptr [dword286],0
+        mov     dword289,28
+        add     dword289,(offset __mvproj_matrix)
+        mov     dword ptr [dword289],0
+        mov     dword292,32
+        add     dword292,(offset __mvproj_matrix)
+        mov     dword ptr [dword292],0
+        mov     dword295,36
+        add     dword295,(offset __mvproj_matrix)
+        mov     dword ptr [dword295],0
+        mov     dword298,40
+        add     dword298,(offset __mvproj_matrix)
         movss   float141,float176
         subss   float141,float178
         movss   float142,float176
         divss   float142,float141
-        movss   dword ptr [dword378+40],float142
-        mov     dword ptr [dword378+44],1065353216
-        mov     dword ptr [dword378+48],0
-        mov     dword ptr [dword378+52],0
+        movss   dword ptr [dword298],float142
+        mov     dword303,44
+        add     dword303,(offset __mvproj_matrix)
+        mov     dword ptr [dword303],1065353216
+        mov     dword306,48
+        add     dword306,(offset __mvproj_matrix)
+        mov     dword ptr [dword306],0
+        mov     dword309,52
+        add     dword309,(offset __mvproj_matrix)
+        mov     dword ptr [dword309],0
+        mov     dword312,56
+        add     dword312,(offset __mvproj_matrix)
         movss   float146,float178
         mulss   float146,float176
         movss   float147,float178
         subss   float147,float176
         divss   float146,float147
-        movss   dword ptr [dword378+56],float146
-        mov     dword ptr [dword378+60],0
+        movss   dword ptr [dword312],float146
+        mov     dword318,60
+        add     dword318,(offset __mvproj_matrix)
+        mov     dword ptr [dword318],0
 ; end of inline function matrix4f_make_perspective
 ; start of inline function matrix4f_make_viewport
         movss   float150,float175
@@ -207,47 +236,81 @@ _rasterizer_init proc
         movss   float183,float3
         cvtsi2ss        float4,dword375
         movss   float184,float4
-        mov     dword379,(offset __viewport_matrix)
-        mov     dword322,dword379
+        mov     dword322,(offset __viewport_matrix)
         movss   float153,float184
         mulss   float153,dword ptr [___unnamed_float_3]
         movss   dword ptr [dword322],float153
-        mov     dword ptr [dword379+4],0
-        mov     dword ptr [dword379+8],0
-        mov     dword ptr [dword379+12],0
-        mov     dword ptr [dword379+16],0
+        mov     dword326,4
+        add     dword326,(offset __viewport_matrix)
+        mov     dword ptr [dword326],0
+        mov     dword329,8
+        add     dword329,(offset __viewport_matrix)
+        mov     dword ptr [dword329],0
+        mov     dword332,12
+        add     dword332,(offset __viewport_matrix)
+        mov     dword ptr [dword332],0
+        mov     dword335,16
+        add     dword335,(offset __viewport_matrix)
+        mov     dword ptr [dword335],0
+        mov     dword338,20
+        add     dword338,(offset __viewport_matrix)
         movss   float158,float183
         xorps   float158,dword ptr [___unnamed_float4_4]
         mulss   float158,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword379+20],float158
-        mov     dword ptr [dword379+24],0
-        mov     dword ptr [dword379+28],0
-        mov     dword ptr [dword379+32],0
-        mov     dword ptr [dword379+36],0
+        movss   dword ptr [dword338],float158
+        mov     dword342,24
+        add     dword342,(offset __viewport_matrix)
+        mov     dword ptr [dword342],0
+        mov     dword345,28
+        add     dword345,(offset __viewport_matrix)
+        mov     dword ptr [dword345],0
+        mov     dword348,32
+        add     dword348,(offset __viewport_matrix)
+        mov     dword ptr [dword348],0
+        mov     dword351,36
+        add     dword351,(offset __viewport_matrix)
+        mov     dword ptr [dword351],0
+        mov     dword354,40
+        add     dword354,(offset __viewport_matrix)
         movss   float164,float181
         subss   float164,float182
-        movss   dword ptr [dword379+40],float164
-        mov     dword ptr [dword379+44],0
+        movss   dword ptr [dword354],float164
+        mov     dword358,44
+        add     dword358,(offset __viewport_matrix)
+        mov     dword ptr [dword358],0
+        mov     dword361,48
+        add     dword361,(offset __viewport_matrix)
         movss   float167,float184
         mulss   float167,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword379+48],float167
+        movss   dword ptr [dword361],float167
+        mov     dword365,52
+        add     dword365,(offset __viewport_matrix)
         movss   float169,float183
         mulss   float169,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword379+52],float169
+        movss   dword ptr [dword365],float169
+        mov     dword369,56
+        add     dword369,(offset __viewport_matrix)
         movss   float170,float182
-        movss   dword ptr [dword379+56],float170
-        mov     dword ptr [dword379+60],1065353216
+        movss   dword ptr [dword369],float170
+        mov     dword372,60
+        add     dword372,(offset __viewport_matrix)
+        mov     dword ptr [dword372],1065353216
 ; end of inline function matrix4f_make_viewport
 ; start of inline function vec4f_assign
         movss   float61,float177
         movss   float186,float61
-        mov     dword380,(offset __clip_z_near_base)
-        mov     dword104,dword380
+        mov     dword104,(offset __clip_z_near_base)
         mov     dword ptr [dword104],0
-        mov     dword ptr [dword380+4],0
+        mov     dword107,4
+        add     dword107,(offset __clip_z_near_base)
+        mov     dword ptr [dword107],0
+        mov     dword110,8
+        add     dword110,(offset __clip_z_near_base)
         movss   float65,float186
-        movss   dword ptr [dword380+8],float65
-        mov     dword ptr [dword380+12],1065353216
+        movss   dword ptr [dword110],float65
+        mov     dword113,12
+        add     dword113,(offset __clip_z_near_base)
+        mov     dword ptr [dword113],1065353216
 ; end of inline function vec4f_assign
         movss   float8,float175
         comiss  float8,float177
@@ -260,24 +323,34 @@ label0001:
 ; start of inline function vec4f_assign
         movss   float67,float189
         movss   float186,float67
-        mov     dword380,(offset __clip_z_near_norm)
-        mov     dword117,dword380
+        mov     dword117,(offset __clip_z_near_norm)
         mov     dword ptr [dword117],0
-        mov     dword ptr [dword380+4],0
+        mov     dword120,4
+        add     dword120,(offset __clip_z_near_norm)
+        mov     dword ptr [dword120],0
+        mov     dword123,8
+        add     dword123,(offset __clip_z_near_norm)
         movss   float71,float186
-        movss   dword ptr [dword380+8],float71
-        mov     dword ptr [dword380+12],1065353216
+        movss   dword ptr [dword123],float71
+        mov     dword126,12
+        add     dword126,(offset __clip_z_near_norm)
+        mov     dword ptr [dword126],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         movss   float73,float175
         movss   float186,float73
-        mov     dword380,(offset __clip_z_far_base)
-        mov     dword130,dword380
+        mov     dword130,(offset __clip_z_far_base)
         mov     dword ptr [dword130],0
-        mov     dword ptr [dword380+4],0
+        mov     dword133,4
+        add     dword133,(offset __clip_z_far_base)
+        mov     dword ptr [dword133],0
+        mov     dword136,8
+        add     dword136,(offset __clip_z_far_base)
         movss   float77,float186
-        movss   dword ptr [dword380+8],float77
-        mov     dword ptr [dword380+12],1065353216
+        movss   dword ptr [dword136],float77
+        mov     dword139,12
+        add     dword139,(offset __clip_z_far_base)
+        mov     dword ptr [dword139],1065353216
 ; end of inline function vec4f_assign
         movss   float17,float175
         comiss  float17,float177
@@ -290,13 +363,18 @@ label0003:
 ; start of inline function vec4f_assign
         movss   float79,float190
         movss   float186,float79
-        mov     dword380,(offset __clip_z_far_norm)
-        mov     dword143,dword380
+        mov     dword143,(offset __clip_z_far_norm)
         mov     dword ptr [dword143],0
-        mov     dword ptr [dword380+4],0
+        mov     dword146,4
+        add     dword146,(offset __clip_z_far_norm)
+        mov     dword ptr [dword146],0
+        mov     dword149,8
+        add     dword149,(offset __clip_z_far_norm)
         movss   float83,float186
-        movss   dword ptr [dword380+8],float83
-        mov     dword ptr [dword380+12],1065353216
+        movss   dword ptr [dword149],float83
+        mov     dword152,12
+        add     dword152,(offset __clip_z_far_norm)
+        mov     dword ptr [dword152],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         cvtsi2ss        float26,dword375
@@ -305,21 +383,31 @@ label0003:
         movss   float28,dword ptr [___unnamed_float_5]
         addss   float28,float27
         movss   float188,float28
-        mov     dword380,(offset __clip_plane_left_base)
-        mov     dword156,dword380
+        mov     dword156,(offset __clip_plane_left_base)
         movss   float86,float188
         movss   dword ptr [dword156],float86
-        mov     dword ptr [dword380+4],0
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword159,4
+        add     dword159,(offset __clip_plane_left_base)
+        mov     dword ptr [dword159],0
+        mov     dword162,8
+        add     dword162,(offset __clip_plane_left_base)
+        mov     dword ptr [dword162],0
+        mov     dword165,12
+        add     dword165,(offset __clip_plane_left_base)
+        mov     dword ptr [dword165],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_left_norm)
-        mov     dword169,dword380
+        mov     dword169,(offset __clip_plane_left_norm)
         mov     dword ptr [dword169],1065353216
-        mov     dword ptr [dword380+4],0
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword172,4
+        add     dword172,(offset __clip_plane_left_norm)
+        mov     dword ptr [dword172],0
+        mov     dword175,8
+        add     dword175,(offset __clip_plane_left_norm)
+        mov     dword ptr [dword175],0
+        mov     dword178,12
+        add     dword178,(offset __clip_plane_left_norm)
+        mov     dword ptr [dword178],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         cvtsi2ss        float36,dword375
@@ -328,21 +416,31 @@ label0003:
         movss   float38,dword ptr [___unnamed_float_1]
         subss   float38,float37
         movss   float188,float38
-        mov     dword380,(offset __clip_plane_right_base)
-        mov     dword182,dword380
+        mov     dword182,(offset __clip_plane_right_base)
         movss   float96,float188
         movss   dword ptr [dword182],float96
-        mov     dword ptr [dword380+4],0
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword185,4
+        add     dword185,(offset __clip_plane_right_base)
+        mov     dword ptr [dword185],0
+        mov     dword188,8
+        add     dword188,(offset __clip_plane_right_base)
+        mov     dword ptr [dword188],0
+        mov     dword191,12
+        add     dword191,(offset __clip_plane_right_base)
+        mov     dword ptr [dword191],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_right_norm)
-        mov     dword195,dword380
+        mov     dword195,(offset __clip_plane_right_norm)
         mov     dword ptr [dword195],-1082130432
-        mov     dword ptr [dword380+4],0
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword198,4
+        add     dword198,(offset __clip_plane_right_norm)
+        mov     dword ptr [dword198],0
+        mov     dword201,8
+        add     dword201,(offset __clip_plane_right_norm)
+        mov     dword ptr [dword201],0
+        mov     dword204,12
+        add     dword204,(offset __clip_plane_right_norm)
+        mov     dword ptr [dword204],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         cvtsi2ss        float45,dword376
@@ -351,37 +449,57 @@ label0003:
         movss   float47,dword ptr [___unnamed_float_5]
         addss   float47,float46
         movss   float187,float47
-        mov     dword380,(offset __clip_plane_top_base)
-        mov     dword208,dword380
+        mov     dword208,(offset __clip_plane_top_base)
         mov     dword ptr [dword208],0
+        mov     dword211,4
+        add     dword211,(offset __clip_plane_top_base)
         movss   float107,float187
-        movss   dword ptr [dword380+4],float107
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        movss   dword ptr [dword211],float107
+        mov     dword214,8
+        add     dword214,(offset __clip_plane_top_base)
+        mov     dword ptr [dword214],0
+        mov     dword217,12
+        add     dword217,(offset __clip_plane_top_base)
+        mov     dword ptr [dword217],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_top_norm)
-        mov     dword221,dword380
+        mov     dword221,(offset __clip_plane_top_norm)
         mov     dword ptr [dword221],0
-        mov     dword ptr [dword380+4],1065353216
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword224,4
+        add     dword224,(offset __clip_plane_top_norm)
+        mov     dword ptr [dword224],1065353216
+        mov     dword227,8
+        add     dword227,(offset __clip_plane_top_norm)
+        mov     dword ptr [dword227],0
+        mov     dword230,12
+        add     dword230,(offset __clip_plane_top_norm)
+        mov     dword ptr [dword230],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_bottom_base)
-        mov     dword234,dword380
+        mov     dword234,(offset __clip_plane_bottom_base)
         mov     dword ptr [dword234],0
-        mov     dword ptr [dword380+4],1065353216
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword237,4
+        add     dword237,(offset __clip_plane_bottom_base)
+        mov     dword ptr [dword237],1065353216
+        mov     dword240,8
+        add     dword240,(offset __clip_plane_bottom_base)
+        mov     dword ptr [dword240],0
+        mov     dword243,12
+        add     dword243,(offset __clip_plane_bottom_base)
+        mov     dword ptr [dword243],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_bottom_norm)
-        mov     dword247,dword380
+        mov     dword247,(offset __clip_plane_bottom_norm)
         mov     dword ptr [dword247],0
-        mov     dword ptr [dword380+4],-1082130432
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword250,4
+        add     dword250,(offset __clip_plane_bottom_norm)
+        mov     dword ptr [dword250],-1082130432
+        mov     dword253,8
+        add     dword253,(offset __clip_plane_bottom_norm)
+        mov     dword ptr [dword253],0
+        mov     dword256,12
+        add     dword256,(offset __clip_plane_bottom_norm)
+        mov     dword ptr [dword256],1065353216
 ; end of inline function vec4f_assign
         destroy_stack_frame
         ret

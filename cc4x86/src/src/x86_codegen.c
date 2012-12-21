@@ -222,11 +222,11 @@ static void _generate_convert_double2float(x86_operand *res, x86_operand *op)
 
 static void _generate_dereference(x86_operand *res, x86_operand *op, data_type *type)
 {
-    ASSERT(OP_IS_ADDRESS(*op) || OP_IS_REGISTER(*op, x86op_dword) || op->op_loc == x86loc_symbol_offset);
+    ASSERT(OP_IS_ADDRESS(*op) || OP_IS_REGISTER(*op, x86op_dword) || OP_IS_SYM_OFFSET(*op));
 
     if (op->op_loc == x86loc_register) {
         bincode_create_operand_addr_from_reg(res, bincode_encode_type(type), op->data.reg);
-    } else if (op->op_loc == x86loc_symbol_offset) {
+    } else if (OP_IS_SYM_OFFSET(*op)) {
         *res            = *op;
         res->op_loc     = x86loc_symbol;
     } else {

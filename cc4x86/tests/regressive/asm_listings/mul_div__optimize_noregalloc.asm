@@ -27,8 +27,7 @@ _test proc
         add     dword11,dword20
         cmp     dword11,2
         je      label0000
-        mov     dword30,1
-        set_retval      dword30
+        set_retval      1
         destroy_stack_frame
         ret
 label0000:
@@ -37,8 +36,7 @@ label0000:
         div     dword33,dword95,dword34
         cmp     dword33,2
         je      label0001
-        mov     dword37,2
-        set_retval      dword37
+        set_retval      2
         destroy_stack_frame
         ret
 label0001:
@@ -47,8 +45,7 @@ label0001:
         div     dword40,dword96,dword41
         cmp     dword41,2
         je      label0002
-        mov     dword44,3
-        set_retval      dword44
+        set_retval      3
         destroy_stack_frame
         ret
 label0002:
@@ -56,8 +53,7 @@ label0002:
         mul     dword47,dword96,dword48
         cmp     dword47,6
         je      label0003
-        mov     dword52,4
-        set_retval      dword52
+        set_retval      4
         destroy_stack_frame
         ret
 label0003:
@@ -65,8 +61,7 @@ label0003:
         mul     dword58,dword96,dword59
         cmp     dword58,6
         je      label0004
-        mov     dword62,5
-        set_retval      dword62
+        set_retval      5
         destroy_stack_frame
         ret
 label0004:
@@ -75,8 +70,7 @@ label0004:
         mul     dword69,dword96,dword70
         cmp     dword69,0
         je      label0005
-        mov     dword72,6
-        set_retval      dword72
+        set_retval      6
         destroy_stack_frame
         ret
 label0005:
@@ -90,13 +84,11 @@ label0005:
         mul     dword83,dword87,dword89
         cmp     dword83,2
         je      label0006
-        mov     dword93,7
-        set_retval      dword93
+        set_retval      7
         destroy_stack_frame
         ret
 label0006:
-        mov     dword94,0
-        set_retval      dword94
+        set_retval      0
         destroy_stack_frame
         ret
 _test endp

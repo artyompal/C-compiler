@@ -5,7 +5,7 @@
 #include "x86_optimizer.h"
 #include "x86_opt_data_flow.h"
 #include "x86_regalloc.h"
-#include "x86_text_output.h"
+
 
 //
 // Хеш переменных.
@@ -117,7 +117,13 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
 
 static BOOL _caching_pass(function_desc *function, x86_operand_type type)
 {
-    return _cache_every_variable(function, type);
+    BOOL changed;
+
+    changed = _cache_every_variable(function, type);
+
+    x86_dataflow_alivereg_init(function, type);
+
+    return changed;
 }
 
 

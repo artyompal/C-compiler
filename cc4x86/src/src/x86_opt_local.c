@@ -201,6 +201,13 @@ static BOOL _can_combine_address_and_insn(int reg, x86_operand *addr, x86_instru
             addr->data.address.index    = NO_REG;
             addr->data.address.offset   += insn->in_op2.data.int_val;
             return TRUE;
+    //} else if (insn->in_code == x86insn_int_mov && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, reg) && OP_IS_SYM_OFFSET(insn->in_op2)
+    //    && (ADDRESS_IS_BASE_OFS(*addr) && insn->in_op1.data.address.base == reg
+    //    || ADDRESS_IS_UNSCALED_INDEX_OFS(*addr) && insn->in_op1.data.address.index == reg)) {
+    //        addr->op_loc                = x86loc_symbol;
+    //        addr->data.sym.offset       = insn->in_op2.data.sym.offset + addr->data.address.offset;
+    //        addr->data.sym.name         = insn->in_op2.data.sym.name;
+    //        return TRUE;
     } else if (insn->in_code == x86insn_int_add && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, reg)
         && OP_IS_PSEUDO_REG(insn->in_op2, x86op_dword) && (ADDRESS_IS_BASE_OFS(*addr) || ADDRESS_IS_UNSCALED_INDEX_OFS(*addr))) {
             addr->data.address.base     = (addr->data.address.base != NO_REG ? addr->data.address.base : addr->data.address.index);
@@ -287,20 +294,30 @@ static BOOL _try_optimize_address(function_desc *function, x86_instruction *insn
 // Пытается распространять константу вместо регистра.
 static BOOL _try_optimize_mov_reg_const(function_desc *function, x86_instruction *mov)
 {
-    int reg, i, def_count;
-    x86_instruction **definitions;
+    x86_instruction **definitions, *insn;
     x86_operand_type type = x86op_dword;
+    int reg, i, def_count;
+    //x86_operand tmp;
 
     reg = mov->in_op1.data.reg;
     x86_dataflow_find_all_usages_of_definition(reg, mov, type, _usage_arr, &_usage_count, _usage_max_count);
-
     definitions = alloca(sizeof(void*) * _usage_max_count);
+
+    //// мы поддерживаем одну коммутативную модифицирующую инструкцию
+    //if (_usage_count == 1 && _usage_arr[0]->in_code == x86insn_int_add && OP_IS_THIS_PSEUDO_REG(_usage_arr[0]->in_op1, x86op_dword, reg)) {
+    //    tmp                     = _usage_arr[0]->in_op2;
+    //    _usage_arr[0]->in_op2   = mov->in_op2;
+    //    mov->in_op2             = tmp;
+
+    //    return TRUE;
+    //}
 
     // проверяем, что регистр используется только в read-only контекстах
     for (i = 0; i < _usage_count; i++) {
         if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)
-            || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
-            || IS_MUL_DIV_INSN(_usage_arr[i]->in_code) || _usage_arr[i]->in_code == x86insn_cdq) {
+            || OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
+            && (IS_MUL_DIV_INSN(_usage_arr[i]->in_code) || _usage_arr[i]->in_code == x86insn_cdq)
+            || OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op1, type, reg) && _usage_arr[i]->in_op2.op_loc != x86loc_none) {
                 return FALSE;
             }
 
@@ -314,7 +331,21 @@ static BOOL _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 
     // заменяем все вхождения
     for (i = 0; i < _usage_count; i++) {
-        _usage_arr[i]->in_op2 = mov->in_op2;
+        insn = _usage_arr[i];
+
+        if (OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, reg)) {
+            insn->in_op1 = mov->in_op2;
+        } else if (OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, reg)) {
+            insn->in_op2 = mov->in_op2;
+        } else if (bincode_operand_contains_register(&insn->in_op1, type, reg)) {
+            if (!_can_combine_address_and_insn(reg, &insn->in_op1, mov)) {
+                return FALSE;
+            }
+        } else if (bincode_operand_contains_register(&insn->in_op2, type, reg)) {
+            if (!_can_combine_address_and_insn(reg, &insn->in_op2, mov)) {
+                return FALSE;
+            }
+        }
     }
 
     // удаляем инструкцию
@@ -328,10 +359,10 @@ static BOOL _try_optimize_lea(function_desc *function, x86_instruction *insn)
 {
     ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword));  // LEA оперирует только псевдорегистрами
 
-    if (insn->in_op2.op_loc == x86loc_symbol || insn->in_op2.op_loc == x86loc_symbol_offset) {
+    if (OP_IS_SYMBOL_OR_OFFSET(insn->in_op2)) {
         return _try_optimize_lea_reg_symbol(function, insn);
     } else {
-        ASSERT(insn->in_op2.op_loc == x86loc_address);
+        ASSERT(OP_IS_ADDRESS(insn->in_op2));
         return _try_optimize_lea_reg_address(function, insn);
     }
 }
@@ -340,7 +371,7 @@ static BOOL _try_optimize_lea(function_desc *function, x86_instruction *insn)
 // Оптимизирует конструкции с MOV.
 static BOOL _try_optimize_mov(function_desc *function, x86_instruction *insn)
 {
-    if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT(insn->in_op2)) {
+    if (OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword) && OP_IS_CONSTANT_OR_OFFSET(insn->in_op2)) {
         return _try_optimize_mov_reg_const(function, insn);
     } else {
         return FALSE;
@@ -427,7 +458,7 @@ static BOOL _try_optimize_movss(function_desc *function, x86_instruction *movss,
     x86_instruction **definitions;
     x86_operand_type type = x86op_float;
 
-    if (movss->in_op2.op_loc != x86loc_symbol && movss->in_op2.op_loc != x86loc_symbol_offset || !OP_IS_PSEUDO_REG(movss->in_op1, type)) {
+    if (!OP_IS_SYMBOL_OR_OFFSET(movss->in_op2) || !OP_IS_PSEUDO_REG(movss->in_op1, type)) {
         return FALSE;
     }
 

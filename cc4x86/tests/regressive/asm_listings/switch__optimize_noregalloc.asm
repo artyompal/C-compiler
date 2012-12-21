@@ -17,18 +17,15 @@ _test_case proc
         jmp     label0004
 label0001:
 label0002:
-        mov     dword12,-1
-        set_retval      dword12
+        set_retval      -1
         destroy_stack_frame
         ret
 label0003:
-        mov     dword13,0
-        set_retval      dword13
+        set_retval      0
         destroy_stack_frame
         ret
 label0004:
-        mov     dword14,1
-        set_retval      dword14
+        set_retval      1
         destroy_stack_frame
         ret
 _test_case endp
@@ -46,20 +43,17 @@ _test_case2 proc
         je      label0004
         jmp     label0005
 label0001:
-        mov     dword14,-1
-        set_retval      dword14
+        set_retval      -1
         destroy_stack_frame
         ret
 label0002:
 label0003:
 label0004:
-        mov     dword15,0
-        set_retval      dword15
+        set_retval      0
         destroy_stack_frame
         ret
 label0005:
-        mov     dword16,1
-        set_retval      dword16
+        set_retval      1
         destroy_stack_frame
         ret
 _test_case2 endp
@@ -74,13 +68,11 @@ _test_default proc
         jmp     label0003
 label0001:
 label0002:
-        mov     dword14,-1
-        set_retval      dword14
+        set_retval      -1
         destroy_stack_frame
         ret
 label0003:
-        mov     dword15,0
-        set_retval      dword15
+        set_retval      0
         destroy_stack_frame
         ret
 _test_default endp
@@ -109,8 +101,7 @@ label0008:
 ; end of inline function test_case
         cmp     dword62,0
         je      label0000
-        mov     dword3,1
-        set_retval      dword3
+        set_retval      1
         destroy_stack_frame
         ret
 label0000:
@@ -139,8 +130,7 @@ label000f:
 ; end of inline function test_case2
         cmp     dword65,0
         je      label0001
-        mov     dword6,1
-        set_retval      dword6
+        set_retval      1
         destroy_stack_frame
         ret
 label0001:
@@ -161,13 +151,11 @@ label0016:
 ; end of inline function test_default
         cmp     dword68,0
         je      label0002
-        mov     dword9,1
-        set_retval      dword9
+        set_retval      1
         destroy_stack_frame
         ret
 label0002:
-        mov     dword10,0
-        set_retval      dword10
+        set_retval      0
         destroy_stack_frame
         ret
 _test endp
