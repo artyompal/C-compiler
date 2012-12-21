@@ -594,8 +594,7 @@ _rasterizer_init proc
         push    dword ptr [ebp+32]
         push    dword ptr [ebp+28]
         push    dword ptr [ebp+24]
-        lea     eax,dword ptr [__mvproj_matrix]
-        push    eax
+        push    (offset __mvproj_matrix)
         call    _matrix4f_make_perspective
         add     esp,20
         push    dword ptr [ebp+28]
@@ -605,8 +604,7 @@ _rasterizer_init proc
         cvtsi2ss        xmm0,dword ptr [ebp+12]
         movss   dword ptr [esp-8],xmm0
         sub     esp,8
-        lea     eax,dword ptr [__viewport_matrix]
-        push    eax
+        push    (offset __viewport_matrix)
         call    _matrix4f_make_viewport
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -618,8 +616,7 @@ _rasterizer_init proc
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-8],xmm0
         sub     esp,8
-        lea     eax,dword ptr [__clip_z_near_base]
-        push    eax
+        push    (offset __clip_z_near_base)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [ebp+28]
@@ -641,8 +638,7 @@ label0001:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-8],xmm0
         sub     esp,8
-        lea     eax,dword ptr [__clip_z_near_norm]
-        push    eax
+        push    (offset __clip_z_near_norm)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -654,8 +650,7 @@ label0001:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-8],xmm0
         sub     esp,8
-        lea     eax,dword ptr [__clip_z_far_base]
-        push    eax
+        push    (offset __clip_z_far_base)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [ebp+28]
@@ -677,8 +672,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-8],xmm0
         sub     esp,8
-        lea     eax,dword ptr [__clip_z_far_norm]
-        push    eax
+        push    (offset __clip_z_far_norm)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -694,8 +688,7 @@ label0003:
         addss   xmm0,xmm1
         movss   dword ptr [esp-16],xmm0
         sub     esp,16
-        lea     eax,dword ptr [__clip_plane_left_base]
-        push    eax
+        push    (offset __clip_plane_left_base)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -707,8 +700,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_1]
         movss   dword ptr [esp-16],xmm0
         sub     esp,16
-        lea     eax,dword ptr [__clip_plane_left_norm]
-        push    eax
+        push    (offset __clip_plane_left_norm)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -724,8 +716,7 @@ label0003:
         subss   xmm0,xmm1
         movss   dword ptr [esp-16],xmm0
         sub     esp,16
-        lea     eax,dword ptr [__clip_plane_right_base]
-        push    eax
+        push    (offset __clip_plane_right_base)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -737,8 +728,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_5]
         movss   dword ptr [esp-16],xmm0
         sub     esp,16
-        lea     eax,dword ptr [__clip_plane_right_norm]
-        push    eax
+        push    (offset __clip_plane_right_norm)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -754,8 +744,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-16],xmm0
         sub     esp,16
-        lea     eax,dword ptr [__clip_plane_top_base]
-        push    eax
+        push    (offset __clip_plane_top_base)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -767,8 +756,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-16],xmm0
         sub     esp,16
-        lea     eax,dword ptr [__clip_plane_top_norm]
-        push    eax
+        push    (offset __clip_plane_top_norm)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -780,8 +768,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-16],xmm0
         sub     esp,16
-        lea     eax,dword ptr [__clip_plane_bottom_base]
-        push    eax
+        push    (offset __clip_plane_bottom_base)
         call    _vec4f_assign
         add     esp,20
         movss   xmm0,dword ptr [___unnamed_float_1]
@@ -793,8 +780,7 @@ label0003:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-16],xmm0
         sub     esp,16
-        lea     eax,dword ptr [__clip_plane_bottom_norm]
-        push    eax
+        push    (offset __clip_plane_bottom_norm)
         call    _vec4f_assign
         add     esp,20
         mov     esp,ebp
@@ -1813,55 +1799,43 @@ __clip_poligon proc
         push    ebp
         mov     ebp,esp
         sub     esp,196
-        lea     eax,dword ptr [__clip_z_far_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_z_far_base]
-        push    eax
+        push    (offset __clip_z_far_norm)
+        push    (offset __clip_z_far_base)
         push    dword ptr [ebp+8]
         lea     eax,[ebp-196]
         push    eax
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_z_near_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_z_near_base]
-        push    eax
+        push    (offset __clip_z_near_norm)
+        push    (offset __clip_z_near_base)
         lea     eax,[ebp-196]
         push    eax
         push    dword ptr [ebp+8]
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_plane_left_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_plane_left_base]
-        push    eax
+        push    (offset __clip_plane_left_norm)
+        push    (offset __clip_plane_left_base)
         push    dword ptr [ebp+8]
         lea     eax,[ebp-196]
         push    eax
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_plane_right_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_plane_right_base]
-        push    eax
+        push    (offset __clip_plane_right_norm)
+        push    (offset __clip_plane_right_base)
         lea     eax,[ebp-196]
         push    eax
         push    dword ptr [ebp+8]
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_plane_top_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_plane_top_base]
-        push    eax
+        push    (offset __clip_plane_top_norm)
+        push    (offset __clip_plane_top_base)
         push    dword ptr [ebp+8]
         lea     eax,[ebp-196]
         push    eax
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_plane_bottom_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_plane_bottom_base]
-        push    eax
+        push    (offset __clip_plane_bottom_norm)
+        push    (offset __clip_plane_bottom_base)
         lea     eax,[ebp-196]
         push    eax
         push    dword ptr [ebp+8]
@@ -1881,8 +1855,7 @@ __transform_to_screen_space proc
         push    ebp
         mov     ebp,esp
         sub     esp,20
-        lea     eax,dword ptr [__viewport_matrix]
-        push    eax
+        push    (offset __viewport_matrix)
         push    dword ptr [ebp+12]
         lea     eax,[ebp-16]
         push    eax
@@ -2029,8 +2002,7 @@ __transform_to_projection_space proc
         push    eax
         call    _vec4f_assign
         add     esp,20
-        lea     eax,dword ptr [__mvproj_matrix]
-        push    eax
+        push    (offset __mvproj_matrix)
         lea     eax,[ebp-16]
         push    eax
         push    dword ptr [ebp+8]

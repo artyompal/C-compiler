@@ -27,13 +27,21 @@ static int              _usage_max_count;
 
 //
 // Заменяет регистр смещением символа. Используется для устранения LEA.
-static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg, symbol *sym)
+static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg, symbol *sym, int ofs)
 {
+    if (bincode_is_pseudoreg_modified_by_insn(insn, x86op_dword, reg)) {
+        return FALSE;
+    }
+
     if (bincode_operand_contains_register(&insn->in_op1, x86op_dword, reg)) {
         if (insn->in_op1.op_loc == x86loc_address && ADDRESS_IS_BASE_OFS(insn->in_op1)) {
             insn->in_op1.op_loc             = x86loc_symbol;
+            insn->in_op1.data.sym.offset    = insn->in_op1.data.address.offset + ofs;
             insn->in_op1.data.sym.name      = sym;
-            insn->in_op1.data.sym.offset    = insn->in_op1.data.address.offset;
+        } else if (insn->in_op1.op_loc == x86loc_register) {
+            insn->in_op1.op_loc             = x86loc_symbol_offset;
+            insn->in_op1.data.sym.name      = sym;
+            insn->in_op1.data.sym.offset    = ofs;
         } else {
             return FALSE;
         }
@@ -43,11 +51,11 @@ static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg,
         if (insn->in_op2.op_loc == x86loc_address && ADDRESS_IS_BASE_OFS(insn->in_op2)) {
             insn->in_op2.op_loc             = x86loc_symbol;
             insn->in_op2.data.sym.name      = sym;
-            insn->in_op2.data.sym.offset    = insn->in_op2.data.address.offset;
+            insn->in_op2.data.sym.offset    = insn->in_op2.data.address.offset + ofs;
         } else if (insn->in_op2.op_loc == x86loc_register) {
             insn->in_op2.op_loc             = x86loc_symbol_offset;
             insn->in_op2.data.sym.name      = sym;
-            insn->in_op2.data.sym.offset    = 0;
+            insn->in_op2.data.sym.offset    = ofs;
         } else {
             return FALSE;
         }
@@ -105,7 +113,7 @@ static BOOL _try_optimize_lea_reg_symbol(function_desc *function, x86_instructio
     }
 
     for (i = 0; i < _usage_count; i++) {
-        if (!_replace_register_with_symbol_offset(_usage_arr[i], reg, lea->in_op2.data.sym.name)) {
+        if (!_replace_register_with_symbol_offset(_usage_arr[i], reg, lea->in_op2.data.sym.name, lea->in_op2.data.sym.offset)) {
             return FALSE;
         }
     }
@@ -318,9 +326,9 @@ static BOOL _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 // Оптимизирует конструкции с LEA.
 static BOOL _try_optimize_lea(function_desc *function, x86_instruction *insn)
 {
-    ASSERT(insn->in_op1.op_loc == x86loc_register && insn->in_op1.data.reg != NO_REG);  // LEA оперирует только псевдорегистрами.
+    ASSERT(OP_IS_PSEUDO_REG(insn->in_op1, x86op_dword));  // LEA оперирует только псевдорегистрами
 
-    if (insn->in_op2.op_loc == x86loc_symbol) {
+    if (insn->in_op2.op_loc == x86loc_symbol || insn->in_op2.op_loc == x86loc_symbol_offset) {
         return _try_optimize_lea_reg_symbol(function, insn);
     } else {
         ASSERT(insn->in_op2.op_loc == x86loc_address);

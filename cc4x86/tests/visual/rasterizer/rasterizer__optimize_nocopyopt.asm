@@ -866,8 +866,7 @@ _rasterizer_triangle3f proc
         movss   dword ptr [edi+8],xmm0
         mov     dword ptr [edi+12],1065353216
 ; end of inline function vec4f_assign
-        lea     ecx,dword ptr [__mvproj_matrix]
-        push    ecx
+        push    (offset __mvproj_matrix)
         lea     ecx,[ebp-716]
         push    ecx
         push    eax
@@ -893,8 +892,7 @@ _rasterizer_triangle3f proc
         movss   dword ptr [ecx+8],xmm0
         mov     dword ptr [ecx+12],1065353216
 ; end of inline function vec4f_assign
-        lea     ecx,dword ptr [__mvproj_matrix]
-        push    ecx
+        push    (offset __mvproj_matrix)
         lea     ecx,[ebp-716]
         push    ecx
         push    eax
@@ -920,8 +918,7 @@ _rasterizer_triangle3f proc
         movss   dword ptr [ecx+8],xmm0
         mov     dword ptr [ecx+12],1065353216
 ; end of inline function vec4f_assign
-        lea     ecx,dword ptr [__mvproj_matrix]
-        push    ecx
+        push    (offset __mvproj_matrix)
         lea     ecx,[ebp-716]
         push    ecx
         push    eax
@@ -943,55 +940,43 @@ _rasterizer_triangle3f proc
         mov     ecx,eax
         mov     [ebp-200],eax
         mov     [ebp-464],ecx
-        lea     eax,dword ptr [__clip_z_far_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_z_far_base]
-        push    eax
+        push    (offset __clip_z_far_norm)
+        push    (offset __clip_z_far_base)
         push    dword ptr [ebp-464]
         lea     eax,[ebp-660]
         push    eax
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_z_near_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_z_near_base]
-        push    eax
+        push    (offset __clip_z_near_norm)
+        push    (offset __clip_z_near_base)
         lea     eax,[ebp-660]
         push    eax
         push    dword ptr [ebp-464]
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_plane_left_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_plane_left_base]
-        push    eax
+        push    (offset __clip_plane_left_norm)
+        push    (offset __clip_plane_left_base)
         push    dword ptr [ebp-464]
         lea     eax,[ebp-660]
         push    eax
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_plane_right_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_plane_right_base]
-        push    eax
+        push    (offset __clip_plane_right_norm)
+        push    (offset __clip_plane_right_base)
         lea     eax,[ebp-660]
         push    eax
         push    dword ptr [ebp-464]
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_plane_top_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_plane_top_base]
-        push    eax
+        push    (offset __clip_plane_top_norm)
+        push    (offset __clip_plane_top_base)
         push    dword ptr [ebp-464]
         lea     eax,[ebp-660]
         push    eax
         call    __clip_on_plain
         add     esp,16
-        lea     eax,dword ptr [__clip_plane_bottom_norm]
-        push    eax
-        lea     eax,dword ptr [__clip_plane_bottom_base]
-        push    eax
+        push    (offset __clip_plane_bottom_norm)
+        push    (offset __clip_plane_bottom_base)
         lea     eax,[ebp-660]
         push    eax
         push    dword ptr [ebp-464]
@@ -1027,8 +1012,7 @@ label0003:
         add     ebx,esi
         mov     [ebp-200],eax
         mov     [ebp-336],ecx
-        lea     eax,dword ptr [__viewport_matrix]
-        push    eax
+        push    (offset __viewport_matrix)
         push    edx
         lea     eax,[ebp-688]
         push    eax

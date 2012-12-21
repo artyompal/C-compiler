@@ -930,8 +930,7 @@ _rasterizer_triangle3f proc
         mov     dword ptr [dword860+12],1065353216
 ; end of inline function vec4f_assign
         push_all
-        lea     dword789,dword ptr [__mvproj_matrix]
-        push_arg        dword789,4
+        push_arg        (offset __mvproj_matrix),4
         lea     dword790,[ebp-716]
         push_arg        dword790,4
         push_arg        dword859,4
@@ -968,8 +967,7 @@ _rasterizer_triangle3f proc
         mov     dword ptr [dword860+12],1065353216
 ; end of inline function vec4f_assign
         push_all
-        lea     dword815,dword ptr [__mvproj_matrix]
-        push_arg        dword815,4
+        push_arg        (offset __mvproj_matrix),4
         lea     dword816,[ebp-716]
         push_arg        dword816,4
         push_arg        dword859,4
@@ -1006,8 +1004,7 @@ _rasterizer_triangle3f proc
         mov     dword ptr [dword860+12],1065353216
 ; end of inline function vec4f_assign
         push_all
-        lea     dword841,dword ptr [__mvproj_matrix]
-        push_arg        dword841,4
+        push_arg        (offset __mvproj_matrix),4
         lea     dword842,[ebp-716]
         push_arg        dword842,4
         push_arg        dword859,4
@@ -1031,10 +1028,8 @@ _rasterizer_triangle3f proc
         mov     dword714,dword867
         mov     dword868,dword714
         push_all
-        lea     dword716,dword ptr [__clip_z_far_norm]
-        push_arg        dword716,4
-        lea     dword717,dword ptr [__clip_z_far_base]
-        push_arg        dword717,4
+        push_arg        (offset __clip_z_far_norm),4
+        push_arg        (offset __clip_z_far_base),4
         push_arg        dword868,4
         lea     dword719,[ebp-660]
         push_arg        dword719,4
@@ -1042,10 +1037,8 @@ _rasterizer_triangle3f proc
         restore_stack   16
         pop_all
         push_all
-        lea     dword720,dword ptr [__clip_z_near_norm]
-        push_arg        dword720,4
-        lea     dword721,dword ptr [__clip_z_near_base]
-        push_arg        dword721,4
+        push_arg        (offset __clip_z_near_norm),4
+        push_arg        (offset __clip_z_near_base),4
         lea     dword722,[ebp-660]
         push_arg        dword722,4
         push_arg        dword868,4
@@ -1053,10 +1046,8 @@ _rasterizer_triangle3f proc
         restore_stack   16
         pop_all
         push_all
-        lea     dword724,dword ptr [__clip_plane_left_norm]
-        push_arg        dword724,4
-        lea     dword725,dword ptr [__clip_plane_left_base]
-        push_arg        dword725,4
+        push_arg        (offset __clip_plane_left_norm),4
+        push_arg        (offset __clip_plane_left_base),4
         push_arg        dword868,4
         lea     dword727,[ebp-660]
         push_arg        dword727,4
@@ -1064,10 +1055,8 @@ _rasterizer_triangle3f proc
         restore_stack   16
         pop_all
         push_all
-        lea     dword728,dword ptr [__clip_plane_right_norm]
-        push_arg        dword728,4
-        lea     dword729,dword ptr [__clip_plane_right_base]
-        push_arg        dword729,4
+        push_arg        (offset __clip_plane_right_norm),4
+        push_arg        (offset __clip_plane_right_base),4
         lea     dword730,[ebp-660]
         push_arg        dword730,4
         push_arg        dword868,4
@@ -1075,10 +1064,8 @@ _rasterizer_triangle3f proc
         restore_stack   16
         pop_all
         push_all
-        lea     dword732,dword ptr [__clip_plane_top_norm]
-        push_arg        dword732,4
-        lea     dword733,dword ptr [__clip_plane_top_base]
-        push_arg        dword733,4
+        push_arg        (offset __clip_plane_top_norm),4
+        push_arg        (offset __clip_plane_top_base),4
         push_arg        dword868,4
         lea     dword735,[ebp-660]
         push_arg        dword735,4
@@ -1086,10 +1073,8 @@ _rasterizer_triangle3f proc
         restore_stack   16
         pop_all
         push_all
-        lea     dword736,dword ptr [__clip_plane_bottom_norm]
-        push_arg        dword736,4
-        lea     dword737,dword ptr [__clip_plane_bottom_base]
-        push_arg        dword737,4
+        push_arg        (offset __clip_plane_bottom_norm),4
+        push_arg        (offset __clip_plane_bottom_base),4
         lea     dword738,[ebp-660]
         push_arg        dword738,4
         push_arg        dword868,4
@@ -1127,8 +1112,7 @@ label0003:
         add     dword49,dword52
         mov     dword872,dword49
         push_all
-        lea     dword745,dword ptr [__viewport_matrix]
-        push_arg        dword745,4
+        push_arg        (offset __viewport_matrix),4
         push_arg        dword871,4
         lea     dword747,[ebp-688]
         push_arg        dword747,4
