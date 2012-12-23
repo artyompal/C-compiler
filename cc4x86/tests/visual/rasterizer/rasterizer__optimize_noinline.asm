@@ -1670,8 +1670,7 @@ _rasterizer_triangle3f proc
         add     esp,8
         mov     edx,[ebp+20]
         movq    xmm0,qword ptr [edx]
-        movq    xmm1,xmm0
-        movsd   qword ptr [ebp-180],xmm1
+        movsd   qword ptr [ebp-180],xmm0
         push    dword ptr [ebp+12]
         lea     eax,[ebp-196]
         add     eax,24

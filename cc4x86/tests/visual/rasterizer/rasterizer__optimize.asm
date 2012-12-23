@@ -724,13 +724,12 @@ _rasterizer_triangle3f proc
 ; end of inline function _transform_to_projection_space
         mov     edx,[ebp+20]
         movq    xmm0,qword ptr [edx]
-        movq    xmm1,xmm0
 ; start of inline function _transform_to_projection_space
         lea     eax,[ebp-196]
         add     eax,24
 ; start of inline function vec4f_assign
 ; end of inline function vec4f_assign
-        movsd   qword ptr [ebp-180],xmm1
+        movsd   qword ptr [ebp-180],xmm0
         push    (offset __mvproj_matrix)
         lea     ecx,[ebp-716]
         push    ecx

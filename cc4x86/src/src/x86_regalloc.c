@@ -517,6 +517,9 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
 
     x86_caching_setup_reg_info(function, pseudoregs_map, type);
 
+    // Перестраиваем все структуры, если необходимо.
+    x86_dataflow_alivereg_init(function, type);
+    x86_dataflow_init_use_def_tables(function, type);
 
     // Обрабатываем инструкции, требующие фиксированных регистров.
     _reserve_special_registers(function, pseudoregs_map, type);
@@ -698,8 +701,8 @@ static void _allocate_registers(function_desc *function, register_map *regmap, x
         }
 
         // Удаляем тривиальные присваивания (тривиальная оптимизация).
-        if (IS_MOV_INSN(insn->in_code) && OP_IS_REGISTER(insn->in_op1, type) && OP_IS_REGISTER(insn->in_op2, type)
-            && insn->in_op1.data.reg == insn->in_op2.data.reg) {
+        if ((IS_MOV_INSN(insn->in_code) || insn->in_code == x86insn_movq) && OP_IS_REGISTER(insn->in_op1, type)
+            && OP_IS_REGISTER(insn->in_op2, type) && insn->in_op1.data.reg == insn->in_op2.data.reg) {
                 x86_dataflow_erase_instruction(function, insn);
             }
 	}

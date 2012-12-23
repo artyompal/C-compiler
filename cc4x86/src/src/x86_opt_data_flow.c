@@ -1244,7 +1244,7 @@ static BOOL _is_last_usage(int reg, x86_instruction *insn, function_desc *functi
 {
     x86_instruction **def_arr   = alloca(sizeof(void *) * _definitions_table.insn_count);
     x86_instruction **usage_arr = alloca(sizeof(void *) * 2 * function->func_insn_count);
-    int def_count, usage_count, def, total_count, current_count;
+    int def_count, usage_count, def, total_count, current_count, max_usage;
     x86_instruction *test;
 
     // находим все определения, доступные данной инструкции
@@ -1254,11 +1254,12 @@ static BOOL _is_last_usage(int reg, x86_instruction *insn, function_desc *functi
     }
 
     // составляем список уникальных использований всех этих определений
-    _exposeduses_find_all_usages_of_definition(reg, def_arr[0], type, usage_arr, &total_count, function->func_insn_count);
-    aux_sort_int((int*)usage_arr, total_count);
+    total_count     = def_count;
+    max_usage       = 2 * function->func_insn_count;
+    memcpy(usage_arr, def_arr, def_count*sizeof(void*));
 
-    for (def = 1; def < def_count; def++) {
-        _exposeduses_find_all_usages_of_definition(reg, def_arr[def], type, usage_arr+total_count, &usage_count, function->func_insn_count);
+    for (def = 0; def < def_count; def++) {
+        _exposeduses_find_all_usages_of_definition(reg, def_arr[def], type, usage_arr+total_count, &usage_count, max_usage-total_count);
         total_count += usage_count;
 
         aux_sort_int((int*)usage_arr, total_count);

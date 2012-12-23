@@ -992,16 +992,15 @@ _rasterizer_triangle3f proc
         add     esp,12
 ; end of inline function _transform_to_projection_space
         movq    xmm0,qword ptr [esi]
-        movq    xmm1,xmm0
 ; start of inline function _transform_to_projection_space
         mov     edi,ebx
         lea     eax,[ebp-196]
         add     eax,24
 ; start of inline function vec4f_assign
-        movss   xmm0,dword ptr [edi+8]
-        movss   xmm2,dword ptr [edi+4]
-        movsd   qword ptr [ebp-180],xmm1
-        movss   xmm1,xmm2
+        movss   xmm1,dword ptr [edi+8]
+        movsd   qword ptr [ebp-180],xmm0
+        movss   xmm0,xmm1
+        movss   xmm1,dword ptr [edi+4]
         movss   xmm2,dword ptr [edi]
         lea     ecx,[ebp-716]
         mov     edx,ecx
