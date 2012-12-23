@@ -45,8 +45,8 @@ label0000:
         add     esp,8
         mov     [ebp-12],eax
 label0001:
-        mov     eax,1
-        add     eax,[ebp-12]
+        mov     eax,[ebp-12]
+        inc     eax
         mov     esp,ebp
         pop     ebp
         ret

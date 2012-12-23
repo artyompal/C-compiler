@@ -201,13 +201,13 @@ static BOOL _can_combine_address_and_insn(int reg, x86_operand *addr, x86_instru
             addr->data.address.index    = NO_REG;
             addr->data.address.offset   += insn->in_op2.data.int_val;
             return TRUE;
-    //} else if (insn->in_code == x86insn_int_mov && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, reg) && OP_IS_SYM_OFFSET(insn->in_op2)
-    //    && (ADDRESS_IS_BASE_OFS(*addr) && insn->in_op1.data.address.base == reg
-    //    || ADDRESS_IS_UNSCALED_INDEX_OFS(*addr) && insn->in_op1.data.address.index == reg)) {
-    //        addr->op_loc                = x86loc_symbol;
-    //        addr->data.sym.offset       = insn->in_op2.data.sym.offset + addr->data.address.offset;
-    //        addr->data.sym.name         = insn->in_op2.data.sym.name;
-    //        return TRUE;
+    } else if (insn->in_code == x86insn_int_mov && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, reg) && OP_IS_SYM_OFFSET(insn->in_op2)
+        && (ADDRESS_IS_BASE_OFS(*addr) && insn->in_op1.data.address.base == reg
+        || ADDRESS_IS_UNSCALED_INDEX_OFS(*addr) && insn->in_op1.data.address.index == reg)) {
+            addr->op_loc                = x86loc_symbol;
+            addr->data.sym.offset       = insn->in_op2.data.sym.offset + addr->data.address.offset;
+            addr->data.sym.name         = insn->in_op2.data.sym.name;
+            return TRUE;
     } else if (insn->in_code == x86insn_int_add && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, reg)
         && OP_IS_PSEUDO_REG(insn->in_op2, x86op_dword) && (ADDRESS_IS_BASE_OFS(*addr) || ADDRESS_IS_UNSCALED_INDEX_OFS(*addr))) {
             addr->data.address.base     = (addr->data.address.base != NO_REG ? addr->data.address.base : addr->data.address.index);
@@ -297,20 +297,21 @@ static BOOL _try_optimize_mov_reg_const(function_desc *function, x86_instruction
     x86_instruction **definitions, *insn;
     x86_operand_type type = x86op_dword;
     int reg, i, def_count;
-    //x86_operand tmp;
+    x86_operand tmp;
 
     reg = mov->in_op1.data.reg;
     x86_dataflow_find_all_usages_of_definition(reg, mov, type, _usage_arr, &_usage_count, _usage_max_count);
     definitions = alloca(sizeof(void*) * _usage_max_count);
 
-    //// мы поддерживаем одну коммутативную модифицирующую инструкцию
-    //if (_usage_count == 1 && _usage_arr[0]->in_code == x86insn_int_add && OP_IS_THIS_PSEUDO_REG(_usage_arr[0]->in_op1, x86op_dword, reg)) {
-    //    tmp                     = _usage_arr[0]->in_op2;
-    //    _usage_arr[0]->in_op2   = mov->in_op2;
-    //    mov->in_op2             = tmp;
+    // мы поддерживаем одну коммутативную модифицирующую инструкцию
+    if (_usage_count == 1 && _usage_arr[0]->in_code == x86insn_int_add && OP_IS_THIS_PSEUDO_REG(_usage_arr[0]->in_op1, x86op_dword, reg)
+        && !OP_IS_CONSTANT_OR_OFFSET(_usage_arr[0]->in_op2)) {
+            tmp                     = _usage_arr[0]->in_op2;
+            _usage_arr[0]->in_op2   = mov->in_op2;
+            mov->in_op2             = tmp;
 
-    //    return TRUE;
-    //}
+            return TRUE;
+        }
 
     // проверяем, что регистр используется только в read-only контекстах
     for (i = 0; i < _usage_count; i++) {

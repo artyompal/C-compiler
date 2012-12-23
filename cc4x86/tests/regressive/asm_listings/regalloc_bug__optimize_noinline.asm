@@ -46,9 +46,7 @@ label0000:
         call    _g
         add     esp,8
 label0001:
-        mov     ecx,1
-        add     ecx,eax
-        mov     eax,ecx
+        inc     eax
         mov     esp,ebp
         pop     ebp
         ret

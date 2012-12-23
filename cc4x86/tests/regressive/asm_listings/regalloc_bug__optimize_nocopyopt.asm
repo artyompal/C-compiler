@@ -23,9 +23,7 @@ label0000:
         sub     eax,3
 ; end of inline function g
 label0001:
-        mov     ecx,1
-        add     ecx,eax
-        mov     eax,ecx
+        inc     eax
         mov     esp,ebp
         pop     ebp
         ret

@@ -926,14 +926,14 @@ label0002:
         movss   xmm0,dword ptr [___unnamed_float_2]
         movss   dword ptr [esp-8],xmm0
         sub     esp,8
-        mov     ebx,8
-        add     ebx,eax
+        mov     ebx,eax
+        add     ebx,8
         push    ebx
-        mov     ebx,8
-        add     ebx,ecx
+        mov     ebx,ecx
+        add     ebx,8
         push    ebx
-        mov     ebx,8
-        add     ebx,edx
+        mov     ebx,edx
+        add     ebx,8
         push    ebx
         push    dword ptr [edx+4]
         push    dword ptr [eax]
@@ -1136,8 +1136,8 @@ label0007:
         push    dword ptr [ebp-52]
         call    __rasterize_horiz_line__unordered
         add     esp,36
-        mov     eax,1
-        add     eax,[ecx+4]
+        mov     eax,[ecx+4]
+        inc     eax
         mov     ebx,eax
 label0009:
         mov     edx,[ebp+16]
@@ -1388,11 +1388,11 @@ label0005:
         push    edx
         call    _vec4f_add
         add     esp,12
-        mov     eax,16
-        add     eax,[ebp-4]
+        mov     eax,[ebp-4]
+        add     eax,16
         push    eax
-        mov     eax,16
-        add     eax,ebx
+        mov     eax,ebx
+        add     eax,16
         push    eax
         lea     eax,[ebp-48]
         push    eax
@@ -1405,8 +1405,8 @@ label0005:
         add     esp,8
         lea     eax,[ebp-48]
         push    eax
-        mov     eax,16
-        add     eax,[ebp-4]
+        mov     eax,[ebp-4]
+        add     eax,16
         push    eax
         mov     ecx,[ebp+8]
         mov     eax,[ecx+192]

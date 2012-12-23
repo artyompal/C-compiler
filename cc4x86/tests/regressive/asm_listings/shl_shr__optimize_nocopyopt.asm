@@ -45,8 +45,8 @@ label0002:
         pop     ebp
         ret
 label0003:
-        mov     ecx,3
-        inc     ecx
+        mov     ecx,1
+        add     ecx,3
         mov     eax,1
         shl     eax,cl
         cmp     eax,16
@@ -56,8 +56,8 @@ label0003:
         pop     ebp
         ret
 label0004:
-        mov     ecx,5
-        inc     ecx
+        mov     ecx,1
+        add     ecx,5
         mov     eax,1
         sal     eax,cl
         cmp     eax,64

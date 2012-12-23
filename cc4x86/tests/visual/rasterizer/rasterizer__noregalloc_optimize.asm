@@ -69,63 +69,6 @@ public  ___unnamed_float_6
 
 .code
 
-_matrix4f_transform proc
-        create_stack_frame
-        mov     dword75,[ebp+8]
-        mov     dword74,[ebp+16]
-        mov     dword73,[ebp+12]
-        movss   float1,dword ptr [dword73+4]
-        mulss   float1,dword ptr [dword74+16]
-        movss   float2,dword ptr [dword73]
-        mulss   float2,dword ptr [dword74]
-        addss   float2,float1
-        movss   float3,dword ptr [dword73+8]
-        mulss   float3,dword ptr [dword74+32]
-        addss   float2,float3
-        movss   float4,dword ptr [dword73+12]
-        mulss   float4,dword ptr [dword74+48]
-        addss   float2,float4
-        movss   dword ptr [dword75],float2
-        movss   float5,dword ptr [dword73]
-        mulss   float5,dword ptr [dword74+4]
-        movss   float6,dword ptr [dword73+4]
-        mulss   float6,dword ptr [dword74+20]
-        addss   float5,float6
-        movss   float7,dword ptr [dword73+8]
-        mulss   float7,dword ptr [dword74+36]
-        addss   float5,float7
-        movss   float8,dword ptr [dword73+12]
-        mulss   float8,dword ptr [dword74+52]
-        addss   float5,float8
-        movss   dword ptr [dword75+4],float5
-        movss   float9,dword ptr [dword73]
-        mulss   float9,dword ptr [dword74+8]
-        movss   float10,dword ptr [dword73+4]
-        mulss   float10,dword ptr [dword74+24]
-        addss   float9,float10
-        movss   float11,dword ptr [dword73+8]
-        mulss   float11,dword ptr [dword74+40]
-        addss   float9,float11
-        movss   float12,dword ptr [dword73+12]
-        mulss   float12,dword ptr [dword74+56]
-        addss   float9,float12
-        movss   dword ptr [dword75+8],float9
-        movss   float13,dword ptr [dword73]
-        mulss   float13,dword ptr [dword74+12]
-        movss   float14,dword ptr [dword73+4]
-        mulss   float14,dword ptr [dword74+28]
-        addss   float13,float14
-        movss   float15,dword ptr [dword73+8]
-        mulss   float15,dword ptr [dword74+44]
-        addss   float13,float15
-        movss   float16,dword ptr [dword73+12]
-        mulss   float16,dword ptr [dword74+60]
-        addss   float13,float16
-        movss   dword ptr [dword75+12],float13
-        destroy_stack_frame
-        ret
-_matrix4f_transform endp
-
 _rasterizer_init proc
         create_stack_frame
         movss   float177,dword ptr [ebp+24]
@@ -143,79 +86,76 @@ _rasterizer_init proc
         cvtsi2ss        float1,dword375
         cvtsi2ss        float2,dword376
         divss   float1,float2
-        mov     dword378,(offset __mvproj_matrix)
         movss   float129,float173
         mulss   float129,float177
         movss   float130,float129
         mulss   float130,float1
         movss   float131,float177
         divss   float131,float130
-        movss   dword ptr [dword378],float131
-        mov     dword ptr [dword378+4],0
-        mov     dword ptr [dword378+8],0
-        mov     dword ptr [dword378+12],0
-        mov     dword ptr [dword378+16],0
+        movss   dword ptr [__mvproj_matrix],float131
+        mov     dword ptr [__mvproj_matrix+4],0
+        mov     dword ptr [__mvproj_matrix+8],0
+        mov     dword ptr [__mvproj_matrix+12],0
+        mov     dword ptr [__mvproj_matrix+16],0
         movss   float136,float177
         divss   float136,float129
-        movss   dword ptr [dword378+20],float136
-        mov     dword ptr [dword378+24],0
-        mov     dword ptr [dword378+28],0
-        mov     dword ptr [dword378+32],0
-        mov     dword ptr [dword378+36],0
+        movss   dword ptr [__mvproj_matrix+20],float136
+        mov     dword ptr [__mvproj_matrix+24],0
+        mov     dword ptr [__mvproj_matrix+28],0
+        mov     dword ptr [__mvproj_matrix+32],0
+        mov     dword ptr [__mvproj_matrix+36],0
         movss   float141,float175
         subss   float141,float177
         movss   float142,float175
         divss   float142,float141
-        movss   dword ptr [dword378+40],float142
-        mov     dword ptr [dword378+44],1065353216
-        mov     dword ptr [dword378+48],0
-        mov     dword ptr [dword378+52],0
+        movss   dword ptr [__mvproj_matrix+40],float142
+        mov     dword ptr [__mvproj_matrix+44],1065353216
+        mov     dword ptr [__mvproj_matrix+48],0
+        mov     dword ptr [__mvproj_matrix+52],0
         movss   float146,float177
         mulss   float146,float175
         movss   float147,float177
         subss   float147,float175
         divss   float146,float147
-        movss   dword ptr [dword378+56],float146
-        mov     dword ptr [dword378+60],0
+        movss   dword ptr [__mvproj_matrix+56],float146
+        mov     dword ptr [__mvproj_matrix+60],0
 ; end of inline function matrix4f_make_perspective
 ; start of inline function matrix4f_make_viewport
         cvtsi2ss        float3,dword376
         cvtsi2ss        float4,dword375
-        mov     dword379,(offset __viewport_matrix)
         movss   float153,float4
         mulss   float153,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword379],float153
-        mov     dword ptr [dword379+4],0
-        mov     dword ptr [dword379+8],0
-        mov     dword ptr [dword379+12],0
-        mov     dword ptr [dword379+16],0
+        movss   dword ptr [__viewport_matrix],float153
+        mov     dword ptr [__viewport_matrix+4],0
+        mov     dword ptr [__viewport_matrix+8],0
+        mov     dword ptr [__viewport_matrix+12],0
+        mov     dword ptr [__viewport_matrix+16],0
         movss   float158,float3
         xorps   float158,dword ptr [___unnamed_float4_4]
         mulss   float158,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword379+20],float158
-        mov     dword ptr [dword379+24],0
-        mov     dword ptr [dword379+28],0
-        mov     dword ptr [dword379+32],0
-        mov     dword ptr [dword379+36],0
+        movss   dword ptr [__viewport_matrix+20],float158
+        mov     dword ptr [__viewport_matrix+24],0
+        mov     dword ptr [__viewport_matrix+28],0
+        mov     dword ptr [__viewport_matrix+32],0
+        mov     dword ptr [__viewport_matrix+36],0
         movss   float164,float175
         subss   float164,float177
-        movss   dword ptr [dword379+40],float164
-        mov     dword ptr [dword379+44],0
+        movss   dword ptr [__viewport_matrix+40],float164
+        mov     dword ptr [__viewport_matrix+44],0
         movss   float167,float4
         mulss   float167,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword379+48],float167
+        movss   dword ptr [__viewport_matrix+48],float167
         movss   float169,float3
         mulss   float169,dword ptr [___unnamed_float_3]
-        movss   dword ptr [dword379+52],float169
-        movss   dword ptr [dword379+56],float177
-        mov     dword ptr [dword379+60],1065353216
+        movss   dword ptr [__viewport_matrix+52],float169
+        movss   dword ptr [__viewport_matrix+56],float177
+        mov     dword ptr [__viewport_matrix+60],1065353216
 ; end of inline function matrix4f_make_viewport
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_z_near_base)
-        mov     dword ptr [dword380],0
-        mov     dword ptr [dword380+4],0
-        movss   dword ptr [dword380+8],float177
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_z_near_base],0
+        mov     dword ptr [__clip_z_near_base+4],0
+        movss   dword ptr [__clip_z_near_base+8],float177
+        mov     dword ptr [__clip_z_near_base+12],1065353216
 ; end of inline function vec4f_assign
         comiss  float175,float177
         jbe     label0000
@@ -225,18 +165,16 @@ label0000:
         movss   float189,dword ptr [___unnamed_float_5]
 label0001:
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_z_near_norm)
-        mov     dword ptr [dword380],0
-        mov     dword ptr [dword380+4],0
-        movss   dword ptr [dword380+8],float189
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_z_near_norm],0
+        mov     dword ptr [__clip_z_near_norm+4],0
+        movss   dword ptr [__clip_z_near_norm+8],float189
+        mov     dword ptr [__clip_z_near_norm+12],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_z_far_base)
-        mov     dword ptr [dword380],0
-        mov     dword ptr [dword380+4],0
-        movss   dword ptr [dword380+8],float175
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_z_far_base],0
+        mov     dword ptr [__clip_z_far_base+4],0
+        movss   dword ptr [__clip_z_far_base+8],float175
+        mov     dword ptr [__clip_z_far_base+12],1065353216
 ; end of inline function vec4f_assign
         comiss  float175,float177
         jbe     label0002
@@ -246,11 +184,10 @@ label0002:
         movss   float190,dword ptr [___unnamed_float_1]
 label0003:
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_z_far_norm)
-        mov     dword ptr [dword380],0
-        mov     dword ptr [dword380+4],0
-        movss   dword ptr [dword380+8],float190
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_z_far_norm],0
+        mov     dword ptr [__clip_z_far_norm+4],0
+        movss   dword ptr [__clip_z_far_norm+8],float190
+        mov     dword ptr [__clip_z_far_norm+12],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         cvtsi2ss        float26,dword375
@@ -258,18 +195,16 @@ label0003:
         divss   float27,float26
         movss   float28,dword ptr [___unnamed_float_5]
         addss   float28,float27
-        mov     dword380,(offset __clip_plane_left_base)
-        movss   dword ptr [dword380],float28
-        mov     dword ptr [dword380+4],0
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        movss   dword ptr [__clip_plane_left_base],float28
+        mov     dword ptr [__clip_plane_left_base+4],0
+        mov     dword ptr [__clip_plane_left_base+8],0
+        mov     dword ptr [__clip_plane_left_base+12],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_left_norm)
-        mov     dword ptr [dword380],1065353216
-        mov     dword ptr [dword380+4],0
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_plane_left_norm],1065353216
+        mov     dword ptr [__clip_plane_left_norm+4],0
+        mov     dword ptr [__clip_plane_left_norm+8],0
+        mov     dword ptr [__clip_plane_left_norm+12],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         cvtsi2ss        float36,dword375
@@ -277,18 +212,16 @@ label0003:
         divss   float37,float36
         movss   float38,dword ptr [___unnamed_float_1]
         subss   float38,float37
-        mov     dword380,(offset __clip_plane_right_base)
-        movss   dword ptr [dword380],float38
-        mov     dword ptr [dword380+4],0
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        movss   dword ptr [__clip_plane_right_base],float38
+        mov     dword ptr [__clip_plane_right_base+4],0
+        mov     dword ptr [__clip_plane_right_base+8],0
+        mov     dword ptr [__clip_plane_right_base+12],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_right_norm)
-        mov     dword ptr [dword380],-1082130432
-        mov     dword ptr [dword380+4],0
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_plane_right_norm],-1082130432
+        mov     dword ptr [__clip_plane_right_norm+4],0
+        mov     dword ptr [__clip_plane_right_norm+8],0
+        mov     dword ptr [__clip_plane_right_norm+12],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
         cvtsi2ss        float45,dword376
@@ -296,32 +229,28 @@ label0003:
         divss   float46,float45
         movss   float47,dword ptr [___unnamed_float_5]
         addss   float47,float46
-        mov     dword380,(offset __clip_plane_top_base)
-        mov     dword ptr [dword380],0
-        movss   dword ptr [dword380+4],float47
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_plane_top_base],0
+        movss   dword ptr [__clip_plane_top_base+4],float47
+        mov     dword ptr [__clip_plane_top_base+8],0
+        mov     dword ptr [__clip_plane_top_base+12],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_top_norm)
-        mov     dword ptr [dword380],0
-        mov     dword ptr [dword380+4],1065353216
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_plane_top_norm],0
+        mov     dword ptr [__clip_plane_top_norm+4],1065353216
+        mov     dword ptr [__clip_plane_top_norm+8],0
+        mov     dword ptr [__clip_plane_top_norm+12],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_bottom_base)
-        mov     dword ptr [dword380],0
-        mov     dword ptr [dword380+4],1065353216
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_plane_bottom_base],0
+        mov     dword ptr [__clip_plane_bottom_base+4],1065353216
+        mov     dword ptr [__clip_plane_bottom_base+8],0
+        mov     dword ptr [__clip_plane_bottom_base+12],1065353216
 ; end of inline function vec4f_assign
 ; start of inline function vec4f_assign
-        mov     dword380,(offset __clip_plane_bottom_norm)
-        mov     dword ptr [dword380],0
-        mov     dword ptr [dword380+4],-1082130432
-        mov     dword ptr [dword380+8],0
-        mov     dword ptr [dword380+12],1065353216
+        mov     dword ptr [__clip_plane_bottom_norm],0
+        mov     dword ptr [__clip_plane_bottom_norm+4],-1082130432
+        mov     dword ptr [__clip_plane_bottom_norm+8],0
+        mov     dword ptr [__clip_plane_bottom_norm+12],1065353216
 ; end of inline function vec4f_assign
         destroy_stack_frame
         ret
@@ -477,6 +406,8 @@ label0001:
         cmp     dword16,dword353
         jle     label0002
 ; start of inline function vec4f_subtract
+        movss   float28,dword ptr [dword352]
+        subss   float28,dword ptr [dword354]
         movss   float29,dword ptr [dword352+4]
         subss   float29,dword ptr [dword354+4]
         movss   float30,dword ptr [dword352+8]
@@ -487,7 +418,7 @@ label0001:
 ; start of inline function vec4f_dot
         movss   float48,float29
         mulss   float48,dword ptr [dword358+4]
-        movss   float49,float79
+        movss   float49,float28
         mulss   float49,dword ptr [dword358]
         addss   float49,float48
         movss   float50,float30
@@ -498,6 +429,8 @@ label0001:
         addss   float49,float51
 ; end of inline function vec4f_dot
 ; start of inline function vec4f_subtract
+        movss   float33,dword ptr [dword353]
+        subss   float33,dword ptr [dword354]
         movss   float34,dword ptr [dword353+4]
         subss   float34,dword ptr [dword354+4]
         movss   float35,dword ptr [dword353+8]
@@ -508,7 +441,7 @@ label0001:
 ; start of inline function vec4f_dot
         movss   float53,float34
         mulss   float53,dword ptr [dword358+4]
-        movss   float54,float79
+        movss   float54,float33
         mulss   float54,dword ptr [dword358]
         addss   float54,float53
         movss   float55,float35
@@ -546,6 +479,8 @@ label0006:
         jbe     label0004
 label0005:
 ; start of inline function vec4f_subtract
+        movss   float38,dword ptr [dword354]
+        subss   float38,dword ptr [dword352]
         movss   float39,dword ptr [dword354+4]
         subss   float39,dword ptr [dword352+4]
         movss   float40,dword ptr [dword354+8]
@@ -566,7 +501,7 @@ label0005:
 ; start of inline function vec4f_dot
         movss   float58,float39
         mulss   float58,dword ptr [dword358+4]
-        movss   float59,float79
+        movss   float59,float38
         mulss   float59,dword ptr [dword358]
         addss   float59,float58
         movss   float60,float40
@@ -580,7 +515,7 @@ label0005:
 ; start of inline function vec4f_dot
         movss   float63,float44
         mulss   float63,dword ptr [dword358+4]
-        movss   float64,float80
+        movss   float64,float43
         mulss   float64,dword ptr [dword358]
         addss   float64,float63
         movss   float65,float45
@@ -604,30 +539,24 @@ label0005:
 ; start of inline function vec4f_add
         mov     dword72,[dword350+192]
         imul    dword72,24
-        mov     dword74,dword350
-        add     dword74,dword72
         movss   float23,dword ptr [dword352]
         addss   float23,float69
-        movss   dword ptr [dword74+dword72],float23
+        movss   dword ptr [dword350+dword72],float23
         movss   float24,dword ptr [dword352+4]
         addss   float24,float70
-        movss   dword ptr [dword74+4],float24
+        movss   dword ptr [dword350+dword72+4],float24
         movss   float25,dword ptr [dword352+8]
         addss   float25,float71
-        movss   dword ptr [dword74+8],float25
+        movss   dword ptr [dword350+dword72+8],float25
         movss   float26,dword ptr [dword352+12]
         addss   float26,float72
-        movss   dword ptr [dword74+12],float26
+        movss   dword ptr [dword350+dword72+12],float26
 ; end of inline function vec4f_add
 ; start of inline function vec2f_subtract
-        mov     dword76,16
-        add     dword76,dword352
-        mov     dword78,16
-        add     dword78,dword353
-        movss   float16,dword ptr [dword78+dword353]
-        subss   float16,dword ptr [dword76+dword352]
-        movss   float17,dword ptr [dword78+4]
-        subss   float17,dword ptr [dword76+4]
+        movss   float16,dword ptr [dword353+16]
+        subss   float16,dword ptr [dword352+16]
+        movss   float17,dword ptr [dword353+20]
+        subss   float17,dword ptr [dword352+20]
 ; end of inline function vec2f_subtract
 ; start of inline function vec2f_mul
         movss   float20,float16
@@ -636,14 +565,12 @@ label0005:
         mulss   float21,float9
 ; end of inline function vec2f_mul
 ; start of inline function vec2f_add
-        mov     dword84,16
-        add     dword84,dword352
         mov     dword88,[dword350+192]
         imul    dword88,24
-        movss   float13,dword ptr [dword84+dword352]
+        movss   float13,dword ptr [dword352+16]
         addss   float13,float20
         movss   dword ptr [dword350+dword88+16],float13
-        movss   float14,dword ptr [dword84+4]
+        movss   float14,dword ptr [dword352+20]
         addss   float14,float21
         movss   dword ptr [dword350+dword88+20],float14
 ; end of inline function vec2f_add
@@ -666,63 +593,108 @@ label0002:
         ret
 __clip_on_plain endp
 
+__transform_to_projection_space proc
+        create_stack_frame
+        mov     dword103,[ebp+8]
+        mov     dword99,[ebp+12]
+; start of inline function vec4f_assign
+        movss   float4,dword ptr [dword99+8]
+        movss   float3,dword ptr [dword99+4]
+        movss   float2,dword ptr [dword99]
+; end of inline function vec4f_assign
+; start of inline function matrix4f_transform
+        movss   float11,float3
+        mulss   float11,dword ptr [__mvproj_matrix+16]
+        movss   float12,float2
+        mulss   float12,dword ptr [__mvproj_matrix]
+        addss   float12,float11
+        movss   float13,float4
+        mulss   float13,dword ptr [__mvproj_matrix+32]
+        addss   float12,float13
+        movss   float14,dword ptr [___unnamed_float_1]
+        mulss   float14,dword ptr [__mvproj_matrix+48]
+        addss   float12,float14
+        movss   dword ptr [dword103],float12
+        movss   float15,float2
+        mulss   float15,dword ptr [__mvproj_matrix+4]
+        movss   float16,float3
+        mulss   float16,dword ptr [__mvproj_matrix+20]
+        addss   float15,float16
+        movss   float17,float4
+        mulss   float17,dword ptr [__mvproj_matrix+36]
+        addss   float15,float17
+        movss   float18,dword ptr [___unnamed_float_1]
+        mulss   float18,dword ptr [__mvproj_matrix+52]
+        addss   float15,float18
+        movss   dword ptr [dword103+4],float15
+        movss   float19,float2
+        mulss   float19,dword ptr [__mvproj_matrix+8]
+        movss   float20,float3
+        mulss   float20,dword ptr [__mvproj_matrix+24]
+        addss   float19,float20
+        movss   float21,float4
+        mulss   float21,dword ptr [__mvproj_matrix+40]
+        addss   float19,float21
+        movss   float22,dword ptr [___unnamed_float_1]
+        mulss   float22,dword ptr [__mvproj_matrix+56]
+        addss   float19,float22
+        movss   dword ptr [dword103+8],float19
+        movss   float23,float2
+        mulss   float23,dword ptr [__mvproj_matrix+12]
+        movss   float24,float3
+        mulss   float24,dword ptr [__mvproj_matrix+28]
+        addss   float23,float24
+        movss   float25,float4
+        mulss   float25,dword ptr [__mvproj_matrix+44]
+        addss   float23,float25
+        movss   float26,dword ptr [___unnamed_float_1]
+        mulss   float26,dword ptr [__mvproj_matrix+60]
+        addss   float23,float26
+        movss   dword ptr [dword103+12],float23
+; end of inline function matrix4f_transform
+        destroy_stack_frame
+        ret
+__transform_to_projection_space endp
+
 _rasterizer_triangle3f proc
         create_stack_frame
-        mov     dword865,[ebp+28]
-        mov     dword863,[ebp+24]
-        mov     dword861,[ebp+20]
-; start of inline function _transform_to_projection_space
-        lea     dword2,[ebp-196]
-; start of inline function vec4f_assign
-; end of inline function vec4f_assign
+        mov     dword855,[ebp+28]
+        mov     dword854,[ebp+24]
+        mov     dword853,[ebp+20]
         push_all
-        push_arg        (offset __mvproj_matrix),4
-        lea     dword790,[ebp-716]
-        push_arg        dword790,4
+        push_arg        dword ptr [ebp+8],4
+        lea     dword2,[ebp-196]
         push_arg        dword2,4
-        call    _matrix4f_transform
-        restore_stack   12
+        call    __transform_to_projection_space
+        restore_stack   8
         pop_all
-; end of inline function _transform_to_projection_space
-        movq    double1,qword ptr [dword861]
-        movq    double121,double1
-; start of inline function _transform_to_projection_space
+        movq    double1,qword ptr [dword853]
+        movq    double104,double1
+        push_all
+        push_arg        dword ptr [ebp+12],4
         lea     dword8,[ebp-196]
         add     dword8,24
-; start of inline function vec4f_assign
-; end of inline function vec4f_assign
-        push_all
-        push_arg        (offset __mvproj_matrix),4
-        lea     dword816,[ebp-716]
-        push_arg        dword816,4
         push_arg        dword8,4
-        call    _matrix4f_transform
-        restore_stack   12
+        call    __transform_to_projection_space
+        restore_stack   8
         pop_all
-; end of inline function _transform_to_projection_space
-        movq    double2,qword ptr [dword863]
+        movq    double2,qword ptr [dword854]
         movq    qword ptr [ebp-156],double2
-; start of inline function _transform_to_projection_space
+        push_all
+        push_arg        dword ptr [ebp+16],4
         lea     dword16,[ebp-196]
         add     dword16,48
-; start of inline function vec4f_assign
-; end of inline function vec4f_assign
-        push_all
-        push_arg        (offset __mvproj_matrix),4
-        lea     dword842,[ebp-716]
-        push_arg        dword842,4
         push_arg        dword16,4
-        call    _matrix4f_transform
-        restore_stack   12
+        call    __transform_to_projection_space
+        restore_stack   8
         pop_all
-; end of inline function _transform_to_projection_space
-        movq    double3,qword ptr [dword865]
+        movq    double3,qword ptr [dword855]
         movq    qword ptr [ebp-132],double3
-        movq    double4,double119
+        movq    double4,double102
         movq    qword ptr [ebp-124],double4
-        movq    double4,double120
+        movq    double4,double103
         movq    qword ptr [ebp-116],double4
-        movq    double4,double121
+        movq    double4,double104
         movq    qword ptr [ebp-108],double4
 ; start of inline function _rasterize_polygon_4f
         lea     dword29,[ebp-196]
@@ -787,40 +759,65 @@ _rasterizer_triangle3f proc
 ; end of inline function _clip_poligon
         cmp     dword743,0
         jne     label0000
-        jmp     label002c
+        jmp     label002d
 label0000:
         cmp     dword ptr [dword29+192],8
         jle     label0001
         mov     dword ptr ds:[0],0
 label0001:
-        mov     dword870,0
+        mov     dword860,0
 label0003:
         mov     dword43,[dword29+192]
-        cmp     dword43,dword870
+        cmp     dword43,dword860
         jle     label0004
 ; start of inline function _transform_to_screen_space
-        mov     dword45,dword29
-        mov     dword48,dword870
+        mov     dword48,dword860
         imul    dword48,24
-        add     dword45,dword48
         lea     dword49,[ebp-332]
-        mov     dword52,dword870
+        mov     dword52,dword860
         sal     dword52,4
-        push_all
-        push_arg        (offset __viewport_matrix),4
-        push_arg        dword45,4
-        lea     dword747,[ebp-688]
-        push_arg        dword747,4
-        call    _matrix4f_transform
-        restore_stack   12
-        pop_all
+; start of inline function matrix4f_transform
+        movss   float86,dword ptr [dword29+dword48+4]
+        mulss   float86,dword ptr [__viewport_matrix+16]
+        movss   float87,dword ptr [dword29+dword48]
+        mulss   float87,dword ptr [__viewport_matrix]
+        addss   float87,float86
+        movss   float88,dword ptr [dword29+dword48+8]
+        mulss   float88,dword ptr [__viewport_matrix+32]
+        addss   float87,float88
+        movss   float89,dword ptr [dword29+dword48+12]
+        mulss   float89,dword ptr [__viewport_matrix+48]
+        addss   float87,float89
+        movss   float90,dword ptr [dword29+dword48]
+        mulss   float90,dword ptr [__viewport_matrix+4]
+        movss   float91,dword ptr [dword29+dword48+4]
+        mulss   float91,dword ptr [__viewport_matrix+20]
+        addss   float90,float91
+        movss   float92,dword ptr [dword29+dword48+8]
+        mulss   float92,dword ptr [__viewport_matrix+36]
+        addss   float90,float92
+        movss   float93,dword ptr [dword29+dword48+12]
+        mulss   float93,dword ptr [__viewport_matrix+52]
+        addss   float90,float93
+        movss   float98,dword ptr [dword29+dword48]
+        mulss   float98,dword ptr [__viewport_matrix+12]
+        movss   float99,dword ptr [dword29+dword48+4]
+        mulss   float99,dword ptr [__viewport_matrix+28]
+        addss   float98,float99
+        movss   float100,dword ptr [dword29+dword48+8]
+        mulss   float100,dword ptr [__viewport_matrix+44]
+        addss   float98,float100
+        movss   float101,dword ptr [dword29+dword48+12]
+        mulss   float101,dword ptr [__viewport_matrix+60]
+        addss   float98,float101
+; end of inline function matrix4f_transform
         movss   float82,dword ptr [___unnamed_float_1]
-        divss   float82,float122
-        movss   float83,float124
+        divss   float82,float98
+        movss   float83,float87
         mulss   float83,float82
         cvttss2si       dword754,float83
         mov     [dword49+dword52],dword754
-        movss   float84,float125
+        movss   float84,float90
         mulss   float84,float82
         cvttss2si       dword760,float84
         mov     [dword49+dword52+4],dword760
@@ -839,108 +836,105 @@ label002a:
 label0029:
 ; end of inline function _transform_to_screen_space
         lea     dword53,[ebp-332]
-        mov     dword56,dword870
+        mov     dword56,dword860
         sal     dword56,4
-        mov     dword62,dword870
+        mov     dword62,dword860
         imul    dword62,24
         movq    double6,qword ptr [dword29+dword62+16]
         movq    qword ptr [dword53+dword56+8],double6
-        inc     dword870
+        inc     dword860
         jmp     label0003
 label0004:
-        mov     dword870,2
+        mov     dword860,2
 label0006:
         mov     dword70,[dword29+192]
         dec     dword70
-        cmp     dword70,dword870
+        cmp     dword70,dword860
         jle     label0007
 ; start of inline function _rasterize_triangle_2i
         lea     dword72,[ebp-332]
-        mov     dword75,dword870
+        mov     dword75,dword860
         sal     dword75,4
         add     dword72,dword75
-        mov     dword873,dword72
-        mov     dword78,dword870
+        mov     dword866,dword72
+        mov     dword78,dword860
         dec     dword78
         sal     dword78,4
         lea     dword80,[ebp-332]
         add     dword80,dword78
-        mov     dword874,dword80
+        mov     dword867,dword80
         lea     dword81,[ebp-332]
-        mov     dword875,dword81
-        mov     dword90,[dword875+4]
-        cmp     dword90,[dword874+4]
+        mov     dword868,dword81
+        mov     dword90,[dword868+4]
+        cmp     dword90,[dword867+4]
         jle     label0008
-        mov     dword876,dword875
-        mov     dword875,dword874
-        mov     dword874,dword876
+        mov     dword869,dword868
+        mov     dword868,dword867
+        mov     dword867,dword869
 label0008:
-        mov     dword106,[dword875+4]
-        cmp     dword106,[dword873+4]
+        mov     dword106,[dword868+4]
+        cmp     dword106,[dword866+4]
         jle     label0009
-        mov     dword876,dword875
-        mov     dword875,dword873
-        mov     dword873,dword876
+        mov     dword869,dword868
+        mov     dword868,dword866
+        mov     dword866,dword869
 label0009:
-        mov     dword122,[dword874+4]
-        cmp     dword122,[dword873+4]
+        mov     dword122,[dword867+4]
+        cmp     dword122,[dword866+4]
         jle     label000a
-        mov     dword876,dword874
-        mov     dword874,dword873
-        mov     dword873,dword876
+        mov     dword869,dword867
+        mov     dword867,dword866
+        mov     dword866,dword869
 label000a:
-        mov     dword138,[dword875+4]
-        cmp     dword138,[dword873+4]
+        mov     dword138,[dword868+4]
+        cmp     dword138,[dword866+4]
         jne     label000b
-        cmp     dword ptr [dword875+4],0
+        cmp     dword ptr [dword868+4],0
         jl      label000c
-        mov     dword147,[dword875+4]
+        mov     dword147,[dword868+4]
         cmp     dword147,dword ptr [__height]
         jge     label000c
 ; start of inline function _rasterize_triangle_1i
         movss   float8,dword ptr [___unnamed_float_2]
         movss   float9,dword ptr [___unnamed_float_2]
-        mov     dword151,8
-        add     dword151,dword873
-        mov     dword877,dword151
-        mov     dword153,8
-        add     dword153,dword874
-        mov     dword878,dword153
-        mov     dword155,8
-        add     dword155,dword875
-        mov     dword879,dword155
-        mov     dword643,[dword875+4]
-        mov     dword880,dword643
-        mov     dword642,[dword873]
-        mov     dword641,[dword874]
-        mov     dword640,[dword875]
-        cmp     dword640,dword641
+        mov     dword151,dword866
+        mov     dword153,dword867
+        mov     dword155,dword868
+        mov     dword643,[dword868+4]
+        mov     dword873,dword643
+        mov     dword642,[dword866]
+        mov     dword874,dword642
+        mov     dword641,[dword867]
+        mov     dword875,dword641
+        mov     dword640,[dword868]
+        mov     dword876,dword640
+        cmp     dword876,dword875
         jge     label001c
-        cmp     dword642,dword641
+        cmp     dword874,dword875
         jle     label001d
         push_all
         push_arg        float8,4
         push_arg        float9,4
-        push_arg        dword ptr [dword879+4],4
-        push_arg        dword ptr [dword879],4
-        push_arg        dword880,4
-        push_arg        dword642,4
-        push_arg        dword640,4
+        push_arg        dword ptr [dword155+12],4
+        push_arg        dword ptr [dword155+8],4
+        push_arg        dword873,4
+        push_arg        dword874,4
+        push_arg        dword876,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
         jmp     label001e
 label001d:
-        cmp     dword642,dword640
+        cmp     dword874,dword876
         jge     label001f
         push_all
         push_arg        float8,4
         push_arg        float9,4
-        push_arg        dword ptr [dword877+4],4
-        push_arg        dword ptr [dword877],4
-        push_arg        dword880,4
-        push_arg        dword641,4
-        push_arg        dword642,4
+        push_arg        dword ptr [dword151+12],4
+        push_arg        dword ptr [dword151+8],4
+        push_arg        dword873,4
+        push_arg        dword875,4
+        push_arg        dword874,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
@@ -949,11 +943,11 @@ label001f:
         push_all
         push_arg        float8,4
         push_arg        float9,4
-        push_arg        dword ptr [dword879+4],4
-        push_arg        dword ptr [dword879],4
-        push_arg        dword880,4
-        push_arg        dword641,4
-        push_arg        dword640,4
+        push_arg        dword ptr [dword155+4],4
+        push_arg        dword ptr [dword155],4
+        push_arg        dword873,4
+        push_arg        dword875,4
+        push_arg        dword876,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
@@ -961,7 +955,7 @@ label0020:
 label001e:
         jmp     label0021
 label001c:
-        cmp     dword642,dword641
+        cmp     dword874,dword875
         jge     label0022
         push_all
         movss   float74,float8
@@ -970,17 +964,17 @@ label001c:
         movss   float75,float9
         xorps   float75,dword ptr [___unnamed_float4_4]
         push_arg        float75,4
-        push_arg        dword ptr [dword877+4],4
-        push_arg        dword ptr [dword877],4
-        push_arg        dword880,4
-        push_arg        dword640,4
-        push_arg        dword642,4
+        push_arg        dword ptr [dword151+4],4
+        push_arg        dword ptr [dword151],4
+        push_arg        dword873,4
+        push_arg        dword876,4
+        push_arg        dword874,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
         jmp     label0023
 label0022:
-        cmp     dword642,dword640
+        cmp     dword874,dword876
         jle     label0024
         push_all
         movss   float76,float8
@@ -989,11 +983,11 @@ label0022:
         movss   float77,float9
         xorps   float77,dword ptr [___unnamed_float4_4]
         push_arg        float77,4
-        push_arg        dword ptr [dword878+4],4
-        push_arg        dword ptr [dword878],4
-        push_arg        dword880,4
-        push_arg        dword642,4
-        push_arg        dword641,4
+        push_arg        dword ptr [dword153+12],4
+        push_arg        dword ptr [dword153+8],4
+        push_arg        dword873,4
+        push_arg        dword874,4
+        push_arg        dword875,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
@@ -1006,11 +1000,11 @@ label0024:
         movss   float79,float9
         xorps   float79,dword ptr [___unnamed_float4_4]
         push_arg        float79,4
-        push_arg        dword ptr [dword878+4],4
-        push_arg        dword ptr [dword878],4
-        push_arg        dword880,4
-        push_arg        dword640,4
-        push_arg        dword641,4
+        push_arg        dword ptr [dword153+4],4
+        push_arg        dword ptr [dword153],4
+        push_arg        dword873,4
+        push_arg        dword876,4
+        push_arg        dword875,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
@@ -1021,76 +1015,76 @@ label0021:
 label000c:
         jmp     label0027
 label000b:
-        mov     dword169,[dword875+4]
-        mov     dword884,dword169
+        mov     dword169,[dword868+4]
+        mov     dword877,dword169
 label000e:
-        mov     dword174,[dword874+4]
-        cmp     dword174,dword884
+        mov     dword174,[dword867+4]
+        cmp     dword174,dword877
         jle     label000f
-        mov     dword179,dword884
-        sub     dword179,[dword875+4]
-        mov     dword184,[dword874]
-        sub     dword184,[dword875]
+        mov     dword179,dword877
+        sub     dword179,[dword868+4]
+        mov     dword184,[dword867]
+        sub     dword184,[dword868]
         imul    dword179,dword184
-        mov     dword191,[dword874+4]
-        sub     dword191,[dword875+4]
+        mov     dword191,[dword867+4]
+        sub     dword191,[dword868+4]
         cdq     dword192,dword179
         idiv    dword179,dword191,dword192
-        add     dword179,[dword875]
-        mov     dword200,dword884
-        sub     dword200,[dword875+4]
-        mov     dword205,[dword873]
-        sub     dword205,[dword875]
+        add     dword179,[dword868]
+        mov     dword200,dword877
+        sub     dword200,[dword868+4]
+        mov     dword205,[dword866]
+        sub     dword205,[dword868]
         imul    dword200,dword205
-        mov     dword212,[dword873+4]
-        sub     dword212,[dword875+4]
+        mov     dword212,[dword866+4]
+        sub     dword212,[dword868+4]
         cdq     dword213,dword200
         idiv    dword200,dword212,dword213
-        add     dword200,[dword875]
-        mov     dword221,dword884
-        sub     dword221,[dword875+4]
+        add     dword200,[dword868]
+        mov     dword221,dword877
+        sub     dword221,[dword868+4]
         cvtsi2ss        float10,dword221
-        movss   float11,dword ptr [dword874+8]
-        subss   float11,dword ptr [dword875+8]
+        movss   float11,dword ptr [dword867+8]
+        subss   float11,dword ptr [dword868+8]
         mulss   float10,float11
-        mov     dword232,[dword874+4]
-        sub     dword232,[dword875+4]
+        mov     dword232,[dword867+4]
+        sub     dword232,[dword868+4]
         cvtsi2ss        float12,dword232
         divss   float10,float12
-        addss   float10,dword ptr [dword875+8]
-        mov     dword240,dword884
-        sub     dword240,[dword875+4]
+        addss   float10,dword ptr [dword868+8]
+        mov     dword240,dword877
+        sub     dword240,[dword868+4]
         cvtsi2ss        float13,dword240
-        movss   float14,dword ptr [dword873+8]
-        subss   float14,dword ptr [dword875+8]
+        movss   float14,dword ptr [dword866+8]
+        subss   float14,dword ptr [dword868+8]
         mulss   float13,float14
-        mov     dword251,[dword873+4]
-        sub     dword251,[dword875+4]
+        mov     dword251,[dword866+4]
+        sub     dword251,[dword868+4]
         cvtsi2ss        float15,dword251
         divss   float13,float15
-        addss   float13,dword ptr [dword875+8]
-        mov     dword259,dword884
-        sub     dword259,[dword875+4]
+        addss   float13,dword ptr [dword868+8]
+        mov     dword259,dword877
+        sub     dword259,[dword868+4]
         cvtsi2ss        float16,dword259
-        movss   float17,dword ptr [dword874+12]
-        subss   float17,dword ptr [dword875+12]
+        movss   float17,dword ptr [dword867+12]
+        subss   float17,dword ptr [dword868+12]
         mulss   float16,float17
-        mov     dword272,[dword874+4]
-        sub     dword272,[dword875+4]
+        mov     dword272,[dword867+4]
+        sub     dword272,[dword868+4]
         cvtsi2ss        float18,dword272
         divss   float16,float18
-        addss   float16,dword ptr [dword875+12]
-        mov     dword281,dword884
-        sub     dword281,[dword875+4]
+        addss   float16,dword ptr [dword868+12]
+        mov     dword281,dword877
+        sub     dword281,[dword868+4]
         cvtsi2ss        float19,dword281
-        movss   float20,dword ptr [dword873+12]
-        subss   float20,dword ptr [dword875+12]
+        movss   float20,dword ptr [dword866+12]
+        subss   float20,dword ptr [dword868+12]
         mulss   float19,float20
-        mov     dword294,[dword873+4]
-        sub     dword294,[dword875+4]
+        mov     dword294,[dword866+4]
+        sub     dword294,[dword868+4]
         cvtsi2ss        float21,dword294
         divss   float19,float21
-        addss   float19,dword ptr [dword875+12]
+        addss   float19,dword ptr [dword868+12]
         mov     dword301,dword200
         sub     dword301,dword179
         cvtsi2ss        float22,dword301
@@ -1104,20 +1098,20 @@ label000e:
         subss   float25,float16
         divss   float25,float24
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   float134,float25
-        movss   float135,float23
-        movss   float136,float19
-        movss   float137,float13
-        movss   float138,float16
-        movss   float139,float10
+        movss   float117,float25
+        movss   float118,float23
+        movss   float119,float19
+        movss   float120,float13
+        movss   float121,float16
+        movss   float122,float10
         cmp     dword179,dword200
         jg      label0013
         push_all
-        push_arg        float134,4
-        push_arg        float135,4
-        push_arg        float138,4
-        push_arg        float139,4
-        push_arg        dword884,4
+        push_arg        float117,4
+        push_arg        float118,4
+        push_arg        float121,4
+        push_arg        float122,4
+        push_arg        dword877,4
         push_arg        dword200,4
         push_arg        dword179,4
         call    __rasterize_horiz_line
@@ -1126,11 +1120,11 @@ label000e:
         jmp     label0014
 label0013:
         push_all
-        push_arg        float134,4
-        push_arg        float135,4
-        push_arg        float136,4
-        push_arg        float137,4
-        push_arg        dword884,4
+        push_arg        float117,4
+        push_arg        float118,4
+        push_arg        float119,4
+        push_arg        float120,4
+        push_arg        dword877,4
         push_arg        dword179,4
         push_arg        dword200,4
         call    __rasterize_horiz_line
@@ -1138,70 +1132,70 @@ label0013:
         pop_all
 label0014:
 ; end of inline function _rasterize_horiz_line__unordered
-        inc     dword884
+        inc     dword877
         jmp     label000e
 label000f:
-        mov     dword327,[dword874+4]
-        sub     dword327,[dword875+4]
-        mov     dword332,[dword873]
-        sub     dword332,[dword875]
+        mov     dword327,[dword867+4]
+        sub     dword327,[dword868+4]
+        mov     dword332,[dword866]
+        sub     dword332,[dword868]
         imul    dword327,dword332
-        mov     dword339,[dword873+4]
-        sub     dword339,[dword875+4]
+        mov     dword339,[dword866+4]
+        sub     dword339,[dword868+4]
         cdq     dword340,dword327
         idiv    dword327,dword339,dword340
-        add     dword327,[dword875]
-        mov     dword350,[dword874+4]
-        sub     dword350,[dword875+4]
+        add     dword327,[dword868]
+        mov     dword350,[dword867+4]
+        sub     dword350,[dword868+4]
         cvtsi2ss        float26,dword350
-        movss   float27,dword ptr [dword873+8]
-        subss   float27,dword ptr [dword875+8]
+        movss   float27,dword ptr [dword866+8]
+        subss   float27,dword ptr [dword868+8]
         mulss   float26,float27
-        mov     dword361,[dword873+4]
-        sub     dword361,[dword875+4]
+        mov     dword361,[dword866+4]
+        sub     dword361,[dword868+4]
         cvtsi2ss        float28,dword361
         divss   float26,float28
-        addss   float26,dword ptr [dword875+8]
-        mov     dword371,[dword874+4]
-        sub     dword371,[dword875+4]
+        addss   float26,dword ptr [dword868+8]
+        mov     dword371,[dword867+4]
+        sub     dword371,[dword868+4]
         cvtsi2ss        float29,dword371
-        movss   float30,dword ptr [dword873+12]
-        subss   float30,dword ptr [dword875+12]
+        movss   float30,dword ptr [dword866+12]
+        subss   float30,dword ptr [dword868+12]
         mulss   float29,float30
-        mov     dword384,[dword873+4]
-        sub     dword384,[dword875+4]
+        mov     dword384,[dword866+4]
+        sub     dword384,[dword868+4]
         cvtsi2ss        float31,dword384
         divss   float29,float31
-        addss   float29,dword ptr [dword875+12]
+        addss   float29,dword ptr [dword868+12]
         movss   float32,float26
-        subss   float32,dword ptr [dword874+8]
+        subss   float32,dword ptr [dword867+8]
         mov     dword395,dword327
-        sub     dword395,[dword874]
+        sub     dword395,[dword867]
         cvtsi2ss        float33,dword395
         divss   float32,float33
         movss   float34,float29
-        subss   float34,dword ptr [dword874+12]
+        subss   float34,dword ptr [dword867+12]
         mov     dword404,dword327
-        sub     dword404,[dword874]
+        sub     dword404,[dword867]
         cvtsi2ss        float35,dword404
         divss   float34,float35
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   float135,float32
-        movss   float62,dword ptr [dword874+12]
-        movss   float136,float62
-        movss   float61,dword ptr [dword874+8]
-        movss   float137,float61
-        movss   float138,float29
-        movss   float139,float26
-        mov     dword600,[dword874+4]
-        mov     dword599,[dword874]
+        movss   float118,float32
+        movss   float62,dword ptr [dword867+12]
+        movss   float119,float62
+        movss   float61,dword ptr [dword867+8]
+        movss   float120,float61
+        movss   float121,float29
+        movss   float122,float26
+        mov     dword600,[dword867+4]
+        mov     dword599,[dword867]
         cmp     dword327,dword599
         jg      label0016
         push_all
         push_arg        float34,4
-        push_arg        float135,4
-        push_arg        float138,4
-        push_arg        float139,4
+        push_arg        float118,4
+        push_arg        float121,4
+        push_arg        float122,4
         push_arg        dword600,4
         push_arg        dword599,4
         push_arg        dword327,4
@@ -1212,9 +1206,9 @@ label000f:
 label0016:
         push_all
         push_arg        float34,4
-        push_arg        float135,4
-        push_arg        float136,4
-        push_arg        float137,4
+        push_arg        float118,4
+        push_arg        float119,4
+        push_arg        float120,4
         push_arg        dword600,4
         push_arg        dword327,4
         push_arg        dword599,4
@@ -1223,77 +1217,77 @@ label0016:
         pop_all
 label0017:
 ; end of inline function _rasterize_horiz_line__unordered
-        mov     dword424,1
-        add     dword424,[dword874+4]
-        mov     dword884,dword424
+        mov     dword424,[dword867+4]
+        inc     dword424
+        mov     dword877,dword424
 label0011:
-        mov     dword430,[dword873+4]
-        cmp     dword430,dword884
+        mov     dword430,[dword866+4]
+        cmp     dword430,dword877
         jle     label0012
-        mov     dword435,dword884
-        sub     dword435,[dword874+4]
-        mov     dword440,[dword873]
-        sub     dword440,[dword874]
+        mov     dword435,dword877
+        sub     dword435,[dword867+4]
+        mov     dword440,[dword866]
+        sub     dword440,[dword867]
         imul    dword435,dword440
-        mov     dword447,[dword873+4]
-        sub     dword447,[dword874+4]
+        mov     dword447,[dword866+4]
+        sub     dword447,[dword867+4]
         cdq     dword448,dword435
         idiv    dword435,dword447,dword448
-        add     dword435,[dword874]
-        mov     dword456,dword884
-        sub     dword456,[dword875+4]
-        mov     dword461,[dword873]
-        sub     dword461,[dword875]
+        add     dword435,[dword867]
+        mov     dword456,dword877
+        sub     dword456,[dword868+4]
+        mov     dword461,[dword866]
+        sub     dword461,[dword868]
         imul    dword456,dword461
-        mov     dword468,[dword873+4]
-        sub     dword468,[dword875+4]
+        mov     dword468,[dword866+4]
+        sub     dword468,[dword868+4]
         cdq     dword469,dword456
         idiv    dword456,dword468,dword469
-        add     dword456,[dword875]
-        mov     dword477,dword884
-        sub     dword477,[dword874+4]
+        add     dword456,[dword868]
+        mov     dword477,dword877
+        sub     dword477,[dword867+4]
         cvtsi2ss        float36,dword477
-        movss   float37,dword ptr [dword873+8]
-        subss   float37,dword ptr [dword874+8]
+        movss   float37,dword ptr [dword866+8]
+        subss   float37,dword ptr [dword867+8]
         mulss   float36,float37
-        mov     dword488,[dword873+4]
-        sub     dword488,[dword874+4]
+        mov     dword488,[dword866+4]
+        sub     dword488,[dword867+4]
         cvtsi2ss        float38,dword488
         divss   float36,float38
-        addss   float36,dword ptr [dword874+8]
-        mov     dword496,dword884
-        sub     dword496,[dword875+4]
+        addss   float36,dword ptr [dword867+8]
+        mov     dword496,dword877
+        sub     dword496,[dword868+4]
         cvtsi2ss        float39,dword496
-        movss   float40,dword ptr [dword873+8]
-        subss   float40,dword ptr [dword875+8]
+        movss   float40,dword ptr [dword866+8]
+        subss   float40,dword ptr [dword868+8]
         mulss   float39,float40
-        mov     dword507,[dword873+4]
-        sub     dword507,[dword875+4]
+        mov     dword507,[dword866+4]
+        sub     dword507,[dword868+4]
         cvtsi2ss        float41,dword507
         divss   float39,float41
-        addss   float39,dword ptr [dword875+8]
-        mov     dword515,dword884
-        sub     dword515,[dword874+4]
+        addss   float39,dword ptr [dword868+8]
+        mov     dword515,dword877
+        sub     dword515,[dword867+4]
         cvtsi2ss        float42,dword515
-        movss   float43,dword ptr [dword873+12]
-        subss   float43,dword ptr [dword874+12]
+        movss   float43,dword ptr [dword866+12]
+        subss   float43,dword ptr [dword867+12]
         mulss   float42,float43
-        mov     dword528,[dword873+4]
-        sub     dword528,[dword874+4]
+        mov     dword528,[dword866+4]
+        sub     dword528,[dword867+4]
         cvtsi2ss        float44,dword528
         divss   float42,float44
-        addss   float42,dword ptr [dword874+12]
-        mov     dword537,dword884
-        sub     dword537,[dword875+4]
+        addss   float42,dword ptr [dword867+12]
+        mov     dword537,dword877
+        sub     dword537,[dword868+4]
         cvtsi2ss        float45,dword537
-        movss   float46,dword ptr [dword873+12]
-        subss   float46,dword ptr [dword875+12]
+        movss   float46,dword ptr [dword866+12]
+        subss   float46,dword ptr [dword868+12]
         mulss   float45,float46
-        mov     dword550,[dword873+4]
-        sub     dword550,[dword875+4]
+        mov     dword550,[dword866+4]
+        sub     dword550,[dword868+4]
         cvtsi2ss        float47,dword550
         divss   float45,float47
-        addss   float45,dword ptr [dword875+12]
+        addss   float45,dword ptr [dword868+12]
         mov     dword557,dword456
         sub     dword557,dword435
         cvtsi2ss        float48,dword557
@@ -1307,49 +1301,49 @@ label0011:
         subss   float51,float42
         divss   float51,float50
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   float134,float51
-        movss   float135,float49
-        movss   float136,float45
-        movss   float137,float39
-        mov     dword887,dword884
-        mov     dword888,dword456
-        cmp     dword435,dword888
+        movss   float117,float51
+        movss   float118,float49
+        movss   float119,float45
+        mov     dword880,dword877
+        mov     dword881,dword456
+        mov     dword882,dword435
+        cmp     dword882,dword881
         jg      label0019
         push_all
-        push_arg        float134,4
-        push_arg        float135,4
+        push_arg        float117,4
+        push_arg        float118,4
         push_arg        float42,4
         push_arg        float36,4
-        push_arg        dword887,4
-        push_arg        dword888,4
-        push_arg        dword435,4
+        push_arg        dword880,4
+        push_arg        dword881,4
+        push_arg        dword882,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
         jmp     label001a
 label0019:
         push_all
-        push_arg        float134,4
-        push_arg        float135,4
-        push_arg        float136,4
-        push_arg        float137,4
-        push_arg        dword887,4
-        push_arg        dword435,4
-        push_arg        dword888,4
+        push_arg        float117,4
+        push_arg        float118,4
+        push_arg        float119,4
+        push_arg        float39,4
+        push_arg        dword880,4
+        push_arg        dword882,4
+        push_arg        dword881,4
         call    __rasterize_horiz_line
         restore_stack   28
         pop_all
 label001a:
 ; end of inline function _rasterize_horiz_line__unordered
-        inc     dword884
+        inc     dword877
         jmp     label0011
 label0012:
 label0027:
 ; end of inline function _rasterize_triangle_2i
-        inc     dword870
+        inc     dword860
         jmp     label0006
 label0007:
-label002c:
+label002d:
 ; end of inline function _rasterize_polygon_4f
         destroy_stack_frame
         ret

@@ -39,8 +39,8 @@ label0002:
         destroy_stack_frame
         ret
 label0003:
-        mov     dword34,3
-        inc     dword34
+        mov     dword34,1
+        add     dword34,3
         mov     dword36,1
         shl     dword36,dword34
         cmp     dword36,16
@@ -49,8 +49,8 @@ label0003:
         destroy_stack_frame
         ret
 label0004:
-        mov     dword40,5
-        inc     dword40
+        mov     dword40,1
+        add     dword40,5
         mov     dword42,1
         sal     dword42,dword40
         cmp     dword42,64

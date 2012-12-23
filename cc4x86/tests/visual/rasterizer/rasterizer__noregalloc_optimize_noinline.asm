@@ -901,14 +901,14 @@ label0002:
         push_arg        float1,4
         movss   float2,dword ptr [___unnamed_float_2]
         push_arg        float2,4
-        mov     dword68,8
-        add     dword68,dword497
+        mov     dword68,dword497
+        add     dword68,8
         push_arg        dword68,4
-        mov     dword70,8
-        add     dword70,dword495
+        mov     dword70,dword495
+        add     dword70,8
         push_arg        dword70,4
-        mov     dword72,8
-        add     dword72,dword494
+        mov     dword72,dword494
+        add     dword72,8
         push_arg        dword72,4
         push_arg        dword ptr [dword494+4],4
         push_arg        dword ptr [dword497],4
@@ -1076,8 +1076,8 @@ label0007:
         call    __rasterize_horiz_line__unordered
         restore_stack   36
         pop_all
-        mov     dword341,1
-        add     dword341,[dword495+4]
+        mov     dword341,[dword495+4]
+        inc     dword341
         mov     dword498,dword341
 label0009:
         mov     dword347,[dword497+4]
@@ -1307,11 +1307,11 @@ label0005:
         restore_stack   12
         pop_all
         push_all
-        mov     dword76,16
-        add     dword76,dword106
+        mov     dword76,dword106
+        add     dword76,16
         push_arg        dword76,4
-        mov     dword78,16
-        add     dword78,dword107
+        mov     dword78,dword107
+        add     dword78,16
         push_arg        dword78,4
         lea     dword79,[ebp-48]
         push_arg        dword79,4
@@ -1328,8 +1328,8 @@ label0005:
         push_all
         lea     dword82,[ebp-48]
         push_arg        dword82,4
-        mov     dword84,16
-        add     dword84,dword106
+        mov     dword84,dword106
+        add     dword84,16
         push_arg        dword84,4
         mov     dword88,[dword104+192]
         imul    dword88,24

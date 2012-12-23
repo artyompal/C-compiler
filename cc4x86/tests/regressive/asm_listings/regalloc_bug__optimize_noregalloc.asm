@@ -23,8 +23,8 @@ label0000:
 ; end of inline function g
         mov     dword35,dword29
 label0001:
-        mov     dword17,1
-        add     dword17,dword35
+        mov     dword17,dword35
+        inc     dword17
         set_retval      dword17
         destroy_stack_frame
         ret

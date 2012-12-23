@@ -51,8 +51,8 @@ label0002:
 label0003:
         mov     dword ptr [ebp-4],1
         mov     dword ptr [ebp-8],1
-        mov     ecx,3
-        add     ecx,[ebp-8]
+        mov     ecx,[ebp-8]
+        add     ecx,3
         mov     eax,[ebp-4]
         shl     eax,cl
         cmp     eax,16
@@ -62,8 +62,8 @@ label0003:
         pop     ebp
         ret
 label0004:
-        mov     ecx,5
-        add     ecx,[ebp-8]
+        mov     ecx,[ebp-8]
+        add     ecx,5
         mov     eax,[ebp-4]
         sal     eax,cl
         mov     [ebp-4],eax
