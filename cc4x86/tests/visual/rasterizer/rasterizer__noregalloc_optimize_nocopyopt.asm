@@ -1012,7 +1012,7 @@ _rasterizer_triangle3f proc
         pop_all
         mov     dword6,dword853
         movq    double1,qword ptr [dword6]
-        movq    double104,double1
+        movq    qword ptr [ebp-180],double1
         push_all
         push_arg        dword ptr [ebp+12],4
         lea     dword8,[ebp-196]
@@ -1035,11 +1035,11 @@ _rasterizer_triangle3f proc
         mov     dword22,dword855
         movq    double3,qword ptr [dword22]
         movq    qword ptr [ebp-132],double3
-        movq    double4,double102
+        movq    double4,qword ptr [ebp-196]
         movq    qword ptr [ebp-124],double4
-        movq    double4,double103
+        movq    double4,qword ptr [ebp-188]
         movq    qword ptr [ebp-116],double4
-        movq    double4,double104
+        movq    double4,qword ptr [ebp-180]
         movq    qword ptr [ebp-108],double4
 ; start of inline function _rasterize_polygon_4f
         lea     dword29,[ebp-196]
@@ -1209,15 +1209,15 @@ label0003:
         movss   dword ptr [dword852+12],float98
 ; end of inline function matrix4f_transform
         movss   float82,dword ptr [___unnamed_float_1]
-        divss   float82,float105
-        movss   float106,float82
-        movss   float83,float107
-        mulss   float83,float106
+        divss   float82,dword ptr [ebp-676]
+        movss   float102,float82
+        movss   float83,dword ptr [ebp-688]
+        mulss   float83,float102
         cvttss2si       dword754,float83
         mov     dword756,dword862
         mov     [dword756],dword754
-        movss   float84,float108
-        mulss   float84,float106
+        movss   float84,dword ptr [ebp-684]
+        mulss   float84,float102
         cvttss2si       dword760,float84
         mov     dword762,dword862
         mov     [dword762+4],dword760
@@ -1320,8 +1320,8 @@ label000a:
         cmp     dword147,dword ptr [__height]
         jge     label000c
 ; start of inline function _rasterize_triangle_1i
-        movss   float109,dword ptr [___unnamed_float_2]
-        movss   float110,dword ptr [___unnamed_float_2]
+        movss   float103,dword ptr [___unnamed_float_2]
+        movss   float104,dword ptr [___unnamed_float_2]
         mov     dword151,dword866
         add     dword151,8
         mov     dword870,dword151
@@ -1350,8 +1350,8 @@ label000a:
         cmp     dword650,dword875
         jle     label001d
         push_all
-        push_arg        float109,4
-        push_arg        float110,4
+        push_arg        float103,4
+        push_arg        float104,4
         mov     dword654,dword872
         push_arg        dword ptr [dword654+4],4
         mov     dword656,dword872
@@ -1368,8 +1368,8 @@ label001d:
         cmp     dword662,dword876
         jge     label001f
         push_all
-        push_arg        float109,4
-        push_arg        float110,4
+        push_arg        float103,4
+        push_arg        float104,4
         mov     dword666,dword870
         push_arg        dword ptr [dword666+4],4
         mov     dword668,dword870
@@ -1383,8 +1383,8 @@ label001d:
         jmp     label0020
 label001f:
         push_all
-        push_arg        float109,4
-        push_arg        float110,4
+        push_arg        float103,4
+        push_arg        float104,4
         mov     dword675,dword872
         push_arg        dword ptr [dword675+4],4
         mov     dword677,dword872
@@ -1403,10 +1403,10 @@ label001c:
         cmp     dword683,dword875
         jge     label0022
         push_all
-        movss   float74,float109
+        movss   float74,float103
         xorps   float74,dword ptr [___unnamed_float4_4]
         push_arg        float74,4
-        movss   float75,float110
+        movss   float75,float104
         xorps   float75,dword ptr [___unnamed_float4_4]
         push_arg        float75,4
         mov     dword687,dword870
@@ -1425,10 +1425,10 @@ label0022:
         cmp     dword695,dword876
         jle     label0024
         push_all
-        movss   float76,float109
+        movss   float76,float103
         xorps   float76,dword ptr [___unnamed_float4_4]
         push_arg        float76,4
-        movss   float77,float110
+        movss   float77,float104
         xorps   float77,dword ptr [___unnamed_float4_4]
         push_arg        float77,4
         mov     dword699,dword871
@@ -1444,10 +1444,10 @@ label0022:
         jmp     label0025
 label0024:
         push_all
-        movss   float78,float109
+        movss   float78,float103
         xorps   float78,dword ptr [___unnamed_float4_4]
         push_arg        float78,4
-        movss   float79,float110
+        movss   float79,float104
         xorps   float79,dword ptr [___unnamed_float4_4]
         push_arg        float79,4
         mov     dword708,dword871
@@ -1526,7 +1526,7 @@ label000e:
         divss   float10,float12
         mov     dword234,dword868
         addss   float10,dword ptr [dword234+8]
-        movss   float111,float10
+        movss   float105,float10
         mov     dword237,dword868
         mov     dword240,dword877
         sub     dword240,[dword237+4]
@@ -1544,7 +1544,7 @@ label000e:
         divss   float13,float15
         mov     dword253,dword868
         addss   float13,dword ptr [dword253+8]
-        movss   float112,float13
+        movss   float106,float13
         mov     dword256,dword868
         mov     dword259,dword877
         sub     dword259,[dword256+4]
@@ -1562,7 +1562,7 @@ label000e:
         divss   float16,float18
         mov     dword274,dword868
         addss   float16,dword ptr [dword274+12]
-        movss   float113,float16
+        movss   float107,float16
         mov     dword278,dword868
         mov     dword281,dword877
         sub     dword281,[dword278+4]
@@ -1580,34 +1580,34 @@ label000e:
         divss   float19,float21
         mov     dword296,dword868
         addss   float19,dword ptr [dword296+12]
-        movss   float114,float19
+        movss   float108,float19
         mov     dword301,dword879
         sub     dword301,dword878
         cvtsi2ss        float22,dword301
-        movss   float23,float112
-        subss   float23,float111
+        movss   float23,float106
+        subss   float23,float105
         divss   float23,float22
-        movss   float115,float23
+        movss   float109,float23
         mov     dword307,dword879
         sub     dword307,dword878
         cvtsi2ss        float24,dword307
-        movss   float25,float114
-        subss   float25,float113
+        movss   float25,float108
+        subss   float25,float107
         divss   float25,float24
-        movss   float116,float25
+        movss   float110,float25
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   float57,float116
-        movss   float117,float57
-        movss   float56,float115
-        movss   float118,float56
-        movss   float55,float114
-        movss   float119,float55
-        movss   float54,float112
-        movss   float120,float54
-        movss   float53,float113
-        movss   float121,float53
-        movss   float52,float111
-        movss   float122,float52
+        movss   float57,float110
+        movss   float111,float57
+        movss   float56,float109
+        movss   float112,float56
+        movss   float55,float108
+        movss   float113,float55
+        movss   float54,float106
+        movss   float114,float54
+        movss   float53,float107
+        movss   float115,float53
+        movss   float52,float105
+        movss   float116,float52
         mov     dword579,dword877
         mov     dword880,dword579
         mov     dword578,dword879
@@ -1618,10 +1618,10 @@ label000e:
         cmp     dword583,dword881
         jg      label0013
         push_all
-        push_arg        float117,4
-        push_arg        float118,4
-        push_arg        float121,4
-        push_arg        float122,4
+        push_arg        float111,4
+        push_arg        float112,4
+        push_arg        float115,4
+        push_arg        float116,4
         push_arg        dword880,4
         push_arg        dword881,4
         push_arg        dword882,4
@@ -1631,10 +1631,10 @@ label000e:
         jmp     label0014
 label0013:
         push_all
-        push_arg        float117,4
-        push_arg        float118,4
-        push_arg        float119,4
-        push_arg        float120,4
+        push_arg        float111,4
+        push_arg        float112,4
+        push_arg        float113,4
+        push_arg        float114,4
         push_arg        dword880,4
         push_arg        dword882,4
         push_arg        dword881,4
@@ -1682,7 +1682,7 @@ label000f:
         divss   float26,float28
         mov     dword363,dword868
         addss   float26,dword ptr [dword363+8]
-        movss   float112,float26
+        movss   float106,float26
         mov     dword366,dword867
         mov     dword369,dword868
         mov     dword371,[dword366+4]
@@ -1701,40 +1701,40 @@ label000f:
         divss   float29,float31
         mov     dword386,dword868
         addss   float29,dword ptr [dword386+12]
-        movss   float114,float29
+        movss   float108,float29
         mov     dword390,dword867
-        movss   float32,float112
+        movss   float32,float106
         subss   float32,dword ptr [dword390+8]
         mov     dword393,dword867
         mov     dword395,dword879
         sub     dword395,[dword393]
         cvtsi2ss        float33,dword395
         divss   float32,float33
-        movss   float115,float32
+        movss   float109,float32
         mov     dword398,dword867
-        movss   float34,float114
+        movss   float34,float108
         subss   float34,dword ptr [dword398+12]
         mov     dword402,dword867
         mov     dword404,dword879
         sub     dword404,[dword402]
         cvtsi2ss        float35,dword404
         divss   float34,float35
-        movss   float116,float34
+        movss   float110,float34
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   float64,float116
-        movss   float117,float64
-        movss   float63,float115
-        movss   float118,float63
+        movss   float64,float110
+        movss   float111,float64
+        movss   float63,float109
+        movss   float112,float63
         mov     dword409,dword867
         movss   float62,dword ptr [dword409+12]
-        movss   float119,float62
+        movss   float113,float62
         mov     dword412,dword867
         movss   float61,dword ptr [dword412+8]
-        movss   float120,float61
-        movss   float60,float114
-        movss   float121,float60
-        movss   float59,float112
-        movss   float122,float59
+        movss   float114,float61
+        movss   float60,float108
+        movss   float115,float60
+        movss   float59,float106
+        movss   float116,float59
         mov     dword416,dword867
         mov     dword600,[dword416+4]
         mov     dword880,dword600
@@ -1747,10 +1747,10 @@ label000f:
         cmp     dword604,dword881
         jg      label0016
         push_all
-        push_arg        float117,4
-        push_arg        float118,4
-        push_arg        float121,4
-        push_arg        float122,4
+        push_arg        float111,4
+        push_arg        float112,4
+        push_arg        float115,4
+        push_arg        float116,4
         push_arg        dword880,4
         push_arg        dword881,4
         push_arg        dword882,4
@@ -1760,10 +1760,10 @@ label000f:
         jmp     label0017
 label0016:
         push_all
-        push_arg        float117,4
-        push_arg        float118,4
-        push_arg        float119,4
-        push_arg        float120,4
+        push_arg        float111,4
+        push_arg        float112,4
+        push_arg        float113,4
+        push_arg        float114,4
         push_arg        dword880,4
         push_arg        dword882,4
         push_arg        dword881,4
@@ -1832,7 +1832,7 @@ label0011:
         divss   float36,float38
         mov     dword490,dword867
         addss   float36,dword ptr [dword490+8]
-        movss   float111,float36
+        movss   float105,float36
         mov     dword493,dword868
         mov     dword496,dword877
         sub     dword496,[dword493+4]
@@ -1850,7 +1850,7 @@ label0011:
         divss   float39,float41
         mov     dword509,dword868
         addss   float39,dword ptr [dword509+8]
-        movss   float112,float39
+        movss   float106,float39
         mov     dword512,dword867
         mov     dword515,dword877
         sub     dword515,[dword512+4]
@@ -1868,7 +1868,7 @@ label0011:
         divss   float42,float44
         mov     dword530,dword867
         addss   float42,dword ptr [dword530+12]
-        movss   float113,float42
+        movss   float107,float42
         mov     dword534,dword868
         mov     dword537,dword877
         sub     dword537,[dword534+4]
@@ -1886,34 +1886,34 @@ label0011:
         divss   float45,float47
         mov     dword552,dword868
         addss   float45,dword ptr [dword552+12]
-        movss   float114,float45
+        movss   float108,float45
         mov     dword557,dword879
         sub     dword557,dword878
         cvtsi2ss        float48,dword557
-        movss   float49,float112
-        subss   float49,float111
+        movss   float49,float106
+        subss   float49,float105
         divss   float49,float48
-        movss   float115,float49
+        movss   float109,float49
         mov     dword563,dword879
         sub     dword563,dword878
         cvtsi2ss        float50,dword563
-        movss   float51,float114
-        subss   float51,float113
+        movss   float51,float108
+        subss   float51,float107
         divss   float51,float50
-        movss   float116,float51
+        movss   float110,float51
 ; start of inline function _rasterize_horiz_line__unordered
-        movss   float71,float116
-        movss   float117,float71
-        movss   float70,float115
-        movss   float118,float70
-        movss   float69,float114
-        movss   float119,float69
-        movss   float68,float112
-        movss   float120,float68
-        movss   float67,float113
-        movss   float121,float67
-        movss   float66,float111
-        movss   float122,float66
+        movss   float71,float110
+        movss   float111,float71
+        movss   float70,float109
+        movss   float112,float70
+        movss   float69,float108
+        movss   float113,float69
+        movss   float68,float106
+        movss   float114,float68
+        movss   float67,float107
+        movss   float115,float67
+        movss   float66,float105
+        movss   float116,float66
         mov     dword621,dword877
         mov     dword880,dword621
         mov     dword620,dword879
@@ -1924,10 +1924,10 @@ label0011:
         cmp     dword625,dword881
         jg      label0019
         push_all
-        push_arg        float117,4
-        push_arg        float118,4
-        push_arg        float121,4
-        push_arg        float122,4
+        push_arg        float111,4
+        push_arg        float112,4
+        push_arg        float115,4
+        push_arg        float116,4
         push_arg        dword880,4
         push_arg        dword881,4
         push_arg        dword882,4
@@ -1937,10 +1937,10 @@ label0011:
         jmp     label001a
 label0019:
         push_all
-        push_arg        float117,4
-        push_arg        float118,4
-        push_arg        float119,4
-        push_arg        float120,4
+        push_arg        float111,4
+        push_arg        float112,4
+        push_arg        float113,4
+        push_arg        float114,4
         push_arg        dword880,4
         push_arg        dword882,4
         push_arg        dword881,4

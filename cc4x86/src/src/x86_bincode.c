@@ -374,25 +374,20 @@ void bincode_create_operand_from_label(x86_operand *op, int label)
 x86_instruction *bincode_create_instruction(x86_instruction_code code, x86_operand *op1, x86_operand *op2, x86_operand *op3)
 {
     x86_instruction *res    = allocator_alloc(allocator_global_pool, sizeof(x86_instruction));
+    memset(res, 0, sizeof(x86_instruction));
 
     res->in_code            = code;
 
     if (op1) {
         res->in_op1         = *op1;
-    } else {
-        res->in_op1.op_loc = x86loc_none;
     }
 
     if (op2) {
         res->in_op2         = *op2;
-    } else {
-        res->in_op2.op_loc = x86loc_none;
     }
 
     if (op3) {
         res->in_op3         = *op3;
-    } else {
-        res->in_op3.op_loc = x86loc_none;
     }
 
     return res;

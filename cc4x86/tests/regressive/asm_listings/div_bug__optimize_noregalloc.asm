@@ -8,9 +8,10 @@
 _test proc
         create_stack_frame
         mov     dword20,2
+        mov     dword ptr [ebp-12],1
         mov     dword11,4
         cdq     dword12,dword11
-        idiv    dword11,dword20
+        idiv    dword11,dword20,dword12
         add     dword11,[ebp-12]
         mov     dword18,dword11
         sub     dword18,3
