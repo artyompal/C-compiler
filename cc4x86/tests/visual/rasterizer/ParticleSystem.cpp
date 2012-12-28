@@ -9,7 +9,7 @@ extern int ddraw_width;
 extern int ddraw_height;
 
 
-#define TEST 1
+#define TEST 0
 
 
 float random(float _min, float _max)
