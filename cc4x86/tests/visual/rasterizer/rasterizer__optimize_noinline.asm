@@ -1530,17 +1530,17 @@ __transform_to_screen_space proc
         call    _matrix4f_transform
         add     esp,12
         movss   xmm0,dword ptr [___unnamed_float_1]
-        divss   xmm0,dword ptr [ebp-4]
-        movss   xmm1,dword ptr [ebp-16]
+        divss   xmm0,xmm1
+        movss   xmm1,xmm2
         mulss   xmm1,xmm0
         cvttss2si       eax,xmm1
         mov     [ebp-24],eax
         mov     eax,[ebp+8]
         mov     ecx,[ebp-24]
         mov     [eax],ecx
-        movss   xmm1,dword ptr [ebp-12]
-        mulss   xmm1,xmm0
-        cvttss2si       ecx,xmm1
+        movss   xmm2,xmm1
+        mulss   xmm2,xmm0
+        cvttss2si       ecx,xmm2
         mov     [eax+4],ecx
         cmp     dword ptr [eax],0
         jl      label0001
@@ -1718,16 +1718,9 @@ _rasterizer_triangle3f proc
         add     esp,8
         mov     eax,[ebp+28]
         movq    xmm2,qword ptr [eax]
-        movsd   qword ptr [ebp-132],xmm2
-        movsd   qword ptr [ebp-156],xmm1
-        movsd   qword ptr [ebp-180],xmm0
-        movq    xmm3,qword ptr [ebp-196]
+        movq    xmm3,xmm4
         movq    xmm4,xmm3
-        movsd   qword ptr [ebp-124],xmm4
-        movsd   qword ptr [ebp-132],xmm2
-        movsd   qword ptr [ebp-156],xmm1
-        movsd   qword ptr [ebp-180],xmm0
-        movq    xmm3,qword ptr [ebp-188]
+        movq    xmm3,xmm5
         movq    xmm5,xmm3
         movq    xmm3,xmm0
         movsd   qword ptr [ebp-108],xmm3

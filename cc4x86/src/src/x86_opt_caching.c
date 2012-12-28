@@ -99,7 +99,7 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
         if (x86_equal_types(insn->in_op2.op_type, type) && OP_IS_ADDRESS(insn->in_op2) && insn->in_op2.data.address.base == ~x86reg_ebp) {
             var = hash_find(_variables_table[type], &insn->in_op2.data.address);
 
-            if (!var && insn->in_code != x86insn_lea && insn->in_op2.data.address.offset > 0) {
+            if (!var && insn->in_code != x86insn_lea) {
                 _create_variable(function, type, insn, &insn->in_op2);
                 //printf("inserted op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
@@ -107,14 +107,13 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
                 continue;
             }
 
-            if (var && var->var_is_creating && insn->in_code != x86insn_lea && (!OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, var->var_reg)
-                || !IS_MOV_INSN(insn->in_code))) {
-                    //printf("replaced op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
+            if (var && var->var_is_creating && insn->in_code != x86insn_lea) {
+                //printf("replaced op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
-                    bincode_create_operand_from_pseudoreg(&insn->in_op2, var->var_type, var->var_reg);
-                    changed = TRUE;
-                    continue;
-                }
+                bincode_create_operand_from_pseudoreg(&insn->in_op2, var->var_type, var->var_reg);
+                changed = TRUE;
+                continue;
+            }
         }
     }
 

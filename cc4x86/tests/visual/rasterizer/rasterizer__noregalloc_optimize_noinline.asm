@@ -1448,12 +1448,12 @@ __transform_to_screen_space proc
         restore_stack   12
         pop_all
         movss   float1,dword ptr [___unnamed_float_1]
-        divss   float1,dword ptr [ebp-4]
-        movss   float2,dword ptr [ebp-16]
+        divss   float1,float4
+        movss   float2,float6
         mulss   float2,float1
         cvttss2si       dword10,float2
         mov     [dword36],dword10
-        movss   float3,dword ptr [ebp-12]
+        movss   float3,float7
         mulss   float3,float1
         cvttss2si       dword16,float3
         mov     [dword36+4],dword16
@@ -1618,30 +1618,23 @@ _rasterizer_triangle3f proc
         pop_all
         movq    double3,qword ptr [dword35]
         movq    double7,double3
-        movsd   qword ptr [ebp-132],double7
-        movsd   qword ptr [ebp-156],double6
-        movsd   qword ptr [ebp-180],double5
-        movq    double4,qword ptr [ebp-196]
-        movq    double8,double4
-        movsd   qword ptr [ebp-124],double8
-        movsd   qword ptr [ebp-132],double7
-        movsd   qword ptr [ebp-156],double6
-        movsd   qword ptr [ebp-180],double5
-        movq    double4,qword ptr [ebp-188]
+        movq    double4,double8
         movq    double9,double4
+        movq    double4,double10
+        movq    double11,double4
         movq    double4,double5
-        movq    double10,double4
+        movq    double12,double4
         push_all
-        movsd   qword ptr [ebp-108],double10
-        movsd   qword ptr [ebp-116],double9
-        movsd   qword ptr [ebp-124],double8
+        movsd   qword ptr [ebp-108],double12
+        movsd   qword ptr [ebp-116],double11
+        movsd   qword ptr [ebp-124],double9
         movsd   qword ptr [ebp-132],double7
         movsd   qword ptr [ebp-156],double6
         movsd   qword ptr [ebp-180],double5
         mov     dword ptr [ebp-4],4
-        movsd   qword ptr [ebp-108],double10
-        movsd   qword ptr [ebp-116],double9
-        movsd   qword ptr [ebp-124],double8
+        movsd   qword ptr [ebp-108],double12
+        movsd   qword ptr [ebp-116],double11
+        movsd   qword ptr [ebp-124],double9
         movsd   qword ptr [ebp-132],double7
         movsd   qword ptr [ebp-156],double6
         movsd   qword ptr [ebp-180],double5

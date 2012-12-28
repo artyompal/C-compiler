@@ -932,16 +932,9 @@ _rasterizer_triangle3f proc
         add     esp,8
         mov     eax,[ebp+28]
         movq    xmm2,qword ptr [eax]
-        movsd   qword ptr [ebp-132],xmm2
-        movsd   qword ptr [ebp-156],xmm1
-        movsd   qword ptr [ebp-180],xmm0
-        movq    xmm3,qword ptr [ebp-196]
+        movq    xmm3,xmm4
         movq    xmm4,xmm3
-        movsd   qword ptr [ebp-124],xmm4
-        movsd   qword ptr [ebp-132],xmm2
-        movsd   qword ptr [ebp-156],xmm1
-        movsd   qword ptr [ebp-180],xmm0
-        movq    xmm3,qword ptr [ebp-188]
+        movq    xmm3,xmm5
         movq    xmm5,xmm3
         movq    xmm3,xmm0
 ; start of inline function _rasterize_polygon_4f
@@ -1104,15 +1097,15 @@ label0003:
         movss   dword ptr [ebx+12],xmm0
 ; end of inline function matrix4f_transform
         movss   xmm0,dword ptr [___unnamed_float_1]
-        divss   xmm0,dword ptr [ebp-676]
-        movss   xmm1,dword ptr [ebp-688]
-        mulss   xmm1,xmm0
-        cvttss2si       ecx,xmm1
+        divss   xmm0,xmm1
+        movss   xmm2,xmm3
+        mulss   xmm2,xmm0
+        cvttss2si       ecx,xmm2
         mov     ebx,edx
         mov     [ebx],ecx
-        movss   xmm1,dword ptr [ebp-684]
-        mulss   xmm1,xmm0
-        cvttss2si       ecx,xmm1
+        movss   xmm2,xmm4
+        mulss   xmm2,xmm0
+        cvttss2si       ecx,xmm2
         mov     ebx,edx
         mov     [ebx+4],ecx
         mov     ecx,edx
@@ -1142,6 +1135,9 @@ label0029:
         movq    qword ptr [ecx+edx+8],xmm0
         inc     eax
         movsd   qword ptr [ebp-712],xmm0
+        movss   dword ptr [ebp-676],xmm1
+        movss   dword ptr [ebp-688],xmm3
+        movss   dword ptr [ebp-684],xmm4
         jmp     label0003
 label0004:
         mov     eax,2
