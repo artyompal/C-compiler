@@ -1723,6 +1723,7 @@ _rasterizer_triangle3f proc
         movq    qword ptr [ebp-116],xmm0
         movq    xmm0,qword ptr [ebp-180]
         movq    qword ptr [ebp-108],xmm0
+        mov     dword ptr [ebp-4],4
         lea     eax,[ebp-196]
         push    eax
         call    __rasterize_polygon_4f

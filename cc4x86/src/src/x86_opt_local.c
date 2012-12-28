@@ -6,14 +6,6 @@
 #include "x86_opt_data_flow.h"
 
 
-#define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base != NO_REG && (OP).data.address.index == NO_REG \
-                                                && (OP).data.address.offset == 0)
-#define ADDRESS_IS_UNSCALED_INDEX(OP)       ((OP).data.address.base == NO_REG && (OP).data.address.index != NO_REG \
-                                                && (OP).data.address.offset == 0  && (OP).data.address.scale == 1)
-#define ADDRESS_IS_BASE_OFS(OP)             ((OP).data.address.base != NO_REG && (OP).data.address.index == NO_REG)
-#define ADDRESS_IS_UNSCALED_INDEX_OFS(OP)   ((OP).data.address.base == NO_REG && (OP).data.address.index != NO_REG \
-                                                && (OP).data.address.scale == 1)
-
 static x86_instruction  **_usage_arr;
 static int              _usage_count;
 static int              _usage_max_count;

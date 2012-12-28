@@ -1626,6 +1626,7 @@ _rasterizer_triangle3f proc
         movq    double4,qword ptr [ebp-180]
         movq    qword ptr [ebp-108],double4
         push_all
+        mov     dword ptr [ebp-4],4
         lea     dword29,[ebp-196]
         push_arg        dword29,4
         call    __rasterize_polygon_4f

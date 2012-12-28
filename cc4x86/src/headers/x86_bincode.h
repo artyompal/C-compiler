@@ -292,6 +292,15 @@ typedef struct x86_instruction_decl {
 #define ENCODE_SSE_COMPARE(TYPE)        ((TYPE) == x86op_float ? x86insn_sse_comiss : x86insn_sse_comisd)
 
 
+#define ADDRESS_IS_BASE(OP)                 ((OP).data.address.base != NO_REG && (OP).data.address.index == NO_REG \
+                                                && (OP).data.address.offset == 0)
+#define ADDRESS_IS_UNSCALED_INDEX(OP)       ((OP).data.address.base == NO_REG && (OP).data.address.index != NO_REG \
+                                                && (OP).data.address.offset == 0  && (OP).data.address.scale == 1)
+#define ADDRESS_IS_BASE_OFS(OP)             ((OP).data.address.base != NO_REG && (OP).data.address.index == NO_REG)
+#define ADDRESS_IS_UNSCALED_INDEX_OFS(OP)   ((OP).data.address.base == NO_REG && (OP).data.address.index != NO_REG \
+                                                && (OP).data.address.scale == 1)
+
+
 void    bincode_extract_pseudoregs_from_operand         (x86_operand *op, x86_operand_type type, int *regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_pseudoregs_from_insn            (x86_instruction *insn, x86_operand_type type, int *regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);
 void    bincode_extract_pseudoregs_from_insn_wo_dupes   (x86_instruction *insn, x86_operand_type type, int regs[MAX_REGISTERS_PER_INSN], int *regs_cnt);

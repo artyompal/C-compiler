@@ -725,6 +725,7 @@ _rasterizer_triangle3f proc
         movq    xmm0,qword ptr [ebp-180]
         movq    qword ptr [ebp-108],xmm0
 ; start of inline function _rasterize_polygon_4f
+        mov     dword ptr [ebp-4],4
         lea     eax,[ebp-196]
 ; start of inline function _clip_poligon
         mov     [ebp-708],eax

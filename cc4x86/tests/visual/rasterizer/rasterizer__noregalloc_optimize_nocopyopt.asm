@@ -1042,6 +1042,7 @@ _rasterizer_triangle3f proc
         movq    double4,qword ptr [ebp-180]
         movq    qword ptr [ebp-108],double4
 ; start of inline function _rasterize_polygon_4f
+        mov     dword ptr [ebp-4],4
         lea     dword29,[ebp-196]
         mov     dword857,dword29
 ; start of inline function _clip_poligon

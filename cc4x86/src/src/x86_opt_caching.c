@@ -140,7 +140,7 @@ static void _reset_creating_flag(function_desc *function, x86_operand_type type)
     }
 }
 
-static void _flush_variable(function_desc *function, x86_operand_type type, variable *var, x86_instruction *insn)
+static void _flush_variable(function_desc *function, x86_operand_type type, x86_instruction *insn, variable *var)
 {
     x86_operand reg, addr;
 
@@ -152,27 +152,89 @@ static void _flush_variable(function_desc *function, x86_operand_type type, vari
     bincode_insert_instruction(function, insn, ENCODE_MOV(var->var_type), &addr, &reg);
 }
 
+static BOOL _is_dirty_variable(function_desc *function, x86_operand_type type, x86_instruction *pos, int reg)
+{
+    x86_instruction **def = alloca(function->func_insn_count * sizeof(void*));
+    int count;
+
+    x86_dataflow_find_all_definitions(reg, pos, type, def, &count, function->func_insn_count);
+    return (count != 0);
+}
+
+static BOOL _flush_all_contained_variables(function_desc *function, x86_operand_type type, x86_instruction *insn,
+                                           symbol *sym, int reg)
+{
+    int var_count   = hash_get_count(_variables_table[type]);
+    void **var_ptr  = hash_get_items(_variables_table[type]);
+    BOOL changed = FALSE;
+    variable *var;
+    int offset;
+    int i;
+
+    for (i = 0; i < var_count; i++) {
+        var = var_ptr[i];
+
+        if (var) {
+            if (var->var_addr.base != ~x86reg_ebp && var->var_addr.index != ~x86reg_ebp
+                || var->var_reg == reg || !var->var_is_creating || !_is_dirty_variable(function, type, insn, var->var_reg)) {
+                    continue;
+                }
+
+            offset = var->var_addr.offset;
+
+            if (offset >= sym->sym_offset && offset < sym->sym_offset + type_calculate_sizeof(sym->sym_type)) {
+                _flush_variable(function, type, insn, var);
+                changed = TRUE;
+            }
+        }
+    }
+
+    return changed;
+}
+
+static BOOL _process_aliasing_variables(function_desc *function, x86_operand_type type, x86_instruction *insn,
+                                        x86_address *addr, int reg)
+{
+    BOOL changed = FALSE;
+    parameter *p;
+    symbol *sym;
+    int offset;
+
+    if (addr->base != ~x86reg_ebp && addr->index != ~x86reg_ebp) {
+        return FALSE;
+    }
+
+    offset = addr->offset;
+
+    for (sym = function->func_locals.list_first; sym; sym = sym->sym_next) {
+        if (offset >= sym->sym_offset && offset < sym->sym_offset + type_calculate_sizeof(sym->sym_type)) {
+            changed |= _flush_all_contained_variables(function, type, insn, sym, reg);
+        }
+    }
+
+    for (p = function->func_params->param_first; p; p = p->param_next) {
+        sym = p->param_sym;
+
+        if (offset >= sym->sym_offset && offset < sym->sym_offset + type_calculate_sizeof(sym->sym_type)) {
+            changed |= _flush_all_contained_variables(function, type, insn, sym, reg);
+        }
+    }
+
+    return changed;
+}
+
 static BOOL _reload_when_necessary(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
     BOOL changed = FALSE;
-    variable *var;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        // проверяем первый операнд
-        var = hash_find(_variables_table[type], &insn->in_op1.data.address);
-
-        if (var && var->var_is_creating && !OP_IS_THIS_PSEUDO_REG(insn->in_op2, type, var->var_reg)) {
-            _flush_variable(function, type, var, insn);
-            changed = TRUE;
-        }
-
-        // проверяем второй операнд
-        var = hash_find(_variables_table[type], &insn->in_op2.data.address);
-
-        if (var && var->var_is_creating && !OP_IS_THIS_PSEUDO_REG(insn->in_op1, type, var->var_reg)) {
-            _flush_variable(function, type, var, insn);
-            changed = TRUE;
+        if (OP_IS_ADDRESS(insn->in_op1)) {
+            changed |= _process_aliasing_variables(function, type, insn, &insn->in_op1.data.address,
+                (OP_IS_PSEUDO_REG(insn->in_op2, type) ? insn->in_op2.data.reg : NO_REG));
+        } else if (OP_IS_ADDRESS(insn->in_op2)) {
+            changed |= _process_aliasing_variables(function, type, insn, &insn->in_op2.data.address,
+                (OP_IS_PSEUDO_REG(insn->in_op1, type) ? insn->in_op1.data.reg : NO_REG));
         }
     }
 
@@ -185,10 +247,11 @@ static BOOL _caching_pass(function_desc *function, x86_operand_type type)
 
     changed |= _cache_every_variable(function, type);
 
-    x86_dataflow_alivereg_init(function, type);
+    x86_dataflow_init_use_def_tables(function, type);
     changed |= _reload_when_necessary(function, type);
 
     _reset_creating_flag(function, type);
+    // TODO: было бы хорошо обойтись без этого флага, так как он не позволяет оптимизировать многопроходно.
 
     return changed;
 }
