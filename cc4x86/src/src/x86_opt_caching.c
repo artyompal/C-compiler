@@ -37,6 +37,31 @@ static BOOL _address_compare(x86_address *key1, x86_address *key2)
         && (key1->index == NO_REG || key1->scale == key2->scale));
 }
 
+static void _create_variable(function_desc *function, x86_operand_type type, x86_instruction *insn, x86_operand *op)
+{
+    variable *var;
+
+    var = allocator_alloc(allocator_per_function_pool, sizeof(variable));
+
+    var->var_addr           = op->data.address;
+    var->var_type           = op->op_type;
+    var->var_is_creating    = TRUE;
+
+    if (op->data.address.offset > 0) {
+        bincode_insert_instruction(function, function->func_binary_code->in_next,
+            ENCODE_MOV(var->var_type), op, op);
+    }
+
+    bincode_create_operand_and_alloc_pseudoreg_in_function(function, op, var->var_type);
+    var->var_reg = op->data.reg;
+
+    if (op->data.address.offset > 0) {
+        function->func_binary_code->in_next->in_op1 = *op;
+    }
+
+    hash_insert(_variables_table[type], var);
+}
+
 
 //
 // Алгоритм кеширования адресов в памяти.
@@ -53,27 +78,18 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
         if (x86_equal_types(insn->in_op1.op_type, type) && OP_IS_ADDRESS(insn->in_op1) && insn->in_op1.data.address.base == ~x86reg_ebp) {
             var = hash_find(_variables_table[type], &insn->in_op1.data.address);
 
-            if (!var && IS_DEFINING_INSN(insn->in_code, type)) {
-                var = allocator_alloc(allocator_per_function_pool, sizeof(variable));
-                memcpy(&var->var_addr, &insn->in_op1.data.address, sizeof(x86_address));
-
-                var->var_type           = insn->in_op1.op_type;
-                var->var_is_creating    = TRUE;
-
-                bincode_create_operand_and_alloc_pseudoreg_in_function(function, &insn->in_op1, var->var_type);
-                var->var_reg = insn->in_op1.data.reg;
-
+            if (!var) {
+                _create_variable(function, type, insn, &insn->in_op1);
                 //printf("inserted op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
-                hash_insert(_variables_table[type], var);
                 changed = TRUE;
                 continue;
             }
 
             if (var && var->var_is_creating) {
+                bincode_create_operand_from_pseudoreg(&insn->in_op1, insn->in_op1.op_type, var->var_reg);
                 //printf("replaced op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
-                bincode_create_operand_from_pseudoreg(&insn->in_op1, insn->in_op1.op_type, var->var_reg);
                 changed = TRUE;
                 continue;
             }
@@ -84,28 +100,9 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
             var = hash_find(_variables_table[type], &insn->in_op2.data.address);
 
             if (!var && insn->in_code != x86insn_lea && insn->in_op2.data.address.offset > 0) {
-                var = allocator_alloc(allocator_per_function_pool, sizeof(variable));
-                memcpy(&var->var_addr, &insn->in_op2.data.address, sizeof(x86_address));
-
-                var->var_type           = insn->in_op2.op_type;
-                var->var_is_creating    = TRUE;
-
-                if (insn->in_op2.data.address.offset > 0) {
-                    bincode_insert_instruction(function, function->func_binary_code->in_next,
-                        ENCODE_MOV(var->var_type), &insn->in_op2, &insn->in_op2);
-                }
-
-                bincode_create_operand_and_alloc_pseudoreg_in_function(function, &insn->in_op2, var->var_type);
-
-                if (insn->in_op2.data.address.offset > 0) {
-                    function->func_binary_code->in_next->in_op1 = insn->in_op2;
-                }
-
-                var->var_reg = insn->in_op2.data.reg;
-
+                _create_variable(function, type, insn, &insn->in_op2);
                 //printf("inserted op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
-                hash_insert(_variables_table[type], var);
                 changed = TRUE;
                 continue;
             }
@@ -245,7 +242,11 @@ static BOOL _caching_pass(function_desc *function, x86_operand_type type)
 {
     BOOL changed = FALSE;
 
+    //text_output_push_function_code(function);
+
     changed |= _cache_every_variable(function, type);
+
+    //text_output_push_function_code(function);
 
     x86_dataflow_init_use_def_tables(function, type);
     changed |= _reload_when_necessary(function, type);
@@ -274,6 +275,9 @@ void x86_caching_reset()
 BOOL x86_caching_pass(function_desc *function)
 {
     BOOL changed = FALSE;
+
+    //if (strstr(function->func_sym->sym_name, "clip_pol"))
+    //    __asm int 3;
 
     changed |= _caching_pass(function, x86op_dword);
     changed |= _caching_pass(function, x86op_float);

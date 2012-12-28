@@ -38,21 +38,20 @@ _test3 proc
         mov     ebp,esp
         sub     esp,4
         push    ebx
-        mov     eax,[ebp+16]
-        mov     ecx,[ebp+12]
+        mov     eax,[ebp+12]
+        mov     ecx,[ebp+16]
         mov     edx,[ebp+8]
         mov     ebx,edx
-        mov     [ebp+16],eax
-        cmp     dword ptr [ebp+16],0
+        cmp     ecx,0
         jle     label0000
-        mov     edx,ecx
+        mov     edx,eax
         jmp     label0001
 label0000:
-        mov     ebx,eax
+        mov     ebx,ecx
 label0001:
         add     ebx,edx
-        add     ebx,ecx
-        sub     ebx,eax
+        add     ebx,eax
+        sub     ebx,ecx
         mov     eax,ebx
         pop     ebx
         mov     esp,ebp
@@ -80,18 +79,17 @@ _test5 proc
         push    ebp
         mov     ebp,esp
         sub     esp,4
-        mov     eax,[ebp+16]
-        mov     ecx,[ebp+12]
+        mov     eax,[ebp+12]
+        mov     ecx,[ebp+16]
         mov     edx,[ebp+8]
-        mov     [ebp+16],eax
-        cmp     dword ptr [ebp+16],0
+        cmp     ecx,0
         jle     label0000
-        mov     edx,ecx
+        mov     edx,eax
         jmp     label0001
 label0000:
 label0001:
-        add     edx,ecx
-        sub     edx,eax
+        add     edx,eax
+        sub     edx,ecx
         mov     eax,edx
         mov     esp,ebp
         pop     ebp

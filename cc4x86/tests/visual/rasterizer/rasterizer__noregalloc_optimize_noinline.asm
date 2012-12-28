@@ -351,8 +351,9 @@ _matrix4f_transform endp
 
 _rasterizer_init proc
         create_stack_frame
-        movss   float62,dword ptr [ebp+24]
-        movss   float61,dword ptr [ebp+28]
+        movss   float63,dword ptr [ebp+24]
+        movss   float62,dword ptr [ebp+28]
+        movss   float61,dword ptr [ebp+32]
         mov     dword105,[ebp+20]
         mov     dword104,[ebp+16]
         mov     dword103,[ebp+12]
@@ -366,20 +367,16 @@ _rasterizer_init proc
         cvtsi2ss        float2,dword104
         divss   float1,float2
         push_arg        float1,4
-        push_arg        dword ptr [ebp+32],4
-        movss   dword ptr [ebp+28],float61
-        push_arg        dword ptr [ebp+28],4
-        movss   dword ptr [ebp+24],float62
-        push_arg        dword ptr [ebp+24],4
+        push_arg        float61,4
+        push_arg        float62,4
+        push_arg        float63,4
         push_arg        (offset __mvproj_matrix),4
         call    _matrix4f_make_perspective
         restore_stack   20
         pop_all
         push_all
-        movss   dword ptr [ebp+28],float61
-        push_arg        dword ptr [ebp+28],4
-        movss   dword ptr [ebp+24],float62
-        push_arg        dword ptr [ebp+24],4
+        push_arg        float62,4
+        push_arg        float63,4
         cvtsi2ss        float3,dword104
         push_arg        float3,4
         cvtsi2ss        float4,dword103
@@ -391,8 +388,7 @@ _rasterizer_init proc
         push_all
         movss   float5,dword ptr [___unnamed_float_1]
         push_arg        float5,4
-        movss   dword ptr [ebp+24],float62
-        push_arg        dword ptr [ebp+24],4
+        push_arg        float63,4
         movss   float6,dword ptr [___unnamed_float_2]
         push_arg        float6,4
         movss   float7,dword ptr [___unnamed_float_2]
@@ -401,17 +397,17 @@ _rasterizer_init proc
         call    _vec4f_assign
         restore_stack   20
         pop_all
-        comiss  float61,float62
+        comiss  float62,float63
         jbe     label0000
-        movss   float63,dword ptr [___unnamed_float_1]
+        movss   float64,dword ptr [___unnamed_float_1]
         jmp     label0001
 label0000:
-        movss   float63,dword ptr [___unnamed_float_5]
+        movss   float64,dword ptr [___unnamed_float_5]
 label0001:
         push_all
         movss   float11,dword ptr [___unnamed_float_1]
         push_arg        float11,4
-        push_arg        float63,4
+        push_arg        float64,4
         movss   float12,dword ptr [___unnamed_float_2]
         push_arg        float12,4
         movss   float13,dword ptr [___unnamed_float_2]
@@ -423,7 +419,7 @@ label0001:
         push_all
         movss   float14,dword ptr [___unnamed_float_1]
         push_arg        float14,4
-        push_arg        float61,4
+        push_arg        float62,4
         movss   float15,dword ptr [___unnamed_float_2]
         push_arg        float15,4
         movss   float16,dword ptr [___unnamed_float_2]
@@ -432,17 +428,17 @@ label0001:
         call    _vec4f_assign
         restore_stack   20
         pop_all
-        comiss  float61,float62
+        comiss  float62,float63
         jbe     label0002
-        movss   float64,dword ptr [___unnamed_float_5]
+        movss   float65,dword ptr [___unnamed_float_5]
         jmp     label0003
 label0002:
-        movss   float64,dword ptr [___unnamed_float_1]
+        movss   float65,dword ptr [___unnamed_float_1]
 label0003:
         push_all
         movss   float20,dword ptr [___unnamed_float_1]
         push_arg        float20,4
-        push_arg        float64,4
+        push_arg        float65,4
         movss   float21,dword ptr [___unnamed_float_2]
         push_arg        float21,4
         movss   float22,dword ptr [___unnamed_float_2]
@@ -637,9 +633,9 @@ __tex2d endp
 __rasterize_horiz_line proc
         create_stack_frame
         movss   float15,dword ptr [ebp+32]
-        movss   float14,dword ptr [ebp+24]
-        movss   float13,dword ptr [ebp+28]
+        movss   float14,dword ptr [ebp+28]
         movss   float12,dword ptr [ebp+20]
+        movss   float11,dword ptr [ebp+24]
         mov     dword85,[ebp+12]
         mov     dword83,[ebp+8]
         mov     dword82,[ebp+16]
@@ -658,10 +654,8 @@ __rasterize_horiz_line proc
         sub     dword11,dword15
 label0000:
         push_all
-        movss   dword ptr [ebp+24],float14
-        push_arg        dword ptr [ebp+24],4
-        movss   dword ptr [ebp+20],float12
-        push_arg        dword ptr [ebp+20],4
+        push_arg        float11,4
+        push_arg        float12,4
         call    __tex2d
         restore_stack   8
         pop_all
@@ -705,11 +699,11 @@ label0000:
         mov     [dword84],dword68
 label0003:
         movss   float9,float12
-        addss   float9,float13
+        addss   float9,float14
         movss   float12,float9
-        movss   float10,float14
+        movss   float10,float11
         addss   float10,float15
-        movss   float14,float10
+        movss   float11,float10
         add     dword84,4
         cmp     dword84,dword11
         jl      label0000
@@ -719,16 +713,23 @@ __rasterize_horiz_line endp
 
 __rasterize_horiz_line__unordered proc
         create_stack_frame
+        movss   float6,dword ptr [ebp+28]
+        movss   float5,dword ptr [ebp+32]
+        movss   float4,dword ptr [ebp+20]
+        movss   float3,dword ptr [ebp+24]
+        movss   float2,dword ptr [ebp+36]
+        movss   float1,dword ptr [ebp+40]
+        mov     dword20,[ebp+16]
         mov     dword19,[ebp+12]
         mov     dword18,[ebp+8]
         cmp     dword18,dword19
         jg      label0000
         push_all
-        push_arg        dword ptr [ebp+40],4
-        push_arg        dword ptr [ebp+36],4
-        push_arg        dword ptr [ebp+24],4
-        push_arg        dword ptr [ebp+20],4
-        push_arg        dword ptr [ebp+16],4
+        push_arg        float1,4
+        push_arg        float2,4
+        push_arg        float3,4
+        push_arg        float4,4
+        push_arg        dword20,4
         push_arg        dword19,4
         push_arg        dword18,4
         call    __rasterize_horiz_line
@@ -737,11 +738,11 @@ __rasterize_horiz_line__unordered proc
         jmp     label0001
 label0000:
         push_all
-        push_arg        dword ptr [ebp+40],4
-        push_arg        dword ptr [ebp+36],4
-        push_arg        dword ptr [ebp+32],4
-        push_arg        dword ptr [ebp+28],4
-        push_arg        dword ptr [ebp+16],4
+        push_arg        float1,4
+        push_arg        float2,4
+        push_arg        float5,4
+        push_arg        float6,4
+        push_arg        dword20,4
         push_arg        dword18,4
         push_arg        dword19,4
         call    __rasterize_horiz_line
@@ -756,8 +757,9 @@ __rasterize_triangle_1i proc
         create_stack_frame
         movss   float8,dword ptr [ebp+36]
         movss   float7,dword ptr [ebp+40]
-        mov     dword75,[ebp+28]
-        mov     dword74,[ebp+32]
+        mov     dword76,[ebp+28]
+        mov     dword75,[ebp+32]
+        mov     dword74,[ebp+20]
         mov     dword73,[ebp+24]
         mov     dword72,[ebp+16]
         mov     dword71,[ebp+12]
@@ -767,13 +769,11 @@ __rasterize_triangle_1i proc
         cmp     dword72,dword71
         jle     label0001
         push_all
-        movss   dword ptr [ebp+40],float7
-        push_arg        dword ptr [ebp+40],4
-        movss   dword ptr [ebp+36],float8
-        push_arg        dword ptr [ebp+36],4
+        push_arg        float7,4
+        push_arg        float8,4
         push_arg        dword ptr [dword73+4],4
         push_arg        dword ptr [dword73],4
-        push_arg        dword ptr [ebp+20],4
+        push_arg        dword74,4
         push_arg        dword72,4
         push_arg        dword70,4
         call    __rasterize_horiz_line
@@ -784,13 +784,11 @@ label0001:
         cmp     dword72,dword70
         jge     label0003
         push_all
-        movss   dword ptr [ebp+40],float7
-        push_arg        dword ptr [ebp+40],4
-        movss   dword ptr [ebp+36],float8
-        push_arg        dword ptr [ebp+36],4
-        push_arg        dword ptr [dword74+4],4
-        push_arg        dword ptr [dword74],4
-        push_arg        dword ptr [ebp+20],4
+        push_arg        float7,4
+        push_arg        float8,4
+        push_arg        dword ptr [dword75+4],4
+        push_arg        dword ptr [dword75],4
+        push_arg        dword74,4
         push_arg        dword71,4
         push_arg        dword72,4
         call    __rasterize_horiz_line
@@ -799,13 +797,11 @@ label0001:
         jmp     label0004
 label0003:
         push_all
-        movss   dword ptr [ebp+40],float7
-        push_arg        dword ptr [ebp+40],4
-        movss   dword ptr [ebp+36],float8
-        push_arg        dword ptr [ebp+36],4
+        push_arg        float7,4
+        push_arg        float8,4
         push_arg        dword ptr [dword73+4],4
         push_arg        dword ptr [dword73],4
-        push_arg        dword ptr [ebp+20],4
+        push_arg        dword74,4
         push_arg        dword71,4
         push_arg        dword70,4
         call    __rasterize_horiz_line
@@ -824,9 +820,9 @@ label0000:
         movss   float2,float8
         xorps   float2,dword ptr [___unnamed_float4_4]
         push_arg        float2,4
-        push_arg        dword ptr [dword74+4],4
-        push_arg        dword ptr [dword74],4
-        push_arg        dword ptr [ebp+20],4
+        push_arg        dword ptr [dword75+4],4
+        push_arg        dword ptr [dword75],4
+        push_arg        dword74,4
         push_arg        dword70,4
         push_arg        dword72,4
         call    __rasterize_horiz_line
@@ -843,9 +839,9 @@ label0006:
         movss   float4,float8
         xorps   float4,dword ptr [___unnamed_float4_4]
         push_arg        float4,4
-        push_arg        dword ptr [dword75+4],4
-        push_arg        dword ptr [dword75],4
-        push_arg        dword ptr [ebp+20],4
+        push_arg        dword ptr [dword76+4],4
+        push_arg        dword ptr [dword76],4
+        push_arg        dword74,4
         push_arg        dword72,4
         push_arg        dword71,4
         call    __rasterize_horiz_line
@@ -860,9 +856,9 @@ label0008:
         movss   float6,float8
         xorps   float6,dword ptr [___unnamed_float4_4]
         push_arg        float6,4
-        push_arg        dword ptr [dword75+4],4
-        push_arg        dword ptr [dword75],4
-        push_arg        dword ptr [ebp+20],4
+        push_arg        dword ptr [dword76+4],4
+        push_arg        dword ptr [dword76],4
+        push_arg        dword74,4
         push_arg        dword70,4
         push_arg        dword71,4
         call    __rasterize_horiz_line
@@ -1194,6 +1190,8 @@ __rasterize_triangle_2i endp
 
 __clip_on_plain proc
         create_stack_frame
+        mov     dword109,[ebp+20]
+        mov     dword108,[ebp+16]
         mov     dword105,[ebp+12]
         mov     dword104,[ebp+8]
         mov     dword ptr [dword104+192],0
@@ -1209,7 +1207,7 @@ label0001:
         cmp     dword16,dword107
         jle     label0002
         push_all
-        push_arg        dword ptr [ebp+16],4
+        push_arg        dword108,4
         push_arg        dword106,4
         lea     dword21,[ebp-24]
         push_arg        dword21,4
@@ -1217,7 +1215,7 @@ label0001:
         restore_stack   12
         pop_all
         push_all
-        push_arg        dword ptr [ebp+20],4
+        push_arg        dword109,4
         lea     dword23,[ebp-24]
         push_arg        dword23,4
         call    _vec4f_dot
@@ -1225,7 +1223,7 @@ label0001:
         pop_all
         read_retval     float1
         push_all
-        push_arg        dword ptr [ebp+16],4
+        push_arg        dword108,4
         push_arg        dword107,4
         lea     dword28,[ebp-24]
         push_arg        dword28,4
@@ -1233,7 +1231,7 @@ label0001:
         restore_stack   12
         pop_all
         push_all
-        push_arg        dword ptr [ebp+20],4
+        push_arg        dword109,4
         lea     dword30,[ebp-24]
         push_arg        dword30,4
         call    _vec4f_dot
@@ -1269,7 +1267,7 @@ label0006:
 label0005:
         push_all
         push_arg        dword106,4
-        push_arg        dword ptr [ebp+16],4
+        push_arg        dword108,4
         lea     dword53,[ebp-24]
         push_arg        dword53,4
         call    _vec4f_subtract
@@ -1284,7 +1282,7 @@ label0005:
         restore_stack   12
         pop_all
         push_all
-        push_arg        dword ptr [ebp+20],4
+        push_arg        dword109,4
         lea     dword60,[ebp-24]
         push_arg        dword60,4
         call    _vec4f_dot
@@ -1292,7 +1290,7 @@ label0005:
         pop_all
         read_retval     float9
         push_all
-        push_arg        dword ptr [ebp+20],4
+        push_arg        dword109,4
         lea     dword62,[ebp-40]
         push_arg        dword62,4
         call    _vec4f_dot
@@ -1378,8 +1376,7 @@ __clip_poligon proc
         push_all
         push_arg        (offset __clip_z_far_norm),4
         push_arg        (offset __clip_z_far_base),4
-        mov     [ebp+8],dword29
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         lea     dword4,[ebp-196]
         push_arg        dword4,4
         call    __clip_on_plain
@@ -1390,16 +1387,14 @@ __clip_poligon proc
         push_arg        (offset __clip_z_near_base),4
         lea     dword7,[ebp-196]
         push_arg        dword7,4
-        mov     [ebp+8],dword29
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         call    __clip_on_plain
         restore_stack   16
         pop_all
         push_all
         push_arg        (offset __clip_plane_left_norm),4
         push_arg        (offset __clip_plane_left_base),4
-        mov     [ebp+8],dword29
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         lea     dword12,[ebp-196]
         push_arg        dword12,4
         call    __clip_on_plain
@@ -1410,16 +1405,14 @@ __clip_poligon proc
         push_arg        (offset __clip_plane_right_base),4
         lea     dword15,[ebp-196]
         push_arg        dword15,4
-        mov     [ebp+8],dword29
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         call    __clip_on_plain
         restore_stack   16
         pop_all
         push_all
         push_arg        (offset __clip_plane_top_norm),4
         push_arg        (offset __clip_plane_top_base),4
-        mov     [ebp+8],dword29
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         lea     dword20,[ebp-196]
         push_arg        dword20,4
         call    __clip_on_plain
@@ -1430,8 +1423,7 @@ __clip_poligon proc
         push_arg        (offset __clip_plane_bottom_base),4
         lea     dword23,[ebp-196]
         push_arg        dword23,4
-        mov     [ebp+8],dword29
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword29,4
         call    __clip_on_plain
         restore_stack   16
         pop_all
@@ -1445,10 +1437,11 @@ __clip_poligon endp
 
 __transform_to_screen_space proc
         create_stack_frame
-        mov     dword35,[ebp+8]
+        mov     dword36,[ebp+8]
+        mov     dword35,[ebp+12]
         push_all
         push_arg        (offset __viewport_matrix),4
-        push_arg        dword ptr [ebp+12],4
+        push_arg        dword35,4
         lea     dword3,[ebp-16]
         push_arg        dword3,4
         call    _matrix4f_transform
@@ -1459,19 +1452,19 @@ __transform_to_screen_space proc
         movss   float2,dword ptr [ebp-16]
         mulss   float2,float1
         cvttss2si       dword10,float2
-        mov     [dword35],dword10
+        mov     [dword36],dword10
         movss   float3,dword ptr [ebp-12]
         mulss   float3,float1
         cvttss2si       dword16,float3
-        mov     [dword35+4],dword16
-        cmp     dword ptr [dword35],0
+        mov     [dword36+4],dword16
+        cmp     dword ptr [dword36],0
         jl      label0001
-        mov     dword25,[dword35]
+        mov     dword25,[dword36]
         cmp     dword25,dword ptr [__width]
         jge     label0001
-        cmp     dword ptr [dword35+4],0
+        cmp     dword ptr [dword36+4],0
         jl      label0001
-        mov     dword32,[dword35+4]
+        mov     dword32,[dword36+4]
         cmp     dword32,dword ptr [__height]
         jl      label0000
 label0001:
@@ -1485,8 +1478,7 @@ __rasterize_polygon_4f proc
         create_stack_frame
         mov     dword53,[ebp+8]
         push_all
-        mov     [ebp+8],dword53
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword53,4
         call    __clip_poligon
         restore_stack   4
         pop_all
@@ -1561,6 +1553,7 @@ __rasterize_polygon_4f endp
 
 __transform_to_projection_space proc
         create_stack_frame
+        mov     dword13,[ebp+8]
         mov     dword12,[ebp+12]
         push_all
         movss   float1,dword ptr [___unnamed_float_1]
@@ -1577,7 +1570,7 @@ __transform_to_projection_space proc
         push_arg        (offset __mvproj_matrix),4
         lea     dword10,[ebp-16]
         push_arg        dword10,4
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword13,4
         call    _matrix4f_transform
         restore_stack   12
         pop_all
@@ -1587,46 +1580,71 @@ __transform_to_projection_space endp
 
 _rasterizer_triangle3f proc
         create_stack_frame
-        mov     dword32,[ebp+28]
-        mov     dword31,[ebp+24]
-        mov     dword30,[ebp+20]
+        mov     dword35,[ebp+28]
+        mov     dword34,[ebp+16]
+        mov     dword33,[ebp+24]
+        mov     dword32,[ebp+12]
+        mov     dword31,[ebp+20]
+        mov     dword30,[ebp+8]
         push_all
-        push_arg        dword ptr [ebp+8],4
+        push_arg        dword30,4
         lea     dword2,[ebp-196]
         push_arg        dword2,4
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        movq    double1,qword ptr [dword30]
-        movq    qword ptr [ebp-180],double1
+        movq    double1,qword ptr [dword31]
+        movq    double5,double1
         push_all
-        push_arg        dword ptr [ebp+12],4
+        push_arg        dword32,4
+        movsd   qword ptr [ebp-180],double5
         lea     dword8,[ebp-196]
         add     dword8,24
         push_arg        dword8,4
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        movq    double2,qword ptr [dword31]
-        movq    qword ptr [ebp-156],double2
+        movq    double2,qword ptr [dword33]
+        movq    double6,double2
         push_all
-        push_arg        dword ptr [ebp+16],4
+        push_arg        dword34,4
+        movsd   qword ptr [ebp-156],double6
+        movsd   qword ptr [ebp-180],double5
         lea     dword16,[ebp-196]
         add     dword16,48
         push_arg        dword16,4
         call    __transform_to_projection_space
         restore_stack   8
         pop_all
-        movq    double3,qword ptr [dword32]
-        movq    qword ptr [ebp-132],double3
+        movq    double3,qword ptr [dword35]
+        movq    double7,double3
+        movsd   qword ptr [ebp-132],double7
+        movsd   qword ptr [ebp-156],double6
+        movsd   qword ptr [ebp-180],double5
         movq    double4,qword ptr [ebp-196]
-        movq    qword ptr [ebp-124],double4
+        movq    double8,double4
+        movsd   qword ptr [ebp-124],double8
+        movsd   qword ptr [ebp-132],double7
+        movsd   qword ptr [ebp-156],double6
+        movsd   qword ptr [ebp-180],double5
         movq    double4,qword ptr [ebp-188]
-        movq    qword ptr [ebp-116],double4
-        movq    double4,qword ptr [ebp-180]
-        movq    qword ptr [ebp-108],double4
+        movq    double9,double4
+        movq    double4,double5
+        movq    double10,double4
         push_all
+        movsd   qword ptr [ebp-108],double10
+        movsd   qword ptr [ebp-116],double9
+        movsd   qword ptr [ebp-124],double8
+        movsd   qword ptr [ebp-132],double7
+        movsd   qword ptr [ebp-156],double6
+        movsd   qword ptr [ebp-180],double5
         mov     dword ptr [ebp-4],4
+        movsd   qword ptr [ebp-108],double10
+        movsd   qword ptr [ebp-116],double9
+        movsd   qword ptr [ebp-124],double8
+        movsd   qword ptr [ebp-132],double7
+        movsd   qword ptr [ebp-156],double6
+        movsd   qword ptr [ebp-180],double5
         lea     dword29,[ebp-196]
         push_arg        dword29,4
         call    __rasterize_polygon_4f

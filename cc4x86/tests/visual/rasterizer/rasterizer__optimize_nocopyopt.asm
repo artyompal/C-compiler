@@ -897,42 +897,67 @@ _rasterizer_triangle3f proc
         push    esi
         push    ebx
         mov     eax,[ebp+28]
-        mov     ecx,[ebp+24]
-        mov     edx,[ebp+20]
-        push    dword ptr [ebp+8]
+        mov     ecx,[ebp+16]
+        mov     edx,[ebp+24]
+        mov     ebx,[ebp+12]
+        mov     esi,[ebp+20]
+        mov     edi,[ebp+8]
+        push    edi
         lea     eax,[ebp-196]
         push    eax
         call    __transform_to_projection_space
         add     esp,8
-        mov     eax,[ebp+20]
-        movq    xmm0,qword ptr [eax]
-        movq    qword ptr [ebp-180],xmm0
-        push    dword ptr [ebp+12]
+        movq    xmm0,qword ptr [esi]
+        movsd   qword ptr [ebp-180],xmm0
+        push    ebx
+        movsd   xmm0,qword ptr [ebp-180]
+        movsd   qword ptr [ebp-180],xmm0
         lea     eax,[ebp-196]
         add     eax,24
         push    eax
         call    __transform_to_projection_space
         add     esp,8
         mov     eax,[ebp+24]
-        movq    xmm0,qword ptr [eax]
-        movq    qword ptr [ebp-156],xmm0
+        movq    xmm1,qword ptr [eax]
+        movsd   qword ptr [ebp-156],xmm1
         push    dword ptr [ebp+16]
+        movsd   xmm1,qword ptr [ebp-156]
+        movsd   qword ptr [ebp-156],xmm1
+        movsd   xmm0,qword ptr [ebp-180]
+        movsd   qword ptr [ebp-180],xmm0
         lea     eax,[ebp-196]
         add     eax,48
         push    eax
         call    __transform_to_projection_space
         add     esp,8
         mov     eax,[ebp+28]
-        movq    xmm0,qword ptr [eax]
-        movq    qword ptr [ebp-132],xmm0
-        movq    xmm0,qword ptr [ebp-196]
-        movq    qword ptr [ebp-124],xmm0
-        movq    xmm0,qword ptr [ebp-188]
-        movq    qword ptr [ebp-116],xmm0
-        movq    xmm0,qword ptr [ebp-180]
-        movq    qword ptr [ebp-108],xmm0
+        movq    xmm2,qword ptr [eax]
+        movsd   qword ptr [ebp-132],xmm2
+        movsd   qword ptr [ebp-156],xmm1
+        movsd   qword ptr [ebp-180],xmm0
+        movq    xmm3,qword ptr [ebp-196]
+        movq    xmm4,xmm3
+        movsd   qword ptr [ebp-124],xmm4
+        movsd   qword ptr [ebp-132],xmm2
+        movsd   qword ptr [ebp-156],xmm1
+        movsd   qword ptr [ebp-180],xmm0
+        movq    xmm3,qword ptr [ebp-188]
+        movq    xmm5,xmm3
+        movq    xmm3,xmm0
 ; start of inline function _rasterize_polygon_4f
+        movsd   qword ptr [ebp-108],xmm3
+        movsd   qword ptr [ebp-116],xmm5
+        movsd   qword ptr [ebp-124],xmm4
+        movsd   qword ptr [ebp-132],xmm2
+        movsd   qword ptr [ebp-156],xmm1
+        movsd   qword ptr [ebp-180],xmm0
         mov     dword ptr [ebp-4],4
+        movsd   qword ptr [ebp-108],xmm3
+        movsd   qword ptr [ebp-116],xmm5
+        movsd   qword ptr [ebp-124],xmm4
+        movsd   qword ptr [ebp-132],xmm2
+        movsd   qword ptr [ebp-156],xmm1
+        movsd   qword ptr [ebp-180],xmm0
         lea     eax,[ebp-196]
 ; start of inline function _clip_poligon
         mov     ecx,eax
