@@ -1694,48 +1694,32 @@ _rasterizer_triangle3f proc
         call    __transform_to_projection_space
         add     esp,8
         movq    xmm0,qword ptr [esi]
-        movsd   qword ptr [ebp-180],xmm0
+        movq    qword ptr [ebp-180],xmm0
         push    ebx
-        movsd   xmm0,qword ptr [ebp-180]
-        movsd   qword ptr [ebp-180],xmm0
         lea     eax,[ebp-196]
         add     eax,24
         push    eax
         call    __transform_to_projection_space
         add     esp,8
         mov     edx,[ebp+24]
-        movq    xmm1,qword ptr [edx]
-        movsd   qword ptr [ebp-156],xmm1
+        movq    xmm0,qword ptr [edx]
+        movq    qword ptr [ebp-156],xmm0
         push    dword ptr [ebp+16]
-        movsd   xmm1,qword ptr [ebp-156]
-        movsd   qword ptr [ebp-156],xmm1
-        movsd   xmm0,qword ptr [ebp-180]
-        movsd   qword ptr [ebp-180],xmm0
         lea     eax,[ebp-196]
         add     eax,48
         push    eax
         call    __transform_to_projection_space
         add     esp,8
         mov     eax,[ebp+28]
-        movq    xmm2,qword ptr [eax]
-        movq    xmm3,xmm4
-        movq    xmm4,xmm3
-        movq    xmm3,xmm5
-        movq    xmm5,xmm3
-        movq    xmm3,xmm0
-        movsd   qword ptr [ebp-108],xmm3
-        movsd   qword ptr [ebp-116],xmm5
-        movsd   qword ptr [ebp-124],xmm4
-        movsd   qword ptr [ebp-132],xmm2
-        movsd   qword ptr [ebp-156],xmm1
-        movsd   qword ptr [ebp-180],xmm0
+        movq    xmm0,qword ptr [eax]
+        movq    qword ptr [ebp-132],xmm0
+        movq    xmm0,xmm1
+        movq    qword ptr [ebp-124],xmm0
+        movq    xmm0,xmm2
+        movq    qword ptr [ebp-116],xmm0
+        movq    xmm0,xmm3
+        movq    qword ptr [ebp-108],xmm0
         mov     dword ptr [ebp-4],4
-        movsd   qword ptr [ebp-108],xmm3
-        movsd   qword ptr [ebp-116],xmm5
-        movsd   qword ptr [ebp-124],xmm4
-        movsd   qword ptr [ebp-132],xmm2
-        movsd   qword ptr [ebp-156],xmm1
-        movsd   qword ptr [ebp-180],xmm0
         lea     eax,[ebp-196]
         push    eax
         call    __rasterize_polygon_4f

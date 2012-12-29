@@ -1594,10 +1594,9 @@ _rasterizer_triangle3f proc
         restore_stack   8
         pop_all
         movq    double1,qword ptr [dword31]
-        movq    double5,double1
+        movq    qword ptr [ebp-180],double1
         push_all
         push_arg        dword32,4
-        movsd   qword ptr [ebp-180],double5
         lea     dword8,[ebp-196]
         add     dword8,24
         push_arg        dword8,4
@@ -1605,11 +1604,9 @@ _rasterizer_triangle3f proc
         restore_stack   8
         pop_all
         movq    double2,qword ptr [dword33]
-        movq    double6,double2
+        movq    qword ptr [ebp-156],double2
         push_all
         push_arg        dword34,4
-        movsd   qword ptr [ebp-156],double6
-        movsd   qword ptr [ebp-180],double5
         lea     dword16,[ebp-196]
         add     dword16,48
         push_arg        dword16,4
@@ -1617,27 +1614,15 @@ _rasterizer_triangle3f proc
         restore_stack   8
         pop_all
         movq    double3,qword ptr [dword35]
-        movq    double7,double3
-        movq    double4,double8
-        movq    double9,double4
-        movq    double4,double10
-        movq    double11,double4
+        movq    qword ptr [ebp-132],double3
         movq    double4,double5
-        movq    double12,double4
+        movq    qword ptr [ebp-124],double4
+        movq    double4,double6
+        movq    qword ptr [ebp-116],double4
+        movq    double4,double7
+        movq    qword ptr [ebp-108],double4
         push_all
-        movsd   qword ptr [ebp-108],double12
-        movsd   qword ptr [ebp-116],double11
-        movsd   qword ptr [ebp-124],double9
-        movsd   qword ptr [ebp-132],double7
-        movsd   qword ptr [ebp-156],double6
-        movsd   qword ptr [ebp-180],double5
         mov     dword ptr [ebp-4],4
-        movsd   qword ptr [ebp-108],double12
-        movsd   qword ptr [ebp-116],double11
-        movsd   qword ptr [ebp-124],double9
-        movsd   qword ptr [ebp-132],double7
-        movsd   qword ptr [ebp-156],double6
-        movsd   qword ptr [ebp-180],double5
         lea     dword29,[ebp-196]
         push_arg        dword29,4
         call    __rasterize_polygon_4f

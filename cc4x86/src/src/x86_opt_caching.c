@@ -78,7 +78,7 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
         if (x86_equal_types(insn->in_op1.op_type, type) && OP_IS_ADDRESS(insn->in_op1) && insn->in_op1.data.address.base == ~x86reg_ebp) {
             var = hash_find(_variables_table[type], &insn->in_op1.data.address);
 
-            if (!var) {
+            if (!var && insn->in_code != x86insn_movq) {
                 _create_variable(function, type, insn, &insn->in_op1);
                 //printf("inserted op1 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
@@ -107,7 +107,7 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
                 continue;
             }
 
-            if (var && var->var_is_creating && insn->in_code != x86insn_lea) {
+            if (var && var->var_is_creating && insn->in_code != x86insn_lea && insn->in_code != x86insn_movq) {
                 //printf("replaced op2 reg=%d address=[reg%d+reg%d%+d]\n", var->var_reg, var->var_addr.base, var->var_addr.index, var->var_addr.offset);
 
                 bincode_create_operand_from_pseudoreg(&insn->in_op2, var->var_type, var->var_reg);
@@ -241,11 +241,7 @@ static BOOL _caching_pass(function_desc *function, x86_operand_type type)
 {
     BOOL changed = FALSE;
 
-    //text_output_push_function_code(function);
-
     changed |= _cache_every_variable(function, type);
-
-    //text_output_push_function_code(function);
 
     x86_dataflow_init_use_def_tables(function, type);
     changed |= _reload_when_necessary(function, type);
@@ -274,9 +270,6 @@ void x86_caching_reset()
 BOOL x86_caching_pass(function_desc *function)
 {
     BOOL changed = FALSE;
-
-    //if (strstr(function->func_sym->sym_name, "clip_pol"))
-    //    __asm int 3;
 
     changed |= _caching_pass(function, x86op_dword);
     changed |= _caching_pass(function, x86op_float);
