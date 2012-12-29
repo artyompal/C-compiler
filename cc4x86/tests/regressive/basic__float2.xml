@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <unit>
   <general>
-    <source_module>..\float2.c</source_module>
+    <source_module>..\basic__float2.c</source_module>
   </general>
   <functions_list>
     <function>

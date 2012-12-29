@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unit>
+  <general>
+    <source_module>..\mem__structure.c</source_module>
+  </general>
+  <functions_list>
+    <function>
+      <name>memset</name>
+      <parameters>
+        <parameter name="ptr" type="void *"/>
+        <parameter name="c" type="char"/>
+        <parameter name="sz" type="unsigned int"/>
+      </parameters>
+      <local_variables>
+        <variable name="dst" type="char *"/>
+      </local_variables>
+      <body>
+        <expression type="char *" lvalue="no" complexity="2" code="assign">
+          <operand_1 type="char *" lvalue="yes" complexity="1" code="variable" name="dst"/>
+          <operand_2 type="char *" lvalue="yes" complexity="1" code="variable" name="ptr"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0000"/>
+        <expression type="null" lvalue="no" complexity="0" code="conditional jump" target="label0001" invert_condition="yes">
+          <condition type="unsigned int" lvalue="no" complexity="2" code="post_decrement" step="1">
+            <operand_1 type="unsigned int" lvalue="yes" complexity="1" code="variable" name="sz"/>
+          </condition>
+        </expression>
+        <expression type="char" lvalue="no" complexity="4" code="assign">
+          <operand_1 type="char" lvalue="yes" complexity="3" code="dereference">
+            <operand_1 type="char *" lvalue="no" complexity="2" code="post_increment" step="1">
+              <operand_1 type="char *" lvalue="yes" complexity="1" code="variable" name="dst"/>
+            </operand_1>
+          </operand_1>
+          <operand_2 type="char" lvalue="yes" complexity="1" code="variable" name="c"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="jump to label" target="label0000"/>
+        <expression type="null" lvalue="no" complexity="0" code="label" name="label0001"/>
+        <expression type="null" lvalue="no" complexity="0" code="return" retvalue="void"/>
+      </body>
+    </function>
+    <function>
+      <name>test</name>
+      <parameters>
+      </parameters>
+      <local_variables>
+        <variable name="s" type="struct __unnamed_struct_0"/>
+      </local_variables>
+      <body>
+        <expression type="int" lvalue="no" complexity="3" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="2" code="dereference">
+            <operand_1 type="struct __unnamed_struct_0 *" lvalue="no" complexity="1" code="get_address">
+              <operand_1 type="struct __unnamed_struct_0" lvalue="yes" complexity="1" code="variable" name="s"/>
+            </operand_1>
+          </operand_1>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="4" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="3" code="dereference">
+            <operand_1 type="struct __unnamed_struct_0 *" lvalue="no" complexity="2" code="add">
+              <operand_1 type="struct __unnamed_struct_0 *" lvalue="no" complexity="1" code="get_address">
+                <operand_1 type="struct __unnamed_struct_0" lvalue="yes" complexity="1" code="variable" name="s"/>
+              </operand_1>
+              <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="4"/>
+            </operand_1>
+          </operand_1>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="4" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="3" code="dereference">
+            <operand_1 type="struct __unnamed_struct_0 *" lvalue="no" complexity="2" code="add">
+              <operand_1 type="struct __unnamed_struct_0 *" lvalue="no" complexity="1" code="get_address">
+                <operand_1 type="struct __unnamed_struct_0" lvalue="yes" complexity="1" code="variable" name="s"/>
+              </operand_1>
+              <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="8"/>
+            </operand_1>
+          </operand_1>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="3"/>
+        </expression>
+        <expression type="void" lvalue="no" complexity="19" code="function call">
+          <func_address type="void (void *, char, unsigned int)" lvalue="yes" complexity="1" code="variable" name="memset"/>
+          <func_argument_0 type="void *" lvalue="no" complexity="1" code="get_address">
+            <operand_1 type="struct __unnamed_struct_0" lvalue="yes" complexity="1" code="variable" name="s"/>
+          </func_argument_0>
+          <func_argument_1 type="int" lvalue="no" complexity="1" code="integer literal" value="0"/>
+          <func_argument_2 type="unsigned int" lvalue="no" complexity="1" code="integer literal" value="12"/>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="yes" complexity="3" code="dereference">
+            <operand_1 type="struct __unnamed_struct_0 *" lvalue="no" complexity="2" code="add">
+              <operand_1 type="struct __unnamed_struct_0 *" lvalue="no" complexity="1" code="get_address">
+                <operand_1 type="struct __unnamed_struct_0" lvalue="yes" complexity="1" code="variable" name="s"/>
+              </operand_1>
+              <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="4"/>
+            </operand_1>
+          </retvalue>
+        </expression>
+      </body>
+    </function>
+  </functions_list>
+</unit>

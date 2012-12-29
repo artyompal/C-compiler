@@ -63,21 +63,25 @@ sub run_test2{
 chdir("../cc4x86/tests/regressive/current_test") or die("chdir: $!");
 
 if (
-    run_test2("simple_test.c") and
-    run_test2("goto.c") and
-    run_test2("while.c") and
-    run_test2("while_break.c") and
-    run_test2("for.c") and
-    run_test2("for2.c") and
-    run_test2("switch.c") and
-    run_test2("div_bug.c") and
-    run_test2("idiv.c") and
-    run_test2("mul_div.c") and
-    run_test2("shl_shr.c") and
-    run_test2("float.c") and
-    run_test2("float2.c") and
-    run_test2("regalloc_bug.c") and
-    run_test2("redundant_copy.c")
+    run_test2("basic__simple_test.c") and
+    run_test2("basic__goto.c") and
+    run_test2("basic__while.c") and
+    run_test2("basic__while_break.c") and
+    run_test2("basic__for.c") and
+    run_test2("basic__for2.c") and
+    run_test2("basic__switch.c") and
+    run_test2("basic__div_bug.c") and
+    run_test2("basic__idiv.c") and
+    run_test2("basic__mul_div.c") and
+    run_test2("basic__shl_shr.c") and
+    run_test2("basic__float.c") and
+    run_test2("basic__float2.c") and
+    run_test2("basic__regalloc_bug.c") and
+    run_test2("basic__redundant_copy.c") and
+
+#    run_test2("mem__aliasing.c") and
+#    run_test2("mem__structure.c") and
+    run_test2("mem__union.c")
 
 #   run_test2("string_literal.c") and
 #   run_test2("byte_word.c")

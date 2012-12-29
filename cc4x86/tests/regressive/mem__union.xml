@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unit>
+  <general>
+    <source_module>..\mem__union.c</source_module>
+  </general>
+  <functions_list>
+    <function>
+      <name>test</name>
+      <parameters>
+      </parameters>
+      <local_variables>
+        <variable name="u" type="union __unnamed_union_0"/>
+      </local_variables>
+      <body>
+        <expression type="int" lvalue="no" complexity="3" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="2" code="dereference">
+            <operand_1 type="union __unnamed_union_0 *" lvalue="no" complexity="1" code="get_address">
+              <operand_1 type="union __unnamed_union_0" lvalue="yes" complexity="1" code="variable" name="u"/>
+            </operand_1>
+          </operand_1>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="2"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="3" code="assign">
+          <operand_1 type="int" lvalue="yes" complexity="2" code="dereference">
+            <operand_1 type="union __unnamed_union_0 *" lvalue="no" complexity="1" code="get_address">
+              <operand_1 type="union __unnamed_union_0" lvalue="yes" complexity="1" code="variable" name="u"/>
+            </operand_1>
+          </operand_1>
+          <operand_2 type="int" lvalue="no" complexity="1" code="integer literal" value="1"/>
+        </expression>
+        <expression type="int" lvalue="no" complexity="3" code="post_decrement" step="1">
+          <operand_1 type="int" lvalue="yes" complexity="2" code="dereference">
+            <operand_1 type="union __unnamed_union_0 *" lvalue="no" complexity="1" code="get_address">
+              <operand_1 type="union __unnamed_union_0" lvalue="yes" complexity="1" code="variable" name="u"/>
+            </operand_1>
+          </operand_1>
+        </expression>
+        <expression type="null" lvalue="no" complexity="0" code="return">
+          <retvalue type="int" lvalue="yes" complexity="2" code="dereference">
+            <operand_1 type="union __unnamed_union_0 *" lvalue="no" complexity="1" code="get_address">
+              <operand_1 type="union __unnamed_union_0" lvalue="yes" complexity="1" code="variable" name="u"/>
+            </operand_1>
+          </retvalue>
+        </expression>
+      </body>
+    </function>
+  </functions_list>
+</unit>
