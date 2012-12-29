@@ -1615,11 +1615,11 @@ _rasterizer_triangle3f proc
         pop_all
         movq    double3,qword ptr [dword35]
         movq    qword ptr [ebp-132],double3
-        movq    double4,double5
+        movq    double4,qword ptr [ebp-196]
         movq    qword ptr [ebp-124],double4
-        movq    double4,double6
+        movq    double4,qword ptr [ebp-188]
         movq    qword ptr [ebp-116],double4
-        movq    double4,double7
+        movq    double4,qword ptr [ebp-180]
         movq    qword ptr [ebp-108],double4
         push_all
         mov     dword ptr [ebp-4],4
