@@ -37,6 +37,8 @@ static BOOL _address_compare(x86_address *key1, x86_address *key2)
         && (key1->index == NO_REG || key1->scale == key2->scale));
 }
 
+//
+// Создаёт закешированную переменную и, возможно, вставляет в начало функции код загрузки её в регистр.
 static void _create_variable(function_desc *function, x86_operand_type type, x86_instruction *insn, x86_operand *op)
 {
     variable *var;
@@ -48,8 +50,7 @@ static void _create_variable(function_desc *function, x86_operand_type type, x86
     var->var_is_creating    = TRUE;
 
     if (op->data.address.offset > 0) {
-        bincode_insert_instruction(function, function->func_binary_code->in_next,
-            ENCODE_MOV(var->var_type), op, op);
+        bincode_insert_instruction(function, function->func_binary_code->in_next, ENCODE_MOV(var->var_type), op, op);
     }
 
     bincode_create_operand_and_alloc_pseudoreg_in_function(function, op, var->var_type);
@@ -62,9 +63,8 @@ static void _create_variable(function_desc *function, x86_operand_type type, x86
     hash_insert(_variables_table[type], var);
 }
 
-
 //
-// Алгоритм кеширования адресов в памяти.
+// Заменяет все переменные в памяти данного типа на регистры.
 static BOOL _cache_every_variable(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn, *next;
@@ -120,22 +120,20 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
     return changed;
 }
 
-static void _reset_creating_flag(function_desc *function, x86_operand_type type)
+//
+// Проверяет, была ли переменная модифицирована.
+// Возвращает TRUE, если есть доступные определения.
+static BOOL _is_dirty_variable(function_desc *function, x86_operand_type type, x86_instruction *pos, int reg)
 {
-    int var_count   = hash_get_count(_variables_table[type]);
-    void **var_ptr  = hash_get_items(_variables_table[type]);
-    variable *var;
-    int i;
+    x86_instruction **def = alloca(function->func_insn_count * sizeof(void*));
+    int count;
 
-    for (i = 0; i < var_count; i++) {
-        var = var_ptr[i];
-
-        if (var) {
-            var->var_is_creating = FALSE;
-        }
-    }
+    x86_dataflow_find_all_definitions(reg, pos, type, def, &count, function->func_insn_count);
+    return (count != 0);
 }
 
+//
+// Флашит одну переменную.
 static void _flush_variable(function_desc *function, x86_operand_type type, x86_instruction *insn, variable *var)
 {
     x86_operand reg, addr;
@@ -148,15 +146,8 @@ static void _flush_variable(function_desc *function, x86_operand_type type, x86_
     bincode_insert_instruction(function, insn, ENCODE_MOV(var->var_type), &addr, &reg);
 }
 
-static BOOL _is_dirty_variable(function_desc *function, x86_operand_type type, x86_instruction *pos, int reg)
-{
-    x86_instruction **def = alloca(function->func_insn_count * sizeof(void*));
-    int count;
-
-    x86_dataflow_find_all_definitions(reg, pos, type, def, &count, function->func_insn_count);
-    return (count != 0);
-}
-
+//
+// Флашит все переменные, пересекающиеся в памяти с данной.
 static BOOL _flush_all_contained_variables(function_desc *function, x86_operand_type type, x86_instruction *insn,
                                            symbol *sym, int reg)
 {
@@ -188,8 +179,10 @@ static BOOL _flush_all_contained_variables(function_desc *function, x86_operand_
     return changed;
 }
 
-static BOOL _process_aliasing_variables(function_desc *function, x86_operand_type type, x86_instruction *insn,
-                                        x86_address *addr, int reg)
+//
+// Флашит все переменные, пересекающиеся с данной.
+static BOOL _flush_aliasing_variables(function_desc *function, x86_operand_type type, x86_instruction *insn,
+                                      x86_address *addr, int reg)
 {
     BOOL changed = FALSE;
     parameter *p;
@@ -219,17 +212,19 @@ static BOOL _process_aliasing_variables(function_desc *function, x86_operand_typ
     return changed;
 }
 
-static BOOL _reload_when_necessary(function_desc *function, x86_operand_type type)
+//
+// Для каждого адреса, находит все закешированные переменные, конфликтующие с ним.
+static BOOL _flush_when_necessary(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
     BOOL changed = FALSE;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         if (OP_IS_ADDRESS(insn->in_op1)) {
-            changed |= _process_aliasing_variables(function, type, insn, &insn->in_op1.data.address,
+            changed |= _flush_aliasing_variables(function, type, insn, &insn->in_op1.data.address,
                 (OP_IS_PSEUDO_REG(insn->in_op2, type) ? insn->in_op2.data.reg : NO_REG));
         } else if (OP_IS_ADDRESS(insn->in_op2)) {
-            changed |= _process_aliasing_variables(function, type, insn, &insn->in_op2.data.address,
+            changed |= _flush_aliasing_variables(function, type, insn, &insn->in_op2.data.address,
                 (OP_IS_PSEUDO_REG(insn->in_op1, type) ? insn->in_op1.data.reg : NO_REG));
         }
     }
@@ -237,6 +232,28 @@ static BOOL _reload_when_necessary(function_desc *function, x86_operand_type typ
     return changed;
 }
 
+//
+// Сбрасывает флаг var_is_creating во всех переменных. Переменные, созданные на этом проходе,
+// будут игнорироваться при следующих проходах кеширования.
+static void _reset_creating_flag(function_desc *function, x86_operand_type type)
+{
+    int var_count   = hash_get_count(_variables_table[type]);
+    void **var_ptr  = hash_get_items(_variables_table[type]);
+    variable *var;
+    int i;
+
+    for (i = 0; i < var_count; i++) {
+        var = var_ptr[i];
+
+        if (var) {
+            var->var_is_creating = FALSE;
+        }
+    }
+}
+
+//
+// Один проход кеширования: пытается закешировать все переменные данного типа.
+// Здесь должны добавляться все необходимые загрузки/сохранения, такие, чтобы код оставался корректен.
 static BOOL _caching_pass(function_desc *function, x86_operand_type type)
 {
     BOOL changed = FALSE;
@@ -244,10 +261,10 @@ static BOOL _caching_pass(function_desc *function, x86_operand_type type)
     changed |= _cache_every_variable(function, type);
 
     x86_dataflow_init_use_def_tables(function, type);
-    changed |= _reload_when_necessary(function, type);
+    changed |= _flush_when_necessary(function, type);
 
+    // TODO: было бы хорошо обойтись без флага var_is_creating, так как он не позволяет оптимизировать многопроходно.
     _reset_creating_flag(function, type);
-    // TODO: было бы хорошо обойтись без этого флага, так как он не позволяет оптимизировать многопроходно.
 
     return changed;
 }
@@ -261,12 +278,16 @@ void x86_caching_init()
     _variables_table[x86op_float] = hash_init((hash_function) _address_hash, (hash_equal_function) _address_compare);
 }
 
+//
+// Очищает структуры модуля кеширования. Должно вызываться один раз на функцию, перед началом оптимизаций.
 void x86_caching_reset()
 {
     hash_clear(_variables_table[x86op_dword]);
     hash_clear(_variables_table[x86op_float]);
 }
 
+//
+// Выполняет один проход оптимизации кеширования переменных для всех поддерживаемых типов переменных.
 BOOL x86_caching_pass(function_desc *function)
 {
     BOOL changed = FALSE;
@@ -277,6 +298,8 @@ BOOL x86_caching_pass(function_desc *function)
     return changed;
 }
 
+//
+// Копирует информацию об адресах переменных в структуры аллокатора регистров.
 void x86_caching_setup_reg_info(function_desc *function, x86_pseudoreg_info *pseudoregs_map, x86_operand_type type)
 {
     int var_count, i, reg;
