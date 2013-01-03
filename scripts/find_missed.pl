@@ -8,15 +8,16 @@ my $item;
 
 
 sub parse {
-	my ($name, $filename) = @_;
+    my ($name, $filename) = @_;
 
-	return unless ($name !~ /common\.[hc]/);
+    return unless ($name !~ /common\.[hc]/);
+    return if ($name !~ /.*\.[hc]$/);
 
     open(FILE, $name) or return;
     while (<FILE>) {
-    	if (/((TODO|FIXME|unimplemented).*)$/i) {
-    		printf OUTFILE "%-20s%s\n", "$filename:", $1;
-    	}
+        if (/((TODO|FIXME|unimplemented).*)$/i) {
+            printf OUTFILE "%-20s%s\n", "$filename:", $1;
+        }
     }
 }
 
