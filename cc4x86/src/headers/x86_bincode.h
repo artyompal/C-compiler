@@ -117,6 +117,13 @@ typedef struct x86_operand_decl {
     } data;
 } x86_operand;
 
+typedef struct x86_variable_decl {
+    x86_address         var_addr;
+    int                 var_reg;
+    x86_operand_type    var_type;
+    BOOL                var_is_creating;
+} x86_variable;
+
 
 typedef enum x86_instruction_code_decl {
     // ветвление:

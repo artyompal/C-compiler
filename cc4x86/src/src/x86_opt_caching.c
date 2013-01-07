@@ -12,13 +12,6 @@
 // Ассоциирует адрес в памяти, выраженный в рамках режимов адресации х86, с псевдо-регистром.
 static hash_id _variables_table[X86_TYPES_COUNT];
 
-typedef struct variable_decl {
-    x86_address         var_addr;
-    int                 var_reg;
-    x86_operand_type    var_type;
-    BOOL                var_is_creating;
-} variable;
-
 
 static unsigned int _address_hash(x86_address *addr)
 {
@@ -41,9 +34,9 @@ static BOOL _address_compare(x86_address *key1, x86_address *key2)
 // Создаёт закешированную переменную и, возможно, вставляет в начало функции код загрузки её в регистр.
 static void _create_variable(function_desc *function, x86_operand_type type, x86_instruction *insn, x86_operand *op)
 {
-    variable *var;
+    x86_variable *var;
 
-    var = allocator_alloc(allocator_per_function_pool, sizeof(variable));
+    var = allocator_alloc(allocator_per_function_pool, sizeof(x86_variable));
 
     var->var_addr           = op->data.address;
     var->var_type           = op->op_type;
@@ -69,7 +62,7 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
 {
     x86_instruction *insn, *next;
     BOOL changed = FALSE;
-    variable *var;
+    x86_variable *var;
 
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
@@ -134,11 +127,11 @@ static BOOL _is_dirty_variable(function_desc *function, x86_operand_type type, x
 
 //
 // Флашит одну переменную.
-static BOOL _flush_variable(function_desc *function, x86_operand_type type, x86_instruction *insn, variable *var)
+static BOOL _flush_variable(function_desc *function, x86_operand_type type, x86_instruction *insn, x86_variable *var, int reg)
 {
-    x86_operand reg, addr;
+    x86_operand regop, addr;
 
-    if (!var->var_is_creating || !_is_dirty_variable(function, type, insn, var->var_reg)) {
+    if (!var->var_is_creating || !_is_dirty_variable(function, type, insn, var->var_reg) || var->var_reg == reg) {
         return FALSE;
     }
 
@@ -146,19 +139,19 @@ static BOOL _flush_variable(function_desc *function, x86_operand_type type, x86_
     addr.op_type        = var->var_type;
     addr.data.address   = var->var_addr;
 
-    bincode_create_operand_from_pseudoreg(&reg, var->var_type, var->var_reg);
-    bincode_insert_instruction(function, insn, ENCODE_MOV(var->var_type), &addr, &reg);
+    bincode_create_operand_from_pseudoreg(&regop, var->var_type, var->var_reg);
+    bincode_insert_instruction(function, insn, ENCODE_MOV(var->var_type), &addr, &regop);
     return TRUE;
 }
 
 //
 // Находит все переменные, пересекающиеся в памяти с данной.
 static void _find_all_aliased_variables(function_desc *function, x86_operand_type type, x86_address *addr,
-    int reg, symbol *sym, variable **var_arr, int *var_count, int var_max_count)
+    symbol *sym, x86_variable **var_arr, int *var_count, int var_max_count)
 {
     int var_table_count     = hash_get_count(_variables_table[type]);
     void **var_table_ptr    = hash_get_items(_variables_table[type]);
-    variable *var;
+    x86_variable *var;
     int offset;
     int i;
 
@@ -168,7 +161,7 @@ static void _find_all_aliased_variables(function_desc *function, x86_operand_typ
         var = var_table_ptr[i];
 
         if (var) {
-            if (var->var_addr.base != ~x86reg_ebp && var->var_addr.index != ~x86reg_ebp || var->var_reg == reg) {
+            if (var->var_addr.base != ~x86reg_ebp && var->var_addr.index != ~x86reg_ebp) {
                 continue;
             }
 
@@ -184,25 +177,23 @@ static void _find_all_aliased_variables(function_desc *function, x86_operand_typ
 
 //
 // Находит все переменные, пересекающиеся с заданным адресом.
-static void x86_caching_find_aliasing_variables(function_desc *function, x86_operand_type type, x86_address *addr,
-    int reg, variable **var_arr, int *var_count, int var_max_count)
+int x86_caching_find_aliasing_variables(function_desc *function, x86_operand_type type, x86_address *addr,
+    x86_variable **var_arr, int var_max_count)
 {
-    int offset, count;
+    int offset, count, var_count = 0;
     parameter *p;
     symbol *sym;
 
-    *var_count = 0;
-
     if (addr->base != ~x86reg_ebp && addr->index != ~x86reg_ebp) {
-        return;
+        return 0;
     }
 
     offset = addr->offset;
 
     for (sym = function->func_locals.list_first; sym; sym = sym->sym_next) {
         if (offset >= sym->sym_offset && offset < sym->sym_offset + type_calculate_sizeof(sym->sym_type)) {
-            _find_all_aliased_variables(function, type, addr, reg, sym, var_arr, &count, var_max_count - *var_count);
-            *var_count += count;
+            _find_all_aliased_variables(function, type, addr, sym, var_arr, &count, var_max_count - var_count);
+            var_count += count;
         }
     }
 
@@ -210,10 +201,12 @@ static void x86_caching_find_aliasing_variables(function_desc *function, x86_ope
         sym = p->param_sym;
 
         if (offset >= sym->sym_offset && offset < sym->sym_offset + type_calculate_sizeof(sym->sym_type)) {
-            _find_all_aliased_variables(function, type, addr, reg, sym, var_arr, &count, var_max_count - *var_count);
-            *var_count += count;
+            _find_all_aliased_variables(function, type, addr, sym, var_arr, &count, var_max_count - var_count);
+            var_count += count;
         }
     }
+
+    return var_count;
 }
 
 //
@@ -221,14 +214,14 @@ static void x86_caching_find_aliasing_variables(function_desc *function, x86_ope
 static BOOL _flush_aliasing_variables(function_desc *function, x86_operand_type type, x86_instruction *insn,
     x86_address *addr, int reg)
 {
-    variable **var_arr = alloca(sizeof(void*) * function->func_insn_count);
+    x86_variable **var_arr = alloca(sizeof(void*) * function->func_insn_count);
     BOOL changed = FALSE;
     int i, var_count;
 
-    x86_caching_find_aliasing_variables(function, type, addr, reg, var_arr, &var_count, function->func_insn_count);
+    var_count = x86_caching_find_aliasing_variables(function, type, addr, var_arr, function->func_insn_count);
 
     for (i = 0; i < var_count; i++) {
-        changed |= _flush_variable(function, type, insn, var_arr[i]);
+        changed |= _flush_variable(function, type, insn, var_arr[i], reg);
     }
 
     return changed;
@@ -261,7 +254,7 @@ static void _reset_creating_flag(function_desc *function, x86_operand_type type)
 {
     int var_count   = hash_get_count(_variables_table[type]);
     void **var_ptr  = hash_get_items(_variables_table[type]);
-    variable *var;
+    x86_variable *var;
     int i;
 
     for (i = 0; i < var_count; i++) {
@@ -329,9 +322,9 @@ BOOL x86_caching_pass(function_desc *function)
 void x86_caching_setup_reg_info(function_desc *function, x86_pseudoreg_info *pseudoregs_map, x86_operand_type type)
 {
     int var_count, i, reg;
-    variable **var_ptr;
+    x86_variable **var_ptr;
 
-    var_ptr     = (variable **) hash_get_items(_variables_table[type]);
+    var_ptr     = (x86_variable **) hash_get_items(_variables_table[type]);
     var_count   = hash_get_count(_variables_table[type]);
 
     for (i = 0; i < var_count; i++) {
