@@ -623,31 +623,66 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
 // независимо от того, достигает ли оно начала S или нет."
 static void _reachingdef_build_gen(set *gen, function_desc *function, basic_block *block, x86_operand_type type)
 {
-    int *reg_definitions_table = alloca(sizeof(int)*function->func_pseudoregs_count[type]);
-    int def, reg, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
-    x86_instruction *insn;
+    int def, reg, i, j, regs[MAX_REGISTERS_PER_INSN], regs_cnt, var_count;
+    int regs_count, max_def_count, table_size;
+    set_vector reg_definitions_table;
+    x86_instruction *insn, *usage;
+    x86_variable **var_arr, *var;
 
+
+    regs_count      = function->func_pseudoregs_count[type];
+    max_def_count   = block->block_end_def - block->block_first_def;
+  
     ASSERT(gen->set_count == _definitions_table.insn_count);
     set_clear_to_zeros(gen);
-    memset(reg_definitions_table, -1, sizeof(int)*function->func_pseudoregs_count[type]);
+ 
+    var_arr         = alloca(sizeof(void*) * max_def_count);
+    setvec_resize(&reg_definitions_table, regs_count, max_def_count);
+
+    for (i = 0; i < regs_count; i++) {
+        set_clear_to_zeros(&reg_definitions_table.vec_base[i]);
+    }
+
 
     // Ќаходим дл€ каждого регистра последнее определение, записывающее в него.
-    for (def = block->block_first_def; def < block->block_end_def; def++) {
-        insn = _definitions_table.insn_base[def];
+    for (i = 0; i < max_def_count; i++) {
+        def     = i + block->block_first_def;
+        insn    = _definitions_table.insn_base[def];
+
+        // јнализируем неоднозначные определени€.
+        if (insn->in_code == x86insn_lea) {
+            usage = x86_dataflow_find_the_only_usage(function, type, insn, insn->in_op1.data.reg);
+
+            if (usage && usage->in_code == x86insn_push_arg) {
+                var_count = x86_caching_find_aliasing_variables(function, type, &insn->in_op2.data.address,
+                    var_arr, max_def_count);
+
+                // ѕомечаем все переменные, которые могут быть потенциально изменены.
+                for (j = 0; j < var_count; j++) {
+                    reg = var_arr[j]->var_reg;
+                    BIT_RAISE(reg_definitions_table.vec_base[reg], i);
+                }
+            }
+        } 
+
+        // јнализируем однозначные определени€.
+        //  аждое однозначное определение затирает все неоднозначные определени€ этого регистра.
         bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
-        for (i = 0; i < regs_cnt; i++) {
-            reg_definitions_table[regs[i]] = def;
+        for (j = 0; j < regs_cnt; j++) {
+            reg = regs[j];
+            set_clear_to_zeros(&reg_definitions_table.vec_base[reg]);
+            BIT_RAISE(reg_definitions_table.vec_base[reg], i);
         }
     }
 
-    // ‘ормируем результат.
-    for (reg = 0; reg < function->func_pseudoregs_count[type]; reg++) {
-        def = reg_definitions_table[reg];
+    // ‘ормируем результат. ≈сли определение присутствовало хот€ бы раз, оно вноситс€ в результат.
+    for (i = 0; i < max_def_count; i++) {
+        def = i + block->block_first_def;
 
-        if (def != -1) {
-            BIT_RAISE(*gen, def);
-        }
+        for (reg = 1; reg < regs_count; reg++) {
+            if (
+
     }
 }
 
