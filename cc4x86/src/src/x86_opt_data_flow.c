@@ -623,72 +623,73 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
 // независимо от того, достигает ли оно начала S или нет."
 static void _reachingdef_build_gen(set *gen, function_desc *function, basic_block *block, x86_operand_type type)
 {
-    int def, reg, i, j, regs[MAX_REGISTERS_PER_INSN], regs_cnt, var_count;
-    int regs_count, max_def_count, table_size;
+    int def, reg, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt, var_count;
+    int regs_count, max_def_count;//, table_size;
     set_vector reg_definitions_table;
-    x86_instruction *insn, *usage;
-    x86_variable **var_arr, *var;
+    x86_instruction *insn;//, *usage;
+    x86_variable **var_arr;//, *var;
 
 
+    // Выделяем память.
     regs_count      = function->func_pseudoregs_count[type];
     max_def_count   = block->block_end_def - block->block_first_def;
-  
+
     ASSERT(gen->set_count == _definitions_table.insn_count);
     set_clear_to_zeros(gen);
- 
+
     var_arr         = alloca(sizeof(void*) * max_def_count);
     setvec_resize(&reg_definitions_table, regs_count, max_def_count);
 
-    for (i = 0; i < regs_count; i++) {
-        set_clear_to_zeros(&reg_definitions_table.vec_base[i]);
+    for (reg = 0; reg < regs_count; reg++) {
+        set_clear_to_zeros(&reg_definitions_table.vec_base[reg]);
     }
 
 
     // Находим для каждого регистра последнее определение, записывающее в него.
-    for (i = 0; i < max_def_count; i++) {
-        def     = i + block->block_first_def;
-        insn    = _definitions_table.insn_base[def];
+    for (def = 0; def < max_def_count; def++) {
+        insn = _definitions_table.insn_base[block->block_first_def + def];
 
         // Анализируем неоднозначные определения.
         if (insn->in_code == x86insn_lea) {
-            usage = x86_dataflow_find_the_only_usage(function, type, insn, insn->in_op1.data.reg);
+//          usage = x86_dataflow_find_the_only_usage(function, type, insn, insn->in_op1.data.reg);
+//          if (usage && usage->in_code == x86insn_push_arg) { // FIXME: handle memcpy?
 
-            if (usage && usage->in_code == x86insn_push_arg) {
-                var_count = x86_caching_find_aliasing_variables(function, type, &insn->in_op2.data.address,
-                    var_arr, max_def_count);
+            var_count = x86_caching_find_aliasing_variables(function, type, &insn->in_op2.data.address,
+               var_arr, max_def_count);
 
-                // Помечаем все переменные, которые могут быть потенциально изменены.
-                for (j = 0; j < var_count; j++) {
-                    reg = var_arr[j]->var_reg;
-                    BIT_RAISE(reg_definitions_table.vec_base[reg], i);
-                }
+            // Помечаем все переменные, которые могут быть потенциально изменены.
+            for (i = 0; i < var_count; i++) {
+                reg = var_arr[i]->var_reg;
+                BIT_RAISE(reg_definitions_table.vec_base[reg], def);
             }
-        } 
+        }
 
         // Анализируем однозначные определения.
         // Каждое однозначное определение затирает все неоднозначные определения этого регистра.
         bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
 
-        for (j = 0; j < regs_cnt; j++) {
-            reg = regs[j];
+        for (i = 0; i < regs_cnt; i++) {
+            reg = regs[i];
             set_clear_to_zeros(&reg_definitions_table.vec_base[reg]);
-            BIT_RAISE(reg_definitions_table.vec_base[reg], i);
+            BIT_RAISE(reg_definitions_table.vec_base[reg], def);
         }
     }
 
-    // Формируем результат. Если определение присутствовало хотя бы раз, оно вносится в результат.
-    for (i = 0; i < max_def_count; i++) {
-        def = i + block->block_first_def;
-
+    // Формируем результат. Если определение сгенерировано для хотя бы одного регистра,
+    // оно вносится в результат.
+    for (def = 0; def < max_def_count; def++) {
         for (reg = 1; reg < regs_count; reg++) {
-            if (
-
+            if (BIT_TEST(reg_definitions_table.vec_base[reg], def)) {
+                BIT_RAISE(*gen, def + block->block_first_def);
+                break;
+            }
+        }
     }
 }
 
 //
-// Вычисляет множество kill для данного блока в смысле достигающих определений,
-// т.е. множество определений из всего кода функции, результат которых полностью переписан.
+// Вычисляет множество kill для данного блока в смысле достигающих определений, т.е. множество определений
+// (однозначных и неоднозначных!) из всего кода функции, результат которых полностью переписан.
 // "kill[S] представляет собой множество определений, которые никогда не достигают конца S,
 // даже если достигают его начала."
 static void _reachingdef_build_kill(set *kill, function_desc *function, basic_block *block, x86_operand_type type)
@@ -696,14 +697,18 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
     x86_instruction *insn;
     set modified_regs;
     int def, reg, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
+    BOOL result;
 
+
+    // Инициализация.
     ASSERT(kill->set_count == _definitions_table.insn_count);
     set_clear_to_zeros(kill);
 
     SET_ALLOCA(modified_regs, function->func_pseudoregs_count[type]);
     set_clear_to_zeros(&modified_regs);
 
-    // Находим для каждого регистра последнее определение, записывающее в него.
+
+    // Помечаем все регистры, для которых обнаруживаются однозначные определения.
     for (def = block->block_first_def; def < block->block_end_def; def++) {
         insn = _definitions_table.insn_base[def];
         bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
@@ -715,23 +720,46 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
 
     // Для каждого изменённого регистра: во всём коде функции, кроме данного блока,
     // находим все определения данного регистра и вносим их в множество.
-    for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
-        if (BIT_TEST(modified_regs, reg)) {
-            for (def = 0; def < _definitions_table.insn_count; def++) {
-                if (def == block->block_first_def) {
-                    def = block->block_end_def - 1;
-                    continue;
-                }
+    for (def = 0; def < _definitions_table.insn_count; def++) {
+        // Пропускаем текущий блок.
+        if (def == block->block_first_def) {
+            def = block->block_end_def - 1;
+            continue;
+        }
 
-                insn = _definitions_table.insn_base[def];
-                bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
+        insn = _definitions_table.insn_base[def];
+        result = TRUE;
 
-                for (i = 0; i < regs_cnt; i++) {
-                    if (regs[i] == reg) {
-                        BIT_RAISE(*kill, def);
-                    }
+        // Помечаем однозначные определения, результат которых переписан.
+        bincode_extract_pseudoregs_written_by_insn(insn, type, regs, &regs_cnt);
+
+        for (i = 0; i < regs_cnt; i++) {
+            if (!BIT_TEST(modified_regs, regs[i])) {
+                result = FALSE;
+            }
+        }
+
+        // Помечаем неоднозначные определения, для которых все изменённые регистры переписаны.
+        if (insn->in_code == x86insn_lea) {
+            var_count = x86_caching_find_aliasing_variables(function, type, &insn->in_op2.data.address,
+               var_arr, max_def_count);
+
+            for (i = 0; i < var_count; i++) {
+                reg = var_arr[i]->var_reg;
+
+                if (!BIT_TEST(modified_regs, reg)) {
+                    break;
                 }
             }
+
+            if (i != var_count) {
+                result = FALSE;
+            }
+        }
+
+        // Если все определённые регистры переписаны, определение входит в kill.
+        if (result) {
+            BIT_RAISE(*kill, def);
         }
     }
 }
