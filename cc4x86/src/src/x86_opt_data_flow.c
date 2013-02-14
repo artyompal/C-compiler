@@ -624,10 +624,10 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
 static void _reachingdef_build_gen(set *gen, function_desc *function, basic_block *block, x86_operand_type type)
 {
     int def, reg, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt, var_count;
-    int regs_count, max_def_count;//, table_size;
     set_vector reg_definitions_table;
-    x86_instruction *insn;//, *usage;
-    x86_variable **var_arr;//, *var;
+    int regs_count, max_def_count;
+    x86_variable **var_arr;
+    x86_instruction *insn;
 
 
     // ¬ыдел€ем пам€ть.
@@ -651,9 +651,6 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
 
         // јнализируем неоднозначные определени€.
         if (insn->in_code == x86insn_lea) {
-//          usage = x86_dataflow_find_the_only_usage(function, type, insn, insn->in_op1.data.reg);
-//          if (usage && usage->in_code == x86insn_push_arg) { // FIXME: handle memcpy?
-
             var_count = x86_caching_find_aliasing_variables(function, type, &insn->in_op2.data.address,
                var_arr, max_def_count);
 
@@ -694,9 +691,10 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
 // даже если достигают его начала."
 static void _reachingdef_build_kill(set *kill, function_desc *function, basic_block *block, x86_operand_type type)
 {
+    int def, reg, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt, var_count;
+    x86_variable **var_arr;
     x86_instruction *insn;
     set modified_regs;
-    int def, reg, i, regs[MAX_REGISTERS_PER_INSN], regs_cnt;
     BOOL result;
 
 
@@ -706,6 +704,8 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
 
     SET_ALLOCA(modified_regs, function->func_pseudoregs_count[type]);
     set_clear_to_zeros(&modified_regs);
+
+    var_arr = alloca(sizeof(void*) * _definitions_table.insn_count);
 
 
     // ѕомечаем все регистры, дл€ которых обнаруживаютс€ однозначные определени€.
@@ -742,7 +742,7 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
         // ѕомечаем неоднозначные определени€, дл€ которых все изменЄнные регистры переписаны.
         if (insn->in_code == x86insn_lea) {
             var_count = x86_caching_find_aliasing_variables(function, type, &insn->in_op2.data.address,
-               var_arr, max_def_count);
+               var_arr, _definitions_table.insn_count);
 
             for (i = 0; i < var_count; i++) {
                 reg = var_arr[i]->var_reg;
