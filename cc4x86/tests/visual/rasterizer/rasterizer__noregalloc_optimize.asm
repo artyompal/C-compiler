@@ -792,7 +792,6 @@ label0003:
         movss   float89,dword ptr [dword29+dword48+12]
         mulss   float89,dword ptr [__viewport_matrix+48]
         addss   float87,float89
-        movss   dword ptr [ebp-680],float120
         movss   dword ptr [ebp-688],float87
         movss   float90,dword ptr [dword29+dword48]
         mulss   float90,dword ptr [__viewport_matrix+4]
@@ -805,7 +804,6 @@ label0003:
         movss   float93,dword ptr [dword29+dword48+12]
         mulss   float93,dword ptr [__viewport_matrix+52]
         addss   float90,float93
-        movss   dword ptr [ebp-680],float120
         movss   dword ptr [ebp-684],float90
         movss   float94,dword ptr [dword29+dword48]
         mulss   float94,dword ptr [__viewport_matrix+8]
@@ -818,7 +816,6 @@ label0003:
         movss   float97,dword ptr [dword29+dword48+12]
         mulss   float97,dword ptr [__viewport_matrix+56]
         addss   float94,float97
-        movss   float120,float94
         movss   float98,dword ptr [dword29+dword48]
         mulss   float98,dword ptr [__viewport_matrix+12]
         movss   float99,dword ptr [dword29+dword48+4]
@@ -830,7 +827,7 @@ label0003:
         movss   float101,dword ptr [dword29+dword48+12]
         mulss   float101,dword ptr [__viewport_matrix+60]
         addss   float98,float101
-        movss   dword ptr [ebp-680],float120
+        movss   dword ptr [ebp-680],float94
         movss   dword ptr [ebp-676],float98
 ; end of inline function matrix4f_transform
         movss   float82,dword ptr [___unnamed_float_1]

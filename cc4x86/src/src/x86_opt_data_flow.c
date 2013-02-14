@@ -698,6 +698,12 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
     BOOL result;
 
 
+    // ѕустые блоки ничего не переопредел€ют.
+    if (block->block_first_def == block->block_first_def) {
+        return;
+    }
+
+
     // »нициализаци€.
     ASSERT(kill->set_count == _definitions_table.insn_count);
     set_clear_to_zeros(kill);

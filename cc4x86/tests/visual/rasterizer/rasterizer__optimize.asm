@@ -809,21 +809,19 @@ label0003:
         movss   xmm0,dword ptr [eax+edx+12]
         mulss   xmm0,dword ptr [__viewport_matrix+48]
         addss   xmm1,xmm0
-        movss   dword ptr [ebp-680],xmm0
         movss   dword ptr [ebp-688],xmm1
-        movss   xmm1,dword ptr [eax+edx]
-        mulss   xmm1,dword ptr [__viewport_matrix+4]
-        movss   xmm2,dword ptr [eax+edx+4]
-        mulss   xmm2,dword ptr [__viewport_matrix+20]
-        addss   xmm1,xmm2
-        movss   xmm2,dword ptr [eax+edx+8]
-        mulss   xmm2,dword ptr [__viewport_matrix+36]
-        addss   xmm1,xmm2
-        movss   xmm2,dword ptr [eax+edx+12]
-        mulss   xmm2,dword ptr [__viewport_matrix+52]
-        addss   xmm1,xmm2
-        movss   dword ptr [ebp-680],xmm0
-        movss   dword ptr [ebp-684],xmm1
+        movss   xmm0,dword ptr [eax+edx]
+        mulss   xmm0,dword ptr [__viewport_matrix+4]
+        movss   xmm1,dword ptr [eax+edx+4]
+        mulss   xmm1,dword ptr [__viewport_matrix+20]
+        addss   xmm0,xmm1
+        movss   xmm1,dword ptr [eax+edx+8]
+        mulss   xmm1,dword ptr [__viewport_matrix+36]
+        addss   xmm0,xmm1
+        movss   xmm1,dword ptr [eax+edx+12]
+        mulss   xmm1,dword ptr [__viewport_matrix+52]
+        addss   xmm0,xmm1
+        movss   dword ptr [ebp-684],xmm0
         movss   xmm0,dword ptr [eax+edx]
         mulss   xmm0,dword ptr [__viewport_matrix+8]
         movss   xmm1,dword ptr [eax+edx+4]
@@ -849,15 +847,15 @@ label0003:
         movss   dword ptr [ebp-680],xmm0
         movss   dword ptr [ebp-676],xmm1
 ; end of inline function matrix4f_transform
-        movss   xmm1,dword ptr [___unnamed_float_1]
-        divss   xmm1,xmm2
-        movss   xmm3,xmm4
-        mulss   xmm3,xmm1
-        cvttss2si       edx,xmm3
+        movss   xmm0,dword ptr [___unnamed_float_1]
+        divss   xmm0,xmm1
+        movss   xmm2,xmm3
+        mulss   xmm2,xmm0
+        cvttss2si       edx,xmm2
         mov     [ebx+esi],edx
-        movss   xmm3,xmm5
-        mulss   xmm3,xmm1
-        cvttss2si       edx,xmm3
+        movss   xmm2,xmm4
+        mulss   xmm2,xmm0
+        cvttss2si       edx,xmm2
         mov     [ebx+esi+4],edx
         cmp     dword ptr [ebx+esi],0
         jl      label002a
@@ -878,14 +876,13 @@ label0029:
         sal     ebx,4
         mov     esi,ecx
         imul    esi,24
-        movq    xmm1,qword ptr [eax+esi+16]
-        movq    qword ptr [edx+ebx+8],xmm1
+        movq    xmm0,qword ptr [eax+esi+16]
+        movq    qword ptr [edx+ebx+8],xmm0
         inc     ecx
-        movss   dword ptr [ebp-680],xmm0
-        movsd   qword ptr [ebp-732],xmm1
-        movss   dword ptr [ebp-676],xmm2
-        movss   dword ptr [ebp-688],xmm4
-        movss   dword ptr [ebp-684],xmm5
+        movsd   qword ptr [ebp-732],xmm0
+        movss   dword ptr [ebp-676],xmm1
+        movss   dword ptr [ebp-688],xmm3
+        movss   dword ptr [ebp-684],xmm4
         jmp     label0003
 label0004:
         mov     ecx,2
