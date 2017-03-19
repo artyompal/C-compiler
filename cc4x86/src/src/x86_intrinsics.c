@@ -105,7 +105,7 @@ void x86_intrinsic_static_memcpy(x86_operand *res, x86_operand *dst, x86_operand
 
 void x86_intrinsic_dynamic_memcpy(x86_operand *res, x86_operand *dst, x86_operand *src, x86_operand *size)
 {
-//  Подразумеваем, что CLD делать не надо.
+//  РџРѕРґСЂР°Р·СѓРјРµРІР°РµРј, С‡С‚Рѕ CLD РґРµР»Р°С‚СЊ РЅРµ РЅР°РґРѕ.
 
 //  mov eax, ecx
 //  shr ecx, 2

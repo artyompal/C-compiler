@@ -12,7 +12,7 @@ typedef struct function_desc_decl function_desc;
 
 void        x86_stack_frame_begin_function      (function_desc *function);
 
-// Следующая функция возвращает смещение относительно EBP.
+// РЎР»РµРґСѓСЋС‰Р°СЏ С„СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ СЃРјРµС‰РµРЅРёРµ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ EBP.
 int         x86_stack_frame_alloc_tmp_var       (function_desc *function, int size);
 
 

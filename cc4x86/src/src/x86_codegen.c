@@ -177,7 +177,7 @@ static x86_instruction_code _invert_jump_operands(x86_instruction_code jump_insn
 
 
 //
-// Êîäîãåíåðàöèÿ äëÿ óíàðíûõ âûðàæåíèé.
+// ÐšÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ñ Ð´Ð»Ñ ÑƒÐ½Ð°Ñ€Ð½Ñ‹Ñ… Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ð¹.
 //
 
 static void _generate_convert_int2float(x86_operand *res, x86_operand *op)
@@ -331,7 +331,7 @@ static void _generate_common_unary_arithm_expr(expression *expr, x86_operand *re
 
 
 //
-// Êîäîãåíåðàöèÿ äëÿ áèíàðíûõ âûðàæåíèé.
+// ÐšÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ñ Ð´Ð»Ñ Ð±Ð¸Ð½Ð°Ñ€Ð½Ñ‹Ñ… Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ð¹.
 //
 
 static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *arithm, x86_operand *res, x86_operand *op1, x86_operand *op2)
@@ -349,8 +349,8 @@ static void _generate_int_simple_expr(arithmetic_opcode opcode, expr_arithm *ari
         insn = _opcode_to_unsigned(insn);
     }
 
-    // TODO: ïîääåðæàòü êîäîãåíåðàöèþ äëÿ long long
-    // TODO: ïîääåðæàòü êîäîãåíåðàöèþ äëÿ îïåðàíäîâ òèïà byte/word
+    // TODO: Ð¿Ð¾Ð´Ð´ÐµÑ€Ð¶Ð°Ñ‚ÑŒ ÐºÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸ÑŽ Ð´Ð»Ñ long long
+    // TODO: Ð¿Ð¾Ð´Ð´ÐµÑ€Ð¶Ð°Ñ‚ÑŒ ÐºÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸ÑŽ Ð´Ð»Ñ Ð¾Ð¿ÐµÑ€Ð°Ð½Ð´Ð¾Ð² Ñ‚Ð¸Ð¿Ð° byte/word
 
     *res = *op1;
 
@@ -547,7 +547,7 @@ static void _generate_sse_binary_expr(expression *expr, x86_operand *res, x86_op
 
 
 //
-// Îñíîâíûå ñëó÷àè êîäîãåíåðàöèè âûðàæåíèé.
+// ÐžÑÐ½Ð¾Ð²Ð½Ñ‹Ðµ ÑÐ»ÑƒÑ‡Ð°Ð¸ ÐºÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ð¸ Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ð¹.
 //
 
 static void _generate_unary_arithm_expr(expression *expr, x86_operand *res)
@@ -624,10 +624,10 @@ static void _generate_call(expression *call, x86_operand *res)
     int param_size, params_total_size = 0;
 
 
-    // ñîõðàíÿåì âñå èñïîëüçóåìûå ðåãèñòðû
+    // ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÐµÐ¼ Ð²ÑÐµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÐ¼Ñ‹Ðµ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ñ‹
     unit_push_nullary_instruction(x86insn_push_all);
 
-    // âû÷èñëÿåì àðãóìåíòû â îáðàòíîì ïîðÿäêå è êëàä¸ì èõ â ñòåê
+    // Ð²Ñ‹Ñ‡Ð¸ÑÐ»ÑÐµÐ¼ Ð°Ñ€Ð³ÑƒÐ¼ÐµÐ½Ñ‚Ñ‹ Ð² Ð¾Ð±Ñ€Ð°Ñ‚Ð½Ð¾Ð¼ Ð¿Ð¾Ñ€ÑÐ´ÐºÐµ Ð¸ ÐºÐ»Ð°Ð´Ñ‘Ð¼ Ð¸Ñ… Ð² ÑÑ‚ÐµÐº
     for (arg = call->data.function_call.args->expr_last; arg; arg = arg->expr_prev) {
         _evaluate_nested_expression(arg, &tmp);
 
@@ -638,7 +638,7 @@ static void _generate_call(expression *call, x86_operand *res)
         params_total_size += param_size;
     }
 
-    // âû÷èñëÿåì àäðåñ ôóíêöèè
+    // Ð²Ñ‹Ñ‡Ð¸ÑÐ»ÑÐµÐ¼ Ð°Ð´Ñ€ÐµÑ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸
     addr = call->data.function_call.address;
 
     if (addr->expr_code == code_expr_symbol && TYPE_IS_FUNCTION(addr->expr_type)) {
@@ -647,25 +647,25 @@ static void _generate_call(expression *call, x86_operand *res)
         _evaluate_nested_expression(addr, &tmp);
     }
 
-    // âûäà¸ì èíñòðóêöèþ CALL è ñîõðàíÿåì èíôîðìàöèþ î òèïå ðåçóëüòàòà âî âòîðîé îïåðàíä
+    // Ð²Ñ‹Ð´Ð°Ñ‘Ð¼ Ð¸Ð½ÑÑ‚Ñ€ÑƒÐºÑ†Ð¸ÑŽ CALL Ð¸ ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÐµÐ¼ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ Ð¾ Ñ‚Ð¸Ð¿Ðµ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð° Ð²Ð¾ Ð²Ñ‚Ð¾Ñ€Ð¾Ð¹ Ð¾Ð¿ÐµÑ€Ð°Ð½Ð´
     tmp2.op_loc     = x86loc_none;
     tmp2.op_type    = bincode_encode_type(call->expr_type);
     unit_push_binary_instruction(x86insn_call, &tmp, &tmp2);
 
-    // óäàëÿåì ïàðàìåòðû èç ñòåêà
+    // ÑƒÐ´Ð°Ð»ÑÐµÐ¼ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð¸Ð· ÑÑ‚ÐµÐºÐ°
     if (params_total_size) {
         bincode_create_operand_from_int_constant(&tmp, x86op_dword, params_total_size);
         unit_push_unary_instruction(x86insn_restore_stack, &tmp);
     }
 
-    // âîññòàíàâëèâàåì ñîõðàí¸ííûå ðåãèñòðû
+    // Ð²Ð¾ÑÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ ÑÐ¾Ñ…Ñ€Ð°Ð½Ñ‘Ð½Ð½Ñ‹Ðµ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ñ‹
     unit_push_nullary_instruction(x86insn_pop_all);
 
-    // âîçâðàùàåì ðåçóëüòàò, åñëè îí åñòü
+    // Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÐ¼ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚, ÐµÑÐ»Ð¸ Ð¾Ð½ ÐµÑÑ‚ÑŒ
     if (TYPE_IS_VOID(call->expr_type)) {
         res->op_loc = x86loc_none;
     } else {
-        // TODO: âîçâðàùàòü ðåçóëüòàò òèïà QWORD
+        // TODO: Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°Ñ‚ÑŒ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ñ‚Ð¸Ð¿Ð° QWORD
         bincode_create_operand_and_alloc_pseudoreg(res, tmp2.op_type);
         unit_push_unary_instruction(x86insn_read_retval, res);
     }
@@ -735,7 +735,7 @@ static void _evaluate_nested_expression(expression *expr, x86_operand *res)
 
 
 //
-// Êîäîãåíåðàöèÿ äëÿ êîäà âûçîâà ôóíêöèé: ïðîëîã/ýïèëîã/return.
+// ÐšÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ñ Ð´Ð»Ñ ÐºÐ¾Ð´Ð° Ð²Ñ‹Ð·Ð¾Ð²Ð° Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹: Ð¿Ñ€Ð¾Ð»Ð¾Ð³/ÑÐ¿Ð¸Ð»Ð¾Ð³/return.
 //
 
 static void _generate_prolog(void)
@@ -764,7 +764,7 @@ static void _generate_return(expression *ret_value)
 
 
 //
-//  Êîäîãåíåðàöèÿ äëÿ ïåðåõîäîâ.
+//  ÐšÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ñ Ð´Ð»Ñ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´Ð¾Ð².
 //
 
 static void _generate_common_conditional_jump(expression *condition, int destination, BOOL invert)
@@ -904,7 +904,7 @@ static void _generate_jmp(expr_jump *jump)
 
 
 //
-// Âûñîêîóðîâíåâûå ôóíêöèè êîäîãåíåðàöèè.
+// Ð’Ñ‹ÑÐ¾ÐºÐ¾ÑƒÑ€Ð¾Ð²Ð½ÐµÐ²Ñ‹Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ ÐºÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ð¸.
 //
 
 static void _evaluate_1st_level_expression(expression *expr)
@@ -964,7 +964,7 @@ static void _walk_through_expressions(void)
 }
 
 
-// Ýòè ôóíêöèè èçâëåêàþò âåùåñòâåííûå êîíñòàíòû èç êîäà ôóíêöèè è ðàçìåùàþò èõ â ñåêöèè .data.
+// Ð­Ñ‚Ð¸ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð¸Ð·Ð²Ð»ÐµÐºÐ°ÑŽÑ‚ Ð²ÐµÑ‰ÐµÑÑ‚Ð²ÐµÐ½Ð½Ñ‹Ðµ ÐºÐ¾Ð½ÑÑ‚Ð°Ð½Ñ‚Ñ‹ Ð¸Ð· ÐºÐ¾Ð´Ð° Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð¸ Ñ€Ð°Ð·Ð¼ÐµÑ‰Ð°ÑŽÑ‚ Ð¸Ñ… Ð² ÑÐµÐºÑ†Ð¸Ð¸ .data.
 
 static void _extract_float_constants(expression *expr, void *unused)
 {
@@ -985,7 +985,7 @@ static void _place_float_constants_into_data_section(void)
 }
 
 
-// Òî÷êà âõîäà â êîäîãåíåðàòîð.
+// Ð¢Ð¾Ñ‡ÐºÐ° Ð²Ñ…Ð¾Ð´Ð° Ð² ÐºÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ‚Ð¾Ñ€.
 
 AUX_CASSERT(sizeof(_curr_codegen_func->func_pseudoregs_count)/sizeof(int) == X86_TYPES_COUNT);
 

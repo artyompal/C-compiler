@@ -19,10 +19,10 @@
 
 #if defined(_MSC_VER)
 
-// TODO: включить это варнинг, когда все конструкции C будут поддерживаться в парсере
+// TODO: РІРєР»СЋС‡РёС‚СЊ СЌС‚Рѕ РІР°СЂРЅРёРЅРі, РєРѕРіРґР° РІСЃРµ РєРѕРЅСЃС‚СЂСѓРєС†РёРё C Р±СѓРґСѓС‚ РїРѕРґРґРµСЂР¶РёРІР°С‚СЊСЃСЏ РІ РїР°СЂСЃРµСЂРµ
 #pragma warning(disable:4702)   // unreachable code
 
-// Надо периодически компилировать проект с этим включённым варнингом.
+// РќР°РґРѕ РїРµСЂРёРѕРґРёС‡РµСЃРєРё РєРѕРјРїРёР»РёСЂРѕРІР°С‚СЊ РїСЂРѕРµРєС‚ СЃ СЌС‚РёРј РІРєР»СЋС‡С‘РЅРЅС‹Рј РІР°СЂРЅРёРЅРіРѕРј.
 #pragma warning(disable:4100)   // 'parameters_total_size' : unreferenced formal parameter
 
 #pragma warning(disable:4244)   // conversion from 'int' to 'BOOL', possible loss of data
@@ -55,7 +55,7 @@ void yyerror(const char *txt);
 __declspec(noreturn) void aux_assertion_failed(const char *file, int line, const char *cond);
 __declspec(noreturn) void aux_unimplemented_error(const char *text);
 
-// ассерты не могут иметь сайд-эффектов
+// Р°СЃСЃРµСЂС‚С‹ РЅРµ РјРѕРіСѓС‚ РёРјРµС‚СЊ СЃР°Р№Рґ-СЌС„С„РµРєС‚РѕРІ
 #ifdef _DEBUG
 #define ASSERT(COND) \
     if (!(COND)) { aux_assertion_failed(__FILE__, __LINE__, #COND); }
@@ -84,7 +84,7 @@ void            aux_extract_file_name       (char *dst, const char *path);
 
 void            aux_sort_int                (int *arr, int count);
 int             aux_unique_int              (int *arr, int count);
-int             aux_binary_search           (const int *arr, int count, int key); // возращает индекс или -1
+int             aux_binary_search           (const int *arr, int count, int key); // РІРѕР·СЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РёР»Рё -1
 
 typedef struct function_desc_decl function_desc;
 

@@ -19,11 +19,11 @@ typedef enum x86_register_status_decl {
 } x86_register_status;
 
 typedef struct x86_pseudoreg_info_decl {
-    x86_register_status     reg_status;             // один из вариантов выше
-    int                     reg_location;           // номер ассоциированного реального регистра или -1
-    int                     reg_stack_location;     // смещение ассоциированной ячейки в стеке
-    BOOL                    reg_dirty;              // был ли регистр модифицирован
-    x86_operand_type        reg_content_type;       // тип содержимого регистра
+    x86_register_status     reg_status;             // РѕРґРёРЅ РёР· РІР°СЂРёР°РЅС‚РѕРІ РІС‹С€Рµ
+    int                     reg_location;           // РЅРѕРјРµСЂ Р°СЃСЃРѕС†РёРёСЂРѕРІР°РЅРЅРѕРіРѕ СЂРµР°Р»СЊРЅРѕРіРѕ СЂРµРіРёСЃС‚СЂР° РёР»Рё -1
+    int                     reg_stack_location;     // СЃРјРµС‰РµРЅРёРµ Р°СЃСЃРѕС†РёРёСЂРѕРІР°РЅРЅРѕР№ СЏС‡РµР№РєРё РІ СЃС‚РµРєРµ
+    BOOL                    reg_dirty;              // Р±С‹Р» Р»Рё СЂРµРіРёСЃС‚СЂ РјРѕРґРёС„РёС†РёСЂРѕРІР°РЅ
+    x86_operand_type        reg_content_type;       // С‚РёРї СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЂРµРіРёСЃС‚СЂР°
 } x86_pseudoreg_info;
 
 

@@ -55,12 +55,12 @@ typedef enum x86_dword_register_decl {
 typedef enum x86_operand_location_decl {
     x86loc_none,
 
-    x86loc_register,        // операнд - регистр
-    x86loc_address,         // операнд - адрес с абсолютным смещением
-    x86loc_int_constant,    // операнд - абсолютная константа
-    x86loc_symbol,          // операнд - адрес с относительным смещением
-    x86loc_symbol_offset,   // операнд - относительная константа
-    x86loc_label,           // операнд - метка
+    x86loc_register,        // РѕРїРµСЂР°РЅРґ - СЂРµРіРёСЃС‚СЂ
+    x86loc_address,         // РѕРїРµСЂР°РЅРґ - Р°РґСЂРµСЃ СЃ Р°Р±СЃРѕР»СЋС‚РЅС‹Рј СЃРјРµС‰РµРЅРёРµРј
+    x86loc_int_constant,    // РѕРїРµСЂР°РЅРґ - Р°Р±СЃРѕР»СЋС‚РЅР°СЏ РєРѕРЅСЃС‚Р°РЅС‚Р°
+    x86loc_symbol,          // РѕРїРµСЂР°РЅРґ - Р°РґСЂРµСЃ СЃ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅС‹Рј СЃРјРµС‰РµРЅРёРµРј
+    x86loc_symbol_offset,   // РѕРїРµСЂР°РЅРґ - РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ РєРѕРЅСЃС‚Р°РЅС‚Р°
+    x86loc_label,           // РѕРїРµСЂР°РЅРґ - РјРµС‚РєР°
 } x86_operand_location;
 
 typedef enum x86_operand_type_decl {
@@ -69,7 +69,7 @@ typedef enum x86_operand_type_decl {
     x86op_byte,
     x86op_word,
     x86op_dword,
-    x86op_qword,    // не является аппаратным типом на x86, эмулируется кодогенератором
+    x86op_qword,    // РЅРµ СЏРІР»СЏРµС‚СЃСЏ Р°РїРїР°СЂР°С‚РЅС‹Рј С‚РёРїРѕРј РЅР° x86, СЌРјСѓР»РёСЂСѓРµС‚СЃСЏ РєРѕРґРѕРіРµРЅРµСЂР°С‚РѕСЂРѕРј
     x86op_float,
     x86op_double,
     x86op_unused,
@@ -77,7 +77,7 @@ typedef enum x86_operand_type_decl {
 
 #define X86_TYPES_COUNT ((int)x86op_float+1)
 
-// base и index являются 32-битными регистрами
+// base Рё index СЏРІР»СЏСЋС‚СЃСЏ 32-Р±РёС‚РЅС‹РјРё СЂРµРіРёСЃС‚СЂР°РјРё
 typedef struct x86_address_decl {
     int     base;
     int     index;
@@ -91,7 +91,7 @@ typedef struct x86_operand_decl {
 
     union data_decl {
         // x86op_byte - x86op_double:
-        // 0 - не используется, >0 - псевдо-регистр, <0 - реальный регистр
+        // 0 - РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ, >0 - РїСЃРµРІРґРѕ-СЂРµРіРёСЃС‚СЂ, <0 - СЂРµР°Р»СЊРЅС‹Р№ СЂРµРіРёСЃС‚СЂ
         int         reg;
 
         // x86reg_qword
@@ -126,7 +126,7 @@ typedef struct x86_variable_decl {
 
 
 typedef enum x86_instruction_code_decl {
-    // ветвление:
+    // РІРµС‚РІР»РµРЅРёРµ:
     x86insn_jmp,
     x86insn_je,
     x86insn_jne,
@@ -139,7 +139,7 @@ typedef enum x86_instruction_code_decl {
     x86insn_jae,
     x86insn_ja,
 
-    // целочисленная арифметика:
+    // С†РµР»РѕС‡РёСЃР»РµРЅРЅР°СЏ Р°СЂРёС„РјРµС‚РёРєР°:
     x86insn_int_inc,
     x86insn_int_dec,
     x86insn_int_neg,
@@ -149,9 +149,9 @@ typedef enum x86_instruction_code_decl {
     x86insn_int_add,
     x86insn_int_sub,
     x86insn_int_imul,
-    x86insn_int_idiv,           // первый параметр - EAX, второй - делитель, третий - EDX
-    x86insn_int_mul,            // первый параметр - EAX, второй - множитель, третий - EDX
-    x86insn_int_div,            // первый параметр - EAX, второй - делитель, третий - EDX
+    x86insn_int_idiv,           // РїРµСЂРІС‹Р№ РїР°СЂР°РјРµС‚СЂ - EAX, РІС‚РѕСЂРѕР№ - РґРµР»РёС‚РµР»СЊ, С‚СЂРµС‚РёР№ - EDX
+    x86insn_int_mul,            // РїРµСЂРІС‹Р№ РїР°СЂР°РјРµС‚СЂ - EAX, РІС‚РѕСЂРѕР№ - РјРЅРѕР¶РёС‚РµР»СЊ, С‚СЂРµС‚РёР№ - EDX
+    x86insn_int_div,            // РїРµСЂРІС‹Р№ РїР°СЂР°РјРµС‚СЂ - EAX, РІС‚РѕСЂРѕР№ - РґРµР»РёС‚РµР»СЊ, С‚СЂРµС‚РёР№ - EDX
     x86insn_int_sal,
     x86insn_int_sar,
     x86insn_int_shl,
@@ -171,7 +171,7 @@ typedef enum x86_instruction_code_decl {
     x86insn_int_setae,
     x86insn_int_seta,
 
-    // SSE2 арифметика:
+    // SSE2 Р°СЂРёС„РјРµС‚РёРєР°:
     x86insn_sse_load_int,
     x86insn_sse_store_int,
     x86insn_sse_float2double,
@@ -193,33 +193,33 @@ typedef enum x86_instruction_code_decl {
     x86insn_sse_comisd,
     x86insn_sse_xorpd,
 
-    // Инструкции для внутреннего пользования.
-    // арифметические модифицирующие:
+    // РРЅСЃС‚СЂСѓРєС†РёРё РґР»СЏ РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ РїРѕР»СЊР·РѕРІР°РЅРёСЏ.
+    // Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РјРѕРґРёС„РёС†РёСЂСѓСЋС‰РёРµ:
     x86insn_imul_const,
     x86insn_lea,
     x86insn_movsx,
     x86insn_movzx,
     x86insn_movq,
 
-    // управление стеком:
+    // СѓРїСЂР°РІР»РµРЅРёРµ СЃС‚РµРєРѕРј:
     x86insn_push,
     x86insn_pop,
-    x86insn_call,               // 1ый параметр - адрес, 2ой - тип результата
+    x86insn_call,               // 1С‹Р№ РїР°СЂР°РјРµС‚СЂ - Р°РґСЂРµСЃ, 2РѕР№ - С‚РёРї СЂРµР·СѓР»СЊС‚Р°С‚Р°
     x86insn_ret,
 
-    // целочисленные read-only:
+    // С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹Рµ read-only:
     x86insn_int_cmp,
     x86insn_int_test,
 
-    // псевдо-инструкции:
-    x86insn_cdq,                // параметры - псевдорегистр для EDX, псевдорегистр для EAX.
-    x86insn_xor_edx_edx,        // параметр - псевдорегистр для EDX
-    x86insn_rep_movsb,          // параметры - псевдорегистры для EDI,ESI,ECX, все изменяются
-    x86insn_rep_movsd,          // параметры - псевдорегистры для EDI,ESI,ECX, все изменяются
-    x86insn_push_arg,           // 1ый параметр может быть любого типа (эмулируется); 2ой параметр - размер
-    x86insn_restore_stack,      // параметр - суммарный размер всех операндов
-    x86insn_set_retval,         // параметр - возвращаемое значение (любого размера)
-    x86insn_read_retval,        // параметр - псевдорегистр, куда нужно сохранить результат
+    // РїСЃРµРІРґРѕ-РёРЅСЃС‚СЂСѓРєС†РёРё:
+    x86insn_cdq,                // РїР°СЂР°РјРµС‚СЂС‹ - РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂ РґР»СЏ EDX, РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂ РґР»СЏ EAX.
+    x86insn_xor_edx_edx,        // РїР°СЂР°РјРµС‚СЂ - РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂ РґР»СЏ EDX
+    x86insn_rep_movsb,          // РїР°СЂР°РјРµС‚СЂС‹ - РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂС‹ РґР»СЏ EDI,ESI,ECX, РІСЃРµ РёР·РјРµРЅСЏСЋС‚СЃСЏ
+    x86insn_rep_movsd,          // РїР°СЂР°РјРµС‚СЂС‹ - РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂС‹ РґР»СЏ EDI,ESI,ECX, РІСЃРµ РёР·РјРµРЅСЏСЋС‚СЃСЏ
+    x86insn_push_arg,           // 1С‹Р№ РїР°СЂР°РјРµС‚СЂ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р»СЋР±РѕРіРѕ С‚РёРїР° (СЌРјСѓР»РёСЂСѓРµС‚СЃСЏ); 2РѕР№ РїР°СЂР°РјРµС‚СЂ - СЂР°Р·РјРµСЂ
+    x86insn_restore_stack,      // РїР°СЂР°РјРµС‚СЂ - СЃСѓРјРјР°СЂРЅС‹Р№ СЂР°Р·РјРµСЂ РІСЃРµС… РѕРїРµСЂР°РЅРґРѕРІ
+    x86insn_set_retval,         // РїР°СЂР°РјРµС‚СЂ - РІРѕР·РІСЂР°С‰Р°РµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ (Р»СЋР±РѕРіРѕ СЂР°Р·РјРµСЂР°)
+    x86insn_read_retval,        // РїР°СЂР°РјРµС‚СЂ - РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂ, РєСѓРґР° РЅСѓР¶РЅРѕ СЃРѕС…СЂР°РЅРёС‚СЊ СЂРµР·СѓР»СЊС‚Р°С‚
     x86insn_label,
     x86insn_push_all,
     x86insn_pop_all,
@@ -341,7 +341,7 @@ x86_instruction *       bincode_create_instruction      (x86_instruction_code co
 
 x86_operand_type        bincode_encode_type             (data_type *type);
 
-// Все следующие функции вставляют инструкцию перед заданной.
+// Р’СЃРµ СЃР»РµРґСѓСЋС‰РёРµ С„СѓРЅРєС†РёРё РІСЃС‚Р°РІР»СЏСЋС‚ РёРЅСЃС‚СЂСѓРєС†РёСЋ РїРµСЂРµРґ Р·Р°РґР°РЅРЅРѕР№.
 void    bincode_insert_ternary_instruction              (function_desc *function, x86_instruction *pos,
                                                             x86_instruction_code code, x86_operand *op1, x86_operand *op2, x86_operand *op3);
 void    bincode_insert_instruction                      (function_desc *function, x86_instruction *pos,

@@ -52,7 +52,7 @@ function_desc * unit_find_function(symbol *name)
 
 
 //
-// Äîáàâëåíèå âûðàæåíèé.
+// Ð”Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ð¹.
 //
 
 void unit_push_expression(expression *expr)
@@ -63,7 +63,7 @@ void unit_push_expression(expression *expr)
         return;
     }
 
-    // âñòàâêà ýëåìåíòà â äâóñâÿçíûé ñïèñîê
+    // Ð²ÑÑ‚Ð°Ð²ÐºÐ° ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð² Ð´Ð²ÑƒÑÐ²ÑÐ·Ð½Ñ‹Ð¹ ÑÐ¿Ð¸ÑÐ¾Ðº
     if (!_curr_func->func_body) {
         _curr_func->func_body   = expr;
         expr->expr_prev         = NULL;
@@ -159,7 +159,7 @@ static void _insert_label_after(int label, expression *position)
 
 
 //
-// Ïîääåðæêà öèêëîâ.
+// ÐŸÐ¾Ð´Ð´ÐµÑ€Ð¶ÐºÐ° Ñ†Ð¸ÐºÐ»Ð¾Ð².
 //
 
 int unit_create_label()
@@ -193,7 +193,7 @@ void unit_push_label(int label)
 
 
 //
-// Ïîääåðæêà goto.
+// ÐŸÐ¾Ð´Ð´ÐµÑ€Ð¶ÐºÐ° goto.
 //
 
 void unit_push_named_label(symbol *label_name)
@@ -240,7 +240,7 @@ static void _resolve_jumps_to_named_labels(void)
 
 
 //
-// Ïîääåðæêà break/continue.
+// ÐŸÐ¾Ð´Ð´ÐµÑ€Ð¶ÐºÐ° break/continue.
 //
 
 static void _reset_continue_break_switch_targets()
@@ -283,11 +283,11 @@ void unit_pop_continue_break_targets()
 
 
 //
-// Ïîääåðæêà switch/case/default.
+// ÐŸÐ¾Ð´Ð´ÐµÑ€Ð¶ÐºÐ° switch/case/default.
 //
 
 
-// Ïîìåùàåì â ñòåê break/default è âû÷èñëÿåì âûðàæåíèå âî âðåìåííóþ ïåðåìåííóþ.
+// ÐŸÐ¾Ð¼ÐµÑ‰Ð°ÐµÐ¼ Ð² ÑÑ‚ÐµÐº break/default Ð¸ Ð²Ñ‹Ñ‡Ð¸ÑÐ»ÑÐµÐ¼ Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ Ð²Ð¾ Ð²Ñ€ÐµÐ¼ÐµÐ½Ð½ÑƒÑŽ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½ÑƒÑŽ.
 
 void unit_open_switch_stmt(expression *value)
 {
@@ -315,7 +315,7 @@ void unit_open_switch_stmt(expression *value)
     _switch_values[_last_switch_value].conditions_insertion_point   = _curr_func->func_body_end;
 }
 
-// Âñòàâëÿåì ìåòêó è âñòàâëÿåì ñðàâíåíèå + óñëîâíûé ïåðåõîä.
+// Ð’ÑÑ‚Ð°Ð²Ð»ÑÐµÐ¼ Ð¼ÐµÑ‚ÐºÑƒ Ð¸ Ð²ÑÑ‚Ð°Ð²Ð»ÑÐµÐ¼ ÑÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Ðµ + ÑƒÑÐ»Ð¾Ð²Ð½Ñ‹Ð¹ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´.
 
 void unit_push_case_label(expression *value)
 {
@@ -334,7 +334,7 @@ void unit_push_case_label(expression *value)
     _switch_values[_last_switch_value].conditions_insertion_point = place->expr_next;
 }
 
-// Âñòàâëÿåì ìåòêó è âñòàâëÿåì áåçóñëîâíûé ïåðåõîä.
+// Ð’ÑÑ‚Ð°Ð²Ð»ÑÐµÐ¼ Ð¼ÐµÑ‚ÐºÑƒ Ð¸ Ð²ÑÑ‚Ð°Ð²Ð»ÑÐµÐ¼ Ð±ÐµÐ·ÑƒÑÐ»Ð¾Ð²Ð½Ñ‹Ð¹ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´.
 
 void unit_push_default_stmt()
 {
@@ -357,7 +357,7 @@ void unit_push_default_stmt()
     _switch_values[_last_switch_value].conditions_insertion_point = place->expr_next;
 }
 
-// Âñòàâëÿåì ìåòêó äëÿ break è âîññòàíàâëèâàåì ñòåêè.
+// Ð’ÑÑ‚Ð°Ð²Ð»ÑÐµÐ¼ Ð¼ÐµÑ‚ÐºÑƒ Ð´Ð»Ñ break Ð¸ Ð²Ð¾ÑÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ ÑÑ‚ÐµÐºÐ¸.
 
 void unit_close_switch_stmt()
 {
@@ -369,7 +369,7 @@ void unit_close_switch_stmt()
 
 
 //
-// Ïîääåðæêà öèêëà for (âûðåçàíèå òðåòüåé èíñòðóêöèè è âñòàâêà å¸ ïîñëå òåëà öèêëà).
+// ÐŸÐ¾Ð´Ð´ÐµÑ€Ð¶ÐºÐ° Ñ†Ð¸ÐºÐ»Ð° for (Ð²Ñ‹Ñ€ÐµÐ·Ð°Ð½Ð¸Ðµ Ñ‚Ñ€ÐµÑ‚ÑŒÐµÐ¹ Ð¸Ð½ÑÑ‚Ñ€ÑƒÐºÑ†Ð¸Ð¸ Ð¸ Ð²ÑÑ‚Ð°Ð²ÐºÐ° ÐµÑ‘ Ð¿Ð¾ÑÐ»Ðµ Ñ‚ÐµÐ»Ð° Ñ†Ð¸ÐºÐ»Ð°).
 //
 
 expression *unit_get_last_expression(void)
@@ -403,7 +403,7 @@ void unit_insert_slice(expression *list)
         return;
     }
 
-    // âñòàâêà ïîäñïèñêà â äâóñâÿçíûé ñïèñîê
+    // Ð²ÑÑ‚Ð°Ð²ÐºÐ° Ð¿Ð¾Ð´ÑÐ¿Ð¸ÑÐºÐ° Ð² Ð´Ð²ÑƒÑÐ²ÑÐ·Ð½Ñ‹Ð¹ ÑÐ¿Ð¸ÑÐ¾Ðº
     if (!_curr_func->func_body) {
         _curr_func->func_body                   = list;
     } else {
@@ -411,7 +411,7 @@ void unit_insert_slice(expression *list)
     }
 
 
-    // íàõîäèì íîâûé êîíåö ñïèñêà
+    // Ð½Ð°Ñ…Ð¾Ð´Ð¸Ð¼ Ð½Ð¾Ð²Ñ‹Ð¹ ÐºÐ¾Ð½ÐµÑ† ÑÐ¿Ð¸ÑÐºÐ°
     end = _curr_func->func_body_end;
 
     for (end = list; end->expr_next; ) {
@@ -423,7 +423,7 @@ void unit_insert_slice(expression *list)
 
 
 //
-//  Óäàëåíèå âûðàæåíèé, áåññìûñëåííûõ ñ òî÷êè çðåíèÿ êîäîãåíåðàöèè.
+//  Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ð¹, Ð±ÐµÑÑÐ¼Ñ‹ÑÐ»ÐµÐ½Ð½Ñ‹Ñ… Ñ Ñ‚Ð¾Ñ‡ÐºÐ¸ Ð·Ñ€ÐµÐ½Ð¸Ñ ÐºÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ð¸.
 //
 
 static void _eliminate_meaningless_expressions(void)
@@ -460,8 +460,8 @@ static void _eliminate_meaningless_expressions(void)
 
 
 //
-//  Âûäåëåíèå ëîãè÷åñêîé àðèôìåòèêè âíóòðè óñëîâíûõ ïåðåõîäîâ.
-//  Ìû ïîìå÷àåì äëÿ êîäîãåíåðàòîðà òàêèå êîìàíäû ñïåöèàëüíûìè êîäàìè.
+//  Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð°Ñ€Ð¸Ñ„Ð¼ÐµÑ‚Ð¸ÐºÐ¸ Ð²Ð½ÑƒÑ‚Ñ€Ð¸ ÑƒÑÐ»Ð¾Ð²Ð½Ñ‹Ñ… Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´Ð¾Ð².
+//  ÐœÑ‹ Ð¿Ð¾Ð¼ÐµÑ‡Ð°ÐµÐ¼ Ð´Ð»Ñ ÐºÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð° Ñ‚Ð°ÐºÐ¸Ðµ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹ ÑÐ¿ÐµÑ†Ð¸Ð°Ð»ÑŒÐ½Ñ‹Ð¼Ð¸ ÐºÐ¾Ð´Ð°Ð¼Ð¸.
 //
 
 static void _replace_boolean_operations_in_jump(expression *expr)
@@ -496,8 +496,8 @@ static void _process_boolean_operations_in_jumps(void)
 
 
 //
-//  Çàìåíÿåì ëîãè÷åñêèå îïåðàöèè, íå ïîäïàâøèå ïîä ïðåäûäóùèå ïðîâåðêè,
-//  íà óñëîâíûé ïåðåõîä + ñîõðàíåíèå âî âðåìåííóþ ïåðåìåííóþ.
+//  Ð—Ð°Ð¼ÐµÐ½ÑÐµÐ¼ Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÐ¸Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¸, Ð½Ðµ Ð¿Ð¾Ð´Ð¿Ð°Ð²ÑˆÐ¸Ðµ Ð¿Ð¾Ð´ Ð¿Ñ€ÐµÐ´Ñ‹Ð´ÑƒÑ‰Ð¸Ðµ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ¸,
+//  Ð½Ð° ÑƒÑÐ»Ð¾Ð²Ð½Ñ‹Ð¹ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´ + ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð¸Ðµ Ð²Ð¾ Ð²Ñ€ÐµÐ¼ÐµÐ½Ð½ÑƒÑŽ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½ÑƒÑŽ.
 //
 
 static void _replace_boolean_with_jumps(expression *expr, void *unused)
@@ -557,7 +557,7 @@ static void _process_general_boolean_arithmetic(void)
 
 
 //
-//  Âû÷èñëåíèå ìåòðèêè ñëîæíîñòè äëÿ âñåõ âûðàæåíèé.
+//  Ð’Ñ‹Ñ‡Ð¸ÑÐ»ÐµÐ½Ð¸Ðµ Ð¼ÐµÑ‚Ñ€Ð¸ÐºÐ¸ ÑÐ»Ð¾Ð¶Ð½Ð¾ÑÑ‚Ð¸ Ð´Ð»Ñ Ð²ÑÐµÑ… Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ð¹.
 //
 
 static void _calc_complexity_cb(expression *expr, void *unused)
@@ -614,7 +614,7 @@ static void _calc_expressions_complexity(void)
 
 
 //
-//  Óäàëåíèå ïåðåìåííûõ, âûøåäøèõ èç îáëàñòè âèäèìîñòè, èç òàáëèöû ñèìâîëîâ.
+//  Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ñ…, Ð²Ñ‹ÑˆÐµÐ´ÑˆÐ¸Ñ… Ð¸Ð· Ð¾Ð±Ð»Ð°ÑÑ‚Ð¸ Ð²Ð¸Ð´Ð¸Ð¼Ð¾ÑÑ‚Ð¸, Ð¸Ð· Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ ÑÐ¸Ð¼Ð²Ð¾Ð»Ð¾Ð².
 //
 
 static void _remove_function_params_from_symtable(data_type *type)
@@ -646,24 +646,24 @@ static void _remove_local_variables_from_symtable(void)
 
 
 //
-//  Îáðàáîòêà äåêëàðàöèé ïåðåìåííûõ è ôóíêöèé.
+//  ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Ð´ÐµÐºÐ»Ð°Ñ€Ð°Ñ†Ð¸Ð¹ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ñ… Ð¸ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹.
 //
 
 void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *symbols)
 {
     symbol *sym;
 
-    if (!symbols) { // îáðàáîòêà ñèíòàêñè÷åñêèõ îøèáîê
+    if (!symbols) { // Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° ÑÐ¸Ð½Ñ‚Ð°ÐºÑÐ¸Ñ‡ÐµÑÐºÐ¸Ñ… Ð¾ÑˆÐ¸Ð±Ð¾Ðº
         return;
     }
 
-    // âûâîäèì òèï ïåðåìåííûõ
+    // Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ Ñ‚Ð¸Ð¿ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ñ…
     type_apply_decl_specifiers_to_vars(decl_spec, symbols);
 
     for (sym = symbols->list_first; sym; sym = sym->sym_next) {
         sym->sym_is_local = !!_curr_func;
 
-        // óäàëÿåì ïàðàìåòðû â óêàçàòåëÿõ íà ôóíêöèþ
+        // ÑƒÐ´Ð°Ð»ÑÐµÐ¼ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð² ÑƒÐºÐ°Ð·Ð°Ñ‚ÐµÐ»ÑÑ… Ð½Ð° Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ
         if (TYPE_IS_FUNCTION(sym->sym_type) || TYPE_IS_POINTER_TO_FUNCTION(sym->sym_type)) {
             if (TYPE_IS_FUNCTION(sym->sym_type)) {
                 sym->sym_code = code_sym_function;
@@ -672,7 +672,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
             _remove_function_params_from_symtable(sym->sym_type);
         }
 
-        // îáðàáàòûâàåì èíèöèàëèçàòîðû, åñëè îíè åñòü
+        // Ð¾Ð±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ‚Ð¾Ñ€Ñ‹, ÐµÑÐ»Ð¸ Ð¾Ð½Ð¸ ÐµÑÑ‚ÑŒ
         if (decl_spec.spec_typedef) {
             if (sym->sym_init) {
                 aux_error("typedef's cannot have initializers");
@@ -717,7 +717,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
         }
     }
 
-    // âñòàâëÿåì ïåðåìåííûå â ñïèñîê
+    // Ð²ÑÑ‚Ð°Ð²Ð»ÑÐµÐ¼ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº
     if (_curr_func) {
         if (_curr_func->func_locals.list_last) {
             _curr_func->func_locals.list_last->sym_next  = symbols->list_first;
@@ -738,7 +738,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
         return;
     }
 
-    // âûâîäèì òèï ôóíêöèè
+    // Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ Ñ‚Ð¸Ð¿ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸
     sym->sym_code       = code_sym_function;
     sym->sym_is_local   = FALSE;
 
@@ -756,7 +756,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     type_apply_decl_specifiers_to_type(*spec, &sym->sym_type);
 
 
-    // åñëè ôóíêöèÿ ïåðåîïðåäåëåíà, òèï äîëæåí ñîîòâåòñòâîâàòü òèïó ïåðâîãî îïèñàíèÿ
+    // ÐµÑÐ»Ð¸ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ñ Ð¿ÐµÑ€ÐµÐ¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð°, Ñ‚Ð¸Ð¿ Ð´Ð¾Ð»Ð¶ÐµÐ½ ÑÐ¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÑ‚Ð²Ð¾Ð²Ð°Ñ‚ÑŒ Ñ‚Ð¸Ð¿Ñƒ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ Ð¾Ð¿Ð¸ÑÐ°Ð½Ð¸Ñ
     hidden = symbol_unhide(sym);
 
     if (hidden) {
@@ -768,7 +768,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     }
 
 
-    // ñîçäà¸ì äåñêðèïòîð ôóíêöèè
+    // ÑÐ¾Ð·Ð´Ð°Ñ‘Ð¼ Ð´ÐµÑÐºÑ€Ð¸Ð¿Ñ‚Ð¾Ñ€ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸
     _curr_func                  = allocator_alloc(allocator_global_pool, sizeof(function_desc));
     memset(_curr_func, 0, sizeof(function_desc));
 
@@ -777,7 +777,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     _curr_func->func_params     = sym->sym_type->data.function.parameters_list;
 
 
-    // âñòàâëÿåì ôóíêöèþ â ñïèñîê ôóíêöèé ìîäóëÿ
+    // Ð²ÑÑ‚Ð°Ð²Ð»ÑÐµÐ¼ Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     if (!_first_function) {
         _first_function = _last_function = _curr_func;
     } else {
@@ -797,7 +797,7 @@ void unit_handle_function_body(symbol *sym)
 
     ASSERT(TYPE_IS_FUNCTION(sym->sym_type));
 
-    // äîáàâëÿåì èíñòðóêöèþ "return", åñëè å¸ íåò â êîíöå ôóíêöèè
+    // Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼ Ð¸Ð½ÑÑ‚Ñ€ÑƒÐºÑ†Ð¸ÑŽ "return", ÐµÑÐ»Ð¸ ÐµÑ‘ Ð½ÐµÑ‚ Ð² ÐºÐ¾Ð½Ñ†Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸
     if (!_curr_func->func_body) {
         unit_push_return(NULL, TRUE);
     } else {
@@ -808,7 +808,7 @@ void unit_handle_function_body(symbol *sym)
         }
 
         if (expr->expr_code != code_expr_return) {
-            // TODO: ÷òîáû âûäàâàòü ýòîò âàðíèíã, íóæíî ñòàòè÷åñêèì àíàëèçîì äîêàçàòü äîñòèæèìîñòü ýòîãî êîäà.
+            // TODO: Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð²Ñ‹Ð´Ð°Ð²Ð°Ñ‚ÑŒ ÑÑ‚Ð¾Ñ‚ Ð²Ð°Ñ€Ð½Ð¸Ð½Ð³, Ð½ÑƒÐ¶Ð½Ð¾ ÑÑ‚Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸Ð¼ Ð°Ð½Ð°Ð»Ð¸Ð·Ð¾Ð¼ Ð´Ð¾ÐºÐ°Ð·Ð°Ñ‚ÑŒ Ð´Ð¾ÑÑ‚Ð¸Ð¶Ð¸Ð¼Ð¾ÑÑ‚ÑŒ ÑÑ‚Ð¾Ð³Ð¾ ÐºÐ¾Ð´Ð°.
             //
             //data_type *func_type = _curr_func->func_sym->sym_type;
             //
@@ -821,24 +821,24 @@ void unit_handle_function_body(symbol *sym)
     }
 
 
-    // Ðàçðåøàåì ññûëêè íà íåîïðåäåë¸ííûå ìåòêè íà ìîìåíò êîìïèëÿöèè goto.
+    // Ð Ð°Ð·Ñ€ÐµÑˆÐ°ÐµÐ¼ ÑÑÑ‹Ð»ÐºÐ¸ Ð½Ð° Ð½ÐµÐ¾Ð¿Ñ€ÐµÐ´ÐµÐ»Ñ‘Ð½Ð½Ñ‹Ðµ Ð¼ÐµÑ‚ÐºÐ¸ Ð½Ð° Ð¼Ð¾Ð¼ÐµÐ½Ñ‚ ÐºÐ¾Ð¼Ð¿Ð¸Ð»ÑÑ†Ð¸Ð¸ goto.
     _resolve_jumps_to_named_labels();
 
-    // Ñíà÷àëà âûêèäûâàåì áåññìûñëåííûå, ñ òî÷êè çðåíèÿ êîäîãåíåðàòîðà, âûðàæåíèÿ.
+    // Ð¡Ð½Ð°Ñ‡Ð°Ð»Ð° Ð²Ñ‹ÐºÐ¸Ð´Ñ‹Ð²Ð°ÐµÐ¼ Ð±ÐµÑÑÐ¼Ñ‹ÑÐ»ÐµÐ½Ð½Ñ‹Ðµ, Ñ Ñ‚Ð¾Ñ‡ÐºÐ¸ Ð·Ñ€ÐµÐ½Ð¸Ñ ÐºÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð°, Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ.
     _eliminate_meaningless_expressions();
 
-    // Çàìåíÿåì îïåðàòîðû &&, || âíóòðè jmp íà ñïåöèàëüíûå êîäû op_logical_and_in_jump/op_logical_or_in_jump.
+    // Ð—Ð°Ð¼ÐµÐ½ÑÐµÐ¼ Ð¾Ð¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ñ‹ &&, || Ð²Ð½ÑƒÑ‚Ñ€Ð¸ jmp Ð½Ð° ÑÐ¿ÐµÑ†Ð¸Ð°Ð»ÑŒÐ½Ñ‹Ðµ ÐºÐ¾Ð´Ñ‹ op_logical_and_in_jump/op_logical_or_in_jump.
     _process_boolean_operations_in_jumps();
 
-    // Çàìåíÿåì ëîãè÷åñêóþ àðèôìåòèêó (îïåðàòîðû &&, ||) íà óñëîâíûå ïåðåõîäû ñ çàïèñüþ ðåçóëüòàòà
-    // âî âðåìåííóþ ïåðåìåííóþ.
+    // Ð—Ð°Ð¼ÐµÐ½ÑÐµÐ¼ Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÑƒÑŽ Ð°Ñ€Ð¸Ñ„Ð¼ÐµÑ‚Ð¸ÐºÑƒ (Ð¾Ð¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ñ‹ &&, ||) Ð½Ð° ÑƒÑÐ»Ð¾Ð²Ð½Ñ‹Ðµ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´Ñ‹ Ñ Ð·Ð°Ð¿Ð¸ÑÑŒÑŽ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°
+    // Ð²Ð¾ Ð²Ñ€ÐµÐ¼ÐµÐ½Ð½ÑƒÑŽ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½ÑƒÑŽ.
     _process_general_boolean_arithmetic();
 
-    // Âû÷èñëÿåì ìåòðèêó ñëîæíîñòè äëÿ êàæäîãî âûðàæåíèÿ, â òîì ÷èñëå äëÿ âëîæåííûõ.
+    // Ð’Ñ‹Ñ‡Ð¸ÑÐ»ÑÐµÐ¼ Ð¼ÐµÑ‚Ñ€Ð¸ÐºÑƒ ÑÐ»Ð¾Ð¶Ð½Ð¾ÑÑ‚Ð¸ Ð´Ð»Ñ ÐºÐ°Ð¶Ð´Ð¾Ð³Ð¾ Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ, Ð² Ñ‚Ð¾Ð¼ Ñ‡Ð¸ÑÐ»Ðµ Ð´Ð»Ñ Ð²Ð»Ð¾Ð¶ÐµÐ½Ð½Ñ‹Ñ….
     _calc_expressions_complexity();
 
-    // Óäàëÿåì ïàðàìåòðû ôóíêöèè è ëîêàëüíûå ïåðåìåííûå èç îáëàñòè âèäèìîñòè.
-    // TODO: ïîääåðæêà ëîêàëüíûõ ïåðåìåííûõ âî âëîæåííûõ áëîêàõ ñ ïðàâèëüíûìè îáëàñòÿìè âèäèìîñòè.
+    // Ð£Ð´Ð°Ð»ÑÐµÐ¼ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð¸ Ð»Ð¾ÐºÐ°Ð»ÑŒÐ½Ñ‹Ðµ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ Ð¸Ð· Ð¾Ð±Ð»Ð°ÑÑ‚Ð¸ Ð²Ð¸Ð´Ð¸Ð¼Ð¾ÑÑ‚Ð¸.
+    // TODO: Ð¿Ð¾Ð´Ð´ÐµÑ€Ð¶ÐºÐ° Ð»Ð¾ÐºÐ°Ð»ÑŒÐ½Ñ‹Ñ… Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ñ… Ð²Ð¾ Ð²Ð»Ð¾Ð¶ÐµÐ½Ð½Ñ‹Ñ… Ð±Ð»Ð¾ÐºÐ°Ñ… Ñ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ð¼Ð¸ Ð¾Ð±Ð»Ð°ÑÑ‚ÑÐ¼Ð¸ Ð²Ð¸Ð´Ð¸Ð¼Ð¾ÑÑ‚Ð¸.
     _remove_function_params_from_symtable(sym->sym_type);
     _remove_local_variables_from_symtable();
 
@@ -854,7 +854,7 @@ void unit_after_global_declaration(void)
 
 
 //
-//  Êîäîãåíåðàöèÿ.
+//  ÐšÐ¾Ð´Ð¾Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ñ.
 //
 
 static void _reset_function_calling_stat()
@@ -925,7 +925,7 @@ void unit_codegen(void)
 
         _perform_local_optimizations();
 
-        // ñòðîèì ñòàòèñòèêó âûçîâîâ ôóíêöèé
+        // ÑÑ‚Ñ€Ð¾Ð¸Ð¼ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÑƒ Ð²Ñ‹Ð·Ð¾Ð²Ð¾Ð² Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹
         if (option_enable_optimization && !option_no_inline) {
             x86_inlining_analyze_function(_curr_func);
         }
@@ -933,7 +933,7 @@ void unit_codegen(void)
         allocator_finish_function();
     }
 
-    // èíëàéíèì âñå ïîäõîäÿùèå ôóíêöèè
+    // Ð¸Ð½Ð»Ð°Ð¹Ð½Ð¸Ð¼ Ð²ÑÐµ Ð¿Ð¾Ð´Ñ…Ð¾Ð´ÑÑ‰Ð¸Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸
     if (option_enable_optimization && !option_no_inline) {
         for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
             x86_inlining_process_function(_curr_func);
@@ -941,7 +941,7 @@ void unit_codegen(void)
         }
     }
 
-    // îáíîâëÿåì ñòàòèñòèêó âûçîâîâ ôóíêöèé, ÷òîáû íå âûâîäèòü â ëèñòèíã íåèñïîëüçóåìûå ôóíêöèè
+    // Ð¾Ð±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÑƒ Ð²Ñ‹Ð·Ð¾Ð²Ð¾Ð² Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð½Ðµ Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ñ‚ÑŒ Ð² Ð»Ð¸ÑÑ‚Ð¸Ð½Ð³ Ð½ÐµÐ¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÐ¼Ñ‹Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸
     _reset_function_calling_stat();
 
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
@@ -951,7 +951,7 @@ void unit_codegen(void)
     x86data_enter_text_section();
 
 
-    // äåëàåì îïòèìèçàöèþ êàæäîé ôóíêöèè è âûâîäèì àññåìáëåðíûé êîä
+    // Ð´ÐµÐ»Ð°ÐµÐ¼ Ð¾Ð¿Ñ‚Ð¸Ð¼Ð¸Ð·Ð°Ñ†Ð¸ÑŽ ÐºÐ°Ð¶Ð´Ð¾Ð¹ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð¸ Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ Ð°ÑÑÐµÐ¼Ð±Ð»ÐµÑ€Ð½Ñ‹Ð¹ ÐºÐ¾Ð´
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
         if (_curr_func->func_is_static && _curr_func->func_usage_count == 0) {
             continue;

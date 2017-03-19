@@ -328,9 +328,9 @@ expression *expr_create_unary(expression *expr, arithmetic_opcode opcode)
     expr = _generate_pointer(expr, !IS_INCREMENT_DECREMENT(opcode), TRUE);
     expr = _integral_promotion(expr);
 
-    // семантические проверки
+    // СЃРµРјР°РЅС‚РёС‡РµСЃРєРёРµ РїСЂРѕРІРµСЂРєРё
     if (IS_INTERNAL(opcode)) {
-        // у инструкций, сгенерированных компилятором, всё должно быть корректно
+        // Сѓ РёРЅСЃС‚СЂСѓРєС†РёР№, СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅС‹С… РєРѕРјРїРёР»СЏС‚РѕСЂРѕРј, РІСЃС‘ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РєРѕСЂСЂРµРєС‚РЅРѕ
     } else if (opcode == op_neg || opcode == op_bitnot || opcode == op_not) {
         if (!TYPE_IS_ARITHMETIC(expr->expr_type)) {
             aux_error("operator '%s' needs operand of arithmetic type", expr_print_opcode_to_user(opcode));
@@ -355,7 +355,7 @@ expression *expr_create_unary(expression *expr, arithmetic_opcode opcode)
         ASSERT(FALSE);
     }
 
-    // создаём результирующее выражение
+    // СЃРѕР·РґР°С‘Рј СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰РµРµ РІС‹СЂР°Р¶РµРЅРёРµ
     res                         = _create_arithmetic(expr->expr_type);
     res->data.arithm.opcode     = opcode;
     res->data.arithm.operand1   = expr;
@@ -368,7 +368,7 @@ expression *expr_create_unary(expression *expr, arithmetic_opcode opcode)
     }
 
 
-    // вычисляем константные выражения
+    // РІС‹С‡РёСЃР»СЏРµРј РєРѕРЅСЃС‚Р°РЅС‚РЅС‹Рµ РІС‹СЂР°Р¶РµРЅРёСЏ
     if (IS_INT_CONSTANT_EXPR(expr)) {
         if (opcode != op_dereference) {
             res = _evaluate_const_int_unary_expression(opcode, expr->data.int_const, res->expr_type);
@@ -471,21 +471,21 @@ static expression *_create_binary_arithm_expr(arithmetic_opcode opcode, expressi
 {
     expression *res;
 
-    // проверка на константное деление на ноль
+    // РїСЂРѕРІРµСЂРєР° РЅР° РєРѕРЅСЃС‚Р°РЅС‚РЅРѕРµ РґРµР»РµРЅРёРµ РЅР° РЅРѕР»СЊ
     if ((opcode == op_div || opcode == op_mod || opcode == op_div_assign || opcode == op_mod_assign)
         && IS_INT_CONSTANT_EXPR(e2) && e2->data.int_const == 0) {
             aux_error("constant division by zero");
             return NULL;
         }
 
-    // если выражение константное, тривиально вычисляем его
+    // РµСЃР»Рё РІС‹СЂР°Р¶РµРЅРёРµ РєРѕРЅСЃС‚Р°РЅС‚РЅРѕРµ, С‚СЂРёРІРёР°Р»СЊРЅРѕ РІС‹С‡РёСЃР»СЏРµРј РµРіРѕ
     if (IS_INT_CONSTANT_EXPR(e1) && IS_INT_CONSTANT_EXPR(e2)) {
         return _evaluate_const_int_binary_expression(opcode, e1->data.int_const, e2->data.int_const, type);
     } else if (IS_FLOAT_CONSTANT_EXPR(e1) && IS_FLOAT_CONSTANT_EXPR(e2)) {
         return _evaluate_const_float_binary_expression(opcode, e1->data.float_const.val, e2->data.float_const.val, type);
     }
 
-    // заменяем умножение/деление на константную степень двойки битовыми сдвигами
+    // Р·Р°РјРµРЅСЏРµРј СѓРјРЅРѕР¶РµРЅРёРµ/РґРµР»РµРЅРёРµ РЅР° РєРѕРЅСЃС‚Р°РЅС‚РЅСѓСЋ СЃС‚РµРїРµРЅСЊ РґРІРѕР№РєРё Р±РёС‚РѕРІС‹РјРё СЃРґРІРёРіР°РјРё
     if (IS_INT_CONSTANT_EXPR(e2)) {
         res = _try_optimize_int_constant_operand(opcode, e1, e2, type);
 
@@ -512,7 +512,7 @@ static expression *_create_binary_arithm_expr(arithmetic_opcode opcode, expressi
         }
     }
 
-    // создаём ноду выражения
+    // СЃРѕР·РґР°С‘Рј РЅРѕРґСѓ РІС‹СЂР°Р¶РµРЅРёСЏ
     res = _create_arithmetic(type);
     res->data.arithm.opcode     = opcode;
     res->data.arithm.operand1   = e1;
@@ -580,7 +580,7 @@ expression *expr_create_binary(expression *e1, expression *e2, arithmetic_opcode
     e1 = _generate_pointer(e1, !IS_ASSIGN_OP(opcode), TRUE);
     e2 = _generate_pointer(e2, TRUE, TRUE);
 
-    // проверяем допустимость типов операндов
+    // РїСЂРѕРІРµСЂСЏРµРј РґРѕРїСѓСЃС‚РёРјРѕСЃС‚СЊ С‚РёРїРѕРІ РѕРїРµСЂР°РЅРґРѕРІ
     if (type_are_same(e1->expr_type, e2->expr_type)) {
         if (TYPE_IS_ARITHMETIC(e1->expr_type))
             _arithmetic_transformations(&e1, &e2);
@@ -603,7 +603,7 @@ expression *expr_create_binary(expression *e1, expression *e2, arithmetic_opcode
         return NULL;
     }
 
-    // проверяем случай сравнения указателей
+    // РїСЂРѕРІРµСЂСЏРµРј СЃР»СѓС‡Р°Р№ СЃСЂР°РІРЅРµРЅРёСЏ СѓРєР°Р·Р°С‚РµР»РµР№
     if (TYPE_IS_POINTER(e1->expr_type)) {
         if (!IS_COMPARE_OP(opcode) && opcode != op_sub && opcode != op_assign) {
             aux_error("type mismatch: invalid operation with pointers");
@@ -613,7 +613,7 @@ expression *expr_create_binary(expression *e1, expression *e2, arithmetic_opcode
         }
     }
 
-    // проверяем присваивание структур
+    // РїСЂРѕРІРµСЂСЏРµРј РїСЂРёСЃРІР°РёРІР°РЅРёРµ СЃС‚СЂСѓРєС‚СѓСЂ
     if (TYPE_IS_STRUCTURE_UNION(e1->expr_type)) {
         if (opcode != op_assign) {
             aux_error("type mismatch: invalid operation with structure/union");
@@ -621,7 +621,7 @@ expression *expr_create_binary(expression *e1, expression *e2, arithmetic_opcode
         }
     }
 
-    // для присваивания первый операнд обязан быть lvalue
+    // РґР»СЏ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ РїРµСЂРІС‹Р№ РѕРїРµСЂР°РЅРґ РѕР±СЏР·Р°РЅ Р±С‹С‚СЊ lvalue
     if (IS_SELF_MOD_OP(opcode)) {
         if (!e1->expr_lvalue) {
             aux_error("operator '%s' needs lvalue as first operand", expr_print_opcode_to_user(opcode));
@@ -629,7 +629,7 @@ expression *expr_create_binary(expression *e1, expression *e2, arithmetic_opcode
         }
     }
 
-    // выводим тип результата; результат сравнения всегда int.
+    // РІС‹РІРѕРґРёРј С‚РёРї СЂРµР·СѓР»СЊС‚Р°С‚Р°; СЂРµР·СѓР»СЊС‚Р°С‚ СЃСЂР°РІРЅРµРЅРёСЏ РІСЃРµРіРґР° int.
     if (IS_COMPARE_OP(opcode)) {
         res_type = type_create_arithmetic(code_type_int);
     } else {
@@ -939,7 +939,7 @@ expression *expr_create_function_call(expression *address, expression_list *args
         return NULL;
     }
 
-    // проверяем тип выражения с адресом функции
+    // РїСЂРѕРІРµСЂСЏРµРј С‚РёРї РІС‹СЂР°Р¶РµРЅРёСЏ СЃ Р°РґСЂРµСЃРѕРј С„СѓРЅРєС†РёРё
     if (TYPE_IS_POINTER(address->expr_type)) {
         address_type = address->expr_type->data.ptr.item_type;
     } else {
@@ -957,14 +957,14 @@ expression *expr_create_function_call(expression *address, expression_list *args
     }
 
 
-    // создаём результирующее выражение
+    // СЃРѕР·РґР°С‘Рј СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰РµРµ РІС‹СЂР°Р¶РµРЅРёРµ
     res = _create_expr(code_expr_function_call, address_type->data.function.result_type);
     res->data.function_call.address = address;
     res->data.function_call.args    = args;
     address->expr_parent            = res;
 
 
-    // проверяем типы аргументов и делаем необходимые преобразования типов
+    // РїСЂРѕРІРµСЂСЏРµРј С‚РёРїС‹ Р°СЂРіСѓРјРµРЅС‚РѕРІ Рё РґРµР»Р°РµРј РЅРµРѕР±С…РѕРґРёРјС‹Рµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ С‚РёРїРѕРІ
     param   = address_type->data.function.parameters_list->param_first;
     arg     = args->expr_first;
 
@@ -1137,7 +1137,7 @@ static BOOL _try_generate_int_cast(expression **res, data_type *from, data_type 
         else if (TYPE_IS_X86_QWORD(to))
             type_cast = op_convert_int2longlong;
         else
-            ASSERT(FALSE);  // должно быть обработано в _is_allowed_cast_of_same_size
+            ASSERT(FALSE);  // РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РѕР±СЂР°Р±РѕС‚Р°РЅРѕ РІ _is_allowed_cast_of_same_size
 
         return TRUE;
     } else if (TYPE_IS_INTEGRAL(from) && TYPE_IS_POINTER(to)) {
@@ -1154,7 +1154,7 @@ static BOOL _try_generate_int_cast(expression **res, data_type *from, data_type 
         else if (from->type_code == code_type_unsigned_long_long)
             type_cast = op_convert_ushort2uint;
         else
-            ASSERT(FALSE);  // должно быть обработано в _is_allowed_cast_of_same_size
+            ASSERT(FALSE);  // РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РѕР±СЂР°Р±РѕС‚Р°РЅРѕ РІ _is_allowed_cast_of_same_size
 
         return TRUE;
     } else if (TYPE_IS_ARITHMETIC(from) && TYPE_IS_ARITHMETIC(to)) {
@@ -1300,7 +1300,7 @@ expression *expr_create_type_cast(expression *expr, data_type *type)
 }
 
 
-// Итератор для рекурсивного обхода подвыражений.
+// РС‚РµСЂР°С‚РѕСЂ РґР»СЏ СЂРµРєСѓСЂСЃРёРІРЅРѕРіРѕ РѕР±С…РѕРґР° РїРѕРґРІС‹СЂР°Р¶РµРЅРёР№.
 
 static void _inner_iterate_subexpr(expression *expr, expression_code filter, int flags,
     void (*callback)(expression *, void *), void *arg)
@@ -1318,7 +1318,7 @@ static void _inner_iterate_subexpr(expression *expr, expression_code filter, int
         case code_expr_symbol:
         case code_expr_label:
         case code_expr_string:
-            // терминальное выражение
+            // С‚РµСЂРјРёРЅР°Р»СЊРЅРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ
             break;
 
         case code_expr_arithmetic:

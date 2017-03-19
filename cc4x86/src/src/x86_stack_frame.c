@@ -5,10 +5,10 @@
 
 
 //
-//  Схема выделения памяти в стеке.
+//  РЎС…РµРјР° РІС‹РґРµР»РµРЅРёСЏ РїР°РјСЏС‚Рё РІ СЃС‚РµРєРµ.
 //
-//  Допустим, у нас есть два формальных параметра "int x, y", локальные переменные "float a, b"
-//  и временные переменные кодогенератора, тогда схема будет следующей:
+//  Р”РѕРїСѓСЃС‚РёРј, Сѓ РЅР°СЃ РµСЃС‚СЊ РґРІР° С„РѕСЂРјР°Р»СЊРЅС‹С… РїР°СЂР°РјРµС‚СЂР° "int x, y", Р»РѕРєР°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ "float a, b"
+//  Рё РІСЂРµРјРµРЅРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ РєРѕРґРѕРіРµРЅРµСЂР°С‚РѕСЂР°, С‚РѕРіРґР° СЃС…РµРјР° Р±СѓРґРµС‚ СЃР»РµРґСѓСЋС‰РµР№:
 //
 //  offset  content
 //  +12     y
@@ -34,7 +34,7 @@ static void _calculate_stack_offsets_for_locals(function_desc *function)
 static void _calculate_stack_offsets_for_params(function_desc *function)
 {
     data_type *func_type    = function->func_sym->sym_type;
-    int stack_base          = 8;    // 4 байта для сохранённого EBP и 4 байта для адреса возврата
+    int stack_base          = 8;    // 4 Р±Р°Р№С‚Р° РґР»СЏ СЃРѕС…СЂР°РЅС‘РЅРЅРѕРіРѕ EBP Рё 4 Р±Р°Р№С‚Р° РґР»СЏ Р°РґСЂРµСЃР° РІРѕР·РІСЂР°С‚Р°
     int parameters_total_sz = 0;
     parameter *param;
 
@@ -53,7 +53,7 @@ static void _calculate_stack_offsets_for_params(function_desc *function)
 
 
 //
-// Внешний интерфейс.
+// Р’РЅРµС€РЅРёР№ РёРЅС‚РµСЂС„РµР№СЃ.
 //
 
 void x86_stack_frame_begin_function(function_desc *function)

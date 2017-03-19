@@ -8,9 +8,9 @@
 
 
 //
-// Хеш переменных.
-// Ассоциирует адрес в памяти, выраженный в рамках режимов адресации х86, с псевдо-регистром.
-// FIXME: нельзя ассоциировать адреса с переменными!!! один регистр может содержать в себе разные указатели.
+// РҐРµС€ РїРµСЂРµРјРµРЅРЅС‹С….
+// РђСЃСЃРѕС†РёРёСЂСѓРµС‚ Р°РґСЂРµСЃ РІ РїР°РјСЏС‚Рё, РІС‹СЂР°Р¶РµРЅРЅС‹Р№ РІ СЂР°РјРєР°С… СЂРµР¶РёРјРѕРІ Р°РґСЂРµСЃР°С†РёРё С…86, СЃ РїСЃРµРІРґРѕ-СЂРµРіРёСЃС‚СЂРѕРј.
+// FIXME: РЅРµР»СЊР·СЏ Р°СЃСЃРѕС†РёРёСЂРѕРІР°С‚СЊ Р°РґСЂРµСЃР° СЃ РїРµСЂРµРјРµРЅРЅС‹РјРё!!! РѕРґРёРЅ СЂРµРіРёСЃС‚СЂ РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ РІ СЃРµР±Рµ СЂР°Р·РЅС‹Рµ СѓРєР°Р·Р°С‚РµР»Рё.
 static hash_id _variables_table[X86_TYPES_COUNT];
 
 
@@ -32,7 +32,7 @@ static BOOL _address_compare(x86_address *key1, x86_address *key2)
 }
 
 //
-// Создаёт закешированную переменную и, возможно, вставляет в начало функции код загрузки её в регистр.
+// РЎРѕР·РґР°С‘С‚ Р·Р°РєРµС€РёСЂРѕРІР°РЅРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ Рё, РІРѕР·РјРѕР¶РЅРѕ, РІСЃС‚Р°РІР»СЏРµС‚ РІ РЅР°С‡Р°Р»Рѕ С„СѓРЅРєС†РёРё РєРѕРґ Р·Р°РіСЂСѓР·РєРё РµС‘ РІ СЂРµРіРёСЃС‚СЂ.
 static void _create_variable(function_desc *function, x86_operand_type type, x86_instruction *insn, x86_operand *op)
 {
     x86_variable *var;
@@ -58,7 +58,7 @@ static void _create_variable(function_desc *function, x86_operand_type type, x86
 }
 
 //
-// Заменяет все переменные в памяти данного типа на регистры.
+// Р—Р°РјРµРЅСЏРµС‚ РІСЃРµ РїРµСЂРµРјРµРЅРЅС‹Рµ РІ РїР°РјСЏС‚Рё РґР°РЅРЅРѕРіРѕ С‚РёРїР° РЅР° СЂРµРіРёСЃС‚СЂС‹.
 static BOOL _cache_every_variable(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn, *next;
@@ -68,7 +68,7 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
     for (insn = function->func_binary_code; insn; insn = next) {
         next = insn->in_next;
 
-        // Анализируем первый операнд и создаём новую переменную, если потребуется.
+        // РђРЅР°Р»РёР·РёСЂСѓРµРј РїРµСЂРІС‹Р№ РѕРїРµСЂР°РЅРґ Рё СЃРѕР·РґР°С‘Рј РЅРѕРІСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ, РµСЃР»Рё РїРѕС‚СЂРµР±СѓРµС‚СЃСЏ.
         if (x86_equal_types(insn->in_op1.op_type, type) && OP_IS_ADDRESS(insn->in_op1) && insn->in_op1.data.address.base == ~x86reg_ebp) {
             var = hash_find(_variables_table[type], &insn->in_op1.data.address);
 
@@ -89,7 +89,7 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
             }
         }
 
-        // Анализируем второй операнд.
+        // РђРЅР°Р»РёР·РёСЂСѓРµРј РІС‚РѕСЂРѕР№ РѕРїРµСЂР°РЅРґ.
         if (x86_equal_types(insn->in_op2.op_type, type) && OP_IS_ADDRESS(insn->in_op2) && insn->in_op2.data.address.base == ~x86reg_ebp) {
             var = hash_find(_variables_table[type], &insn->in_op2.data.address);
 
@@ -115,8 +115,8 @@ static BOOL _cache_every_variable(function_desc *function, x86_operand_type type
 }
 
 //
-// Проверяет, была ли переменная модифицирована.
-// Возвращает TRUE, если есть доступные определения.
+// РџСЂРѕРІРµСЂСЏРµС‚, Р±С‹Р»Р° Р»Рё РїРµСЂРµРјРµРЅРЅР°СЏ РјРѕРґРёС„РёС†РёСЂРѕРІР°РЅР°.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ TRUE, РµСЃР»Рё РµСЃС‚СЊ РґРѕСЃС‚СѓРїРЅС‹Рµ РѕРїСЂРµРґРµР»РµРЅРёСЏ.
 static BOOL _is_dirty_variable(function_desc *function, x86_operand_type type, x86_instruction *pos, int reg)
 {
     x86_instruction **def = alloca(function->func_insn_count * sizeof(void*));
@@ -127,7 +127,7 @@ static BOOL _is_dirty_variable(function_desc *function, x86_operand_type type, x
 }
 
 //
-// Флашит одну переменную.
+// Р¤Р»Р°С€РёС‚ РѕРґРЅСѓ РїРµСЂРµРјРµРЅРЅСѓСЋ.
 static BOOL _flush_variable(function_desc *function, x86_operand_type type, x86_instruction *insn, x86_variable *var, int reg)
 {
     x86_operand regop, addr;
@@ -146,7 +146,7 @@ static BOOL _flush_variable(function_desc *function, x86_operand_type type, x86_
 }
 
 //
-// Находит все переменные, пересекающиеся в памяти с данной.
+// РќР°С…РѕРґРёС‚ РІСЃРµ РїРµСЂРµРјРµРЅРЅС‹Рµ, РїРµСЂРµСЃРµРєР°СЋС‰РёРµСЃСЏ РІ РїР°РјСЏС‚Рё СЃ РґР°РЅРЅРѕР№.
 static void _find_all_aliased_variables(function_desc *function, x86_operand_type type, x86_address *addr,
     symbol *sym, x86_variable **var_arr, int *var_count, int var_max_count)
 {
@@ -177,7 +177,7 @@ static void _find_all_aliased_variables(function_desc *function, x86_operand_typ
 }
 
 //
-// Находит все переменные, пересекающиеся с заданным адресом.
+// РќР°С…РѕРґРёС‚ РІСЃРµ РїРµСЂРµРјРµРЅРЅС‹Рµ, РїРµСЂРµСЃРµРєР°СЋС‰РёРµСЃСЏ СЃ Р·Р°РґР°РЅРЅС‹Рј Р°РґСЂРµСЃРѕРј.
 int x86_caching_find_aliasing_variables(function_desc *function, x86_operand_type type, x86_address *addr,
     x86_variable **var_arr, int var_max_count)
 {
@@ -211,7 +211,7 @@ int x86_caching_find_aliasing_variables(function_desc *function, x86_operand_typ
 }
 
 //
-// Находит и флашит все закешированные переменные, накладывающиеся на данный адрес.
+// РќР°С…РѕРґРёС‚ Рё С„Р»Р°С€РёС‚ РІСЃРµ Р·Р°РєРµС€РёСЂРѕРІР°РЅРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ, РЅР°РєР»Р°РґС‹РІР°СЋС‰РёРµСЃСЏ РЅР° РґР°РЅРЅС‹Р№ Р°РґСЂРµСЃ.
 static BOOL _flush_aliasing_variables(function_desc *function, x86_operand_type type, x86_instruction *insn,
     x86_address *addr, int reg)
 {
@@ -229,7 +229,7 @@ static BOOL _flush_aliasing_variables(function_desc *function, x86_operand_type 
 }
 
 //
-// Для каждого адреса, находит все закешированные переменные, конфликтующие с ним.
+// Р”Р»СЏ РєР°Р¶РґРѕРіРѕ Р°РґСЂРµСЃР°, РЅР°С…РѕРґРёС‚ РІСЃРµ Р·Р°РєРµС€РёСЂРѕРІР°РЅРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ, РєРѕРЅС„Р»РёРєС‚СѓСЋС‰РёРµ СЃ РЅРёРј.
 static BOOL _flush_when_necessary(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -249,8 +249,8 @@ static BOOL _flush_when_necessary(function_desc *function, x86_operand_type type
 }
 
 //
-// Сбрасывает флаг var_is_creating во всех переменных. Переменные, созданные на этом проходе,
-// будут игнорироваться при следующих проходах кеширования.
+// РЎР±СЂР°СЃС‹РІР°РµС‚ С„Р»Р°Рі var_is_creating РІРѕ РІСЃРµС… РїРµСЂРµРјРµРЅРЅС‹С…. РџРµСЂРµРјРµРЅРЅС‹Рµ, СЃРѕР·РґР°РЅРЅС‹Рµ РЅР° СЌС‚РѕРј РїСЂРѕС…РѕРґРµ,
+// Р±СѓРґСѓС‚ РёРіРЅРѕСЂРёСЂРѕРІР°С‚СЊСЃСЏ РїСЂРё СЃР»РµРґСѓСЋС‰РёС… РїСЂРѕС…РѕРґР°С… РєРµС€РёСЂРѕРІР°РЅРёСЏ.
 static void _reset_creating_flag(function_desc *function, x86_operand_type type)
 {
     int var_count   = hash_get_count(_variables_table[type]);
@@ -268,8 +268,8 @@ static void _reset_creating_flag(function_desc *function, x86_operand_type type)
 }
 
 //
-// Один проход кеширования: пытается закешировать все переменные данного типа.
-// Здесь должны добавляться все необходимые загрузки/сохранения, такие, чтобы код оставался корректен.
+// РћРґРёРЅ РїСЂРѕС…РѕРґ РєРµС€РёСЂРѕРІР°РЅРёСЏ: РїС‹С‚Р°РµС‚СЃСЏ Р·Р°РєРµС€РёСЂРѕРІР°С‚СЊ РІСЃРµ РїРµСЂРµРјРµРЅРЅС‹Рµ РґР°РЅРЅРѕРіРѕ С‚РёРїР°.
+// Р—РґРµСЃСЊ РґРѕР»Р¶РЅС‹ РґРѕР±Р°РІР»СЏС‚СЊСЃСЏ РІСЃРµ РЅРµРѕР±С…РѕРґРёРјС‹Рµ Р·Р°РіСЂСѓР·РєРё/СЃРѕС…СЂР°РЅРµРЅРёСЏ, С‚Р°РєРёРµ, С‡С‚РѕР±С‹ РєРѕРґ РѕСЃС‚Р°РІР°Р»СЃСЏ РєРѕСЂСЂРµРєС‚РµРЅ.
 static BOOL _caching_pass(function_desc *function, x86_operand_type type)
 {
     BOOL changed = FALSE;
@@ -279,19 +279,19 @@ static BOOL _caching_pass(function_desc *function, x86_operand_type type)
     x86_dataflow_init_use_def_tables(function, type);
     changed |= _flush_when_necessary(function, type);
 
-    // TODO: было бы хорошо обойтись без флага var_is_creating, так как он не позволяет оптимизировать многопроходно.
+    // TODO: Р±С‹Р»Рѕ Р±С‹ С…РѕСЂРѕС€Рѕ РѕР±РѕР№С‚РёСЃСЊ Р±РµР· С„Р»Р°РіР° var_is_creating, С‚Р°Рє РєР°Рє РѕРЅ РЅРµ РїРѕР·РІРѕР»СЏРµС‚ РѕРїС‚РёРјРёР·РёСЂРѕРІР°С‚СЊ РјРЅРѕРіРѕРїСЂРѕС…РѕРґРЅРѕ.
     _reset_creating_flag(function, type);
 
-    // TODO: Если внести все кейсы алайсинга как неоднозначные определения в ои-цепочки,
-    // то перегружать переменные надо тогда и только тогда, когда в ои-цепочке присутствует
-    // хоть одно неоднозначное определение.
+    // TODO: Р•СЃР»Рё РІРЅРµСЃС‚Рё РІСЃРµ РєРµР№СЃС‹ Р°Р»Р°Р№СЃРёРЅРіР° РєР°Рє РЅРµРѕРґРЅРѕР·РЅР°С‡РЅС‹Рµ РѕРїСЂРµРґРµР»РµРЅРёСЏ РІ РѕРё-С†РµРїРѕС‡РєРё,
+    // С‚Рѕ РїРµСЂРµРіСЂСѓР¶Р°С‚СЊ РїРµСЂРµРјРµРЅРЅС‹Рµ РЅР°РґРѕ С‚РѕРіРґР° Рё С‚РѕР»СЊРєРѕ С‚РѕРіРґР°, РєРѕРіРґР° РІ РѕРё-С†РµРїРѕС‡РєРµ РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚
+    // С…РѕС‚СЊ РѕРґРЅРѕ РЅРµРѕРґРЅРѕР·РЅР°С‡РЅРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ.
 
     return changed;
 }
 
 
 //
-// Внешние интерфейсы модуля кеширования.
+// Р’РЅРµС€РЅРёРµ РёРЅС‚РµСЂС„РµР№СЃС‹ РјРѕРґСѓР»СЏ РєРµС€РёСЂРѕРІР°РЅРёСЏ.
 void x86_caching_init()
 {
     _variables_table[x86op_dword] = hash_init((hash_function) _address_hash, (hash_equal_function) _address_compare);
@@ -299,7 +299,7 @@ void x86_caching_init()
 }
 
 //
-// Очищает структуры модуля кеширования. Должно вызываться один раз на функцию, перед началом оптимизаций.
+// РћС‡РёС‰Р°РµС‚ СЃС‚СЂСѓРєС‚СѓСЂС‹ РјРѕРґСѓР»СЏ РєРµС€РёСЂРѕРІР°РЅРёСЏ. Р”РѕР»Р¶РЅРѕ РІС‹Р·С‹РІР°С‚СЊСЃСЏ РѕРґРёРЅ СЂР°Р· РЅР° С„СѓРЅРєС†РёСЋ, РїРµСЂРµРґ РЅР°С‡Р°Р»РѕРј РѕРїС‚РёРјРёР·Р°С†РёР№.
 void x86_caching_reset()
 {
     hash_clear(_variables_table[x86op_dword]);
@@ -307,7 +307,7 @@ void x86_caching_reset()
 }
 
 //
-// Выполняет один проход оптимизации кеширования переменных для всех поддерживаемых типов переменных.
+// Р’С‹РїРѕР»РЅСЏРµС‚ РѕРґРёРЅ РїСЂРѕС…РѕРґ РѕРїС‚РёРјРёР·Р°С†РёРё РєРµС€РёСЂРѕРІР°РЅРёСЏ РїРµСЂРµРјРµРЅРЅС‹С… РґР»СЏ РІСЃРµС… РїРѕРґРґРµСЂР¶РёРІР°РµРјС‹С… С‚РёРїРѕРІ РїРµСЂРµРјРµРЅРЅС‹С….
 BOOL x86_caching_pass(function_desc *function)
 {
     BOOL changed = FALSE;
@@ -319,7 +319,7 @@ BOOL x86_caching_pass(function_desc *function)
 }
 
 //
-// Копирует информацию об адресах переменных в структуры аллокатора регистров.
+// РљРѕРїРёСЂСѓРµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ РѕР± Р°РґСЂРµСЃР°С… РїРµСЂРµРјРµРЅРЅС‹С… РІ СЃС‚СЂСѓРєС‚СѓСЂС‹ Р°Р»Р»РѕРєР°С‚РѕСЂР° СЂРµРіРёСЃС‚СЂРѕРІ.
 void x86_caching_setup_reg_info(function_desc *function, x86_pseudoreg_info *pseudoregs_map, x86_operand_type type)
 {
     int var_count, i, reg;

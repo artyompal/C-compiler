@@ -91,7 +91,7 @@ data_type *type_create_string()
 
 
 //
-// Конструктор рекуррентно-заданных типов данных.
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЂРµРєСѓСЂСЂРµРЅС‚РЅРѕ-Р·Р°РґР°РЅРЅС‹С… С‚РёРїРѕРІ РґР°РЅРЅС‹С….
 //
 
 static data_type *_add_sized_array_node(data_type **type, expression *size)
@@ -269,7 +269,7 @@ data_type *type_create_complete_structure(symbol *sym, fields_list *fields)
     sym->sym_code               = code_sym_type;
     sym->sym_type               = res;
 
-    // вычисляем смещение каждого поля структуры
+    // РІС‹С‡РёСЃР»СЏРµРј СЃРјРµС‰РµРЅРёРµ РєР°Р¶РґРѕРіРѕ РїРѕР»СЏ СЃС‚СЂСѓРєС‚СѓСЂС‹
     field = fields->fields_first->field_next;
 
     for (prev = fields->fields_first; field; prev = field, field = field->field_next) {
@@ -479,7 +479,7 @@ BOOL type_are_same(data_type *type1, data_type *type2)
 
     case code_type_pointer:
         return (
-            //type1->data.ptr.is_const == type2->data.ptr.is_const && // FIXME: массивы не поддерживают константность элементов, поэтому невозможно сравнивать типы с учётом константости
+            //type1->data.ptr.is_const == type2->data.ptr.is_const && // FIXME: РјР°СЃСЃРёРІС‹ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°СЋС‚ РєРѕРЅСЃС‚Р°РЅС‚РЅРѕСЃС‚СЊ СЌР»РµРјРµРЅС‚РѕРІ, РїРѕСЌС‚РѕРјСѓ РЅРµРІРѕР·РјРѕР¶РЅРѕ СЃСЂР°РІРЅРёРІР°С‚СЊ С‚РёРїС‹ СЃ СѓС‡С‘С‚РѕРј РєРѕРЅСЃС‚Р°РЅС‚РѕСЃС‚Рё
             //type1->data.ptr.is_volatile == type2->data.ptr.is_volatile &&
             type_are_same(type1->data.ptr.item_type, type2->data.ptr.item_type));
 
@@ -623,7 +623,7 @@ data_type *type_create_pointer_with_spec(decl_specifier decl_spec)
 {
     data_type *ptr              = type_create_pointer_node(NULL);
 
-    ptr->data.ptr.is_const      = decl_spec.spec_const; // FIXME: константность здесь означает константность самого указателя, а не того, на что он указывает.
+    ptr->data.ptr.is_const      = decl_spec.spec_const; // FIXME: РєРѕРЅСЃС‚Р°РЅС‚РЅРѕСЃС‚СЊ Р·РґРµСЃСЊ РѕР·РЅР°С‡Р°РµС‚ РєРѕРЅСЃС‚Р°РЅС‚РЅРѕСЃС‚СЊ СЃР°РјРѕРіРѕ СѓРєР°Р·Р°С‚РµР»СЏ, Р° РЅРµ С‚РѕРіРѕ, РЅР° С‡С‚Рѕ РѕРЅ СѓРєР°Р·С‹РІР°РµС‚.
     ptr->data.ptr.is_volatile   = decl_spec.spec_volatile;
 
     return ptr;
