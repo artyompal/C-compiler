@@ -1,7 +1,7 @@
 Russian version below - Русская версия ниже.
 <hr>
 <p>
-This is a C compiler with code-generation for x86/SSE2 with optimization. It misses some C language features, like enums and preprocessor.
+This is a C compiler with code-generation for x86/SSE2 with optimization. It lacks some C language features, like enums and preprocessor.
 <p>
 I'm terribly sorry, however all the history, all the documentation and the comments are in Russsian language. You might find Google Translate useful OR try to take advantage of an automatic translation in the Chrome browser!
 <p>
