@@ -1,15 +1,15 @@
 Russian version below - Русская версия ниже.
 <hr>
 <p>
-This is a C compiler with code-generation for x86/SSE2 with optimizations. It misses some C language features, like enums and preprocessor.
+This is a C compiler with code-generation for x86/SSE2 with optimization. It misses some C language features, like enums and preprocessor.
 <p>
-I'm terribly sorry, however all the history and all the documentation and comments are in Russsian language. You might find Google translate useful OR try to take advantage of an automatic translation in Chrome browser!
+I'm terribly sorry, however all the history, all the documentation and the comments are in Russsian language. You might find Google Translate useful OR try to take advantage of an automatic translation in the Chrome browser!
 <p>
 It uses Flex as a lexical analyzer generator + Bison as a parser generator.
 <p>
-I've written a test in C language (https://github.com/artyompal/C-compiler/blob/master/cc4x86/tests/visual/rasterizer/rasterizer.c) which was a software 3D rasterizer and on this test my compiler reached the same performance as Microsoft Visual С++. Then I made test more challenging.
+I've written a test in C language (https://github.com/artyompal/C-compiler/blob/master/cc4x86/tests/visual/rasterizer/rasterizer.c) which was a software 3D rasterizer, and on this test my compiler reached the same performance as Microsoft Visual С++. Then I made that test more challenging.
 <p>
-You could try to run the test from here: https://github.com/artyompal/C-compiler/tree/master/cc4x86/tests/visual/rasterizer. There are executables provided for both MSVC and CC. Windows is required, obviously. Alternatively, you could recompile both tests.
+You could try to run the test from here: https://github.com/artyompal/C-compiler/tree/master/cc4x86/tests/visual/rasterizer. There are executables provided for both MSVC and CC. Windows is required. Alternatively, you could recompile both tests.
 <p>
 What optimizer can do:
 <ul>
@@ -23,7 +23,7 @@ The most interesting part of sources (code generator + optimizer) is here: https
 <p>
 One nice feature is, it can generate AST (abstract syntax tree) and save it into XML file like this: https://github.com/artyompal/C-compiler/blob/master/cc4x86/tests/regressive/for.xml. Check out ASTs for regressive tests here: https://github.com/artyompal/C-compiler/tree/master/cc4x86/tests/regressive.
 <p>
-The most advanced experimental code lives in this branch https://github.com/artyompal/C-compiler/tree/var_caching_dev. However, this is unfinished work and it's likely to be broken.
+The most advanced experimental code lives in this branch: https://github.com/artyompal/C-compiler/tree/var_caching_dev. However, this is unfinished work and it's likely to be broken.
 <p>
 The whole project wouldn't be possible without Dragon book, which I highly recommend as a comprehensive reference about compiler design: https://www.amazon.co.uk/Compilers-Principles-Techniques-Alfred-Aho/dp/0201100886. There is also a second edition of this book.
 <hr>
@@ -36,7 +36,7 @@ The whole project wouldn't be possible without Dragon book, which I highly recom
 <p>
 Я начал с того, что написал простой тест на языке Си (https://github.com/artyompal/C-compiler/blob/master/cc4x86/tests/visual/rasterizer/rasterizer.c), это был 3D-растеризатор. Стояла задача на этом тесте получить производительнось Microsoft Visual С++, и эта задача была выполнена. Потом я стал усложнять тест.
 <p>
-Вы можете попробовать запустить тест отсюда: https://github.com/artyompal/C-compiler/tree/master/cc4x86/tests/visual/rasterizer. Прилагаются собранные экзешники для MSVC и CC. Работает только под Windows. Либо же, вы можете пересобрать оба теста.
+Вы можете попробовать запустить тест отсюда: https://github.com/artyompal/C-compiler/tree/master/cc4x86/tests/visual/rasterizer. Прилагаются собранные exe для MSVC и CC. Работает только под Windows. Альтернативно, вы можете пересобрать оба теста.
 <p>
 Что может оптимизатор:
 <ul>
