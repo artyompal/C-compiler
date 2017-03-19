@@ -8,7 +8,7 @@
 static hash_id symbol_table;
 
 
-// õåø-ôóíêöèÿ djb2
+// Ñ…ÐµÑˆ-Ñ„ÑƒÐ½ÐºÑ†Ð¸Ñ djb2
 static unsigned int _symbol_hash(symbol *key)
 {
     unsigned int res = 5381;
@@ -32,7 +32,7 @@ int symbol_equal(symbol *key1, symbol *key2)
     return !strcmp(key1->sym_name, key2->sym_name);
 }
 
-// ñòðîêà äîëæíà áûòü âûäåëåíà ÷åðåç allocator_global_pool
+// ÑÑ‚Ñ€Ð¾ÐºÐ° Ð´Ð¾Ð»Ð¶Ð½Ð° Ð±Ñ‹Ñ‚ÑŒ Ð²Ñ‹Ð´ÐµÐ»ÐµÐ½Ð° Ñ‡ÐµÑ€ÐµÐ· allocator_global_pool
 static symbol *_symbol_lookup(const char *str)
 {
     symbol *sym;
@@ -74,7 +74,7 @@ symbol *symbol_unhide(symbol *sym)
     unhidden_name = allocator_alloc(allocator_global_pool, strlen(sym->sym_name));
     strcpy(unhidden_name, sym->sym_name + 1);
 
-    unhidden = _symbol_lookup(unhidden_name); // ïðîïóñêàåì @
+    unhidden = _symbol_lookup(unhidden_name); // Ð¿Ñ€Ð¾Ð¿ÑƒÑÐºÐ°ÐµÐ¼ @
     ASSERT(unhidden);
     return unhidden;
 }
@@ -85,7 +85,7 @@ void symbol_delete_hidden(symbol *orig, symbol *hidden)
     ASSERT(hidden->sym_name[0] != '@');
 
     orig->sym_name = hidden->sym_name;
-    symbol_remove_from_table(hidden, FALSE);   // íåëüçÿ îñâîáîæäàòü ïàìÿòü sym_name!
+    symbol_remove_from_table(hidden, FALSE);   // Ð½ÐµÐ»ÑŒÐ·Ñ Ð¾ÑÐ²Ð¾Ð±Ð¾Ð¶Ð´Ð°Ñ‚ÑŒ Ð¿Ð°Ð¼ÑÑ‚ÑŒ sym_name!
 
     hash_insert(symbol_table, orig);
 }
@@ -97,13 +97,13 @@ symbol *symbol_create_variable(symbol *sym)
 
     if (sym->sym_code != code_sym_unknown && (sym->sym_code != code_sym_label || sym->sym_value.val_int != INVALID_LABEL)) {
         if (sym->sym_code == code_sym_function) {
-            // FIXME: ìû ìîæåò îâåððàéäèòü òîëüêî ôóíêöèè; extern declarations / typedefs ïîêà íå ïîääåðæèâàþòñÿ.
-            // Ñîçäà¸ì ñêðûòûé ñèìâîë è ïîçæå ïðîâåðÿåì ñîîòâåòñòâèå òèïîâ.
+            // FIXME: Ð¼Ñ‹ Ð¼Ð¾Ð¶ÐµÑ‚ Ð¾Ð²ÐµÑ€Ñ€Ð°Ð¹Ð´Ð¸Ñ‚ÑŒ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸; extern declarations / typedefs Ð¿Ð¾ÐºÐ° Ð½Ðµ Ð¿Ð¾Ð´Ð´ÐµÑ€Ð¶Ð¸Ð²Ð°ÑŽÑ‚ÑÑ.
+            // Ð¡Ð¾Ð·Ð´Ð°Ñ‘Ð¼ ÑÐºÑ€Ñ‹Ñ‚Ñ‹Ð¹ ÑÐ¸Ð¼Ð²Ð¾Ð» Ð¸ Ð¿Ð¾Ð·Ð¶Ðµ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ ÑÐ¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÑ‚Ð²Ð¸Ðµ Ñ‚Ð¸Ð¿Ð¾Ð².
             hidden_symbol_name = allocator_alloc(allocator_global_pool, strlen(sym->sym_name) + 2);
             sprintf(hidden_symbol_name, "@%s", sym->sym_name);
 
             hidden_symbol = _symbol_lookup(hidden_symbol_name);
-            // FIXME: ñèìâîëû ìîãóò ïåðåîïðåäåëÿòüñÿ íåñêîëüêî ðàç
+            // FIXME: ÑÐ¸Ð¼Ð²Ð¾Ð»Ñ‹ Ð¼Ð¾Ð³ÑƒÑ‚ Ð¿ÐµÑ€ÐµÐ¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒÑÑ Ð½ÐµÑÐºÐ¾Ð»ÑŒÐºÐ¾ Ñ€Ð°Ð·
             ASSERT(hidden_symbol->sym_code == code_sym_unknown);
             return hidden_symbol;
         } else {

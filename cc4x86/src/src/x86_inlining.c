@@ -7,9 +7,9 @@
 
 
 //
-// Собирает статистику использования этой и других функций:
-// - вычисляет длину этой функции в инструкциях;
-// - инкрементирует счётчики использования всех функций, вызываемых из данной.
+// РЎРѕР±РёСЂР°РµС‚ СЃС‚Р°С‚РёСЃС‚РёРєСѓ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ СЌС‚РѕР№ Рё РґСЂСѓРіРёС… С„СѓРЅРєС†РёР№:
+// - РІС‹С‡РёСЃР»СЏРµС‚ РґР»РёРЅСѓ СЌС‚РѕР№ С„СѓРЅРєС†РёРё РІ РёРЅСЃС‚СЂСѓРєС†РёСЏС…;
+// - РёРЅРєСЂРµРјРµРЅС‚РёСЂСѓРµС‚ СЃС‡С‘С‚С‡РёРєРё РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РІСЃРµС… С„СѓРЅРєС†РёР№, РІС‹Р·С‹РІР°РµРјС‹С… РёР· РґР°РЅРЅРѕР№.
 //
 void x86_inlining_analyze_function(function_desc *function)
 {
@@ -40,7 +40,7 @@ void x86_inlining_analyze_function(function_desc *function)
 
 
 //
-// Корректирует стековый адрес в заинлайненной функции в данном операнде.
+// РљРѕСЂСЂРµРєС‚РёСЂСѓРµС‚ СЃС‚РµРєРѕРІС‹Р№ Р°РґСЂРµСЃ РІ Р·Р°РёРЅР»Р°Р№РЅРµРЅРЅРѕР№ С„СѓРЅРєС†РёРё РІ РґР°РЅРЅРѕРј РѕРїРµСЂР°РЅРґРµ.
 //
 static void _fixup_stack_address(x86_operand *op, int params_ofs, int locals_ofs)
 {
@@ -50,7 +50,7 @@ static void _fixup_stack_address(x86_operand *op, int params_ofs, int locals_ofs
 }
 
 //
-// Корректирует стековые адреса и псевдорегистры в данной инструкции.
+// РљРѕСЂСЂРµРєС‚РёСЂСѓРµС‚ СЃС‚РµРєРѕРІС‹Рµ Р°РґСЂРµСЃР° Рё РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂС‹ РІ РґР°РЅРЅРѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё.
 //
 static void _fixup_instruction(x86_instruction *inserted, int regs_ofs[X86_REGISTER_TYPES_COUNT],
     int params_ofs, int locals_ofs)
@@ -71,7 +71,7 @@ static void _fixup_instruction(x86_instruction *inserted, int regs_ofs[X86_REGIS
 }
 
 //
-// Генерирует код, возвращающий значение из заинлайненой функции.
+// Р“РµРЅРµСЂРёСЂСѓРµС‚ РєРѕРґ, РІРѕР·РІСЂР°С‰Р°СЋС‰РёР№ Р·РЅР°С‡РµРЅРёРµ РёР· Р·Р°РёРЅР»Р°Р№РЅРµРЅРѕР№ С„СѓРЅРєС†РёРё.
 //
 static void _patch_retval(function_desc *caller, x86_instruction *inserted, int res_ofs)
 {
@@ -93,7 +93,7 @@ static void _patch_retval(function_desc *caller, x86_instruction *inserted, int 
             bincode_create_operand_addr_from_ebp_offset(&inserted->in_op1, inserted->in_op1.op_type, res_ofs);
         }
     } else {
-        //  SSE-вариант для записи результата
+        //  SSE-РІР°СЂРёР°РЅС‚ РґР»СЏ Р·Р°РїРёСЃРё СЂРµР·СѓР»СЊС‚Р°С‚Р°
         inserted->in_code = ENCODE_SSE_MOV(inserted->in_op1.op_type);
 
         if (inserted->in_op1.op_loc == x86loc_register) {
@@ -109,12 +109,12 @@ static void _patch_retval(function_desc *caller, x86_instruction *inserted, int 
 }
 
 //
-// Эта функция должна:
-// - вставить код вызываемой функции;
-// - скорректировать смещения всех параметров и локальных переменных вызываемой функции;
-// - скорректировать значения псевдо-регистров и меток;
-// - пропатчить все ret на jump в конец функции;
-// - пропатчить все set_retval на запись в результат.
+// Р­С‚Р° С„СѓРЅРєС†РёСЏ РґРѕР»Р¶РЅР°:
+// - РІСЃС‚Р°РІРёС‚СЊ РєРѕРґ РІС‹Р·С‹РІР°РµРјРѕР№ С„СѓРЅРєС†РёРё;
+// - СЃРєРѕСЂСЂРµРєС‚РёСЂРѕРІР°С‚СЊ СЃРјРµС‰РµРЅРёСЏ РІСЃРµС… РїР°СЂР°РјРµС‚СЂРѕРІ Рё Р»РѕРєР°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С… РІС‹Р·С‹РІР°РµРјРѕР№ С„СѓРЅРєС†РёРё;
+// - СЃРєРѕСЂСЂРµРєС‚РёСЂРѕРІР°С‚СЊ Р·РЅР°С‡РµРЅРёСЏ РїСЃРµРІРґРѕ-СЂРµРіРёСЃС‚СЂРѕРІ Рё РјРµС‚РѕРє;
+// - РїСЂРѕРїР°С‚С‡РёС‚СЊ РІСЃРµ ret РЅР° jump РІ РєРѕРЅРµС† С„СѓРЅРєС†РёРё;
+// - РїСЂРѕРїР°С‚С‡РёС‚СЊ РІСЃРµ set_retval РЅР° Р·Р°РїРёСЃСЊ РІ СЂРµР·СѓР»СЊС‚Р°С‚.
 //
 
 static void _insert_function_code(x86_instruction *point, function_desc *callee, function_desc *caller,
@@ -158,10 +158,10 @@ static void _insert_function_code(x86_instruction *point, function_desc *callee,
 }
 
 //
-// Эта функция инлайнит все вхождения данной функции, если они есть.
-// Если обнаружено хотя бы одно вхождение, то в стеке выделяется место
-// под все локальные переменые и параметры функции, и под результат, если он есть.
-// Затем каждое вхождение заменяется кодом вызываемой функции.
+// Р­С‚Р° С„СѓРЅРєС†РёСЏ РёРЅР»Р°Р№РЅРёС‚ РІСЃРµ РІС…РѕР¶РґРµРЅРёСЏ РґР°РЅРЅРѕР№ С„СѓРЅРєС†РёРё, РµСЃР»Рё РѕРЅРё РµСЃС‚СЊ.
+// Р•СЃР»Рё РѕР±РЅР°СЂСѓР¶РµРЅРѕ С…РѕС‚СЏ Р±С‹ РѕРґРЅРѕ РІС…РѕР¶РґРµРЅРёРµ, С‚Рѕ РІ СЃС‚РµРєРµ РІС‹РґРµР»СЏРµС‚СЃСЏ РјРµСЃС‚Рѕ
+// РїРѕРґ РІСЃРµ Р»РѕРєР°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅС‹Рµ Рё РїР°СЂР°РјРµС‚СЂС‹ С„СѓРЅРєС†РёРё, Рё РїРѕРґ СЂРµР·СѓР»СЊС‚Р°С‚, РµСЃР»Рё РѕРЅ РµСЃС‚СЊ.
+// Р—Р°С‚РµРј РєР°Р¶РґРѕРµ РІС…РѕР¶РґРµРЅРёРµ Р·Р°РјРµРЅСЏРµС‚СЃСЏ РєРѕРґРѕРј РІС‹Р·С‹РІР°РµРјРѕР№ С„СѓРЅРєС†РёРё.
 //
 static void _inline_function_if_used(function_desc *callee, function_desc *caller)
 {
@@ -178,24 +178,24 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
     for (insn = caller->func_binary_code; insn; insn = next_insn) {
         next_insn = insn->in_next;
 
-        // Если это не вызов интересующей функции, пропускаем.
+        // Р•СЃР»Рё СЌС‚Рѕ РЅРµ РІС‹Р·РѕРІ РёРЅС‚РµСЂРµСЃСѓСЋС‰РµР№ С„СѓРЅРєС†РёРё, РїСЂРѕРїСѓСЃРєР°РµРј.
         if (insn->in_code != x86insn_call || insn->in_op1.op_loc != x86loc_symbol
             || !symbol_equal(insn->in_op1.data.sym.name, callee->func_sym)) {
                 continue;
         }
 
-        // Если это первое вхождение, маппим локальные переменные и параметры.
+        // Р•СЃР»Рё СЌС‚Рѕ РїРµСЂРІРѕРµ РІС…РѕР¶РґРµРЅРёРµ, РјР°РїРїРёРј Р»РѕРєР°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ Рё РїР°СЂР°РјРµС‚СЂС‹.
         if (!was) {
             was = TRUE;
 
             ASSERT(insn->in_code == x86insn_call);
 
             if (next_insn->in_code == x86insn_restore_stack) {
-                // если есть параметры, выделяем место в стеке
+                // РµСЃР»Рё РµСЃС‚СЊ РїР°СЂР°РјРµС‚СЂС‹, РІС‹РґРµР»СЏРµРј РјРµСЃС‚Рѕ РІ СЃС‚РµРєРµ
                 params_total_sz = next_insn->in_op1.data.int_val;
                 params_ofs      = x86_stack_frame_alloc_tmp_var(caller, params_total_sz) - 8;
 
-                // для каждого параметра создаём локальную переменную
+                // РґР»СЏ РєР°Р¶РґРѕРіРѕ РїР°СЂР°РјРµС‚СЂР° СЃРѕР·РґР°С‘Рј Р»РѕРєР°Р»СЊРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ
                 param   = callee->func_sym->sym_type->data.function.parameters_list->param_first;
                 ofs     = params_ofs + 8;
 
@@ -208,11 +208,11 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             }
 
             if (callee->func_local_vars_sz) {
-                // если есть локальные переменные, выделяем под них место в стеке
+                // РµСЃР»Рё РµСЃС‚СЊ Р»РѕРєР°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ, РІС‹РґРµР»СЏРµРј РїРѕРґ РЅРёС… РјРµСЃС‚Рѕ РІ СЃС‚РµРєРµ
                 locals_ofs = x86_stack_frame_alloc_tmp_var(caller, callee->func_local_vars_sz)
                     + callee->func_local_vars_sz;
 
-                // для каждой из них создаём локальную переменную в стеке вызывающей функции
+                // РґР»СЏ РєР°Р¶РґРѕР№ РёР· РЅРёС… СЃРѕР·РґР°С‘Рј Р»РѕРєР°Р»СЊРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ РІ СЃС‚РµРєРµ РІС‹Р·С‹РІР°СЋС‰РµР№ С„СѓРЅРєС†РёРё
                 for (sym = callee->func_locals.list_first; sym; sym = sym->sym_next) {
                     sym_copy = unit_create_temporary_variable(caller, sym->sym_type);
                     sym_copy->sym_offset = sym->sym_offset + locals_ofs;
@@ -220,18 +220,18 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             }
 
             if (insn->in_op2.op_type != x86op_unused) {
-                // если есть возвращаемое значение, выделяем под него место в стеке
+                // РµСЃР»Рё РµСЃС‚СЊ РІРѕР·РІСЂР°С‰Р°РµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ, РІС‹РґРµР»СЏРµРј РїРѕРґ РЅРµРіРѕ РјРµСЃС‚Рѕ РІ СЃС‚РµРєРµ
                 res_ofs = x86_stack_frame_alloc_tmp_var(caller,
                     type_calculate_sizeof(callee->func_sym->sym_type->data.function.result_type));
 
-                // создаём локальную переменную для результата
+                // СЃРѕР·РґР°С‘Рј Р»РѕРєР°Р»СЊРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ РґР»СЏ СЂРµР·СѓР»СЊС‚Р°С‚Р°
                 sym = unit_create_temporary_variable(caller, callee->func_sym->sym_type->data.function.result_type);
                 sym->sym_offset = res_ofs;
             }
         }
 
 
-        // Патчим запись параметров и удаляем остальной код вызова.
+        // РџР°С‚С‡РёРј Р·Р°РїРёСЃСЊ РїР°СЂР°РјРµС‚СЂРѕРІ Рё СѓРґР°Р»СЏРµРј РѕСЃС‚Р°Р»СЊРЅРѕР№ РєРѕРґ РІС‹Р·РѕРІР°.
         next_insn = insn->in_next;
         prev_insn = insn->in_prev;
         ofs = 8;
@@ -247,7 +247,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
             sz = insn->in_op2.data.int_val;
             insn->in_op2 = insn->in_op1;
 
-            // патчим push_arg на специфичную для типа данных инструкцию
+            // РїР°С‚С‡РёРј push_arg РЅР° СЃРїРµС†РёС„РёС‡РЅСѓСЋ РґР»СЏ С‚РёРїР° РґР°РЅРЅС‹С… РёРЅСЃС‚СЂСѓРєС†РёСЋ
             if (insn->in_op1.op_loc == x86loc_register) {
                 if (!OP_IS_FLOAT(insn->in_op1)) {
                     insn->in_code       = x86insn_int_mov;
@@ -297,7 +297,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
         insn = next_insn;
 
 
-        // Вставляем код функции с коррекцией локальных переменных и параметров, и обработкой return.
+        // Р’СЃС‚Р°РІР»СЏРµРј РєРѕРґ С„СѓРЅРєС†РёРё СЃ РєРѕСЂСЂРµРєС†РёРµР№ Р»РѕРєР°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С… Рё РїР°СЂР°РјРµС‚СЂРѕРІ, Рё РѕР±СЂР°Р±РѕС‚РєРѕР№ return.
         for (type = 0; type < X86_REGISTER_TYPES_COUNT; type++) {
             regs_ofs[type] = caller->func_pseudoregs_count[type];
             caller->func_pseudoregs_count[type] += callee->func_pseudoregs_count[type];
@@ -311,7 +311,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 
 
         if (res_ofs != 0) {
-            // Патчим последующее чтение результата (максимум, одну инструкцию).
+            // РџР°С‚С‡РёРј РїРѕСЃР»РµРґСѓСЋС‰РµРµ С‡С‚РµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚Р° (РјР°РєСЃРёРјСѓРј, РѕРґРЅСѓ РёРЅСЃС‚СЂСѓРєС†РёСЋ).
             for (; insn && insn->in_code != x86insn_call; insn = insn->in_next) {
                 if (insn->in_code != x86insn_read_retval) {
                     continue;
@@ -335,7 +335,7 @@ static void _inline_function_if_used(function_desc *callee, function_desc *calle
 
 
 //
-// Пытается заинлайнить какие-нибудь вызовы функций в коде данной функции.
+// РџС‹С‚Р°РµС‚СЃСЏ Р·Р°РёРЅР»Р°Р№РЅРёС‚СЊ РєР°РєРёРµ-РЅРёР±СѓРґСЊ РІС‹Р·РѕРІС‹ С„СѓРЅРєС†РёР№ РІ РєРѕРґРµ РґР°РЅРЅРѕР№ С„СѓРЅРєС†РёРё.
 //
 void x86_inlining_process_function(function_desc *function)
 {

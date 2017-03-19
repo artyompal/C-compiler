@@ -69,7 +69,7 @@ void hash_insert(hash_id hash, void *value)
 
     hash->size++;
 
-    // Ìû ñîõðàíÿåì òàáëèöó õîòÿ áû íàïîëîâèíó ñâîáîäíîé, ÷òîáû óìåíüøèòü ÷èñëî êîëëèçèé.
+    // ÐœÑ‹ ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÐµÐ¼ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñƒ Ñ…Ð¾Ñ‚Ñ Ð±Ñ‹ Ð½Ð°Ð¿Ð¾Ð»Ð¾Ð²Ð¸Ð½Ñƒ ÑÐ²Ð¾Ð±Ð¾Ð´Ð½Ð¾Ð¹, Ñ‡Ñ‚Ð¾Ð±Ñ‹ ÑƒÐ¼ÐµÐ½ÑŒÑˆÐ¸Ñ‚ÑŒ Ñ‡Ð¸ÑÐ»Ð¾ ÐºÐ¾Ð»Ð»Ð¸Ð·Ð¸Ð¹.
     if (hash->size * 2 > hash->reserved) {
         unsigned old_reserved   = hash->reserved;
         void **old_data         = hash->data;
@@ -87,7 +87,7 @@ void hash_insert(hash_id hash, void *value)
         }
     }
 
-    // Òàê êàê òàáëèöà õîòÿ áû íàïîëîâèíó ñâîáîäíà, ìåñòî âñåãäà åñòü. Íàõîäèì ïåðâóþ íåçàíÿòóþ ÿ÷åéêó.
+    // Ð¢Ð°Ðº ÐºÐ°Ðº Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ð° Ñ…Ð¾Ñ‚Ñ Ð±Ñ‹ Ð½Ð°Ð¿Ð¾Ð»Ð¾Ð²Ð¸Ð½Ñƒ ÑÐ²Ð¾Ð±Ð¾Ð´Ð½Ð°, Ð¼ÐµÑÑ‚Ð¾ Ð²ÑÐµÐ³Ð´Ð° ÐµÑÑ‚ÑŒ. ÐÐ°Ñ…Ð¾Ð´Ð¸Ð¼ Ð¿ÐµÑ€Ð²ÑƒÑŽ Ð½ÐµÐ·Ð°Ð½ÑÑ‚ÑƒÑŽ ÑÑ‡ÐµÐ¹ÐºÑƒ.
     while (hash->data[hash_value] != NULL) {
         hash_value = INDEX_WRAP(hash_value);
     }
@@ -100,7 +100,7 @@ void hash_delete(hash_id hash, void *value)
     unsigned value_to_erase = hash->hash_func(value) % hash->reserved;
     unsigned value_to_move;
 
-    // Ïîèñê óäàëÿåìîãî çíà÷åíèÿ.
+    // ÐŸÐ¾Ð¸ÑÐº ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð³Ð¾ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ.
     while (hash->data[value_to_erase] != value) {
         ASSERT(hash->data[value_to_erase] != NULL);
         value_to_erase = INDEX_WRAP(value_to_erase);
@@ -108,7 +108,7 @@ void hash_delete(hash_id hash, void *value)
 
     value_to_move = INDEX_WRAP(value_to_erase);
 
-    // Åñëè ñëåäóþùàÿ ÿ÷åéêà äîëæíà áûòü íà ìåñòå òåêóùåé, ïåðåäâèãàåì å¸.
+    // Ð•ÑÐ»Ð¸ ÑÐ»ÐµÐ´ÑƒÑŽÑ‰Ð°Ñ ÑÑ‡ÐµÐ¹ÐºÐ° Ð´Ð¾Ð»Ð¶Ð½Ð° Ð±Ñ‹Ñ‚ÑŒ Ð½Ð° Ð¼ÐµÑÑ‚Ðµ Ñ‚ÐµÐºÑƒÑ‰ÐµÐ¹, Ð¿ÐµÑ€ÐµÐ´Ð²Ð¸Ð³Ð°ÐµÐ¼ ÐµÑ‘.
     while (hash->data[value_to_move] &&
             hash->hash_func(hash->data[value_to_move]) % hash->reserved == value_to_erase) {
         hash->data[value_to_erase] = hash->data[value_to_move];
@@ -117,7 +117,7 @@ void hash_delete(hash_id hash, void *value)
         value_to_move   = INDEX_WRAP(value_to_move);
     }
 
-    // Óäàëåíèå.
+    // Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ.
     hash->size--;
     hash->data[value_to_erase] = NULL;
 }

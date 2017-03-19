@@ -84,7 +84,7 @@ int token_integer_literal(const char *token, int unused)
     long long val;
     data_type_code type     = code_type_int;
 
-    // парсим суффиксы ulUL и выводим тип
+    // РїР°СЂСЃРёРј СЃСѓС„С„РёРєСЃС‹ ulUL Рё РІС‹РІРѕРґРёРј С‚РёРї
     while (*endptr) {
         if (*endptr == 'u' || *endptr == 'U')
             if (type == code_type_int)
@@ -123,7 +123,7 @@ int token_float_literal(const char *token, int unused)
     double val          = strtod(token, &endptr);
     data_type_code type = code_type_double;
 
-    // парсим суффиксы lfLF и выводим тип
+    // РїР°СЂСЃРёРј СЃСѓС„С„РёРєСЃС‹ lfLF Рё РІС‹РІРѕРґРёРј С‚РёРї
     while (*endptr) {
         if (*endptr == 'f' || *endptr == 'F')
             if (type == code_type_double)
@@ -208,7 +208,7 @@ int token_string_literal(const char *token, int token_len)
         _parse_character(token + i, &length, &value);
     }
 
-    count++;    // место для завершающего нуля
+    count++;    // РјРµСЃС‚Рѕ РґР»СЏ Р·Р°РІРµСЂС€Р°СЋС‰РµРіРѕ РЅСѓР»СЏ
     data    = allocator_alloc(allocator_global_pool, count);
 
     for (i = 1, j = 0; token[i] != '"'; i += length, j++) {

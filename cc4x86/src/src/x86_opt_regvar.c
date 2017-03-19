@@ -28,7 +28,7 @@ static x86_register_vars_list   _register_vars_list;
 
 
 //
-// Ñîçäà¸ò ðåãèñòðîâóþ ïåðåìåííóþ è äîáàâëÿåò å¸ â ñïèñîê.
+// Ð¡Ð¾Ð·Ð´Ð°Ñ‘Ñ‚ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¾Ð²ÑƒÑŽ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½ÑƒÑŽ Ð¸ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÑ‚ ÐµÑ‘ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº.
 static void _create_register_variable(symbol *sym, x86_operand_type type)
 {
     x86_register_var *res;
@@ -50,7 +50,7 @@ static void _create_register_variable(symbol *sym, x86_operand_type type)
 }
 
 //
-// Êîëëáýê äëÿ ñëåäóþùåé ôóíêöèè.
+// ÐšÐ¾Ð»Ð»Ð±ÑÐº Ð´Ð»Ñ ÑÐ»ÐµÐ´ÑƒÑŽÑ‰ÐµÐ¹ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸.
 static void _search_for_addressing_or_int2float(expression *expr, void *result)
 {
     address_lookup_result *res = result;
@@ -61,30 +61,30 @@ static void _search_for_addressing_or_int2float(expression *expr, void *result)
         }
 }
 
-// Äîáàâëÿåò ïåðåìåííóþ â ñïèñîê, åñëè íèãäå íå áåð¸òñÿ å¸ àäðåñ.
+// Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÑ‚ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½ÑƒÑŽ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº, ÐµÑÐ»Ð¸ Ð½Ð¸Ð³Ð´Ðµ Ð½Ðµ Ð±ÐµÑ€Ñ‘Ñ‚ÑÑ ÐµÑ‘ Ð°Ð´Ñ€ÐµÑ.
 static void _try_create_register_variable(function_desc *function, symbol *sym, x86_operand_type type)
 {
     address_lookup_result address_taken;
     address_taken.sym = sym, address_taken.res = FALSE;
 
-    // ïðîâåðÿåì ðàçìåð ïåðåìåííîé
+    // Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹
     if (type == x86op_dword && !TYPE_IS_X86_DWORD(sym->sym_type) || type == x86op_float && !TYPE_IS_FLOATING(sym->sym_type)) {
         return;
     }
 
-    // ïðîâåðÿåì, ÷òî íèãäå íå áåð¸òñÿ àäðåñ ýòîé ïåðåìåííîé
+    // Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼, Ñ‡Ñ‚Ð¾ Ð½Ð¸Ð³Ð´Ðµ Ð½Ðµ Ð±ÐµÑ€Ñ‘Ñ‚ÑÑ Ð°Ð´Ñ€ÐµÑ ÑÑ‚Ð¾Ð¹ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹
     expr_iterate_through_subexpressions(function->func_body, code_expr_arithmetic, EXPR_IT_APPLY_FILTER,
         _search_for_addressing_or_int2float, &address_taken);
     if (address_taken.res) {
         return;
     }
 
-    // äîáàâëÿåì â ñïèñîê.
+    // Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº.
     _create_register_variable(sym, type);
 }
 
 //
-// Âûÿâëÿåò âñå ïåðåìåííûå, êîòîðûå ìîæíî ñäåëàòü ðåãèñòðîâûìè.
+// Ð’Ñ‹ÑÐ²Ð»ÑÐµÑ‚ Ð²ÑÐµ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ðµ Ð¼Ð¾Ð¶Ð½Ð¾ ÑÐ´ÐµÐ»Ð°Ñ‚ÑŒ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¾Ð²Ñ‹Ð¼Ð¸.
 static void _choose_possible_register_variables(function_desc *function, x86_operand_type type)
 {
     symbol *var;
@@ -103,7 +103,7 @@ static void _choose_possible_register_variables(function_desc *function, x86_ope
 }
 
 //
-// Çàìåíÿåò âñå âõîæäåíèÿ ðåãèñòðîâîé ïåðåìåííîé íà ðåãèñòð.
+// Ð—Ð°Ð¼ÐµÐ½ÑÐµÑ‚ Ð²ÑÐµ Ð²Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸Ñ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¾Ð²Ð¾Ð¹ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹ Ð½Ð° Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€.
 static void _replace_variable_with_register(function_desc *function, x86_register_var *reg_var, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -129,7 +129,7 @@ static void _replace_variable_with_register(function_desc *function, x86_registe
 }
 
 //
-// Ñîõðàíÿåò ññûëêó íà àëëîöèðîâàííîå ìåñòî â ñòåêå äëÿ ðåãèñòðîâîé ïåðåìåííîé.
+// Ð¡Ð¾Ñ…Ñ€Ð°Ð½ÑÐµÑ‚ ÑÑÑ‹Ð»ÐºÑƒ Ð½Ð° Ð°Ð»Ð»Ð¾Ñ†Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ðµ Ð¼ÐµÑÑ‚Ð¾ Ð² ÑÑ‚ÐµÐºÐµ Ð´Ð»Ñ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¾Ð²Ð¾Ð¹ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹.
 static void _link_stack_var_to_register_var(function_desc *function, x86_pseudoreg_info *info, x86_register_var *reg_var, x86_operand_type type)
 {
     int var_offset  = reg_var->sym->sym_offset;
@@ -140,23 +140,23 @@ static void _link_stack_var_to_register_var(function_desc *function, x86_pseudor
 }
 
 //
-// Ñîçäà¸ò âñå âîçìîæíûå ðåãèñòðîâûå ïåðåìåííûå.
+// Ð¡Ð¾Ð·Ð´Ð°Ñ‘Ñ‚ Ð²ÑÐµ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ñ‹Ðµ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¾Ð²Ñ‹Ðµ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ.
 static void _create_register_variables_for_type(function_desc *function, x86_operand_type type)
 {
     int last_pseudo_register;
     x86_register_var *reg_var;
 
-    // ñîñòàâëÿåì ñïèñîê ïåðåìåíûõ
+    // ÑÐ¾ÑÑ‚Ð°Ð²Ð»ÑÐµÐ¼ ÑÐ¿Ð¸ÑÐ¾Ðº Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ñ‹Ñ…
     _choose_possible_register_variables(function, type);
 
-    // ðåãèñòðû íóìåðóþòñÿ ñ åäèíèöû
+    // Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ñ‹ Ð½ÑƒÐ¼ÐµÑ€ÑƒÑŽÑ‚ÑÑ Ñ ÐµÐ´Ð¸Ð½Ð¸Ñ†Ñ‹
     function->func_pseudoregs_count[type]++;
 
     last_pseudo_register                    = function->func_pseudoregs_count[type];
     function->func_start_of_regvars[type]   = last_pseudo_register;
 
 
-    // ñîçäà¸ì âñå âîçìîæíûå ðåãèñòðîâûå ïåðåìåííûå
+    // ÑÐ¾Ð·Ð´Ð°Ñ‘Ð¼ Ð²ÑÐµ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ñ‹Ðµ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¾Ð²Ñ‹Ðµ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ
     for (reg_var = _register_vars_list.first; reg_var; reg_var = reg_var->next) {
         if (reg_var->type == type) {
             reg_var->pseudo_reg = last_pseudo_register++;
@@ -168,30 +168,30 @@ static void _create_register_variables_for_type(function_desc *function, x86_ope
 
 
 //
-// Èíèöèàëèçàöèÿ ñïèñêà ðåãèñòðîâûõ ïåðåìåííûõ.
+// Ð˜Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ ÑÐ¿Ð¸ÑÐºÐ° Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¾Ð²Ñ‹Ñ… Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ñ….
 void x86_regvars_init()
 {
     _register_vars_list.first = _register_vars_list.last = NULL;
 }
 
 //
-// Ãëîáàëüíàÿ òî÷êà âõîäà â àëëîêàòîð ðåãèñòðîâûõ ïåðåìåííûõ.
+// Ð“Ð»Ð¾Ð±Ð°Ð»ÑŒÐ½Ð°Ñ Ñ‚Ð¾Ñ‡ÐºÐ° Ð²Ñ…Ð¾Ð´Ð° Ð² Ð°Ð»Ð»Ð¾ÐºÐ°Ñ‚Ð¾Ñ€ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¾Ð²Ñ‹Ñ… Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ñ….
 void x86_regvars_create(function_desc *function)
 {
     _create_register_variables_for_type(function, x86op_dword);
     _create_register_variables_for_type(function, x86op_float);
 
-    // äåëàåì îïòèìèçàöèè, ñòàâøèå òåïåðü âîçìîæíûìè
+    // Ð´ÐµÐ»Ð°ÐµÐ¼ Ð¾Ð¿Ñ‚Ð¸Ð¼Ð¸Ð·Ð°Ñ†Ð¸Ð¸, ÑÑ‚Ð°Ð²ÑˆÐ¸Ðµ Ñ‚ÐµÐ¿ÐµÑ€ÑŒ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ñ‹Ð¼Ð¸
     x86_local_optimization_pass(function, TRUE);
 }
 
 //
-// Çàïîëíÿåò ïîëå reg_stack_location ñìåùåíèåì ñòåêîâîé ïåðåìåíîé äëÿ âñåõ ðåãèñòðîâûõ ïåðåìåííûõ.
+// Ð—Ð°Ð¿Ð¾Ð»Ð½ÑÐµÑ‚ Ð¿Ð¾Ð»Ðµ reg_stack_location ÑÐ¼ÐµÑ‰ÐµÐ½Ð¸ÐµÐ¼ ÑÑ‚ÐµÐºÐ¾Ð²Ð¾Ð¹ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð¾Ð¹ Ð´Ð»Ñ Ð²ÑÐµÑ… Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¾Ð²Ñ‹Ñ… Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ñ….
 void x86_regvars_setup_offset(function_desc *function, x86_pseudoreg_info *info, x86_operand_type type)
 {
     x86_register_var *reg_var;
 
-    // ñîõðàíÿåì ñòåêîâûå ñìåùåíèÿ äëÿ êàæäîé ïåðåìåííîé, ÷òîáû íå àëëîöèðîâàòü ëèøíåå ìåñòî â ñòåêå
+    // ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÐµÐ¼ ÑÑ‚ÐµÐºÐ¾Ð²Ñ‹Ðµ ÑÐ¼ÐµÑ‰ÐµÐ½Ð¸Ñ Ð´Ð»Ñ ÐºÐ°Ð¶Ð´Ð¾Ð¹ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð½Ðµ Ð°Ð»Ð»Ð¾Ñ†Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð»Ð¸ÑˆÐ½ÐµÐµ Ð¼ÐµÑÑ‚Ð¾ Ð² ÑÑ‚ÐµÐºÐµ
     for (reg_var = _register_vars_list.first; reg_var; reg_var = reg_var->next) {
         if (reg_var->type == type) {
             _link_stack_var_to_register_var(function, info, reg_var, type);

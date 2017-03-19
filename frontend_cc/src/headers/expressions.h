@@ -12,7 +12,7 @@ typedef struct symbol_decl symbol;
 
 
 typedef enum arithmetic_opcode_decl {
-    // бинарные арифметические операции:
+    // Р±РёРЅР°СЂРЅС‹Рµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РѕРїРµСЂР°С†РёРё:
     op_add,
     op_sub,
     op_mul,
@@ -24,7 +24,7 @@ typedef enum arithmetic_opcode_decl {
     op_xor,
     op_or,
 
-    // операции сравнения и логические:
+    // РѕРїРµСЂР°С†РёРё СЃСЂР°РІРЅРµРЅРёСЏ Рё Р»РѕРіРёС‡РµСЃРєРёРµ:
     op_less_then,
     op_less_equal,
     op_greater_then,
@@ -36,7 +36,7 @@ typedef enum arithmetic_opcode_decl {
     op_logical_and_in_jump,
     op_logical_or_in_jump,
 
-    // операции присваивания:
+    // РѕРїРµСЂР°С†РёРё РїСЂРёСЃРІР°РёРІР°РЅРёСЏ:
     op_assign,
     op_add_assign,
     op_sub_assign,
@@ -49,7 +49,7 @@ typedef enum arithmetic_opcode_decl {
     op_xor_assign,
     op_or_assign,
 
-    // унарные арифметические операции:
+    // СѓРЅР°СЂРЅС‹Рµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РѕРїРµСЂР°С†РёРё:
     op_neg,
     op_bitnot,
     op_not,
@@ -60,7 +60,7 @@ typedef enum arithmetic_opcode_decl {
     op_dereference,
     op_get_address,
 
-    // унарные операции внутреннего использования:
+    // СѓРЅР°СЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ:
     op_convert_int2float,
     op_convert_float2int,
     op_convert_float2double,
@@ -98,7 +98,7 @@ typedef enum expression_code_decl {
     code_expr_symbol,
     code_expr_function_call,
     code_expr_jump,
-    code_expr_jump_by_name,         // используется для разрешения goto вперёд
+    code_expr_jump_by_name,         // РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СЂР°Р·СЂРµС€РµРЅРёСЏ goto РІРїРµСЂС‘Рґ
     code_expr_return,
     code_expr_arithmetic,
     code_expr_label,
@@ -123,17 +123,17 @@ typedef struct arithm_decl {
     arithmetic_opcode   opcode;
     expression          *operand1;
     expression          *operand2;
-    int                 step;               // для инкремента/декремента указателей
+    int                 step;               // РґР»СЏ РёРЅРєСЂРµРјРµРЅС‚Р°/РґРµРєСЂРµРјРµРЅС‚Р° СѓРєР°Р·Р°С‚РµР»РµР№
 } expr_arithm;
 
 typedef struct expression_decl {
-    expression_code expr_code;              // код операции, см. выше
-    data_type *     expr_type;              // указатель на корень дерева типов
-    BOOL            expr_lvalue;            // означает, что фактически выражение является указателем на означенный тип
-    int             expr_source_line;       // отслеживание номеров строк для сообщений об ошибках
-    expression      *expr_next, *expr_prev; // связный список (для comma-expression и фактических параметров функций)
-    expression      *expr_parent;           // хранит структуру дерева для арифметических операций
-    int             expr_complexity;        // используется кодогенератором
+    expression_code expr_code;              // РєРѕРґ РѕРїРµСЂР°С†РёРё, СЃРј. РІС‹С€Рµ
+    data_type *     expr_type;              // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РєРѕСЂРµРЅСЊ РґРµСЂРµРІР° С‚РёРїРѕРІ
+    BOOL            expr_lvalue;            // РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ С„Р°РєС‚РёС‡РµСЃРєРё РІС‹СЂР°Р¶РµРЅРёРµ СЏРІР»СЏРµС‚СЃСЏ СѓРєР°Р·Р°С‚РµР»РµРј РЅР° РѕР·РЅР°С‡РµРЅРЅС‹Р№ С‚РёРї
+    int             expr_source_line;       // РѕС‚СЃР»РµР¶РёРІР°РЅРёРµ РЅРѕРјРµСЂРѕРІ СЃС‚СЂРѕРє РґР»СЏ СЃРѕРѕР±С‰РµРЅРёР№ РѕР± РѕС€РёР±РєР°С…
+    expression      *expr_next, *expr_prev; // СЃРІСЏР·РЅС‹Р№ СЃРїРёСЃРѕРє (РґР»СЏ comma-expression Рё С„Р°РєС‚РёС‡РµСЃРєРёС… РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёР№)
+    expression      *expr_parent;           // С…СЂР°РЅРёС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґРµСЂРµРІР° РґР»СЏ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёС… РѕРїРµСЂР°С†РёР№
+    int             expr_complexity;        // РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РєРѕРґРѕРіРµРЅРµСЂР°С‚РѕСЂРѕРј
 
     union {
         // code_expr_int_constant

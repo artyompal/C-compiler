@@ -7,13 +7,13 @@
 #endif // _MSC_VER
 
 
-typedef struct basic_block_decl {           // структура базового блока:
-    x86_instruction     *block_leader;      // первая инструкция блока, чаще всего метка
-    int                 block_length;       // число инструкций в блоке
-    x86_instruction     *block_last_insn;   // указатель на последнюю инструкцию
+typedef struct basic_block_decl {           // СЃС‚СЂСѓРєС‚СѓСЂР° Р±Р°Р·РѕРІРѕРіРѕ Р±Р»РѕРєР°:
+    x86_instruction     *block_leader;      // РїРµСЂРІР°СЏ РёРЅСЃС‚СЂСѓРєС†РёСЏ Р±Р»РѕРєР°, С‡Р°С‰Рµ РІСЃРµРіРѕ РјРµС‚РєР°
+    int                 block_length;       // С‡РёСЃР»Рѕ РёРЅСЃС‚СЂСѓРєС†РёР№ РІ Р±Р»РѕРєРµ
+    x86_instruction     *block_last_insn;   // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РїРѕСЃР»РµРґРЅСЋСЋ РёРЅСЃС‚СЂСѓРєС†РёСЋ
 
-    int                 block_first_def;    // первое определение
-    int                 block_end_def;      // определение, последующее последнему
+    int                 block_first_def;    // РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ
+    int                 block_end_def;      // РѕРїСЂРµРґРµР»РµРЅРёРµ, РїРѕСЃР»РµРґСѓСЋС‰РµРµ РїРѕСЃР»РµРґРЅРµРјСѓ
 } basic_block;
 
 

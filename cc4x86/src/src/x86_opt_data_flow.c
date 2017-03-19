@@ -8,45 +8,45 @@
 #include "x86_optimizer.h"
 
 
-// Общие данные.
-static basic_blocks_vector  _basic_blocks;                  // число элементов равно количеству блоков в функции
+// РћР±С‰РёРµ РґР°РЅРЅС‹Рµ.
+static basic_blocks_vector  _basic_blocks;                  // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ СЂР°РІРЅРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ Р±Р»РѕРєРѕРІ РІ С„СѓРЅРєС†РёРё
 
 
-// Таблицы живых регистров.
-static set_vector           _alivereg_in;                   // число множеств равно количеству блоков в функции;
-static set_vector           _alivereg_out;                  // число элементов в каждом множестве равно числу псевдорегистров
+// РўР°Р±Р»РёС†С‹ Р¶РёРІС‹С… СЂРµРіРёСЃС‚СЂРѕРІ.
+static set_vector           _alivereg_in;                   // С‡РёСЃР»Рѕ РјРЅРѕР¶РµСЃС‚РІ СЂР°РІРЅРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ Р±Р»РѕРєРѕРІ РІ С„СѓРЅРєС†РёРё;
+static set_vector           _alivereg_out;                  // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РєР°Р¶РґРѕРј РјРЅРѕР¶РµСЃС‚РІРµ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂРѕРІ
 
-static set                  _alivereg_after_current_insn;   // число элементов в каждом множестве равно числу псевдорегистров
-static set                  _alivereg_before_current_insn;  // число элементов в каждом множестве равно числу псевдорегистров
+static set                  _alivereg_after_current_insn;   // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РєР°Р¶РґРѕРј РјРЅРѕР¶РµСЃС‚РІРµ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂРѕРІ
+static set                  _alivereg_before_current_insn;  // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РєР°Р¶РґРѕРј РјРЅРѕР¶РµСЃС‚РІРµ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂРѕРІ
 
 static int                  _current_block;
 static x86_instruction *    _current_insn;
 
 
-// Таблицы достигающих определений.
-static insn_vector          _definitions_table;             // число элементов равно числу инструкций в функции
+// РўР°Р±Р»РёС†С‹ РґРѕСЃС‚РёРіР°СЋС‰РёС… РѕРїСЂРµРґРµР»РµРЅРёР№.
+static insn_vector          _definitions_table;             // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РёРЅСЃС‚СЂСѓРєС†РёР№ РІ С„СѓРЅРєС†РёРё
 
-static set_vector           _reachingdef_in;                // число множеств равно количеству блоков в функции;
-static set_vector           _reachingdef_out;               // число элементов в каждом множестве равно числу псевдорегистров
+static set_vector           _reachingdef_in;                // С‡РёСЃР»Рѕ РјРЅРѕР¶РµСЃС‚РІ СЂР°РІРЅРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ Р±Р»РѕРєРѕРІ РІ С„СѓРЅРєС†РёРё;
+static set_vector           _reachingdef_out;               // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РєР°Р¶РґРѕРј РјРЅРѕР¶РµСЃС‚РІРµ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂРѕРІ
 
 
-// Таблицы импортирующих использований.
-static insn_vector          _exposeduse_table;              // число элементов равно числу найденных импортирующих использований
-static int_vector           _exposeduse_reg2idx;            // число элементов в каждом множестве равно числу псевдорегистров+1
+// РўР°Р±Р»РёС†С‹ РёРјРїРѕСЂС‚РёСЂСѓСЋС‰РёС… РёСЃРїРѕР»СЊР·РѕРІР°РЅРёР№.
+static insn_vector          _exposeduse_table;              // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РЅР°Р№РґРµРЅРЅС‹С… РёРјРїРѕСЂС‚РёСЂСѓСЋС‰РёС… РёСЃРїРѕР»СЊР·РѕРІР°РЅРёР№
+static int_vector           _exposeduse_reg2idx;            // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РєР°Р¶РґРѕРј РјРЅРѕР¶РµСЃС‚РІРµ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂРѕРІ+1
 
-static set_vector           _exposeduses_in;                // число множеств равно количеству блоков в функции;
-static set_vector           _exposeduses_out;               // число элементов равно числу найденных импортирующих использований
+static set_vector           _exposeduses_in;                // С‡РёСЃР»Рѕ РјРЅРѕР¶РµСЃС‚РІ СЂР°РІРЅРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ Р±Р»РѕРєРѕРІ РІ С„СѓРЅРєС†РёРё;
+static set_vector           _exposeduses_out;               // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РЅР°Р№РґРµРЅРЅС‹С… РёРјРїРѕСЂС‚РёСЂСѓСЋС‰РёС… РёСЃРїРѕР»СЊР·РѕРІР°РЅРёР№
 
-// Таблицы потенциально избыточных копирований.
-static insn_vector          _redundantcopies_table;         // число элементов равно числу найденых инструкций копирования
-static set_vector           _redundantcopies_in;            // число множеств равно количеству блоков в функции;
-static set_vector           _redundantcopies_out;           // число элементов равно числу найденных инструкций копирования
+// РўР°Р±Р»РёС†С‹ РїРѕС‚РµРЅС†РёР°Р»СЊРЅРѕ РёР·Р±С‹С‚РѕС‡РЅС‹С… РєРѕРїРёСЂРѕРІР°РЅРёР№.
+static insn_vector          _redundantcopies_table;         // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РЅР°Р№РґРµРЅС‹С… РёРЅСЃС‚СЂСѓРєС†РёР№ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+static set_vector           _redundantcopies_in;            // С‡РёСЃР»Рѕ РјРЅРѕР¶РµСЃС‚РІ СЂР°РІРЅРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ Р±Р»РѕРєРѕРІ РІ С„СѓРЅРєС†РёРё;
+static set_vector           _redundantcopies_out;           // С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ СЂР°РІРЅРѕ С‡РёСЃР»Сѓ РЅР°Р№РґРµРЅРЅС‹С… РёРЅСЃС‚СЂСѓРєС†РёР№ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Общие функции обработки структур данных.
+// РћР±С‰РёРµ С„СѓРЅРєС†РёРё РѕР±СЂР°Р±РѕС‚РєРё СЃС‚СЂСѓРєС‚СѓСЂ РґР°РЅРЅС‹С….
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,22 +57,22 @@ static int _is_leader(x86_instruction *insn)
 }
 
 //
-// Строит список базовых блоков для данной функции.
+// РЎС‚СЂРѕРёС‚ СЃРїРёСЃРѕРє Р±Р°Р·РѕРІС‹С… Р±Р»РѕРєРѕРІ РґР»СЏ РґР°РЅРЅРѕР№ С„СѓРЅРєС†РёРё.
 static void _detect_basic_blocks(function_desc *function)
 {
     x86_instruction *insn, *block_leader, *prev_insn;
     int estimated_count = 1;
     int current_index = 0, leader_index = 0;
 
-    // считаем верхнюю оценку для числа возможных блоков
+    // СЃС‡РёС‚Р°РµРј РІРµСЂС…РЅСЋСЋ РѕС†РµРЅРєСѓ РґР»СЏ С‡РёСЃР»Р° РІРѕР·РјРѕР¶РЅС‹С… Р±Р»РѕРєРѕРІ
     for (insn = function->func_binary_code->in_next; insn; insn = insn->in_next)
         estimated_count += _is_leader(insn);
 
-    // выделяем память
+    // РІС‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ
     _basic_blocks.blocks_base = allocator_alloc(allocator_per_function_pool, estimated_count * sizeof(basic_block));
     _basic_blocks.blocks_count = 0;
 
-    // строим список блоков
+    // СЃС‚СЂРѕРёРј СЃРїРёСЃРѕРє Р±Р»РѕРєРѕРІ
     for (insn = function->func_binary_code; insn; ) {
         block_leader    = insn;
         leader_index    = current_index;
@@ -85,7 +85,7 @@ static void _detect_basic_blocks(function_desc *function)
             current_index++;
         } while (insn && !_is_leader(insn));
 
-        // insn - новый лидер либо NULL
+        // insn - РЅРѕРІС‹Р№ Р»РёРґРµСЂ Р»РёР±Рѕ NULL
         _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_leader      = block_leader;
         _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_length      = current_index - leader_index;
         _basic_blocks.blocks_base[_basic_blocks.blocks_count].block_last_insn   = prev_insn;
@@ -97,16 +97,16 @@ static void _detect_basic_blocks(function_desc *function)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Анализ живых регистров. Используется аллокатором регистров.
+// РђРЅР°Р»РёР· Р¶РёРІС‹С… СЂРµРіРёСЃС‚СЂРѕРІ. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р°Р»Р»РѕРєР°С‚РѕСЂРѕРј СЂРµРіРёСЃС‚СЂРѕРІ.
 //
-// Регистра x называется живым в точке p, если его значение в точке p может быть использовано вдоль некоторого,
-// начинающегося в p пути графа потока. Иначе он является dead.
+// Р РµРіРёСЃС‚СЂР° x РЅР°Р·С‹РІР°РµС‚СЃСЏ Р¶РёРІС‹Рј РІ С‚РѕС‡РєРµ p, РµСЃР»Рё РµРіРѕ Р·РЅР°С‡РµРЅРёРµ РІ С‚РѕС‡РєРµ p РјРѕР¶РµС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРѕ РІРґРѕР»СЊ РЅРµРєРѕС‚РѕСЂРѕРіРѕ,
+// РЅР°С‡РёРЅР°СЋС‰РµРіРѕСЃСЏ РІ p РїСѓС‚Рё РіСЂР°С„Р° РїРѕС‚РѕРєР°. РРЅР°С‡Рµ РѕРЅ СЏРІР»СЏРµС‚СЃСЏ dead.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //
-// Вычисляет множество def для данного блока,
-// т.е. множество псевдорегистров, которые переписываются до их использования.
+// Р’С‹С‡РёСЃР»СЏРµС‚ РјРЅРѕР¶РµСЃС‚РІРѕ def РґР»СЏ РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР°,
+// С‚.Рµ. РјРЅРѕР¶РµСЃС‚РІРѕ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂРѕРІ, РєРѕС‚РѕСЂС‹Рµ РїРµСЂРµРїРёСЃС‹РІР°СЋС‚СЃСЏ РґРѕ РёС… РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ.
 static void _alivereg_build_def(set *def, basic_block *block, function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -119,37 +119,37 @@ static void _alivereg_build_def(set *def, basic_block *block, function_desc *fun
     SET_ALLOCA(used, def->set_count);
     set_clear_to_zeros(&used);
 
-    // помечаем все инструкции
+    // РїРѕРјРµС‡Р°РµРј РІСЃРµ РёРЅСЃС‚СЂСѓРєС†РёРё
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
-        // извлекаем все переписываемые регистры
+        // РёР·РІР»РµРєР°РµРј РІСЃРµ РїРµСЂРµРїРёСЃС‹РІР°РµРјС‹Рµ СЂРµРіРёСЃС‚СЂС‹
         bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
             ASSERT(reg < function->func_pseudoregs_count[type]);
 
-            // если регистр не использовался ранее, вносим его во множество
+            // РµСЃР»Рё СЂРµРіРёСЃС‚СЂ РЅРµ РёСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ СЂР°РЅРµРµ, РІРЅРѕСЃРёРј РµРіРѕ РІРѕ РјРЅРѕР¶РµСЃС‚РІРѕ
             if (!BIT_TEST(used, reg)) {
                 BIT_RAISE(*def, reg);
             }
         }
 
-        // извлекаем все читаемые регистры
+        // РёР·РІР»РµРєР°РµРј РІСЃРµ С‡РёС‚Р°РµРјС‹Рµ СЂРµРіРёСЃС‚СЂС‹
         bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
             ASSERT(reg < function->func_pseudoregs_count[type]);
 
-            // помечаем их как использованные
+            // РїРѕРјРµС‡Р°РµРј РёС… РєР°Рє РёСЃРїРѕР»СЊР·РѕРІР°РЅРЅС‹Рµ
             BIT_RAISE(used, reg);
         }
     }
 }
 
 //
-// Вычисляет множество use для данного блока,
-// т.е. множество псевдорегистров, которые могут использоваться до их определения.
+// Р’С‹С‡РёСЃР»СЏРµС‚ РјРЅРѕР¶РµСЃС‚РІРѕ use РґР»СЏ РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР°,
+// С‚.Рµ. РјРЅРѕР¶РµСЃС‚РІРѕ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂРѕРІ, РєРѕС‚РѕСЂС‹Рµ РјРѕРіСѓС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РґРѕ РёС… РѕРїСЂРµРґРµР»РµРЅРёСЏ.
 static void _alivereg_build_use(set *use, basic_block *block, function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -162,37 +162,37 @@ static void _alivereg_build_use(set *use, basic_block *block, function_desc *fun
     SET_ALLOCA(defined, use->set_count);
     set_clear_to_zeros(&defined);
 
-    // помечаем все инструкции
+    // РїРѕРјРµС‡Р°РµРј РІСЃРµ РёРЅСЃС‚СЂСѓРєС†РёРё
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
-        // извлекаем все читаемые регистры
+        // РёР·РІР»РµРєР°РµРј РІСЃРµ С‡РёС‚Р°РµРјС‹Рµ СЂРµРіРёСЃС‚СЂС‹
         bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
             ASSERT(reg < function->func_pseudoregs_count[type]);
 
-            // если регистр не определён в данном блоке, вносим его во множество
+            // РµСЃР»Рё СЂРµРіРёСЃС‚СЂ РЅРµ РѕРїСЂРµРґРµР»С‘РЅ РІ РґР°РЅРЅРѕРј Р±Р»РѕРєРµ, РІРЅРѕСЃРёРј РµРіРѕ РІРѕ РјРЅРѕР¶РµСЃС‚РІРѕ
             if (!BIT_TEST(defined, reg)) {
                 BIT_RAISE(*use, reg);
             }
         }
 
-        // извлекаем все переписываемые регистры
+        // РёР·РІР»РµРєР°РµРј РІСЃРµ РїРµСЂРµРїРёСЃС‹РІР°РµРјС‹Рµ СЂРµРіРёСЃС‚СЂС‹
         bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
 
         for (j = 0; j < regs_cnt; j++) {
             reg = regs[j];
             ASSERT(reg < function->func_pseudoregs_count[type]);
 
-            // помечаем их как определённые
+            // РїРѕРјРµС‡Р°РµРј РёС… РєР°Рє РѕРїСЂРµРґРµР»С‘РЅРЅС‹Рµ
             BIT_RAISE(defined, reg);
         }
     }
 }
 
 //
-// Строит для каждого базового блока множества in/out в смысле живых регистров.
-// Дракон, алгоритм 10.4.
+// РЎС‚СЂРѕРёС‚ РґР»СЏ РєР°Р¶РґРѕРіРѕ Р±Р°Р·РѕРІРѕРіРѕ Р±Р»РѕРєР° РјРЅРѕР¶РµСЃС‚РІР° in/out РІ СЃРјС‹СЃР»Рµ Р¶РёРІС‹С… СЂРµРіРёСЃС‚СЂРѕРІ.
+// Р”СЂР°РєРѕРЅ, Р°Р»РіРѕСЂРёС‚Рј 10.4.
 static void _alivereg_build_inout(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -205,17 +205,17 @@ static void _alivereg_build_inout(function_desc *function, x86_operand_type type
     SET_ALLOCA(tmp, function->func_pseudoregs_count[type]);
     SET_ALLOCA(old_in, function->func_pseudoregs_count[type]);
 
-    // Все in делаем пустыми множествами.
+    // Р’СЃРµ in РґРµР»Р°РµРј РїСѓСЃС‚С‹РјРё РјРЅРѕР¶РµСЃС‚РІР°РјРё.
     for (block = 0; block < _basic_blocks.blocks_count; block++)
         set_clear_to_zeros(&_alivereg_in.vec_base[block]);
 
-    // Цикл, пока вносятся изменения хотя бы в один из блоков in.
+    // Р¦РёРєР», РїРѕРєР° РІРЅРѕСЃСЏС‚СЃСЏ РёР·РјРµРЅРµРЅРёСЏ С…РѕС‚СЏ Р±С‹ РІ РѕРґРёРЅ РёР· Р±Р»РѕРєРѕРІ in.
     do {
         changed = FALSE;
 
         for (block = _basic_blocks.blocks_count-1; block >= 0; block--) {
             //
-            // 1. out[B] = объединение всех in[последующих B].
+            // 1. out[B] = РѕР±СЉРµРґРёРЅРµРЅРёРµ РІСЃРµС… in[РїРѕСЃР»РµРґСѓСЋС‰РёС… B].
             //
 
             set_clear_to_zeros(&_alivereg_out.vec_base[block]);
@@ -233,7 +233,7 @@ static void _alivereg_build_inout(function_desc *function, x86_operand_type type
                 ASSERT(insn->in_op1.op_loc == x86loc_label);
                 label = insn->in_op1.data.label;
 
-                // Ищем базовый блок, на первую инструкцию которого делается переход.
+                // РС‰РµРј Р±Р°Р·РѕРІС‹Р№ Р±Р»РѕРє, РЅР° РїРµСЂРІСѓСЋ РёРЅСЃС‚СЂСѓРєС†РёСЋ РєРѕС‚РѕСЂРѕРіРѕ РґРµР»Р°РµС‚СЃСЏ РїРµСЂРµС…РѕРґ.
                 for (j = 0; ; j++) {
                     ASSERT(j < _basic_blocks.blocks_count);
 
@@ -265,48 +265,48 @@ static void _alivereg_build_inout(function_desc *function, x86_operand_type type
 }
 
 //
-// Пересчитывает таблицы для данной инструкции.
+// РџРµСЂРµСЃС‡РёС‚С‹РІР°РµС‚ С‚Р°Р±Р»РёС†С‹ РґР»СЏ РґР°РЅРЅРѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё.
 static void _alivereg_update_tables(x86_operand_type type)
 {
     x86_instruction *insn;
     int j, regs_cnt, regs[MAX_REGISTERS_PER_INSN];
 
-    // Обновляем таблицу _alivereg_after_current_insn (множество псевдорегистров, активных после этой инструкции).
+    // РћР±РЅРѕРІР»СЏРµРј С‚Р°Р±Р»РёС†Сѓ _alivereg_after_current_insn (РјРЅРѕР¶РµСЃС‚РІРѕ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂРѕРІ, Р°РєС‚РёРІРЅС‹С… РїРѕСЃР»Рµ СЌС‚РѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё).
     set_assign(&_alivereg_after_current_insn, &_alivereg_out.vec_base[_current_block]);
 
     for (insn = _basic_blocks.blocks_base[_current_block].block_last_insn; insn != _current_insn; insn = insn->in_prev) {
 		ASSERT(insn);
 
-        // извлекаем все переписываемые регистры
+        // РёР·РІР»РµРєР°РµРј РІСЃРµ РїРµСЂРµРїРёСЃС‹РІР°РµРјС‹Рµ СЂРµРіРёСЃС‚СЂС‹
         bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
 
-        // вычитаем все эти регистры из множества
+        // РІС‹С‡РёС‚Р°РµРј РІСЃРµ СЌС‚Рё СЂРµРіРёСЃС‚СЂС‹ РёР· РјРЅРѕР¶РµСЃС‚РІР°
         for (j = 0; j < regs_cnt; j++)
             BIT_CLEAR(_alivereg_after_current_insn, regs[j]);
 
-        // извлекаем все читаемые регистры
+        // РёР·РІР»РµРєР°РµРј РІСЃРµ С‡РёС‚Р°РµРјС‹Рµ СЂРµРіРёСЃС‚СЂС‹
         bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
 
-        // добавляем каждый регистр во множество
+        // РґРѕР±Р°РІР»СЏРµРј РєР°Р¶РґС‹Р№ СЂРµРіРёСЃС‚СЂ РІРѕ РјРЅРѕР¶РµСЃС‚РІРѕ
         for (j = 0; j < regs_cnt; j++)
             BIT_RAISE(_alivereg_after_current_insn, regs[j]);
     }
 
-    // Копируем состояние "после" в состояние "до",
-    // и добавляем изменения, вносимые текущей инструкцией.
+    // РљРѕРїРёСЂСѓРµРј СЃРѕСЃС‚РѕСЏРЅРёРµ "РїРѕСЃР»Рµ" РІ СЃРѕСЃС‚РѕСЏРЅРёРµ "РґРѕ",
+    // Рё РґРѕР±Р°РІР»СЏРµРј РёР·РјРµРЅРµРЅРёСЏ, РІРЅРѕСЃРёРјС‹Рµ С‚РµРєСѓС‰РµР№ РёРЅСЃС‚СЂСѓРєС†РёРµР№.
     set_assign(&_alivereg_before_current_insn, &_alivereg_after_current_insn);
 
-    // извлекаем все переписываемые регистры
+    // РёР·РІР»РµРєР°РµРј РІСЃРµ РїРµСЂРµРїРёСЃС‹РІР°РµРјС‹Рµ СЂРµРіРёСЃС‚СЂС‹
     bincode_extract_pseudoregs_overwritten_by_insn(_current_insn, type, regs, &regs_cnt);
 
-    // вычитаем все эти регистры из множества
+    // РІС‹С‡РёС‚Р°РµРј РІСЃРµ СЌС‚Рё СЂРµРіРёСЃС‚СЂС‹ РёР· РјРЅРѕР¶РµСЃС‚РІР°
     for (j = 0; j < regs_cnt; j++)
         BIT_CLEAR(_alivereg_before_current_insn, regs[j]);
 
-    // извлекаем все читаемые регистры
+    // РёР·РІР»РµРєР°РµРј РІСЃРµ С‡РёС‚Р°РµРјС‹Рµ СЂРµРіРёСЃС‚СЂС‹
     bincode_extract_pseudoregs_read_by_insn(_current_insn, type, regs, &regs_cnt);
 
-    // добавляем каждый регистр во множество
+    // РґРѕР±Р°РІР»СЏРµРј РєР°Р¶РґС‹Р№ СЂРµРіРёСЃС‚СЂ РІРѕ РјРЅРѕР¶РµСЃС‚РІРѕ
     for (j = 0; j < regs_cnt; j++)
         BIT_RAISE(_alivereg_before_current_insn, regs[j]);
 }
@@ -314,28 +314,28 @@ static void _alivereg_update_tables(x86_operand_type type)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Импортирующие использования. Применяются для того, чтобы найти все использования данного определения.
+// РРјРїРѕСЂС‚РёСЂСѓСЋС‰РёРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ. РџСЂРёРјРµРЅСЏСЋС‚СЃСЏ РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ РЅР°Р№С‚Рё РІСЃРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РґР°РЅРЅРѕРіРѕ РѕРїСЂРµРґРµР»РµРЅРёСЏ.
 //
-// Использованием считается инструкция, которая читает значение регистра.
-// Импортирующими считается те из них, перед которыми в данном базовом блоке нет перезаписывающих инструкций для этого регистра.
-// Импортирующие использования хранятся отсортированными по регистру.
-// В _exposeduse_reg2idx хранится индекс первого использования данного регистра в этой функции.
+// РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј СЃС‡РёС‚Р°РµС‚СЃСЏ РёРЅСЃС‚СЂСѓРєС†РёСЏ, РєРѕС‚РѕСЂР°СЏ С‡РёС‚Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ СЂРµРіРёСЃС‚СЂР°.
+// РРјРїРѕСЂС‚РёСЂСѓСЋС‰РёРјРё СЃС‡РёС‚Р°РµС‚СЃСЏ С‚Рµ РёР· РЅРёС…, РїРµСЂРµРґ РєРѕС‚РѕСЂС‹РјРё РІ РґР°РЅРЅРѕРј Р±Р°Р·РѕРІРѕРј Р±Р»РѕРєРµ РЅРµС‚ РїРµСЂРµР·Р°РїРёСЃС‹РІР°СЋС‰РёС… РёРЅСЃС‚СЂСѓРєС†РёР№ РґР»СЏ СЌС‚РѕРіРѕ СЂРµРіРёСЃС‚СЂР°.
+// РРјРїРѕСЂС‚РёСЂСѓСЋС‰РёРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ С…СЂР°РЅСЏС‚СЃСЏ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹РјРё РїРѕ СЂРµРіРёСЃС‚СЂСѓ.
+// Р’ _exposeduse_reg2idx С…СЂР°РЅРёС‚СЃСЏ РёРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РґР°РЅРЅРѕРіРѕ СЂРµРіРёСЃС‚СЂР° РІ СЌС‚РѕР№ С„СѓРЅРєС†РёРё.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //
-// Строит список из всех импортирующих использований.
+// РЎС‚СЂРѕРёС‚ СЃРїРёСЃРѕРє РёР· РІСЃРµС… РёРјРїРѕСЂС‚РёСЂСѓСЋС‰РёС… РёСЃРїРѕР»СЊР·РѕРІР°РЅРёР№.
 static void _exposeduses_build_table(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
     int approx_count, reg, j, regs_cnt, regs[MAX_REGISTERS_PER_INSN];
 
 
-    // Считаем максимальное число элементов.
+    // РЎС‡РёС‚Р°РµРј РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ.
     approx_count = function->func_insn_count * MAX_REGISTERS_PER_INSN;
 
 
-    // Выделяем память.
+    // Р’С‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ.
     _exposeduse_table.insn_base  = allocator_alloc(allocator_per_function_pool, sizeof(x86_instruction)*approx_count);
     _exposeduse_table.insn_count = 0;
 
@@ -343,7 +343,7 @@ static void _exposeduses_build_table(function_desc *function, x86_operand_type t
     _exposeduse_reg2idx.int_count   = function->func_pseudoregs_count[type]+1;
 
 
-    // Проходим по всем регистрам, и для каждого находим все интересующие нас использования и вносим их в таблицу.
+    // РџСЂРѕС…РѕРґРёРј РїРѕ РІСЃРµРј СЂРµРіРёСЃС‚СЂР°Рј, Рё РґР»СЏ РєР°Р¶РґРѕРіРѕ РЅР°С…РѕРґРёРј РІСЃРµ РёРЅС‚РµСЂРµСЃСѓСЋС‰РёРµ РЅР°СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ Рё РІРЅРѕСЃРёРј РёС… РІ С‚Р°Р±Р»РёС†Сѓ.
     for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
         _exposeduse_reg2idx.int_base[reg]   = _exposeduse_table.insn_count;
 
@@ -359,13 +359,13 @@ static void _exposeduses_build_table(function_desc *function, x86_operand_type t
         }
     }
 
-    // Дописываем индекс конца использований для последнего регистра.
+    // Р”РѕРїРёСЃС‹РІР°РµРј РёРЅРґРµРєСЃ РєРѕРЅС†Р° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёР№ РґР»СЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЂРµРіРёСЃС‚СЂР°.
     _exposeduse_reg2idx.int_base[reg] = _exposeduse_table.insn_count;
 }
 
 //
-// Вычисляет множество use для данного блока (множество импортирующих использований),
-// т.е. множество пар (s,x) : s - инструкция, использующая регистр x, причём предшествующих определений x в данном блоке нет.
+// Р’С‹С‡РёСЃР»СЏРµС‚ РјРЅРѕР¶РµСЃС‚РІРѕ use РґР»СЏ РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР° (РјРЅРѕР¶РµСЃС‚РІРѕ РёРјРїРѕСЂС‚РёСЂСѓСЋС‰РёС… РёСЃРїРѕР»СЊР·РѕРІР°РЅРёР№),
+// С‚.Рµ. РјРЅРѕР¶РµСЃС‚РІРѕ РїР°СЂ (s,x) : s - РёРЅСЃС‚СЂСѓРєС†РёСЏ, РёСЃРїРѕР»СЊР·СѓСЋС‰Р°СЏ СЂРµРіРёСЃС‚СЂ x, РїСЂРёС‡С‘Рј РїСЂРµРґС€РµСЃС‚РІСѓСЋС‰РёС… РѕРїСЂРµРґРµР»РµРЅРёР№ x РІ РґР°РЅРЅРѕРј Р±Р»РѕРєРµ РЅРµС‚.
 static void _exposeduses_build_use(set *use, basic_block *block, function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -378,7 +378,7 @@ static void _exposeduses_build_use(set *use, basic_block *block, function_desc *
     SET_ALLOCA(defined_registers, function->func_pseudoregs_count[type]);
     set_clear_to_zeros(&defined_registers);
 
-    // Проходим по всем инструкциям данного блока.
+    // РџСЂРѕС…РѕРґРёРј РїРѕ РІСЃРµРј РёРЅСЃС‚СЂСѓРєС†РёСЏРј РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР°.
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
         bincode_extract_pseudoregs_read_by_insn(insn, type, regs, &regs_cnt);
 
@@ -386,7 +386,7 @@ static void _exposeduses_build_use(set *use, basic_block *block, function_desc *
             reg = regs[j];
 
             if (!BIT_TEST(defined_registers, reg)) {
-                // Находим индекс этой инструкции в таблице _exposeduse_table.
+                // РќР°С…РѕРґРёРј РёРЅРґРµРєСЃ СЌС‚РѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё РІ С‚Р°Р±Р»РёС†Рµ _exposeduse_table.
                 for (idx = _exposeduse_reg2idx.int_base[reg]; idx < _exposeduse_reg2idx.int_base[reg+1]; idx++) {
                     if (_exposeduse_table.insn_base[idx] == insn) {
                         BIT_RAISE(*use, idx);
@@ -406,9 +406,9 @@ static void _exposeduses_build_use(set *use, basic_block *block, function_desc *
 }
 
 //
-// Вычисляет множество def для данного блока,
-// т.е. множество пар (s,x) : s - инструкция, использующая регистр x, причём s не из данного блока,
-// а x определяется в данном блоке.
+// Р’С‹С‡РёСЃР»СЏРµС‚ РјРЅРѕР¶РµСЃС‚РІРѕ def РґР»СЏ РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР°,
+// С‚.Рµ. РјРЅРѕР¶РµСЃС‚РІРѕ РїР°СЂ (s,x) : s - РёРЅСЃС‚СЂСѓРєС†РёСЏ, РёСЃРїРѕР»СЊР·СѓСЋС‰Р°СЏ СЂРµРіРёСЃС‚СЂ x, РїСЂРёС‡С‘Рј s РЅРµ РёР· РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР°,
+// Р° x РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ РІ РґР°РЅРЅРѕРј Р±Р»РѕРєРµ.
 static void _exposeduses_build_def(set *def, basic_block *block, function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -420,18 +420,18 @@ static void _exposeduses_build_def(set *def, basic_block *block, function_desc *
 
     defined_registers = allocator_alloc(allocator_per_function_pool, sizeof(int)*block->block_length*MAX_REGISTERS_PER_INSN);
 
-    // Находим все регистры, которые модифицируются в данном блоке.
+    // РќР°С…РѕРґРёРј РІСЃРµ СЂРµРіРёСЃС‚СЂС‹, РєРѕС‚РѕСЂС‹Рµ РјРѕРґРёС„РёС†РёСЂСѓСЋС‚СЃСЏ РІ РґР°РЅРЅРѕРј Р±Р»РѕРєРµ.
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
         bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
         memcpy(defined_registers+defined_registers_count, regs, sizeof(int)*regs_cnt);
         defined_registers_count += regs_cnt;
     }
 
-    // Фильтруем повторяющиеся регистры.
+    // Р¤РёР»СЊС‚СЂСѓРµРј РїРѕРІС‚РѕСЂСЏСЋС‰РёРµСЃСЏ СЂРµРіРёСЃС‚СЂС‹.
     aux_sort_int(defined_registers, defined_registers_count);
     defined_registers_count = aux_unique_int(defined_registers, defined_registers_count);
 
-    // Проходим по всем инструкциям функции, кроме данного блока, и вносим во множество те, которые используют регистры из набора.
+    // РџСЂРѕС…РѕРґРёРј РїРѕ РІСЃРµРј РёРЅСЃС‚СЂСѓРєС†РёСЏРј С„СѓРЅРєС†РёРё, РєСЂРѕРјРµ РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР°, Рё РІРЅРѕСЃРёРј РІРѕ РјРЅРѕР¶РµСЃС‚РІРѕ С‚Рµ, РєРѕС‚РѕСЂС‹Рµ РёСЃРїРѕР»СЊР·СѓСЋС‚ СЂРµРіРёСЃС‚СЂС‹ РёР· РЅР°Р±РѕСЂР°.
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         if (insn == block->block_leader) {
             insn = block->block_last_insn;
@@ -444,7 +444,7 @@ static void _exposeduses_build_def(set *def, basic_block *block, function_desc *
             reg = regs[i];
 
             if (aux_binary_search(defined_registers, defined_registers_count, reg) >= 0) {
-                // Находим индекс этой инструкции в таблице _exposeduse_table.
+                // РќР°С…РѕРґРёРј РёРЅРґРµРєСЃ СЌС‚РѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё РІ С‚Р°Р±Р»РёС†Рµ _exposeduse_table.
                 for (idx = _exposeduse_reg2idx.int_base[reg]; _exposeduse_table.insn_base[idx] != insn; idx++) {
                     ASSERT(idx < _exposeduse_reg2idx.int_base[reg+1]);
                 }
@@ -458,8 +458,8 @@ static void _exposeduses_build_def(set *def, basic_block *block, function_desc *
 }
 
 //
-// Строит для каждого базового блока множества in/out в смысле ио-цепочек.
-// Дракон, алгоритм 10.4.
+// РЎС‚СЂРѕРёС‚ РґР»СЏ РєР°Р¶РґРѕРіРѕ Р±Р°Р·РѕРІРѕРіРѕ Р±Р»РѕРєР° РјРЅРѕР¶РµСЃС‚РІР° in/out РІ СЃРјС‹СЃР»Рµ РёРѕ-С†РµРїРѕС‡РµРє.
+// Р”СЂР°РєРѕРЅ, Р°Р»РіРѕСЂРёС‚Рј 10.4.
 static void _exposeduses_build_inout(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -472,17 +472,17 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
     SET_ALLOCA(tmp, _exposeduse_table.insn_count);
     SET_ALLOCA(old_in, _exposeduse_table.insn_count);
 
-    // Все in делаем пустыми множествами.
+    // Р’СЃРµ in РґРµР»Р°РµРј РїСѓСЃС‚С‹РјРё РјРЅРѕР¶РµСЃС‚РІР°РјРё.
     for (block = 0; block < _basic_blocks.blocks_count; block++)
         set_clear_to_zeros(&_exposeduses_in.vec_base[block]);
 
-    // Цикл, пока вносятся изменения хотя бы в один из блоков in.
+    // Р¦РёРєР», РїРѕРєР° РІРЅРѕСЃСЏС‚СЃСЏ РёР·РјРµРЅРµРЅРёСЏ С…РѕС‚СЏ Р±С‹ РІ РѕРґРёРЅ РёР· Р±Р»РѕРєРѕРІ in.
     do {
         changed = FALSE;
 
         for (block = _basic_blocks.blocks_count-1; block >= 0; block--) {
             //
-            // 1. out[B] = объединение всех in[последующих B].
+            // 1. out[B] = РѕР±СЉРµРґРёРЅРµРЅРёРµ РІСЃРµС… in[РїРѕСЃР»РµРґСѓСЋС‰РёС… B].
             //
 
             set_clear_to_zeros(&_exposeduses_out.vec_base[block]);
@@ -500,7 +500,7 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
                 ASSERT(insn->in_op1.op_loc == x86loc_label);
                 label = insn->in_op1.data.label;
 
-                // Ищем базовый блок, на первую инструкцию которого делается переход.
+                // РС‰РµРј Р±Р°Р·РѕРІС‹Р№ Р±Р»РѕРє, РЅР° РїРµСЂРІСѓСЋ РёРЅСЃС‚СЂСѓРєС†РёСЋ РєРѕС‚РѕСЂРѕРіРѕ РґРµР»Р°РµС‚СЃСЏ РїРµСЂРµС…РѕРґ.
                 for (j = 0; ; j++) {
                     ASSERT(j < _basic_blocks.blocks_count);
 
@@ -532,12 +532,12 @@ static void _exposeduses_build_inout(function_desc *function, x86_operand_type t
 }
 
 //
-// Возвращает все использования данного определения в данной функции (ио-цепочку данного определения).
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РІСЃРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РґР°РЅРЅРѕРіРѕ РѕРїСЂРµРґРµР»РµРЅРёСЏ РІ РґР°РЅРЅРѕР№ С„СѓРЅРєС†РёРё (РёРѕ-С†РµРїРѕС‡РєСѓ РґР°РЅРЅРѕРіРѕ РѕРїСЂРµРґРµР»РµРЅРёСЏ).
 //
-// Проходит в обратном порядке от конца блока до интересующего определения.
-// Если других определений нет, то цепочка состоит из множества out плюс использования в данном блоке.
-// Если встречаются другие определения, то цепочка состоит из использований, находящихся между
-// рассматриваемым определением и следующим определением.
+// РџСЂРѕС…РѕРґРёС‚ РІ РѕР±СЂР°С‚РЅРѕРј РїРѕСЂСЏРґРєРµ РѕС‚ РєРѕРЅС†Р° Р±Р»РѕРєР° РґРѕ РёРЅС‚РµСЂРµСЃСѓСЋС‰РµРіРѕ РѕРїСЂРµРґРµР»РµРЅРёСЏ.
+// Р•СЃР»Рё РґСЂСѓРіРёС… РѕРїСЂРµРґРµР»РµРЅРёР№ РЅРµС‚, С‚Рѕ С†РµРїРѕС‡РєР° СЃРѕСЃС‚РѕРёС‚ РёР· РјРЅРѕР¶РµСЃС‚РІР° out РїР»СЋСЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РІ РґР°РЅРЅРѕРј Р±Р»РѕРєРµ.
+// Р•СЃР»Рё РІСЃС‚СЂРµС‡Р°СЋС‚СЃСЏ РґСЂСѓРіРёРµ РѕРїСЂРµРґРµР»РµРЅРёСЏ, С‚Рѕ С†РµРїРѕС‡РєР° СЃРѕСЃС‚РѕРёС‚ РёР· РёСЃРїРѕР»СЊР·РѕРІР°РЅРёР№, РЅР°С…РѕРґСЏС‰РёС…СЃСЏ РјРµР¶РґСѓ
+// СЂР°СЃСЃРјР°С‚СЂРёРІР°РµРјС‹Рј РѕРїСЂРµРґРµР»РµРЅРёРµРј Рё СЃР»РµРґСѓСЋС‰РёРј РѕРїСЂРµРґРµР»РµРЅРёРµРј.
 //
 static void _exposeduses_find_all_usages_of_definition(int reg, x86_instruction *def, x86_operand_type type,
                                                        x86_instruction **res_arr, int *res_count, int res_max_count)
@@ -549,7 +549,7 @@ static void _exposeduses_find_all_usages_of_definition(int reg, x86_instruction 
     block = def->in_block - _basic_blocks.blocks_base;
     *res_count = 0;
 
-    // добавляем все использования в пределах данного блока
+    // РґРѕР±Р°РІР»СЏРµРј РІСЃРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РІ РїСЂРµРґРµР»Р°С… РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР°
     for (test = def->in_next; test != def->in_block->block_last_insn->in_next; test = test->in_next) {
         if (bincode_is_pseudoreg_overwritten_by_insn(test, type, reg)) {
             reached_def = TRUE;
@@ -562,7 +562,7 @@ static void _exposeduses_find_all_usages_of_definition(int reg, x86_instruction 
     }
 
     if (!reached_def) {
-        // добавляем использования из множества out данного блока
+        // РґРѕР±Р°РІР»СЏРµРј РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РёР· РјРЅРѕР¶РµСЃС‚РІР° out РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР°
         for (i = _exposeduse_reg2idx.int_base[reg]; i < _exposeduse_reg2idx.int_base[reg + 1]; i++) {
             if (BIT_TEST(_exposeduses_out.vec_base[block], i)) {
                 res_arr[*res_count] = _exposeduse_table.insn_base[i];
@@ -572,7 +572,7 @@ static void _exposeduses_find_all_usages_of_definition(int reg, x86_instruction 
         }
     }
 
-    // обеспечиваем уникальность
+    // РѕР±РµСЃРїРµС‡РёРІР°РµРј СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚СЊ
     aux_sort_int((int*)res_arr, *res_count);
     *res_count = aux_unique_int((int*)res_arr, *res_count);
 }
@@ -580,36 +580,36 @@ static void _exposeduses_find_all_usages_of_definition(int reg, x86_instruction 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Анализ достигающих определений. Применяется для того, чтобы найти все модифицирующие инструкции,
-// влияющие на значение регистра в данной точке.
+// РђРЅР°Р»РёР· РґРѕСЃС‚РёРіР°СЋС‰РёС… РѕРїСЂРµРґРµР»РµРЅРёР№. РџСЂРёРјРµРЅСЏРµС‚СЃСЏ РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ РЅР°Р№С‚Рё РІСЃРµ РјРѕРґРёС„РёС†РёСЂСѓСЋС‰РёРµ РёРЅСЃС‚СЂСѓРєС†РёРё,
+// РІР»РёСЏСЋС‰РёРµ РЅР° Р·РЅР°С‡РµРЅРёРµ СЂРµРіРёСЃС‚СЂР° РІ РґР°РЅРЅРѕР№ С‚РѕС‡РєРµ.
 //
-// Мы считаем определениями любые измененяющие инструкции (и перезаписывающие, и модифицирующие).
-// Мы говорим, что определение d достигает точки p, если имеется путь от точки, непосредственно следующей за d, к p,
-// такой, что d не уничтожается вдоль этого пути.
+// РњС‹ СЃС‡РёС‚Р°РµРј РѕРїСЂРµРґРµР»РµРЅРёСЏРјРё Р»СЋР±С‹Рµ РёР·РјРµРЅРµРЅСЏСЋС‰РёРµ РёРЅСЃС‚СЂСѓРєС†РёРё (Рё РїРµСЂРµР·Р°РїРёСЃС‹РІР°СЋС‰РёРµ, Рё РјРѕРґРёС„РёС†РёСЂСѓСЋС‰РёРµ).
+// РњС‹ РіРѕРІРѕСЂРёРј, С‡С‚Рѕ РѕРїСЂРµРґРµР»РµРЅРёРµ d РґРѕСЃС‚РёРіР°РµС‚ С‚РѕС‡РєРё p, РµСЃР»Рё РёРјРµРµС‚СЃСЏ РїСѓС‚СЊ РѕС‚ С‚РѕС‡РєРё, РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ СЃР»РµРґСѓСЋС‰РµР№ Р·Р° d, Рє p,
+// С‚Р°РєРѕР№, С‡С‚Рѕ d РЅРµ СѓРЅРёС‡С‚РѕР¶Р°РµС‚СЃСЏ РІРґРѕР»СЊ СЌС‚РѕРіРѕ РїСѓС‚Рё.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //
-// Строит таблицу определений в данной функции (т.е. массив модифицирующих инструкций).
+// РЎС‚СЂРѕРёС‚ С‚Р°Р±Р»РёС†Сѓ РѕРїСЂРµРґРµР»РµРЅРёР№ РІ РґР°РЅРЅРѕР№ С„СѓРЅРєС†РёРё (С‚.Рµ. РјР°СЃСЃРёРІ РјРѕРґРёС„РёС†РёСЂСѓСЋС‰РёС… РёРЅСЃС‚СЂСѓРєС†РёР№).
 static void _reachingdef_build_table(function_desc *function, x86_operand_type type)
 {
     int max_count = unit_get_instruction_count(function);
     int count = 0, block = 0;
     x86_instruction *insn;
 
-    // выделяем память под число инструкций в функции
+    // РІС‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ РїРѕРґ С‡РёСЃР»Рѕ РёРЅСЃС‚СЂСѓРєС†РёР№ РІ С„СѓРЅРєС†РёРё
     _definitions_table.insn_base = allocator_alloc(allocator_per_function_pool, max_count * sizeof(x86_instruction *));
     _basic_blocks.blocks_base[block].block_first_def = 0;
 
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
-        // сохраняем для каждого блока данные о количестве определений в нём
+        // СЃРѕС…СЂР°РЅСЏРµРј РґР»СЏ РєР°Р¶РґРѕРіРѕ Р±Р»РѕРєР° РґР°РЅРЅС‹Рµ Рѕ РєРѕР»РёС‡РµСЃС‚РІРµ РѕРїСЂРµРґРµР»РµРЅРёР№ РІ РЅС‘Рј
         if (insn != function->func_binary_code && _is_leader(insn)) {
             _basic_blocks.blocks_base[block].block_end_def = count;
             block++;
             _basic_blocks.blocks_base[block].block_first_def = count;
         }
 
-        // добавляем найденные определения в таблицу
+        // РґРѕР±Р°РІР»СЏРµРј РЅР°Р№РґРµРЅРЅС‹Рµ РѕРїСЂРµРґРµР»РµРЅРёСЏ РІ С‚Р°Р±Р»РёС†Сѓ
         if (IS_VOLATILE_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type)) {
             _definitions_table.insn_base[count++] = insn;
         }
@@ -621,10 +621,10 @@ static void _reachingdef_build_table(function_desc *function, x86_operand_type t
 }
 
 //
-// Вычисляет множество gen для данного блока в смысле достигающих определений,
-// т.е. множество определений, добавленных в данном блоке, однозначных и неоднозначных.
-// "Мы хотим, чтобы определение d находилось в gen[S], если d достигает конца S,
-// независимо от того, достигает ли оно начала S или нет."
+// Р’С‹С‡РёСЃР»СЏРµС‚ РјРЅРѕР¶РµСЃС‚РІРѕ gen РґР»СЏ РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР° РІ СЃРјС‹СЃР»Рµ РґРѕСЃС‚РёРіР°СЋС‰РёС… РѕРїСЂРµРґРµР»РµРЅРёР№,
+// С‚.Рµ. РјРЅРѕР¶РµСЃС‚РІРѕ РѕРїСЂРµРґРµР»РµРЅРёР№, РґРѕР±Р°РІР»РµРЅРЅС‹С… РІ РґР°РЅРЅРѕРј Р±Р»РѕРєРµ, РѕРґРЅРѕР·РЅР°С‡РЅС‹С… Рё РЅРµРѕРґРЅРѕР·РЅР°С‡РЅС‹С….
+// "РњС‹ С…РѕС‚РёРј, С‡С‚РѕР±С‹ РѕРїСЂРµРґРµР»РµРЅРёРµ d РЅР°С…РѕРґРёР»РѕСЃСЊ РІ gen[S], РµСЃР»Рё d РґРѕСЃС‚РёРіР°РµС‚ РєРѕРЅС†Р° S,
+// РЅРµР·Р°РІРёСЃРёРјРѕ РѕС‚ С‚РѕРіРѕ, РґРѕСЃС‚РёРіР°РµС‚ Р»Рё РѕРЅРѕ РЅР°С‡Р°Р»Р° S РёР»Рё РЅРµС‚."
 static void _reachingdef_build_gen(set *gen, function_desc *function, basic_block *block, x86_operand_type type)
 {
     int *reg_definitions_table = alloca(sizeof(int)*function->func_pseudoregs_count[type]);
@@ -635,7 +635,7 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
     set_clear_to_zeros(gen);
     memset(reg_definitions_table, -1, sizeof(int)*function->func_pseudoregs_count[type]);
 
-    // Находим для каждого регистра последнее однозначное определение, записывающее в него.
+    // РќР°С…РѕРґРёРј РґР»СЏ РєР°Р¶РґРѕРіРѕ СЂРµРіРёСЃС‚СЂР° РїРѕСЃР»РµРґРЅРµРµ РѕРґРЅРѕР·РЅР°С‡РЅРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ, Р·Р°РїРёСЃС‹РІР°СЋС‰РµРµ РІ РЅРµРіРѕ.
     for (def = block->block_first_def; def < block->block_end_def; def++) {
         insn = _definitions_table.insn_base[def];
         bincode_extract_pseudoregs_overwritten_by_insn(insn, type, regs, &regs_cnt);
@@ -645,14 +645,14 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
         }
     }
 
-    // Вносим последнее однозначное определение для каждого регистра в множество gen.
+    // Р’РЅРѕСЃРёРј РїРѕСЃР»РµРґРЅРµРµ РѕРґРЅРѕР·РЅР°С‡РЅРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ РґР»СЏ РєР°Р¶РґРѕРіРѕ СЂРµРіРёСЃС‚СЂР° РІ РјРЅРѕР¶РµСЃС‚РІРѕ gen.
     for (reg = 0; reg < function->func_pseudoregs_count[type]; reg++) {
         def = reg_definitions_table[reg];
 
         if (def != -1) {
             BIT_RAISE(*gen, def);
 
-            // А также вносим все неоднозначные определения, следующие после данного и до конца базового блока.
+            // Рђ С‚Р°РєР¶Рµ РІРЅРѕСЃРёРј РІСЃРµ РЅРµРѕРґРЅРѕР·РЅР°С‡РЅС‹Рµ РѕРїСЂРµРґРµР»РµРЅРёСЏ, СЃР»РµРґСѓСЋС‰РёРµ РїРѕСЃР»Рµ РґР°РЅРЅРѕРіРѕ Рё РґРѕ РєРѕРЅС†Р° Р±Р°Р·РѕРІРѕРіРѕ Р±Р»РѕРєР°.
             for (; def != block->block_end_def; def++) {
                 insn = _definitions_table.insn_base[def];
 
@@ -665,10 +665,10 @@ static void _reachingdef_build_gen(set *gen, function_desc *function, basic_bloc
 }
 
 //
-// Вычисляет множество kill для данного блока в смысле достигающих определений,
-// т.е. множество определений из всего кода функции, результат которых полностью переписан.
-// "kill[S] представляет собой множество определений, которые никогда не достигают конца S,
-// даже если достигают его начала."
+// Р’С‹С‡РёСЃР»СЏРµС‚ РјРЅРѕР¶РµСЃС‚РІРѕ kill РґР»СЏ РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР° РІ СЃРјС‹СЃР»Рµ РґРѕСЃС‚РёРіР°СЋС‰РёС… РѕРїСЂРµРґРµР»РµРЅРёР№,
+// С‚.Рµ. РјРЅРѕР¶РµСЃС‚РІРѕ РѕРїСЂРµРґРµР»РµРЅРёР№ РёР· РІСЃРµРіРѕ РєРѕРґР° С„СѓРЅРєС†РёРё, СЂРµР·СѓР»СЊС‚Р°С‚ РєРѕС‚РѕСЂС‹С… РїРѕР»РЅРѕСЃС‚СЊСЋ РїРµСЂРµРїРёСЃР°РЅ.
+// "kill[S] РїСЂРµРґСЃС‚Р°РІР»СЏРµС‚ СЃРѕР±РѕР№ РјРЅРѕР¶РµСЃС‚РІРѕ РѕРїСЂРµРґРµР»РµРЅРёР№, РєРѕС‚РѕСЂС‹Рµ РЅРёРєРѕРіРґР° РЅРµ РґРѕСЃС‚РёРіР°СЋС‚ РєРѕРЅС†Р° S,
+// РґР°Р¶Рµ РµСЃР»Рё РґРѕСЃС‚РёРіР°СЋС‚ РµРіРѕ РЅР°С‡Р°Р»Р°."
 static void _reachingdef_build_kill(set *kill, function_desc *function, basic_block *block, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -681,7 +681,7 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
     SET_ALLOCA(modified_regs, function->func_pseudoregs_count[type]);
     set_clear_to_zeros(&modified_regs);
 
-    // Находим для каждого регистра последнее определение, записывающее в него.
+    // РќР°С…РѕРґРёРј РґР»СЏ РєР°Р¶РґРѕРіРѕ СЂРµРіРёСЃС‚СЂР° РїРѕСЃР»РµРґРЅРµРµ РѕРїСЂРµРґРµР»РµРЅРёРµ, Р·Р°РїРёСЃС‹РІР°СЋС‰РµРµ РІ РЅРµРіРѕ.
     for (def = block->block_first_def; def < block->block_end_def; def++) {
         insn = _definitions_table.insn_base[def];
         bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
@@ -691,8 +691,8 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
         }
     }
 
-    // Для каждого изменённого регистра: во всём коде функции, кроме данного блока,
-    // находим все определения данного регистра и вносим их в множество.
+    // Р”Р»СЏ РєР°Р¶РґРѕРіРѕ РёР·РјРµРЅС‘РЅРЅРѕРіРѕ СЂРµРіРёСЃС‚СЂР°: РІРѕ РІСЃС‘Рј РєРѕРґРµ С„СѓРЅРєС†РёРё, РєСЂРѕРјРµ РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР°,
+    // РЅР°С…РѕРґРёРј РІСЃРµ РѕРїСЂРµРґРµР»РµРЅРёСЏ РґР°РЅРЅРѕРіРѕ СЂРµРіРёСЃС‚СЂР° Рё РІРЅРѕСЃРёРј РёС… РІ РјРЅРѕР¶РµСЃС‚РІРѕ.
     for (reg = 1; reg < function->func_pseudoregs_count[type]; reg++) {
         if (BIT_TEST(modified_regs, reg)) {
             for (def = 0; def < _definitions_table.insn_count; def++) {
@@ -715,8 +715,8 @@ static void _reachingdef_build_kill(set *kill, function_desc *function, basic_bl
 }
 
 //
-// Нахождение достигающих определений.
-// Строит множества in/out для каждого блока (Дракон, алгоритм 10.2).
+// РќР°С…РѕР¶РґРµРЅРёРµ РґРѕСЃС‚РёРіР°СЋС‰РёС… РѕРїСЂРµРґРµР»РµРЅРёР№.
+// РЎС‚СЂРѕРёС‚ РјРЅРѕР¶РµСЃС‚РІР° in/out РґР»СЏ РєР°Р¶РґРѕРіРѕ Р±Р»РѕРєР° (Р”СЂР°РєРѕРЅ, Р°Р»РіРѕСЂРёС‚Рј 10.2).
 static void _reachingdef_build_inout(function_desc *function, x86_operand_type type)
 {
     int block, prev, start_label;
@@ -730,7 +730,7 @@ static void _reachingdef_build_inout(function_desc *function, x86_operand_type t
     SET_ALLOCA(tmp, _definitions_table.insn_count);
     SET_ALLOCA(old_out, _definitions_table.insn_count);
 
-    // Инициализируем все out[B] соответствующим gen[B].
+    // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РІСЃРµ out[B] СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј gen[B].
     for (block = 0; block < _basic_blocks.blocks_count; block++) {
         // out[block] = gen[block]
         _reachingdef_build_gen(&_reachingdef_out.vec_base[block], function, &_basic_blocks.blocks_base[block], type);
@@ -739,15 +739,15 @@ static void _reachingdef_build_inout(function_desc *function, x86_operand_type t
     do {
         change = FALSE;
 
-        // цикл по всем блокам
+        // С†РёРєР» РїРѕ РІСЃРµРј Р±Р»РѕРєР°Рј
         for (block = _basic_blocks.blocks_count-1; block >= 0; block--) {
             set_clear_to_zeros(&_reachingdef_in.vec_base[block]);
 
-            // если блок начинается с метки
+            // РµСЃР»Рё Р±Р»РѕРє РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ РјРµС‚РєРё
             if (_basic_blocks.blocks_base[block].block_leader->in_code == x86insn_label) {
                 start_label = _basic_blocks.blocks_base[block].block_leader->in_op1.data.label;
 
-                // цикл по всем блокам, ищем jump на данную метку
+                // С†РёРєР» РїРѕ РІСЃРµРј Р±Р»РѕРєР°Рј, РёС‰РµРј jump РЅР° РґР°РЅРЅСѓСЋ РјРµС‚РєСѓ
                 for (prev = 0; prev < _basic_blocks.blocks_count; prev++) {
                     insn = _basic_blocks.blocks_base[prev].block_last_insn;
 
@@ -758,7 +758,7 @@ static void _reachingdef_build_inout(function_desc *function, x86_operand_type t
                 }
             }
 
-            // проверяем непосредственно предыдущий блок
+            // РїСЂРѕРІРµСЂСЏРµРј РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ РїСЂРµРґС‹РґСѓС‰РёР№ Р±Р»РѕРє
             if (block > 0) {
                 prev = block - 1;
                 insn = _basic_blocks.blocks_base[prev].block_last_insn;
@@ -790,8 +790,8 @@ static void _reachingdef_build_inout(function_desc *function, x86_operand_type t
 }
 
 //
-// Строит ои-цепочку для данной инструкции и данного регистра,
-// то есть возвращает все определения, влияющие на значение данного регистра в данной точке.
+// РЎС‚СЂРѕРёС‚ РѕРё-С†РµРїРѕС‡РєСѓ РґР»СЏ РґР°РЅРЅРѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё Рё РґР°РЅРЅРѕРіРѕ СЂРµРіРёСЃС‚СЂР°,
+// С‚Рѕ РµСЃС‚СЊ РІРѕР·РІСЂР°С‰Р°РµС‚ РІСЃРµ РѕРїСЂРµРґРµР»РµРЅРёСЏ, РІР»РёСЏСЋС‰РёРµ РЅР° Р·РЅР°С‡РµРЅРёРµ РґР°РЅРЅРѕРіРѕ СЂРµРіРёСЃС‚СЂР° РІ РґР°РЅРЅРѕР№ С‚РѕС‡РєРµ.
 static void _reachingdef_find_all_definitions(int reg, x86_instruction *insn, x86_operand_type type,
                                              x86_instruction **res_arr, int *res_count, int res_max_count)
 {
@@ -801,9 +801,9 @@ static void _reachingdef_find_all_definitions(int reg, x86_instruction *insn, x8
 
     *res_count = 0;
 
-    // проходим все определения внутри данного блока в обратном порядке
+    // РїСЂРѕС…РѕРґРёРј РІСЃРµ РѕРїСЂРµРґРµР»РµРЅРёСЏ РІРЅСѓС‚СЂРё РґР°РЅРЅРѕРіРѕ Р±Р»РѕРєР° РІ РѕР±СЂР°С‚РЅРѕРј РїРѕСЂСЏРґРєРµ
     for (test = insn->in_prev; test != block->block_leader->in_prev; test = test->in_prev) {
-        // если находим однозначное определение, то на этом поиск заканчивается
+        // РµСЃР»Рё РЅР°С…РѕРґРёРј РѕРґРЅРѕР·РЅР°С‡РЅРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ, С‚Рѕ РЅР° СЌС‚РѕРј РїРѕРёСЃРє Р·Р°РєР°РЅС‡РёРІР°РµС‚СЃСЏ
         if (bincode_is_pseudoreg_overwritten_by_insn(test, type, reg)) {
             ASSERT(*res_count < res_max_count);
             res_arr[*res_count] = test;
@@ -818,7 +818,7 @@ static void _reachingdef_find_all_definitions(int reg, x86_instruction *insn, x8
         }
     }
 
-    // прибавляем все определения из множества in
+    // РїСЂРёР±Р°РІР»СЏРµРј РІСЃРµ РѕРїСЂРµРґРµР»РµРЅРёСЏ РёР· РјРЅРѕР¶РµСЃС‚РІР° in
     for (def_idx = 0; def_idx != _definitions_table.insn_count; def_idx++) {
         if (_definitions_table.insn_base[def_idx] && BIT_TEST(_reachingdef_in.vec_base[block-_basic_blocks.blocks_base], def_idx)) {
             if (bincode_is_pseudoreg_modified_by_insn(_definitions_table.insn_base[def_idx], type, reg)) {
@@ -829,14 +829,14 @@ static void _reachingdef_find_all_definitions(int reg, x86_instruction *insn, x8
         }
     }
 
-    // обеспечиваем уникальность
+    // РѕР±РµСЃРїРµС‡РёРІР°РµРј СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚СЊ
     aux_sort_int((int*)res_arr, *res_count);
     *res_count = aux_unique_int((int*)res_arr, *res_count);
 }
 
 //
-// Проверяет, доступно ли определение def для инструкции insn
-// (проверка на вхождение инструкции insn в ои-цепочку данного определения).
+// РџСЂРѕРІРµСЂСЏРµС‚, РґРѕСЃС‚СѓРїРЅРѕ Р»Рё РѕРїСЂРµРґРµР»РµРЅРёРµ def РґР»СЏ РёРЅСЃС‚СЂСѓРєС†РёРё insn
+// (РїСЂРѕРІРµСЂРєР° РЅР° РІС…РѕР¶РґРµРЅРёРµ РёРЅСЃС‚СЂСѓРєС†РёРё insn РІ РѕРё-С†РµРїРѕС‡РєСѓ РґР°РЅРЅРѕРіРѕ РѕРїСЂРµРґРµР»РµРЅРёСЏ).
 static BOOL _reachingdef_is_definition_available(int reg, x86_instruction *def, x86_instruction *insn, x86_operand_type type)
 {
     x86_instruction **def_arr = alloca(sizeof(void *) * _definitions_table.insn_count);
@@ -849,21 +849,21 @@ static BOOL _reachingdef_is_definition_available(int reg, x86_instruction *def, 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Анализ избыточных копирований. Нужен для оптимизации распространения копирований.
+// РђРЅР°Р»РёР· РёР·Р±С‹С‚РѕС‡РЅС‹С… РєРѕРїРёСЂРѕРІР°РЅРёР№. РќСѓР¶РµРЅ РґР»СЏ РѕРїС‚РёРјРёР·Р°С†РёРё СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёСЏ РєРѕРїРёСЂРѕРІР°РЅРёР№.
 //
-// Избыточным копированием в данной точке называется инструкция x = y, такая, что каждый путь от начального узла
-// к началу её блока B содержит эту инструкцию, и после последнего вхождения этой инструкции y не изменяется.
+// РР·Р±С‹С‚РѕС‡РЅС‹Рј РєРѕРїРёСЂРѕРІР°РЅРёРµРј РІ РґР°РЅРЅРѕР№ С‚РѕС‡РєРµ РЅР°Р·С‹РІР°РµС‚СЃСЏ РёРЅСЃС‚СЂСѓРєС†РёСЏ x = y, С‚Р°РєР°СЏ, С‡С‚Рѕ РєР°Р¶РґС‹Р№ РїСѓС‚СЊ РѕС‚ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ СѓР·Р»Р°
+// Рє РЅР°С‡Р°Р»Сѓ РµС‘ Р±Р»РѕРєР° B СЃРѕРґРµСЂР¶РёС‚ СЌС‚Сѓ РёРЅСЃС‚СЂСѓРєС†РёСЋ, Рё РїРѕСЃР»Рµ РїРѕСЃР»РµРґРЅРµРіРѕ РІС…РѕР¶РґРµРЅРёСЏ СЌС‚РѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё y РЅРµ РёР·РјРµРЅСЏРµС‚СЃСЏ.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //
-// Отбираем инструкции копирования. Они хранятся отсортированными по указателю в массиве.
+// РћС‚Р±РёСЂР°РµРј РёРЅСЃС‚СЂСѓРєС†РёРё РєРѕРїРёСЂРѕРІР°РЅРёСЏ. РћРЅРё С…СЂР°РЅСЏС‚СЃСЏ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹РјРё РїРѕ СѓРєР°Р·Р°С‚РµР»СЋ РІ РјР°СЃСЃРёРІРµ.
 static void _redundantcopies_build_table(function_desc *function, x86_operand_type type)
 {
     x86_instruction *insn;
     int count = 0;
 
-    // составляем таблицу всех копирований
+    // СЃРѕСЃС‚Р°РІР»СЏРµРј С‚Р°Р±Р»РёС†Сѓ РІСЃРµС… РєРѕРїРёСЂРѕРІР°РЅРёР№
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         if (IS_MOV_INSN(insn->in_code) && OP_IS_PSEUDO_REG(insn->in_op1, type) && OP_IS_PSEUDO_REG(insn->in_op2, type)) {
             count++;
@@ -883,8 +883,8 @@ static void _redundantcopies_build_table(function_desc *function, x86_operand_ty
 }
 
 //
-// "Мы говорим, что инструкция копирования s: x = y генерируется в блоке B, если s находится в блоке B,
-// и в пределах B нет последующего присваивания переменной y."
+// "РњС‹ РіРѕРІРѕСЂРёРј, С‡С‚Рѕ РёРЅСЃС‚СЂСѓРєС†РёСЏ РєРѕРїРёСЂРѕРІР°РЅРёСЏ s: x = y РіРµРЅРµСЂРёСЂСѓРµС‚СЃСЏ РІ Р±Р»РѕРєРµ B, РµСЃР»Рё s РЅР°С…РѕРґРёС‚СЃСЏ РІ Р±Р»РѕРєРµ B,
+// Рё РІ РїСЂРµРґРµР»Р°С… B РЅРµС‚ РїРѕСЃР»РµРґСѓСЋС‰РµРіРѕ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ РїРµСЂРµРјРµРЅРЅРѕР№ y."
 static void _redundantcopies_build_gen(set *gen, function_desc *function, basic_block *block, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -915,7 +915,7 @@ static void _redundantcopies_build_gen(set *gen, function_desc *function, basic_
 }
 
 //
-// "Мы говорим, что s: x = y уничтожается в блоке B, если s находится вне блока, а в блоке выполняется присваивание x или y."
+// "РњС‹ РіРѕРІРѕСЂРёРј, С‡С‚Рѕ s: x = y СѓРЅРёС‡С‚РѕР¶Р°РµС‚СЃСЏ РІ Р±Р»РѕРєРµ B, РµСЃР»Рё s РЅР°С…РѕРґРёС‚СЃСЏ РІРЅРµ Р±Р»РѕРєР°, Р° РІ Р±Р»РѕРєРµ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ РїСЂРёСЃРІР°РёРІР°РЅРёРµ x РёР»Рё y."
 static void _redundantcopies_build_kill(set *kill, function_desc *function, basic_block *block, x86_operand_type type)
 {
     x86_instruction *insn;
@@ -928,7 +928,7 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
     ASSERT(kill->set_count == _redundantcopies_table.insn_count);
     set_clear_to_zeros(kill);
 
-    // помечаем все модифицированные в этом блоке регистры
+    // РїРѕРјРµС‡Р°РµРј РІСЃРµ РјРѕРґРёС„РёС†РёСЂРѕРІР°РЅРЅС‹Рµ РІ СЌС‚РѕРј Р±Р»РѕРєРµ СЂРµРіРёСЃС‚СЂС‹
     for (insn = block->block_leader; insn != block->block_last_insn->in_next; insn = insn->in_next) {
         bincode_extract_pseudoregs_modified_by_insn(insn, type, regs, &regs_cnt);
 
@@ -937,7 +937,7 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
         }
     }
 
-    // проходим все инструкции этой функции, кроме этого блока
+    // РїСЂРѕС…РѕРґРёРј РІСЃРµ РёРЅСЃС‚СЂСѓРєС†РёРё СЌС‚РѕР№ С„СѓРЅРєС†РёРё, РєСЂРѕРјРµ СЌС‚РѕРіРѕ Р±Р»РѕРєР°
     for (insn = function->func_binary_code; insn; insn = insn->in_next) {
         if (insn == block->block_leader) {
             insn = block->block_last_insn;
@@ -955,7 +955,7 @@ static void _redundantcopies_build_kill(set *kill, function_desc *function, basi
 }
 
 //
-// Строит множества in/out для избыточных копирований (Дракон, уравнения 10.12, алгоритм 10.3).
+// РЎС‚СЂРѕРёС‚ РјРЅРѕР¶РµСЃС‚РІР° in/out РґР»СЏ РёР·Р±С‹С‚РѕС‡РЅС‹С… РєРѕРїРёСЂРѕРІР°РЅРёР№ (Р”СЂР°РєРѕРЅ, СѓСЂР°РІРЅРµРЅРёСЏ 10.12, Р°Р»РіРѕСЂРёС‚Рј 10.3).
 static void _redundantcopies_build_inout(function_desc *function, x86_operand_type type)
 {
     int block, prev, start_label;
@@ -969,13 +969,13 @@ static void _redundantcopies_build_inout(function_desc *function, x86_operand_ty
     SET_ALLOCA(tmp, _redundantcopies_table.insn_count);
     SET_ALLOCA(old_out, _redundantcopies_table.insn_count);
 
-    // in[B1] инициализируется пустым множеством.
+    // in[B1] РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚СЃСЏ РїСѓСЃС‚С‹Рј РјРЅРѕР¶РµСЃС‚РІРѕРј.
     set_clear_to_zeros(&_redundantcopies_in.vec_base[0]);
 
-    // out[B1] инициализируется gen[B1]
+    // out[B1] РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚СЃСЏ gen[B1]
     _redundantcopies_build_gen(&_redundantcopies_out.vec_base[0], function, &_basic_blocks.blocks_base[0], type);
 
-    // все остальные out[B] инициализируются U - kill[B]
+    // РІСЃРµ РѕСЃС‚Р°Р»СЊРЅС‹Рµ out[B] РёРЅРёС†РёР°Р»РёР·РёСЂСѓСЋС‚СЃСЏ U - kill[B]
     for (block = 1; block < _basic_blocks.blocks_count; block++) {
         _redundantcopies_build_kill(&_redundantcopies_out.vec_base[block], function, &_basic_blocks.blocks_base[block], type);
         set_invert(&_redundantcopies_out.vec_base[block]);
@@ -984,15 +984,15 @@ static void _redundantcopies_build_inout(function_desc *function, x86_operand_ty
     do {
         change = FALSE;
 
-        // цикл по всем блокам
+        // С†РёРєР» РїРѕ РІСЃРµРј Р±Р»РѕРєР°Рј
         for (block = _basic_blocks.blocks_count-1; block > 0; block--) {
             set_clear_to_ones(&_redundantcopies_in.vec_base[block]);
 
-            // если блок начинается с метки
+            // РµСЃР»Рё Р±Р»РѕРє РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ РјРµС‚РєРё
             if (_basic_blocks.blocks_base[block].block_leader->in_code == x86insn_label) {
                 start_label = _basic_blocks.blocks_base[block].block_leader->in_op1.data.label;
 
-                // цикл по всем блокам, ищем jump на данную метку
+                // С†РёРєР» РїРѕ РІСЃРµРј Р±Р»РѕРєР°Рј, РёС‰РµРј jump РЅР° РґР°РЅРЅСѓСЋ РјРµС‚РєСѓ
                 for (prev = 0; prev < _basic_blocks.blocks_count; prev++) {
                     insn = _basic_blocks.blocks_base[prev].block_last_insn;
 
@@ -1003,7 +1003,7 @@ static void _redundantcopies_build_inout(function_desc *function, x86_operand_ty
                 }
             }
 
-            // проверяем непосредственно предыдущий блок
+            // РїСЂРѕРІРµСЂСЏРµРј РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ РїСЂРµРґС‹РґСѓС‰РёР№ Р±Р»РѕРє
             if (block > 0) {
                 prev = block - 1;
                 insn = _basic_blocks.blocks_base[prev].block_last_insn;
@@ -1035,8 +1035,8 @@ static void _redundantcopies_build_inout(function_desc *function, x86_operand_ty
 }
 
 //
-// Тест инструкции на вхождение во множество in указанного блока.
-// Является аналогом проверки ои-цепочки для уравнений копирования.
+// РўРµСЃС‚ РёРЅСЃС‚СЂСѓРєС†РёРё РЅР° РІС…РѕР¶РґРµРЅРёРµ РІРѕ РјРЅРѕР¶РµСЃС‚РІРѕ in СѓРєР°Р·Р°РЅРЅРѕРіРѕ Р±Р»РѕРєР°.
+// РЇРІР»СЏРµС‚СЃСЏ Р°РЅР°Р»РѕРіРѕРј РїСЂРѕРІРµСЂРєРё РѕРё-С†РµРїРѕС‡РєРё РґР»СЏ СѓСЂР°РІРЅРµРЅРёР№ РєРѕРїРёСЂРѕРІР°РЅРёСЏ.
 static BOOL _redundantcopies_is_insn_available(x86_instruction *insn, basic_block *block)
 {
     int idx = aux_binary_search((int*)_redundantcopies_table.insn_base, _redundantcopies_table.insn_count, (int)insn);
@@ -1048,12 +1048,12 @@ static BOOL _redundantcopies_is_insn_available(x86_instruction *insn, basic_bloc
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Внешние интерфейсы.
+// Р’РЅРµС€РЅРёРµ РёРЅС‚РµСЂС„РµР№СЃС‹.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //
-// Инициализация структур для анализа живых регистров.
+// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃС‚СЂСѓРєС‚СѓСЂ РґР»СЏ Р°РЅР°Р»РёР·Р° Р¶РёРІС‹С… СЂРµРіРёСЃС‚СЂРѕРІ.
 void x86_dataflow_init_alive_reg_tables(function_desc *function, x86_operand_type type)
 {
     _detect_basic_blocks(function);
@@ -1067,7 +1067,7 @@ void x86_dataflow_init_alive_reg_tables(function_desc *function, x86_operand_typ
 }
 
 //
-// Пересчитывает таблицы для данной инструкции.
+// РџРµСЂРµСЃС‡РёС‚С‹РІР°РµС‚ С‚Р°Р±Р»РёС†С‹ РґР»СЏ РґР°РЅРЅРѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё.
 void x86_dataflow_set_current_insn(function_desc *function, x86_operand_type type, x86_instruction *insn)
 {
     _current_block  = insn->in_block - _basic_blocks.blocks_base;
@@ -1077,36 +1077,36 @@ void x86_dataflow_set_current_insn(function_desc *function, x86_operand_type typ
 }
 
 //
-// Проверяет, можно ли освободить регистр ПОСЛЕ этой инструкции.
+// РџСЂРѕРІРµСЂСЏРµС‚, РјРѕР¶РЅРѕ Р»Рё РѕСЃРІРѕР±РѕРґРёС‚СЊ СЂРµРіРёСЃС‚СЂ РџРћРЎР›Р• СЌС‚РѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё.
 int x86_dataflow_is_pseudoreg_alive_after(int pseudoreg)
 {
     return BIT_TEST(_alivereg_after_current_insn, pseudoreg);
 }
 
 //
-// Проверяет, можно ли освободить регистр ПЕРЕД этой инструкцией.
+// РџСЂРѕРІРµСЂСЏРµС‚, РјРѕР¶РЅРѕ Р»Рё РѕСЃРІРѕР±РѕРґРёС‚СЊ СЂРµРіРёСЃС‚СЂ РџР•Р Р•Р” СЌС‚РѕР№ РёРЅСЃС‚СЂСѓРєС†РёРµР№.
 int x86_dataflow_is_pseudoreg_alive_before(int pseudoreg)
 {
     return BIT_TEST(_alivereg_before_current_insn, pseudoreg);
 }
 
 //
-// Инициализация ои/ио-цепочек.
+// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РѕРё/РёРѕ-С†РµРїРѕС‡РµРє.
 void x86_dataflow_init_use_def_tables(function_desc *function, x86_operand_type type)
 {
     _detect_basic_blocks(function);
 
-    // генерируем таблицы достигающих определений
+    // РіРµРЅРµСЂРёСЂСѓРµРј С‚Р°Р±Р»РёС†С‹ РґРѕСЃС‚РёРіР°СЋС‰РёС… РѕРїСЂРµРґРµР»РµРЅРёР№
     _reachingdef_build_table(function, type);
     _reachingdef_build_inout(function, type);
 
-    // генерируем таблицы импортирующих использований
+    // РіРµРЅРµСЂРёСЂСѓРµРј С‚Р°Р±Р»РёС†С‹ РёРјРїРѕСЂС‚РёСЂСѓСЋС‰РёС… РёСЃРїРѕР»СЊР·РѕРІР°РЅРёР№
     _exposeduses_build_table(function, type);
     _exposeduses_build_inout(function, type);
 }
 
 //
-// Удаляет инструкцию из функции и изо всех таблиц.
+// РЈРґР°Р»СЏРµС‚ РёРЅСЃС‚СЂСѓРєС†РёСЋ РёР· С„СѓРЅРєС†РёРё Рё РёР·Рѕ РІСЃРµС… С‚Р°Р±Р»РёС†.
 void x86_dataflow_erase_instruction(function_desc *function, x86_instruction *insn)
 {
     basic_block *block;
@@ -1137,13 +1137,13 @@ void x86_dataflow_erase_instruction(function_desc *function, x86_instruction *in
         }
     }
 
-    // Мы не можем удалять инструкции из _redundantcopies_table, так как она отсортирована,
-    // а индексы в ней задают биты в множестве c_in[block].
+    // РњС‹ РЅРµ РјРѕР¶РµРј СѓРґР°Р»СЏС‚СЊ РёРЅСЃС‚СЂСѓРєС†РёРё РёР· _redundantcopies_table, С‚Р°Рє РєР°Рє РѕРЅР° РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅР°,
+    // Р° РёРЅРґРµРєСЃС‹ РІ РЅРµР№ Р·Р°РґР°СЋС‚ Р±РёС‚С‹ РІ РјРЅРѕР¶РµСЃС‚РІРµ c_in[block].
 }
 
 
 //
-// Делает оптимизацию распространения копирований (Дракон, алгоритм 10.6).
+// Р”РµР»Р°РµС‚ РѕРїС‚РёРјРёР·Р°С†РёСЋ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёСЏ РєРѕРїРёСЂРѕРІР°РЅРёР№ (Р”СЂР°РєРѕРЅ, Р°Р»РіРѕСЂРёС‚Рј 10.6).
 void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 {
     x86_instruction *mov, *usage, *next, *test, **usage_arr;
@@ -1155,13 +1155,13 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
     for (mov = function->func_binary_code; mov; mov = next) {
         next = mov->in_next;
 
-        // для каждой инструкции копирования
+        // РґР»СЏ РєР°Р¶РґРѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё РєРѕРїРёСЂРѕРІР°РЅРёСЏ
         if (IS_MOV_INSN(mov->in_code) && OP_IS_PSEUDO_REG(mov->in_op1, type) && OP_IS_PSEUDO_REG(mov->in_op2, type)) {
             x               = mov->in_op1.data.reg;
             y               = mov->in_op2.data.reg;
             replace_allowed = TRUE;
 
-            // находим все использования x
+            // РЅР°С…РѕРґРёРј РІСЃРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ x
             _exposeduses_find_all_usages_of_definition(x, mov, type, usage_arr, &usage_count, function->func_insn_count);
 
             for (i = 0; i < usage_count && replace_allowed; i++) {
@@ -1170,34 +1170,34 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                     continue;
                 }
 
-                // проверяем достижимость этого использования этой инструкцией копирования
+                // РїСЂРѕРІРµСЂСЏРµРј РґРѕСЃС‚РёР¶РёРјРѕСЃС‚СЊ СЌС‚РѕРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ СЌС‚РѕР№ РёРЅСЃС‚СЂСѓРєС†РёРµР№ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
                 if (!_reachingdef_is_definition_available(x, mov, usage, type)) {
                     continue;
                 }
 
-                // x должно использоваться только в read-only контекстах
+                // x РґРѕР»Р¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ С‚РѕР»СЊРєРѕ РІ read-only РєРѕРЅС‚РµРєСЃС‚Р°С…
                 if (bincode_is_pseudoreg_modified_by_insn(usage, type, x)) {
                     replace_allowed = FALSE;
                     break;
                 }
 
-                // проверяем для этого использования x, входит ли mov в c_in[block]
+                // РїСЂРѕРІРµСЂСЏРµРј РґР»СЏ СЌС‚РѕРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ x, РІС…РѕРґРёС‚ Р»Рё mov РІ c_in[block]
                 if (usage->in_block != mov->in_block && !_redundantcopies_is_insn_available(mov, usage->in_block)) {
                     replace_allowed = FALSE;
                     break;
                 }
 
-                // проверяем, что нет изменений x или y в текущем блоке и до использования
+                // РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ РЅРµС‚ РёР·РјРµРЅРµРЅРёР№ x РёР»Рё y РІ С‚РµРєСѓС‰РµРј Р±Р»РѕРєРµ Рё РґРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ
                 test = (usage->in_block == mov->in_block ? mov->in_next : usage->in_block->block_leader);
 
                 for (; test != usage; test = test->in_next) {
-                    // если мы достигли конца, вероятно, имеется цикл; не поддерживаем этот случай и выходим
+                    // РµСЃР»Рё РјС‹ РґРѕСЃС‚РёРіР»Рё РєРѕРЅС†Р°, РІРµСЂРѕСЏС‚РЅРѕ, РёРјРµРµС‚СЃСЏ С†РёРєР»; РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµРј СЌС‚РѕС‚ СЃР»СѓС‡Р°Р№ Рё РІС‹С…РѕРґРёРј
                     if (test == usage->in_block->block_last_insn) {
                         replace_allowed = FALSE;
                         break;
                     }
 
-                    // если x или y изменяются, выходим
+                    // РµСЃР»Рё x РёР»Рё y РёР·РјРµРЅСЏСЋС‚СЃСЏ, РІС‹С…РѕРґРёРј
                     if (bincode_is_pseudoreg_modified_by_insn(test, type, x) || bincode_is_pseudoreg_modified_by_insn(test, type, y)) {
                         replace_allowed = FALSE;
                         break;
@@ -1205,7 +1205,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
                 }
             }
 
-            // если все проверки закончились положительно, удаляем инструкцию и заменяем все вхождения x на y.
+            // РµСЃР»Рё РІСЃРµ РїСЂРѕРІРµСЂРєРё Р·Р°РєРѕРЅС‡РёР»РёСЃСЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕ, СѓРґР°Р»СЏРµРј РёРЅСЃС‚СЂСѓРєС†РёСЋ Рё Р·Р°РјРµРЅСЏРµРј РІСЃРµ РІС…РѕР¶РґРµРЅРёСЏ x РЅР° y.
             if (replace_allowed) {
                 for (i = 0; i < usage_count; i++) {
                     usage = usage_arr[i];
@@ -1235,7 +1235,7 @@ void _optimize_redundant_copies(function_desc *function, x86_operand_type type)
 }
 
 //
-// Повторяет оптимизацию, пока она даёт результаты.
+// РџРѕРІС‚РѕСЂСЏРµС‚ РѕРїС‚РёРјРёР·Р°С†РёСЋ, РїРѕРєР° РѕРЅР° РґР°С‘С‚ СЂРµР·СѓР»СЊС‚Р°С‚С‹.
 static void _optimize_redundant_copies_iterative(function_desc *function, x86_operand_type type)
 {
     int function_length, new_length = unit_get_instruction_count(function);
@@ -1256,7 +1256,7 @@ static void _optimize_redundant_copies_iterative(function_desc *function, x86_op
 }
 
 //
-// Внешний интерфейс для функции распространения копирований.
+// Р’РЅРµС€РЅРёР№ РёРЅС‚РµСЂС„РµР№СЃ РґР»СЏ С„СѓРЅРєС†РёРё СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёСЏ РєРѕРїРёСЂРѕРІР°РЅРёР№.
 void x86_dataflow_optimize_redundant_copies(function_desc *function)
 {
     _optimize_redundant_copies_iterative(function, x86op_dword);
@@ -1265,8 +1265,8 @@ void x86_dataflow_optimize_redundant_copies(function_desc *function)
 
 
 //
-// Проверяет, можно ли освобождать регистр, т.е. является ли данная инструкция
-// последним использованием определения данного регистра.
+// РџСЂРѕРІРµСЂСЏРµС‚, РјРѕР¶РЅРѕ Р»Рё РѕСЃРІРѕР±РѕР¶РґР°С‚СЊ СЂРµРіРёСЃС‚СЂ, С‚.Рµ. СЏРІР»СЏРµС‚СЃСЏ Р»Рё РґР°РЅРЅР°СЏ РёРЅСЃС‚СЂСѓРєС†РёСЏ
+// РїРѕСЃР»РµРґРЅРёРј РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РѕРїСЂРµРґРµР»РµРЅРёСЏ РґР°РЅРЅРѕРіРѕ СЂРµРіРёСЃС‚СЂР°.
 static BOOL _is_last_usage(int reg, x86_instruction *insn, function_desc *function, x86_operand_type type)
 {
     x86_instruction **def_arr   = alloca(sizeof(void *) * _definitions_table.insn_count);
@@ -1274,13 +1274,13 @@ static BOOL _is_last_usage(int reg, x86_instruction *insn, function_desc *functi
     int def_count, usage_count, def, total_count, current_count;
     x86_instruction *test;
 
-    // находим все определения, доступные данной инструкции
+    // РЅР°С…РѕРґРёРј РІСЃРµ РѕРїСЂРµРґРµР»РµРЅРёСЏ, РґРѕСЃС‚СѓРїРЅС‹Рµ РґР°РЅРЅРѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё
     _reachingdef_find_all_definitions(reg, insn, type, def_arr, &def_count, _definitions_table.insn_count);
     if (!def_count) {
         return FALSE;
     }
 
-    // составляем список уникальных использований всех этих определений
+    // СЃРѕСЃС‚Р°РІР»СЏРµРј СЃРїРёСЃРѕРє СѓРЅРёРєР°Р»СЊРЅС‹С… РёСЃРїРѕР»СЊР·РѕРІР°РЅРёР№ РІСЃРµС… СЌС‚РёС… РѕРїСЂРµРґРµР»РµРЅРёР№
     _exposeduses_find_all_usages_of_definition(reg, def_arr[0], type, usage_arr, &total_count, function->func_insn_count);
     aux_sort_int((int*)usage_arr, total_count);
 
@@ -1292,7 +1292,7 @@ static BOOL _is_last_usage(int reg, x86_instruction *insn, function_desc *functi
         total_count = aux_unique_int((int*)usage_arr, total_count);
     }
 
-    // проходим по всем инструкциям функции в порядке их выполнения и считаем число встреченных определений
+    // РїСЂРѕС…РѕРґРёРј РїРѕ РІСЃРµРј РёРЅСЃС‚СЂСѓРєС†РёСЏРј С„СѓРЅРєС†РёРё РІ РїРѕСЂСЏРґРєРµ РёС… РІС‹РїРѕР»РЅРµРЅРёСЏ Рё СЃС‡РёС‚Р°РµРј С‡РёСЃР»Рѕ РІСЃС‚СЂРµС‡РµРЅРЅС‹С… РѕРїСЂРµРґРµР»РµРЅРёР№
     for (current_count = 0, test = function->func_binary_code; ; test = test->in_next) {
         ASSERT(test);
 

@@ -18,39 +18,39 @@ typedef enum x86_operand_type_decl      x86_operand_type;
 
 
 typedef struct function_desc_decl {
-    // синтаксическая/семантическая информация:
-    symbol *                    func_sym;                   // идентификатор функции
+    // СЃРёРЅС‚Р°РєСЃРёС‡РµСЃРєР°СЏ/СЃРµРјР°РЅС‚РёС‡РµСЃРєР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ:
+    symbol *                    func_sym;                   // РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С„СѓРЅРєС†РёРё
 
-    // информация кодогенератора:
-    expression *                func_body;                  // код функции в виде дерева выражений
-    expression *                func_body_end;              // указатель на конец функции
-    BOOL                        func_is_static;             // видимость функции
-    symbol_list                 func_locals;                // список локальных переменных функции
-    parameter_list *            func_params;                // список формальных параметров функции
-    x86_instruction *           func_binary_code;           // код функции в промежуточном представлении
-    x86_instruction *           func_binary_code_end;       // указатель на конец списка
-    int                         func_parameters_sz;         // суммарный размер, в байтах, параметров функции
-    int                         func_local_vars_sz;         // суммарный размер, в байтах, локальных переменных
+    // РёРЅС„РѕСЂРјР°С†РёСЏ РєРѕРґРѕРіРµРЅРµСЂР°С‚РѕСЂР°:
+    expression *                func_body;                  // РєРѕРґ С„СѓРЅРєС†РёРё РІ РІРёРґРµ РґРµСЂРµРІР° РІС‹СЂР°Р¶РµРЅРёР№
+    expression *                func_body_end;              // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РєРѕРЅРµС† С„СѓРЅРєС†РёРё
+    BOOL                        func_is_static;             // РІРёРґРёРјРѕСЃС‚СЊ С„СѓРЅРєС†РёРё
+    symbol_list                 func_locals;                // СЃРїРёСЃРѕРє Р»РѕРєР°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С… С„СѓРЅРєС†РёРё
+    parameter_list *            func_params;                // СЃРїРёСЃРѕРє С„РѕСЂРјР°Р»СЊРЅС‹С… РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё
+    x86_instruction *           func_binary_code;           // РєРѕРґ С„СѓРЅРєС†РёРё РІ РїСЂРѕРјРµР¶СѓС‚РѕС‡РЅРѕРј РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРё
+    x86_instruction *           func_binary_code_end;       // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РєРѕРЅРµС† СЃРїРёСЃРєР°
+    int                         func_parameters_sz;         // СЃСѓРјРјР°СЂРЅС‹Р№ СЂР°Р·РјРµСЂ, РІ Р±Р°Р№С‚Р°С…, РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё
+    int                         func_local_vars_sz;         // СЃСѓРјРјР°СЂРЅС‹Р№ СЂР°Р·РјРµСЂ, РІ Р±Р°Р№С‚Р°С…, Р»РѕРєР°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С…
 
-    // информация аллокатора регистров:
-    int                         func_start_of_regvars[6];   // первая регистровая переменная (номер псевдорегистра)
-    int                         func_labels_count;          // последняя аллоцированная метка в функции
+    // РёРЅС„РѕСЂРјР°С†РёСЏ Р°Р»Р»РѕРєР°С‚РѕСЂР° СЂРµРіРёСЃС‚СЂРѕРІ:
+    int                         func_start_of_regvars[6];   // РїРµСЂРІР°СЏ СЂРµРіРёСЃС‚СЂРѕРІР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ (РЅРѕРјРµСЂ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂР°)
+    int                         func_labels_count;          // РїРѕСЃР»РµРґРЅСЏСЏ Р°Р»Р»РѕС†РёСЂРѕРІР°РЅРЅР°СЏ РјРµС‚РєР° РІ С„СѓРЅРєС†РёРё
     int                         func_pseudoregs_count[6];   // X86_REGISTER_TYPES_COUNT
 
-    // информация для инлайнинга:
-    int                         func_insn_count;            // количество инструкций во внутреннем представлении
-    int                         func_usage_count;           // число вызовов этой функции
+    // РёРЅС„РѕСЂРјР°С†РёСЏ РґР»СЏ РёРЅР»Р°Р№РЅРёРЅРіР°:
+    int                         func_insn_count;            // РєРѕР»РёС‡РµСЃС‚РІРѕ РёРЅСЃС‚СЂСѓРєС†РёР№ РІРѕ РІРЅСѓС‚СЂРµРЅРЅРµРј РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРё
+    int                         func_usage_count;           // С‡РёСЃР»Рѕ РІС‹Р·РѕРІРѕРІ СЌС‚РѕР№ С„СѓРЅРєС†РёРё
 
-    // односвязный список:
+    // РѕРґРЅРѕСЃРІСЏР·РЅС‹Р№ СЃРїРёСЃРѕРє:
     struct function_desc_decl * func_next;
 } function_desc;
 
 
-// текущая функция в парсере
+// С‚РµРєСѓС‰Р°СЏ С„СѓРЅРєС†РёСЏ РІ РїР°СЂСЃРµСЂРµ
 function_desc * unit_get_current_function           (void);
 
 
-// поддержка объявлений функций и переменных
+// РїРѕРґРґРµСЂР¶РєР° РѕР±СЉСЏРІР»РµРЅРёР№ С„СѓРЅРєС†РёР№ Рё РїРµСЂРµРјРµРЅРЅС‹С…
 function_desc * unit_get_functions_list             (void);
 function_desc * unit_find_function                  (symbol *name);
 symbol *        unit_create_temporary_variable      (function_desc *function, data_type *type);
@@ -59,7 +59,7 @@ void            unit_handle_function_prototype      (decl_specifier *spec, symbo
 void            unit_handle_function_body           (symbol *sym);
 void            unit_after_global_declaration       (void);
 
-// поддержка циклов
+// РїРѕРґРґРµСЂР¶РєР° С†РёРєР»РѕРІ
 void            unit_push_return                    (expression *result, BOOL allow_empty_return);
 void            unit_push_expression                (expression *expr);
 int             unit_create_label                   ();
@@ -68,35 +68,35 @@ void            unit_push_jump                      (int dest, expression *condi
 int             unit_create_label_and_push_jump     (expression *condition, BOOL invert_condition);
 void            unit_push_label                     (int label);
 
-// поддержка goto
+// РїРѕРґРґРµСЂР¶РєР° goto
 void            unit_push_named_label               (symbol *label);
 void            unit_push_jump_to_named_label       (symbol *label);
 
-// поддержка break/continue
+// РїРѕРґРґРµСЂР¶РєР° break/continue
 void            unit_push_continue                  ();
 void            unit_push_break                     ();
 void            unit_push_continue_break_targets    (int continue_target, int break_target);
 void            unit_pop_continue_break_targets     ();
 
-// поддержка switch/case/default
+// РїРѕРґРґРµСЂР¶РєР° switch/case/default
 void            unit_open_switch_stmt               (expression *value);
 void            unit_push_case_label                (expression *value);
 void            unit_push_default_stmt              ();
 void            unit_close_switch_stmt              ();
 
-// поддержка цикла for (вырезание третьей инструкции и вставка её после тела цикла)
+// РїРѕРґРґРµСЂР¶РєР° С†РёРєР»Р° for (РІС‹СЂРµР·Р°РЅРёРµ С‚СЂРµС‚СЊРµР№ РёРЅСЃС‚СЂСѓРєС†РёРё Рё РІСЃС‚Р°РІРєР° РµС‘ РїРѕСЃР»Рµ С‚РµР»Р° С†РёРєР»Р°)
 expression *    unit_get_last_expression            (void);
 expression *    unit_extract_slice                  (expression *expr);
 void            unit_insert_slice                   (expression *list);
 
-// поддержка кодогенератора
+// РїРѕРґРґРµСЂР¶РєР° РєРѕРґРѕРіРµРЅРµСЂР°С‚РѕСЂР°
 void            unit_codegen                        (void);
 void            unit_push_nullary_instruction       (x86_instruction_code code);
 void            unit_push_unary_instruction         (x86_instruction_code code, x86_operand *op);
 void            unit_push_binary_instruction        (x86_instruction_code code, x86_operand *op1, x86_operand *op2);
 void            unit_push_ternary_instruction       (x86_instruction_code code, x86_operand *op1, x86_operand *op2, x86_operand *op3);
 
-// поддержка оптимизатора
+// РїРѕРґРґРµСЂР¶РєР° РѕРїС‚РёРјРёР·Р°С‚РѕСЂР°
 int             unit_get_instruction_count          (function_desc *function);
 
 

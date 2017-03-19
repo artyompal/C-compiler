@@ -14,7 +14,7 @@ typedef struct symbol_list_decl     symbol_list;
 
 
 typedef enum data_type_code_decl {
-    // арифметические типы
+    // Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ С‚РёРїС‹
     code_type_void,
     code_type_char,
     code_type_unsigned_char,
@@ -31,7 +31,7 @@ typedef enum data_type_code_decl {
     code_type_double,
     code_type_long_double,
 
-    // составные типы
+    // СЃРѕСЃС‚Р°РІРЅС‹Рµ С‚РёРїС‹
     code_type_pointer,
     code_type_sized_array,
     code_type_unsized_array,
@@ -51,8 +51,8 @@ typedef struct data_type_decl data_type;
 typedef struct structure_union_field_decl structure_union_field;
 
 typedef struct structure_union_field_decl {
-    symbol *                field_sym;          // NULL     - заполнитель
-    int                     field_width;        // -1       - ширина не указана
+    symbol *                field_sym;          // NULL     - Р·Р°РїРѕР»РЅРёС‚РµР»СЊ
+    int                     field_width;        // -1       - С€РёСЂРёРЅР° РЅРµ СѓРєР°Р·Р°РЅР°
     int                     field_offset;
     structure_union_field * field_next;
 } struct_union_field;
@@ -76,7 +76,7 @@ typedef struct data_type_decl {
         // code_type_sized_array, code_type_unsized_array
         struct array_decl {
             data_type *     item_type;
-            int             size;         // только для code_type_sized_array
+            int             size;         // С‚РѕР»СЊРєРѕ РґР»СЏ code_type_sized_array
         } array;
 
         // code_type_structure, code_type_union

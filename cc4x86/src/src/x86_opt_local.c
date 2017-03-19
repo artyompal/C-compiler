@@ -21,12 +21,12 @@ static int              _usage_max_count;
 
 //
 //
-// Вспомогательные функции для проверки и оптимизации кода в специальных случаях.
+// Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё РґР»СЏ РїСЂРѕРІРµСЂРєРё Рё РѕРїС‚РёРјРёР·Р°С†РёРё РєРѕРґР° РІ СЃРїРµС†РёР°Р»СЊРЅС‹С… СЃР»СѓС‡Р°СЏС….
 //
 //
 
 //
-// Заменяет регистр смещением символа. Используется для устранения LEA.
+// Р—Р°РјРµРЅСЏРµС‚ СЂРµРіРёСЃС‚СЂ СЃРјРµС‰РµРЅРёРµРј СЃРёРјРІРѕР»Р°. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СѓСЃС‚СЂР°РЅРµРЅРёСЏ LEA.
 static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg, symbol *sym)
 {
     if (bincode_operand_contains_register(&insn->in_op1, x86op_dword, reg)) {
@@ -57,7 +57,7 @@ static BOOL _replace_register_with_symbol_offset(x86_instruction *insn, int reg,
 }
 
 //
-// Заменяет регистр другим регистром. Используется для устранения лишних копирований регистров.
+// Р—Р°РјРµРЅСЏРµС‚ СЂРµРіРёСЃС‚СЂ РґСЂСѓРіРёРј СЂРµРіРёСЃС‚СЂРѕРј. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СѓСЃС‚СЂР°РЅРµРЅРёСЏ Р»РёС€РЅРёС… РєРѕРїРёСЂРѕРІР°РЅРёР№ СЂРµРіРёСЃС‚СЂРѕРІ.
 static void _replace_register_in_instruction(x86_instruction *insn, int reg, int reg2)
 {
     int *regs[MAX_REGISTERS_PER_INSN];
@@ -73,14 +73,14 @@ static void _replace_register_in_instruction(x86_instruction *insn, int reg, int
 }
 
 //
-// Проверяет, что регистр используется только в текущем блоке и только в константных контекстах.
-// Берёт информацию из глобальных переменных _usage_arr, _usage_count.
+// РџСЂРѕРІРµСЂСЏРµС‚, С‡С‚Рѕ СЂРµРіРёСЃС‚СЂ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РІ С‚РµРєСѓС‰РµРј Р±Р»РѕРєРµ Рё С‚РѕР»СЊРєРѕ РІ РєРѕРЅСЃС‚Р°РЅС‚РЅС‹С… РєРѕРЅС‚РµРєСЃС‚Р°С….
+// Р‘РµСЂС‘С‚ РёРЅС„РѕСЂРјР°С†РёСЋ РёР· РіР»РѕР±Р°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С… _usage_arr, _usage_count.
 static BOOL _check_locality_and_constantness(x86_instruction *insn, int reg)
 {
     x86_operand_type type = x86op_dword;
     int i;
 
-    // проверяем, что регистр используется только в read-only контекстах
+    // РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ СЂРµРіРёСЃС‚СЂ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РІ read-only РєРѕРЅС‚РµРєСЃС‚Р°С…
     for (i = 0; i < _usage_count; i++) {
         if (_usage_arr[i]->in_block != insn->in_block || bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)) {
             return FALSE;
@@ -91,7 +91,7 @@ static BOOL _check_locality_and_constantness(x86_instruction *insn, int reg)
 }
 
 //
-// Заменяет все использования регистра на смещение символа, и если это всегда удаётся, удаляем инструкцию LEA.
+// Р—Р°РјРµРЅСЏРµС‚ РІСЃРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ СЂРµРіРёСЃС‚СЂР° РЅР° СЃРјРµС‰РµРЅРёРµ СЃРёРјРІРѕР»Р°, Рё РµСЃР»Рё СЌС‚Рѕ РІСЃРµРіРґР° СѓРґР°С‘С‚СЃСЏ, СѓРґР°Р»СЏРµРј РёРЅСЃС‚СЂСѓРєС†РёСЋ LEA.
 static void _try_optimize_lea_reg_symbol(function_desc *function, x86_instruction *lea)
 {
     x86_operand_type type = x86op_dword;
@@ -114,7 +114,7 @@ static void _try_optimize_lea_reg_symbol(function_desc *function, x86_instructio
 }
 
 //
-// Пробует убрать инструкцию LEA.
+// РџСЂРѕР±СѓРµС‚ СѓР±СЂР°С‚СЊ РёРЅСЃС‚СЂСѓРєС†РёСЋ LEA.
 static void _try_optimize_lea_reg_address(function_desc *function, x86_instruction *lea)
 {
     x86_instruction *block_end, *usage;
@@ -130,7 +130,7 @@ static void _try_optimize_lea_reg_address(function_desc *function, x86_instructi
 
     block_end = lea->in_block->block_last_insn->in_next;
 
-    // Если инструкция - тривиальный LEA вроде LEA EAX,[EDX] или LEA EAX,[EDX*1], то просто устраняем её.
+    // Р•СЃР»Рё РёРЅСЃС‚СЂСѓРєС†РёСЏ - С‚СЂРёРІРёР°Р»СЊРЅС‹Р№ LEA РІСЂРѕРґРµ LEA EAX,[EDX] РёР»Рё LEA EAX,[EDX*1], С‚Рѕ РїСЂРѕСЃС‚Рѕ СѓСЃС‚СЂР°РЅСЏРµРј РµС‘.
     if (ADDRESS_IS_BASE(lea->in_op2) || ADDRESS_IS_UNSCALED_INDEX(lea->in_op2)) {
         reg2 = (ADDRESS_IS_BASE(lea->in_op2) ? lea->in_op2.data.address.base : lea->in_op2.data.address.index);
 
@@ -152,7 +152,7 @@ static void _try_optimize_lea_reg_address(function_desc *function, x86_instructi
 }
 
 //
-// Ищет определение данного регистра в пределах текущего блока.
+// РС‰РµС‚ РѕРїСЂРµРґРµР»РµРЅРёРµ РґР°РЅРЅРѕРіРѕ СЂРµРіРёСЃС‚СЂР° РІ РїСЂРµРґРµР»Р°С… С‚РµРєСѓС‰РµРіРѕ Р±Р»РѕРєР°.
 static x86_instruction *_find_local_definition(function_desc *function, x86_instruction *insn, int reg)
 {
     for (insn = insn->in_prev; insn && insn != insn->in_block->block_leader->in_prev; insn = insn->in_prev) {
@@ -165,7 +165,7 @@ static x86_instruction *_find_local_definition(function_desc *function, x86_inst
 }
 
 //
-// Проверяет факт того, что значение больше не будет кем-то использоваться.
+// РџСЂРѕРІРµСЂСЏРµС‚ С„Р°РєС‚ С‚РѕРіРѕ, С‡С‚Рѕ Р·РЅР°С‡РµРЅРёРµ Р±РѕР»СЊС€Рµ РЅРµ Р±СѓРґРµС‚ РєРµРј-С‚Рѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ.
 static BOOL _is_unused_anymore(function_desc *function, x86_instruction *insn, int reg)
 {
     x86_dataflow_set_current_insn(function, x86op_dword, insn);
@@ -173,7 +173,7 @@ static BOOL _is_unused_anymore(function_desc *function, x86_instruction *insn, i
 }
 
 //
-// Пытается объединить поместить арифметическую операцию в адрес.
+// РџС‹С‚Р°РµС‚СЃСЏ РѕР±СЉРµРґРёРЅРёС‚СЊ РїРѕРјРµСЃС‚РёС‚СЊ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєСѓСЋ РѕРїРµСЂР°С†РёСЋ РІ Р°РґСЂРµСЃ.
 static BOOL _can_combine_address_and_insn(int reg, x86_operand *addr, x86_instruction *insn)
 {
     if (insn->in_code == x86insn_int_add && OP_IS_THIS_PSEUDO_REG(insn->in_op1, x86op_dword, reg) && OP_IS_CONSTANT(insn->in_op2)) {
@@ -207,7 +207,7 @@ static BOOL _can_combine_address_and_insn(int reg, x86_operand *addr, x86_instru
 }
 
 //
-// Пытается поместить в адрес столько вычислений, сколько возможно.
+// РџС‹С‚Р°РµС‚СЃСЏ РїРѕРјРµСЃС‚РёС‚СЊ РІ Р°РґСЂРµСЃ СЃС‚РѕР»СЊРєРѕ РІС‹С‡РёСЃР»РµРЅРёР№, СЃРєРѕР»СЊРєРѕ РІРѕР·РјРѕР¶РЅРѕ.
 static void _try_optimize_address(function_desc *function, x86_instruction *insn, x86_operand *addr)
 {
     x86_operand_type type = x86op_dword;
@@ -268,7 +268,7 @@ static void _try_optimize_address(function_desc *function, x86_instruction *insn
 }
 
 //
-// Пытается распространять константу вместо регистра.
+// РџС‹С‚Р°РµС‚СЃСЏ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏС‚СЊ РєРѕРЅСЃС‚Р°РЅС‚Сѓ РІРјРµСЃС‚Рѕ СЂРµРіРёСЃС‚СЂР°.
 static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction *mov)
 {
     int reg, i, def_count;
@@ -280,7 +280,7 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
 
     definitions = alloca(sizeof(void*) * _usage_max_count);
 
-    // проверяем, что регистр используется только в read-only контекстах
+    // РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ СЂРµРіРёСЃС‚СЂ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РІ read-only РєРѕРЅС‚РµРєСЃС‚Р°С…
     for (i = 0; i < _usage_count; i++) {
         if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg)
             || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
@@ -297,21 +297,21 @@ static void _try_optimize_mov_reg_const(function_desc *function, x86_instruction
         ASSERT(definitions[0] == mov);
     }
 
-    // заменяем все вхождения
+    // Р·Р°РјРµРЅСЏРµРј РІСЃРµ РІС…РѕР¶РґРµРЅРёСЏ
     for (i = 0; i < _usage_count; i++) {
         _usage_arr[i]->in_op2 = mov->in_op2;
     }
 
-    // удаляем инструкцию
+    // СѓРґР°Р»СЏРµРј РёРЅСЃС‚СЂСѓРєС†РёСЋ
     x86_dataflow_erase_instruction(function, mov);
 }
 
 //
-// Оптимизирует конструкции с LEA.
+// РћРїС‚РёРјРёР·РёСЂСѓРµС‚ РєРѕРЅСЃС‚СЂСѓРєС†РёРё СЃ LEA.
 static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 {
     ASSERT(insn->in_op1.op_loc == x86loc_register);
-    ASSERT(insn->in_op1.data.reg > 0);  // LEA оперирует только псевдорегистрами.
+    ASSERT(insn->in_op1.data.reg > 0);  // LEA РѕРїРµСЂРёСЂСѓРµС‚ С‚РѕР»СЊРєРѕ РїСЃРµРІРґРѕСЂРµРіРёСЃС‚СЂР°РјРё.
 
     if (insn->in_op2.op_loc == x86loc_symbol) {
         _try_optimize_lea_reg_symbol(function, insn);
@@ -322,7 +322,7 @@ static void _try_optimize_lea(function_desc *function, x86_instruction *insn)
 }
 
 //
-// Оптимизирует конструкции с MOV.
+// РћРїС‚РёРјРёР·РёСЂСѓРµС‚ РєРѕРЅСЃС‚СЂСѓРєС†РёРё СЃ MOV.
 static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
 {
     x86_dataflow_set_current_insn(function, x86op_dword, insn);
@@ -335,7 +335,7 @@ static void _try_optimize_mov(function_desc *function, x86_instruction *insn)
 }
 
 //
-// Оптимизирует конструкции с ADD/SUB.
+// РћРїС‚РёРјРёР·РёСЂСѓРµС‚ РєРѕРЅСЃС‚СЂСѓРєС†РёРё СЃ ADD/SUB.
 static void _try_optimize_add_sub(function_desc *function, x86_instruction *insn)
 {
     if (OP_IS_CONSTANT(insn->in_op2)) {
@@ -349,7 +349,7 @@ static void _try_optimize_add_sub(function_desc *function, x86_instruction *insn
 }
 
 //
-// Удаляет инструкцию CMP reg,0 или TEST, следующую сразу после арифметичекой операции с этим же регистром.
+// РЈРґР°Р»СЏРµС‚ РёРЅСЃС‚СЂСѓРєС†РёСЋ CMP reg,0 РёР»Рё TEST, СЃР»РµРґСѓСЋС‰СѓСЋ СЃСЂР°Р·Сѓ РїРѕСЃР»Рµ Р°СЂРёС„РјРµС‚РёС‡РµРєРѕР№ РѕРїРµСЂР°С†РёРё СЃ СЌС‚РёРј Р¶Рµ СЂРµРіРёСЃС‚СЂРѕРј.
 static void _try_optimize_cmp_test(function_desc *function, x86_instruction *cmp)
 {
     if (OP_IS_PSEUDO_REG(cmp->in_op1, x86op_dword) && IS_FLAGS_MODIFYING_INSN(cmp->in_prev->in_code)
@@ -361,7 +361,7 @@ static void _try_optimize_cmp_test(function_desc *function, x86_instruction *cmp
 }
 
 //
-// Оптимизирует целочисленные инструкции.
+// РћРїС‚РёРјРёР·РёСЂСѓРµС‚ С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹Рµ РёРЅСЃС‚СЂСѓРєС†РёРё.
 static void _optimize_dword_insns(function_desc *function)
 {
     x86_instruction *insn, *next, *prev;
@@ -416,7 +416,7 @@ static void _optimize_dword_insns(function_desc *function)
 }
 
 //
-// Пытается распространять константу вместо регистра.
+// РџС‹С‚Р°РµС‚СЃСЏ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏС‚СЊ РєРѕРЅСЃС‚Р°РЅС‚Сѓ РІРјРµСЃС‚Рѕ СЂРµРіРёСЃС‚СЂР°.
 static void _try_optimize_movss(function_desc *function, x86_instruction *movss, BOOL after_regvars)
 {
     int reg, i, def_count;
@@ -431,7 +431,7 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss,
     x86_dataflow_find_all_usages_of_definition(reg, movss, type, _usage_arr, &_usage_count, _usage_max_count);
     definitions = alloca(sizeof(void*) * _usage_max_count);
 
-    // проверяем, что регистр используется только в read-only контекстах
+    // РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ СЂРµРіРёСЃС‚СЂ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РІ read-only РєРѕРЅС‚РµРєСЃС‚Р°С…
     for (i = 0; i < _usage_count; i++) {
         if (bincode_is_pseudoreg_modified_by_insn(_usage_arr[i], type, reg) || !OP_IS_THIS_PSEUDO_REG(_usage_arr[i]->in_op2, type, reg)
             || !after_regvars && !OP_IS_PSEUDO_REG(_usage_arr[i]->in_op1, type)) {
@@ -446,7 +446,7 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss,
         ASSERT(definitions[0] == movss);
     }
 
-    // заменяем все вхождения
+    // Р·Р°РјРµРЅСЏРµРј РІСЃРµ РІС…РѕР¶РґРµРЅРёСЏ
     for (i = 0; i < _usage_count; i++) {
         if (_usage_arr[i]->in_code == x86insn_sse_movss && OP_IS_ADDRESS_OR_SYMBOL(_usage_arr[i]->in_op1) && OP_IS_SYMBOL(movss->in_op2)) {
             _usage_arr[i]->in_code          = x86insn_int_mov;
@@ -459,12 +459,12 @@ static void _try_optimize_movss(function_desc *function, x86_instruction *movss,
         }
     }
 
-    // удаляем инструкцию
+    // СѓРґР°Р»СЏРµРј РёРЅСЃС‚СЂСѓРєС†РёСЋ
     x86_dataflow_erase_instruction(function, movss);
 }
 
 //
-// Оптимизирует флоатовые инструкции.
+// РћРїС‚РёРјРёР·РёСЂСѓРµС‚ С„Р»РѕР°С‚РѕРІС‹Рµ РёРЅСЃС‚СЂСѓРєС†РёРё.
 static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
 {
     x86_instruction *insn, *next;
@@ -488,7 +488,7 @@ static void _optimize_float_insn(function_desc *function, BOOL after_regvars)
 }
 
 //
-// Устраняет неиспользуемые метки в коде.
+// РЈСЃС‚СЂР°РЅСЏРµС‚ РЅРµРёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ РјРµС‚РєРё РІ РєРѕРґРµ.
 static void _kill_unused_labels(function_desc *function)
 {
     int labels_count    = function->func_labels_count;
@@ -519,7 +519,7 @@ static void _kill_unused_labels(function_desc *function)
 }
 
 //
-// Итерация оптимизации. Оптимизатор пытается объединить идущие подряд инструкции в более эффективные формы.
+// РС‚РµСЂР°С†РёСЏ РѕРїС‚РёРјРёР·Р°С†РёРё. РћРїС‚РёРјРёР·Р°С‚РѕСЂ РїС‹С‚Р°РµС‚СЃСЏ РѕР±СЉРµРґРёРЅРёС‚СЊ РёРґСѓС‰РёРµ РїРѕРґСЂСЏРґ РёРЅСЃС‚СЂСѓРєС†РёРё РІ Р±РѕР»РµРµ СЌС„С„РµРєС‚РёРІРЅС‹Рµ С„РѕСЂРјС‹.
 void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 {
     int old_insn_count;
@@ -545,7 +545,7 @@ void x86_local_optimization_pass(function_desc *function, BOOL after_regvars)
 
 
 //
-// Оптимизирует последовательные серии movss/sub esp,4/...
+// РћРїС‚РёРјРёР·РёСЂСѓРµС‚ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅС‹Рµ СЃРµСЂРёРё movss/sub esp,4/...
 static void _optimize_sub_esp(function_desc *function, x86_instruction *first)
 {
     x86_instruction *insn, *last, *prev;
@@ -587,7 +587,7 @@ static void _optimize_sub_esp(function_desc *function, x86_instruction *first)
 }
 
 //
-// Стадия оптимизации, выполняемая после аллокации регистров.
+// РЎС‚Р°РґРёСЏ РѕРїС‚РёРјРёР·Р°С†РёРё, РІС‹РїРѕР»РЅСЏРµРјР°СЏ РїРѕСЃР»Рµ Р°Р»Р»РѕРєР°С†РёРё СЂРµРіРёСЃС‚СЂРѕРІ.
 void x86_optimize_after_register_coloring(function_desc *function)
 {
     x86_instruction *insn, *next;

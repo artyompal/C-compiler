@@ -1,28 +1,28 @@
 
 
-typedef struct basic_blocks_vector_decl {   // âåêòîð áàçîâûõ áëîêîâ:
-    basic_block         *blocks_base;       // àäðåñ íà÷àëà
-    int                 blocks_count;       // ÷èñëî ýëåìåíòîâ
+typedef struct basic_blocks_vector_decl {   // Ð²ÐµÐºÑ‚Ð¾Ñ€ Ð±Ð°Ð·Ð¾Ð²Ñ‹Ñ… Ð±Ð»Ð¾ÐºÐ¾Ð²:
+    basic_block         *blocks_base;       // Ð°Ð´Ñ€ÐµÑ Ð½Ð°Ñ‡Ð°Ð»Ð°
+    int                 blocks_count;       // Ñ‡Ð¸ÑÐ»Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð²
 } basic_blocks_vector;
 
-typedef struct set_decl {                   // ìíîæåñòâî â áèòîâîì ïðåäñòàâëåíèè:
-    unsigned            *set_base;          // àäðåñ íà÷àëà
-    int                 set_count;          // ÷èñëî ýëåìåíòîâ â ìíîæåñòâå, ò.å. ÷èñëî áèòîâ â ìàññèâå
+typedef struct set_decl {                   // Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ð¾ Ð² Ð±Ð¸Ñ‚Ð¾Ð²Ð¾Ð¼ Ð¿Ñ€ÐµÐ´ÑÑ‚Ð°Ð²Ð»ÐµÐ½Ð¸Ð¸:
+    unsigned            *set_base;          // Ð°Ð´Ñ€ÐµÑ Ð½Ð°Ñ‡Ð°Ð»Ð°
+    int                 set_count;          // Ñ‡Ð¸ÑÐ»Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð² Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ðµ, Ñ‚.Ðµ. Ñ‡Ð¸ÑÐ»Ð¾ Ð±Ð¸Ñ‚Ð¾Ð² Ð² Ð¼Ð°ÑÑÐ¸Ð²Ðµ
 } set;
 
-typedef struct set_vector_decl {            // âåêòîð ìíîæåñòâ:
-    set                 *vec_base;          // àäðåñ íà÷àëà
-    int                 vec_count;          // êîëè÷åñòâî ìíîæåñòâ
+typedef struct set_vector_decl {            // Ð²ÐµÐºÑ‚Ð¾Ñ€ Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²:
+    set                 *vec_base;          // Ð°Ð´Ñ€ÐµÑ Ð½Ð°Ñ‡Ð°Ð»Ð°
+    int                 vec_count;          // ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²
 } set_vector;
 
-typedef struct insn_vector_decl {           // âåêòîð èíñòðóêöèé:
-    x86_instruction     **insn_base;        // àäðåñ íà÷àëà
-    int                 insn_count;         // êîëè÷åñòâî èíñòðóêöèé
+typedef struct insn_vector_decl {           // Ð²ÐµÐºÑ‚Ð¾Ñ€ Ð¸Ð½ÑÑ‚Ñ€ÑƒÐºÑ†Ð¸Ð¹:
+    x86_instruction     **insn_base;        // Ð°Ð´Ñ€ÐµÑ Ð½Ð°Ñ‡Ð°Ð»Ð°
+    int                 insn_count;         // ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ð½ÑÑ‚Ñ€ÑƒÐºÑ†Ð¸Ð¹
 } insn_vector;
 
-typedef struct int_vector_decl {            // âåêòîð int:
-    int                 *int_base;          // àäðåñ íà÷àëà
-    int                 int_count;          // êîëè÷åñòâî
+typedef struct int_vector_decl {            // Ð²ÐµÐºÑ‚Ð¾Ñ€ int:
+    int                 *int_base;          // Ð°Ð´Ñ€ÐµÑ Ð½Ð°Ñ‡Ð°Ð»Ð°
+    int                 int_count;          // ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾
 } int_vector;
 
 
@@ -37,7 +37,7 @@ typedef struct int_vector_decl {            // âåêòîð int:
 
 
 //
-// Ïðèìèòèâû äëÿ ðàáîòû íàä ìíîæåñòâàìè.
+// ÐŸÑ€Ð¸Ð¼Ð¸Ñ‚Ð¸Ð²Ñ‹ Ð´Ð»Ñ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ð½Ð°Ð´ Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ð°Ð¼Ð¸.
 static void set_alloc(set *s, int count)
 {
     s->set_base     = allocator_alloc(allocator_per_function_pool, SET_SIZE_IN_BYTES(count));

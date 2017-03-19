@@ -57,7 +57,7 @@ decl_specifier parser_add_type_specifiers(decl_specifier orig_value, decl_specif
     decl_specifier res = orig_value;
 
 #define SET(SPEC) orig_value.spec_##SPEC
-    // àðèôìåòè÷åñêèå òèïû
+    // Ð°Ñ€Ð¸Ñ„Ð¼ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ¸Ðµ Ñ‚Ð¸Ð¿Ñ‹
     if (added_value.spec_void) {
         if (SET(void) || SET(char) || SET(short) || SET(int) || SET(long) || SET(float) || SET(double)
             || SET(signed) || SET(unsigned) || SET(struct_union) || SET(enum) || SET(typedefed_name)) {
@@ -104,7 +104,7 @@ decl_specifier parser_add_type_specifiers(decl_specifier orig_value, decl_specif
         else { res.spec_unsigned = 1; }
     }
 
-    // ñîñòàâíûå òèïû
+    // ÑÐ¾ÑÑ‚Ð°Ð²Ð½Ñ‹Ðµ Ñ‚Ð¸Ð¿Ñ‹
     else if (added_value.spec_struct_union) {
         if (SET(void) || SET(char) || SET(short) || SET(int) || SET(long) || SET(float) || SET(double)
             || SET(signed) || SET(unsigned) || SET(struct_union) || SET(enum) || SET(typedefed_name)) {
@@ -122,7 +122,7 @@ decl_specifier parser_add_type_specifiers(decl_specifier orig_value, decl_specif
         } else { res.spec_typedefed_name = 1, res.spec_compound_type = added_value.spec_compound_type; }
     }
 
-    // CV-êâàëèôèêàòîðû
+    // CV-ÐºÐ²Ð°Ð»Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€Ñ‹
     else if (added_value.spec_const) {
         if (SET(const)) { goto qualifier_error; }
         else { res.spec_const = 1; }
@@ -131,7 +131,7 @@ decl_specifier parser_add_type_specifiers(decl_specifier orig_value, decl_specif
         else { res.spec_volatile = 1; }
     }
 
-    // êâàëèôèêàòîðû âèäèìîñòè
+    // ÐºÐ²Ð°Ð»Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€Ñ‹ Ð²Ð¸Ð´Ð¸Ð¼Ð¾ÑÑ‚Ð¸
     else if (added_value.spec_typedef) {
         if (SET(typedef) || SET(extern) || SET(static) || SET(auto) || SET(register)) { goto storage_error; }
         else { res.spec_typedef = 1; }
@@ -229,7 +229,7 @@ symbol *parser_attach_initializer(symbol *sym, initializer *value)
 {
     if (!sym) { return NULL; }
 
-    // TODO: ñåìàíòè÷åñêèå ïðîâåðêè: ïðîâåðêè òèïîâ è íåÿâíûå ïðåîáðàçîâàíèÿ òèïîâ.
+    // TODO: ÑÐµÐ¼Ð°Ð½Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸Ðµ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ¸: Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ¸ Ñ‚Ð¸Ð¿Ð¾Ð² Ð¸ Ð½ÐµÑÐ²Ð½Ñ‹Ðµ Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ñ Ñ‚Ð¸Ð¿Ð¾Ð².
     sym->sym_init = value;
     return sym;
 }

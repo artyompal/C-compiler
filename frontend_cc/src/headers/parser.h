@@ -17,7 +17,7 @@
 typedef struct expression_decl expression;
 
 
-// инициализаторы: могут быть скалярным значением или списком значений
+// РёРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂС‹: РјРѕРіСѓС‚ Р±С‹С‚СЊ СЃРєР°Р»СЏСЂРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј РёР»Рё СЃРїРёСЃРєРѕРј Р·РЅР°С‡РµРЅРёР№
 
 typedef enum initializer_code_decl {
     code_terminal_initializer,
@@ -40,7 +40,7 @@ typedef struct initializer_decl {
 } initializer;
 
 
-// параметр функции
+// РїР°СЂР°РјРµС‚СЂ С„СѓРЅРєС†РёРё
 
 typedef enum parameter_code_decl {
     code_symbol_parameter,
@@ -53,8 +53,8 @@ typedef struct parameter_decl parameter;
 typedef struct parameter_decl {
     parameter_code  param_code;
     parameter *     param_next;
-    data_type *     param_type;     // только для code_symbol_parameter и code_type_parameter
-    symbol *        param_sym;      // только для code_symbol_parameter
+    data_type *     param_type;     // С‚РѕР»СЊРєРѕ РґР»СЏ code_symbol_parameter Рё code_type_parameter
+    symbol *        param_sym;      // С‚РѕР»СЊРєРѕ РґР»СЏ code_symbol_parameter
 } parameter;
 
 typedef struct parameter_list_decl {
@@ -63,7 +63,7 @@ typedef struct parameter_list_decl {
 } parameter_list;
 
 
-// YYSTYPE - универсальная семантическая структура парсера
+// YYSTYPE - СѓРЅРёРІРµСЂСЃР°Р»СЊРЅР°СЏ СЃРµРјР°РЅС‚РёС‡РµСЃРєР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° РїР°СЂСЃРµСЂР°
 
 typedef union YYSTYPE_decl {
     symbol *                sym;

@@ -52,7 +52,7 @@ function_desc * unit_find_function(symbol *name)
 
 
 //
-// Добавление выражений.
+// Р”РѕР±Р°РІР»РµРЅРёРµ РІС‹СЂР°Р¶РµРЅРёР№.
 //
 
 void unit_push_expression(expression *expr)
@@ -63,7 +63,7 @@ void unit_push_expression(expression *expr)
         return;
     }
 
-    // вставка элемента в двусвязный список
+    // РІСЃС‚Р°РІРєР° СЌР»РµРјРµРЅС‚Р° РІ РґРІСѓСЃРІСЏР·РЅС‹Р№ СЃРїРёСЃРѕРє
     if (!_curr_func->func_body) {
         _curr_func->func_body   = expr;
         expr->expr_prev         = NULL;
@@ -159,7 +159,7 @@ static void _insert_label_after(int label, expression *position)
 
 
 //
-// Поддержка циклов.
+// РџРѕРґРґРµСЂР¶РєР° С†РёРєР»РѕРІ.
 //
 
 int unit_create_label()
@@ -193,7 +193,7 @@ void unit_push_label(int label)
 
 
 //
-// Поддержка goto.
+// РџРѕРґРґРµСЂР¶РєР° goto.
 //
 
 void unit_push_named_label(symbol *label_name)
@@ -240,7 +240,7 @@ static void _resolve_jumps_to_named_labels(void)
 
 
 //
-// Поддержка break/continue.
+// РџРѕРґРґРµСЂР¶РєР° break/continue.
 //
 
 static void _reset_continue_break_switch_targets()
@@ -283,11 +283,11 @@ void unit_pop_continue_break_targets()
 
 
 //
-// Поддержка switch/case/default.
+// РџРѕРґРґРµСЂР¶РєР° switch/case/default.
 //
 
 
-// Помещаем в стек break/default и вычисляем выражение во временную переменную.
+// РџРѕРјРµС‰Р°РµРј РІ СЃС‚РµРє break/default Рё РІС‹С‡РёСЃР»СЏРµРј РІС‹СЂР°Р¶РµРЅРёРµ РІРѕ РІСЂРµРјРµРЅРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ.
 
 void unit_open_switch_stmt(expression *value)
 {
@@ -315,7 +315,7 @@ void unit_open_switch_stmt(expression *value)
     _switch_values[_last_switch_value].conditions_insertion_point   = _curr_func->func_body_end;
 }
 
-// Вставляем метку и вставляем сравнение + условный переход.
+// Р’СЃС‚Р°РІР»СЏРµРј РјРµС‚РєСѓ Рё РІСЃС‚Р°РІР»СЏРµРј СЃСЂР°РІРЅРµРЅРёРµ + СѓСЃР»РѕРІРЅС‹Р№ РїРµСЂРµС…РѕРґ.
 
 void unit_push_case_label(expression *value)
 {
@@ -334,7 +334,7 @@ void unit_push_case_label(expression *value)
     _switch_values[_last_switch_value].conditions_insertion_point = place->expr_next;
 }
 
-// Вставляем метку и вставляем безусловный переход.
+// Р’СЃС‚Р°РІР»СЏРµРј РјРµС‚РєСѓ Рё РІСЃС‚Р°РІР»СЏРµРј Р±РµР·СѓСЃР»РѕРІРЅС‹Р№ РїРµСЂРµС…РѕРґ.
 
 void unit_push_default_stmt()
 {
@@ -357,7 +357,7 @@ void unit_push_default_stmt()
     _switch_values[_last_switch_value].conditions_insertion_point = place->expr_next;
 }
 
-// Вставляем метку для break и восстанавливаем стеки.
+// Р’СЃС‚Р°РІР»СЏРµРј РјРµС‚РєСѓ РґР»СЏ break Рё РІРѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃС‚РµРєРё.
 
 void unit_close_switch_stmt()
 {
@@ -369,7 +369,7 @@ void unit_close_switch_stmt()
 
 
 //
-// Поддержка цикла for (вырезание третьей инструкции и вставка её после тела цикла).
+// РџРѕРґРґРµСЂР¶РєР° С†РёРєР»Р° for (РІС‹СЂРµР·Р°РЅРёРµ С‚СЂРµС‚СЊРµР№ РёРЅСЃС‚СЂСѓРєС†РёРё Рё РІСЃС‚Р°РІРєР° РµС‘ РїРѕСЃР»Рµ С‚РµР»Р° С†РёРєР»Р°).
 //
 
 expression *unit_get_last_expression(void)
@@ -403,7 +403,7 @@ void unit_insert_slice(expression *list)
         return;
     }
 
-    // вставка подсписка в двусвязный список
+    // РІСЃС‚Р°РІРєР° РїРѕРґСЃРїРёСЃРєР° РІ РґРІСѓСЃРІСЏР·РЅС‹Р№ СЃРїРёСЃРѕРє
     if (!_curr_func->func_body) {
         _curr_func->func_body                   = list;
     } else {
@@ -411,7 +411,7 @@ void unit_insert_slice(expression *list)
     }
 
 
-    // находим новый конец списка
+    // РЅР°С…РѕРґРёРј РЅРѕРІС‹Р№ РєРѕРЅРµС† СЃРїРёСЃРєР°
     end = _curr_func->func_body_end;
 
     for (end = list; end->expr_next; ) {
@@ -423,7 +423,7 @@ void unit_insert_slice(expression *list)
 
 
 //
-//  Удаление выражений, бессмысленных с точки зрения кодогенерации.
+//  РЈРґР°Р»РµРЅРёРµ РІС‹СЂР°Р¶РµРЅРёР№, Р±РµСЃСЃРјС‹СЃР»РµРЅРЅС‹С… СЃ С‚РѕС‡РєРё Р·СЂРµРЅРёСЏ РєРѕРґРѕРіРµРЅРµСЂР°С†РёРё.
 //
 
 static void _eliminate_meaningless_expressions(void)
@@ -460,8 +460,8 @@ static void _eliminate_meaningless_expressions(void)
 
 
 //
-//  Выделение логической арифметики внутри условных переходов.
-//  Мы помечаем для кодогенератора такие команды специальными кодами.
+//  Р’С‹РґРµР»РµРЅРёРµ Р»РѕРіРёС‡РµСЃРєРѕР№ Р°СЂРёС„РјРµС‚РёРєРё РІРЅСѓС‚СЂРё СѓСЃР»РѕРІРЅС‹С… РїРµСЂРµС…РѕРґРѕРІ.
+//  РњС‹ РїРѕРјРµС‡Р°РµРј РґР»СЏ РєРѕРґРѕРіРµРЅРµСЂР°С‚РѕСЂР° С‚Р°РєРёРµ РєРѕРјР°РЅРґС‹ СЃРїРµС†РёР°Р»СЊРЅС‹РјРё РєРѕРґР°РјРё.
 //
 
 static void _replace_boolean_operations_in_jump(expression *expr)
@@ -496,8 +496,8 @@ static void _process_boolean_operations_in_jumps(void)
 
 
 //
-//  Заменяем логические операции, не подпавшие под предыдущие проверки,
-//  на условный переход + сохранение во временную переменную.
+//  Р—Р°РјРµРЅСЏРµРј Р»РѕРіРёС‡РµСЃРєРёРµ РѕРїРµСЂР°С†РёРё, РЅРµ РїРѕРґРїР°РІС€РёРµ РїРѕРґ РїСЂРµРґС‹РґСѓС‰РёРµ РїСЂРѕРІРµСЂРєРё,
+//  РЅР° СѓСЃР»РѕРІРЅС‹Р№ РїРµСЂРµС…РѕРґ + СЃРѕС…СЂР°РЅРµРЅРёРµ РІРѕ РІСЂРµРјРµРЅРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ.
 //
 
 static void _replace_boolean_with_jumps(expression *expr, void *unused)
@@ -557,7 +557,7 @@ static void _process_general_boolean_arithmetic(void)
 
 
 //
-//  Вычисление метрики сложности для всех выражений.
+//  Р’С‹С‡РёСЃР»РµРЅРёРµ РјРµС‚СЂРёРєРё СЃР»РѕР¶РЅРѕСЃС‚Рё РґР»СЏ РІСЃРµС… РІС‹СЂР°Р¶РµРЅРёР№.
 //
 
 static void _calc_complexity_cb(expression *expr, void *unused)
@@ -614,7 +614,7 @@ static void _calc_expressions_complexity(void)
 
 
 //
-//  Удаление переменных, вышедших из области видимости, из таблицы символов.
+//  РЈРґР°Р»РµРЅРёРµ РїРµСЂРµРјРµРЅРЅС‹С…, РІС‹С€РµРґС€РёС… РёР· РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё, РёР· С‚Р°Р±Р»РёС†С‹ СЃРёРјРІРѕР»РѕРІ.
 //
 
 static void _remove_function_params_from_symtable(data_type *type)
@@ -646,24 +646,24 @@ static void _remove_local_variables_from_symtable(void)
 
 
 //
-//  Обработка деклараций переменных и функций.
+//  РћР±СЂР°Р±РѕС‚РєР° РґРµРєР»Р°СЂР°С†РёР№ РїРµСЂРµРјРµРЅРЅС‹С… Рё С„СѓРЅРєС†РёР№.
 //
 
 void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *symbols)
 {
     symbol *sym;
 
-    if (!symbols) { // обработка синтаксических ошибок
+    if (!symbols) { // РѕР±СЂР°Р±РѕС‚РєР° СЃРёРЅС‚Р°РєСЃРёС‡РµСЃРєРёС… РѕС€РёР±РѕРє
         return;
     }
 
-    // выводим тип переменных
+    // РІС‹РІРѕРґРёРј С‚РёРї РїРµСЂРµРјРµРЅРЅС‹С…
     type_apply_decl_specifiers_to_vars(decl_spec, symbols);
 
     for (sym = symbols->list_first; sym; sym = sym->sym_next) {
         sym->sym_is_local = !!_curr_func;
 
-        // удаляем параметры в указателях на функцию
+        // СѓРґР°Р»СЏРµРј РїР°СЂР°РјРµС‚СЂС‹ РІ СѓРєР°Р·Р°С‚РµР»СЏС… РЅР° С„СѓРЅРєС†РёСЋ
         if (TYPE_IS_FUNCTION(sym->sym_type) || TYPE_IS_POINTER_TO_FUNCTION(sym->sym_type)) {
             if (TYPE_IS_FUNCTION(sym->sym_type)) {
                 sym->sym_code = code_sym_function;
@@ -672,7 +672,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
             _remove_function_params_from_symtable(sym->sym_type);
         }
 
-        // обрабатываем инициализаторы, если они есть
+        // РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РёРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂС‹, РµСЃР»Рё РѕРЅРё РµСЃС‚СЊ
         if (decl_spec.spec_typedef) {
             if (sym->sym_init) {
                 aux_error("typedef's cannot have initializers");
@@ -717,7 +717,7 @@ void unit_handle_variable_declarations(decl_specifier decl_spec, symbol_list *sy
         }
     }
 
-    // вставляем переменные в список
+    // РІСЃС‚Р°РІР»СЏРµРј РїРµСЂРµРјРµРЅРЅС‹Рµ РІ СЃРїРёСЃРѕРє
     if (_curr_func) {
         if (_curr_func->func_locals.list_last) {
             _curr_func->func_locals.list_last->sym_next  = symbols->list_first;
@@ -738,7 +738,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
         return;
     }
 
-    // выводим тип функции
+    // РІС‹РІРѕРґРёРј С‚РёРї С„СѓРЅРєС†РёРё
     sym->sym_code       = code_sym_function;
     sym->sym_is_local   = FALSE;
 
@@ -756,7 +756,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     type_apply_decl_specifiers_to_type(*spec, &sym->sym_type);
 
 
-    // если функция переопределена, тип должен соответствовать типу первого описания
+    // РµСЃР»Рё С„СѓРЅРєС†РёСЏ РїРµСЂРµРѕРїСЂРµРґРµР»РµРЅР°, С‚РёРї РґРѕР»Р¶РµРЅ СЃРѕРѕС‚РІРµС‚СЃС‚РІРѕРІР°С‚СЊ С‚РёРїСѓ РїРµСЂРІРѕРіРѕ РѕРїРёСЃР°РЅРёСЏ
     hidden = symbol_unhide(sym);
 
     if (hidden) {
@@ -768,7 +768,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     }
 
 
-    // создаём дескриптор функции
+    // СЃРѕР·РґР°С‘Рј РґРµСЃРєСЂРёРїС‚РѕСЂ С„СѓРЅРєС†РёРё
     _curr_func                  = allocator_alloc(allocator_global_pool, sizeof(function_desc));
     memset(_curr_func, 0, sizeof(function_desc));
 
@@ -777,7 +777,7 @@ void unit_handle_function_prototype(decl_specifier *spec, symbol *sym)
     _curr_func->func_params     = sym->sym_type->data.function.parameters_list;
 
 
-    // вставляем функцию в список функций модуля
+    // РІСЃС‚Р°РІР»СЏРµРј С„СѓРЅРєС†РёСЋ РІ СЃРїРёСЃРѕРє С„СѓРЅРєС†РёР№ РјРѕРґСѓР»СЏ
     if (!_first_function) {
         _first_function = _last_function = _curr_func;
     } else {
@@ -797,7 +797,7 @@ void unit_handle_function_body(symbol *sym)
 
     ASSERT(TYPE_IS_FUNCTION(sym->sym_type));
 
-    // добавляем инструкцию "return", если её нет в конце функции
+    // РґРѕР±Р°РІР»СЏРµРј РёРЅСЃС‚СЂСѓРєС†РёСЋ "return", РµСЃР»Рё РµС‘ РЅРµС‚ РІ РєРѕРЅС†Рµ С„СѓРЅРєС†РёРё
     if (!_curr_func->func_body) {
         unit_push_return(NULL, TRUE);
     } else {
@@ -808,7 +808,7 @@ void unit_handle_function_body(symbol *sym)
         }
 
         if (expr->expr_code != code_expr_return) {
-            // TODO: чтобы выдавать этот варнинг, нужно статическим анализом доказать достижимость этого кода.
+            // TODO: С‡С‚РѕР±С‹ РІС‹РґР°РІР°С‚СЊ СЌС‚РѕС‚ РІР°СЂРЅРёРЅРі, РЅСѓР¶РЅРѕ СЃС‚Р°С‚РёС‡РµСЃРєРёРј Р°РЅР°Р»РёР·РѕРј РґРѕРєР°Р·Р°С‚СЊ РґРѕСЃС‚РёР¶РёРјРѕСЃС‚СЊ СЌС‚РѕРіРѕ РєРѕРґР°.
             //
             //data_type *func_type = _curr_func->func_sym->sym_type;
             //
@@ -821,24 +821,24 @@ void unit_handle_function_body(symbol *sym)
     }
 
 
-    // Разрешаем ссылки на неопределённые метки на момент компиляции goto.
+    // Р Р°Р·СЂРµС€Р°РµРј СЃСЃС‹Р»РєРё РЅР° РЅРµРѕРїСЂРµРґРµР»С‘РЅРЅС‹Рµ РјРµС‚РєРё РЅР° РјРѕРјРµРЅС‚ РєРѕРјРїРёР»СЏС†РёРё goto.
     _resolve_jumps_to_named_labels();
 
-    // Сначала выкидываем бессмысленные, с точки зрения кодогенератора, выражения.
+    // РЎРЅР°С‡Р°Р»Р° РІС‹РєРёРґС‹РІР°РµРј Р±РµСЃСЃРјС‹СЃР»РµРЅРЅС‹Рµ, СЃ С‚РѕС‡РєРё Р·СЂРµРЅРёСЏ РєРѕРґРѕРіРµРЅРµСЂР°С‚РѕСЂР°, РІС‹СЂР°Р¶РµРЅРёСЏ.
     _eliminate_meaningless_expressions();
 
-    // Заменяем операторы &&, || внутри jmp на специальные коды op_logical_and_in_jump/op_logical_or_in_jump.
+    // Р—Р°РјРµРЅСЏРµРј РѕРїРµСЂР°С‚РѕСЂС‹ &&, || РІРЅСѓС‚СЂРё jmp РЅР° СЃРїРµС†РёР°Р»СЊРЅС‹Рµ РєРѕРґС‹ op_logical_and_in_jump/op_logical_or_in_jump.
     _process_boolean_operations_in_jumps();
 
-    // Заменяем логическую арифметику (операторы &&, ||) на условные переходы с записью результата
-    // во временную переменную.
+    // Р—Р°РјРµРЅСЏРµРј Р»РѕРіРёС‡РµСЃРєСѓСЋ Р°СЂРёС„РјРµС‚РёРєСѓ (РѕРїРµСЂР°С‚РѕСЂС‹ &&, ||) РЅР° СѓСЃР»РѕРІРЅС‹Рµ РїРµСЂРµС…РѕРґС‹ СЃ Р·Р°РїРёСЃСЊСЋ СЂРµР·СѓР»СЊС‚Р°С‚Р°
+    // РІРѕ РІСЂРµРјРµРЅРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ.
     _process_general_boolean_arithmetic();
 
-    // Вычисляем метрику сложности для каждого выражения, в том числе для вложенных.
+    // Р’С‹С‡РёСЃР»СЏРµРј РјРµС‚СЂРёРєСѓ СЃР»РѕР¶РЅРѕСЃС‚Рё РґР»СЏ РєР°Р¶РґРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ, РІ С‚РѕРј С‡РёСЃР»Рµ РґР»СЏ РІР»РѕР¶РµРЅРЅС‹С….
     _calc_expressions_complexity();
 
-    // Удаляем параметры функции и локальные переменные из области видимости.
-    // TODO: поддержка локальных переменных во вложенных блоках с правильными областями видимости.
+    // РЈРґР°Р»СЏРµРј РїР°СЂР°РјРµС‚СЂС‹ С„СѓРЅРєС†РёРё Рё Р»РѕРєР°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ РёР· РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё.
+    // TODO: РїРѕРґРґРµСЂР¶РєР° Р»РѕРєР°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С… РІРѕ РІР»РѕР¶РµРЅРЅС‹С… Р±Р»РѕРєР°С… СЃ РїСЂР°РІРёР»СЊРЅС‹РјРё РѕР±Р»Р°СЃС‚СЏРјРё РІРёРґРёРјРѕСЃС‚Рё.
     _remove_function_params_from_symtable(sym->sym_type);
     _remove_local_variables_from_symtable();
 
@@ -854,7 +854,7 @@ void unit_after_global_declaration(void)
 
 
 //
-//  Кодогенерация.
+//  РљРѕРґРѕРіРµРЅРµСЂР°С†РёСЏ.
 //
 
 static void _reset_function_calling_stat()
@@ -882,7 +882,7 @@ void unit_codegen(void)
             x86_local_optimization_pass(_curr_func, FALSE);
         }
 
-        // строим статистику вызовов функций
+        // СЃС‚СЂРѕРёРј СЃС‚Р°С‚РёСЃС‚РёРєСѓ РІС‹Р·РѕРІРѕРІ С„СѓРЅРєС†РёР№
         if (option_enable_optimization && !option_no_inline) {
             x86_inlining_analyze_function(_curr_func);
         }
@@ -890,7 +890,7 @@ void unit_codegen(void)
         allocator_finish_function();
     }
 
-    // инлайним все подходящие функции
+    // РёРЅР»Р°Р№РЅРёРј РІСЃРµ РїРѕРґС…РѕРґСЏС‰РёРµ С„СѓРЅРєС†РёРё
     if (option_enable_optimization && !option_no_inline) {
         for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
             x86_inlining_process_function(_curr_func);
@@ -898,7 +898,7 @@ void unit_codegen(void)
         }
     }
 
-    // обновляем статистику вызовов функций, чтобы не выводить в листинг неиспользуемые функции
+    // РѕР±РЅРѕРІР»СЏРµРј СЃС‚Р°С‚РёСЃС‚РёРєСѓ РІС‹Р·РѕРІРѕРІ С„СѓРЅРєС†РёР№, С‡С‚РѕР±С‹ РЅРµ РІС‹РІРѕРґРёС‚СЊ РІ Р»РёСЃС‚РёРЅРі РЅРµРёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ С„СѓРЅРєС†РёРё
     _reset_function_calling_stat();
 
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
@@ -907,7 +907,7 @@ void unit_codegen(void)
 
     x86data_enter_text_section();
 
-    // делаем оптимизацию каждой функции и выводим ассемблерный код
+    // РґРµР»Р°РµРј РѕРїС‚РёРјРёР·Р°С†РёСЋ РєР°Р¶РґРѕР№ С„СѓРЅРєС†РёРё Рё РІС‹РІРѕРґРёРј Р°СЃСЃРµРјР±Р»РµСЂРЅС‹Р№ РєРѕРґ
     for (_curr_func = _first_function; _curr_func; _curr_func = _curr_func->func_next) {
         if (_curr_func->func_is_static && _curr_func->func_usage_count == 0) {
             continue;
@@ -973,7 +973,7 @@ void unit_push_ternary_instruction(x86_instruction_code code, x86_operand *op1, 
 
 
 //
-// Считает число инструкций в функции.
+// РЎС‡РёС‚Р°РµС‚ С‡РёСЃР»Рѕ РёРЅСЃС‚СЂСѓРєС†РёР№ РІ С„СѓРЅРєС†РёРё.
 //
 int unit_get_instruction_count(function_desc *function)
 {

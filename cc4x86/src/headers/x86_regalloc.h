@@ -19,11 +19,11 @@ typedef enum x86_register_status_decl {
 } x86_register_status;
 
 typedef struct x86_pseudoreg_info_decl {
-    x86_register_status     reg_status;             // îäèí èç âàðèàíòîâ âûøå
-    int                     reg_location;           // íîìåð àññîöèèðîâàííîãî ðåàëüíîãî ðåãèñòðà èëè -1
-    int                     reg_stack_location;     // ñìåùåíèå àññîöèèðîâàííîé ÿ÷åéêè â ñòåêå
-    BOOL                    reg_dirty;              // áûë ëè ðåãèñòð ìîäèôèöèðîâàí
-    x86_operand_type        reg_content_type;       // òèï ñîäåðæèìîãî ðåãèñòðà
+    x86_register_status     reg_status;             // Ð¾Ð´Ð¸Ð½ Ð¸Ð· Ð²Ð°Ñ€Ð¸Ð°Ð½Ñ‚Ð¾Ð² Ð²Ñ‹ÑˆÐµ
+    int                     reg_location;           // Ð½Ð¾Ð¼ÐµÑ€ Ð°ÑÑÐ¾Ñ†Ð¸Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ð³Ð¾ Ñ€ÐµÐ°Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð° Ð¸Ð»Ð¸ -1
+    int                     reg_stack_location;     // ÑÐ¼ÐµÑ‰ÐµÐ½Ð¸Ðµ Ð°ÑÑÐ¾Ñ†Ð¸Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ð¹ ÑÑ‡ÐµÐ¹ÐºÐ¸ Ð² ÑÑ‚ÐµÐºÐµ
+    BOOL                    reg_dirty;              // Ð±Ñ‹Ð» Ð»Ð¸ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€ Ð¼Ð¾Ð´Ð¸Ñ„Ð¸Ñ†Ð¸Ñ€Ð¾Ð²Ð°Ð½
+    x86_operand_type        reg_content_type;       // Ñ‚Ð¸Ð¿ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ð¾Ð³Ð¾ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°
 } x86_pseudoreg_info;
 
 #define OP_IS_REGVAR(REG, TYPE) ((REG) >= function->func_start_of_regvars[(TYPE)])
