@@ -3,7 +3,7 @@ Russian version below - Русская версия ниже.
 <p>
 This is a C compiler with code-generation for x86/SSE2 with optimizations. It misses some C language features, like enums and preprocessor.
 <p>
-I'm terribly sorry, however all the history and all the documentation and comments are in Russsian language (cp1251). You might find Google translate useful OR try to take advantage of an automatic translation in Chrome browser!
+I'm terribly sorry, however all the history and all the documentation and comments are in Russsian language. You might find Google translate useful OR try to take advantage of an automatic translation in Chrome browser!
 <p>
 It uses Flex as a lexical analyzer generator + Bison as a parser generator.
 <p>
@@ -30,7 +30,7 @@ The whole project wouldn't be possible without Dragon book, which I highly recom
 <p>
 Это проект оптимизирующего компилятора Си с кодогенерацией для x86/SSE2. Не все фичи языка Си поддерживаются: отсутствует препроцессор, не поддерживаются enum и т. д.
 <p>
-Вся история версий, все комментарии и документация написаны на русском языке, в кодировке ANSI-1251.
+Вся история версий, все комментарии и документация написаны на русском языке.
 <p>
 Лексические анализатор генерируется Flex, парсер генерируется Bison.
 <p>
