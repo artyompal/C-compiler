@@ -30,7 +30,7 @@ The whole project wouldn't be possible without Dragon book, which I highly recom
 <p>
 Это проект оптимизирующего компилятора Си с кодогенерацией для x86/SSE2. Не все фичи языка Си поддерживаются: отсутствует препроцессор, не поддерживаются enum и т. д.
 <p>
-Вся история версий, все комментарии и документация написаны на русском языке, в кодировке Ansi-1251.
+Вся история версий, все комментарии и документация написаны на русском языке, в кодировке ANSI-1251.
 <p>
 Лексические анализатор генерируется Flex, парсер генерируется Bison.
 <p>
@@ -46,7 +46,7 @@ The whole project wouldn't be possible without Dragon book, which I highly recom
 <li>устранять недоступный код и т.д.</li>
 </ul>
 <p>
-Самая интересная часть кода (кодогенератор с оптимизатором) находится здесь: https://github.com/artyompal/C-compiler/tree/master/cc4x86/src/src. Скучная рутина (парсер, проверки типов и т. д.) находятся здесь: https://github.com/artyompal/C-compiler/tree/master/frontend_cc/src/src. Эти два компонента независимы, поэтому не должно быть проблемой добавить фронт-енд для любого другого языка, чтобы компилировать его в x86.
+Самая интересная часть кода (кодогенератор с оптимизатором) находится здесь: https://github.com/artyompal/C-compiler/tree/master/cc4x86/src/src. Скучная рутина (парсер, проверки типов и т. д.) находится здесь: https://github.com/artyompal/C-compiler/tree/master/frontend_cc/src/src. Эти два компонента независимы, поэтому не должно быть проблемой добавить фронт-енд для любого другого языка, чтобы компилировать его в x86.
 <p>
 Одна любопытная фича заключается в том, что компилятор может сохранить синтаксическое дерево (AST) в XML-файл, например: https://github.com/artyompal/C-compiler/blob/master/cc4x86/tests/regressive/for.xml. Вы можете посмотреть на примеры XML-файлов для разных простых тестов здесь: https://github.com/artyompal/C-compiler/tree/master/cc4x86/tests/regressive.
 <p>
