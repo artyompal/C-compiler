@@ -5,7 +5,7 @@ This is a C compiler with code-generation for x86/SSE2 with optimization. It mis
 <p>
 I'm terribly sorry, however all the history, all the documentation and the comments are in Russsian language. You might find Google Translate useful OR try to take advantage of an automatic translation in the Chrome browser!
 <p>
-It uses Flex as a lexical analyzer generator + Bison as a parser generator.
+It uses Flex as a lexical analyzer generator + Bison as a parser generator. All grammar files are here: https://github.com/artyompal/C-compiler/tree/master/frontend_cc/scripts.
 <p>
 I've written a test in C language (https://github.com/artyompal/C-compiler/blob/master/cc4x86/tests/visual/rasterizer/rasterizer.c) which was a software 3D rasterizer, and on this test my compiler reached the same performance as Microsoft Visual С++. Then I made that test more challenging.
 <p>
@@ -32,7 +32,7 @@ The whole project wouldn't be possible without Dragon book, which I highly recom
 <p>
 Вся история версий, все комментарии и документация написаны на русском языке.
 <p>
-Лексические анализатор генерируется Flex, парсер генерируется Bison.
+Лексический анализатор генерируется Flex, парсер генерируется Bison. Описания грамматики здесь: https://github.com/artyompal/C-compiler/tree/master/frontend_cc/scripts).
 <p>
 Я начал с того, что написал простой тест на языке Си (https://github.com/artyompal/C-compiler/blob/master/cc4x86/tests/visual/rasterizer/rasterizer.c), это был 3D-растеризатор. Стояла задача на этом тесте получить производительнось Microsoft Visual С++, и эта задача была выполнена. Потом я стал усложнять тест.
 <p>
@@ -50,7 +50,7 @@ The whole project wouldn't be possible without Dragon book, which I highly recom
 <p>
 Одна любопытная фича заключается в том, что компилятор может сохранить синтаксическое дерево (AST) в XML-файл, например: https://github.com/artyompal/C-compiler/blob/master/cc4x86/tests/regressive/for.xml. Вы можете посмотреть на примеры XML-файлов для разных простых тестов здесь: https://github.com/artyompal/C-compiler/tree/master/cc4x86/tests/regressive.
 <p>
-Самая продвинутая версия кодогенератора разрабатывалась здесь: https://github.com/artyompal/C-compiler/tree/var_caching_dev. К сожалению, этот код не дописан и наверняка сломан.
+Самая продвинутая версия оптимизатора находится здесь: https://github.com/artyompal/C-compiler/tree/var_caching_dev. К сожалению, этот код не дописан и наверняка сломан.
 <p>
 Весь этот проект заимствует неприлично много идей из книги Дракона: https://www.amazon.co.uk/Compilers-Principles-Techniques-Alfred-Aho/dp/0201100886. Я всячески рекомендую эту нашумевшую публикацию к изучению, тем более, что уже вышло второе издание.
 <hr>
